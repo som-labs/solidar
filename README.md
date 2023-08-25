@@ -1,0 +1,2 @@
+# solidar
+Calculadora fotovoltàica
