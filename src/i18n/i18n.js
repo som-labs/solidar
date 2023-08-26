@@ -25,14 +25,18 @@ const resources = {
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
+  .use(LanguageDetector) // detects language in the browser
   .init({
     resources,
     fallbackLng: 'es',
-    lng: 'es',
     keySeparator: false, // we do not use keys in form messages.welcome
     interpolation: {
       escapeValue: false // react already safes from xss
-    }
+    },
+    detection: {
+      order: ['querystring', 'cookie', 'localStorage', 'sessionStorage', 'navigator', 'htmlTag', 'path', 'subdomain'],
+      lookupQuerystring: 'lang',
+    },
   })
 
 export default i18n
