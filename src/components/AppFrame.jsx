@@ -4,6 +4,7 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import ColorModeButton from './ColorModeButton'
+import LanguageMenu from './LanguageMenu'
 import {useTranslation} from 'react-i18next'
 
 
@@ -16,10 +17,7 @@ export default function AppFrame({ children }) {
     {text:t('APP_FRAME_ABOUT')},
   ]
 
-  useMemo(() => {
-    i18n.changeLanguage("es")
-  }, [i18n])
-
+  // TODO: Move styling to the global style
   return (
     <>
       <AppBar position="static" enableColorOnDark>
@@ -35,6 +33,7 @@ export default function AppFrame({ children }) {
             </Button>
           ))}
           <ColorModeButton />
+          <LanguageMenu />
         </Toolbar>
       </AppBar>
       <div>
