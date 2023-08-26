@@ -6,20 +6,27 @@ import Button from '@mui/material/Button'
 import ColorModeButton from './ColorModeButton'
 import LanguageMenu from './LanguageMenu'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from "react-router-dom"
 
 
-export default function AppFrame({ children }) {
+
+export default function AppFrame({children}) {
   const {t, i18n} = useTranslation()
-  const appTitle = "Solidar"
-  const menuOptions = [
+  const navigate = useNavigate()
+
+  const title = "Solidar"
+  const pages = [
     {
       text: t('APP_FRAME.PAGE_HOME'),
+      path: '/',
     },
     {
       text: t('APP_FRAME.PAGE_SIMULATORS'),
+      path: '/simulator',
     },
     {
       text: t('APP_FRAME.PAGE_ABOUT'),
+      path: '/about',
     },
   ]
 
@@ -29,12 +36,16 @@ export default function AppFrame({ children }) {
       <AppBar position="static" enableColorOnDark>
         <Toolbar>
           <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
-            {appTitle}
+            {title}
           </Typography>
-          { menuOptions.map((option) => (
-            <Button key={option.text} color="inherit">
+          { pages.map((page) => (
+            <Button
+              key={page.text}
+              color="inherit"
+              onClick={()=>navigate(page.path)}
+            >
               <Typography variant="h6" sx={{textTransform: 'none'}}>
-                {option.text}
+                {page.text}
               </Typography>
             </Button>
           ))}
