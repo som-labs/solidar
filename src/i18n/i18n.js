@@ -2,29 +2,15 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 
-import LOCALE_CA from './locale-ca.yaml'
-import LOCALE_EN from './locale-en.yaml'
-import LOCALE_ES from './locale-es.yaml'
-import LOCALE_GL from './locale-gl.yaml'
-import LOCALE_EU from './locale-eu.yaml'
+const translations = import.meta.globEager('./locale-*.yaml')
 
-const resources = {
-  ca: {
-    translation: { ...LOCALE_CA }
-  },
-  en: {
-    translation: { ...LOCALE_EN }
-  },
-  es: {
-    translation: { ...LOCALE_ES }
-  },
-  gl: {
-    translation: { ...LOCALE_GL }
-  },
-  eu: {
-    translation: { ...LOCALE_EU }
-  }
-}
+const resources = Object.fromEntries(
+  Object.keys(translations).map((key) => {
+    const code = key.slice('./locale-'.length, -'.yaml'.length)
+    const translation = translations[key].default
+    return [code, {translation}]
+  })
+)
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
