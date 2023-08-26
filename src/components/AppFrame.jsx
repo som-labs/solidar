@@ -1,9 +1,10 @@
 import React, {useMemo} from 'react';
 import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import {useTranslation} from 'react-i18next';
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import ColorModeButton from './ColorModeButton'
+import {useTranslation} from 'react-i18next'
 
 
 export default function AppFrame({ children }) {
@@ -21,14 +22,19 @@ export default function AppFrame({ children }) {
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="static" enableColorOnDark>
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
             {appTitle}
           </Typography>
           { menuOptions.map((option) => (
-              <Button key={option.text} color="inherit">{option.text}</Button>
+            <Button key={option.text} color="inherit">
+              <Typography variant="h6" sx={{textTransform: 'none'}}>
+                {option.text}
+              </Typography>
+            </Button>
           ))}
+          <ColorModeButton />
         </Toolbar>
       </AppBar>
       <div>
