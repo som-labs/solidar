@@ -8,11 +8,14 @@
 - [x] License
 - [x] Documentation files
 - [x] linter, editorconfig, 
-- [ ] README
-- [ ] CHANGES
-- [ ] App frame
+- [x] README
+- [x] CHANGES
+- [x] AppFrame
+- [x] AppFrame: Change language button
+- [x] AppFrame: Change theme button
+- [x] Scoped translation ids
 - [ ] Page router
+- [ ] AppFrame: Common Footer
+- [ ] Configuration
 - [ ] Top level wizard
-- [ ] 
-
 
