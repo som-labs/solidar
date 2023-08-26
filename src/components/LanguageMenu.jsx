@@ -25,6 +25,10 @@ export default function LanguageMenu() {
       text: 'Català',
     },
     {
+      id: 'en',
+      text: 'English',
+    },
+    {
       id: 'es',
       text: 'Español',
     },

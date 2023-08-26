@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 
 import LOCALE_CA from './locale-ca.yaml'
+import LOCALE_EN from './locale-en.yaml'
 import LOCALE_ES from './locale-es.yaml'
 import LOCALE_GL from './locale-gl.yaml'
 import LOCALE_EU from './locale-eu.yaml'
@@ -10,6 +11,9 @@ import LOCALE_EU from './locale-eu.yaml'
 const resources = {
   ca: {
     translation: { ...LOCALE_CA }
+  },
+  en: {
+    translation: { ...LOCALE_EN }
   },
   es: {
     translation: { ...LOCALE_ES }
