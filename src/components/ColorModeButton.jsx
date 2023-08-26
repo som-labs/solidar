@@ -1,11 +1,13 @@
-import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
-import BrightnessHighIcon from '@mui/icons-material/BrightnessHigh';
-import BrightnessLowIcon from '@mui/icons-material/BrightnessLow';
-import IconButton from '@mui/material/IconButton';
+import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto'
+import BrightnessHighIcon from '@mui/icons-material/BrightnessHigh'
+import BrightnessLowIcon from '@mui/icons-material/BrightnessLow'
+import IconButton from '@mui/material/IconButton'
 import { ColorModeContext } from './GlobalTheme'
 import React from 'react'
+import {useTranslation} from 'react-i18next'
 
 export default function ColorModeButton() {
+  const {t, i18n} = useTranslation()
   const {toggle, current} = React.useContext(ColorModeContext)
   const modeIcons = {
     'dark': BrightnessLowIcon,
@@ -15,7 +17,7 @@ export default function ColorModeButton() {
   return <>
       <IconButton
         color={'inherit'}
-        aria-label="Toggle Color Mode"
+        aria-label={t('APP_FRAME_TOGGLE_COLOR_MODE')}
         onClick={ toggle }
       >
         <Icon/>

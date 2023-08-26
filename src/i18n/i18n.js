@@ -1,12 +1,11 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
+import LanguageDetector from 'i18next-browser-languagedetector'
 
 import LOCALE_CA from './locale-ca.yaml'
 import LOCALE_ES from './locale-es.yaml'
 import LOCALE_GL from './locale-gl.yaml'
 import LOCALE_EU from './locale-eu.yaml'
-
-console.log("LOCALE_ES",LOCALE_ES)
 
 const resources = {
   ca: {
