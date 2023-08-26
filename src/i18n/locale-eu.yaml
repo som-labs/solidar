@@ -1,3 +1,4 @@
-APP_FRAME_HOME: Hasiera
-APP_FRAME_SIMULATORS: Simulagailuak
-APP_FRAME_ABOUT: Solidari buruz
+APP_FRAME:
+  PAGE_HOME: Hasiera
+  PAGE_SIMULATORS: Simulagailuak
+  PAGE_ABOUT: Solidari buruz

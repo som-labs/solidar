@@ -17,7 +17,8 @@ export default function ColorModeButton() {
   return <>
       <IconButton
         color={'inherit'}
-        aria-label={t('APP_FRAME_TOGGLE_COLOR_MODE')}
+        aria-label={t('APP_FRAME.TOGGLE_COLOR_MODE')}
+        title={t('APP_FRAME.TOGGLE_COLOR_MODE')}
         onClick={ toggle }
       >
         <Icon/>

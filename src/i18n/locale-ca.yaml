@@ -1,3 +1,4 @@
-APP_FRAME_HOME: Inici
-APP_FRAME_SIMULATORS: Simuladors
-APP_FRAME_ABOUT: Sobre Solidar
+APP_FRAME:
+  PAGE_HOME: Inici
+  PAGE_SIMULATORS: Simuladors
+  PAGE_ABOUT: Sobre Solidar

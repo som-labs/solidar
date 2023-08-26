@@ -1,7 +1,8 @@
-APP_FRAME_HOME: Inicio
-APP_FRAME_SIMULATORS: Simuladores
-APP_FRAME_ABOUT: Sobre Solidar
-APP_FRAME_TOGGLE_COLOR_MODE: Cambia el tema de color
-APP_FRAME_CHANGE_LANGUAGE: Cambia el idioma
-APP_FRAME_CONTRIBUTE_TRANSLATIONS: Ayúdanos a traducir a otros idiomas
+APP_FRAME:
+  PAGE_HOME: Inicio
+  PAGE_SIMULATORS: Simuladores
+  PAGE_ABOUT: Sobre Solidar
+  TOGGLE_COLOR_MODE: Cambia el tema de color
+  CHANGE_LANGUAGE: Cambia el idioma
+  CONTRIBUTE_TRANSLATIONS: Ayúdanos a traducir a otros idiomas
 

@@ -5,16 +5,22 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import ColorModeButton from './ColorModeButton'
 import LanguageMenu from './LanguageMenu'
-import {useTranslation} from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 
 export default function AppFrame({ children }) {
   const {t, i18n} = useTranslation()
   const appTitle = "Solidar"
   const menuOptions = [
-    {text:t('APP_FRAME_HOME')},
-    {text:t('APP_FRAME_SIMULATORS')},
-    {text:t('APP_FRAME_ABOUT')},
+    {
+      text: t('APP_FRAME.PAGE_HOME'),
+    },
+    {
+      text: t('APP_FRAME.PAGE_SIMULATORS'),
+    },
+    {
+      text: t('APP_FRAME.PAGE_ABOUT'),
+    },
   ]
 
   // TODO: Move styling to the global style
