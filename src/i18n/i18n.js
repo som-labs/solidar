@@ -27,8 +27,7 @@ i18n
   .use(LanguageDetector) // detects language in the browser
   .init({
     resources,
-    fallbackLng: 'es',
-    keySeparator: false, // we do not use keys in form messages.welcome
+    fallbackLng: 'es', // Comment out to better spot untranslated texts
     interpolation: {
       escapeValue: false // react already safes from xss
     },

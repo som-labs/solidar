@@ -41,7 +41,8 @@ export default function LanguageMenu() {
   return <>
     <IconButton
       color={ 'inherit' }
-      aria-label={ t('APP_FRAME_CHANGE_LANGUAGE') }
+      aria-label={ t('APP_FRAME.CHANGE_LANGUAGE') }
+      title={ t('APP_FRAME.CHANGE_LANGUAGE') }
       id = 'language-button'
       aria-controls={open ? 'language-menu' : undefined}
       aria-expanded={open ? 'true' : undefined}
@@ -78,7 +79,7 @@ export default function LanguageMenu() {
             closeMenu()
           }}
         >
-          {t('APP_FRAME_CONTRIBUTE_TRANSLATIONS')}
+          {t('APP_FRAME.CONTRIBUTE_TRANSLATIONS')}
         </MenuItem>
       )}
     </Menu>
