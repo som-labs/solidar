@@ -48,8 +48,8 @@ export default function Page() {
           {t('HOME.FURTHER_INFORMATION_TITLE')}
         </h1>
         <Box sx={{width: '100%', display: 'flex', flexFlow: 'row wrap', justifyContent: 'center'}}>
-          { articles.map((article)=>(
-            <ArticleThumb {...article} />
+          { articles.map((article,i)=>(
+            <ArticleThumb key={i} {...article} />
           ))}
         </Box>
       </Container>
