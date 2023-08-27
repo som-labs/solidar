@@ -2,7 +2,10 @@ import React from 'react'
 import Paper from '@mui/material/Paper'
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import { useTranslation } from 'react-i18next'
+import footerItems from '../data/footeritems.yaml'
+import { Link } from "react-router-dom"
 
 export default function Footer() {
   const {t, i18n} = useTranslation()
@@ -15,9 +18,11 @@ export default function Footer() {
   >
     <Container>
       <Box sx={{display: 'flex', flexFlow: 'row', gap: 10}}>
-        <p>{t("Solidar 2023")}</p>
-        <p>{t("Grupo Local Madrid")}</p>
-        <p>{t("Som Energia")}</p>
+        { footerItems.map((item)=> item.url? (
+          <div key={item.text}><Link color="primary.contrastText" to={item.url} target='_blank'>{item.text}</Link></div>
+        ): (
+          <div key={item.text}>{item.text}</div>
+        ))}
       </Box>
     </Container>
   </Paper>
