@@ -14,7 +14,9 @@
 - [x] AppFrame: Change language button
 - [x] AppFrame: Change theme button
 - [x] Scoped translation ids
-- [ ] Page router
+- [x] Page router
+- [x] AppFrame: Responsive
+- [x] AppFrame: App icon
 - [ ] AppFrame: Common Footer
 - [ ] Configuration
 - [ ] Top level wizard
