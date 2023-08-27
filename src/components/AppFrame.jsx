@@ -10,6 +10,7 @@ import PagesButtons from './PagesButtons'
 import Footer from './Footer'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from "react-router-dom"
+import { ScrollRestoration } from 'react-router-dom'
 
 export default function AppFrame({children}) {
   const {t, i18n} = useTranslation()
@@ -34,6 +35,7 @@ export default function AppFrame({children}) {
   // TODO: Move styling to the global style
   return (
     <>
+      <ScrollRestoration/>
       <AppBar position="static" enableColorOnDark>
         <Toolbar>
           <PagesMenu
