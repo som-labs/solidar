@@ -1,4 +1,4 @@
-import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles'
 
 export default function SomEnergiaTheme(isDarkMode) {
   return responsiveFontSizes(createTheme({

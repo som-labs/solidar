@@ -2,9 +2,9 @@
 // and dark modes.
 
 import useMediaQuery from '@mui/material/useMediaQuery'
-import CssBaseline from '@mui/material/CssBaseline';
+import CssBaseline from '@mui/material/CssBaseline'
 import SomEnergiaTheme from './SomEnergiaTheme'
-import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles';
+import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles'
 import React from 'react'
 import useLocalStorage from '../hooks/LocalStorage'
 
@@ -13,7 +13,7 @@ const ColorModeContext = React.createContext({
   current: null,
   set: (value) => {},
   toggle: () => {},
-});
+})
 
 function GlobalTheme({children}) {
   const [colorMode, setColorMode] = useLocalStorage('colorMode', null)
