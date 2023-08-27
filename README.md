@@ -1,15 +1,23 @@
 # Solidar
 
-Dimensioner for roof solar panel installations
+Optimize the size of roof solar panel installations
 
 ## About Solidar
 
-TODO: A more verbose description of the project
+Solidar is a calculator to find out the optimal number of solar panels
+to install on the roof of a building,
+given the features of the roof and the energy use of the residents.
+
+It takes data like the dimensions of the roof, its tilt and orientaion,
+the energy use and the electric fare,
+and, then, generates a report with the proposed a number of panels,
+their economic cost and estimations the eventual savings.
+
 
 ## Copying
 
 This software is licensed under a GNU Affero Licence 3.0 or later.
-A short non-binding summary of it is that
+A short non-binding summary is that
 you have the right to **use, modify and distribute** it
 as long as you grant the **same rights to the users**
 you redistribute to, including your modifications
