@@ -2,10 +2,12 @@ import React from 'react'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
 import ColorModeButton from './ColorModeButton'
 import LanguageMenu from './LanguageMenu'
 import PagesMenu from './PagesMenu'
 import PagesButtons from './PagesButtons'
+import Footer from './Footer'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from "react-router-dom"
 
@@ -72,9 +74,10 @@ export default function AppFrame({children}) {
           <LanguageMenu />
         </Toolbar>
       </AppBar>
-      <div>
+      <Box sx={{minHeight: "100vh"}}>
         {children}
-      </div>
+      </Box>
+      <Footer/>
     </>
   )
 } 
