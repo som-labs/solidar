@@ -28,13 +28,13 @@ const router = createBrowserRouter(routes)
 
 function App() {
   const {t, i18n} = useTranslation()
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
 
   return (
     <GlobalTheme>
       <RouterProvider router={router} />
     </GlobalTheme>
-  );
+  )
 }
 
 export default App
