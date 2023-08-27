@@ -1,14 +1,13 @@
-import React, {useMemo} from 'react';
-import AppBar from '@mui/material/AppBar';
+import React from 'react'
+import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
 import ColorModeButton from './ColorModeButton'
 import LanguageMenu from './LanguageMenu'
+import PagesMenu from './PagesMenu'
+import PagesButtons from './PagesButtons'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from "react-router-dom"
-
-
 
 export default function AppFrame({children}) {
   const {t, i18n} = useTranslation()
@@ -35,20 +34,40 @@ export default function AppFrame({children}) {
     <>
       <AppBar position="static" enableColorOnDark>
         <Toolbar>
-          <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
+          <PagesMenu
+            pages={pages}
+            sx={{
+              display: {
+                xs: 'inline',
+                sm: 'none',
+              },
+            }}
+          />
+          <img
+            src="/logo.svg"
+            width="32px"
+            style={{marginInline: '.5rem'}}
+          />
+          <Typography
+            variant="h5"
+            component="div"
+            sx={{
+              flexGrow: 1,
+              textTransform: 'uppercase',
+            }}
+          >
             {title}
           </Typography>
-          { pages.map((page) => (
-            <Button
-              key={page.text}
-              color="inherit"
-              onClick={()=>navigate(page.path)}
-            >
-              <Typography variant="h6" sx={{textTransform: 'none'}}>
-                {page.text}
-              </Typography>
-            </Button>
-          ))}
+
+          <PagesButtons
+            pages={pages}
+            sx={{
+              display: {
+                xs: 'none',
+                sm: 'inline',
+              },
+            }}
+          />
           <ColorModeButton />
           <LanguageMenu />
         </Toolbar>
@@ -57,5 +76,5 @@ export default function AppFrame({children}) {
         {children}
       </div>
     </>
-  );
+  )
 } 
