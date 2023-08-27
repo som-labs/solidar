@@ -6,6 +6,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import React from 'react'
 import {useTranslation} from 'react-i18next'
+import languages from '../data/languages.yaml'
 
 export default function LanguageMenu() {
   const {t, i18n} = useTranslation()
@@ -18,30 +19,6 @@ export default function LanguageMenu() {
   const closeMenu = () => {
     setMenuAnchor(null)
   }
-
-  const translateUrl = 'https://traduccio.somenergia.coop/projects/solidar/'
-  const languages = [
-    {
-      id: 'ca',
-      text: 'Català',
-    },
-    {
-      id: 'en',
-      text: 'English',
-    },
-    {
-      id: 'es',
-      text: 'Español',
-    },
-    {
-      id: 'eu',
-      text: 'Euskara',
-    },
-    {
-      id: 'gl',
-      text: 'Galego',
-    },
-  ]
 
   return <>
     <IconButton
@@ -65,7 +42,7 @@ export default function LanguageMenu() {
       open={open}
       onClose={closeMenu}
     >
-      {languages.map((language) => (
+      {languages.supportedLanguages.map((language) => (
         <MenuItem
           key={language.id}
           selected={language.id === i18n.language}
@@ -80,7 +57,7 @@ export default function LanguageMenu() {
           {language.text}
         </MenuItem>
       ))}
-      { translateUrl && (
+      { languages.translateUrl && (
         <MenuItem
           onClick={()=>{
             window.open(translateUrl, '_blank')
