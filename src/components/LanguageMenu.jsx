@@ -74,6 +74,9 @@ export default function LanguageMenu() {
             closeMenu()
           }}
         >
+          <ListItemIcon>
+            {language.id === i18n.language && <CheckIcon />}
+          </ListItemIcon>
           {language.text}
         </MenuItem>
       ))}
