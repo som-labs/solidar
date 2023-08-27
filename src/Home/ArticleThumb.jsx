@@ -20,8 +20,8 @@ export default function ArticleThumb(params) {
               ):(
               <Skeleton variant="rectangular" animation={false} width='160px' height='90px' />
             )}
-            <Typography variant="body1">{title}</Typography>
-            <Typography variant="body2">{excerpt}</Typography>
+            <Typography variant="h6">{title}</Typography>
+            <Typography variant="body1">{excerpt}</Typography>
           </Box>
         </CardContent>
       </CardActionArea>
