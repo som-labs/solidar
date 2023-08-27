@@ -2,21 +2,22 @@ import TranslateIcon from '@mui/icons-material/Translate'
 import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import useLocalStorage from '../hooks/LocalStorage'
+import CheckIcon from '@mui/icons-material/Check'
+import ListItemIcon from '@mui/material/ListItemIcon'
 import React from 'react'
 import {useTranslation} from 'react-i18next'
 
 export default function LanguageMenu() {
   const {t, i18n} = useTranslation()
 
-  const [menuAnchor, setMenuAnchor] = React.useState(null);
-  const open = Boolean(menuAnchor);
+  const [menuAnchor, setMenuAnchor] = React.useState(null)
+  const open = Boolean(menuAnchor)
   const openMenu = (event) => {
-    setMenuAnchor(event.currentTarget);
-  };
+    setMenuAnchor(event.currentTarget)
+  }
   const closeMenu = () => {
-    setMenuAnchor(null);
-  };
+    setMenuAnchor(null)
+  }
 
   const translateUrl = 'https://traduccio.somenergia.coop/projects/solidar/'
   const languages = [
