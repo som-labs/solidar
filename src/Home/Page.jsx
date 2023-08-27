@@ -6,7 +6,7 @@ import Button from '@mui/material/Button'
 import Typography from  '@mui/material/Typography'
 import ToolSelector from './ToolSelector'
 import ArticleThumb from './ArticleThumb'
-import articles from './articles.yaml'
+import articles from '../data/articles.yaml'
 
 export default function Page() {
   const {t, i18n} = useTranslation()
