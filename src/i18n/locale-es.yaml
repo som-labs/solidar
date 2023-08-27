@@ -5,4 +5,27 @@ APP_FRAME:
   TOGGLE_COLOR_MODE: Cambia el tema de color
   CHANGE_LANGUAGE: Cambia el idioma
   CONTRIBUTE_TRANSLATIONS: Ayúdanos a traducir
+HOME:
+  IS_IT_WORTH_TITLE1: Quiero ponerme placas solares
+  IS_IT_WORTH_TITLE2: ¿cómo sé si me compensa?
+  IS_IT_WORTH_PARAGRAPH1: |
+    Solidar es una calculadora que determina
+    la cantidad óptima de paneles a instalar
+    según las condiciones de la cubierta
+    y del consumo eléctrico de las personas participantes.
+
+  IS_IT_WORTH_PARAGRAPH2: |
+    Toma datos como el tamaño de la cubierta,
+    su inclinación y orientación,
+    el consumo eléctrico y la tarifa,
+    y genera un informe con el número de paneles,
+    el coste de la instalación y el ahorro potencial.
+
+  IS_IT_WORTH_BUTTON: Ir a las herramientas de simulación
+  SIMULATION_TOOLS_TITLE: Herramientas de simulación
+  SIMULATION_TOOLS_INDIVIDUAL: Simulador para Consumo Individual
+  SIMULATION_TOOLS_INDIVIDUAL_DESCRIPTION: (Nueva versión disponible)
+  SIMULATION_TOOLS_COLLECTIVE: Simulador para Consumo Colectivo
+  SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION: (En desarrollo)
+  FURTHER_INFORMATION_TITLE: Información de interés
 
