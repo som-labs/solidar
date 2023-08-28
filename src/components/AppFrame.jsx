@@ -17,6 +17,7 @@ export default function AppFrame({ children }) {
   const navigate = useNavigate()
 
   const title = 'Solidar'
+  const logo = '/logo.svg'
   const pages = [
     {
       text: t('APP_FRAME.PAGE_HOME'),
@@ -35,9 +36,10 @@ export default function AppFrame({ children }) {
   // TODO: Move styling to the global style
   return (
     <>
-      <ScrollRestoration />
+      <ScrollRestoration /> {/* Scroll up on page switch */}
       <AppBar position="static" enableColorOnDark>
         <Toolbar>
+          {/* Page selector for small devices */}
           <PagesMenu
             pages={pages}
             sx={{
@@ -47,7 +49,11 @@ export default function AppFrame({ children }) {
               },
             }}
           />
-          <img src="/logo.svg" width="32px" style={{ marginInline: '.5rem' }} />
+
+          {/* Logo */}
+          <img src={logo} width="32px" style={{ marginInline: '.5rem' }} />
+
+          {/* App name */}
           <Typography
             variant="h5"
             component="div"
@@ -59,6 +65,7 @@ export default function AppFrame({ children }) {
             {title}
           </Typography>
 
+          {/* Page selector for bigger devices */}
           <PagesButtons
             pages={pages}
             sx={{
@@ -68,6 +75,8 @@ export default function AppFrame({ children }) {
               },
             }}
           />
+
+          {/* Tool buttons */}
           <ColorModeButton />
           <LanguageMenu />
         </Toolbar>
