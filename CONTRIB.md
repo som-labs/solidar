@@ -11,17 +11,20 @@ You are very welcome to join in.
 
 ## Technologies
 
-- [<img width="64px" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Vitejs-logo.svg"/> Vite](https://vitejs.dev/) as building tool
-- [<img width="64px" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"/> React](https://react.dev/) as UI framework
-- [<img width="64px" src="https://mui.com/static/logo.png"/> MUI](https://mui.com/) as component library
+[<img width="32px" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Vitejs-logo.svg"/> Vite](https://vitejs.dev/) as building tool
+
+[<img width="32px" src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg"/> React](https://react.dev/) as UI framework
+
+[<img width="32px" src="https://mui.com/static/logo.png"/> MUI](https://mui.com/) as component library
 
 ## Code style
 
-It's encoded into editorconfig and prettier.
-Configure your editor and just let them take over.
+Code style encoded into editorconfig and prettier configuration.
+Configure your editor to obey and just let them take over.
 
-Separate styling related changes from actual code changes in different commits
-to avoid actual changes getting obfuscated in the diffs.
+If you stil have to commit style related changes,
+please, separate them from actual code changes,
+to avoid obfuscating the later in diffs.
 
 ## Code layout
 
@@ -67,6 +70,19 @@ TODO: Naming convention for non component files.
     - Ensure you have all remote changes with `git fetch`
     - Do a last rebase on origin/master before merging
     - Merge with `--no-ff`
+
+## Commits
+
+- Keep commits small enough for the reviewers to identify the change in the diff
+- Do not mix styling with real changes to avoid masking the latter within the diffs
+- Prefix first line of the commit message with a emoji identifying the type of commit:
+    - ✨ feat 🐛 fix 🏗  build 🔧 ci 📝 docs
+    - ⚡ perf ♻ refactor 🎨 style 🧹 cleanup
+    - ✅ test 🚧 wip 🌐 i18n
+- Separate the first line and the body with a blank line
+- Use the body to justify the reasons to reviewers and enumerate changes that are not in the header line
+- Use lightly markdown to format the body (lists...)
+- Acknoledge coauthors with lines like: `Co-authored-by: Meregildo <meregildo.obsidiana@somenergia.coop>`
 
 ## Releasing
 
