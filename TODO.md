@@ -29,4 +29,5 @@
 - [ ] Simulator: Top level wizard
 - [ ] Default Configuration as yaml
 - [ ] Import old code into src/services/legacy/
+- [ ] Continuous integration and deployment
 
