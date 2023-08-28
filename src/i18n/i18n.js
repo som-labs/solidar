@@ -8,8 +8,8 @@ const resources = Object.fromEntries(
   Object.keys(translations).map((key) => {
     const code = key.slice('./locale-'.length, -'.yaml'.length)
     const translation = translations[key].default
-    return [code, {translation}]
-  })
+    return [code, { translation }]
+  }),
 )
 
 i18n
@@ -19,10 +19,19 @@ i18n
     resources,
     fallbackLng: 'es', // Comment out to better spot untranslated texts
     interpolation: {
-      escapeValue: false // react already safes from xss
+      escapeValue: false, // react already safes from xss
     },
     detection: {
-      order: ['querystring', 'cookie', 'localStorage', 'sessionStorage', 'navigator', 'htmlTag', 'path', 'subdomain'],
+      order: [
+        'querystring',
+        'cookie',
+        'localStorage',
+        'sessionStorage',
+        'navigator',
+        'htmlTag',
+        'path',
+        'subdomain',
+      ],
       lookupQuerystring: 'lang',
     },
   })
