@@ -15,7 +15,7 @@ export default function ToolSelector(params) {
       <CardActionArea {...(route?{component: Link, to: route}:{})} >
         <CardContent>
           <Box sx={{display: 'flex', flexFlow: 'column', alignItems: 'center'}}>
-            <Skeleton variant="rectangular" animation={false} width={310} height={400}/>
+            <Skeleton variant="rectangular" animation={false} width={360} height={370}/>
             <Typography variant="h5" sx={{textAlign: 'center'}}>{title}</Typography>
             <Typography variant="h6" sx={{textAlign: 'center'}}>{subtitle}</Typography>
           </Box>
