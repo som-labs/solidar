@@ -60,7 +60,7 @@ export default function LanguageMenu() {
       { languages.translateUrl && (
         <MenuItem
           onClick={()=>{
-            window.open(translateUrl, '_blank')
+            window.open(languages.translateUrl, '_blank')
             closeMenu()
           }}
         >
