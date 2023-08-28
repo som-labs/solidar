@@ -9,14 +9,14 @@ import PagesMenu from './PagesMenu'
 import PagesButtons from './PagesButtons'
 import Footer from './Footer'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from 'react-router-dom'
 import { ScrollRestoration } from 'react-router-dom'
 
-export default function AppFrame({children}) {
-  const {t, i18n} = useTranslation()
+export default function AppFrame({ children }) {
+  const { t, i18n } = useTranslation()
   const navigate = useNavigate()
 
-  const title = "Solidar"
+  const title = 'Solidar'
   const pages = [
     {
       text: t('APP_FRAME.PAGE_HOME'),
@@ -35,7 +35,7 @@ export default function AppFrame({children}) {
   // TODO: Move styling to the global style
   return (
     <>
-      <ScrollRestoration/>
+      <ScrollRestoration />
       <AppBar position="static" enableColorOnDark>
         <Toolbar>
           <PagesMenu
@@ -47,11 +47,7 @@ export default function AppFrame({children}) {
               },
             }}
           />
-          <img
-            src="/logo.svg"
-            width="32px"
-            style={{marginInline: '.5rem'}}
-          />
+          <img src="/logo.svg" width="32px" style={{ marginInline: '.5rem' }} />
           <Typography
             variant="h5"
             component="div"
@@ -76,10 +72,8 @@ export default function AppFrame({children}) {
           <LanguageMenu />
         </Toolbar>
       </AppBar>
-      <Box sx={{minHeight: "100vh"}}>
-        {children}
-      </Box>
-      <Footer/>
+      <Box sx={{ minHeight: '100vh' }}>{children}</Box>
+      <Footer />
     </>
   )
-} 
+}
