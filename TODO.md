@@ -27,7 +27,7 @@
 - [ ] Home: Images for collective install: free, vectorized and using current-color
 - [ ] Home: Images for individual install: free, vectorized and using current-color
 - [ ] Simulator: Top level wizard
-- [ ] Default Configuration as yaml
-- [ ] Import old code into src/services/legacy/
+- [ ] Default simulator configuration as yaml
+- [ ] Import old code into src/services/legacy/ to start integrating
 - [ ] Continuous integration and deployment
-
+- [ ] Fix: Weblate link gives unneded access to local storage because how we are redirecting (see console)
