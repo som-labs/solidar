@@ -1,6 +1,6 @@
 # Pending tasks
 
-## Initial Setup
+## Phase 1: Initial Setup
 
 - [x] Vite bootstrap
 - [x] Code structure
@@ -20,14 +20,28 @@
 - [x] AppFrame: Common Footer
 - [x] Home
 - [x] Data driven based on yaml's
+- [x] Footer: Remove link colors and decoration
 - [ ] Footer: Responsive: do not wrap text, wrap elements
-- [ ] Footer: Remove link colors and decoration
 - [ ] Home: Responsive intro
-- [ ] Home: Images for intro: free, vectorized and using current-color
-- [ ] Home: Images for collective install: free, vectorized and using current-color
-- [ ] Home: Images for individual install: free, vectorized and using current-color
-- [ ] Simulator: Top level wizard
-- [ ] Default simulator configuration as yaml
-- [ ] Import old code into src/services/legacy/ to start integrating
 - [ ] Continuous integration and deployment
 - [ ] Fix: Weblate link gives unneded access to local storage because how we are redirecting (see console)
+- [ ] Theme: Because primary is that green, theme greys look pinky and look award. What about reducing the red component?
+
+## Phase 2: First integration with Madrid team code
+
+- Error Page
+- Home page:
+    - [ ] Home: Images for intro: copyleft, vectorized and using current-color
+    - [ ] Home: Images for collective install: copyleft, vectorized and using current-color
+    - [ ] Home: Images for individual install: copyleft, vectorized and using current-color
+    - [ ] Home: Change install type image color on hover (using current-color, alternatively use css-filter or opacity)
+    - [ ] Home: populate src/data/articles.yaml
+- Simulator:
+    - [ ] Simulator: Top level wizard component
+    - [ ] Simulator: Second level wizard component
+    - [ ] Simulator: Default simulator configuration as yaml
+    - [ ] Simulator: Store modified simulator configuration in localstorage
+    - [ ] Simulator Toolbar
+    - [ ] Import old code into src/services/legacy/ to start integrating
+    - [ ] Define inteface between legacy code and react code
+    - [ ] Design simulation project data structure to 
