@@ -81,7 +81,7 @@ export default function AppFrame({ children }) {
           <LanguageMenu />
         </Toolbar>
       </AppBar>
-      <Box sx={{ minHeight: '100vh' }}>{children}</Box>
+      <Box sx={{ minHeight: 'calc( 100vh - 7rem )' }}>{children}</Box>
       <Footer />
     </>
   )
