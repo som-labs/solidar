@@ -26,6 +26,7 @@
 - [ ] Continuous integration and deployment
 - [ ] Fix: Weblate link gives unneded access to local storage because how we are redirecting (see console)
 - [ ] Theme: Because primary is that green, theme greys look pinky and look award. What about reducing the red component?
+- [ ] Consider lazy route loading https://reactrouter.com/en/main/route/route#lazy
 
 ## Phase 2: First integration with Madrid team code
 
