@@ -8,8 +8,13 @@ import GlobalTheme from './components/GlobalTheme'
 import HomePage from './Home/Page'
 import SimulatorPage from './Simulator/Page'
 import AboutPage from './About/Page'
+import NotFoundPage from './NotFound/Page'
 
 const routes = [
+  {
+    path: '*',
+    element: <NotFoundPage />,
+  },
   {
     path: '/',
     element: <AppFrame><HomePage/></AppFrame>,

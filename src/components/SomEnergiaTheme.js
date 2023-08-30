@@ -22,6 +22,7 @@ export default function SomEnergiaTheme(isDarkMode) {
         secondary: {
           main: '#a1a1a1', // from webforms-ui
           //main: '#E0E723', //'hsl(62, 80%, 52%)', // from style guide
+          contrastText: 'white',
         },
       },
     }),

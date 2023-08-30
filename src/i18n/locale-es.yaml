@@ -5,6 +5,9 @@ APP_FRAME:
   TOGGLE_COLOR_MODE: Cambia el tema de color
   CHANGE_LANGUAGE: Cambia el idioma
   CONTRIBUTE_TRANSLATIONS: Ayúdanos a traducir
+  GO_HOME: Ir a la pagina principal
+  GO_SIMULATOR: Ir al simulador
+  PAGE_NOT_FOUND: No se ha encontrado la pàgina
 HOME:
   IS_IT_WORTH_TITLE1: Quiero ponerme placas solares
   IS_IT_WORTH_TITLE2: ¿cómo sé si me compensa?
