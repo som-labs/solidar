@@ -23,7 +23,7 @@ export default function Footer() {
       }}
     >
       <Container>
-        <Box sx={{ display: 'flex', flexFlow: 'row', gap: 10 }}>
+        <Box sx={{ display: 'flex', flexFlow: 'row wrap', gap: 1 }}>
           {footerItems.map((item) => (
             <Button
               key={item.text}

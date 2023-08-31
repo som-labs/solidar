@@ -5,6 +5,10 @@ export default function SomEnergiaTheme(isDarkMode) {
     createTheme({
       typography: {
         fontFamily: '"Montserrat", "Helvetica", "Arial", sans-serif',
+        // Custom variant for home page paragraphs
+        brochureP: {
+          fontSize: 18,
+        },
       },
       palette: {
         mode: isDarkMode ? 'dark' : 'light',
