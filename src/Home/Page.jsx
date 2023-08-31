@@ -8,41 +8,70 @@ import AppFrame from '../components/AppFrame'
 import ToolSelector from './ToolSelector'
 import ArticleThumb from './ArticleThumb'
 import articles from '../data/articles.yaml'
+import { Header, BrochureP as P } from '../components/StyledHtml'
 
 export default function Page() {
   const { t, i18n } = useTranslation()
   return (
     <AppFrame>
       <Container>
-        <Box sx={{ display: 'flex', flexFlow: 'row', mt: '2rem' }}>
-          <Box>
-            <Container>
-              <h1 sx={{}}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexFlow: 'row wrap-reverse',
+            justifyContent: 'center',
+            mt: '2rem',
+          }}
+        >
+          <Box
+            style={{
+              display: 'inline',
+              minWidth: '40%',
+              alignSelf: 'stretch',
+            }}
+            sx={{
+              maxWidth: { md: '65%' },
+            }}
+          >
+            <Container
+              style={{
+                display: 'flex',
+                flexFlow: 'column',
+                gap: '2rem',
+                contentJustify: 'center',
+              }}
+            >
+              <Header>
                 {t('HOME.IS_IT_WORTH_TITLE1')}
                 <br />
                 {t('HOME.IS_IT_WORTH_TITLE2')}
-                <br />
-              </h1>
-              <p>{t('HOME.IS_IT_WORTH_PARAGRAPH1')}</p>
-              <p>{t('HOME.IS_IT_WORTH_PARAGRAPH2')}</p>
-              <Button variant="contained" href="#tools">
-                {t('HOME.IS_IT_WORTH_BUTTON')}
-              </Button>
+              </Header>
+              <P>{t('HOME.IS_IT_WORTH_PARAGRAPH1')}</P>
+              <P>{t('HOME.IS_IT_WORTH_PARAGRAPH2')}</P>
+              <Box>
+                <Button variant="contained" href="#tools">
+                  {t('HOME.IS_IT_WORTH_BUTTON')}
+                </Button>
+              </Box>
             </Container>
           </Box>
           <img
             src="/logo.svg"
-            style={{ objectFit: 'contain', minWidth: '100px', width: '50%' }}
+            style={{
+              objectFit: 'contain',
+              maxWidth: '30%',
+              minWidth: 'min(90%, 300px)',
+            }}
           />
         </Box>
         <Box
           sx={{ display: 'flex', flexFlow: 'column', my: '2rem' }}
           style={{ alignItems: 'center' }}
         >
-          <h1>
+          <Header>
             <a name="tools" />
             {t('HOME.SIMULATION_TOOLS_TITLE')}
-          </h1>
+          </Header>
           <Box
             sx={{
               width: '100%',
@@ -67,7 +96,7 @@ export default function Page() {
           <Container
             sx={{ display: 'flex', flexFlow: 'column', mt: '2rem', alignItems: 'center' }}
           >
-            <h1 sx={{}}>{t('HOME.FURTHER_INFORMATION_TITLE')}</h1>
+            <Header>{t('HOME.FURTHER_INFORMATION_TITLE')}</Header>
             <Box
               sx={{
                 width: '100%',
