@@ -45,4 +45,4 @@
     - [ ] Simulator Toolbar
     - [ ] Import old code into src/services/legacy/ to start integrating
     - [ ] Define inteface between legacy code and react code
-    - [ ] Design simulation project data structure to 
+    - [ ] 
