@@ -68,17 +68,12 @@ class TipoConsumo extends DiaHora {
    * @returns {Array<string>} Nombres de los tipos de consumo definidos
    */
   static selectNombreTipoConsumo () {
-        return TCB.TipoConsumo.map( (tipoConsumo) => {return tipoConsumo.nombreTipoConsumo});
+        let _tipos = TCB.TipoConsumo.map( (tipoConsumo) => {return tipoConsumo.nombreTipoConsumo});
+        _tipos.push('Participe sin consumo');
+        _tipos.push(undefined);
+        _tipos.push('Borrar');
+        return _tipos;
   }
-  /**
-   *  * Devuelve un objeto TipoConsumo con: select TipoConsumo from TipoConsumo where nombreTipoConsumo = nombreTC
-   * @param {string} nombreTC Nombre del tipo de consumo buscado
-   * @returns {TipoConsumo} o undefined en caso de no existir
-   */
-  static findxNombre( nombreTC ) {
-    return TCB.TipoConsumo.find( (tc) => {return tc.nombreTipoConsumo === nombreTC});
-  }
-
 
   sintetizaTiposConsumo ( tipo2, factor) {
     if (factor === undefined) factor = 1;
@@ -93,8 +88,6 @@ class TipoConsumo extends DiaHora {
     }
     super.sintetizaDiaHora( tipo2, factor);
   }
-  
-
 
 }
 export default TipoConsumo

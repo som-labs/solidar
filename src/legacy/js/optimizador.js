@@ -26,7 +26,7 @@ async function optimizador( bases, consumo, potenciaPanelInicio) {
     energiaAsignada = energiaAsignada > energiaPendiente ? energiaPendiente : energiaAsignada;
     tmpPaneles = Math.round(energiaAsignada / bases[i].rendimiento.unitarioTotal / potenciaPanelInicio);
     UTIL.debugLog("_initInstalacion con" + tmpPaneles + " paneles de " + potenciaPanelInicio + "kWp en la base ", bases[i].id);
-    //Creamos una instalación por defecto que cubra el consumo maximo anual   
+    //Creamos una instalación por defecto que cubra el consumo maximo anual
     bases[i].instalacion = new Instalacion({paneles: tmpPaneles, potenciaUnitaria: potenciaPanelInicio});
     TCB.totalPaneles += tmpPaneles;
     energiaPendiente -= energiaAsignada;
@@ -53,7 +53,9 @@ function nuevoTotalPaneles ( panelesNuevo) {
     maxPanelesBase = Math.trunc(TCB.BaseSolar[i].potenciaMaxima / TCB.BaseSolar[i].instalacion.potenciaUnitaria);
     tmpPaneles = maxPanelesBase > panelesPendientes ? panelesPendientes : maxPanelesBase;
     UTIL.debugLog("asignados " +  tmpPaneles + " a base "+TCB.BaseSolar[i].idBaseSolar);
-    TCB.BaseSolar[i].instalacion = new Instalacion({paneles: tmpPaneles, potenciaUnitaria:TCB.BaseSolar[i].instalacion.potenciaUnitaria}); 
+/*     TCB.BaseSolar[i].instalacion = new Instalacion({paneles: tmpPaneles, potenciaUnitaria:TCB.BaseSolar[i].instalacion.potenciaUnitaria});  */
+
+    TCB.BaseSolar[i].instalacion.paneles = tmpPaneles; 
     panelesPendientes -= tmpPaneles;
   }
 

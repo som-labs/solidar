@@ -18,9 +18,10 @@ import * as UTIL from "./Utiles.js"
 function inicializaEventosParametros() {
 //Botones del formulario de parametros para descargar matrices de los objetos de la aplicación
 //Estas funciones permiten descargar las tablas de la aplicación para verificacion o debug
-/* Las funciones de dump de datos de produccion y rendimiento se deben redefinir al existir multiples bases
+    /* 
   document.getElementById("dumpConsumo").addEventListener("click", function handleChange(event) { 
-    if (TCB.consumoCreado) dumpData("consumos.csv",TCB.consumo.idxTable, TCB.consumo.diaHora)});
+    if (TCB.consumoCreado) UTIL.dumpData("consumos.csv",TCB.consumo.idxTable, TCB.consumo.diaHora)});
+Las funciones de dump de datos de produccion y rendimiento se deben redefinir al existir multiples bases
   document.getElementById("dumpProduccion").addEventListener("click", function handleChange(event) { 
     if (TCB.produccionCreada) dumpData("produccion.csv", TCB.produccion.idxTable, TCB.produccion.diaHora)});
   document.getElementById("dumpRendimiento").addEventListener("click", function handleChange(event) { 

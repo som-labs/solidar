@@ -1,4 +1,5 @@
 import DiaHora from "./DiaHora.js";
+import * as UTIL from "./Utiles.js";
 /**
  * @class Balance
  * @classdesc representa el balance energetico horario global de toda la configuración
@@ -11,6 +12,7 @@ class Balance extends DiaHora {
   autoconsumo = 0;
   excedenteAnual = 0;
   deficitAnual = 0;
+  consumoDiurno = 0;
 
   /**
    * @constructor
@@ -19,6 +21,7 @@ class Balance extends DiaHora {
    * @param {number} coefEnergia Coeficiente de energía asignado (0 - 100)
    */
   constructor(produccion, consumo, coefEnergia) {
+    UTIL.debugLog("Generando balance");
     super();
 /**
  * Añade campos necesarios para el balance a la tabla IDX de DiaHora
@@ -27,10 +30,17 @@ class Balance extends DiaHora {
       this.idxTable[i].deficit = 0;
       this.idxTable[i].excedente = 0;
       this.idxTable[i].autoconsumo = 0;
+      this.idxTable[i].consumoDiurno = 0;
     }
 
     for (let idxDia = 0; idxDia < 365; idxDia++) {
+      this.idxTable[idxDia].fecha = consumo.idxTable[idxDia].fecha;
       for (let hora = 0; hora < 24; hora++) {
+        if (produccion.diaHora[idxDia][hora] > 0) {
+          this.idxTable[idxDia].consumoDiurno += consumo.diaHora[idxDia][hora];
+          this.consumoDiurno += consumo.diaHora[idxDia][hora];
+        }
+
         this.diaHora[idxDia][hora] = consumo.diaHora[idxDia][hora] - produccion.diaHora[idxDia][hora] * coefEnergia / 100;
 
         if (this.diaHora[idxDia][hora] < 0) {

@@ -2,7 +2,7 @@
  * TCB
  * @namespace
  * @fileoverview Area de allmacenamiento de las variables globales de la aplicación
- * @version      Solidar.3.2.1
+ * @version      Solidar.3.3
  * @author       José Luis García (SOM Madrid)
  * @copyright
  * 
@@ -29,7 +29,7 @@ const TCB = {
 
     importando: false, //Es verdadero durante el proceso de importacion
     //Donde se guardan los datos a exportar
-    datosProyecto: {'version': '3.2.1'}, 
+    datosProyecto: {'version': '3.3'}, 
 
     /**
     * @type {Array<PuntoConsumo>}
@@ -66,7 +66,10 @@ const TCB = {
     idFinca: 0,         //Generador de id de finca. Inicializado desde el proxy de catastro
 
     _tablaBasesAsignadas : null,
+    _tablaReparto : null,
+    listaZonasComunes : [], //Lista de los nombres de las zonas comunes generadas en los modos colectivo y comunidad
     tiempoEsperaPVGIS: 100,
+
 //Por ver
     pdfDoc: "",
     pdf : "",
@@ -213,7 +216,7 @@ const TCB = {
         potenciaPanelInicio : 0.450
     },
    
-    /**
+    /** Constante donde se define el precio estimado de la instalación en base a la potencia instalada
      * @typedef {object} precioInstalacion
      * @property {number} precioInstalacion.desde rango inferior de kWp para este precio
      * @property {number} precioInstalacion.hasta rango superior de kWp para este precio
@@ -228,7 +231,6 @@ const TCB = {
         {"desde":20, "hasta":25, "precio":1000},
         {"desde":25, "hasta":100, "precio": 950}
     ],
-    correccionPrecioInstalacion : 1, //Sin corrección
     
     tiempoSubvencionIBI : 0,
     valorSubvencionIBI : 0,

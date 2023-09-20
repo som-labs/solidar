@@ -196,7 +196,7 @@ async function prepara() {
 
     nuevaLinea('Disclaimer', i++, TCB.i18next.t("economico_MSG_disclaimerPrecioInstalacion"),'');
     nuevaLinea('Dato', i++, 'precioInstalacion_LBL', UTIL.formatoValor('dinero',TCB.produccion.precioInstalacion));
-    nuevaLinea('Dato', i++, 'precioInstalacionCorregido_LBL', UTIL.formatoValor('dinero',TCB.produccion.precioInstalacionCorregido));
+
     //var nImage;
     await Plotly.toImage('graf_4', { format: 'png', width: 800, height: 500 }).then(function (dataURL) {
       nImage = document.createElement("img");
@@ -220,7 +220,7 @@ async function prepara() {
       
       const _tablaReparto = new Tabulator(divRPTReparto, {
         layout:"fitColumns",
-        index: "idFinca", 
+        index: "idFinca",
         data: table1,
         columns:[ 
           {title:"Id", field:"idFinca"},
@@ -233,7 +233,7 @@ async function prepara() {
           {title:"Coef Energia", field:"coefEnergia",hozAlign:"right", topCalc:"sum", formatter: "_formatoValor", topCalcFormatter:"_formatoValor"},
           {title:"Producción", field:"produccionTotal", hozAlign:"right", formatter: "_formatoValor"},
           {title:"Coef Inversión", field:"coefInversion", hozAlign:"right", topCalc:"sum", formatter: "_formatoValor", topCalcFormatter:"_formatoValor"},
-          {title:"Inversión", field:"precioInstalacionCorregido", hozAlign:"right", formatter: "_formatoValor"},
+          {title:"Inversión", field:"precioInstalacion", hozAlign:"right", formatter: "_formatoValor"},
           {title:"Ahorro", field:"ahorroFincaAnual", hozAlign:"right", formatter: "_formatoValor", topCalc:"sum", topCalcFormatter:"_formatoValor"},
           {title:"Coef Hucha", field:"coefHucha", hozAlign:"right", formatter: "_formatoValor"},
           {title:"Cuota Hucha", field:"cuotaHucha", hozAlign:"right", formatter: "_formatoValor"}
@@ -343,7 +343,7 @@ function nuevaLinea( tipo, linea, propiedad, valor) {
             for (let val=0; val < valor.length; val++) {
               divNode2 = document.createElement("div");
               att1 = document.createAttribute("class");
-              att1.value = "col-md-2 text-end";
+              att1.value = "col-md-1 text-end";
               divNode2.setAttributeNode(att1);
               divNode2.innerHTML = valor[val];
               divNode0.appendChild(divNode2);

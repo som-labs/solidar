@@ -1,22 +1,25 @@
 import TCB from "./TCB.js";
+import * as UTIL from "./Utiles.js";
 /** 
  * @class Finca
  * @classdesc Es la clase que representa las unidades (Finca) candidatas a formar parte del proyecto.
  */
+
+
 
 class Finca {
     // Estas propiedades se definen para que exista un nombre único para cada campo en toda la aplicación.
     /**@property {number} ahorroFincaAnual Sinonimo de ahorroAnual */
     get ahorroFincaAnual() { if (this.economico !== undefined) return this.economico.ahorroAnual; else return 0}
     set ahorroFincaAnual( value) {return}
-
+   
     constructor( finca) {
       this.coefConsumo = 0;
       this.coefInversion = 0;
       this.coefEnergia = 0;
       this.coefHucha = 0;
       this.cuotaHucha = 0;
-
+      this.coste = 0;
 
       this.nombreTipoConsumo = undefined;
       this.idFinca; 
@@ -27,6 +30,7 @@ class Finca {
       this.uso;
       this.superficie;
       this.participacion;
+      this.grupo;
 
       //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto    
       for (const objProp in finca) {
@@ -34,6 +38,7 @@ class Finca {
           this[objProp] = finca[objProp];
         }
       }
+
       this.superficie = typeof finca.superficie === 'string' ? parseFloat(finca.superficie.replace(",", ".")) : finca.superficie;
       this.participacion = typeof finca.participacion === 'string' ? parseFloat(finca.participacion.replace(",", ".")) : finca.participacion;
       
@@ -66,39 +71,78 @@ class Finca {
      * @param {Object} fincaActualizada 
      */
     static actualiza_creaFinca ( fincaActiva) {
-        const fincaActualizada = TCB.Finca.find( (finca) => { return finca.idFinca === fincaActiva.idFinca });
-        if (fincaActualizada === undefined) {
+      const fincaActualizada = UTIL.selectTCB('Finca', 'idFinca', fincaActiva.idFinca );
+        //const fincaActualizada = TCB.Finca.find( (finca) => { return finca.idFinca === fincaActiva.idFinca });
+        //if (fincaActualizada === undefined) {
+        if (fincaActualizada.length === 0) {
           TCB.Finca.push( new Finca(fincaActiva));
         } else {
           for (let prop in fincaActiva) {
-            fincaActualizada[prop] = fincaActiva[prop];
+            fincaActualizada[0][prop] = fincaActiva[prop];
           }
         }
     }
 
     static getTabulatorRow ( campo, valor) {
-      const actFinca = TCB.Finca.find( (b) => { return b[campo] === valor})
-      if (actFinca === undefined) return undefined;
+      //cambio actFinca por _f y [0]
+      //const actFinca = TCB.Finca.find( (b) => { return b[campo] === valor})
+      const _f = UTIL.selectTCB('Finca', campo,  valor);
+      //if (actFinca === undefined) return undefined;
+      if (_f.length === 0) return undefined;
       let row = {};
-      row.idFinca = actFinca.idFinca;
+      for (let prop in _f[0]) {
+        if (typeof _f[0][prop] !== 'object') {
+            row[prop] = _f[0][prop];
+        }
+      }
+/*       row.idFinca = actFinca.idFinca;
+      row.idPuntoConsumo = actFinca.idPuntoConsumo;
       row.nombreFinca = actFinca.nombreFinca;
       row.uso = actFinca.uso;
+      row.grupo = actFinca.grupo;
       row.participacion = actFinca.participacion;
-
       row.coefEnergia = actFinca.coefEnergia;
-      row.produccionTotal = actFinca.coefEnergia * TCB.produccion.pTotalAnual / 100;
       row.coefInversion = actFinca.coefInversion;
-      row.precioInstalacionCorregido = actFinca.coefInversion * TCB.produccion.precioInstalacionCorregido / 100;
-
+      row.coste = actFinca.coste;
       row.coefConsumo = actFinca.coefConsumo;
-      row.cTotalAnual =  actFinca.coefConsumo * TCB.consumo.cTotalAnual / 100;
       row.coefHucha = actFinca.coefHucha;
-      row.cuotaHucha = actFinca.cuotaHucha;
+      row.cuotaHucha = actFinca.cuotaHucha; */
 
-      if (actFinca.economico !== undefined) row.ahorroFincaAnual = actFinca.economico.ahorroAnual;
-      
+      row.produccionTotal = _f[0].coefEnergia * TCB.produccion.pTotalAnual / 100;
+      row.precioInstalacion = _f[0].coefInversion * TCB.produccion.precioInstalacion / 100;
+      row.cTotalAnual =  _f[0].coefConsumo * TCB.consumo.cTotalAnual / 100;
+
+      if (_f[0].economico !== undefined) 
+        row.ahorroFincaAnual = _f[0].economico.ahorroAnual;
+      else
+        row.ahorroFincaAnual = "";
       return row;
     }
+
+    static mapaUsoGrupo = {
+      'Almacen-Estacionamiento':'Estacionamiento',
+      'Comercial'         : 'Comercial',
+      'Cultural'          :'Otros',
+      'Ocio y Hostelería' :'Otros',
+      'Industrial'        :'Otros',
+      'Deportivo'         :'Otros',
+      'Oficinas'          :'Otros',
+      'Edificio Singular' :'Otros',
+      'Religioso'         :'Otros',
+      'Espectáculos'      :'Otros',
+      'Residencial'       :'Residencial',
+      'RDL 1/2004 8.2.a'  :'Otros', //producción de energía eléctrica y gas y al refino de petróleo, y las centrales nucleares
+      'RDL 1/2004 8.2.b'  :'Otros', //presas, saltos de agua y embalses, incl. su lecho o vaso, excepto destinadas exclusivamente al riego
+      'RDL 1/2004 8.2.c'  :'Otros', //autopistas, carreteras y túneles de peaje
+      'RDL 1/2004 8.2.d'  :'Otros', //aeropuertos y puertos comerciales
+      'Sanidad y Beneficencia':'Otros',
+      'Agrario'           :'Otros',
+      'Suelo sin edif., obras urbaniz., jardinería, constr. ruinosa':'Otros',
+      'Industrial agrario':'Otros',
+      'Almacén agrario'   :'Otros'
+    }
+
+    static getGrupos = {values: ['Estacionamiento', 'Comercial','Residencial', 'Otros', 'Zonas Comunes']};
 
 }
 export default Finca
