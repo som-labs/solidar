@@ -1,0 +1,127 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Solidar - Instrucciones</title>
+    <meta name="Generator" content="Microsoft Word 15 (filtered)">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+      .fa {
+        font-size:24px;
+      }
+    </style>
+  </head>
+
+  <body style=" background-color:rgb(220, 249, 233); font-family:verdana; font-size:20px;" lang="ES">
+    <img src="../../datos/logo.png" class="float-left" style="width:220px;height:90px;" alt="SOM Energia Madrid">
+    <b><span style="font-size:20.0pt;line-height:105%">&nbsp;&nbsp;&nbsp;
+
+ Instruccions ràpides per a l'ús del simulador de producció fotovoltaica individual</span></b>
+
+    <p>Solidar està estructurat en uns mòduls que et descrivim a continuació i que s'han d'executar en ordre.</p>
+    <p><a href="https://youtu.be/3jApoNuasYk">Pots veure una demostració de com fer servir l’aplicació en aquest vídeo tutorial
+    </a></p>
+
+    <h3>Pas 1- Localització:</h3>
+    <p>En aquest primer pas hem d'identificar les àrees on es poden instal·lar panells fotovoltaics. Pots definir-ne tantes com consideris oportú, el sistema realitzarà una assignació ordenada de panells tenint en compte l'eficiència de la base.</p>
+    <p>Mitjançant el desplaçament al mapa podràs localitzar la zona d'interès amb l'ajuda dels camps de localització o, si les coneixes, introduint directament les coordenades latitud, longitud al camp corresponent.</p>
+    <p>Un cop visualitzada la zona de treball hauràs de dibuixar les àrees, com a mínim una, on es poden instal·lar els panells.</p>
+    <p>L'àrea es tancarà automàticament quan marquis el tercer punt formant un paral·lelogram.</p>
+    <p>Un cop definida l'àrea veuràs que apareix una fila a la taula que hi ha sota el mapa, on tens les dades de la base solar definida en aquesta àrea. Ara acabarem de configurar-ne els detalls.</p>
+<ul>
+    <li>  Nom: En cas que hi hagi més d'una base és convenient assignar un nom a cadascuna ja que l'aplicació assignarà panells a cadascuna d'elles i mostrarà aquesta assignació basada en el nom.</li>
+    <li>	Long-Lat: Coordenades geogràfiques del centre de l'àrea definida.</li>
+    <li>	Superfície en mapa: Superfície en m2 mesurats al mapa sense tenir en compte la inclinació de la teulada.</li>
+    <li>  Inclinació de la teulada: Si els panells s'instal·len sobre una teulada inclinada aquí podràs indicar-ne l'angle respecte a l'horitzontal del lloc. El sistema corregirà la superfície de l’àrea prèviament calculada des de la projecció horitzontal del mapa i en conseqüència el camp Potència màxima admesa que es basa en l’àrea real disponible.</li>
+    <li> Àrea disponible: L'àrea mesurada al mapa corregida per la inclinació de la teulada.</li>
+    <li>	Max. kWp: És una estimació de la potència pic màxima que es podria instal·lar en funció de l'àrea disponible. S'utilitza un paràmetre que es pot canviar a <i class="fa fa-cog fa-fw"></i></li>
+    <li>	Inclinació del panell: Aquest és l'angle amb què s'instal·laran els panells mesurat a partir de la teulada. Per exemple, en una teulada inclinada amb instal·lació coplanària s'ha de posar 0º.</li>
+    <li>	Inclinació òptima: En cas que vulguis que l'aplicació calculi les inclinacions òptimes marca aquesta casella i no introdueixis cap valor en els camps anteriors.</li>
+    <li>	Orientació (Acimut): En aquest camp indicarem l'orientació que els panells tindran respecte del sud geogràfic. Pots escriure l'angle directament al camp o definir-lo sobre el mapa amb el botó <i class='fa fa-compass'></i> Si selecciones aquesta opció veuràs que apareix una línia al mapa que et permet indicar quina és la orientació possible dels panells, tenint en compte les condicions de la teulada. Aquest camp és especialment important a l'hora de determinar l'eficiència de cada base.</li>
+    <li>	Angles òptims: Si voleu que l'aplicació calculi tots els angles òptims marca aquesta casella i tots els anteriors seran ignorats.</li>
+</ul>
+    <p>Pots utilitzar la icona <i class='fa fa-trash-o'></i> si en algun moment voleu esborrar una base.</p>
+    <p>Un cop definida la localització i la configuració de les bases on s'instal·laran els panells pots donar a la fletxa <i class="fa fa-arrow-right"></i>"Següent" per passar al proper pas.</p>
+
+
+    <h3>Pas 2 – Tipus de Consum:</h3>
+    <p>Ara definirem els perfils de consum i la tarifa actual del contracte amb l'empresa comercialitzadora.</p>
+    <p>Tenim una taula amb els camps següents:</p>
+    <ul>
+    <li>	Identificació del consum: Aquí podràs donar un nom al tipus de consum que estàs definint.</li>
+    <li>Font: Hi ha dues maneres de definir el perfil de consum:
+    <ul>
+      <li>	CSV: Si tens fitxer CSV (Comma Separated Values) amb consums horaris obtinguts de la teva empresa distribuïdora. En aquest cas hauràs d'identificar el fitxer al camp Nom fitxer font utilitzant la icona <i class='fa fa-file-o'></i>.</li>
+      <li>	REE: Si no tens el fitxer CSV pots utilitzar aquesta opció. En aquest cas hauràs d'introduir el consum anual de la finca al camp "Consum anual REE".</li>
+    </ul>
+    </li>
+    <li>	Consum anual: es completa amb el consum anual d’energia del consum identificat.</li>
+    <li>	Tarifa: Nom de la tarifa contractada en aquest tipus de consum, 2.0TD o 3.0TD. Això afectarà el càlcul dels preus pagats a cada hora.</li>
+    </ul>
+    <p>Un cop carregat el tipus de consum, veuràs un mapa acolorit amb el teu perfil de consum horari al llarg de l'any. Fent un clic sobre aquest podràs veure el perfil de consum d'un dia concret.</p>
+    <p>Ara podem canviar els preus associats a les tarifes (2.0TD o 3.0TD) que s'utilitzaran a la simulació.
+    Un cop seleccionada la tarifa, l'aplicació proposa uns preus que pots veure mitjançant la icona <i class='fa fa-eur'></i>. Es proposen inicialment els de SOM Energia. Si no són els correctes, els has d'actualitzar, des del mateix desplegable, als valors que siguin adequats abans de fer el càlcul.</p>
+    <p>Podeu definir més d'un tipus de consum en aquesta pestanya fent servir el botó Nou tipus consum. Això ens permet simular que passaria si afegíssim un nou consum a aquesta instal·lació com podria ser un vehicle elèctric o algun element de càrrega significativa. El sistema totalitzarà tots els tipus de consum de forma horària per fer els càlculs. Si és el cas, amb la icona <i class='fa fa-line-chart'></i> pots veure el gràfic de cadascú i amb <i class='fa fa-trash-o'></i> > podràs esborrar el tipus de consum d'aquesta fila de la taula.</p>
+    <p>Un cop aconseguit aquest punt pots clicar al botó <i class='fa fa-arrow-right'></i> "Següent".
+      
+    <h3>Pas 3 - Balanç d'energia</h3>
+    <p>En aquesta pestanya s'observaran els resultats de la primera proposta que realitza el sistema amb el criteri d'assignació de panells següent:</p>
+    <ol>
+      <li>Definir un nombre de panells suficients per generar l'energia necessària per cobrir el consum d'un any en funció dels tipus de consum definits a 2.</li>
+      <li>Verificar que la superfície disponible a les bases definides al pas 1 són suficients per generar aquesta energia. Si no ho són, es mostra un avís.</li>
+      <li>Anar assignant panells a les bases donant prioritat a les bases més eficients des del punt de vista de rendiment energètic.</li>
+    </ol>
+<p>Un cop finalitzat el procés de càlcul veiem la següent taula de les bases:</p>
+<ul>
+<li> Nom: Nom donat a la base al pas 1.</li>
+<li>	Energia anual per kWp instal·lat: És el rendiment unitari de la base en funció de la ubicació geogràfica, l'orientació relativa al sud (acimut) i la inclinació dels panells que hem obtingut de PVGIS.</li>
+<li>	Potència màxima admesa: Tenint en compte l'àrea disponible.</li>
+<li>	Panells: Nombre inicial de panells proposat pel sistema sobre la base de l'algorisme abans esmentat.</li>
+<li>	Potència de cada panell: segons s’ha definit al paràmetre "Potència unitària (kWp) panell inici" a <i class="fa fa-cog fa-fw"></i>. Aquest valor es pot canviar dinàmicament des d’aquest camp.</li>
+<li>	Potència total de la base: És la potència unitària del panell multiplicada pel nombre de panells de la base.</li>
+<li>	<i class='fa fa-info-circle'></i> Ens permet veure informació detallada de la base.</li>
+</ul>
+<p>
+En aquest moment pot ser interessant que observis els resultats a les pestanyes de Balanç Econòmic i Gràfics per avaluar la situació i abans de decidir canviar el nombre de panells o la potència individual dels mateixos.
+</p><p>
+En tot cas, des d'aquesta pestanya podràs canviar els panells assignats a cada base segons el teu criteri quan ho consideris oportú. Solidar verificarà que no pots posar més panells que els que la superfície definida al pas 1 permet a cada base.
+</p><p>
+Un cop assolit aquest punt pots clicar al botó <i class="fa fa-arrow-right"></i> "Següent" per veure els resultats des del punt de vista econòmic-financer o tornar <i class="fa fa -arrow-left"></i> si vols canviar alguna cosa de les pestanyes anteriors.
+</p>
+    <h3>Pas 4 - Balanç Econòmic</h3>
+    <p>Aquí pots veure quin és el resultat des del punt de vista econòmic financer de la instal·lació dels panells definits al pas 3.</p>
+
+    <p>És important destacar alguns camps existents en aquesta pestanya:</p>
+
+    <li>La despesa anual, amb plaques o sense i per tant l'estalvi, està altament condicionada per les tarifes definides al pas 2 del tipus de consum.</li>
+    <li>Donada la volatilitat dels preus, i les variacions detectades per regions, és molt difícil estimar un preu de la instal·lació. Et proposem un amb les estimacions que tenim, però el correcte és que t'assessoris amb un instal·lador. Podràs corregir el preu que et proposem indicant un percentatge positiu per incrementar el preu o negatiu per disminuir-lo al camp "Correcció de preu en %".</li>
+
+    <p>Amb les dades definides abans l'aplicació mostrarà una taula financera amb l'estudi del retorn de la inversió esperat a 10 anys o fins que s'aconsegueixi un resultat positiu.</p>
+    <p>Per a aquesta taula és important definir, en els camps mostrats amb aquesta finalitat, si hi ha algun tipus de subvenció a aplicar de fons Next Generation o la bonificació de l'IBI que apliquen alguns ajuntaments.</p>
+    <p>Respecte a la subvenció dels fons europeus, es tindrà en compte el criteri del 80% de consum propi però l'elecció d'instal·lació individual o col·lectiva és lliure.</p>
+    <p>Veuràs un gràfic amb el títol "Alternatives amb panells..." on es mostra el comportament d'algunes variables significatives en funció del nombre de panells instal·lats. Donant un clic sobre el gràfic canviaràs la configuració al número que seleccionis i es realitzarà el càlcul de totes les magnituds amb el nou nombre de panells escollit.</p>
+    <h3>5 - Gràfics</h3>
+    <p>En aquesta pestanya s'observen alguns gràfics que mostren el comportament mensual del sistema proposat.</p>
+
+    <h3>6 - Resum</h3>
+    <p>Es mostra un resum de totes les variables introduïdes i calculades per a aquesta simulació i es pot sol·licitar un informe en format PDF.</p>
+    <br>
+    <p>Es poden fer diversos cicles de proves canviant la configuració de la instal·lació <Panells> o <Potència per panell>. Aquest canvi es pot fer des de la pestanya <Balanç energia> o des del gràfic d'alternatives del Balanç econòmic. L'aplicació farà els càlculs corresponents de manera automàtica.</p>
+    <p>
+    A la pestanya <Paràmetres>, que s'activa des de la icona d'eines, <i class="fa fa-cog fa-fw"></i> es poden actualitzar diversos paràmetres utilitzats al càlcul. Els canvis realitzats en aquesta pestanya es reflectiran en el proper càlcul.</p>
+    <p>
+    Des del menú situat a la part superior dreta es poden seleccionar les opcions següents, d'esquerra a dreta:
+    </p>
+    <div><i class="fa fa-floppy-o fa-fw"></i>&nbsp; 
+      Salvar un projecte en format Solimp per a futures importacions.</div>
+      <div><i class="fa fa-envelope-o fa-fw"></i>&nbsp; 
+        Formulari de contacte des d'on ens pots enviar els teus comentaris, així com informar de possibles errors o millores que considereu oportunes.</div>
+      <div><i class="fa fa-file-pdf-o fa-fw"></i>&nbsp; 
+        Genera un informe en PDF de la simulació activa.</div>
+      <div><i class="fa fa-cog fa-fw"></i>&nbsp; 
+        Eines per canviar algun dels paràmetres utilitzats per l’aplicació.</div>
+      <div><i class="fa fa-info fa-fw"></i>&nbsp; 
+        Obre aquest document.</div>
+      <div><i class="fa fa-question-circle-o fa-fw"></i>&nbsp; 
+        Habilita, a la dreta de la pantalla, una guia explicativa de la pestanya on et trobis en aquell moment.</div>
+  </body>
+</html>

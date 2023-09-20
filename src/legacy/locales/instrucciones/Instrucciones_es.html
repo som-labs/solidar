@@ -1,0 +1,123 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Solidar - Instrucciones</title>
+    <meta name="Generator" content="Microsoft Word 15 (filtered)">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+      .fa {
+        font-size:24px;
+      }
+    </style>
+  </head>
+  <body style=" background-color:rgb(220, 249, 233); font-family:verdana; font-size:20px;" lang="ES">
+    <img src="../../datos/logo.png" class="float-left" style="width:220px;height:90px;" alt="SOM Energia Madrid">
+    <b><span style="font-size:20.0pt;line-height:105%">&nbsp;&nbsp;&nbsp;
+     Instrucciones rápidas para el uso del simulador de producción fotovoltaica individual
+    </span></b>
+
+    <p>Solidar está estructurado en unos módulos que te describimos a continuación y que deben ser ejecutados en orden.</p>
+    <p><a href="https://youtu.be/3jApoNuasYk">Puedes ver una demostración del uso de la aplicación  en este video tutorial.</a></p>
+    <p><a href="../manual_es.html">Puedes ver el manual de usuario completo en este enlace. (solo castellano)</a></p>
+
+    <h3> Paso 1- Localización:</h3>
+    <p>En este primer paso debemos identificar las áreas en las que se pueden instalar paneles fotovoltaicos. Puedes definir tantas como consideres oportuno, el sistema realizará una asignación ordenada de paneles teniendo en cuenta la eficiencia de la base.</p>
+    <p>Mediante el desplazamiento en el mapa podrás localizar la zona de interés con la ayuda de los campos de localización o, si las conoces, introduciendo directamente las coordenadas latitud, longitud en el campo correspondiente.</p>
+    <p>Una vez visualizada la zona de trabajo deberás dibujar las áreas, como mínimo una, en las que se pueden instalar los paneles.</p>
+    <p>El área se cerrará automaticamente cuando des el tercer punto formando un paralelogramo.</p>
+    <p>Una vez definida el área verás que aparece una fila en la tabla que hay debajo del mapa, en la que tienes los datos de la base solar definida en ese área. Ahora procederemos a terminar de configurar los detalles de la misma.</p>
+    <ul>
+    <li>Nombre: En el caso de existir mas de una base es conveniente asignarles un nombre ya que la aplicación asignará paneles a cada una de ellas y mostrará esa asignación basada en el nombre.</li>
+    <li>Long-Lat: Coordenadas geográficas del centro del área definida</li>
+    <li>Superficie en mapa: Superficie en m<sup>2</sup> medidos en el mapa sin tener en cuenta la inclinación del tejado.</li>
+    <li>Inclinación del tejado: Si los paneles se instalan sobre un tejado inclinado aquí podrás indicar el ángulo del mismo con respecto a la horizontal del lugar. El sistema corregirá la superficie del area previamente calculada desde la proyección horizontal del mapa y en consecuencia el campo Potencia máxima admitida que se basa en el area real disponible.</li>
+    <li>Area disponible: El área medida en el mapa corregida por la inclinación del tejado.</li>
+    <li>Max. kWp: Es una estimación de la potencia pico máxima que se podría instalar en función del area disponible. Se utiliza un parámetro que se puede cambiar en <i class="fa fa-cog fa-fw"></i></li>
+    <li>Inclinación del panel: Este es el ángulo con el que se instalarán los paneles medido a partir del tejado. Por ejemplo en un tejado inclinado con instalación coplanar se debe poner 0º</li>
+    <li>Inclinación óptima: En caso de que quieras que la aplicación calcule las inclinaciones óptimas marca esta casilla y no introduzcas ningún valor en los campos anteriores.</li>
+    <li>Orientación (Acimut): En este campo indicaremos la orientación que los paneles tendrán respecto al sur geográfico. Puedes escribir el ángulo directamente en el campo o definirlo sobre el mapa con el boton <i class='fa fa-compass'></i> Si seleccionas esta opción verás que aparece una línea en el mapa que te permite indicar cuál es la orientación posible de los paneles, teniendo en cuenta las condiciones del tejado. Este campo es de especial importancia a la hora de determinar la eficiencia de cada base.</li>
+    <li>Angulos óptimos: Si quieres que la aplicación calcule todos los ángulos óptimos marca esta casilla y todos los anteriores serán ignorados.</li>
+    </ul>
+    Puedes utilizar el icono <i class='fa fa-trash-o'></i> si en algún momento quieres borrar una base.
+    <p>Una vez definida la localización y configuración de las bases donde se instalarán los paneles puedes dar a la flecha <i class="fa fa-arrow-right"></i> "Siguiente" para pasar el próximo paso.</p>
+
+    <h3>Paso 2 - Tipo Consumo:</h3>
+    <p>Ahora procederemos a definir los perfiles de consumo y la tarifa actual del contrato con la empresa comercializadora.</p>
+    <p>Tenemos una tabla con los siguientes campos:</p>
+    <ul>
+    <li>Identificación del consumo: Aquí podrás dar un nombre al tipo de consumo que estás definiendo.</li>
+    <li>Fuente: Existen dos formas de definir el perfil de consumo:
+      <ul>
+        <li>CSV: Si tienes fichero CSV (Comma Separated Values) con consumos horarios obtenidos de tu empresa distribuidora. En este caso deberás identificar el fichero en el campo Nombre fichero fuente utilizando el icono <i class='fa fa-file-o'></i>.</li>
+        <li>REE: Si no tienes el fichero CSV puedes utilizar esta opción. En este caso deberás introducir el consumo anual de la finca en el campo "Consumo anual REE".</li>
+      </ul>
+    </li>
+    <li>Consumo anual: Se completa con el consumo anual de energía del consumo identificado.</li>
+    <li>Tarifa: Nombre de la tarifa contratada en este tipo de consumo, 2.0TD o 3.0TD. Esto afectará al cálculo de los precios apagados cada hora.</li>
+    </ul>
+    <p>Una vez cargado el tipo de consumo verás un mapa coloreado con tu perfil de consumo horario a lo largo del año. Dando un click sobre el mismo podrás ver el perfil de consumo de un día concreto.</p>
+    <p>Ahora podemos cambiar los precios asociados a las tarifas (2.0TD o 3.0TD) que se utilizarán en la simulación.<br>
+    Una vez seleccionada la tarifa, la aplicación propone unos precios que puedes ver mediante el icono <i class='fa fa-eur'></i>. Se proponen inicialmente los de SOM Energia. Si no son los correctos debes actualizarlos, desde el mismo desplegable, a los valores que sean adecuados antes de realizar el cálculo.</p>
+    <p>Puedes definir más de un tipo de consumo en esta pestaña utilizando el botón Nuevo tipo consumo. Esto nos permite simular que pasaría si añadiéramos un nuevo consumo a esta instalación como podría ser un vehículo eléctrico o algún elemento de carga significativa. El sistema totalizará todos los tipos de consumo de forma horaria para realizar los cálculos. Si es el caso, con el icono <i class='fa fa-line-chart'></i> puedes ver el gráfico de cada uno y con <i class='fa fa-trash-o'></i> podrás borrar el tipo de consumo de esa fila de la tabla.</p>
+    <p>Una vez alcanzado este punto puedes dar al botón <i class='fa fa-arrow-right'></i> "Siguiente".</p>
+
+    <h3>Paso 3 - Balance energía</h3>
+    <p> En esta pestaña se observarán los resultados de la primera propuesta que realiza el sistema con el siguiente criterio de asignación de paneles:</p>
+    <ol>
+    <li>Definir un número de paneles suficiente para generar la energía necesaria para cubrir el consumo de un año en función de los tipos de consumo definidos en 2.</li>
+    <li>Verificar que la superficie disponible en las bases definidas en el paso 1 son suficientes para generar esa energía. Si no lo son se muestra un aviso.</li>
+    <li>Ir asignando paneles a las bases dando prioridad a las bases mas eficientes desde el punto de vista de rendimiento energético.</li>
+    </ol>
+    Una vez finalizado el proceso de cálculo vemos la siguiente tabla de las bases:
+    <ul>
+      <li>Nombre: Nombre dado a la base en el paso 1.</li>
+      <li>Energia anual por kWp instalado: Es el rendimiento unitario de la base en función de la ubicación geográfica, la orientación relativa al sur (acimut) y la inclinación de los paneles que hemos obtenido de PVGIS.</li>
+      <li>Potencia máxima admitida: Teniendo en cuenta el área disponible</li>
+      <li>Paneles: Número inicial de paneles propuesto por el sistema en base al algoritmo antes mencionado</li>
+      <li>Potencia de cada panel: según definido en el parámetro "Potencia unitaria (kWp) panel inicio" en <i class="fa fa-cog fa-fw"></i>. Este valor se puede cambiar dinámicamente desde este campo.</li>
+      <li>Potencia total de la base: Es la potencia unitaria del panel multiplicada por el número de paneles de la base.</li>
+      <li><i class='fa fa-info-circle'></i>  Nos permite ver información detallada de la base.</li>
+    </ul>
+    <p>En el resto de la pestaña se pueden ver un conjunto de datos relativos al balance energético de esta configuración.</p>
+    <p>En este momento puede ser interesante que observes los resultados en las pestañas de Balance Económico y Gráficos para evaluar la situación y antes de decidir cambiar el número de paneles o la potencia individual de los mismos.</p>
+    <p>En todo caso, desde esta pestaña podrás cambiar los paneles asignados a cada base según tu propio criterio cuando lo consideres oportuno. Solidar verificará que no puedes poner mas paneles que los que la superficie definida en el paso 1 permite en cada base.</p>
+    <p>Una vez alcanzado este punto puedes dar al botón <i class="fa fa-arrow-right"></i> "Siguiente" para ver los resultados desde el punto de vista económico-financiero o volver <i class="fa fa-arrow-left"></i> si quieres cambiar algo de las pestañas anteriores.</p>
+
+    <h3>Paso 4 - Balance económico</h3>
+    <p>Aquí puedes ver cual es el resultado desde el punto de vista económico financiero de la instalación de los paneles definidos en el paso 3.</p>
+    <p>Es importante destacar algunos campos existentes en esta pestaña:</p>
+    <ul>
+    <li>El gasto anual, con o sin placas y por lo tanto el ahorro, está altamente condicionado por las tarifas definidas en el paso 2 del tipo de consumo.</li>
+    <li>Dada la volatilidad de los precios, y las variaciones detectadas por regiones, es muy difícil estimar un precio de la instalación. Te
+    proponemos uno con las estimaciones que tenemos, pero lo correcto es que te asesores con un instalador. Podrás corregir el precio que te proponemos indicando un porcentaje positivo para incrementar el precio o negativo para disminuirlo en el campo "Corrección de precio en %".</li>
+    </ul>
+    <p>Con los datos antes definidos la aplicación mostrará una tabla financiera con el estudio del retorno de la inversión esperado a 10 años o hasta que se consiga un resultado positivo.</p>
+    <p>Para esta tabla es importante definir, en los campos mostrados a tal fin, si existe algún tipo de subvención a aplicar de fondos Next Generation o la bonificación del IBI que aplican algunos ayuntamientos.</p>
+    <p>En cuanto a la subvención de fondos europeos se tendrá en cuenta el criterio del 80% de consumo propio pero la elección de instalación individual o colectiva es libre.</p>
+    <p>Verás un gráfico con el título de "Alternativas con paneles...." donde se muestra el comportamiento de algunas variables significativas en función del número de paneles instalados. Dando un click sobre el gráfico cambiarás la configuración al número que selecciones y se realizará el cálculo de todas las magnitudes con el nuevo número de paneles elegido.</p>
+
+    <h3>5 - Gráficos</h3>
+    <p> En esta pestaña se observan algunos gráficos que muestran el comportamiento mensual del sistema propuesto.</p>
+
+    <h3>6 - Resumen</h3>
+    <p>Se muestra un resumen de todas las variables introducidas y calculadas para esta simulación y se puede solicitar un informe en formato PDF.</p>
+    <br>
+    <p>Se pueden hacer varios ciclos de pruebas cambiando la configuración de la instalación &lt;Paneles&gt; o &lt;Potencia por panel&gt;. Este cambio se puede hacer desde la pestaña &lt;Balance energía&gt; o desde el gráfico de alternativas del Balance económico. La aplicación realizará los cálculos correspondientes de forma automática.</p>
+    <p>En la pestaña &lt;Parámetros&gt;, que se activa desde el icono de herramientas <i class="fa fa-cog fa-fw"></i>, se pueden actualizar varios parámetros utilizados en el cálculo. Los cambios realizados en esta pestaña se reflejarán en el próximo cálculo.</p>
+    <p>Desde el menú situado en la parte superior derecha se pueden seleccionar las siguientes opciones, de izquierda a derecha:</p>
+
+    <div><i class="fa fa-floppy-o fa-fw"></i>&nbsp; 
+    Salvar un proyecto en formato Solimp para futuras importaciones.</div>
+    <div><i class="fa fa-envelope-o fa-fw"></i>&nbsp; 
+    Formulario de contacto desde donde nos puedes enviar tus comentarios, así como informar de posibles errores o mejoras que consideres oportunas.</div>
+    <div><i class="fa fa-file-pdf-o fa-fw"></i>&nbsp; 
+    Genera un informe en PDF de la simulación activa.</div>
+    <div><i class="fa fa-cog fa-fw"></i>&nbsp; 
+    Herramientas para cambiar alguno de los parámetros utilizados por la aplicación.</div>
+    <div><i class="fa fa-info fa-fw"></i>&nbsp; 
+    Abre este documento.</div>
+    <div><i class="fa fa-question-circle-o fa-fw"></i>&nbsp; 
+    Habilita un panel a la derecha de la pantalla con una guía explicativa de la pestaña en la que te encuentres en ese momento.</div>
+
+  </body>
+</html>
