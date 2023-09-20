@@ -4,6 +4,7 @@ import * as UTIL from "./Utiles.js";
  * @class DiaHora
  * @classdesc Es la clase base para todas las matrices diaHora de 365 filas y 24 columnas para almacenar los valores de los diversos objetos de la aplicacion
  */
+
 class DiaHora {
     
 /** @property {Array} idxTable Vector [365] objetos {} resumen de algunas propiedades de cada dia del año */
@@ -33,8 +34,9 @@ class DiaHora {
 /** inicializa Inicializa la estructura DiaHora a cero */
     inicializa() {
         for (let i = 0; i < 365; i++) {
-            let diaMes = UTIL.fechaDesdeIndice(i);
-            this.idxTable[i] = { previos: 0, dia: diaMes[0], mes: diaMes[1], suma: 0, maximo: 0, promedio: 0};
+/*             let diaMes = UTIL.fechaDesdeIndice(i);
+            this.idxTable[i] = { previos: 0, dia: diaMes[0], mes: diaMes[1], suma: 0, maximo: 0, promedio: 0, fecha:''}; */
+            this.idxTable[i] = { previos: 0, suma: 0, maximo: 0, promedio: 0, fecha:''};
         }
         this.diaHora = Array.from(Array(365), () => new Array(24).fill(0));
     }
@@ -60,7 +62,8 @@ class DiaHora {
                     decimal:",", 
                     fechaHdr:"FECHA",
                     horaHdr:"HORA", 
-                    factor:1}) {
+                    factor:1,
+                    metodo:"SUSTITUYE"}) {
         this.datosCargados = false;                
         var lastLine;
         this.maximoAnual = -Infinity;
@@ -131,7 +134,7 @@ class DiaHora {
             try {
                 var lastFecha = new Date(1970, 1, 1);
                 var hora;
-                var unDia = { dia: 0, mes: 0, valores: Array(24).fill(0) }; //el mes es 0-11, la hora es 0-23
+                var unDia = { fecha: lastFecha, valores: Array(24).fill(0) }; //el mes es 0-11, la hora es 0-23
 
                 // Se han detectado ficheros de Naturgy con registros vacios al final del mismo
                 // si el campo fecha viene vacio consideramos que hay que ignorar el registro
@@ -177,17 +180,19 @@ class DiaHora {
                     } else {
                         if (i == 0) {
                             unDia = {
-                            dia: currFecha.getDate(),
-                            mes: currFecha.getMonth(),
+                            fecha: currFecha,
+/*                              dia: currFecha.getDate(),
+                                mes: currFecha.getMonth(), */
                             valores: Array(24).fill(0),
                             };
                             unDia.valores[hora] = parseFloat(lineas[i][valorHdr].replace(options.decimal, "." )) * options.factor;
                         } else {
-                            this.mete(unDia, this.idxTable, this.diaHora);
+                            this.mete(unDia, options.metodo);
                             unDia = {
-                            dia: currFecha.getDate(),
-                            mes: currFecha.getMonth(),
-                            valores: Array(24).fill(0),
+                                fecha: currFecha,
+/*                              dia: currFecha.getDate(),
+                                mes: currFecha.getMonth(), */
+                                valores: Array(24).fill(0),
                             };
                             unDia.valores[hora] = parseFloat(lineas[i][valorHdr].replace(options.decimal, "." )) * options.factor;
                         }
@@ -199,18 +204,32 @@ class DiaHora {
                     }
                 }
                 // Si el ultimo registro no vino vacio lo metemos
-                if (!vacio) this.mete(unDia, this.idxTable, this.diaHora);
+                if (!vacio) this.mete(unDia, options.metodo);
                 this.fechaFin = lastFecha;
                 this.horaFin = hora;
                 this.numeroRegistros = lineas.length;
                 this.datosCargados = true; 
                 this.sintesis();
                 resolve();
-             } catch (error) {
+            } catch (error) {
                 this.numeroRegistros = 0;
                 this.datosCargados = false; 
                 alert ("Error lectura en linea:\n" + JSON.stringify(lastLine) + "\n" + error);
                 reject(error);
+            }
+
+            //Verificamos que tenemos 365 dias registrados.
+            let todos = true;
+            for (let i=0; i<365; i++) {
+                if (this.idxTable[i].fecha === '') {
+                    todos = false;
+                    console.log( i + " esta sin fecha " + UTIL.fechaDesdeIndice(i));
+                }
+            }
+            if (!todos) {
+                alert ('Faltan dias para completar un año de datos');
+                this.numeroRegistros = 0;
+                return false;
             }
         };
         reader.readAsText(csvFile);
@@ -237,6 +256,7 @@ class DiaHora {
             this.idxTable[dia].promedio = (this.idxTable[dia].promedio + (inDiaHora.idxTable[dia].promedio * factor)) / (factor + 1);
             this.idxTable[dia].maximo = this.idxTable[dia].maximo > inDiaHora.idxTable[dia].maximo ?
                                                 this.idxTable[dia].maximo : inDiaHora.idxTable[dia].maximo
+            this.idxTable[dia].fecha = inDiaHora.idxTable[dia].fecha;
         }
         this.sintesis();
     }
@@ -249,6 +269,7 @@ class DiaHora {
             for (let hora=0; hora<24; hora++) {
               this.diaHora[dia][hora] += inDiaHora.diaHora[dia][hora];
             }
+            this.idxTable[dia].fecha =  inDiaHora.idxTable[dia].fecha;
             this.idxTable[dia].suma += inDiaHora.idxTable[dia].suma;
             this.idxTable[dia].promedio = this.idxTable[dia].suma / 2;
             this.idxTable[dia].maximo = this.idxTable[dia].maximo > inDiaHora.idxTable[dia].maximo ?
@@ -281,8 +302,8 @@ class DiaHora {
         return dia;
     }
 /**
- * Carga diaHora a partir de otro objeto diaHora aplicandole un factor de escala.
- * @param {DiaHora} inDiaHora 
+ * Carga diaHora de this a partir de otro objeto diaHora aplicandole un factor de escala.
+ * @param {DiaHora} inDiaHora DiaHora origen
  * @param {number} factor 
  */
     escala ( inDiaHora, factor) {
@@ -290,6 +311,7 @@ class DiaHora {
             for (let hora = 0; hora < 24; hora++) {
                 this.diaHora[dia][hora] = inDiaHora.diaHora[dia][hora] * factor;
             }
+            this.idxTable[dia].fecha = inDiaHora.idxTable[dia].fecha;
             this.idxTable[dia].suma = inDiaHora.idxTable[dia].suma * factor;
             this.idxTable[dia].promedio = inDiaHora.idxTable[dia].promedio * factor;
             this.idxTable[dia].maximo = inDiaHora.idxTable[dia].maximo * factor;
@@ -301,21 +323,26 @@ class DiaHora {
  * Introduce los valores de un dia en diaHora y actualiza la tabla idx del dia correspondiente
  * En caso de existir valores previos para ese dia calcula los promedios
  * @param {object} unDia Estructura a carga
- * @param {number} unDia.dia Dia del año 0-364 al que se insertarán estos datos
- * @param {number} unDia.mes Mes del año 0-11 al que se insertarán estos datos
+ * @param {Date} unDia.fecha Fecha del registro al que se insertarán estos datos
  * @param {Array(24)<number>} unDia.valores Valores a insertar en esta fila
  */
-    mete(unDia) {
-        var indiceDia = UTIL.indiceDesdeDiaMes(unDia.dia, unDia.mes);
+    mete(unDia, metodo) {
+        let _dia = unDia.fecha.getDate();
+        let _mes = unDia.fecha.getMonth();
+        var indiceDia = UTIL.indiceDesdeDiaMes(_dia, _mes);
         for (let hora = 0; hora < 24; hora++) {
-          if (this.idxTable[indiceDia].previos > 0) {
-            //Implica que ya habia registros previos para ese dia por lo que recalculamos el promedio
-            unDia.valores[hora] =
-              (this.diaHora[indiceDia][hora] * this.idxTable[indiceDia].previos +
-                unDia.valores[hora]) / (this.idxTable[indiceDia].previos + 1);
-          }
-          this.diaHora[indiceDia][hora] = unDia.valores[hora];
+            if (metodo === "PROMEDIO") {
+                if (this.idxTable[indiceDia].previos > 0) {
+                    //Implica que ya habia registros previos para ese dia por lo que recalculamos el promedio
+                    unDia.valores[hora] =
+                    (this.diaHora[indiceDia][hora] * this.idxTable[indiceDia].previos +
+                        unDia.valores[hora]) / (this.idxTable[indiceDia].previos + 1);
+                }
+            } 
+            this.diaHora[indiceDia][hora] = unDia.valores[hora];
         }
+
+        this.idxTable[indiceDia].fecha = unDia.fecha;
         this.idxTable[indiceDia].previos = this.idxTable[indiceDia].previos + 1;
         this.idxTable[indiceDia].suma = UTIL.suma(unDia.valores);
         this.idxTable[indiceDia].promedio = UTIL.promedio(unDia.valores);
@@ -353,9 +380,16 @@ class DiaHora {
     resumenMensual(propiedad) {
         let valorMensual = new Array(12).fill(0);
         for (let i = 0; i < 365; i++) {
-            valorMensual[this.idxTable[i].mes] += this.idxTable[i][propiedad];
+            valorMensual[this.idxTable[i].fecha.getMonth()] += this.idxTable[i][propiedad];
         }
         return valorMensual;
+    }
+
+    transformaFechas() {
+        if (typeof this.idxTable[0].fecha === 'string')
+            for (let dia=0; dia<365; dia++) {
+                this.idxTable[dia].fecha = new Date(this.idxTable[dia].fecha);
+            } 
     }
 
 }

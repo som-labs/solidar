@@ -25,6 +25,7 @@ export default class PuntoConsumo {
     }
 
     async cargaFincas () {
+    
         //Carga las fincas dependientes de cada punto de consumo con la llamada al catastro
         var url = "proxy-Catastro-detalle x refcat.php?refcat=" + this.refcat;
         url += "&idSesion=" + TCB.idSesion;
@@ -36,19 +37,22 @@ export default class PuntoConsumo {
 
             for (let unaFinca of jsonFincas) {
               unaFinca.idPuntoConsumo = this.idPuntoConsumo;
+              unaFinca.idFinca = TCB.idFinca++;
+              unaFinca.grupo = Finca.mapaUsoGrupo[unaFinca.uso];
               TCB.Finca.push( new Finca(unaFinca));
-              TCB.idFinca = unaFinca.idFinca;
             }
             this.fincasCargadas = true;
             return true;
           } else {
             alert("Error obteniendo datos de catastro " + fincas.status + "\n" + url);
             this.fincasCargadas = false;
+            TCB.cargaFincasError = true;
             return false;
           }
         } catch (err) {
           UTIL.debugLog("Error obteniendo datos de catastro " + err.message + "\n" + url);
           this.fincasCargadas = false;
+          TCB.cargaFincasError = true;
           return false;
         }
     }

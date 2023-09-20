@@ -60,7 +60,17 @@ async function inicializaEventos () {
 function importa (datosImportar) {
 
   for (let importTC of datosImportar.TipoConsumo) {
+    
+    UTIL.debugLog( "Importando tipo consumo: "+importTC.nombreTipoConsumo);
     let tTC = new TipoConsumo( importTC);
+    //Si los datos fueron importados de versiones anteriores no habia fecha. Se asume que son del año 2022 a efectos del cálculo de tarifas en dias de la semana
+    for (let dia=0; dia<365; dia++) {
+      if (tTC.idxTable[dia].fecha === undefined) tTC.idxTable[dia].fecha = new Date(2022,tTC.idxTable[dia].mes,tTC.idxTable[dia].dia);
+    } 
+
+    //En el fichero de importación las fechas vienen como string. Hay que convertirlas a Date.
+    tTC.transformaFechas();
+
 
     // Asociamos la tarifa al TipoConsumo
     let _tarifa = new Tarifa(tTC.tarifa.nombreTarifa, tTC.tarifa.territorio);
@@ -107,7 +117,7 @@ async function valida() {
     return false;
   }
 
-  document.getElementById('csvResumen').innerHTML ="";
+  //document.getElementById('csvResumen').innerHTML ="";
 
   let status = true;
   // Se verifica que cada TipoConsumo definido se le ha cargado el CSV correspondiente
@@ -184,39 +194,38 @@ async function muestraTablas() {
     return true;
   }
   var muestraPrecios = function(cell){
-  const activo = UTIL.setActivo(cell);
-  const container = document.createElement("div");
-  const lista =  activo.objeto.tarifa.getTarifa ()
-  let _max = 6;
-  if (activo.objeto.tarifa.nombreTarifa === "2.0TD") _max = 3;
-  for (let i=1; i <= _max; i++) lista["P"+i]= activo.objeto.tarifa.precios[i]; 
+    const activo = UTIL.setActivo(cell);
+    const container = document.createElement("div");
+    const lista =  activo.objeto.tarifa.getTarifa ();
+    let _max = 6;
+    if (activo.objeto.tarifa.nombreTarifa === "2.0TD") _max = 3;
+    for (let i=1; i <= _max; i++) lista["P"+i]= activo.objeto.tarifa.precios[i]; 
 
-  let contents = "<strong style='font-size:1.2em;'>Tarifa "+activo.objeto.tarifa.nombreTarifa+" (€ / kWh)</strong><br/><ul style='padding:0;  margin-top:10px; margin-bottom:0;>";
-  container.innerHTML = contents;
+    let contents = "<strong style='font-size:1.2em;'>Tarifa "+activo.objeto.tarifa.nombreTarifa+" (€ / kWh)</strong><br/><ul style='padding:0;  margin-top:10px; margin-bottom:0;>";
+    container.innerHTML = contents;
 
-  var tabla = document.createElement("Table");
-  for (let prop in lista) {
-    if (!(activo.objeto.tarifa.nombreTarifa === "2.0TD" && prop[1] > 3)){
-      let row = tabla.insertRow(-1);
-
-      let tarifa = row.insertCell(0);
-      let label = document.createTextNode(TCB.i18next.t(prop+"_LBL"));
-      tarifa.appendChild(label);
-      let precio = row.insertCell(1);
-      const lineaTarifa = document.createElement("input");
-      lineaTarifa.type = 'number';
-      lineaTarifa.style.width = "100px";
-      lineaTarifa.style.textAlign = "right";
-      lineaTarifa.step = 0.001;
-      lineaTarifa.style.border = '1';
-      lineaTarifa.id = prop;
-      lineaTarifa.value = lista[prop]; //UTIL.formatoValor('precioEnergia', lista[prop]);
-      lineaTarifa.addEventListener('change', (evt) => {cambioPrecioTarifa(evt.target, activo.objeto)}); // .tarifa)});
-      precio.appendChild(lineaTarifa); 
+    var tabla = document.createElement("Table");
+    for (let prop in lista) {
+      if (!(activo.objeto.tarifa.nombreTarifa === "2.0TD" && prop[1] > 3)){
+        let row = tabla.insertRow(-1);
+        let tarifa = row.insertCell(0);
+        let label = document.createTextNode(TCB.i18next.t(prop+"_LBL"));
+        tarifa.appendChild(label);
+        let precio = row.insertCell(1);
+        const lineaTarifa = document.createElement("input");
+        lineaTarifa.type = 'number';
+        lineaTarifa.style.width = "100px";
+        lineaTarifa.style.textAlign = "right";
+        lineaTarifa.step = 0.001;
+        lineaTarifa.style.border = '1';
+        lineaTarifa.id = prop;
+        lineaTarifa.value = lista[prop]; //UTIL.formatoValor('precioEnergia', lista[prop]);
+        lineaTarifa.addEventListener('change', (evt) => {cambioPrecioTarifa(evt.target, activo.objeto)}); // .tarifa)});
+        precio.appendChild(lineaTarifa); 
+      }
     }
-  }
-  container.appendChild(tabla);
-  return container;
+    container.appendChild(tabla);
+    return container;
   };
   var noEditable = function (cell) { //}, formatterParams) {
     cell.getElement().style.backgroundColor = "rgba(220, 249, 233, 1)";
@@ -242,7 +251,7 @@ async function muestraTablas() {
       {field: "botonMuestraTarifa", hozAlign: "center", titleFormatter: tarifaIcon, 
       formatter:tarifaIcon, width:40, headerSort:false, clickPopup: (evt, cell) => muestraPrecios(cell)},
       {field: "botonMuestraMapaTipoConsumo", hozAlign: "center", titleFormatter: grafIcon, 
-      formatter:grafIcon, width:40, headerSort:false, cellClick: (evt, cell) => muestraGraficosFila(cell)},
+      formatter:grafIcon, width:40, headerSort:false, cellClick: (evt, cell) => muestraGraficosObjeto(cell)},
       {field: "botonBorraTipoConsumo", hozAlign: "center", titleFormatter: deleteIcon, 
       formatter: deleteIcon, width:40, headerSort:false, cellClick: (evt, cell) => borraTipoConsumo( cell)}
     ]
@@ -264,8 +273,8 @@ async function muestraTablas() {
   });
 }
 
-/**
- * Gestiona el cambio de nombre del TipoConsumo teniendo en cuenta que la relacion entre Finca y TipoConsumo se basa en el nombre de éste.
+/** Gestiona el cambio de nombre del TipoConsumo teniendo en cuenta que la relacion entre Finca y TipoConsumo
+ *  se basa en el nombre de éste.
  * @param {Tabulator.cell} cell Identificación del TipoConsumo que estamos cambiando
  */
 function cambioNombreTipoConsumo (cell) {
@@ -276,10 +285,16 @@ function cambioNombreTipoConsumo (cell) {
   for (let finca of TCB.Finca) {
     if (finca.nombreTipoConsumo === cell.getOldValue()) finca.nombreTipoConsumo = cell.getValue();
   }
-  document.getElementById("csvResumen").innerHTML = TCB.i18next.t("tipoConsumoDefault_MSG");
+  //document.getElementById("csvResumen").innerHTML = TCB.i18next.t("tipoConsumoDefault_MSG");
   
 }
 
+/** gestiona el cambio de los precios asociados a una determinada tarifa.
+ * Se activa desde el evento asociado al campo dentro de la tabla dinamica que se construye al seleccionar el 
+ * simbolo € en la fila del tipo de consumo
+ * @param {event} evt Identifica el campo que estamos cambiando
+ * @param {TipoConsumo} tipoConsumo 
+ */
 function cambioPrecioTarifa (evt, tipoConsumo) {
   let idx;
   if (evt.id === 'Compensa') idx = 0;
@@ -287,6 +302,10 @@ function cambioPrecioTarifa (evt, tipoConsumo) {
   tipoConsumo.tarifa.precios[idx] = parseFloat(evt.value);
 }
 
+/** Borra un tipo de consumo siempre que no tenga fincas previamente asociadas
+ * 
+ * @param {Tabulator.Cell} cell Celda que identifica la fila del tipo de consumo a borrar
+ */
 function borraTipoConsumo(cell) {
 
   TCB.requiereOptimizador = true;
@@ -301,53 +320,57 @@ function borraTipoConsumo(cell) {
     TCB.TipoConsumo.splice(idxTipoConsumo, 1);
     cell.getRow().delete();
   } else {  //Debemos buscar en todas las fincas si alguna tiene este tipo de consumo
-      const _idx = TCB.Finca.findIndex( (finca) => {return finca.nombreTipoConsumo === activo.objeto.nombreTipoConsumo});
-      if (_idx < 0) { //Ninguna finca tiene este Tipode  consumo asociado
+      const _fs = UTIL.selectTCB('Finca', 'nombreTipoConsumo', activo.objeto.nombreTipoConsumo);
+      if (_fs.length == 0) {
         TCB.TipoConsumo.splice(idxTipoConsumo, 1);
         cell.getRow().delete();
       } else {
-        alert ("Hay fincas con este tipo de consumo");
+        alert (TCB.i18next.t("consumo_MSG_hayFincasAsociadas"));
       }
   }
-  document.getElementById("csvResumen").innerHTML = TCB.i18next.t("tipoConsumoDefault_MSG");
-  document.getElementById('graf_resumenConsumo').style.display = "none";
-  document.getElementById("graf_perfilDia").style.display = "none";
+  //Limpia los graficos
+  muestraGraficosObjeto();
 }
 
-function muestraGraficosFila(cell) {
-
-  const activo = UTIL.setActivo(cell);
-  muestraGraficosObjeto (activo.objeto);
-
-}
-
-function muestraGraficosObjeto (objeto) {
-  if (objeto !== undefined) {
-    let consumoMsg = TCB.i18next.t('consumo_MSG_resumen', {registros: objeto.numeroRegistros, 
-      desde: objeto.fechaInicio.toLocaleDateString(),
-      hasta: objeto.fechaFin.toLocaleDateString()});
-    document.getElementById("csvResumen").innerHTML = consumoMsg;
-
+/** Muestra o apaga la zona de graficos de tipo consumo de un objeto.
+ * Si el argumento es undefined limpia los gráficos
+ * 
+ * @param {Object} target Puede ser un objeto Tipo de consumo o una celda de la tabla que define la fila que contiene
+ * el objeto a grafica.
+ */
+function muestraGraficosObjeto (target) {
+  let objetoMostrar;
+  if (target !== undefined) {
+    if (target.constructor.name === "TipoConsumo") {
+      objetoMostrar = target;
+    } else {
+      const activo = UTIL.setActivo(target);
+      objetoMostrar = activo.objeto;
+    }
     document.getElementById('graf_resumenConsumo').style.display = "block";
     document.getElementById('graf_perfilDia').style.display = "block";
     document.getElementById('graf_res').style.display = "block";
-
-    TCB.graficos.gestionTipoConsumo_MapaConsumo(objeto, "graf_resumenConsumo", "graf_perfilDia");
-    TCB.graficos.gestionTipoConsumo_MapaMesHora(objeto, "graf_res");
-
+    TCB.graficos.gestionTipoConsumo_MapaConsumo(objetoMostrar, "graf_resumenConsumo", "graf_perfilDia");
+    TCB.graficos.gestionTipoConsumo_MapaMesHora(objetoMostrar, "graf_res");
   } else {
-    document.getElementById("csvResumen").innerHTML = TCB.i18next.t("tipoConsumoDefault_MSG");
     document.getElementById('graf_resumenConsumo').style.display = "none";
     document.getElementById('graf_perfilDia').style.display = "none";
     document.getElementById('graf_res').style.display = "none";
   }
 }
 
+/** Crea un nuevo tipo de consumo con valores por defecto
+ * 
+ * @returns {Object} El tipo de consumo creado
+ */
 async function creaNuevoTipoConsumoDefault(){
+
+  muestraGraficosObjeto(); //Limpia la zona de gráficos
   TCB.requiereOptimizador = true;
   TCB.cambioTipoConsumo = true;
   let nuevoTipoConsumo = {};
-  document.getElementById("csvResumen").innerHTML = TCB.i18next.t("tipoConsumoDefault_MSG");
+
+  //Asigna los valores por defecto
   nuevoTipoConsumo.idTipoConsumo = TCB.featIdUnico++;
   nuevoTipoConsumo.nombreTipoConsumo = "TCons " + nuevoTipoConsumo.idTipoConsumo;
   nuevoTipoConsumo.fuente = "CSV";
@@ -357,16 +380,14 @@ async function creaNuevoTipoConsumoDefault(){
   nuevoTipoConsumo.nombreTarifa = "2.0TD";
   nuevoTipoConsumo.territorio = TCB.territorio;
 
+  // Lo añadimos a TCB
   let idxTC = TCB.TipoConsumo.push( new TipoConsumo(nuevoTipoConsumo));
   TCB.TipoConsumo[idxTC-1].tarifa = new Tarifa(nuevoTipoConsumo.nombreTarifa, nuevoTipoConsumo.territorio);
   nuevoTipoConsumo.cTotalAnual = TCB.TipoConsumo[idxTC-1].cTotalAnual;
-  document.getElementById('graf_resumenConsumo').style.display = "none";
-  document.getElementById('graf_perfilDia').style.display = "none";
-  document.getElementById('graf_res').style.display = "none";
 
+  //Lo añadimos a la tabla de tipos de consumo
   _tablaTipoConsumo.addRow(nuevoTipoConsumo, false)
   .then(function(row) {
-    //const tipoCell = row.getCell('fuente').getElement();
     row.getCell('fuente').getElement().style.backgroundColor = "white"; 
     row.getCell('botonSeleccionFichero').getElement().style.backgroundColor = document.body.style.backgroundColor;
     const REEcell = row.getCell('consumoAnualREE').getElement();
@@ -375,33 +396,53 @@ async function creaNuevoTipoConsumoDefault(){
     CSVcell.style.backgroundColor = document.body.style.backgroundColor;
     CSVcell.innerHTML = TCB.i18next.t("consumo_MSG_nombreCSVPorDefinir");
   })
+
+  //Devolvemos el tipo de consumo creado
   return nuevoTipoConsumo;
 }
 
-async function getFile(cell) { 
+/** Crea un elemento input de tipo File oculto y define el eventListener de modo que al activarlo se pueda
+ * definir el fichero a cargar.
+ * 
+ * @param {Tabultor.Cell} cell Indica la celda que se ha activado 
+ * @returns 
+ */
+async function getFile(cell) {
+  //Activamos el objeto de la fila seleccionada 
   const activo = UTIL.setActivo(cell);
+
+  //Si el tipo es REE no hay nada que hacer
   if (activo.fila.fuente === "REE") return;
-    var input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.csv';
-    input.onchange = () => {
+
+  var input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.csv';
+  input.onchange = () => {
       UTIL.debugLog("Cargando consumos desde: "+ input.files[0].name);
       TCB.requiereOptimizador = true;
-      let objTipoConsumo = TCB.TipoConsumo.find( tipo => tipo.idTipoConsumo === cell.getRow().getData().idTipoConsumo);
-      objTipoConsumo.nombreFicheroCSV = input.files[0].name;
-      if (cargaCSV (objTipoConsumo, input.files[0], activo.fila.fuente)) {
+      //let objTipoConsumo = TCB.TipoConsumo.find( tipo => tipo.idTipoConsumo === cell.getRow().getData().idTipoConsumo);
+      let _tc = UTIL.selectTCB('TipoConsumo', 'idTipoConsumo', cell.getRow().getData().idTipoConsumo)[0];
+      _tc.nombreFicheroCSV = input.files[0].name;
+      if (cargaCSV (_tc, input.files[0], activo.fila.fuente)) {
         activo.fila.nombreFicheroCSV = input.files[0].name;
         activo.objeto.nombreFicheroCSV = input.files[0].name;
       } else {
         activo.fila.nombreFicheroCSV = TCB.i18next.t("consumo_MSG_nombreCSVPorDefinir");
       }
-    };
+  };
   input.click();
 }
 
+/** Gestiona el cambio de tarifa asignada al tipo de consumo
+ * 
+ * @param {Tabulator.Cell} cell Celda la tabla donde esta la tarifa a cambiar
+ * @returns {string} Nombre de la tarifa seleccionada
+ */
 async function cambioTarifa (cell) {
+
   TCB.requiereOptimizador = true;
   TCB.cambioTipoConsumo = true;
+  //Activamos el objeto de la fila seleccionada 
   activo = UTIL.setActivo(cell);
   activo.objeto.nombreTarifa = cell.getValue(); //Hay que trabajar esta duplicidad
   activo.objeto.tarifa.nombreTarifa = cell.getValue();
@@ -417,18 +458,17 @@ async function cambioTarifa (cell) {
     valorArr:[activo.objeto.tarifa.nombreTarifa], factor: activo.objeto.consumoAnualREE }
     await activo.objeto.loadFromCSV(activo.objeto.ficheroCSV, opciones);
 
-    let consumoMsg = TCB.i18next.t('consumo_MSG_resumen', {registros: activo.objeto.numeroRegistros, 
-      desde: activo.objeto.fechaInicio.toLocaleDateString(),
-      hasta: activo.objeto.fechaFin.toLocaleDateString()});
-    document.getElementById("csvResumen").innerHTML = consumoMsg;
-    TCB.graficos.gestionTipoConsumo_MapaConsumo(activo.objeto, "graf_resumenConsumo", "graf_perfilDia");
-    document.getElementById('graf_resumenConsumo').style.display = "block";
-    document.getElementById("graf_perfilDia").style.display = "block";
+    muestraGraficosObjeto(activo.objeto);
   }
-
   return activo.objeto.tarifa.nombreTarifa;
 }
-
+/** Define los parametros para la función loadFromCSV segun los datos de la fila
+ * 
+ * @param {TipoConsumo} objTipoConsumo 
+ * @param {File} ficheroCSV 
+ * @param {string} fuente 
+ * @returns {boolean} true si todo OK, flase en caso de error
+ */
 async function cargaCSV (objTipoConsumo, ficheroCSV, fuente) {
   TCB.cambioTipoConsumo = true;
   objTipoConsumo.inicializa();
@@ -439,20 +479,9 @@ async function cargaCSV (objTipoConsumo, ficheroCSV, fuente) {
   //Si la fuente es DATADIS loadcsv debera cambiar el formato de fecha de AAAA/MM/DD a DD/MM/AAAA
   opciones.fechaSwp = (fuente === "DATADIS");
   await objTipoConsumo.loadFromCSV(ficheroCSV, opciones);
-
   if (objTipoConsumo.numeroRegistros > 0) {
-    let consumoMsg = TCB.i18next.t('consumo_MSG_resumen', {registros: objTipoConsumo.numeroRegistros, 
-                              desde: objTipoConsumo.fechaInicio.toLocaleDateString(),
-                              hasta: objTipoConsumo.fechaFin.toLocaleDateString()});
-    document.getElementById("csvResumen").innerHTML = consumoMsg;
-
     _tablaTipoConsumo.updateData([objTipoConsumo.select_tablaTipoConsumo()]);
     muestraGraficosObjeto(objTipoConsumo);
-/*     document.getElementById('graf_resumenConsumo').style.display = "block";
-    document.getElementById("graf_perfilDia").style.display = "block";
-    document.getElementById('graf_res').style.display = "block";
-    TCB.graficos.gestionTipoConsumo_MapaMesHora( objTipoConsumo, "graf_res");
-    TCB.graficos.gestionTipoConsumo_MapaConsumo(objTipoConsumo, "graf_resumenConsumo", "graf_perfilDia"); */
     return true
   }
   return false;
@@ -469,21 +498,11 @@ async function cambioConsumoAnualREE ( cell) {
   activo.objeto.fuente = "REE";
   activo.objeto.ficheroCSV = await UTIL.getFileFromUrl(TCB.basePath + "datos/REE.csv");
   const opciones = {delimiter:";", decimal:".", fechaHdr:"FECHA", horaHdr:"HORA", 
-  valorArr:[activo.objeto.tarifa.nombreTarifa], factor: activo.objeto.consumoAnualREE };
+  valorArr:[activo.objeto.tarifa.nombreTarifa], factor: activo.objeto.consumoAnualREE};
   await activo.objeto.loadFromCSV(activo.objeto.ficheroCSV, opciones);
 
   console.log(activo.objeto.numeroRegistros);
   if (activo.objeto.numeroRegistros > 0) {
-/*     let consumoMsg = TCB.i18next.t('consumo_MSG_resumen', {registros: activo.objeto.numeroRegistros, 
-                              desde: activo.objeto.fechaInicio.toLocaleDateString(),
-                              hasta: activo.objeto.fechaFin.toLocaleDateString()});
-    document.getElementById("csvResumen").innerHTML = consumoMsg;
-
-    document.getElementById('graf_resumenConsumo').style.display = "block";
-    document.getElementById("graf_perfilDia").style.display = "block";
-    document.getElementById('graf_res').style.display = "block";
-    TCB.graficos.gestionTipoConsumo_MapaConsumo(activo.objeto, "graf_resumenConsumo", "graf_perfilDia");
-    TCB.graficos.gestionTipoConsumo_MapaMesHora( activo.objeto, "graf_res"); */
     muestraGraficosObjeto(activo.objeto);
     _tablaTipoConsumo.updateData([activo.objeto.select_tablaTipoConsumo()]);
   }
@@ -493,11 +512,6 @@ function cambioFuente (cell) {
 
   TCB.cambioTipoConsumo = true;
   activo = UTIL.setActivo(cell);
-
-/*   document.getElementById("csvResumen").innerHTML = TCB.i18next.t("tipoConsumoDefault_MSG");
-  document.getElementById('graf_resumenConsumo').style.display = "none";
-  document.getElementById("graf_perfilDia").style.display = "none";
-  document.getElementById('graf_res').style.display = "none"; */
   muestraGraficosObjeto();
   
   activo.objeto.resetFuente(cell.getValue());

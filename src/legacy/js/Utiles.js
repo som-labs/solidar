@@ -1,5 +1,5 @@
 /**
- * @module UTIL
+ * @module utiles.js
  * @fileoverview Funciones varias
  * @version      Solidar.3
  * @author       José Luis García (SOM Madrid)
@@ -46,8 +46,11 @@ const campos = {
 "planta":{"unidad":"", "salvar":true, "mostrar":true},
 "puerta":{"unidad":"", "salvar":true, "mostrar":true},
 "participacion":{unidad:"%", decimales: 2, salvar:true, mostrar:true},
-"coefHucha":{unidad: "%", decimales: 2, salvar:true, "mostrar":true},
+"coefHucha":{unidad: "%", decimales: 0, salvar:true, "mostrar":true},
 "cuotaHucha":{unidad:" €", decimales: 2, salvar:true, mostrar:true},
+"coefHuchaGlobal":{unidad: "%", decimales: 2, salvar:true, "mostrar":true},
+"cuotaHuchaGlobal":{unidad:" €", decimales: 2, salvar:true, mostrar:true},
+"coste":{unidad:" €", decimales: 2, salvar:true, mostrar:true},
 
 // BaseSolar:
 "idBaseSolar": {"unidad":"", "decimales":0, "salvar":true, "mostrar":false},
@@ -127,9 +130,9 @@ const campos = {
 "VANProyecto":{"unidad": " €", "decimales": 0, "salvar":false, "mostrar":true},
 "interesVAN":{"unidad": "%", "decimales": 0, "salvar":false, "mostrar":false},
 "economicoCreado": {"unidad": "", "salvar":false, "mostrar":false},
-"tiempoSubvencionIBI": {"unidad": "", "salvar":true, "mostrar":true},
-"valorSubvencionIBI": {"unidad": "", "salvar":true, "mostrar":true},
-"porcientoSubvencionIBI": {"unidad": "", "salvar":true, "mostrar":true},
+"tiempoSubvencionIBI": {unidad: "", decimales:0, salvar:true, mostrar:true},
+"valorSubvencionIBI": {unidad: " €", decimales:0, salvar:true, mostrar:true},
+"porcientoSubvencionIBI": {unidad: "%", decimales:2, salvar:true, mostrar:true},
 "tipoSubvencionEU": {"unidad": "", "salvar":true, "mostrar":true},
 "valorSubvencionEU": {"unidad": "", "salvar":false, "mostrar":true},
 "previo":{"unidad":" €", "decimales":2, "salvar":false, "mostrar":true},
@@ -140,8 +143,9 @@ const campos = {
 "pendiente":{"unidad":" €", "decimales":2, "salvar":false, "mostrar":true},
 "VAN":{"unidad":" €", "decimales":2, "salvar":false, "mostrar":true},
 "TIR":{"unidad":"%", "decimales":2, "salvar":false, "mostrar":true},
-"precioInstalacion":{"unidad":" €", "decimales":0, "salvar":true, "mostrar":true},
-"precioInstalacionCorregido":{"unidad":" €", "decimales":0,"salvar":true, "mostrar":true},
+"precioInstalacion":{unidad:" €", decimales:0, salvar:true, mostrar:true},
+"nuevoPrecioInstalacion":{unidad:" €", decimales:0, salvar:true, mostrar:true},
+
 
 /* Globales */
   "areaTotal": {"unidad": " m²", "decimales":2, "salvar":true, "mostrar":true},
@@ -213,9 +217,8 @@ export const indiceDia = [
   [11, 334, 364],
 ];
 
-/**
- * Devuelve el valor de la variable en los argumentos de entrada de la URL
- * @memberof! Utiles.js
+/** Devuelve el valor de la variable en los argumentos de entrada de la URL
+ * @memberof UTIL
  * @param {String} variable Nombre de la variable que buscamos en los argumentos de entrada
  * @returns {Boolean|String}  false si la variable no está en la entrada o el valor de la misma si está
  */
@@ -228,15 +231,16 @@ function getParametrosEntrada(variable) {
     return false;
   }
 }
-
-function debugLog(msg, obj) {
+/** Envia mensaje a la consola del desarrollador si se ha activado el debug en la url de llamada con el argumento debug=1.
+ * Si el argumento objeto no es nulo se vuelca su contenido en la consola
+ * @param {String} mensaje 
+ * @param {Object} objeto 
+ */
+function debugLog(mensaje, objeto) {
   if (TCB.debug !== false) {
-    console.log(msg);
-    if (obj !== undefined && typeof obj === "object") {
-      console.dir(obj);
-/*       var objPropTxt = "";
-      for (let objProp in obj) objPropTxt += objProp + "->" + obj[objProp] + "\n";
-      console.log(objPropTxt); */
+    console.log(mensaje);
+    if (objeto !== undefined && typeof objeto === "object") {
+      console.dir(objeto);
     }
   }
 }
@@ -269,7 +273,7 @@ function distancia(p0, p1) {
 }
 
 /** Completa el estilo y texto a asignar a un label en el mapa
- * @memberof! Utiles.js
+ * @memberof utiles.js
  * @param {*} feature es el ol.feature (un punto) al que se asignará el label. El objeto en cuestion tiene un ID del tipo objeto.componente.id 
  * @param {*} texto a poner en el label
  * @param {*} colorArray color del texto
@@ -315,10 +319,10 @@ function setLabel ( feature, texto, colorArray, bgcolorArray) {
  * @property {string} id
  * @property {object} objeto
  */
-/**
- * @memberof! Utiles.js
+/** Obtiene diversas propiedades relativas a la celda seleccionada
+ * @memberof Utiles.js
  * @param {Tabulator.cell} cell 
- * @returns {object} activo
+ * @returns {activo}
  */
 function setActivo(cell) {
   // Sinonimos almacena la relacion entre id de la tabla en index y objeto que almacena
@@ -335,7 +339,7 @@ function setActivo(cell) {
     'tabla': cell.getTable(),  
     'nombreTabla': tipoObjetoBuscado,
     'celda': cell.getField(),
-    "fila": cell.getRow().getData()
+    'fila': cell.getRow().getData()
   };
   //El campo unico (id) de cada objeto es id<nombre objeto>
   const _id = "id" + _activo.nombreTabla;
@@ -344,8 +348,7 @@ function setActivo(cell) {
   return _activo;
 }
 
-
-
+/* Deprecated se movio de DiaHora
 function mete(unDia, idxTable, outTable) {
 
   var indiceDia = indiceDesdeDiaMes(unDia.dia, unDia.mes);
@@ -364,7 +367,7 @@ function mete(unDia, idxTable, outTable) {
   idxTable[indiceDia].mes = unDia.mes;
   idxTable[indiceDia].suma = suma(unDia.valores);
   idxTable[indiceDia].maximo = Math.max(...unDia.valores);
-}
+} */
 
 async function getFileFromUrl(url, type) {
   const response = await fetch(url);
@@ -505,7 +508,7 @@ function dumpData(nombre, idxTable, dataTable) {
 }
 
 /** Genera los strings formateados de todos los campos de la aplicación
- * @memberof! Utiles.js
+ * @memberof Utiles.js
  * @param {string} campo 
  * @param {any} valor 
  * @returns {string} valor formateado segun definición de UTIL.campos
@@ -556,20 +559,19 @@ function formatoValor( campo, valor) {
   }
 }
 /** formatoValor desde una celda de Tabulator
- * Esta definida como extensiónd e Tabulator -> Tabulator.extendModule en inicializaAplicacion
- * @memberof! Utiles.js
+ * Esta definida como extensión de Tabulator -> Tabulator.extendModule en inicializaAplicacion
+ * @memberof Utiles.js
  * @param {Tabulator.cell} cell 
  * @param {String} campo Nombre del campo donde proviene el valor. Campos definirá el formato definitivo en decimales y unidades
  * @returns {String} Valor del campo formateado
  */
 function n_formatoValor( cell, campo) {
-
   if (campo === undefined) campo = cell.getField();
   const valor = cell.getValue();
   return formatoValor( campo, valor);
-
 }
-/* Función para mostrar el formulario modal de propiedades de un objeto generico
+
+/* Muestra el formulario modal de propiedades de un objeto generico
 @param: objeto -> es el objeto del que se mostrará todas las propiedades que devuelve getOwnPropertyDescriptors en la función
                 obtenerPropiedades. La llamada es recursiva, si una propiedad es un objeto se mostrarán la propiedades de ese
                 objeto tambien.
@@ -620,7 +622,7 @@ function formularioAtributos (objeto, descripcion) { //}, yesBtnLabel = 'Yes', n
 /** funcion para convertir el los objetos Solidar del repositorio en una tabla
  * TCB.XXXX[] -> [objeto, propiedad: [valores de propiedad en cada XXX]]
  * Es necesaria para el reporte PDF
- * 
+ * @memberof Utiles.js
  * @param {Object} tabla 
  * @returns {Array}
  */
@@ -704,12 +706,11 @@ var prop_val;
  * @param {integer} nivel 
  * @returns {propiedades} 
  */
-
 function obtenerPropiedades ( objeto, nivel) {
   if (objeto === undefined || objeto === null || objeto instanceof File) return;
   if (nivel == 0 ) prop_val = {};
-  const propiedades = Object.getOwnPropertyDescriptors(objeto);
 
+  const propiedades = Object.getOwnPropertyDescriptors(objeto);
   let actobj = objeto.constructor.name;
   prop_val[actobj] = prop_val[actobj] ?? [];
 
@@ -737,36 +738,47 @@ function obtenerPropiedades ( objeto, nivel) {
   return prop_val;
 }
 
-function round2Decimales(num) {
-  let val = +(Math.round(num + "e+2")  + "e-2");
-  return val;
+/** Redondea flotantes a dos decimales
+ * 
+ * @param {Number} numero EL número a redondear
+ * @returns {Number} El valor del argumento numero a dos decimales
+ */
+function round2Decimales(numero) {
+  return +(Math.round(numero + "e+2")  + "e-2");
 }
 
+/** Nuestra el texto en el campo cuyo id es campo
+ * 
+ * @param {string} campo Identificacion del nodo del DOM donde mostrar el texto
+ * @param {string} texto Identificacion i18n del mensaje a mostrar
+ */
 function mensaje (campo, texto) {
-
   let nodoCampo = document.getElementById( campo);
   nodoCampo.innerHTML = TCB.i18next.t(texto);
   nodoCampo.setAttribute("data-i18n", texto);
-
 }
 
-function muestraAtributos (cell ) { //tipo, id, evento) {
-  /*     const filaActiva = evento.target.parentNode.parentNode.parentNode;
-      const id = filaActiva.cells[0].outerText; */
-      const activo = setActivo(cell);
-      formularioAtributos(activo.objeto, TCB.i18next.t("resultados_LBL_basePropiedades", {'id': activo.id}));
+/** Muestra el formulario modal de atributos del objeto asociado a la fila seleccionada
+ * 
+ * @param {Tabulator.cell} cell Celda para activar el comando
+ */
+function muestraAtributos (cell ) {
+  const activo = setActivo(cell);
+  formularioAtributos(activo.objeto, TCB.i18next.t("resultados_LBL_basePropiedades", {'id': activo.id}));
 }
 
 /** Funcion para mostrar resultados
  * 
  * @param {string} donde campo donde se muestra el valor
- * @param {any} valor a mostrar//
+ * @param {any} valor a mostrar
  */
 function muestra(donde, valor) {
-  if (document.getElementById(donde).type === 'number'){
-    document.getElementById(donde).value = valor;
+  let _campo = document.getElementById(donde);
+  if (_campo.type === 'number' || _campo.type === 'text'){
+    _campo.setAttribute('type','');
+    _campo.setAttribute('value', valor);
   } else {
-    document.getElementById(donde).innerHTML = valor;
+    _campo.innerHTML = valor;
   }
 }
 
@@ -782,13 +794,15 @@ function muestra(donde, valor) {
 //}
 
 function selectTCB (tabla, campo, valor) {
-  let recordSet = [];
+
+  return TCB[tabla].filter( e => e[campo] === valor)
+/*   let recordSet = [];
   for (let i=0; i<TCB[tabla].length; i++) {
     if (TCB[tabla][i][campo] === valor) {
       recordSet.push(i);
     }
   }
-  return recordSet;
+  return recordSet; */
 }
 
 function hdrToolTip (e, col) {
@@ -804,8 +818,68 @@ function hdrToolTip (e, col) {
   return el; 
 }
 
+async function cargaTarifasDesdeSOM() {
+  const urlSOMTarifas =  "./proxy SOM.php?nombre=";
+  debugLog("Tarifas leidas desde SOM:" + urlSOMTarifas);
+  let _url;
+  let respuesta;
+  let txtTarifas;
+  try {
+    _url = urlSOMTarifas + '2.0TD';
+    respuesta = await fetch(_url);
+    if (respuesta.status === 200) {
+      txtTarifas = await respuesta.text();
+      TCB.tarifas['2.0TD'].precios = txtTarifas.split(",");
+    }
+    console.log(txtTarifas);
+    _url = urlSOMTarifas + '3.0TD';
+    respuesta = await fetch(_url);
+    if (respuesta.status === 200) {
+      txtTarifas = await respuesta.text();
+      TCB.tarifas['3.0TD-Peninsula'].precios = txtTarifas.split(",");
+      TCB.tarifas['3.0TD-Ceuta'].precios = txtTarifas.split(",");
+      TCB.tarifas['3.0TD-Melilla'].precios = txtTarifas.split(",");
+      TCB.tarifas['3.0TD-Islas Baleares'].precios = txtTarifas.split(",");
+      TCB.tarifas['3.0TD-Canarias'].precios = txtTarifas.split(",");
+    }
+    console.log(txtTarifas);
+    return true;
+  } catch (err) {
+    alert("Error leyendo tarifas desde SOM Energia" + err.message + "<br>Seguimos con fichero de Solidar");
+    return false;
+  }
+}
+
+function preparaInput( campo, changeFunction, datoOrigen) {
+ 
+  let t = document.getElementById(campo);
+  //Guardamos el valor original en el atributo dato-origen del campo
+  t.setAttribute('dato-origen', datoOrigen);
+  /* 
+  La definicion del formato numero en español no es correcta para el separador de miles menos que 9999 por lo que cambiamos a catalan
+  */
+  let lng = TCB.i18next.language.substring(0,2) === 'es' ? 'ca' : TCB.i18next.language.substring(0,2);
+  t.setAttribute("lng", lng);
+
+  t.addEventListener("change", (e) => changeFunction( e));
+  
+  t.addEventListener("focus", (e) => {
+    console.log("get focus en "+ t.id + " para valor anterior " + t.getAttribute('dato-origen'));
+    e.target.value = t.getAttribute('dato-origen');
+    e.target.type = 'number'; 
+  })
+  t.addEventListener("focusout", (e) => {
+    console.log("salgo de "+t.id+" con valor "+ e.target.value);
+    t.setAttribute('dato-origen', e.target.value);
+    e.target.type='';
+    e.target.value= formatoValor(campo, e.target.value);
+    console.log("mostrado como "+ e.target.value);
+  })
+
+}
 export {
   cambioValor,
+  cargaTarifasDesdeSOM,
   //copyClipboard,
   csvToArray,
   debugLog,
@@ -821,13 +895,14 @@ export {
   indiceDesdeDiaMes,
   indiceDesdeFecha,
   mensaje,
-  mete,
+ // mete,
   muestra,
   muestraAtributos,
   n_formatoValor,
   nombreMes,
   nombreMesLargo,
   obtenerPropiedades,
+  preparaInput,
   promedio,
   round2Decimales,
   selectTCB,
