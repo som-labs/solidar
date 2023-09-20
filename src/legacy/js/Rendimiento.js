@@ -40,7 +40,9 @@ class Rendimiento extends DiaHora {
     } else { //estamos importando
       //Asignacion propiedades contenidas en el objeto de entrada    
       for (const objProp in base) {
-        this[objProp] = base[objProp];
+        if (typeof base[objProp] !== Object) {
+          this[objProp] = base[objProp];
+        }
       }
     }
   }
@@ -91,7 +93,8 @@ class Rendimiento extends DiaHora {
           alert(TCB.i18next.t("rendimiento_MSG_errorFetch") + PVGISdata.message);
           return false
         }
-        var unDia = { dia: 0, mes: 0, valores: Array(24).fill(0) };
+/*         var unDia = { dia: 0, mes: 0, valores: Array(24).fill(0) }; */
+        var unDia = { fecha: '', valores: Array(24).fill(0) };
         let i = 0;
         var hora;
         var lastFecha = new Date(1970, 1, 1);
@@ -126,16 +129,18 @@ class Rendimiento extends DiaHora {
           } else {
             if (i == 0) {
               unDia = {
-                dia: currFecha.getDate(),
-                mes: currFecha.getMonth(),
+                fecha: currFecha,
+/*                 dia: currFecha.getDate(),
+                mes: currFecha.getMonth(), */
                 valores: Array(24).fill(0),
               };
               unDia.valores[hora] = parseFloat(element["P"]);
             } else {
-              this.mete(unDia, this.idxTable, this.diaHora);
+              this.mete(unDia, "PROMEDIO");
               unDia = {
-                dia: currFecha.getDate(),
-                mes: currFecha.getMonth(),
+                fecha: currFecha,
+/*                 dia: currFecha.getDate(),
+                mes: currFecha.getMonth(), */
                 valores: Array(24).fill(0),
               };
               unDia.valores[hora] = parseFloat(element["P"]);
@@ -145,7 +150,7 @@ class Rendimiento extends DiaHora {
           i++;
         });
 
-        this.mete(unDia, this.idxTable, this.diaHora);
+        this.mete(unDia, "PROMEDIO");
         for (let i=0; i<365; i++) this.unitarioTotal += this.idxTable[i].suma / 1000;
 
         this.PVGISfechaFin = lastFecha;

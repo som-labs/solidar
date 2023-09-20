@@ -169,12 +169,15 @@ function inicializaEventos () {
   var attribution = new ol.control.Attribution({collapsible: false});
 
   // Cartografía básica de Open Street Map
-  const OSM = new ol.layer.Tile({
-    source: new ol.source.OSM({
+  const OSM = new ol.layer.Tile(
+    {source: new ol.source.OSM({
       crossOrigin: null,
       maxZoom: 30
-    })
-  });
+    })}
+/*     {source: new ol.source.XYZ({
+      url: 'https://api.mapbox.com/styles/v1/svenpt/cjsbq6vq716ye1fpgw10kvitp.html/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic3ZlbnB0IiwiYSI6ImNqc2Vxa3Q5MzBqcTAzeW1kOWRiajV4ZzYifQ.xpDqTM6B41sS6QjZPwb6yQ'
+    })} */
+  );
   OSM.set('name', 'OSM');
   
   // Vector es el Layer que muestra los features mantenidos en la fuente origenDatosSolidar
@@ -300,6 +303,7 @@ async function importa( datosImportar) {
     if (mapView.getZoom() > 18) mapView.setZoom(18);
 
     //Creamos el objeto BaseSolar
+    UTIL.debugLog("Creando base: " + base.nombreBaseSolar);
     let tbase = new BaseSolar(base);
     
     //Creamos el objeto instalacion de la base
@@ -307,6 +311,7 @@ async function importa( datosImportar) {
 
     //Creamos el rendimiento
     tbase.rendimiento = new Rendimiento(base.rendimiento);
+    tbase.rendimiento.transformaFechas();
 
     //Creamos la produccion de cada base
     tbase.produccion = new Produccion(tbase);
@@ -321,7 +326,7 @@ async function importa( datosImportar) {
 
   //Creamos la produccion global
   //Como el objeto Produccion de Solidar no tiene metodos propios se copia directamente el objeto JSON de solimp
-  TCB.produccion = new Produccion(); //datosImportar.produccion;
+  TCB.produccion = new Produccion();
 
   if (datosImportar.version === "3.1") { //En esta version no se exportaba este valor
   // Cálculo del CO2 equivalente a la producción anual de toda la instalación
@@ -333,6 +338,9 @@ async function importa( datosImportar) {
   //Definimos el estilo del punto de consumo que no viene en los datos exportados
 
   datosImportar.PuntoConsumo.forEach( (punto) => {
+
+    UTIL.debugLog("Creando punto consumo: " + punto.nombrePuntoConsumo);
+
     //Si no es INDIVIDUAL los puntosConsumo tienen geometria y hay que crearla
     if (TCB.modoActivo !== INDIVIDUAL) {
       const symbol = TCB.origenDatosSolidar.getFeatureById("PuntoConsumo.symbol." + punto.idPuntoConsumo);
@@ -352,7 +360,6 @@ async function importa( datosImportar) {
 }
 
 async function exporta() {
-
   // Guardamos los datos del mapa en formato geoJSON
   TCB.datosProyecto.mapa = salvarDatosMapa();
   TCB.datosProyecto.BaseSolar = TCB.BaseSolar;
@@ -433,14 +440,15 @@ async function valida () {
     //Si el modo no es individual
     if (TCB.modoActivo !== INDIVIDUAL) {
     
-    //Todos los puntos de consumo deben tener sus fincas cargadas
+    //Todos los puntos de consumo deben tener sus fincas cargadas salvo que sea un punto sin catastro. En ese caso se cargaran las fincas en el módulo de gestión de fincas importando desde CSV
+      TCB.cargaFincasError = false;
       TCB.PuntoConsumo.forEach ( punto => {
-        if ( !punto.fincasCargadas || punto.sinCatastro) {
-          if (punto.cargaFincas()) {
-            TCB.ultimarefcat = punto.refcat;
-          } else {
-            alert ('Problema en cargaFincas de Punto Consumo '+punto.nombrePuntoConsumo);
-            return false;
+        if (!punto.sinCatastro) {       //Seguimos si el catastro ha identificado una refcat basado en lon-lat
+          if ( !punto.fincasCargadas) { //Seguimos si no sa habian cargado las fincas previamente
+            if (!punto.cargaFincas()) {  //Cargamos las fincas
+              alert ('Problema en cargaFincas de Punto Consumo '+punto.nombrePuntoConsumo);
+              return false;
+            }
           }
         }  
       });
@@ -479,6 +487,7 @@ function muestraTablas() {
           }
         },
         columns:[
+            {title:"Id", field: "idPuntoConsumo", hozAlign:"center"},
             {title:"Nombre", field:"nombrePuntoConsumo", hozAlign:"left", editor:"input", cellEdited: (cell) => UTIL.cambioValor(cell, true)},
             {title:"Lon-Lat", field:"lonlatPuntoConsumo", hozAlign:"center", formatter:noEditable},
             {title:"Ref. Catastral", field:"refcat", hozAlign:"center", formatter:noEditable},
@@ -633,7 +642,7 @@ async function construirBaseSolar ( geoBaseSolar) {
  */
 async function construirPuntoConsumo ( geoPuntoConsumo) {
 
-// En el modo INTERACTIVO no existe PuntoConsumo, en modo COMUNIDAD puede existir solo 1, en COMUNIDAD puede haber muchos
+// En el modo INTERACTIVO no existe PuntoConsumo, en modo COLECTIVO puede existir solo 1, en COMUNIDAD puede haber muchos
   if (TCB.PuntoConsumo.length > 0 && TCB.modoActivo !== COMUNIDAD) {
   alert (TCB.i18next.t("mapa_MSG_cuantosPuntoConsumo", {modoActivo: TCB.modoActivo}));
   return false;

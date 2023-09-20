@@ -51,27 +51,29 @@ class Economico {
     this.interesVAN = TCB.parametros.interesVAN;
 
     if (finca === undefined) {   
-/*  Vamos a calcular un economico global a partir de lo economicos de cada tipo de consumo teniendo en cuenta el numero de instancias en la tabla   participes */
+/*  Vamos a calcular un economico global a partir de lo economicos de cada tipo de consumo teniendo en cuenta el numero de instancias en la tabla participes */
       for (let finca of TCB.Participes) {
-        this.gastoSinPlacasAnual += finca.economico.gastoSinPlacasAnual;
-        this.gastoConPlacasAnual += finca.economico.gastoConPlacasAnual; 
-        for (let i=0; i<12; i++) {
-          this.consumoOriginalMensual[i] += finca.economico.consumoOriginalMensual[i];
-          this.consumoConPlacasMensual[i] += finca.economico.consumoConPlacasMensual[i];
-          this.compensadoMensual[i] += finca.economico.compensadoMensual[i];
-          this.ahorradoAutoconsumoMes[i] += finca.economico.ahorradoAutoconsumoMes[i];
-          this.perdidaMes[i] += finca.economico.perdidaMes[i];
-          this.compensadoMensualCorregido[i] += finca.economico.compensadoMensualCorregido[i];
-          this.consumoConPlacasMensualCorregido[i] += finca.economico.consumoConPlacasMensualCorregido[i];
-          this.extraccionHucha[i] += finca.economico.extraccionHucha[i];
-          this.huchaSaldo[i] += finca.economico.huchaSaldo[i];
+        if (finca.nombreTipoConsumo !== 'Participe sin consumo') {
+          this.gastoSinPlacasAnual += finca.economico.gastoSinPlacasAnual;
+          this.gastoConPlacasAnual += finca.economico.gastoConPlacasAnual; 
+          for (let i=0; i<12; i++) {
+            this.consumoOriginalMensual[i] += finca.economico.consumoOriginalMensual[i];
+            this.consumoConPlacasMensual[i] += finca.economico.consumoConPlacasMensual[i];
+            this.compensadoMensual[i] += finca.economico.compensadoMensual[i];
+            this.ahorradoAutoconsumoMes[i] += finca.economico.ahorradoAutoconsumoMes[i];
+            this.perdidaMes[i] += finca.economico.perdidaMes[i];
+            this.compensadoMensualCorregido[i] += finca.economico.compensadoMensualCorregido[i];
+            this.consumoConPlacasMensualCorregido[i] += finca.economico.consumoConPlacasMensualCorregido[i];
+            this.extraccionHucha[i] += finca.economico.extraccionHucha[i];
+            this.huchaSaldo[i] += finca.economico.huchaSaldo[i];
+          }
         }
       }
       this.calculoFinanciero(100, 100);
 
     } else { //Vamos a calcular el economico especifico de la finca
-      const tcon = TipoConsumo.findxNombre( finca.nombreTipoConsumo);
-      this.tarifa = tcon.tarifa;
+      const _tc = UTIL.selectTCB('TipoConsumo','nombreTipoConsumo',finca.nombreTipoConsumo); 
+      this.tarifa = _tc[0].tarifa;
 
       //Vamos a calcular el precio de la energia cada dia
       for (let dia=0; dia < 365; dia++) {
@@ -80,12 +82,7 @@ class Economico {
         this.idxTable[dia].ahorradoAutoconsumo = 0;
         this.idxTable[dia].compensado = 0;
 
-        //Completamos las tabla de tarifas
-        //El dia de calculo a efectos de tarifa es el dia / mes del año del último registro del fichero de consumos
-        //let diaCalculo = new Date(TCB.consumo.fechaFin.getYear(),this.idxTable[dia].mes,this.idxTable[dia].dia);
-        let diaCalculo = new Date(2022,this.idxTable[dia].mes,this.idxTable[dia].dia);
-        let diaSemana = diaCalculo.getDay();
-        this.idxTable[dia].diaSemana = diaSemana;
+        let diaSemana = _tc[0].idxTable[dia].fecha.getDay();
 
         //Vamos a calcular el precio de la energia cada hora
         for (let hora = 0; hora < 24; hora++) {
@@ -104,8 +101,8 @@ class Economico {
           }
 
           // La tarifa original es -> this.diaHoraTarifaOriginal[dia][hora]
-          // El consumo original es -> tcon.diaHora[dia][hora]
-          this.diaHoraPrecioOriginal[dia][hora] = tcon.diaHora[dia][hora] * this.diaHoraTarifaOriginal[dia][hora] *  coefImpuesto;
+          // El consumo original es -> _tc[0].diaHora[dia][hora]
+          this.diaHoraPrecioOriginal[dia][hora] = _tc[0].diaHora[dia][hora] * this.diaHoraTarifaOriginal[dia][hora] *  coefImpuesto;
           
           // Determinamos el precio de esa hora (la tarifa) segun sea el balance es decir teniendo en cuanta los paneles. Si es negativo compensa
           if (finca.balance.diaHora[dia][hora] < 0) {  //Aportamos energia a la red de distribución
@@ -130,13 +127,15 @@ class Economico {
 
       //Se debe corregir que si la comercializadora limita economicamente la compensacion al consumo o compensar mediante bateria virtual
       this.correccionExcedentes(finca.coefHucha, finca.cuotaHucha);
-/* 
-      this.gastoSinPlacasAnual += UTIL.suma(this.consumoOriginalMensual);
-      this.gastoConPlacasAnual += UTIL.suma(this.consumoConPlacasMensualCorregido); */
       this.calculoFinanciero(finca.coefEnergia, finca.coefInversion);
     }
   }
 
+  /** Función para la gestion economica de excedentes de cada mes
+   * 
+   * @param {*} coefHucha Porcentaje de excedentes que se transfieren a la hucha
+   * @param {*} cuotaHucha Cuota mensual sin IVA que cobra la comercializadora por la gestión de la hucha.
+   */
   correccionExcedentes(coefHucha, cuotaHucha) {
 
     const _cuotaHucha = cuotaHucha * (100 + TCB.parametros.IVAinstalacion) / 100;
@@ -146,7 +145,6 @@ class Economico {
       if (consumoConCuota < 0) { //el excedente supera lo que hay que pagar
         this.perdidaMes[i] = -consumoConCuota; //en principio no se compensa y es perdida
         this.compensadoMensualCorregido[i] = this.compensadoMensual[i] + this.perdidaMes[i] + _cuotaHucha;
-        //this.consumoConPlacasMensualCorregido[i] = cuotaHucha; //La cuota por gestión de la hucha es un gasto fijo mensual
 
         //Gestion de la batería virtual
         let huchaMes = this.perdidaMes[i] * coefHucha / 100; //Las perdidas pasan a la hucha corregidas por coefHucha
@@ -157,8 +155,6 @@ class Economico {
           this.huchaSaldo[i] = this.huchaSaldo[i-1] + huchaMes;
         }
         this.perdidaMes[i] -= huchaMes; //El resto del coefHucha se asume como perdidas
-
-        //console.log(finca.idFinca + "," + i + "," + 0 + "," + this.huchaSaldo[i] + "," + -huchaMes + "," + this.consumoConPlacasMensualCorregido[i]);
       } else {
         this.perdidaMes[i] = 0;
         this.compensadoMensualCorregido[i] = this.compensadoMensual[i] + _cuotaHucha;
@@ -166,31 +162,25 @@ class Economico {
         ////La cuota por gestión de la hucha es un gasto fijo mensual independientemente del balance
         this.consumoConPlacasMensualCorregido[i] = consumoConCuota;
 
-        //let ttt = this.consumoConPlacasMensualCorregido[i];
-          if (i > 0) { //i === 0 => enero no hay saldo en la hucha
-            if (this.huchaSaldo[i-1] <= this.consumoConPlacasMensualCorregido[i]) { //Saldo insuficiente
-              this.extraccionHucha[i] = this.huchaSaldo[i-1];
-              this.consumoConPlacasMensualCorregido[i] -= this.extraccionHucha[i];
-              //console.log(finca.idFinca + "," + i + "," + ttt + "," + this.huchaSaldo[i-1] + "," + this.extraccionHucha[i] + "," + this.consumoConPlacasMensualCorregido[i]);
-            } else { //Saldo suficiente
-              this.extraccionHucha[i] = this.consumoConPlacasMensualCorregido[i];
-              this.consumoConPlacasMensualCorregido[i] = 0;
-              //console.log(finca.idFinca + "," + i + "," + ttt + "," + 0 + "," + this.extraccionHucha[i] + "," + this.consumoConPlacasMensualCorregido[i]);
-            }
-            this.huchaSaldo[i] = this.huchaSaldo[i-1] - this.extraccionHucha[i];
-
-          } else { //enero
-            //console.log(finca.idFinca + "," + i + "," + ttt + "," + 0 + "," + this.extraccionHucha[i] + "," + this.consumoConPlacasMensualCorregido[i]);
+        if (i > 0) { //i === 0 => enero no hay saldo en la hucha
+          if (this.huchaSaldo[i-1] <= this.consumoConPlacasMensualCorregido[i]) { //Saldo insuficiente
+            this.extraccionHucha[i] = this.huchaSaldo[i-1];
+            this.consumoConPlacasMensualCorregido[i] -= this.extraccionHucha[i];
+          } else { //Saldo suficiente
+            this.extraccionHucha[i] = this.consumoConPlacasMensualCorregido[i];
+            this.consumoConPlacasMensualCorregido[i] = 0;
           }
+          this.huchaSaldo[i] = this.huchaSaldo[i-1] - this.extraccionHucha[i];
+        } 
       }
     }
-    
     this.gastoSinPlacasAnual = UTIL.suma(this.consumoOriginalMensual);
     this.gastoConPlacasAnual = UTIL.suma(this.consumoConPlacasMensualCorregido);
   }
 
 /**
- * Suma el valor de los 365 dias de la columna prop de idxTabla. Es la misma que DiaHora pero Economico no hereda DiaHora por eso hay que redefinirla.
+ * Suma el valor de los 365 dias de la columna prop de idxTabla. 
+ * Es la misma que DiaHora pero Economico no hereda DiaHora por eso hay que redefinirla.
  * @param {String} prop Propiedad a sumar
  * @returns {Number} Suma de los 365 valores de la propiedad prop
  */
@@ -216,12 +206,20 @@ class Economico {
     if (coefEnergia == 0) { 
       this.VANProyecto = "N/A";
       this.TIRProyecto = "N/A";
-      return
+      return;
+    }
+
+    this.ahorroAnual = 
+    UTIL.suma(this.consumoOriginalMensual) - UTIL.suma(this.consumoConPlacasMensualCorregido);
+    //Algunas cuotas de la hucha pueden producir ahorros negativos que no tienen sentido
+    if (this.ahorroAnual < 0) {
+      UTIL.debugLog (TCB.i18next.t("Cuotas hucha generan ahorro negativo"));
+      return;
     }
 
     //Datos de la bonificación del IBI
+    const valorSubvencionIBI = TCB.valorSubvencionIBI;
     const tiempoSubvencionIBI = document.getElementById("tiempoSubvencionIBI").value;
-    const valorSubvencionIBI = document.getElementById("valorSubvencionIBI").value;
     const porcientoSubvencionIBI = document.getElementById("porcientoSubvencionIBI").value / 100;
 
     // Calculo de la subvención EU
@@ -242,28 +240,28 @@ class Economico {
     let cuotaPeriodo = [];  //Es el resultado neto negativo de inversión o positivo de ganancia de cada año
     this.cashFlow = [];     //Es un objeto unFlow por cada año
     let cuota;              //Resultado neto del año
-    this.ahorroAnual = 
-        UTIL.suma(this.consumoOriginalMensual) - UTIL.suma(this.consumoConPlacasMensualCorregido);
+
 
     let i = 1;
     let unFlow = {};
       unFlow = {"ano": i, 
         "ahorro": this.ahorroAnual, 
         "previo":0, 
-        "inversion": -TCB.produccion.precioInstalacionCorregido * coefInversion / 100,
+        "inversion": -TCB.produccion.precioInstalacion * coefInversion / 100,
         "subvencion": 0,
         "IBI": 0,
-        "pendiente": -TCB.produccion.precioInstalacionCorregido * coefInversion / 100 + this.ahorroAnual
+        "pendiente": -TCB.produccion.precioInstalacion * coefInversion / 100 + this.ahorroAnual
     }
 
     cuota = unFlow.inversion + unFlow.ahorro;
     cuotaPeriodo.push(cuota);
     this.cashFlow.push(unFlow);
 
-
     // Se genera la tabla hasta alcanzar el retorno de la inversión o la finalización de la subvención de IBI
-
     while (unFlow.ano < 10 || unFlow.pendiente < 0) {
+      //Puede ser que la cuota de la hucha haga que el ahorro sea negativo. En ese caso mostramos los resultados de 10 años
+      if (unFlow.ano > 10 && unFlow.ahorro < 0) break;
+
       let lastPendiente = unFlow.pendiente;
       unFlow = {};
       unFlow.ano = ++i;
@@ -285,13 +283,14 @@ class Economico {
       cuotaPeriodo.push(cuota);
       unFlow.pendiente = unFlow.previo + cuota;
       this.cashFlow.push(unFlow);
+      //console.log(unFlow);
     }
     
     if (cuotaPeriodo[0] < 0) {
       this.VANProyecto = this.VAN(this.interesVAN, cuotaPeriodo);
       this.TIRProyecto = this.TIR(this.interesVAN * 2, cuotaPeriodo);
     } else {
-      //console.log("Estamos en una finca añadida que no tiene participación en la inversión. No tiene sentido el cashflow");
+      //Estamos en una finca añadida que no tiene participación en la inversión. No tiene sentido el cashflow
       this.VANProyecto = "N/A";
       this.TIRProyecto = "N/A";
     }

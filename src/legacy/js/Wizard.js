@@ -15,9 +15,11 @@
     { 'COLECTIVO': [
             {"id":"localizacion-tab", "nombre":"main_TAB_localizacion", "interno":"localizacion", "gestor":"gestionLocalizacion", "siguiente":"tipoConsumo-tab"},
             {"id":"tipoConsumo-tab", "nombre":"main_TAB_tipoConsumo", "interno":"tipoConsumo", "gestor":"gestionTipoConsumo",      "siguiente":"fincas-tab"},
-            {"id":"fincas-tab", "nombre":"main_TAB_fincas", "interno":"fincas", "gestor":"gestionFincas", "siguiente":"resultados-tab"},
+            {"id":"fincas-tab", "nombre":"main_TAB_fincas", "interno":"fincas", "gestor":"gestionFincas", 
+            "siguiente":"resultados-tab"},
             {"id":"resultados-tab", "nombre":"main_TAB_resultados", "interno":"resultados", "gestor":"gestionResultados", "siguiente":"economico-tab"},
-            {"id":"reparto-tab", "nombre":"main_TAB_reparto", "interno":"reparto", "gestor":"gestionReparto", "siguiente":"economico-tab"},
+            {"id":"reparto-tab", "nombre":"main_TAB_reparto", "interno":"reparto", "gestor":"gestionReparto", 
+            "siguiente":"economico-tab"},
             {"id":"economico-tab", "nombre":"main_TAB_economico", "interno":"economico", "gestor":"gestionEconomico", "siguiente":"graficos-tab"},
             {"id":"graficos-tab", "nombre":"main_TAB_graficos", "interno":"graficos", "gestor":"gestionGraficos",                "siguiente":"reporte-tab"},
             {"id":"reporte-tab", "nombre":"main_TAB_reporte", "interno":"reporte",  "gestor":"gestionReporte", 
@@ -33,7 +35,14 @@
           "siguiente":""}
         ],
       'COMUNIDAD':[
-          {"id":"localizacion-tab", "nombre":"main_TAB_localizacion", "interno":"localizacion", "gestor":"gestionLocalizacion", "siguiente":""},
+        {"id":"localizacion-tab", "nombre":"main_TAB_localizacion", "interno":"localizacion", "gestor":"gestionLocalizacion", "siguiente":"tipoConsumo-tab"},
+        {"id":"tipoConsumo-tab", "nombre":"main_TAB_tipoConsumo", "interno":"tipoConsumo", "gestor":"gestionTipoConsumo",      "siguiente":"fincas-tab"},
+        {"id":"fincas-tab", "nombre":"main_TAB_fincas", "interno":"fincas", "gestor":"gestionFincas", 
+        "siguiente":"resultados-tab"},
+        {"id":"resultados-tab", "nombre":"main_TAB_resultados", "interno":"resultados", "gestor":"gestionResultados", "siguiente":"economico-tab"},
+        {"id":"reparto-tab", "nombre":"main_TAB_reparto", "interno":"reparto", "gestor":"gestionReparto", 
+        "siguiente":"economico-tab"},
+        {"id":"economico-tab", "nombre":"main_TAB_economico", "interno":"economico", "gestor":"gestionEconomico", "siguiente":""},
         ]
       }
 
@@ -43,8 +52,8 @@
 
         gestionProyecto('Inicializa');
         // Botones de siguiente y anterior
-        document.getElementById("botonSiguiente").addEventListener("click", function handleChange(event) { eventoWizard('Siguiente')});
-        document.getElementById("botonAnterior").addEventListener("click", function handleChange(event) { eventoWizard('Anterior')});
+        document.getElementById("botonSiguiente").addEventListener("click", function handleChange() { eventoWizard('Siguiente')});
+        document.getElementById("botonAnterior").addEventListener("click", function handleChange() { eventoWizard('Anterior')});
         tabs.forEach ((tab) => {
           document.getElementById("nav-"+tab.interno+"-tab").style.display = 'block';
           const funcionInicializacion = tab.gestor;
@@ -82,7 +91,7 @@
     }
     
     async function muestraPestana ( nombre) {
-        document.getElementById('titulo').innerHTML = TCB.i18next.t("ayuda_TIT_"+ nombre);
+        document.getElementById('offcanvasAyudaTitulo').innerHTML = TCB.i18next.t("ayuda_TIT_"+ nombre);
         //Esta es la version buena cuando esten todos los idiomas disponibles
         //const ficheroAyuda = "./locales/" + TCB.i18next.language.substring(0,2) + '-ayuda-' + nombre + '.htm'; 
         const ficheroAyuda = "./locales/" + 'es' + '-ayuda-' + nombre + '.htm';
