@@ -8,7 +8,9 @@ class Instalacion {
   /**
    * @private {number} #precioFinal Precio final de la instalación
    */
-  #precioFinal;
+  #precioInstalacion;
+  #numeroPaneles;
+  #potenciaUnitaria;
   /**
    * @constructor
    * @param {Object} inInst objeto con las características de la instalación a crear
@@ -16,40 +18,83 @@ class Instalacion {
    * @param {number} inInst.potenciaUnitaria kWp de cada uno de los paneles
    */
   constructor( inInst ) {
+
+    Object.defineProperties(this, {
+      precioInstalacion: {
+          enumerable:true, 
+          set(precio) {
+            this.#precioInstalacion = precio;
+          },
+          get() {
+            return this.#precioInstalacion;
+          }
+      },
+      potenciaUnitaria: {
+          enumerable: true,
+          set (potencia) {
+            // actualiza proporcionalemnte el precio si ya tenia un precio asignado
+            if (this.#precioInstalacion !== 0) 
+              this.#precioInstalacion *= potencia / this.#potenciaUnitaria;
+            else
+              this.getPrecioInstalacion();
+          
+            this.#potenciaUnitaria = potencia;
+          },
+          get () {
+            return this.#potenciaUnitaria
+          }
+      },
+      paneles: {
+          enumerable: true,
+          set (numero) {
+          // actualiza proporcionalemnte el precio si ya tenia un precio asignado
+          if (this.#precioInstalacion !== 0) 
+            this.#precioInstalacion *= numero / this.#numeroPaneles;
+          else
+            this.getPrecioInstalacion();
+      
+            this.#numeroPaneles = numero;
+          },
+          get () {
+            return this.#numeroPaneles;
+          }
+      },
+  /** Potencia total kWp disponibles en esta instalación
+  * @type {number} 
+  */
+      potenciaTotal: {
+        enumerable: true,
+        get() {
+          return this.potenciaUnitaria * this.#numeroPaneles;
+        }
+      }
+    })
+
     UTIL.debugLog("Nueva instalacion con "+inInst.paneles+" paneles de "+ inInst.potenciaUnitaria+" kWp");
-    this.potenciaUnitaria = inInst.potenciaUnitaria;
-    this.paneles = inInst.paneles;
+    this.#potenciaUnitaria = inInst.potenciaUnitaria;
+    this.#numeroPaneles = inInst.paneles;
+    this.getPrecioInstalacion();
   }
 
-/*   set precioFinal (precio) {
-    this.#precioFinal = precio;
-  } */
-
-  /**
-   * @property {number} potenciaTotal Potencia total kWp disponibles en esta instalación
-   */
-  get potenciaTotal() {
-    return this.potenciaUnitaria * this.paneles;
+  toJSON() {
+    return {
+      potenciaUnitaria: this.#potenciaUnitaria,
+      paneles: this.#numeroPaneles,
+      precioInstalacion: this.#precioInstalacion
+    }
   }
-  /**
-   * @property {number} precioInstalacion Precio estimado de la instalación en Euros con impuestos incluidos
-   * @see TCB.precioInstalacion
-   */
-  get precioInstalacion() {
+  /** Devuelve el precio teórico de la instalación según nuestra estimación
+  * @see TCB.precioInstalacion
+  *  return {number} Precio teorico de la instalación
+  */
+  getPrecioInstalacion() {
     if (this.potenciaTotal > 0) {
       let potenciaBase = this.potenciaTotal;
       let i = TCB.precioInstalacion.precios.findIndex( rango => rango.desde <= potenciaBase && rango.hasta >= potenciaBase);
-      this.#precioFinal = this.potenciaTotal * TCB.precioInstalacion.precios[i].precio * (1 + TCB.parametros.IVAinstalacion / 100);
+      this.#precioInstalacion = this.potenciaTotal * TCB.precioInstalacion.precios[i].precio * (1 + TCB.parametros.IVAinstalacion / 100);
     } else {
-      this.#precioFinal = 0;
+      this.#precioInstalacion = 0;
     }
-    return this.#precioFinal;
-  }
-  /**
-   * @property {number} precioInstalacionCorregido Precio estimado de la instalación en Euros con impuestos incluidos y aplicando factor manual de corrección introducido por el usuario
-   */
-  get precioInstalacionCorregido () {
-    return this.#precioFinal * TCB.correccionPrecioInstalacion;
   }
 }
 export default Instalacion 
