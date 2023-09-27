@@ -94,7 +94,8 @@ export default function Wizard(params) {
 
   function next() {
     setCurrentStep((current) => {
-      var inext = current + 1
+      const childrenNext = callOrValue(children[current].props.next)
+      var inext = childrenNext === false ? current : current + 1
       while (callOrValue(children[inext].props.skip)) inext++
       if (inext >= totalSteps) return current
       return inext
