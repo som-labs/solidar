@@ -4,3 +4,22 @@
   padding:0;
   margin:0
 }
+
+.map-container{
+    height: 200px;
+    width: 50%;
+}
+
+.tablas{
+  height: 300px;
+  width: 100%;
+}
+
+.gridBases {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-gap: 10px;
+}
+
+
+
