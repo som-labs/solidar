@@ -12,16 +12,15 @@ import BasesContext from '../../BasesContext'
 import TCB from '../../classes/TCB.js'
 import BaseSolar from '../../classes/BaseSolar.js'
 
-const TiltStep = () => {
-
+const AzimutStep = () => {
     const { t, i18n } = useTranslation()
     const {bases, setBases} = useContext(BasesContext)
 
-    function setTilt( index, value) {
+    function setAzimut( index, value) {
         let oldBases = [...bases]
         let nIndex = oldBases.findIndex((t) => t.idBaseSolar == index )
-        oldBases[nIndex].inclinacionTejado = value
-        TCB.BaseSolar[nIndex].inclinacionTejado = value
+        oldBases[nIndex].inAcimut = value
+        TCB.BaseSolar[nIndex].inAcimut = value
         TCB.BaseSolar[nIndex].requierePVGIS = true
         setBases(oldBases)
     }
@@ -36,27 +35,27 @@ const TiltStep = () => {
 
     return <>
         <Container>
-            <Typography variant='body'>{t("SIMULATOR.PROMPT_TILT")}</Typography>
-            {/* Aqui va el array de las inclinaciones de las bases */}
+            <Typography variant='body'>{t("SIMULATOR.PROMPT_AZIMUT")}</Typography>
+            {/* Aqui va el array de los acimiut de las bases */}
             <div className="gridBases">
                 {bases.map(tBase => (
                 <>
                     <Box>
                         <p>{ tBase.nombreBaseSolar }</p>
                         <TextField
-                            key={ tBase.idBaseSolar }
-                            type="text"
-                            value={ tBase.inclinacionTejado }
-                            onChange={ (ev)=>setTilt( tBase.idBaseSolar, ev.target.value) }
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                    <IconButton edge="end" color="primary" onClick={ ()=>deleteBase( tBase.idBaseSolar )}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                    </InputAdornment>
-                                ),
-                            }}
+                              key={ tBase.idBaseSolar }
+                              type="text"
+                              value={ tBase.inAcimut }
+                              onChange={ (ev)=>setAzimut( tBase.idBaseSolar, ev.target.value) }
+                              InputProps={{
+                                  endAdornment: (
+                                      <InputAdornment position="end">
+                                      <IconButton edge="end" color="primary" onClick={ ()=>deleteBase( tBase.idBaseSolar )}>
+                                          <DeleteIcon />
+                                      </IconButton>
+                                      </InputAdornment>
+                                  ),
+                              }}
                         />
                     </Box>
                 </>
@@ -66,4 +65,4 @@ const TiltStep = () => {
     </>
 }
 
-export default TiltStep;
+export default AzimutStep;
