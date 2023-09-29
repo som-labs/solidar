@@ -10,15 +10,15 @@ import MultiValueFormatter from "react-tabulator/lib/formatters/MultiValueFormat
 import MultiSelectEditor from "react-tabulator/lib/editors/MultiSelectEditor";
 import Button from '@mui/material/Button'
 
-const EnergyBalanceStep = () => {
+const SummaryStep = () => {
     const { t, i18n } = useTranslation()
 
     return <>
         <Container>
-            <Typography variant='h3'>{t("SIMULATOR.TITLE_ENERGY_BALANCE")}</Typography>
-            <Typography variant='body'>{t("SIMULATOR.DESC_ENERGY_BALANCE")}</Typography>
+            <Typography variant='h3'>{t("SIMULATOR.TITLE_SUMMARY")}</Typography>
+            <Typography variant='body'>{t("SIMULATOR.DESC_SUMMARY")}</Typography>
         </Container>
     </>
 }
 
-export default EnergyBalanceStep
+export default SummaryStep

@@ -64,6 +64,7 @@ class DiaHora {
                     horaHdr:"HORA", 
                     factor:1,
                     metodo:"SUSTITUYE"}) {
+
         this.datosCargados = false;                
         var lastLine;
         this.maximoAnual = -Infinity;
@@ -109,7 +110,7 @@ class DiaHora {
                 }
             } catch (e) {
                 alert("Posible error de formato fichero de consumos\n" + data[0]);
-                return;
+                return false;
             }
             UTIL.debugLog("Cabecera CSV:", headers);
 

@@ -31,3 +31,54 @@ HOME:
   SIMULATION_TOOLS_COLLECTIVE: Simulador para Consumo Colectivo
   SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION: (En desarrollo)
   FURTHER_INFORMATION_TITLE: Información de interés
+
+SIMULATOR:
+  LABEL_LOCATION: LOCALIZACIÓN
+  TITLE_LOCATION: Localización
+  DESC_LOCATION: |
+    "En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.\n
+    A partir del área disponible, se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta. Su rendimiento se calcula a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).
+    Rellena el siguiente formulario"
+
+  LABEL_AREASDISPONIBLES: AREAS DISPONIBLES
+  PROMPT_ADDRESS: Busca la dirección del edificio
+  PROMPT_DRAW: Dibuja las áreas disponibles del edificio en el mapa (?). Puedes añadir tantas áreas como quieras.
+
+  LABEL_TILT: INCLINACION
+  PROMPT_TILT: Indica la inclinación de cada una de las áreas definidas
+
+  LABEL_AZIMUT: ORIENTACIÓN AL SUR
+  PROMPT_AZIMUT: Señala la orientación del tejado respecto al sur (acimut) haciendo clicken las areas que esten inclinadas (?)
+
+  LABEL_SUMMARY: RESUMEN
+  PROMPT_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
+
+  TITLE_CONSUMPTION: Consumo
+  DESC_CONSUMPTION: |
+    Consumo eléctrico
+
+    En la siguiente pantalla necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.\n
+    Para calcular el coste del consumo necesitamos conocer tu tarifa y los precios por tramos horarios de tu comercializadora (a menos que tengas tarifa plana).\n
+
+    El documento de consumo CSV nos permitirá conocer tus hábitos de consumo, saber en qué tramos horarios y en qué meses del año sueles consumir más energía.\n
+
+    Necesitamos conocer el precio de compensación por excedentes de tu comercializadora para calcular parte del ahorro en la factura. Recuerda que tu factura no será en ningún momento de un importe positivo.
+
+    ¿Qué es el precio de compensación por excedentes?
+    Rellena los campos de la siguiente tabla
+
+  TITLE_ENERGY_BALANCE: Balance de Energía
+  DESC_ENERGY_BALANCE: |
+    A partir de tu documento de consumo hemos hecho el cálculo del número de paneles que necesitarías para cubrirlo. 
+    (i) Los paneles se asignan primero a las áreas más eficientes desde el punto de vista de rendimiento energético.
+    En la siguiente tabla puedes cambiar el número de paneles en cada área individualmente.
+
+
+  TITLE_ECONOMIC_BALANCE: Balance Económico
+  DESC_ECONOMIC_BALANCE: |
+    En esta pantalla conocerás cuánto tendrás que invertir en la instalación (teniendo en cuenta las subvenciones) cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión.
+
+  TITLE_SUMMARY: RESUMEN
+  DESC_SUMMARY: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
+
+
