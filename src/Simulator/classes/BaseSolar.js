@@ -1,6 +1,6 @@
-import TCB from "./TCB.js";
-import * as UTIL from "./Utiles.js";
-import Rendimiento from "./Rendimiento.js";
+import TCB from "./TCB";
+import * as UTIL from "./Utiles";
+import Rendimiento from "./Rendimiento";
 /**
  * @class BaseSolar
  * @classdesc Clase para definir las bases solares en las que se instalarán las fuentes de producción

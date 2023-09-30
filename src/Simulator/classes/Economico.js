@@ -1,6 +1,6 @@
-import TCB from "./TCB.js";
-import * as UTIL from "./Utiles.js";
-import TipoConsumo from "./TipoConsumo.js";
+import TCB from "./TCB";
+import * as UTIL from "./Utiles";
+import TipoConsumo from "./TipoConsumo";
 /**
  * @class Economico
  * @classdesc Clase representa las condiciones economico financieras de la configuración global o de cada Finca individualmente

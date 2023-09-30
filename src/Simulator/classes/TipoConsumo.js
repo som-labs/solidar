@@ -1,5 +1,5 @@
-// import TCB from "./TCB.js";
-import DiaHora from "./DiaHora.js";
+// import TCB from "./TCB";
+import DiaHora from "./DiaHora";
 /**
  * Clase representa un perfil específico de consumo. Se puede obtener a partir de un fichero CSV de distribuidora o del perfile estandar de REE
  * @extends DiaHora

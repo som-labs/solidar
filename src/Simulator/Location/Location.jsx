@@ -1,13 +1,15 @@
 import React, { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import TCB from '../classes/TCB.js'
-import TCBContext from '../TCBContext.jsx'
+import TCB from '../classes/TCB'
+import TCBContext from '../TCBContext'
 
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import MapComponent from './MapComponent.jsx'
-import Summary from './Summary/Summary.jsx'
+import MapComponent from './MapComponent'
+import Summary from './Summary/Summary'
+
+import Wizard from '../../components/Wizard'
 
 const LocationStep = () => {
 

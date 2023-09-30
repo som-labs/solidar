@@ -16,15 +16,15 @@ import { MuiFileInput } from 'mui-file-input'
 import Select from '@mui/material/Select'
 import { MenuItem } from '@mui/material'
 import InputLabel from '@mui/material/InputLabel'
-import TipoConsumo from '../classes/TipoConsumo.js'
-import Tarifa from '../classes/Tarifa.js'
+import TipoConsumo from '../classes/TipoConsumo'
+import Tarifa from '../classes/Tarifa'
 
-import TCBContext from '../TCBContext.jsx'
-import TCB from '../classes/TCB.js'
+import TCBContext from '../TCBContext'
+import TCB from '../classes/TCB'
 import MapaMesHora from './MapaMesHora'
 
-import DialogNewConsumption from './DialogNewConsumption.jsx'
-import { formatoValor } from '../classes/Utiles.js'
+import DialogNewConsumption from './DialogNewConsumption'
+import { formatoValor } from '../classes/Utiles'
 
 //PENDIENTE: Decidir si mostramos los datos en formato tabla o creamos boxes segun diseño de Clara
 const ConsumptionStep = () => {

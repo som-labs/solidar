@@ -1,7 +1,7 @@
-import TCB from "./TCB.js";
-import * as UTIL from "./Utiles.js";
-import TipoConsumo from "./TipoConsumo.js";
-import DiaHora from "./DiaHora.js";
+import TCB from "./TCB";
+import * as UTIL from "./Utiles";
+import TipoConsumo from "./TipoConsumo";
+import DiaHora from "./DiaHora";
 /**
  * @class Consumo
  * @classdesc Clase representa el consumo global de toda la configuración.

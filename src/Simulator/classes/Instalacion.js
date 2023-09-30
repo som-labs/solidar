@@ -1,5 +1,5 @@
-import TCB from "./TCB.js";
-import * as UTIL from "./Utiles.js";
+import TCB from "./TCB";
+import * as UTIL from "./Utiles";
 /**
  * @class Instalacion
  * @classdesc Clase para definir la configuración de la instalación de una base

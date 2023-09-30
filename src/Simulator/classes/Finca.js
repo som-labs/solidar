@@ -1,5 +1,5 @@
-import TCB from "./TCB.js";
-import * as UTIL from "./Utiles.js";
+import TCB from "./TCB";
+import * as UTIL from "./Utiles";
 /** 
  * @class Finca
  * @classdesc Es la clase que representa las unidades (Finca) candidatas a formar parte del proyecto.

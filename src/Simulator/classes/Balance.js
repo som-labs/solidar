@@ -1,5 +1,5 @@
-import DiaHora from "./DiaHora.js";
-import * as UTIL from "./Utiles.js";
+import DiaHora from "./DiaHora";
+import * as UTIL from "./Utiles";
 /**
  * @class Balance
  * @classdesc representa el balance energetico horario global de toda la configuración
