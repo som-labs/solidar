@@ -28,7 +28,6 @@ function DefaultWizardPage(params) {
     prevLabel = 'Previous',
     validationErrors,
   } = params
-  console.log(children)
 
   return (
     <Box
@@ -205,7 +204,6 @@ const WizardExampleContext = React.createContext({ value: '', setValue: () => {}
 function MyPage({ label }) {
   const { value, setValue } = React.useContext(WizardExampleContext)
   const field = label.toLowerCase()
-  console.log('Value in Mypage', value)
   return (
     <Container>
       <TextField
@@ -213,10 +211,8 @@ function MyPage({ label }) {
         value={value[field] ? value[field] : ''}
         onChange={(e) => {
           setValue((old) => {
-            console.log('Prechange', e, old)
             const newValue = { ...old }
             newValue[field] = e.target.value
-            console.log('changed:', newValue)
             return newValue
           })
         }}
