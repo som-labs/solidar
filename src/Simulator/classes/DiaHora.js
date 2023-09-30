@@ -1,5 +1,5 @@
-import TCB from "./TCB.js";
-import * as UTIL from "./Utiles.js";
+import TCB from "./TCB";
+import * as UTIL from "./Utiles";
 /** 
  * @class DiaHora
  * @classdesc Es la clase base para todas las matrices diaHora de 365 filas y 24 columnas para almacenar los valores de los diversos objetos de la aplicacion

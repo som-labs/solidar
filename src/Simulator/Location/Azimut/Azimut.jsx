@@ -9,8 +9,8 @@ import TextField from '@mui/material/TextField'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 import TCBContext from '../../TCBContext'
-import TCB from '../../classes/TCB.js'
-import BaseSolar from '../../classes/BaseSolar.js'
+import TCB from '../../classes/TCB'
+import BaseSolar from '../../classes/BaseSolar'
 
 const AzimutStep = () => {
     const { t, i18n } = useTranslation()

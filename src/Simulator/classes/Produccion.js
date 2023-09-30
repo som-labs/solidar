@@ -1,6 +1,6 @@
-import TCB from "./TCB.js";
-import DiaHora from "./DiaHora.js";
-import * as UTIL from "./Utiles.js";
+import TCB from "./TCB";
+import DiaHora from "./DiaHora";
+import * as UTIL from "./Utiles";
 /**
  * Clase representa la produccion horaria. Puede ser de una base o en caso TCB.produccion la global de toda la configuración
  * @extends DiaHora

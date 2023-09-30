@@ -9,10 +9,10 @@
  * v 01/04/2023 - Version inicial documentada para Solidar.3
 */
 
-import TCB from './TCB.js'
-import Style from 'ol/style/Style.js'
-import Fill from 'ol/style/Fill.js'
-import Text from 'ol/style/Text.js'
+import TCB from './TCB'
+import Style from 'ol/style/Style'
+import Fill from 'ol/style/Fill'
+import Text from 'ol/style/Text'
 
 /*global bootstrap, ol*/
 const campos = {

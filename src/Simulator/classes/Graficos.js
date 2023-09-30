@@ -1,15 +1,14 @@
+import * as UTIL from "./Utiles";
+import TCB from "./TCB";
 
-import * as UTIL from "./Utiles.js";
-import TCB from "./TCB.js";
-
-//import * as IDIOMA from "./Idioma.js";
-// import Finca from "./Finca.js";
-// import TipoConsumo from "./TipoConsumo.js";
-// import {nuevoTotalPaneles} from "./optimizador.js";
-// import {calculaResultados} from "./calculaResultados.js";
-// import {gestionEconomico} from "./gestionEconomico.js";
-// import {gestionResultados} from "./gestionResultados.js";
-// import { gestionGraficos } from "./gestionGraficos.js";
+//import * as IDIOMA from "./Idioma";
+// import Finca from "./Finca";
+// import TipoConsumo from "./TipoConsumo";
+// import {nuevoTotalPaneles} from "./optimizador";
+// import {calculaResultados} from "./calculaResultados";
+// import {gestionEconomico} from "./gestionEconomico";
+// import {gestionResultados} from "./gestionResultados";
+// import { gestionGraficos } from "./gestionGraficos";
 /*global Plotly, INDIVIDUAL*/
 /**
  * @class Graficos

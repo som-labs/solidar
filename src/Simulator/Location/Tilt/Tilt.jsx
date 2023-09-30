@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 import TCBContext from '../../TCBContext'
-import TCB from '../../classes/TCB.js'
+import TCB from '../../classes/TCB'
 
 const TiltStep = () => {
 

@@ -5,7 +5,7 @@ import Container from '@mui/material/Container'
 import { DataGrid } from '@mui/x-data-grid'
 import * as UTIL from '../../classes/Utiles'
 import TCBContext from '../../TCBContext'
-import TCB from '../../classes/TCB.js'
+import TCB from '../../classes/TCB'
 
 const SummaryStep = () => {
     const { t, i18n } = useTranslation()
