@@ -1,6 +1,6 @@
-import TCB from "./TCB.js";
-import * as UTIL from "./Utiles.js";
-import DiaHora from "./DiaHora.js";
+import TCB from "./TCB";
+import * as UTIL from "./Utiles";
+import DiaHora from "./DiaHora";
 /** 
  * @class Rendimiento
  * @classdesc clase responsable de obtener la información de PVGIS.

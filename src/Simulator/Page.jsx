@@ -13,10 +13,10 @@ import SummaryStep from './Summary/Summary'
 
 import TCBContext from './TCBContext'
 import MapContext from './MapContext'
-import TCB from './classes/TCB.js'
+import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
 
-import InicializaAplicacion from './classes/InicializaAplicacion.js'
+import InicializaAplicacion from './classes/InicializaAplicacion'
 import Instalacion from './classes/Instalacion'
 
 export default function Page() {
