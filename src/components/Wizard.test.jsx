@@ -1,5 +1,5 @@
-import { beforeEach, afterEach, describe, expect, test, it } from 'vitest'
-import { cleanup, render, screen, fireEvent } from '@testing-library/react'
+import { beforeEach, afterEach, describe, expect, test, it, fn } from 'vitest'
+import { cleanup, render, screen, fireEvent, act, waitFor } from '@testing-library/react'
 import Wizard from './Wizard'
 import React from 'react'
 
@@ -194,12 +194,32 @@ describe('Next attribute', () => {
     fireEvent.click(nextButton())
     expect(pagesStatus()).toEqual([false, true, false])
   })
-  /*
-  it('promise resolving true, keeps page', () => {
-    wizardWithNext(() => true)
+  it('promise resolving false, keeps page', async () => {
+    var resolveFunction = undefined
+    const promise = new Promise((resolve, reject)=>{
+      resolveFunction = resolve
+    })
+    wizardWithNext(()=>promise)
     fireEvent.click(nextButton())
-    expect(pagesStatus()).toEqual([false, true, false])
+    await waitFor(()=>expect(nextButton().disabled).toBe(true))
+    resolveFunction(false)
+    await waitFor(()=>expect(nextButton().disabled).toBe(false))
+    await waitFor(()=>expect(pagesStatus()).toEqual([true, false, false]))
   })
+  it('promise resolving true, advances page', async () => {
+    var resolveFunction = undefined
+    const promise = new Promise((resolve, reject)=>{
+      resolveFunction = resolve
+    })
+    wizardWithNext(()=>promise)
+    fireEvent.click(nextButton())
+    expect(nextButton().disabled).toBe(true)
+    resolveFunction(true)
+
+    await waitFor(()=>expect(nextButton().disabled).toBe(false))
+    await waitFor(()=>expect(pagesStatus()).toEqual([false, true, false]))
+  })
+  /*
   it('callback returns string, disable next and shows error', () => {
     wizardWithNext(() => 'An error has occurred')
     expect(nextButton().disabled).toBe(true)
