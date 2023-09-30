@@ -1,6 +1,6 @@
-import TCB from "./TCB.js";
-import Produccion from "./Produccion.js";
-import Balance from "./Balance.js";
+import TCB from "./TCB";
+import Produccion from "./Produccion";
+import Balance from "./Balance";
 
 /**
  * Esta funcion realiza los calculos del balance de energia para la configuracion de bases y consumos existentes.

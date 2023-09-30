@@ -1,6 +1,6 @@
-import TCB from "./TCB.js";
-import * as UTIL from "./Utiles.js";
-import Finca from "./Finca.js";
+import TCB from "./TCB";
+import * as UTIL from "./Utiles";
+import Finca from "./Finca";
 
 export default class PuntoConsumo {
   

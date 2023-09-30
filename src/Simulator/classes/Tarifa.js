@@ -1,4 +1,4 @@
-import TCB from "./TCB.js";
+import TCB from "./TCB";
 /**
  * @class Tarifa
  * @classdesc Clase representa las tarifas aplicadas a cada TipoConsumo.

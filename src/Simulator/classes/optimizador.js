@@ -1,6 +1,6 @@
-import * as UTIL from "./Utiles.js";
-import Instalacion from "./Instalacion.js";
-import TCB from "./TCB.js";
+import * as UTIL from "./Utiles";
+import Instalacion from "./Instalacion";
+import TCB from "./TCB";
 
 /** 
  * Funcion para asignar un número de paneles de potencia unitaria (segun valor argumento potenciaPanelInicio) 
