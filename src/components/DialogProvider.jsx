@@ -4,6 +4,7 @@
 // provides openDialog and closeDialog functions.
 // The first one appends the provided component
 // as direct child of the Provider.
+// Multiple dialogs are stacked in opening order.
 
 // based on https://stackoverflow.com/questions/63737526/material-ui-how-to-open-dialog-imperatively-programmatically/63737527#63737527
 
@@ -29,12 +30,12 @@ function DialogContainer(props) {
   return (
     <Dialog
       TransitionComponent={Transition}
-      fullScreen={fullScreen}
-      open={open}
-      onClose={onClose}
       TransitionProps={{
         onExited: onKill,
       }}
+      open={open}
+      onClose={onClose}
+      fullScreen={fullScreen}
       scroll="paper"
       {...extraprops}
     >

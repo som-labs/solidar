@@ -9,6 +9,7 @@ import HomePage from './Home/Page'
 import SimulatorPage from './Simulator/Page'
 import AboutPage from './About/Page'
 import NotFoundPage from './NotFound/Page'
+import DialogProvider from './components/DialogProvider'
 
 const routes = [
   {
@@ -41,7 +42,9 @@ function App() {
 
   return (
     <GlobalTheme>
-      <RouterProvider router={router} />
+      <DialogProvider>
+        <RouterProvider router={router} />
+      </DialogProvider>
     </GlobalTheme>
   )
 }
