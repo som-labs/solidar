@@ -16,7 +16,7 @@ const COMUNIDAD = 'COMUNIDAD';
 /*global INDIVIDUAL, COLECTIVO, COMUNIDAD, ol*/ 
 const TCB = {
     //Variables globales de funcionamiento
-    debug : false,
+    debug : true,
     basePath : "",
     idSesion : "", //Identificador unico de sesión
 
@@ -174,7 +174,7 @@ const TCB = {
                 [6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 4],
                 [6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 3]
             ]},
-        "3.0TD-Islas Baleares" : {
+        "3.0TD-Illes Balears" : {
             "precios": [0.13, 0.233, 0.254, 0.230, 0.213, 0.213, 0.196],
             "horas": [
                 [6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 4, 4],
@@ -250,7 +250,7 @@ const TCB = {
             'renovable' : 0.331,
             'norenovable' : 0.472
         },
-        'Islas Baleares' : {
+        'Illes Balears' : {
             'renovable' : 0.932,
             'norenovable' : 0.966
         },

@@ -9,6 +9,7 @@
  * v 01/04/2023 - Version inicial documentada para Solidar.3
 */
 import TCB from "./TCB.js";
+
 /*global bootstrap, ol*/
 const campos = {
   "ahorroFincaAnual":{unidad:" €", decimales:2, "salvar":true, "mostrar":true},
@@ -514,13 +515,15 @@ function dumpData(nombre, idxTable, dataTable) {
  * @returns {string} valor formateado segun definición de UTIL.campos
  */
 function formatoValor( campo, valor) {
-
+console.log(TCB.i18next)
   if (valor === undefined) return undefined;
 
    const dato = campos[campo];
 /*      console.log(dato); 
   console.log(campo + "->" + valor);  */
   if (dato === undefined || valor === "") return valor;
+
+
 
   if (typeof valor === 'boolean') return TCB.i18next.t("valor_"+valor);
 

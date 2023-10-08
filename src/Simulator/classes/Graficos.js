@@ -1,13 +1,15 @@
+
 import * as UTIL from "./Utiles.js";
 import TCB from "./TCB.js";
-import * as IDIOMA from "./Idioma.js";
-import Finca from "./Finca.js";
-import TipoConsumo from "./TipoConsumo.js";
-import {nuevoTotalPaneles} from "./optimizador.js";
-import {calculaResultados} from "./calculaResultados.js";
-import {gestionEconomico} from "./gestionEconomico.js";
-import {gestionResultados} from "./gestionResultados.js";
-import { gestionGraficos } from "./gestionGraficos.js";
+
+//import * as IDIOMA from "./Idioma.js";
+// import Finca from "./Finca.js";
+// import TipoConsumo from "./TipoConsumo.js";
+// import {nuevoTotalPaneles} from "./optimizador.js";
+// import {calculaResultados} from "./calculaResultados.js";
+// import {gestionEconomico} from "./gestionEconomico.js";
+// import {gestionResultados} from "./gestionResultados.js";
+// import { gestionGraficos } from "./gestionGraficos.js";
 /*global Plotly, INDIVIDUAL*/
 /**
  * @class Graficos
@@ -23,7 +25,7 @@ class Graficos {
         this.maxConsumoMes;
         this.maxHora;
         this.maxMes;
-        this.mesMapa = Array.from(IDIOMA.i18nextMes());
+        //this.mesMapa = Array.from(IDIOMA.i18nextMes());
         this.opcion; //ConHucha o SinHucha
         this.fecha = [];
         this.valores = [];
@@ -40,7 +42,7 @@ class Graficos {
     i18nextGraficos() {
         let layout_update;
         let data_update;
-        this.mesMapa =  Array.from(IDIOMA.i18nextMes());
+        //this.mesMapa =  Array.from(IDIOMA.i18nextMes());
 
         if( this.divMapaConsumo !== undefined) {
             layout_update = {
@@ -910,188 +912,188 @@ class Graficos {
         Plotly.react(donde1, data, layout);
     }
 
-    gestionEconomico_PlotAlternativas (donde, potencia_kWp, paneles, TIR, autoconsumo, autosuficiencia, precioInstalacion, ahorroAnual, limiteSubvencion) {
+    // gestionEconomico_PlotAlternativas (donde, potencia_kWp, paneles, TIR, autoconsumo, autosuficiencia, precioInstalacion, ahorroAnual, limiteSubvencion) {
 
-        this.divPlotAlternativas = donde;
-        this.potencia_kWp = potencia_kWp;
+    //     this.divPlotAlternativas = donde;
+    //     this.potencia_kWp = potencia_kWp;
 
-        var trace_TIR = {
-            x: paneles,
-            y: TIR,
-            name: 'TIR(%)',
-            type: 'scatter'
-        };
+    //     var trace_TIR = {
+    //         x: paneles,
+    //         y: TIR,
+    //         name: 'TIR(%)',
+    //         type: 'scatter'
+    //     };
 
-        var trace_autosuficiencia = {
-            x: paneles,
-            y: autosuficiencia,
-            name: TCB.i18next.t('graficos_LBL_graficasAutosuficiencia') + "(%)",
-            type: 'scatter'
-        };
+    //     var trace_autosuficiencia = {
+    //         x: paneles,
+    //         y: autosuficiencia,
+    //         name: TCB.i18next.t('graficos_LBL_graficasAutosuficiencia') + "(%)",
+    //         type: 'scatter'
+    //     };
 
-        var trace_autoconsumo = {
-            x: paneles,
-            y: autoconsumo,
-            name: TCB.i18next.t('graficos_LBL_graficasAutoconsumo') + "(%)",
-            type: 'scatter'
-        };
+    //     var trace_autoconsumo = {
+    //         x: paneles,
+    //         y: autoconsumo,
+    //         name: TCB.i18next.t('graficos_LBL_graficasAutoconsumo') + "(%)",
+    //         type: 'scatter'
+    //     };
 
-        var trace_precioInstalacion = {
-            x: paneles,
-            y: precioInstalacion,
-            name: TCB.i18next.t('graficos_LBL_graficasInversion') + "(€)",
-            yaxis : 'y2',
-            type: 'scatter'
-        };
+    //     var trace_precioInstalacion = {
+    //         x: paneles,
+    //         y: precioInstalacion,
+    //         name: TCB.i18next.t('graficos_LBL_graficasInversion') + "(€)",
+    //         yaxis : 'y2',
+    //         type: 'scatter'
+    //     };
 
-        var trace_ahorroAnual = {
-            x: paneles,
-            y: ahorroAnual,
-            name: TCB.i18next.t('graficos_LBL_graficasAhorro') + "(€)",
-            yaxis : 'y2',
-            type: 'scatter'
-        };
+    //     var trace_ahorroAnual = {
+    //         x: paneles,
+    //         y: ahorroAnual,
+    //         name: TCB.i18next.t('graficos_LBL_graficasAhorro') + "(€)",
+    //         yaxis : 'y2',
+    //         type: 'scatter'
+    //     };
 
-        var numeroMaximoPaneles = 0;
-        TCB.BaseSolar.forEach ( (base) => { numeroMaximoPaneles +=  Math.trunc(base.potenciaMaxima / base.instalacion.potenciaUnitaria)});
+    //     var numeroMaximoPaneles = 0;
+    //     TCB.BaseSolar.forEach ( (base) => { numeroMaximoPaneles +=  Math.trunc(base.potenciaMaxima / base.instalacion.potenciaUnitaria)});
 
-        var layout = {
-            paper_bgcolor:'rgba(0,0,0,0)',
-            plot_bgcolor:'rgba(0,0,0,0)',
-            width: 800,
-            height: 500,
-            title: TCB.i18next.t('graficos_LBL_alternativasPotencia', {potencia: UTIL.formatoValor('potencia',potencia_kWp)}),
-            xaxis: {
-                title: TCB.i18next.t('graficos_LBL_paneles')
-            },
-            yaxis: {
-                title: '%'
-            },
-            yaxis2: {
-                title: 'Euros',
-                overlaying: 'y',
-                side: 'right'
-            },
-            legend: {
-                x:1.1, y:1.,
-                orientation:'v'
-            },
-            shapes: [
-                {
-                type: 'line',
-                x0: TCB.totalPaneles, y0: 0,
-                x1: TCB.totalPaneles, y1: 100,
-                line: {color: 'rgb(55, 128, 191)', width: 3}
-                },
-            ],
-            annotations: [
-                {
-                    x: TCB.totalPaneles, y: 100,
-                    xref: 'x', yref: 'y',
-                    text: TCB.totalPaneles + " " + TCB.i18next.t("graficos_LBL_paneles"),
-                    showarrow: true,
-                    arrowhead: 2,
-                    xanchor: 'left',
-                    hovertext: TCB.i18next.t("graficos_LBL_panelesActuales",{paneles: TCB.totalPaneles}),
-                    ax: 20,
-                    ay: -20
-                }
-            ]
-        };
-        if (numeroMaximoPaneles === paneles[4]) {
-            layout.annotations.push(
-                {
-                    x: numeroMaximoPaneles, y: 100,
-                    xref: 'x', yref: 'y',
-                    text: TCB.i18next.t("graficos_LBL_numeroMaximoPaneles", {'paneles': numeroMaximoPaneles}),
-                    showarrow: true,
-                    arrowhead: 3,
-                    xanchor: 'right',
-                    hovertext: TCB.i18next.t("graficos_LBL_maximoPanelesExplicacion", {'area':UTIL.formatoValor('superficie',TCB.areaTotal)}),
-                    ax: -20,
-                    ay: -5
-                });
-            layout.shapes.push(
-                {
-                    type: 'line',
-                    x0: numeroMaximoPaneles, y0: 0,
-                    x1: numeroMaximoPaneles, y1: 100,
-                    line: {color: 'rgb(250, 20, 0)', width: 2}
-                })
-        }
+    //     var layout = {
+    //         paper_bgcolor:'rgba(0,0,0,0)',
+    //         plot_bgcolor:'rgba(0,0,0,0)',
+    //         width: 800,
+    //         height: 500,
+    //         title: TCB.i18next.t('graficos_LBL_alternativasPotencia', {potencia: UTIL.formatoValor('potencia',potencia_kWp)}),
+    //         xaxis: {
+    //             title: TCB.i18next.t('graficos_LBL_paneles')
+    //         },
+    //         yaxis: {
+    //             title: '%'
+    //         },
+    //         yaxis2: {
+    //             title: 'Euros',
+    //             overlaying: 'y',
+    //             side: 'right'
+    //         },
+    //         legend: {
+    //             x:1.1, y:1.,
+    //             orientation:'v'
+    //         },
+    //         shapes: [
+    //             {
+    //             type: 'line',
+    //             x0: TCB.totalPaneles, y0: 0,
+    //             x1: TCB.totalPaneles, y1: 100,
+    //             line: {color: 'rgb(55, 128, 191)', width: 3}
+    //             },
+    //         ],
+    //         annotations: [
+    //             {
+    //                 x: TCB.totalPaneles, y: 100,
+    //                 xref: 'x', yref: 'y',
+    //                 text: TCB.totalPaneles + " " + TCB.i18next.t("graficos_LBL_paneles"),
+    //                 showarrow: true,
+    //                 arrowhead: 2,
+    //                 xanchor: 'left',
+    //                 hovertext: TCB.i18next.t("graficos_LBL_panelesActuales",{paneles: TCB.totalPaneles}),
+    //                 ax: 20,
+    //                 ay: -20
+    //             }
+    //         ]
+    //     };
+    //     if (numeroMaximoPaneles === paneles[4]) {
+    //         layout.annotations.push(
+    //             {
+    //                 x: numeroMaximoPaneles, y: 100,
+    //                 xref: 'x', yref: 'y',
+    //                 text: TCB.i18next.t("graficos_LBL_numeroMaximoPaneles", {'paneles': numeroMaximoPaneles}),
+    //                 showarrow: true,
+    //                 arrowhead: 3,
+    //                 xanchor: 'right',
+    //                 hovertext: TCB.i18next.t("graficos_LBL_maximoPanelesExplicacion", {'area':UTIL.formatoValor('superficie',TCB.areaTotal)}),
+    //                 ax: -20,
+    //                 ay: -5
+    //             });
+    //         layout.shapes.push(
+    //             {
+    //                 type: 'line',
+    //                 x0: numeroMaximoPaneles, y0: 0,
+    //                 x1: numeroMaximoPaneles, y1: 100,
+    //                 line: {color: 'rgb(250, 20, 0)', width: 2}
+    //             })
+    //     }
 
-        if (limiteSubvencion !== undefined) {
-            layout.annotations.push({
-                x: limiteSubvencion, y: 80,
-                xref: 'x', yref: 'y',
-                text: TCB.i18next.t("limiteSubvencionEU_LBL"),
-                showarrow: true,
-                arrowhead: 3,
-                xanchor: 'left',
-                hovertext: limiteSubvencion.toFixed(1) + " " + TCB.i18next.t("graficos_LBL_paneles"),
-                ax: 20,
-                ay: 0
-            });
-            layout.shapes.push({
-                type: 'line',
-                x0: 0, y0: 80,
-                x1: limiteSubvencion, y1: 80,
-                line: {color: 'rgb(87, 202, 0)', width: 2}
-            },{
-                type: 'line',
-                x0: limiteSubvencion, y0: 0,
-                x1: limiteSubvencion, y1: 80,
-                line: {color: 'rgb(87, 202, 0)', width: 2}
-            })
-        }
+    //     if (limiteSubvencion !== undefined) {
+    //         layout.annotations.push({
+    //             x: limiteSubvencion, y: 80,
+    //             xref: 'x', yref: 'y',
+    //             text: TCB.i18next.t("limiteSubvencionEU_LBL"),
+    //             showarrow: true,
+    //             arrowhead: 3,
+    //             xanchor: 'left',
+    //             hovertext: limiteSubvencion.toFixed(1) + " " + TCB.i18next.t("graficos_LBL_paneles"),
+    //             ax: 20,
+    //             ay: 0
+    //         });
+    //         layout.shapes.push({
+    //             type: 'line',
+    //             x0: 0, y0: 80,
+    //             x1: limiteSubvencion, y1: 80,
+    //             line: {color: 'rgb(87, 202, 0)', width: 2}
+    //         },{
+    //             type: 'line',
+    //             x0: limiteSubvencion, y0: 0,
+    //             x1: limiteSubvencion, y1: 80,
+    //             line: {color: 'rgb(87, 202, 0)', width: 2}
+    //         })
+    //     }
 
-        var data = [trace_TIR, trace_autoconsumo, trace_autosuficiencia, trace_precioInstalacion, trace_ahorroAnual];
+    //     var data = [trace_TIR, trace_autoconsumo, trace_autosuficiencia, trace_precioInstalacion, trace_ahorroAnual];
 
-        Plotly.react(donde, data, layout);
+    //     Plotly.react(donde, data, layout);
 
-        var gd = document.getElementById(donde);
-        var xInDataCoord;
-        //var yInDataCoord;
+    //     var gd = document.getElementById(donde);
+    //     var xInDataCoord;
+    //     //var yInDataCoord;
     
-        if (this.init) {
-            this.init = false;
-            gd.addEventListener('click', function(evt) {
+    //     if (this.init) {
+    //         this.init = false;
+    //         gd.addEventListener('click', function(evt) {
 
-                // Cuando click en zona del grafico llega un MouseEvent en caso contrario es un PointerEvent y lo ignoramos
-                if (evt instanceof PointerEvent) return;
+    //             // Cuando click en zona del grafico llega un MouseEvent en caso contrario es un PointerEvent y lo ignoramos
+    //             if (evt instanceof PointerEvent) return;
 
-                if (TCB.totalPaneles != Math.round(xInDataCoord)) {
-                    if (Math.round(xInDataCoord) > numeroMaximoPaneles) return;
-                    TCB.totalPaneles = Math.round(xInDataCoord);
-                    UTIL.debugLog("Grafico alternativas cambia a " + Math.round(TCB.totalPaneles ));
+    //             if (TCB.totalPaneles != Math.round(xInDataCoord)) {
+    //                 if (Math.round(xInDataCoord) > numeroMaximoPaneles) return;
+    //                 TCB.totalPaneles = Math.round(xInDataCoord);
+    //                 UTIL.debugLog("Grafico alternativas cambia a " + Math.round(TCB.totalPaneles ));
 
-                    nuevoTotalPaneles ( TCB.totalPaneles);
-                    calculaResultados();
+    //                 nuevoTotalPaneles ( TCB.totalPaneles);
+    //                 calculaResultados();
 
-                    gestionResultados('Prepara');  //Pensar esto no deberiamos llamar Prepara fuera del flujo normal
-                    gestionEconomico('Prepara');
-                    gestionGraficos('Prepara');
-                }
-            });
+    //                 gestionResultados('Prepara');  //Pensar esto no deberiamos llamar Prepara fuera del flujo normal
+    //                 gestionEconomico('Prepara');
+    //                 gestionGraficos('Prepara');
+    //             }
+    //         });
             
-            gd.addEventListener('mousemove', function(evt) {
+    //         gd.addEventListener('mousemove', function(evt) {
 
-                if (evt instanceof PointerEvent) return;
-                if (evt.pointerX === undefined) return; //console.log("label?");
-                let tPaneles = gd.data[0].x;
-                var bb = evt.target.getBoundingClientRect();
-                xInDataCoord = gd._fullLayout.xaxis.p2d(evt.clientX - bb.left);
-                //yInDataCoord = gd._fullLayout.yaxis.p2d(evt.clientY - bb.top);
+    //             if (evt instanceof PointerEvent) return;
+    //             if (evt.pointerX === undefined) return; //console.log("label?");
+    //             let tPaneles = gd.data[0].x;
+    //             var bb = evt.target.getBoundingClientRect();
+    //             xInDataCoord = gd._fullLayout.xaxis.p2d(evt.clientX - bb.left);
+    //             //yInDataCoord = gd._fullLayout.yaxis.p2d(evt.clientY - bb.top);
 
-                // Se limita el número de paneles que se puede seleccionar del gráfico desde 1 al máximo mostrado
-                if (Math.round(xInDataCoord) > 0 && Math.round(xInDataCoord) <= tPaneles[tPaneles.length - 1]) {
-                    Plotly.relayout(gd, 'title', 
-                        [TCB.i18next.t('graficos_LBL_alternativasPotencia', {potencia: UTIL.formatoValor('potencia', potencia_kWp)}), 
-                        TCB.i18next.t('graficos_LBL_cambiaPaneles', {paneles: Math.round(xInDataCoord)})].join("<br>"));
-                }
-            });
-        }
-    }
+    //             // Se limita el número de paneles que se puede seleccionar del gráfico desde 1 al máximo mostrado
+    //             if (Math.round(xInDataCoord) > 0 && Math.round(xInDataCoord) <= tPaneles[tPaneles.length - 1]) {
+    //                 Plotly.relayout(gd, 'title', 
+    //                     [TCB.i18next.t('graficos_LBL_alternativasPotencia', {potencia: UTIL.formatoValor('potencia', potencia_kWp)}), 
+    //                     TCB.i18next.t('graficos_LBL_cambiaPaneles', {paneles: Math.round(xInDataCoord)})].join("<br>"));
+    //             }
+    //         });
+    //     }
+    // }
 
     gestionResultados_BalanceResultados( donde) {
 

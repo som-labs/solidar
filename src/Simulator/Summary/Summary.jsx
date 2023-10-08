@@ -15,8 +15,8 @@ const SummaryStep = () => {
 
     return <>
         <Container>
-            <Typography variant='h3'>{t("SIMULATOR.TITLE_SUMMARY")}</Typography>
-            <Typography variant='body'>{t("SIMULATOR.DESC_SUMMARY")}</Typography>
+            <Typography variant='h3'>{t("SUMMARY.TITLE")}</Typography>
+            <Typography variant='body'>{t("SUMMARY.DESCRIPTION")}</Typography>
         </Container>
     </>
 }

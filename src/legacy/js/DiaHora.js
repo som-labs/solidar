@@ -102,8 +102,8 @@ class DiaHora {
                 if (! (chkValor && chkFecha && chkHora)) {
                     let failHdr = "";
                     if (!chkValor) failHdr += "Valor consumo"; 
-                    if (!chkFecha) failHdr += options.fechaHdr;
-                    if (!chkHora) failHdr += options.horaHdr;
+                    if (!chkFecha) failHdr += "," + options.fechaHdr;
+                    if (!chkHora) failHdr += "," + options.horaHdr;
                     alert (TCB.i18next.t("consumo_MSG_errorCabeceras", {cabeceras: failHdr}));
                     return [];
                 }
