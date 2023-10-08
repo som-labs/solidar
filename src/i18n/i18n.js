@@ -2,6 +2,8 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 
+import TCB from '../Simulator/classes/TCB.js'
+
 const translations = import.meta.globEager('./locale-*.yaml')
 
 const resources = Object.fromEntries(
@@ -36,4 +38,7 @@ i18n
     },
   })
 
+    // Added line to avoid changing many lines of code in components coming from
+    TCB.i18next = i18n
+    
 export default i18n

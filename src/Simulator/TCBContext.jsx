@@ -1,5 +1,5 @@
 import React from "react"
 
-const TipoConsumoContext = React.createContext()
+const TCBContext = React.createContext([])
 
-export default TipoConsumoContext
+export default TCBContext

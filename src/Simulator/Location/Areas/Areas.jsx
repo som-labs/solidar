@@ -1,5 +1,6 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
+
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
@@ -8,13 +9,13 @@ import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import DeleteIcon from '@mui/icons-material/Delete'
 
-import BasesContext from '../../BasesContext'
+import TCBContext from '../../TCBContext'
 import TCB from '../../classes/TCB.js'
-import BaseSolar from '../../classes/BaseSolar.js'
+import * as UTIL from '../../Utiles'
 
 const AreasStep = () => {
     const { t, i18n } = useTranslation()
-    const {bases, setBases} = useContext(BasesContext)
+    const {bases, setBases, tipoConsumo, setTipoConsumo} = useContext(TCBContext)
 
     function setName( index, value) {
         let oldBases = [...bases]
@@ -54,7 +55,7 @@ const AreasStep = () => {
                                 ),
                             }}
                         />
-                        <p>{ tBase.areaMapa.toFixed(2) + " m²" }</p>
+                        <p>{ UTIL.formatoValor('superficie', tBase.areaMapa)}</p>
                     </Box>
                 </>
                 ))} 
@@ -63,7 +64,8 @@ const AreasStep = () => {
             {/* Aqui va la superficie total en m2 de las bases creadas */}
             <div>
                 <Typography variant='h5'>
-                {"Area total: " + Math.round(bases.reduce( (sum, tBase) => sum + tBase.areaMapa, 0 )) + " m²"}
+                {(t('LOCATION.MSG_AREA_TOTAL', 
+                    {areaTotal : UTIL.formatoValor('superficie', Math.round(bases.reduce( (sum, tBase) => sum + tBase.areaMapa, 0 )))}))}
                 </Typography>
             </div>
         </Container>

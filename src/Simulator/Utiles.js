@@ -8,7 +8,7 @@
  * History
  * v 01/04/2023 - Version inicial documentada para Solidar.3
 */
-
+import TCB from '../Simulator/classes/TCB.js'
 /*global bootstrap, ol*/
 const campos = {
   "ahorroFincaAnual":{unidad:" €", decimales:2, "salvar":true, "mostrar":true},
@@ -737,6 +737,11 @@ function obtenerPropiedades ( objeto, nivel) {
   return prop_val;
 }
 
+/** Devuelve el número recibido con solo dos decimales
+ * 
+ * @param {number} num 
+ * @returns {number} El numero recibido con dos decimales
+ */
 function round2Decimales(num) {
   let val = +(Math.round(num + "e+2")  + "e-2");
   return val;

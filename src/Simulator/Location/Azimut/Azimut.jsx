@@ -8,13 +8,13 @@ import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import DeleteIcon from '@mui/icons-material/Delete'
 
-import BasesContext from '../../BasesContext'
+import TCBContext from '../../TCBContext'
 import TCB from '../../classes/TCB.js'
 import BaseSolar from '../../classes/BaseSolar.js'
 
 const AzimutStep = () => {
     const { t, i18n } = useTranslation()
-    const {bases, setBases} = useContext(BasesContext)
+    const {bases, setBases, tipoConsumo, setTipoConsumo} = useContext(TCBContext)
 
     function setAzimut( index, value) {
         let oldBases = [...bases]
@@ -35,7 +35,7 @@ const AzimutStep = () => {
 
     return <>
         <Container>
-            <Typography variant='body'>{t("SIMULATOR.PROMPT_AZIMUT")}</Typography>
+            <Typography variant='body'>{t("LOCATION.PROMPT_AZIMUT")}</Typography>
             {/* Aqui va el array de los acimiut de las bases */}
             <div className="gridBases">
                 {bases.map(tBase => (
