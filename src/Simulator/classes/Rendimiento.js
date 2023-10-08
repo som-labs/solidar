@@ -74,8 +74,7 @@ class Rendimiento extends DiaHora {
     }
 
     addurl += "&pvtechchoice=" + TCB.parametros.tecnologia;
-    let [lon , lat] = base.lonlatBaseSolar.split(",");
-
+    let [lon , lat] = base.lonlatBaseSolar
     let url =
       TCB.basePath + "proxy PVGIS.php?" +
       "idSesion=" + TCB.idSesion +
@@ -84,7 +83,6 @@ class Rendimiento extends DiaHora {
       addurl;
 
     UTIL.debugLog("PVGIS url:" + url);
-
      try { 
       const respuesta = await fetch(url);
       if (respuesta.status === 200) {

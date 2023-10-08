@@ -1,21 +1,15 @@
 import React, { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { DataGrid } from '@mui/x-data-grid'
-import InputAdornment from '@mui/material/InputAdornment'
-import IconButton from '@mui/material/IconButton'
-import TextField from '@mui/material/TextField'
-import SearchIcon from '@mui/icons-material/Delete'
-
-import BasesContext from '../../BasesContext'
+import * as UTIL from '../../Utiles'
+import TCBContext from '../../TCBContext'
 import TCB from '../../classes/TCB.js'
-import BaseSolar from '../../classes/BaseSolar.js'
 
 const SummaryStep = () => {
     const { t, i18n } = useTranslation()
-    const {bases, setBases} = useContext(BasesContext)
+    const {bases, setBases, tipoConsumo, setTipoConsumo} = useContext(TCBContext)
 
     function deleteBase( index) {
         let oldBases = [...bases]
@@ -26,11 +20,14 @@ const SummaryStep = () => {
     }
 
     const columns = [
-        { field: 'idBaseSolar', headerName: 'ID', width: 70 },
-        { field: 'nombreBaseSolar', headerName: 'Nombre', width: 130 },
-        { field: 'areaReal', headerName: 'Area real', width: 130 },
-        { field: 'inclinacionTejado', headerName: 'Inclinación'},
-        { field: 'inAcimut', headerName: 'Acimut'}
+       // { field: 'idBaseSolar', headerName: 'ID', width: 50 },
+        { field: 'nombreBaseSolar', headerName: 'Nombre' },
+        { field: 'areaReal', headerName: 'Area real', width: 130, align:'right', renderCell: (params) => {
+            return UTIL.formatoValor('areaReal', params.value)}},
+        { field: 'inclinacionTejado', headerName: 'Inclinación', align:'right'},
+        { field: 'inAcimut', headerName: 'Acimut', align:'right'},
+        { field: 'potenciaMaxima', headerName: 'Pot. Maxima', align:'right', renderCell: (params) => {
+            return UTIL.formatoValor('potenciaMaxima',params.value)}}
     ]
 
     function getRowId(row) {
@@ -39,8 +36,9 @@ const SummaryStep = () => {
 
     return <>
         <Container>
-            <Typography variant='h3'>{t("SIMULATOR.LABEL_SUMMARY")}</Typography>
-            <Typography variant='body'>{t("SIMULATOR.PROMPT_SUMMARY")}</Typography>
+            <Typography variant='h3'>{t("LOCATION.LABEL_SUMMARY")}</Typography>
+            <Typography variant='body'>{t("LOCATION.PROMPT_SUMMARY")}</Typography>
+            
             <DataGrid
                 getRowId={getRowId}
                 rows={bases}
@@ -51,7 +49,7 @@ const SummaryStep = () => {
                   },
                 }}
                 pageSizeOptions={[5, 10]}
-                checkboxSelection
+                //checkboxSelection
             />
         </Container>
     </>
