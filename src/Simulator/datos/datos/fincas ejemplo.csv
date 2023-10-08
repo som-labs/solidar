@@ -1,0 +1,2 @@
+idFinca;Nombre;RefCat;Planta;Puerta;Uso;Superficie;Participacion;Tipo consumo
+Número secuencial único de cada finca;Un nombre que permite identificar cada finca en los informes;Opcional;Opcional;Opcional;Tener en cuenta que se podrá utilizar elvalor residencial como criterio de reparto;Opcional;Coeficiente de participación en la propiedad. Es un criterio de reparto posible.;Debe coincidir con alguno de los tipos de consumo definidos en la aplicación. Puede quedar en blanco y asignar luego.

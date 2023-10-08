@@ -70,18 +70,18 @@ class DiaHora {
         this.maximoAnual = -Infinity;
         this.totalAnual = 0;
         const reader = new FileReader();
+
         return new Promise((resolve, reject) => {
+        let errorStatus = false;
+        let errorMsg;
         reader.onerror = () => {
-            alert(
-                TCB.i18next.t("consumo_MSG_errorLecturaFicheroCSV") +
-                "\nReader.error: " + reader.error 
-            );
-            reject("...error de lectura");
+            errorStatus = true
+            errorMsg = TCB.i18next.t("consumo_MSG_errorLecturaFicheroCSV") + "\nReader.error: " + reader.error;
+            return reject(errorMsg);
         };
     
         reader.onload = (e) => {
             const data = e.target.result;
-            //const data = UTIL.csvToArray(text, options.delimiter);
 
             //Procesamos los headers
             let chkValor = false;
@@ -89,6 +89,7 @@ class DiaHora {
             let chkHora = false;
             let valorHdr; //Nombre del campo donde se almacena el valor a recoger
 
+            //Verificamos las cabeceras del fichero CSV
             try {
                 var headers = data.slice(0, data.indexOf("\n")).split(options.delimiter);
                 for (let i=0; i<headers.length; i++) {
@@ -105,13 +106,18 @@ class DiaHora {
                     if (!chkValor) failHdr += "Valor consumo"; 
                     if (!chkFecha) failHdr += options.fechaHdr;
                     if (!chkHora) failHdr += options.horaHdr;
-                    alert (TCB.i18next.t("consumo_MSG_errorCabeceras", {cabeceras: failHdr}));
-                    return [];
+                    errorStatus = true;
+                    errorMsg = TCB.i18next.t("consumo_MSG_errorCabeceras", {cabeceras: failHdr});
                 }
             } catch (e) {
-                alert("Posible error de formato fichero de consumos\n" + data[0]);
-                return false;
+                errorStatus = true;
+                errorMsg = "Posible error de formato fichero de consumos\n" + data[0];
             }
+
+            if (errorStatus) {
+                return reject (errorMsg)
+            }
+            
             UTIL.debugLog("Cabecera CSV:", headers);
 
             // usamos split para crear un array con cada fila del CSV
@@ -182,8 +188,6 @@ class DiaHora {
                         if (i == 0) {
                             unDia = {
                             fecha: currFecha,
-/*                              dia: currFecha.getDate(),
-                                mes: currFecha.getMonth(), */
                             valores: Array(24).fill(0),
                             };
                             unDia.valores[hora] = parseFloat(lineas[i][valorHdr].replace(options.decimal, "." )) * options.factor;
@@ -191,47 +195,50 @@ class DiaHora {
                             this.mete(unDia, options.metodo);
                             unDia = {
                                 fecha: currFecha,
-/*                              dia: currFecha.getDate(),
-                                mes: currFecha.getMonth(), */
                                 valores: Array(24).fill(0),
                             };
                             unDia.valores[hora] = parseFloat(lineas[i][valorHdr].replace(options.decimal, "." )) * options.factor;
                         }
                         lastFecha = currFecha;
                         if (isNaN(unDia.valores[hora])) {
-                            console.log(lastLine);
+                            UTIL.debugLog(lastLine);
                             throw "Conversión consumo";
                         }
                     }
                 }
                 // Si el ultimo registro no vino vacio lo metemos
                 if (!vacio) this.mete(unDia, options.metodo);
+                
+                //Verificamos que tenemos 365 dias registrados.
+                let todos = true;
+                for (let i=0; i<365; i++) {
+                    if (this.idxTable[i].fecha === '') {
+                        todos = false;
+                        UTIL.debugLog( i + " esta sin fecha " + UTIL.fechaDesdeIndice(i));
+                    }
+                }
+
+                if (!todos) {
+                    this.numeroRegistros = 0;
+                    reject ('Faltan dias para completar un año de datos');
+                }
+
                 this.fechaFin = lastFecha;
                 this.horaFin = hora;
                 this.numeroRegistros = lineas.length;
                 this.datosCargados = true; 
+
                 this.sintesis();
                 resolve();
+
             } catch (error) {
                 this.numeroRegistros = 0;
                 this.datosCargados = false; 
-                alert ("Error lectura en linea:\n" + JSON.stringify(lastLine) + "\n" + error);
-                reject(error);
+                UTIL.debugLog ("Error lectura en linea:\n" + JSON.stringify(lastLine) + "\n" + error);
+                return reject("Error lectura en linea:\n" + JSON.stringify(lastLine) + "\n" + error);
             }
 
-            //Verificamos que tenemos 365 dias registrados.
-            let todos = true;
-            for (let i=0; i<365; i++) {
-                if (this.idxTable[i].fecha === '') {
-                    todos = false;
-                    console.log( i + " esta sin fecha " + UTIL.fechaDesdeIndice(i));
-                }
-            }
-            if (!todos) {
-                alert ('Faltan dias para completar un año de datos');
-                this.numeroRegistros = 0;
-                return false;
-            }
+
         };
         reader.readAsText(csvFile);
         });

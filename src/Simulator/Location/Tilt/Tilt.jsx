@@ -8,20 +8,25 @@ import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 import DeleteIcon from '@mui/icons-material/Delete'
 
-import BasesContext from '../../BasesContext'
+import TCBContext from '../../TCBContext'
 import TCB from '../../classes/TCB.js'
-import BaseSolar from '../../classes/BaseSolar.js'
 
 const TiltStep = () => {
 
     const { t, i18n } = useTranslation()
-    const {bases, setBases} = useContext(BasesContext)
+    const {bases, setBases, tipoConsumo, setTipoConsumo} = useContext(TCBContext)
 
     function setTilt( index, value) {
         let oldBases = [...bases]
         let nIndex = oldBases.findIndex((t) => t.idBaseSolar == index )
+
         oldBases[nIndex].inclinacionTejado = value
+        oldBases[nIndex].areaReal = TCB.BaseSolar[nIndex].areaMapa / Math.cos(value / 180 * Math.PI)
+        oldBases[nIndex].potenciaMaxima = oldBases[nIndex].areaReal / TCB.parametros.conversionAreakWp
+
         TCB.BaseSolar[nIndex].inclinacionTejado = value
+        TCB.BaseSolar[nIndex].areaReal = TCB.BaseSolar[nIndex].areaMapa / Math.cos(value / 180 * Math.PI)
+        TCB.BaseSolar[nIndex].potenciaMaxima = oldBases[nIndex].areaReal / TCB.parametros.conversionAreakWp
         TCB.BaseSolar[nIndex].requierePVGIS = true
         setBases(oldBases)
     }
@@ -36,7 +41,7 @@ const TiltStep = () => {
 
     return <>
         <Container>
-            <Typography variant='body'>{t("SIMULATOR.PROMPT_TILT")}</Typography>
+            <Typography variant='body'>{t("LOCATION.PROMPT_TILT")}</Typography>
             {/* Aqui va el array de las inclinaciones de las bases */}
             <div className="gridBases">
                 {bases.map(tBase => (
