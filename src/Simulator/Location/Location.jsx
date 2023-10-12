@@ -6,26 +6,12 @@ import TCBContext from '../TCBContext.jsx'
 
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import MapWrapper from './MapWrapper'
-
-import Wizard from '../../components/Wizard'
-import AreasStep from './Areas/Areas.jsx'
-import TiltStep from './Tilt/Tilt.jsx'
-import AzimutStep from './Azimut/Azimut.jsx'
-import SummaryStep from './Summary/Summary.jsx'
+import MapComponent from './MapComponent.jsx'
+import Summary from './Summary/Summary.jsx'
 
 const LocationStep = () => {
 
     const { t, i18n } = useTranslation()
-
-//REVISAR: el mensaje aparece al inicio sin dar al next
-    const validame = () => {
-      if (TCB.BaseSolar.length > 0) {
-        return false
-      } else {
-        return (t('LOCATION.MSG_alMenosUnaBase'))
-      } 
-    }
 
     return <>
       <Container>
@@ -34,14 +20,9 @@ const LocationStep = () => {
          {/* REVISAR los eventos del mapa*/}
         <Typography variant='body'>{t("LOCATION.PROMPT_DRAW")}</Typography>
         {/* REVISAR: hay que ver como onseguir que la mapa permanezca en el estado definido por el usuario al volver de otras pestañas */}
-        <MapWrapper/>
+        <MapComponent />
         <div>
-          <Wizard variant='tabs'>
-                <AreasStep label="area" title={t("LOCATION.LABEL_AREASDISPONIBLES")} validate={validame}/>
-                <TiltStep label="tilt" title={t("LOCATION.LABEL_TILT")} />
-                <AzimutStep label="azimut" title={t("LOCATION.LABEL_AZIMUT")} />
-                <SummaryStep label="summary" title={t("LOCATION.LABEL_SUMMARY")} />
-          </Wizard>
+          <Summary></Summary>
         </div>
       </Container>
     </>

@@ -11,7 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 
 import TCBContext from '../../TCBContext'
 import TCB from '../../classes/TCB.js'
-import * as UTIL from '../../Utiles'
+import * as UTIL from '../../classes/Utiles'
 
 const AreasStep = () => {
     const { t, i18n } = useTranslation()

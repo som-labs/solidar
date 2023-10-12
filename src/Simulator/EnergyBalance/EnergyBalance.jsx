@@ -5,23 +5,48 @@ import Container from '@mui/material/Container'
 //import GraficoA from '../components/graphics/GraficoA'
 import TCBContext from '../TCBContext'
 import React, { useContext, useState } from 'react'
-
+import TCB from '../classes/TCB'
 import { DataGrid } from '@mui/x-data-grid'
-import * as UTIL from '../Utiles'
-
+import * as UTIL from '../classes/Utiles'
+import Instalacion from '../classes/Instalacion'
 //import TCB from '../../classes/TCB.js'
 
 const EnergyBalanceStep = () => {
     const { t, i18n } = useTranslation()
+    TCB.i18next = i18n
+    console.log(TCB.i18next)
     const {bases, setBases, tipoConsumo, setTipoConsumo} = useContext(TCBContext)
+
+    // let oldBases = [...bases]
+    // for (let i=0; i<TCB.BaseSolar.length; i++) {
+    // //TCB.BaseSolar.forEach (base => {
+    //     if (TCB.BaseSolar[i].requierePVGIS) {
+    //         // if (!base.angulosOptimos) {
+    //         //     if (base.inclinacionTejado === 0 && base.inclinacionPaneles === 0 && !base.inclinacionOptima) {
+    //         //         if (!window.confirm("Base: " + base.nombreBaseSolar + " con paneles a 0º de inclinación")) return false; 
+    //         //     }
+    //         // }
+    //         // UTIL.debugLog("Base requiere PVGIS:", base);
+    //         console.log('cargariamos rendimiento de', oldBases[i].nombreBaseSolar)
+    //          //base.cargaRendimiento();
+    //          TCB.BaseSolar[i].instalacion = new Instalacion({paneles: 0, potenciaUnitaria: 450});
+    //           oldBases[i].paneles = 0
+    //           oldBases[i].potenciaUnitaria = 450
+    //           oldBases[i].potenciaTotal = 4.4
+
+
+    //          TCB.requiereOptimizador = true;
+    //      }
+    //  }
+    //  setBases(oldBases)
 
     const columns = [
         // { field: 'idBaseSolar', headerName: 'ID', width: 50 },
          { field: 'nombreBaseSolar', headerName: 'Nombre' },
          { field: 'paneles', headerName: 'Paneles', width: 130, align:'right', renderCell: (params) => {
              return UTIL.formatoValor('paneles', params.value)}},
-         { field: 'potenciaMaxima', headerName: 'Pot. Maxima', align:'right', renderCell: (params) => {
-             return UTIL.formatoValor('potenciaMaxima',params.value)}},
+        //  { field: 'potenciaMaxima', headerName: 'Pot. Maxima', align:'right', renderCell: (params) => {
+        //      return UTIL.formatoValor('potenciaMaxima',params.value)}},
         { field: 'potenciaUnitaria', headerName: 'Potencia Unitaria'},
         { field: 'potenciaTotal', headerName:'Potencia Total de la base'}
      ]
@@ -51,7 +76,7 @@ const EnergyBalanceStep = () => {
             />
             </div>
 
-                    <div className="form-group row justify-content-center">
+                    {/* <div className="form-group row justify-content-center">
                         <label className="col-md-2" data-i18n="cMaximoAnual_LBL"></label>
                         <div className="col-md-2 text-end" id="cMaximoAnual" data-bs-toggle="tooltip" data-bs-placement="top">
                         <a data-i18n="resultados_LBL_pendienteCalculo"></a>
@@ -184,7 +209,7 @@ const EnergyBalanceStep = () => {
                         <a data-i18n="resultados_LBL_pendienteCalculo"></a>
                         </div>
                     </div>
-                    <hr/>
+                    <hr/> */}
 
         </Container>
     </>
