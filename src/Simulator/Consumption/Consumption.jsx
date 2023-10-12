@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import DeleteIcon from '@mui/icons-material/Delete';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
+import Box from '@mui/material/Box'
 
 //import { Alert } from '../components/Alert'
 import { DataGrid } from '@mui/x-data-grid';
@@ -23,7 +24,7 @@ import TCB from '../classes/TCB.js'
 import MapaMesHora from './MapaMesHora'
 
 import DialogNewConsumption from './DialogNewConsumption.jsx'
-import { formatoValor } from '../Utiles.js'
+import { formatoValor } from '../classes/Utiles.js'
 
 //PENDIENTE: Decidir si mostramos los datos en formato tabla o creamos boxes segun diseño de Clara
 const ConsumptionStep = () => {
@@ -141,7 +142,7 @@ const ConsumptionStep = () => {
         { field: 'Actions', headerName: '',
             renderCell: (params) => {
                 return (
-                    <box>
+                    <Box>
                     <IconButton
                         variant="contained"
                         size="small"
@@ -159,7 +160,7 @@ const ConsumptionStep = () => {
                     >
                     <DeleteIcon />
                     </IconButton>
-                    </box>
+                    </Box>
                 )
             }
         }
@@ -195,9 +196,9 @@ const ConsumptionStep = () => {
 
                 />
         {/* </div> */}
-        <box>
+        <Box>
             <MapaMesHora>{activo}</MapaMesHora>
-        </box>
+        </Box>
         </Container>
     </>
 }

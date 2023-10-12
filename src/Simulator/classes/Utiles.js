@@ -8,7 +8,11 @@
  * History
  * v 01/04/2023 - Version inicial documentada para Solidar.3
 */
-import TCB from "./TCB.js";
+
+import TCB from './TCB.js'
+import Style from 'ol/style/Style.js'
+import Fill from 'ol/style/Fill.js'
+import Text from 'ol/style/Text.js'
 
 /*global bootstrap, ol*/
 const campos = {
@@ -147,7 +151,6 @@ const campos = {
 "precioInstalacion":{unidad:" €", decimales:0, salvar:true, mostrar:true},
 "nuevoPrecioInstalacion":{unidad:" €", decimales:0, salvar:true, mostrar:true},
 
-
 /* Globales */
   "areaTotal": {"unidad": " m²", "decimales":2, "salvar":true, "mostrar":true},
   //"impuestoTotal":{"unidad": "%", "decimales": 0, "salvar":false, "mostrar":true},
@@ -274,14 +277,14 @@ function distancia(p0, p1) {
 }
 
 /** Completa el estilo y texto a asignar a un label en el mapa
- * @memberof utiles.js
+ * @memberof Utiles.js
  * @param {*} feature es el ol.feature (un punto) al que se asignará el label. El objeto en cuestion tiene un ID del tipo objeto.componente.id 
  * @param {*} texto a poner en el label
  * @param {*} colorArray color del texto
  * @param {*} bgcolorArray color del background del label
  * 
  */
-function setLabel ( feature, texto, colorArray, bgcolorArray) {
+async function setLabel ( feature, texto, colorArray, bgcolorArray) {
 
   //Identificamos el objeto de que se trata a partir del ID del feature recibido
   const componente = feature.getId().split('.');
@@ -297,18 +300,19 @@ function setLabel ( feature, texto, colorArray, bgcolorArray) {
       break;
   }
   //Construimos el style
-  var Slabel = new ol.style.Style({
-    text: new ol.style.Text({
+  var Slabel = new Style({
+    text: new Text({
       font: '16px sans-serif',
       textAlign: posicionTexto,
       text: texto,
-      fill: new ol.style.Fill({ color: colorArray}),
-      backgroundFill: new ol.style.Fill({ color: bgcolorArray}),
+      fill: new Fill({ color: colorArray}),
+      backgroundFill: new Fill({ color: bgcolorArray}),
       padding: [2, 2, 2, 2],
     })
   })
   //lo asignamos al feature recibido
   feature.setStyle(Slabel);
+  return Slabel
 }
 
 /**
@@ -320,10 +324,10 @@ function setLabel ( feature, texto, colorArray, bgcolorArray) {
  * @property {string} id
  * @property {object} objeto
  */
-/** Obtiene diversas propiedades relativas a la celda seleccionada
- * @memberof Utiles.js
+/**
+ * @memberof! Utiles.js
  * @param {Tabulator.cell} cell 
- * @returns {activo}
+ * @returns {object} activo
  */
 function setActivo(cell) {
   // Sinonimos almacena la relacion entre id de la tabla en index y objeto que almacena
@@ -340,7 +344,7 @@ function setActivo(cell) {
     'tabla': cell.getTable(),  
     'nombreTabla': tipoObjetoBuscado,
     'celda': cell.getField(),
-    'fila': cell.getRow().getData()
+    "fila": cell.getRow().getData()
   };
   //El campo unico (id) de cada objeto es id<nombre objeto>
   const _id = "id" + _activo.nombreTabla;
@@ -349,7 +353,8 @@ function setActivo(cell) {
   return _activo;
 }
 
-/* Deprecated se movio de DiaHora
+
+
 function mete(unDia, idxTable, outTable) {
 
   var indiceDia = indiceDesdeDiaMes(unDia.dia, unDia.mes);
@@ -368,7 +373,7 @@ function mete(unDia, idxTable, outTable) {
   idxTable[indiceDia].mes = unDia.mes;
   idxTable[indiceDia].suma = suma(unDia.valores);
   idxTable[indiceDia].maximo = Math.max(...unDia.valores);
-} */
+}
 
 async function getFileFromUrl(url, type) {
   const response = await fetch(url);
@@ -509,13 +514,13 @@ function dumpData(nombre, idxTable, dataTable) {
 }
 
 /** Genera los strings formateados de todos los campos de la aplicación
- * @memberof Utiles.js
+ * @memberof! Utiles.js
  * @param {string} campo 
  * @param {any} valor 
  * @returns {string} valor formateado segun definición de UTIL.campos
  */
 function formatoValor( campo, valor) {
-console.log(TCB.i18next)
+
   if (valor === undefined) return undefined;
 
    const dato = campos[campo];
@@ -523,14 +528,10 @@ console.log(TCB.i18next)
   console.log(campo + "->" + valor);  */
   if (dato === undefined || valor === "") return valor;
 
-
-
   if (typeof valor === 'boolean') return TCB.i18next.t("valor_"+valor);
-
   if (dato.unidad === 'º') { //Se debe tener en cuanta que algunos campos de angulos para PVGIS pueden tener el valor Optimo por lo que no se añade º
       if (valor === 'Optimo') return TCB.i18next.t("valorOptimo_LBL");
   }
-
   if (dato.unidad === 'fecha') {
     const tvalor = typeof valor === 'string' ? new Date(valor) : valor;
     let options;
@@ -552,7 +553,6 @@ console.log(TCB.i18next)
     return (tvalor.toLocaleDateString(TCB.i18next.language, options));
   }
 
-
   if (dato.decimales !== undefined) {
     /*Segun la definición ISO (https://st.unicode.org/cldr-apps/v#/es/Symbols/70ef5e0c9d323e01) los numeros en 'es' no llevan '.' si no hay mas de dos digitos delante del '.' Minimum Grouping Digits = 2. Como no estoy de acuerdo con este criterio en el caso de 'es' lo cambio a 'ca' que funciona bien */
     let lng = TCB.i18next.language.substring(0,2) === 'es' ? 'ca' : TCB.i18next.language.substring(0,2);
@@ -562,19 +562,20 @@ console.log(TCB.i18next)
   }
 }
 /** formatoValor desde una celda de Tabulator
- * Esta definida como extensión de Tabulator -> Tabulator.extendModule en inicializaAplicacion
- * @memberof Utiles.js
+ * Esta definida como extensiónd e Tabulator -> Tabulator.extendModule en inicializaAplicacion
+ * @memberof! Utiles.js
  * @param {Tabulator.cell} cell 
  * @param {String} campo Nombre del campo donde proviene el valor. Campos definirá el formato definitivo en decimales y unidades
  * @returns {String} Valor del campo formateado
  */
 function n_formatoValor( cell, campo) {
+
   if (campo === undefined) campo = cell.getField();
   const valor = cell.getValue();
   return formatoValor( campo, valor);
-}
 
-/* Muestra el formulario modal de propiedades de un objeto generico
+}
+/* Función para mostrar el formulario modal de propiedades de un objeto generico
 @param: objeto -> es el objeto del que se mostrará todas las propiedades que devuelve getOwnPropertyDescriptors en la función
                 obtenerPropiedades. La llamada es recursiva, si una propiedad es un objeto se mostrarán la propiedades de ese
                 objeto tambien.
@@ -625,7 +626,7 @@ function formularioAtributos (objeto, descripcion) { //}, yesBtnLabel = 'Yes', n
 /** funcion para convertir el los objetos Solidar del repositorio en una tabla
  * TCB.XXXX[] -> [objeto, propiedad: [valores de propiedad en cada XXX]]
  * Es necesaria para el reporte PDF
- * @memberof Utiles.js
+ *
  * @param {Object} tabla 
  * @returns {Array}
  */
@@ -709,11 +710,12 @@ var prop_val;
  * @param {integer} nivel 
  * @returns {propiedades} 
  */
+
 function obtenerPropiedades ( objeto, nivel) {
   if (objeto === undefined || objeto === null || objeto instanceof File) return;
   if (nivel == 0 ) prop_val = {};
+const propiedades = Object.getOwnPropertyDescriptors(objeto);
 
-  const propiedades = Object.getOwnPropertyDescriptors(objeto);
   let actobj = objeto.constructor.name;
   prop_val[actobj] = prop_val[actobj] ?? [];
 
@@ -741,7 +743,7 @@ function obtenerPropiedades ( objeto, nivel) {
   return prop_val;
 }
 
-/** Redondea flotantes a dos decimales
+/** Devuelve el número recibido con solo dos decimales
  * 
  * @param {Number} numero EL número a redondear
  * @returns {Number} El valor del argumento numero a dos decimales
@@ -756,16 +758,15 @@ function round2Decimales(numero) {
  * @param {string} texto Identificacion i18n del mensaje a mostrar
  */
 function mensaje (campo, texto) {
+
   let nodoCampo = document.getElementById( campo);
   nodoCampo.innerHTML = TCB.i18next.t(texto);
   nodoCampo.setAttribute("data-i18n", texto);
 }
 
-/** Muestra el formulario modal de atributos del objeto asociado a la fila seleccionada
- * 
- * @param {Tabulator.cell} cell Celda para activar el comando
- */
-function muestraAtributos (cell ) {
+function muestraAtributos (cell ) { //tipo, id, evento) {
+  /*     const filaActiva = evento.target.parentNode.parentNode.parentNode;
+      const id = filaActiva.cells[0].outerText; */
   const activo = setActivo(cell);
   formularioAtributos(activo.objeto, TCB.i18next.t("resultados_LBL_basePropiedades", {'id': activo.id}));
 }
@@ -797,15 +798,13 @@ function muestra(donde, valor) {
 //}
 
 function selectTCB (tabla, campo, valor) {
-
-  return TCB[tabla].filter( e => e[campo] === valor)
-/*   let recordSet = [];
+let recordSet = [];
   for (let i=0; i<TCB[tabla].length; i++) {
     if (TCB[tabla][i][campo] === valor) {
       recordSet.push(i);
     }
   }
-  return recordSet; */
+  return recordSet;
 }
 
 function hdrToolTip (e, col) {
@@ -820,7 +819,6 @@ function hdrToolTip (e, col) {
   el.innerText = TCB.i18next.t(col.getField()+"_TT"); //getDefinition().title);
   return el; 
 }
-
 async function cargaTarifasDesdeSOM() {
   const urlSOMTarifas =  "./proxy SOM.php?nombre=";
   debugLog("Tarifas leidas desde SOM:" + urlSOMTarifas);
@@ -882,8 +880,7 @@ function preparaInput( campo, changeFunction, datoOrigen) {
 }
 export {
   cambioValor,
-  cargaTarifasDesdeSOM,
-  //copyClipboard,
+    //copyClipboard,
   csvToArray,
   debugLog,
   difDays,
@@ -898,14 +895,13 @@ export {
   indiceDesdeDiaMes,
   indiceDesdeFecha,
   mensaje,
- // mete,
+  mete,
   muestra,
   muestraAtributos,
   n_formatoValor,
   nombreMes,
   nombreMesLargo,
   obtenerPropiedades,
-  preparaInput,
   promedio,
   round2Decimales,
   selectTCB,

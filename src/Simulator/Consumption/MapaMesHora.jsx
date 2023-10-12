@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import TCB from '../classes/TCB.js'
 import Plot from 'react-plotly.js'
 // import TCBContext from '../../TCBContext'
-import * as UTIL from '../Utiles.js'
+import * as UTIL from '../classes/Utiles.js'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 
