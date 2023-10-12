@@ -76,7 +76,10 @@ class Rendimiento extends DiaHora {
     addurl += "&pvtechchoice=" + TCB.parametros.tecnologia;
     let [lon , lat] = base.lonlatBaseSolar
     let url =
-      TCB.basePath + "proxy PVGIS.php?" +
+
+    //http://localhost/SOM/Solidar.3/proxy PVGIS.php?idSesion=1696851045991&lat=40.4505&lon=-3.6999&optimalangles=1&loss=20&pvtechchoice=crystSi
+    TCB.basePath + "http://localhost/SOM/Solidar.3/proxy PVGIS.php?" +
+    //  TCB.basePath + "proxy PVGIS.php?" +
       "idSesion=" + TCB.idSesion +
       "&lat=" + lat +
       "&lon=" + lon +
