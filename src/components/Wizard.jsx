@@ -172,7 +172,7 @@ export default function Wizard(params) {
         const isCurrent = ichild === currentStep
         const prevDisabled = ichild === 0 || isInTransition
         const validationErrors = callOrValue(child.props?.validate)
-        const nextDisabled = ichild === totalSteps - 1 || validationErrors || isInTransition
+        const nextDisabled = ichild === totalSteps - 1 || !!validationErrors || isInTransition
         if (!showAll && !isCurrent) return null
         return (
           <fieldset key={ichild} style={{ border: 'none' }} disabled={!isCurrent}>
