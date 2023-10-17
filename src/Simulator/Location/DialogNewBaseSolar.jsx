@@ -14,10 +14,10 @@ import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField'
 import { MuiFileInput } from 'mui-file-input'
 
-import BaseSolar from '../classes/BaseSolar.js'
-import Tarifa from '../classes/Tarifa.js'
-import TCB from '../classes/TCB.js'
-import TCBContext from '../TCBContext.jsx'
+import BaseSolar from '../classes/BaseSolar'
+import Tarifa from '../classes/Tarifa'
+import TCB from '../classes/TCB'
+import TCBContext from '../TCBContext'
 
 export default function DialogNewBaseSolar({data, onChange, onClose, onCancel }) {
 
