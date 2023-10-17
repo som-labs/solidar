@@ -9,7 +9,7 @@ import TCB from '../classes/TCB'
 import { DataGrid } from '@mui/x-data-grid'
 import * as UTIL from '../classes/Utiles'
 import Instalacion from '../classes/Instalacion'
-//import TCB from '../../classes/TCB.js'
+//import TCB from '../../classes/TCB'
 
 const EnergyBalanceStep = () => {
     const { t, i18n } = useTranslation()

@@ -1,9 +1,9 @@
-import TCB from "./TCB.js";
-import * as UTIL from "./Utiles.js";
-import Graficos from "./Graficos.js";
+import TCB from "./TCB";
+import * as UTIL from "./Utiles";
+import Graficos from "./Graficos";
 import { useTranslation } from 'react-i18next'
 
-// import { gestionParametros } from "./gestionParametros.js";
+// import { gestionParametros } from "./gestionParametros";
 
 /*global bootstrap, Tabulator, COLECTIVO */
 

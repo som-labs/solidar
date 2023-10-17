@@ -35,7 +35,7 @@ import DialogNewBaseSolar from './DialogNewBaseSolar'
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 import TCBContext from '../TCBContext'
-import BaseSolar from '../classes/BaseSolar.js'
+import BaseSolar from '../classes/BaseSolar'
 
 function MapComponent() {
     const { t, i18n } = useTranslation()
