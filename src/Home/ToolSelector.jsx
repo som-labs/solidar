@@ -13,7 +13,17 @@ export default function ToolSelector(params) {
   return (
     <>
       <Card elevation={0}>
-        <CardActionArea {...(route ? { component: Link, to: route } : {})}>
+        <CardActionArea
+          {...(route ? { component: Link, to: route } : {})}
+          sx={{
+            color: 'primary.main',
+            transition: '.2s',
+            '&:hover': {
+              color: 'secondary.main',
+              transition: '.2s',
+            },
+          }}
+        >
           <CardContent>
             <Box sx={{ display: 'flex', flexFlow: 'column', alignItems: 'center' }}>
               {Icon ? (
