@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import Plot from 'react-plotly.js'
+import Plot from 'react-plotly'
 import TCBContext from '../../TCBContext'
 
 import Container from '@mui/material/Container'

@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
-import TCB from '../classes/TCB.js'
-import Plot from 'react-plotly.js'
+import TCB from '../classes/TCB'
+import Plot from 'react-plotly'
 // import TCBContext from '../../TCBContext'
-import * as UTIL from '../classes/Utiles.js'
+import * as UTIL from '../classes/Utiles'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 
