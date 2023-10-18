@@ -5,9 +5,6 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 
 import TextField from '@mui/material/TextField'
-import DateEditor from 'react-tabulator/lib/editors/DateEditor'
-import MultiValueFormatter from 'react-tabulator/lib/formatters/MultiValueFormatter'
-import MultiSelectEditor from 'react-tabulator/lib/editors/MultiSelectEditor'
 import Button from '@mui/material/Button'
 
 const SummaryStep = () => {
