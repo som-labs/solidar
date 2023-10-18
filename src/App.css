@@ -1,16 +1,15 @@
-
-#root{
-  width:100%;
-  padding:0;
-  margin:0
+#root {
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
-.map-container{
-    height: 200px;
-    width: 50%;
+.map-container {
+  height: 200px;
+  width: 50%;
 }
 
-.tablas{
+.tablas {
   height: 300px;
   width: 100%;
 }
@@ -20,6 +19,3 @@
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   grid-gap: 10px;
 }
-
-
-

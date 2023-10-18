@@ -12,71 +12,78 @@ import Instalacion from '../classes/Instalacion'
 //import TCB from '../../classes/TCB'
 
 const EnergyBalanceStep = () => {
-    const { t, i18n } = useTranslation()
-    TCB.i18next = i18n
-    console.log(TCB.i18next)
-    const {bases, setBases, tipoConsumo, setTipoConsumo} = useContext(TCBContext)
+  const { t, i18n } = useTranslation()
+  TCB.i18next = i18n
+  console.log(TCB.i18next)
+  const { bases, setBases, tipoConsumo, setTipoConsumo } = useContext(TCBContext)
 
-    // let oldBases = [...bases]
-    // for (let i=0; i<TCB.BaseSolar.length; i++) {
-    // //TCB.BaseSolar.forEach (base => {
-    //     if (TCB.BaseSolar[i].requierePVGIS) {
-    //         // if (!base.angulosOptimos) {
-    //         //     if (base.inclinacionTejado === 0 && base.inclinacionPaneles === 0 && !base.inclinacionOptima) {
-    //         //         if (!window.confirm("Base: " + base.nombreBaseSolar + " con paneles a 0º de inclinación")) return false; 
-    //         //     }
-    //         // }
-    //         // UTIL.debugLog("Base requiere PVGIS:", base);
-    //         console.log('cargariamos rendimiento de', oldBases[i].nombreBaseSolar)
-    //          //base.cargaRendimiento();
-    //          TCB.BaseSolar[i].instalacion = new Instalacion({paneles: 0, potenciaUnitaria: 450});
-    //           oldBases[i].paneles = 0
-    //           oldBases[i].potenciaUnitaria = 450
-    //           oldBases[i].potenciaTotal = 4.4
+  // let oldBases = [...bases]
+  // for (let i=0; i<TCB.BaseSolar.length; i++) {
+  // //TCB.BaseSolar.forEach (base => {
+  //     if (TCB.BaseSolar[i].requierePVGIS) {
+  //         // if (!base.angulosOptimos) {
+  //         //     if (base.inclinacionTejado === 0 && base.inclinacionPaneles === 0 && !base.inclinacionOptima) {
+  //         //         if (!window.confirm("Base: " + base.nombreBaseSolar + " con paneles a 0º de inclinación")) return false;
+  //         //     }
+  //         // }
+  //         // UTIL.debugLog("Base requiere PVGIS:", base);
+  //         console.log('cargariamos rendimiento de', oldBases[i].nombreBaseSolar)
+  //          //base.cargaRendimiento();
+  //          TCB.BaseSolar[i].instalacion = new Instalacion({paneles: 0, potenciaUnitaria: 450});
+  //           oldBases[i].paneles = 0
+  //           oldBases[i].potenciaUnitaria = 450
+  //           oldBases[i].potenciaTotal = 4.4
 
+  //          TCB.requiereOptimizador = true;
+  //      }
+  //  }
+  //  setBases(oldBases)
 
-    //          TCB.requiereOptimizador = true;
-    //      }
-    //  }
-    //  setBases(oldBases)
+  const columns = [
+    // { field: 'idBaseSolar', headerName: 'ID', width: 50 },
+    { field: 'nombreBaseSolar', headerName: 'Nombre' },
+    {
+      field: 'paneles',
+      headerName: 'Paneles',
+      width: 130,
+      align: 'right',
+      renderCell: (params) => {
+        return UTIL.formatoValor('paneles', params.value)
+      },
+    },
+    //  { field: 'potenciaMaxima', headerName: 'Pot. Maxima', align:'right', renderCell: (params) => {
+    //      return UTIL.formatoValor('potenciaMaxima',params.value)}},
+    { field: 'potenciaUnitaria', headerName: 'Potencia Unitaria' },
+    { field: 'potenciaTotal', headerName: 'Potencia Total de la base' },
+  ]
 
-    const columns = [
-        // { field: 'idBaseSolar', headerName: 'ID', width: 50 },
-         { field: 'nombreBaseSolar', headerName: 'Nombre' },
-         { field: 'paneles', headerName: 'Paneles', width: 130, align:'right', renderCell: (params) => {
-             return UTIL.formatoValor('paneles', params.value)}},
-        //  { field: 'potenciaMaxima', headerName: 'Pot. Maxima', align:'right', renderCell: (params) => {
-        //      return UTIL.formatoValor('potenciaMaxima',params.value)}},
-        { field: 'potenciaUnitaria', headerName: 'Potencia Unitaria'},
-        { field: 'potenciaTotal', headerName:'Potencia Total de la base'}
-     ]
+  function getRowId(row) {
+    return row.idBaseSolar
+  }
 
-     function getRowId(row) {
-        return row.idBaseSolar;
-    }
+  return (
+    <>
+      <Container>
+        <Typography variant="h3">{t('ENERGY_BALANCE.TITLE')}</Typography>
+        <Typography variant="body">{t('ENERGY_BALANCE.DESCRIPTION')}</Typography>
 
-    return <>
-        <Container>
-            <Typography variant='h3'>{t("ENERGY_BALANCE.TITLE")}</Typography>
-            <Typography variant='body'>{t("ENERGY_BALANCE.DESCRIPTION")}</Typography>
+        <div>
+          <Typography variant="body">{t('tabla bases asignadas')}</Typography>
+          <DataGrid
+            getRowId={getRowId}
+            rows={bases}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+            //checkboxSelection
+          />
+        </div>
 
-            <div>
-            <Typography variant='body'>{t("tabla bases asignadas")}</Typography>
-            <DataGrid
-                getRowId={getRowId}
-                rows={bases}
-                columns={columns}
-                initialState={{
-                  pagination: {
-                      paginationModel: { page: 0, pageSize: 5 },
-                  },
-                }}
-                pageSizeOptions={[5, 10]}
-                //checkboxSelection
-            />
-            </div>
-
-                    {/* <div className="form-group row justify-content-center">
+        {/* <div className="form-group row justify-content-center">
                         <label className="col-md-2" data-i18n="cMaximoAnual_LBL"></label>
                         <div className="col-md-2 text-end" id="cMaximoAnual" data-bs-toggle="tooltip" data-bs-placement="top">
                         <a data-i18n="resultados_LBL_pendienteCalculo"></a>
@@ -210,9 +217,9 @@ const EnergyBalanceStep = () => {
                         </div>
                     </div>
                     <hr/> */}
-
-        </Container>
+      </Container>
     </>
+  )
 }
 
 export default EnergyBalanceStep

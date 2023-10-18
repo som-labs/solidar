@@ -1,36 +1,36 @@
-APP_FRAME: 
-  PAGE_HOME:  Inicio
-  PAGE_SIMULATORS:  Simuladores
-  PAGE_ABOUT:  Sobre Solidar
-  TOGGLE_COLOR_MODE:  Cambia el tema de color
-  CHANGE_LANGUAGE:  Cambia el idioma
-  CONTRIBUTE_TRANSLATIONS:  Ayúdanos a traducir
-  GO_HOME:  Ir a la pagina principal
-  GO_SIMULATOR:  Ir al simulador
-  PAGE_NOT_FOUND:  No se ha encontrado la pàgina
-HOME: 
-  IS_IT_WORTH_TITLE1:  Quiero ponerme placas solares
-  IS_IT_WORTH_TITLE2:  ¿cómo sé si me compensa?
-  IS_IT_WORTH_PARAGRAPH1:  |
+APP_FRAME:
+  PAGE_HOME: Inicio
+  PAGE_SIMULATORS: Simuladores
+  PAGE_ABOUT: Sobre Solidar
+  TOGGLE_COLOR_MODE: Cambia el tema de color
+  CHANGE_LANGUAGE: Cambia el idioma
+  CONTRIBUTE_TRANSLATIONS: Ayúdanos a traducir
+  GO_HOME: Ir a la pagina principal
+  GO_SIMULATOR: Ir al simulador
+  PAGE_NOT_FOUND: No se ha encontrado la pàgina
+HOME:
+  IS_IT_WORTH_TITLE1: Quiero ponerme placas solares
+  IS_IT_WORTH_TITLE2: ¿cómo sé si me compensa?
+  IS_IT_WORTH_PARAGRAPH1: |
     Solidar es una calculadora que determina
     la cantidad óptima de paneles a instalar
     según las condiciones de la cubierta
     y del consumo eléctrico de las personas participantes.
 
-  IS_IT_WORTH_PARAGRAPH2:  |
+  IS_IT_WORTH_PARAGRAPH2: |
     Toma datos como el tamaño de la cubierta
     su inclinación y orientación
     el consumo eléctrico y la tarifa
     y genera un informe con el número de paneles
     el coste de la instalación y el ahorro potencial.
 
-  IS_IT_WORTH_BUTTON:  Ir a las herramientas de simulación
-  SIMULATION_TOOLS_TITLE:  Herramientas de simulación
-  SIMULATION_TOOLS_INDIVIDUAL:  Simulador para Consumo Individual
-  SIMULATION_TOOLS_INDIVIDUAL_DESCRIPTION:  (Nueva versión disponible)
-  SIMULATION_TOOLS_COLLECTIVE:  Simulador para Consumo Colectivo
-  SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION:  (En desarrollo)
-  FURTHER_INFORMATION_TITLE:  Información de interés
+  IS_IT_WORTH_BUTTON: Ir a las herramientas de simulación
+  SIMULATION_TOOLS_TITLE: Herramientas de simulación
+  SIMULATION_TOOLS_INDIVIDUAL: Simulador para Consumo Individual
+  SIMULATION_TOOLS_INDIVIDUAL_DESCRIPTION: (Nueva versión disponible)
+  SIMULATION_TOOLS_COLLECTIVE: Simulador para Consumo Colectivo
+  SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION: (En desarrollo)
+  FURTHER_INFORMATION_TITLE: Información de interés
 
 MAIN:
   botonAnterior_TT: Anterior
@@ -44,24 +44,24 @@ MAIN:
   TAB_reporte: Resumo
   botonSiguiente_TT: A continuación
 
-LOCATION: 
-  LABEL:  LOCALIZACIÓN
-  TITLE:  Localización
-  DESCRIPTION:  |
+LOCATION:
+  LABEL: LOCALIZACIÓN
+  TITLE: Localización
+  DESCRIPTION: |
     En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.\n
     A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.\n Su rendimiento se calcula a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).
     Rellena el siguiente formulario:
 
-  LABEL_AREASDISPONIBLES:  AREAS DISPONIBLES
-  PROMPT_ADDRESS:  Busca la dirección del edificio
+  LABEL_AREASDISPONIBLES: AREAS DISPONIBLES
+  PROMPT_ADDRESS: Busca la dirección del edificio
   TOOLTIP_ADDRESS: Despois de indicar a cidade e a dirección onde se instalará o pulso dos paneis pulse la lupa
-  PROMPT_DRAW:  Dibuja las áreas disponibles del edificio en el mapa (?). Puedes añadir tantas áreas como quieras.
-  LABEL_TILT:  INCLINACION
-  PROMPT_TILT:  Indica la inclinación de cada una de las áreas definidas
-  LABEL_AZIMUT:  ORIENTACIÓN AL SUR
-  PROMPT_AZIMUT:  Señala la orientación del tejado respecto al sur (acimut) haciendo clicken las areas que esten inclinadas (?)
-  LABEL_SUMMARY:  RESUMEN
-  PROMPT_SUMMARY:  Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
+  PROMPT_DRAW: Dibuja las áreas disponibles del edificio en el mapa (?). Puedes añadir tantas áreas como quieras.
+  LABEL_TILT: INCLINACION
+  PROMPT_TILT: Indica la inclinación de cada una de las áreas definidas
+  LABEL_AZIMUT: ORIENTACIÓN AL SUR
+  PROMPT_AZIMUT: Señala la orientación del tejado respecto al sur (acimut) haciendo clicken las areas que esten inclinadas (?)
+  LABEL_SUMMARY: RESUMEN
+  PROMPT_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
   MSG_alMenosUnaBase: Debe definir al menos una base en el mapa
   MSG_definirBases: Debe definir las bases solares antes de continuar
   LABEL_SATELITE: Vista por satélite
@@ -70,8 +70,8 @@ LOCATION:
   candidatos_TT: Seleccione a dirección correcta ou rexístrate no mapa inferior cunha pulsación do dobre rato
 
 CONSUMPTION:
-  TITLE:  Consumo
-  DESCRIPTION:  |
+  TITLE: Consumo
+  DESCRIPTION: |
     Consumo eléctrico
     En la siguiente pantalla necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.\n
     Para calcular el coste del consumo necesitamos conocer tu tarifa y los precios por tramos horarios de tu comercializadora (a menos que tengas tarifa plana).\n
@@ -103,10 +103,10 @@ LABEL_cTotalAnual: Consumo anual
 TT_cTotalAnual: Consumo anual de electricidade
 tcMaximoAnual_LBL: Máximo consumo horario anual
 numeroDias_LBL: Días procesados
-botonBorraTipoConsumo_LBL: 
-botonMuestraMapaTipoConsumo_LBL: 
-botonMuestraTarifa_LBL: 
-botonSeleccionFichero_LBL: 
+botonBorraTipoConsumo_LBL:
+botonMuestraMapaTipoConsumo_LBL:
+botonMuestraTarifa_LBL:
+botonSeleccionFichero_LBL:
 botonBorraTipoConsumo_TT: Elimina o perfil de consumo seleccionado
 botonMuestraMapaTipoConsumo_TT: Mostra o gráfico do mapa de consumo deste perfil
 botonMuestraTarifa_TT: Mostrar os prezos das tarifas
@@ -116,8 +116,8 @@ consumo_MSG_hayFincasAsociadas: No se puede borrar un tipo de consumo que tiene 
 consumo_MSG_descripcionFuentes: "Hai tres formas de proporcionar a información do perfil de consumo <li>CSV:  un ficheiro con valores separados por punto e coma obtido da páxina web da túa empresa de distribución.<a href='./data/Links for individual CSV download . htm 'target='_blank'> Consulta aquí as instrucións </a></li><li>REE:  empregando o perfil estándar REE segundo <a href='https: //www.ree.es/es/clientes / generator/gestion-medidas-electricas/consulta-perfiles-de-consumo' target='_blank'> perfís de consumo final en función dos perfís iniciais en función da demanda real do sistema</a> e do consumo anual estimado do instalación</li><li>DATADIS:  ficheiro obtido da plataforma das empresas distribuidoras denominada <a href: 'https: //datadis.es/home' 'target='_blank'>DATADIS</a></ / li><p>Debes escoller un ou outro segundo a información que teñas.</p>"
 consumo_MSG_errorLecturaFicheroConsumo: Erro de lectura CSV Ficheiro de consumo
 consumo_MSG_errorCabeceras: Cabeceira de erro de formato CSV {{cabeceras}}
-consumo_MSG_resumen: "{{registros}} Rexistros de consumo cargados desde {{desde}} ata {{hasta}}"
-consumo_MSG_numeroLimitadoRegistros: "Aviso:  só existen {{registros}} rexistros que non completan un ano de estatísticas"
+consumo_MSG_resumen: '{{registros}} Rexistros de consumo cargados desde {{desde}} ata {{hasta}}'
+consumo_MSG_numeroLimitadoRegistros: 'Aviso:  só existen {{registros}} rexistros que non completan un ano de estatísticas'
 consumo_MSG_definirPotenciaBaseREE: Debe definir un consumo base anual superior a 0 para o perfil REE
 consumo_MSG_nombreCSVPorDefinir: Por definir
 consumo_TT_descripcionTarifaP1: Tarifa P1 o punta (a máis cara en 2.0TD)
@@ -144,20 +144,20 @@ TARIFA:
   P6_LBL: Tarifa P6
 
 ENERGY_BALANCE:
-  TITLE:  Balance de Energía
-  DESCRIPTION:  |
+  TITLE: Balance de Energía
+  DESCRIPTION: |
     A partir de tu documento de consumo hemos hecho el cálculo del número de paneles que necesitarías para cubrirlo. 
     (i) Los paneles se asignan primero a las áreas más eficientes desde el punto de vista de rendimiento energético.
     En la siguiente tabla puedes cambiar el número de paneles en cada área individualmente.
 
 ECONOMIC_BALANCE:
-  TITLE:  Balance Económico
-  DESCRIPTION:  |
+  TITLE: Balance Económico
+  DESCRIPTION: |
     En esta pantalla conocerás cuánto tendrás que invertir en la instalación (teniendo en cuenta las subvenciones) cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión.
 
 SUMMARY:
-  TITLE:  RESUMEN
-  DESCRIPTION:  Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
+  TITLE: RESUMEN
+  DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
 
 ene: xan
 feb: feb
@@ -187,7 +187,7 @@ valor_true: Verdadeiro
 valor_false: Falso
 
 objetos solidar: objetos
-objeto_BaseSolar:  Base solar
+objeto_BaseSolar: Base solar
 objeto_Rendimiento: Rendemento segundo pvgis
 objeto_Instalacion: Instalación
 objeto_Produccion: Producción
@@ -249,21 +249,19 @@ contacto_LBL_email: correo electrónico
 contacto_LBL_nombre: Nome
 
 Menu de botones: Menu de botones
-botonExportar_TT:  Gardar proxecto
+botonExportar_TT: Gardar proxecto
 botonContacto_TT: Contacto / suxestións
-botonInformePDF_TT:  Gardar informe en PDF
+botonInformePDF_TT: Gardar informe en PDF
 botonParametros_TT: Parámetros
-botonInstrucciones_TT:  Instrucións
+botonInstrucciones_TT: Instrucións
 botonAyuda_TT: Axuda
 
-botonExportar_LBL:  
-botonContacto_LBL: 
-botonInformePDF_LBL: 
-botonParametros_LBL: 
-botonInstrucciones_LBL: 
-botonAyuda_LBL: 
-
-
+botonExportar_LBL:
+botonContacto_LBL:
+botonInformePDF_LBL:
+botonParametros_LBL:
+botonInstrucciones_LBL:
+botonAyuda_LBL:
 
 titulo ayudas: titulo ayudas
 ayuda_TIT_localizacion: Nesta pestana identifícanse datos de localización xeográfica
@@ -304,7 +302,7 @@ mensajes mapa: Mensajes del mapa
 mapa_MSG_definePuntoConsumo: Debe definir al menos un punto de consumo en el mapa antes de seguir
 
 mapa_MSG_cuantosPuntoConsumo: En modo {{modoActivo}} no pueden existir mas de un punto de consumo\nDebe borrar el existente antes de continuar
-mapa_MSG_errorCatastroXY: "Error consulta catastro:  {{descripcion}}"
+mapa_MSG_errorCatastroXY: 'Error consulta catastro:  {{descripcion}}'
 mapa_MSG_Polygon: Defina a área na que se instalarán os paneis. Só son necesarios tres puntos. Despois podes definir o acimut de cada un deles usando a icona <i class='fa fa-compass'></i>
 mapa_MSG_LineString: Dun punto para indicar a orientación xeográfica dos paneis
 mapa_MSG_Point: Define a localización do consumo
@@ -334,10 +332,10 @@ inclinacionOptima_TT: Marca este campo se queres que o sistema calcule o valor �
 inAcimut_LBL: Orientación (Azimut)
 inAcimut_TT: O ángulo entre o sur coa proxección horizontal do sol. Se os paneis estivesen orientados ao sur o azimut será 0º feito ao leste -90º e oeste 90º. Este campo está cuberto indicando no mapa a orientación que terán os paneis. Se non se complete suponse que é 0
 botonAcimut_TT: Puede definirlo mediante click en el mapa
-botonAcimut_LBL: 
+botonAcimut_LBL:
 angulosOptimos_LBL: Ángulos óptimos
 angulosOptimos_TT: Marca este campo se queres que o sistema calcule o valor óptimo da inclinación e Azimut
-botonBorraBase_LBL: 
+botonBorraBase_LBL:
 botonBorraBase_TT: Elimina a base seleccionada
 
 tabla PuntoConsumo_LBL: tabla PuntoConsumo
@@ -372,7 +370,7 @@ inclinacion_LBL: Inclinación paneles
 acimut_LBL: Acimut de la base
 unitarioTotal_LBL: Enerxía anual / kWp instalada
 unitarioTotal_TT: Enerxía anual producida por kWp instalada
-rendimiento_MSG_errorFetch: "Erro ao executar Fetch en PVGIS. Resposta: "
+rendimiento_MSG_errorFetch: 'Erro ao executar Fetch en PVGIS. Resposta: '
 rendimiento_MSG_obteniendoPVGISdata: Obtendo datos PVGIS
 
 produccion: produccion
@@ -387,8 +385,8 @@ pTotalAnual_LBL: Produción anual
 pTotalAnual_TT: Enerxía anual producida
 
 resultados: resultados
-botonInfoBase_LBL: 
-botonInfoBase_TT: Información detallada de la base seleccionada	
+botonInfoBase_LBL:
+botonInfoBase_TT: Información detallada de la base seleccionada
 potenciaUnitaria_LBL: Potencia por panel en kWp
 potenciaUnitaria_TT: Potencia unitaria dos paneis instalados
 paneles_LBL: Paneis
@@ -434,7 +432,7 @@ resultados_LBL_pendienteCalculo: Pendente
 graficos_LBL_numeroMaximoPaneles: Limite os paneis por área dispoñible
 resultados_LBL_tituloPropiedades: Propiedades
 resultados_MSG_excesoPotencia: Hai un exceso de potencia nesta base baseándose na área de Apoble
-resultados_LBL_basePropiedades: "Base:  {{id}}"
+resultados_LBL_basePropiedades: 'Base:  {{id}}'
 
 economico: economico
 tabla: tabla
@@ -466,7 +464,7 @@ noCompensadoAnual_LBL: Custo enerxético non compensado
 noCompensadoAnual_TT: A cantidade de enerxía excedente que o comerciante non compensará. Será favorable para o consumidor.\nN normalmente ocorre cando se instalan máis paneis que os recomendables cando se consumen moi por debaixo do habitual (de vacacións) ou cando o prezo de compensación de O comerciante era alto (moi improbable).
 valorSubvencionIBI_LBL: IBI (€)
 valorSubvencionIBI_TT: Cubrir se o concello onde se realiza a instalación subvenciona o imposto de bens inmobles.\nFundación Renovables facilita unha relación dos concellos con bonificacións e reducións do IBI no ICIO.
-porcientoSubvencionIBI_LBL: "% de subvención"
+porcientoSubvencionIBI_LBL: '% de subvención'
 porcientoSubvencionIBI_TT: A porcentaxe co concello bonos o importe do IBI
 tiempoSubvencionIBI_LBL: Duración (anos)
 tiempoSubvencionIBI_TT: O número de anos durante os cales pódese aplicar o bono no IBI
@@ -509,15 +507,14 @@ graficos_LBL_cambiaPaneles: Fai clic en cambiar a {{paneles}} paneis
 graficos_LBL_paneles: Paneis
 graficos_LBL_panelesActuales: Paneis actuais {{paneles}}
 
-
 informe_LBL_produccionMediaEsperada: Produción media esperada
 informe_LBL_datosInstalacionAnalizada: Datos de instalación analizados
 informe_LBL_datosPVGISObtenidos: Datos PVGIS obtidos
 informe_LBL_datosLocalizacionAportados: Datos de localización proporcionados
 informe_LBL_datosDeConsumo: Datos de consumo
-informe_LBL_fichero: "Ficheiro: "
+informe_LBL_fichero: 'Ficheiro: '
 informe_LBL_paraPotenciaAnual: para a potencia anual de
-informe_LBL_registros: "Rexistros:  {{registros}}"
+informe_LBL_registros: 'Rexistros:  {{registros}}'
 informe_LBL_numeroRegistros: Rexistros
 informe_LBL_desde: Desde
 informe_LBL_hasta: Ata
@@ -531,8 +528,7 @@ informe_LBL_balanceEconomico: Equilibrio económico
 informe_LBL_balanceFinanciero: Balance financeiro (euros)
 informe_MSG_procesarPrimero: Debe obter o equilibrio enerxético antes de poder xerar o informe
 
-
 resultados_LBL_participacion: Participación
 
 nominatim_MSG_errorFetch: Erro ao executar fecth en nominatim.\n{{er}} \n {{url}}}
-nominatim_MSG_errorBuscandoTerritorio: "Nominatim Erro ao buscar o estado do territorio:  {{resp}}"
+nominatim_MSG_errorBuscandoTerritorio: 'Nominatim Erro ao buscar o estado do territorio:  {{resp}}'
