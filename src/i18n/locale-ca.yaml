@@ -1,36 +1,36 @@
-APP_FRAME: 
-  PAGE_HOME:  Inici
-  PAGE_SIMULATORS:  Simuladors
-  PAGE_ABOUT:  Quant a Solidar
-  TOGGLE_COLOR_MODE:  Cambia el tema de color
-  CHANGE_LANGUAGE:  Cambia el idioma
-  CONTRIBUTE_TRANSLATIONS:  Ayúdanos a traducir
-  GO_HOME:  Ir a la pagina principal
-  GO_SIMULATOR:  Ir al simulador
-  PAGE_NOT_FOUND:  No se ha encontrado la pàgina
-HOME: 
-  IS_IT_WORTH_TITLE1:  Quiero ponerme placas solares
-  IS_IT_WORTH_TITLE2:  ¿cómo sé si me compensa?
-  IS_IT_WORTH_PARAGRAPH1:  |
+APP_FRAME:
+  PAGE_HOME: Inici
+  PAGE_SIMULATORS: Simuladors
+  PAGE_ABOUT: Quant a Solidar
+  TOGGLE_COLOR_MODE: Cambia el tema de color
+  CHANGE_LANGUAGE: Cambia el idioma
+  CONTRIBUTE_TRANSLATIONS: Ayúdanos a traducir
+  GO_HOME: Ir a la pagina principal
+  GO_SIMULATOR: Ir al simulador
+  PAGE_NOT_FOUND: No se ha encontrado la pàgina
+HOME:
+  IS_IT_WORTH_TITLE1: Quiero ponerme placas solares
+  IS_IT_WORTH_TITLE2: ¿cómo sé si me compensa?
+  IS_IT_WORTH_PARAGRAPH1: |
     Solidar es una calculadora que determina
     la cantidad óptima de paneles a instalar
     según las condiciones de la cubierta
     y del consumo eléctrico de las personas participantes.
 
-  IS_IT_WORTH_PARAGRAPH2:  |
+  IS_IT_WORTH_PARAGRAPH2: |
     Toma datos como el tamaño de la cubierta
     su inclinación y orientación
     el consumo eléctrico y la tarifa
     y genera un informe con el número de paneles
     el coste de la instalación y el ahorro potencial.
 
-  IS_IT_WORTH_BUTTON:  Ir a las herramientas de simulación
-  SIMULATION_TOOLS_TITLE:  Herramientas de simulación
-  SIMULATION_TOOLS_INDIVIDUAL:  Simulador para Consumo Individual
-  SIMULATION_TOOLS_INDIVIDUAL_DESCRIPTION:  (Nueva versión disponible)
-  SIMULATION_TOOLS_COLLECTIVE:  Simulador para Consumo Colectivo
-  SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION:  (En desarrollo)
-  FURTHER_INFORMATION_TITLE:  Información de interés
+  IS_IT_WORTH_BUTTON: Ir a las herramientas de simulación
+  SIMULATION_TOOLS_TITLE: Herramientas de simulación
+  SIMULATION_TOOLS_INDIVIDUAL: Simulador para Consumo Individual
+  SIMULATION_TOOLS_INDIVIDUAL_DESCRIPTION: (Nueva versión disponible)
+  SIMULATION_TOOLS_COLLECTIVE: Simulador para Consumo Colectivo
+  SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION: (En desarrollo)
+  FURTHER_INFORMATION_TITLE: Información de interés
 
 MAIN:
   botonAnterior_TT: Anterior
@@ -44,24 +44,24 @@ MAIN:
   TAB_reporte: Resum
   botonSiguiente_TT: Següent
 
-LOCATION: 
-  LABEL:  LOCALIZACIÓN
-  TITLE:  Localización
-  DESCRIPTION:  |
+LOCATION:
+  LABEL: LOCALIZACIÓN
+  TITLE: Localización
+  DESCRIPTION: |
     En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.\n
     A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.\n Su rendimiento se calcula a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).
     Rellena el siguiente formulario:
 
-  LABEL_AREASDISPONIBLES:  AREAS DISPONIBLES
-  PROMPT_ADDRESS:  Busca la dirección del edificio
+  LABEL_AREASDISPONIBLES: AREAS DISPONIBLES
+  PROMPT_ADDRESS: Busca la dirección del edificio
   TOOLTIP_ADDRESS: Després d'indicar la ciutat i l'adreça d'on s'instal·laran els panells premeu la lupa
-  PROMPT_DRAW:  Dibuja las áreas disponibles del edificio en el mapa (?). Puedes añadir tantas áreas como quieras.
-  LABEL_TILT:  INCLINACION
-  PROMPT_TILT:  Indica la inclinación de cada una de las áreas definidas
-  LABEL_AZIMUT:  ORIENTACIÓN AL SUR
-  PROMPT_AZIMUT:  Señala la orientación del tejado respecto al sur (acimut) haciendo clicken las areas que esten inclinadas (?)
-  LABEL_SUMMARY:  RESUMEN
-  PROMPT_SUMMARY:  Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
+  PROMPT_DRAW: Dibuja las áreas disponibles del edificio en el mapa (?). Puedes añadir tantas áreas como quieras.
+  LABEL_TILT: INCLINACION
+  PROMPT_TILT: Indica la inclinación de cada una de las áreas definidas
+  LABEL_AZIMUT: ORIENTACIÓN AL SUR
+  PROMPT_AZIMUT: Señala la orientación del tejado respecto al sur (acimut) haciendo clicken las areas que esten inclinadas (?)
+  LABEL_SUMMARY: RESUMEN
+  PROMPT_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
   MSG_alMenosUnaBase: Cal definir almenys una base en el mapa
   MSG_definirBases: Cal definir las bases solares abans de seguir
   LABEL_SATELITE: Vista de satèl·lit
@@ -70,8 +70,8 @@ LOCATION:
   candidatos_TT: Selecciona la direcció correcta o fes un senyal al mapa inferior amb una pulsació doble de ratolí
 
 CONSUMPTION:
-  TITLE:  Consumo
-  DESCRIPTION:  |
+  TITLE: Consumo
+  DESCRIPTION: |
     Consumo eléctrico
     En la siguiente pantalla necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.\n
     Para calcular el coste del consumo necesitamos conocer tu tarifa y los precios por tramos horarios de tu comercializadora (a menos que tengas tarifa plana).\n
@@ -103,10 +103,10 @@ CONSUMPTION:
   TT_cTotalAnual: Consum elèctric anual
   tcMaximoAnual_LBL: Màxim consum horari anual
   numeroDias_LBL: Dies processats
-  botonBorraTipoConsumo_LBL: 
-  botonMuestraMapaTipoConsumo_LBL: 
-  botonMuestraTarifa_LBL: 
-  botonSeleccionFichero_LBL: 
+  botonBorraTipoConsumo_LBL:
+  botonMuestraMapaTipoConsumo_LBL:
+  botonMuestraTarifa_LBL:
+  botonSeleccionFichero_LBL:
   botonBorraTipoConsumo_TT: Esborra el perfil de consum seleccionat
   botonMuestraMapaTipoConsumo_TT: Mostra gràfic mapa de consum d'aquest perfil
   botonMuestraTarifa_TT: Mostra preus de tarifa
@@ -116,10 +116,10 @@ CONSUMPTION:
   consumo_MSG_descripcionFuentes: "Hi ha tres maneres de proveir la informació del perfil de consum <li>CSV:  un fitxer amb valors separats per punt i coma obtingut des del web de la teva empresa distribuïdora.<a href='./dades/Enllaços per a descàrrega CSV individual. htm 'target='_blank'> Veure instruccions aquí </a></li><li>REE:  utilitzant el perfil estàndard de REE segons <a href='https: //www.ree.es/es/clientes/ generador/gestion-mesures-elèctriques/consulta-perfils-de-consum' target='_blank'> perfils finals de consum a partir dels perfils inicials en funció de la demanda real del sistema</a> i el consum anual estimat de la instal·lació</li><li>DATADIS:  un fitxer obtingut de la plataforma de les empreses distribuïdores anomenada <a href: 'https: //datadis.es/home' 'target='_blank'>DATADIS</a>< /li><p>Has de triar una o altra segons la informació que disposis.</p>"
   consumo_MSG_errorLecturaFicheroConsumo: Error de lectura fitxer de consums CSV
   consumo_MSG_errorCabeceras: Error de format CSV falta capçalera {{cabeceras}}
-  consumo_MSG_resumen: "{{registros}} Registres de consum carregats des de {{desde}} fins a {{hasta}}"
+  consumo_MSG_resumen: '{{registros}} Registres de consum carregats des de {{desde}} fins a {{hasta}}'
   consumo_MSG_numeroLimitadoRegistros: "Avís:  només existeixen {{registros}} registres que no completen un any d'estadístiques"
   consumo_MSG_definirPotenciaBaseREE: S'ha de definir un consum de base anual superior a 0 per al perfil REE
-  consumo_MSG_nombreCSVPorDefinir: Por definir   
+  consumo_MSG_nombreCSVPorDefinir: Por definir
   consumo_TT_descripcionTarifaP1: Tarifa P1 o punta (la més cara en 2.0TD)
   consumo_TT_descripcionTarifaP2: Tarifa P2 o vall (la intermèdia en 2.0TD)
   consumo_TT_descripcionTarifaP3: Tarifa P3 o llano (la més barata en 2.0TD)
@@ -130,7 +130,6 @@ CONSUMPTION:
   consumo_LBL_compensa: Compensa
   consumo_TT_compensa: Tarifa de compensació
   consumo_TT_valorCompensa: Indica el preu en euros sense IVA amb què la comercialitzadora paga l'electricitat no consumida
-
 
 TARIFA:
   territorio_LBL: Territori
@@ -145,20 +144,20 @@ TARIFA:
   P6_LBL: Tarifa P6
 
 ENERGY_BALANCE:
-  TITLE:  Balance de Energía
-  DESCRIPTION:  |
+  TITLE: Balance de Energía
+  DESCRIPTION: |
     A partir de tu documento de consumo hemos hecho el cálculo del número de paneles que necesitarías para cubrirlo. 
     (i) Los paneles se asignan primero a las áreas más eficientes desde el punto de vista de rendimiento energético.
     En la siguiente tabla puedes cambiar el número de paneles en cada área individualmente.
 
 ECONOMIC_BALANCE:
-  TITLE:  Balance Económico
-  DESCRIPTION:  |
+  TITLE: Balance Económico
+  DESCRIPTION: |
     En esta pantalla conocerás cuánto tendrás que invertir en la instalación (teniendo en cuenta las subvenciones) cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión.
 
 SUMMARY:
-  TITLE:  RESUMEN
-  DESCRIPTION:  Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
+  TITLE: RESUMEN
+  DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
 
 ene: gen
 feb: feb
@@ -215,7 +214,7 @@ parametros_LBL_descripcion: Configuració de paràmetres de l'aplicació. Els ca
 conversionAreakWp_LBL: Metres quadrats necessaris per instal·lar un kWp
 conversionAreakWp_TT: Aquest valor s'utilitzarà per saber quants kWp es poden instal·lar en una àrea definida. kWp maxim = àrea en metres quadrats / aquest paràmetre
 impuestoElectrico_LBL: Impost elèctric en %
-impuestoElectrico_TT: "L’impost especial sobre l’electricitat"
+impuestoElectrico_TT: 'L’impost especial sobre l’electricitat'
 IVAenergia_LBL: IVA aplicable a l’energia en %
 IVAenergia_TT: L'IVA que es repercuteix per la despesa en electricitat
 IVAinstalacion_LBL: IVA aplicable a la instal·lació en %
@@ -252,19 +251,17 @@ contacto_LBL_nombre: Nom
 Menu de botones: Menu de botones
 botonExportar_TT: Guardar el projecte
 botonContacto_TT: Contacte / Suggeriments
-botonInformePDF_TT:  Desa l’informe en PDF
+botonInformePDF_TT: Desa l’informe en PDF
 botonParametros_TT: Paràmetres
-botonInstrucciones_TT:  Instruccions
+botonInstrucciones_TT: Instruccions
 botonAyuda_TT: Auxiliar
 
-botonExportar_LBL:  
-botonContacto_LBL: 
-botonInformePDF_LBL: 
-botonParametros_LBL: 
-botonInstrucciones_LBL: 
-botonAyuda_LBL: 
-
-
+botonExportar_LBL:
+botonContacto_LBL:
+botonInformePDF_LBL:
+botonParametros_LBL:
+botonInstrucciones_LBL:
+botonAyuda_LBL:
 
 titulo ayudas: titulo ayudas
 ayuda_TIT_localizacion: En aquesta pestanye s'identifiquen dades de localització geogràfica
@@ -290,7 +287,6 @@ modulo localizacion: modulo localizacion
 posicionLonLat_LBL: Long-Lat
 posicionLonLat_TT: No cal omplir aquest camp només es fa servir per centrar el mapa en aquestes coordenades
 
-
 el mapa: controles del mapa
 botonPuntoConsumo_LBL: Punto Consummo
 botonPuntoConsumo_TT: Botó per crear un novo punt de consum
@@ -306,7 +302,7 @@ mensajes mapa: Mensajes del mapa
 mapa_MSG_definePuntoConsumo: Cal definir almenys un punt de consum en el mapa abans de seguir
 
 mapa_MSG_cuantosPuntoConsumo: En mode {{modoActivo}} no poden existir més d'un punt de consum\n Cal esborrar l'existent abans de continuar
-mapa_MSG_errorCatastroXY: "Error consulta cadastre:  {{descripcion}}"
+mapa_MSG_errorCatastroXY: 'Error consulta cadastre:  {{descripcion}}'
 mapa_MSG_Polygon: Defineix l’àrea on s’instal·laran els panells. Només són necessaris tres punts. A continuació podeu definir l'acimut per a cadascuna mitjançant la icona <i class='fa fa-compass'></i>
 mapa_MSG_LineString: D’un punt per indicar l’orientació geogràfica dels panells
 mapa_MSG_Point: Defineix la ubicació del consum
@@ -318,9 +314,9 @@ mapa_MSG_insular: Compte estàs en territori no peninsular. Les tarifes 3.0TD no
 tabla base solar: _tablaBaseSolar
 idBaseSolar_LBL: ID
 nombreBaseSolar_LBL: Nom
-nombreBaseSolar_TT: Identifiqueu el nom d'aquesta base per a referències futures   
+nombreBaseSolar_TT: Identifiqueu el nom d'aquesta base per a referències futures
 lonlatBaseSolar_LBL: Long-Lat
-lonlatBaseSolar_TT: Coordenadas geográficas de la base   
+lonlatBaseSolar_TT: Coordenadas geográficas de la base
 areaMapa_LBL: Superfície al mapa
 areaMapa_TT: Superfície mesurada al mapa en metres quadrats
 inclinacionTejado_LBL: Inclinació de la teulada
@@ -335,11 +331,11 @@ inclinacionOptima_LBL: Inclinació òptima
 inclinacionOptima_TT: Marca aquest camp si vols que el sistema calculi el valor òptim de la inclinació dels panells
 inAcimut_LBL: Orientació (Azimut)
 inAcimut_TT: L'angle entre el sud amb la projecció horitzontal del sol. Si els panells estiguessin orientats al sud l'azimut serà 0º cap a l'est -90º i cap a l'oest 90º. Aquest camp s'emplena indicant al mapa l'orientació que tindran els panells. Si no es completa s'assumeix que és 0
-botonAcimut_LBL: 
+botonAcimut_LBL:
 botonAcimut_TT: Pots definir-ho mitjançant clic al mapa
 angulosOptimos_LBL: Angles òptims
 angulosOptimos_TT: Marca aquest camp si vols que el sistema calculi el valor òptim d’inclinació i azimut
-botonBorraBase_LBL: 
+botonBorraBase_LBL:
 botonBorraBase_TT: Suprimeix la base seleccionada
 
 tabla PuntoConsumo_LBL: tabla PuntoConsumo
@@ -374,10 +370,8 @@ inclinacion_LBL: Inclinació panells
 acimut_LBL: Acimut de la base
 unitarioTotal_LBL: kWh anual per kWp instal·lat
 unitarioTotal_TT: Són els kWh anuals que es poden obtenir per cada kWp instal·lat en aquesta base
-rendimiento_MSG_errorFetch: "Error executant fetch en PVGIS. Resposta: "
+rendimiento_MSG_errorFetch: 'Error executant fetch en PVGIS. Resposta: '
 rendimiento_MSG_obteniendoPVGISdata: Obtenint dades de PVGIS
-
-
 
 produccion: produccion
 precioInstalacion_LBL: Cost d’instal·lació estimat
@@ -391,7 +385,7 @@ pTotalAnual_LBL: Producció anual
 pTotalAnual_TT: Producció fotovoltaica mitjana anual estimada
 
 resultados: resultados
-botonInfoBase_LBL: 
+botonInfoBase_LBL:
 botonInfoBase_TT: Informació detallada de la base seleccionada
 potenciaUnitaria_LBL: Potència per panell a kWp
 potenciaUnitaria_TT: Potència unitària en kWp dels panells instal·lats
@@ -418,7 +412,7 @@ energiaFaltante%Consumo_TT: El percentatge de l’electricitat comprada respecte
 energiaSobrante%Produccion_LBL: Percentatge d'electricitat sobrant
 energiaSobrante%Produccion_TT: El percentatge de l'electricitat sobrant respecte de la produïda
 Consumo%Produccion_LBL: Percentatge de consum respecte a la producció
-Consumo%Produccion_TT: Percentatge de consum respecte a la producció. Per poder optar a la subvenció dels fons Next Generation aquest percentatge sempre ha de superar el 80%   
+Consumo%Produccion_TT: Percentatge de consum respecte a la producció. Per poder optar a la subvenció dels fons Next Generation aquest percentatge sempre ha de superar el 80%
 Produccion%Consumo_LBL: Percentatge de producció respecte el consum
 Produccion%Consumo_TT: Percentatge d’energia fotovoltaica produïda respecte a la consumida
 autoconsumoMedioAnual_LBL: Autoconsum mitjà anual
@@ -438,7 +432,7 @@ resultados_LBL_pendienteCalculo: Pendent
 graficos_LBL_numeroMaximoPaneles: Límit de panells per àrea disponible
 resultados_LBL_tituloPropiedades: Propietats
 resultados_MSG_excesoPotencia: Hi ha un excés de potència en aquesta base en funció a l'àrea disponible
-resultados_LBL_basePropiedades: "Base:  {{id}}"
+resultados_LBL_basePropiedades: 'Base:  {{id}}'
 
 economico: economico
 tabla: tabla
@@ -513,10 +507,9 @@ graficos_LBL_cambiaPaneles: Clic canvia a {{paneles}} panells
 graficos_LBL_paneles: Panells
 graficos_LBL_panelesActuales: Panells actuals {{paneles}}
 
-
 catastro_MSG_errorFetch: Error en executar fecth a Cadastre. \n {{err}} \n {{url}}
 nominatim_MSG_errorFetch: Error en executar fecth a Nominatim. \n {{err}} \n {{url}}
-nominatim_MSG_errorBuscandoTerritorio: "Nominatim Error buscant territori status:  {{resp}}"
+nominatim_MSG_errorBuscandoTerritorio: 'Nominatim Error buscant territori status:  {{resp}}'
 
 tipoConsumo_LBL_fichero: Selecciona fitxer
 
@@ -527,9 +520,9 @@ informe_LBL_datosInstalacionAnalizada: Dades d'instal·lació analitzada
 informe_LBL_datosPVGISObtenidos: Dades PVGIS obtingudes
 informe_LBL_datosLocalizacionAportados: Dades de localització aportades
 informe_LBL_datosDeConsumo: Dades de consum
-informe_LBL_fichero: "Fitxer :" 
+informe_LBL_fichero: 'Fitxer :'
 informe_LBL_paraPotenciaAnual: per a la potència anual de
-informe_LBL_registros: "Registres:  {{registros}}"
+informe_LBL_registros: 'Registres:  {{registros}}'
 informe_LBL_numeroRegistros: Registres
 informe_LBL_desde: Des de
 informe_LBL_hasta: Fins

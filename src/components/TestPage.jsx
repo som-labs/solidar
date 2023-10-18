@@ -3,8 +3,5 @@ import AppFrame from './AppFrame'
 import { WizardExample } from './Wizard'
 
 export default function TestPage() {
-  return <AppFrame>{[
-    false && <WizardExample />,
-    true && <WizardExample />,
-  ]}</AppFrame>
+  return <AppFrame>{[false && <WizardExample />, true && <WizardExample />]}</AppFrame>
 }

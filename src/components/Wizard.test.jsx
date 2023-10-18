@@ -169,17 +169,17 @@ describe('Next attribute', () => {
       </Wizard>,
     )
   }
-  it('value false, keeps page',  () => {
+  it('value false, keeps page', () => {
     wizardWithNext(false)
     fireEvent.click(nextButton())
     expect(pagesStatus()).toEqual([true, false, false])
   })
-  it('value true, advances page',  () => {
+  it('value true, advances page', () => {
     wizardWithNext(true)
     fireEvent.click(nextButton())
     expect(pagesStatus()).toEqual([false, true, false])
   })
-  it('value undefined (next attribute not present), advances page',  () => {
+  it('value undefined (next attribute not present), advances page', () => {
     wizardWithNext(undefined)
     fireEvent.click(nextButton())
     expect(pagesStatus()).toEqual([false, true, false])
@@ -196,28 +196,28 @@ describe('Next attribute', () => {
   })
   it('promise resolving false, keeps page', async () => {
     var resolveFunction = undefined
-    const promise = new Promise((resolve, reject)=>{
+    const promise = new Promise((resolve, reject) => {
       resolveFunction = resolve
     })
-    wizardWithNext(()=>promise)
+    wizardWithNext(() => promise)
     fireEvent.click(nextButton())
-    await waitFor(()=>expect(nextButton().disabled).toBe(true))
+    await waitFor(() => expect(nextButton().disabled).toBe(true))
     resolveFunction(false)
-    await waitFor(()=>expect(nextButton().disabled).toBe(false))
-    await waitFor(()=>expect(pagesStatus()).toEqual([true, false, false]))
+    await waitFor(() => expect(nextButton().disabled).toBe(false))
+    await waitFor(() => expect(pagesStatus()).toEqual([true, false, false]))
   })
   it('promise resolving true, advances page', async () => {
     var resolveFunction = undefined
-    const promise = new Promise((resolve, reject)=>{
+    const promise = new Promise((resolve, reject) => {
       resolveFunction = resolve
     })
-    wizardWithNext(()=>promise)
+    wizardWithNext(() => promise)
     fireEvent.click(nextButton())
     expect(nextButton().disabled).toBe(true)
     resolveFunction(true)
 
-    await waitFor(()=>expect(nextButton().disabled).toBe(false))
-    await waitFor(()=>expect(pagesStatus()).toEqual([false, true, false]))
+    await waitFor(() => expect(nextButton().disabled).toBe(false))
+    await waitFor(() => expect(pagesStatus()).toEqual([false, true, false]))
   })
   /*
   it('callback returns string, disable next and shows error', () => {
@@ -227,17 +227,12 @@ describe('Next attribute', () => {
   })
   */
 })
-// - next=true, goes to next in order
-// - next=undefined, goes to next in order
-// - next=false stays
 // - next=true and next skipif evaluates to true, skips
 // - next=true and next skipif evaluates to false, do not skip
+// - next=true, but none left, stays
 // - next=explicitPage
 // - next=notExistingPage
-// - next=function evaluates the function
-// - next=promise evaluates the promise async
 // - on start, skipif is considered to jump 0 or later
-// - next=true, but none left, stays
 
 //describe('Custom buttons', () => {})
 //describe('Hide buttons', () => {})
