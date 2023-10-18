@@ -5,6 +5,38 @@
 // The first one appends the provided component
 // as direct child of the Provider.
 // Multiple dialogs are stacked in opening order.
+//
+// At some upper level component use
+//
+// import DialogProvider from 'DialogProvider'
+//
+// and then, in the top level component:
+//
+// return (<>
+//   ...
+//   <DialogProvider>
+//     ... {/* here the components that open dialogs */}
+//   </DialogProvider>
+//   ...
+//   </>)
+//
+// Then in your inner component:
+//
+// import {useDialog} from 'DialogProvider'
+//
+// function MyComponent(...) {
+// ...
+// [ openDialog, closeDialog ] = useDialog()
+//
+//   function handleOpenMyDialog(...) {
+//      openDialog(<MyDialogComponent onClose={closeDialog} ... />)
+//   }
+// }
+//
+// MyDialogComponent should not provide the <Dialog> component
+// but the content.
+//
+//
 
 // based on https://stackoverflow.com/questions/63737526/material-ui-how-to-open-dialog-imperatively-programmatically/63737527#63737527
 
