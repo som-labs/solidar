@@ -1,6 +1,6 @@
-import TCB from "./TCB";
-import * as UTIL from "./Utiles";
-import Graficos from "./Graficos";
+import TCB from './TCB'
+import * as UTIL from './Utiles'
+import Graficos from './Graficos'
 import { useTranslation } from 'react-i18next'
 
 // import { gestionParametros } from "./gestionParametros";
@@ -8,60 +8,65 @@ import { useTranslation } from 'react-i18next'
 /*global bootstrap, Tabulator, COLECTIVO */
 
 async function InicializaAplicacion() {
-
   const { t, i18n } = useTranslation()
 
-  alert("en inicia")
-//Si recibimos argumento debug en la url ejecutamos con debug
-  TCB.debug = UTIL.getParametrosEntrada('debug');
-  UTIL.debugLog("_initEvents Debug activo: " + TCB.debug);
+  alert('en inicia')
+  //Si recibimos argumento debug en la url ejecutamos con debug
+  TCB.debug = UTIL.getParametrosEntrada('debug')
+  UTIL.debugLog('_initEvents Debug activo: ' + TCB.debug)
 
-//Identificación de la sesión con objeto Date.now() de javascript.
-  TCB.idSesion = Date.now();
+  //Identificación de la sesión con objeto Date.now() de javascript.
+  TCB.idSesion = Date.now()
 
-//Definimos el modo de trabajo
-  let _modo = UTIL.getParametrosEntrada('modo');
+  //Definimos el modo de trabajo
+  let _modo = UTIL.getParametrosEntrada('modo')
   if (_modo) {
-    _modo = _modo.toUpperCase();
-    if (TCB.modos.includes(_modo)) TCB.modoActivo = _modo;
+    _modo = _modo.toUpperCase()
+    if (TCB.modos.includes(_modo)) TCB.modoActivo = _modo
   }
-  UTIL.debugLog("_initEvents modo de trabajo: " + TCB.modoActivo);
+  UTIL.debugLog('_initEvents modo de trabajo: ' + TCB.modoActivo)
 
-//Definimos el titulo segun sea el modo
+  //Definimos el titulo segun sea el modo
   // const _menu = document.getElementById('menu_screen');
   // _menu.setAttribute('data-i18n','main_LBL_titulo_'+TCB.modoActivo);
   // _menu.classList.add('h2');
 
   // Define la url base de la aplicación
-  let fullPath = window.location.href;
-  let ipos = fullPath.lastIndexOf("/");
-  TCB.basePath = fullPath.slice(0, ipos + 1);
-  UTIL.debugLog("_initEvents ejecutando desde " + TCB.basePath);
+  let fullPath = window.location.href
+  let ipos = fullPath.lastIndexOf('/')
+  TCB.basePath = fullPath.slice(0, ipos + 1)
+  UTIL.debugLog('_initEvents ejecutando desde ' + TCB.basePath)
 
   // lectura del fichero de precios de instalación del servidor. Si falla se usan las de la TCB
-  const ficheroPreciosInstalacion = "./datos/precios instalacion.json";
-  UTIL.debugLog("Precios instalación leidos desde servidor:" + ficheroPreciosInstalacion);
+  const ficheroPreciosInstalacion = './datos/precios instalacion.json'
+  UTIL.debugLog('Precios instalación leidos desde servidor:' + ficheroPreciosInstalacion)
   try {
-    const precios = await fetch(ficheroPreciosInstalacion);
+    const precios = await fetch(ficheroPreciosInstalacion)
     if (precios.status === 200) {
-      TCB.precioInstalacion = await precios.json();
+      TCB.precioInstalacion = await precios.json()
     }
   } catch (err) {
-    UTIL.debugLog("Error leyendo precios de instalación del servidor " + err.message + "<br>Seguimos con TCB");
+    UTIL.debugLog(
+      'Error leyendo precios de instalación del servidor ' +
+        err.message +
+        '<br>Seguimos con TCB',
+    )
   }
 
   // lectura del fichero de tarifas del servidor. Si falla se usan las de la TCB
   //if (!UTIL.cargaTarifasDesdeSOM() ) { //Dejamos esta llamada hasta que el tiempo de respuesta de SOM sea aceptable
-    const ficheroTarifa = "./datos/tarifas.json";
-    UTIL.debugLog("Tarifas leidas desde servidor:" + ficheroTarifa);
-    try {
-      const respuesta = await fetch(ficheroTarifa);
-      if (respuesta.status === 200) {
-        TCB.tarifas = await respuesta.json();
-      }
-    } catch (err) {
-      UTIL.debugLog("Error leyendo tarifas del servidor " + err.message + "<br>Seguimos con TCB");
+  const ficheroTarifa = './datos/tarifas.json'
+  UTIL.debugLog('Tarifas leidas desde servidor:' + ficheroTarifa)
+  try {
+    const respuesta = await fetch(ficheroTarifa)
+    if (respuesta.status === 200) {
+      TCB.tarifas = await respuesta.json()
     }
+  } catch (err) {
+    UTIL.debugLog(
+      'Error leyendo tarifas del servidor ' + err.message + '<br>Seguimos con TCB',
+    )
+  }
   //}
 
   // // Se incializan los tooltips
@@ -70,10 +75,10 @@ async function InicializaAplicacion() {
 
   // Added line to avoid changing many lines of code in components coming from
   //TCB.i18next = i18n
-  UTIL.debugLog("Ejecucion instancia en idioma " + TCB.i18next.language);
+  UTIL.debugLog('Ejecucion instancia en idioma ' + TCB.i18next.language)
 
   //Inicializacion graficos Plotly
-  TCB.graficos = new Graficos();
+  TCB.graficos = new Graficos()
 
   // // Evento del boton de instrucciones
   // document.getElementById('botonInstrucciones').addEventListener("click", async function handleChange() {
@@ -132,7 +137,7 @@ async function InicializaAplicacion() {
   // Tabulator.extendModule("format", "formatters", {
   //   _formatoValor: function(cell, formatterParams) {
   //       let campo;
-  //       if (formatterParams.campo === undefined) 
+  //       if (formatterParams.campo === undefined)
   //         campo = cell.getField();
   //       else
   //         campo = formatterParams.campo;
@@ -140,8 +145,7 @@ async function InicializaAplicacion() {
   //   }
   // });
 
-
-  return true;
+  return true
 }
 
 export default InicializaAplicacion

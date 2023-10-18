@@ -82,14 +82,13 @@ function callOrValue(f, ...params) {
   return f
 }
 function isPromise(thing) {
-  return typeof thing?.then === 'function';
+  return typeof thing?.then === 'function'
 }
-
 
 export default function Wizard(params) {
   const { children, showAll = false, variant = 'progress', onPageChange } = params
   const [currentStep, setCurrentStep] = React.useState(0)
-  const [ isInTransition, beInTransition] = React.useState(false)
+  const [isInTransition, beInTransition] = React.useState(false)
   const totalSteps = children.length
 
   React.useEffect(() => {
@@ -172,7 +171,8 @@ export default function Wizard(params) {
         const isCurrent = ichild === currentStep
         const prevDisabled = ichild === 0 || isInTransition
         const validationErrors = callOrValue(child.props?.validate)
-        const nextDisabled = ichild === totalSteps - 1 || !!validationErrors || isInTransition
+        const nextDisabled =
+          ichild === totalSteps - 1 || !!validationErrors || isInTransition
         if (!showAll && !isCurrent) return null
         return (
           <fieldset key={ichild} style={{ border: 'none' }} disabled={!isCurrent}>
