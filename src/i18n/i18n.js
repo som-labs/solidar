@@ -38,7 +38,7 @@ i18n
     },
   })
 
-    // Added line to avoid changing many lines of code in components coming from
-    TCB.i18next = i18n
-    
+// Added line to avoid changing many lines of code in components coming from
+TCB.i18next = i18n
+
 export default i18n
