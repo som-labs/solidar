@@ -45,4 +45,13 @@
     - [ ] Simulator Toolbar
     - [ ] Import old code into src/services/legacy/ to start integrating
     - [ ] Define inteface between legacy code and react code
-    - [ ] 
+    - [ ]
+
+## To talk with Jose Luis
+
+- Translations:
+    - Do not fill ca and gl translations with spanish strings, empty strings are marked as pending to translators, but filled ones don't
+    - Yaml: using `\n` does not have any effect in strings starting with |, just add an extra return, anyway html will collapse then but...
+    - What about using markdown in translated texts and adding a markdown component? (Markdown component from OpenData)
+    - Translated strings in uppercase are not ok. Use normal casing and use styling to make them UPPERCASE. Buttons and tabs already does that. Consider joining UPPERCASE and Lowercase version of the same translation.
+    - Translation Ids should be UPPERCASE. Most come from legacy and it is ok but, let's try to change them as we use them. Same with scoping.
