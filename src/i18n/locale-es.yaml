@@ -45,12 +45,14 @@ MAIN:
   botonSiguiente_TT: Siguiente
 
 LOCATION:
-  LABEL: LOCALIZACIÓN
+  LABEL: Localización
   TITLE: Localización
   DESCRIPTION: |
-    En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.\n
-    A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.\n Su rendimiento se calcula a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).
-    Rellena el siguiente formulario:
+    En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.
+
+    A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.
+
+    Su rendimiento se calcula a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).
 
   LABEL_AREASDISPONIBLES: AREAS DISPONIBLES
   PROMPT_ADDRESS: Busca la dirección del edificio
@@ -73,8 +75,8 @@ CONSUMPTION:
   TITLE: Consumo
   DESCRIPTION: |
     Consumo eléctrico
-    En la siguiente pantalla necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.\n
-    Para calcular el coste del consumo necesitamos conocer tu tarifa y los precios por tramos horarios de tu comercializadora (a menos que tengas tarifa plana).\n
+    En la siguiente pantalla necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.
+    Para calcular el coste del consumo necesitamos conocer tu tarifa y los precios por tramos horarios de tu comercializadora (a menos que tengas tarifa plana).
     El documento de consumo CSV nos permitirá conocer tus hábitos de consumo saber en qué tramos horarios y en qué meses del año sueles consumir más energía.\n
     Necesitamos conocer el precio de compensación por excedentes de tu comercializadora para calcular parte del ahorro en la factura. Recuerda que tu factura no será en ningún momento de un importe positivo.
     ¿Qué es el precio de compensación por excedentes?
@@ -146,10 +148,17 @@ TARIFA:
 ENERGY_BALANCE:
   TITLE: Balance de Energía
   DESCRIPTION: |
-    A partir de tu documento de consumo hemos hecho el cálculo del número de paneles que necesitarías para cubrirlo. 
+    A partir de tu documento de consumo hemos hecho el cálculo del número de paneles que necesitarías para cubrirlo.
+
     (i) Los paneles se asignan primero a las áreas más eficientes desde el punto de vista de rendimiento energético.
+
     En la siguiente tabla puedes cambiar el número de paneles en cada área individualmente.
 
+  TITLE_GRAFICO_CONSUMOGENERACION3D: Gráfico resumen de consumos versus producción
+  LABEL_LEYENDA_PRODUCCION: Producción
+  LABEL_LEYENDA_CONSUMO: Consumo
+  LABEL_LEYENDA_DIA: Día
+  LABEL_LEYENDA_HORA: Hora
 ECONOMIC_BALANCE:
   TITLE: Balance Económico
   DESCRIPTION: |
@@ -513,11 +522,11 @@ botonAyuda_LBL:
   graficos_LBL_tituloBalanceEconomico: Balance económico mensual con {{potencia}} instalados
   graficos_LBL_alternativasPotencia: Alternativas con paneles de {{potencia}} instalados
   graficos_LBL_produccionMediaMensual: Producción media mensual con {{potencia}} instalados / consumo medio mensual
-  graficos_LBL_graficasProduccion: Producción
+
   graficos_LBL_graficasNoCompensado: No compensado
   graficos_LBL_graficasGastoConPaneles: Gasto con paneles
   graficos_LBL_graficasGastoSinPaneles: Gasto sin paneles
-  graficos_LBL_graficasConsumo: Consumo
+
   graficos_LBL_graficasCompensacion: Reducción por compensación
   graficos_LBL_graficasExcedente: Excedente
   graficos_LBL_graficasInversion: Inversión
@@ -526,8 +535,6 @@ botonAyuda_LBL:
   graficos_LBL_graficasAutoconsumo: Autoconsumo
   graficos_LBL_graficasAutosuficiencia: Autosuficiencia
   graficos_LBL_graficasprodvscons: Prod. vs Cons.
-  graficos_LBL_graficasDia: Día
-  graficos_LBL_graficasHora: Hora
   graficos_LBL_cambiaPaneles: Click cambia a {{paneles}} paneles
   graficos_LBL_paneles: Paneles
   graficos_LBL_panelesActuales: Paneles actuales {{paneles}}

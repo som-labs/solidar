@@ -45,4 +45,4 @@ async function calculaResultados() {
   return
 }
 
-export { calculaResultados }
+export default calculaResultados

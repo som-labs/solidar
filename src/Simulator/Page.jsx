@@ -10,23 +10,23 @@ import ConsumptionStep from './Consumption/Consumption'
 import EnergyBalanceStep from './EnergyBalance/EnergyBalance'
 import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
 import SummaryStep from './Summary/Summary'
-
+//import DialogProvider from '../components/DialogProvider'
 import TCBContext from './TCBContext'
 import MapContext from './MapContext'
 import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
 
 import InicializaAplicacion from './classes/InicializaAplicacion'
+import Consumo from './classes/Consumo'
 import Instalacion from './classes/Instalacion'
+
+InicializaAplicacion()
+TCB.debug = true
 
 export default function Page() {
   const { t, i18n } = useTranslation()
 
-  //REVISAR: porque no se ejecuta InicializaAplicacion
-  useEffect(() => {
-    InicializaAplicacion()
-    TCB.debug = true
-  }, [])
+  useEffect(() => {}, [])
 
   const [map, setMap] = useState()
 
@@ -67,72 +67,124 @@ export default function Page() {
     }),
   )
 
-  /* REVISAR: si descomento apare el mensaje dos veces */
   const validaLocation = () => {
     if (TCB.BaseSolar.length > 0) {
       //Carga rendimientos de cada base que lo requiera asincronicamente
       //La propiedad requierePVGIS es gestionada en GestionLocalizacion y se pone a true cuando cambia algun angulo
       try {
         let oldBases = [...bases]
-        for (let i = 0; i < TCB.BaseSolar.length; i++) {
-          //TCB.BaseSolar.forEach (base => {
-          if (TCB.BaseSolar[i].requierePVGIS) {
-            // if (!base.angulosOptimos) {
-            //     if (base.inclinacionTejado === 0 && base.inclinacionPaneles === 0 && !base.inclinacionOptima) {
-            //         if (!window.confirm("Base: " + base.nombreBaseSolar + " con paneles a 0º de inclinación")) return false;
-            //     }
-            // }
-            // UTIL.debugLog("Base requiere PVGIS:", base);
-            console.log('cargariamos rendimiento de', oldBases[i].nombreBaseSolar)
-            //base.cargaRendimiento();
-            //  TCB.BaseSolar[i].instalacion = new Instalacion({paneles: 0, potenciaUnitaria: 450});
-            //   oldBases[i].paneles = 0
-            //   oldBases[i].potenciaUnitaria = 450
-            //   oldBases[i].potenciaTotal = 4.4
-
-            //  TCB.requiereOptimizador = true;
+        TCB.BaseSolar.forEach((base) => {
+          if (base.requierePVGIS) {
+            if (!base.angulosOptimos) {
+              if (
+                base.inclinacionTejado === 0 &&
+                base.inclinacionPaneles === 0 &&
+                !base.inclinacionOptima
+              ) {
+                if (
+                  !window.confirm(
+                    'Base: ' + base.nombreBaseSolar + ' con paneles a 0º de inclinación',
+                  )
+                )
+                  return false
+              }
+            }
+            UTIL.debugLog('Base requiere PVGIS:', base)
+            base.cargaRendimiento()
+            TCB.requiereOptimizador = true
           }
-        }
+        })
         setBases(oldBases)
+        return true
       } catch (err) {
         //     //alert ("Error en validacion de Localizacion: " + err);
         //     return ("Error en validacion de Localizacion: " + err);
       }
       return false
     } else {
-      return t('LOCATION.MSG_definirBases')
+      alert('LOCATION.MSG_definirBases')
+      return false
     }
   }
 
   const validaTipoConsumo = () => {
-    if (TCB.TipoConsumo.length > 0) {
+    // Si no ha habido ningún cambio seguimos adelante
+    console.log('Estamos en validaTipoConsumo')
+
+    if (TCB.TipoConsumo.length === 0) {
+      alert(t('CONSUMPTION.MSG_definirFicheroConsumo'))
       return false
-    } else {
-      return t('CONSUMPTION.MSG_definirFicheroConsumo')
     }
+
+    let status = true
+    // Se verifica que cada TipoConsumo definido se le ha cargado el CSV correspondiente
+    //let consumoTotal = 0;
+    //for (let tipoConsumo of TCB.TipoConsumo) consumoTotal +=  tipoConsumo.cTotalAnual;
+
+    for (const tipoConsumo of TCB.TipoConsumo) {
+      if (tipoConsumo.fuente === 'REE') {
+        if (!(tipoConsumo.consumoAnualREE > 0)) {
+          alert(
+            tipoConsumo.nombreTipoConsumo +
+              '\n' +
+              TCB.i18next.t('consumo_MSG_definirPotenciaBaseREE'),
+          )
+          status = false
+          break
+        }
+      } else if (tipoConsumo.fuente === 'CSV' || tipoConsumo.fuente === 'DATADIS') {
+        if (tipoConsumo.ficheroCSV === null) {
+          alert(
+            tipoConsumo.nombreTipoConsumo +
+              '\n' +
+              TCB.i18next.t('consumo_MSG_definirFicheroConsumo'),
+          )
+          status = false
+          break
+        }
+      }
+    }
+
+    //Crearemos el consumo global como suma de todos los tipos de consumo definidos
+    if (status) {
+      TCB.consumo = new Consumo()
+      TCB.cambioTipoConsumo = true
+    }
+    return status
   }
 
   return (
     <>
       <AppFrame>
+        {/* <DialogProvider> */}
         <TCBContext.Provider value={{ bases, setBases, tipoConsumo, setTipoConsumo }}>
           <Container>
-            <Wizard variant="tabs">
-              <MapContext.Provider value={{ map, setMap }}>
-                <LocationStep label="location" title={t('MAIN.TAB_localizacion')} />
-                {/* validate = {validaLocation} /> */}
-              </MapContext.Provider>
-              <ConsumptionStep label="consumption" title={t('MAIN.TAB_tipoConsumo')} />
-              {/* validate = {validaTipoConsumo}/>  */}
-              <EnergyBalanceStep label="energybalance" title={t('MAIN.TAB_resultados')} />
-              <EconomicBalanceStep
-                label="economicbalance"
-                title={t('MAIN.TAB_economico')}
-              />
-              <SummaryStep label="summary" title={t('MAIN.TAB_reporte')} />
-            </Wizard>
+            <MapContext.Provider value={{ map, setMap }}>
+              <Wizard variant="tabs">
+                <LocationStep
+                  label="location"
+                  title={t('MAIN.TAB_localizacion')}
+                  next={validaLocation}
+                />
+                <ConsumptionStep
+                  label="consumption"
+                  title={t('MAIN.TAB_tipoConsumo')}
+                  next={validaTipoConsumo}
+                />
+                <EnergyBalanceStep
+                  label="energybalance"
+                  title={t('MAIN.TAB_resultados')}
+                />
+                <EconomicBalanceStep
+                  label="economicbalance"
+                  title={t('MAIN.TAB_economico')}
+                />
+                <SummaryStep label="summary" title={t('MAIN.TAB_reporte')} />
+              </Wizard>
+            </MapContext.Provider>
           </Container>
         </TCBContext.Provider>
+        {/* </DialogProvider> */}
       </AppFrame>
     </>
   )

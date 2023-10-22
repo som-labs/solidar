@@ -1,6 +1,5 @@
 import TCB from './TCB'
 import * as UTIL from './Utiles'
-import TipoConsumo from './TipoConsumo'
 import DiaHora from './DiaHora'
 /**
  * @class Consumo
@@ -26,37 +25,20 @@ class Consumo extends DiaHora {
 
   /**
    * @constructor
-   * @param {Object} consumo Un objeto consumo importado
+   * @param {Object} consumo A JS object to be used as template for a Solidar Consumo object
    */
   constructor(consumo) {
     UTIL.debugLog('Generando consumo global')
     super()
 
+    console.log('en consumo recibo ', consumo)
     if (consumo === undefined) {
-      let _tcCount = {}
-      // Contabilizamos las fincas que tienen el mismo tipo de consumo
-      for (let finca of TCB.Participes) {
-        if (_tcCount[finca.nombreTipoConsumo] === undefined)
-          _tcCount[finca.nombreTipoConsumo] = 1
-        else _tcCount[finca.nombreTipoConsumo]++
-      }
-
-      for (let nombreTipoConsumo in _tcCount) {
-        if (nombreTipoConsumo !== 'Participe sin consumo') {
-          const _tc = UTIL.selectTCB(
-            'TipoConsumo',
-            'nombreTipoConsumo',
-            nombreTipoConsumo,
-          )
-          this.sintetizaDiaHora(_tc[0], _tcCount[nombreTipoConsumo])
-          UTIL.debugLog(
-            'Sintetizando ' +
-              _tcCount[nombreTipoConsumo] +
-              ' fincas con tipoConsumo ' +
-              nombreTipoConsumo,
-          )
-        }
-      }
+      TCB.TipoConsumo.forEach((_tc) => {
+        console.log('procesando TC ', _tc)
+        this.suma(_tc)
+      })
+      console.log('consumo creado en consumo')
+      console.log(this)
     } else {
       //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto
       for (const objProp in consumo) {
