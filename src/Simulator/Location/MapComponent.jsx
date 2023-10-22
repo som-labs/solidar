@@ -1,23 +1,19 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
-// Objetos de OpenLayers
+// OpenLayers objects
 import { Map, View } from 'ol'
 import TileLayer from 'ol/layer/Tile'
 import { OSM, Vector as VectorSource, XYZ } from 'ol/source'
 import { Style, Fill, Stroke } from 'ol/style'
-
 import VectorLayer from 'ol/layer/Vector'
-
 import Feature from 'ol/Feature'
 import { Point } from 'ol/geom'
 import { getArea } from 'ol/sphere'
 import { transform, fromLonLat } from 'ol/proj'
-
 import Draw from 'ol/interaction/Draw'
-import { toStringXY } from 'ol/coordinate'
 
-// Objetos MUI
+// MUI objects
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
@@ -31,34 +27,41 @@ import SearchIcon from '@mui/icons-material/Search'
 import MapContext from '../MapContext'
 import DialogNewBaseSolar from './DialogNewBaseSolar'
 
-// Objetos Solidar
+//import { useDialog } from '../../components/DialogProvider' //DialogProvider
+
+// Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 import TCBContext from '../TCBContext'
 import BaseSolar from '../classes/BaseSolar'
 
+// Prueba autoselect
+import CandidatosApp from './CandidatosApp'
+
 function MapComponent() {
   const { t, i18n } = useTranslation()
 
+  // Map state
   const [mapType, setMapType] = useState('LOCATION.LABEL_SATELITE')
   const [selectedCoord, setSelectedCoord] = useState([-3.7, 40.45])
-
-  // mantenimiento de los features creados
-  const [current, setCurrent] = useState()
-  const [featuresLayer, setFeaturesLayer] = useState()
-
-  // OpenLayers Data source for Solidar object
-  const vectorSourceRef = useRef(new VectorSource({ wrapX: false }))
-
-  const { bases, setBases, tipoConsumo, setTipoConsumo } = useContext(TCBContext)
-
   const { map, setMap } = useContext(MapContext)
   const mapElement = useRef()
   const mapRef = useRef(map)
 
-  // Busqueda de direccion
+  // OpenLayers Data source for Solidar object
+  const vectorSourceRef = useRef(new VectorSource({ wrapX: false }))
+
+  // OpenLayers features manipulation
+  const [current, setCurrent] = useState()
+  const [featuresLayer, setFeaturesLayer] = useState()
+
+  const { bases, setBases, tipoConsumo, setTipoConsumo } = useContext(TCBContext)
+
+  // Address search states
   const [address, setAddress] = useState('')
   const [candidatos, setCandidatos] = useState([])
+
+  // const [openDialog, closeDialog] = useDialog() //para DialogProvider
 
   // Control del dialogo de atributos de la BaseSolar
   const [isDialogOpen, setDialogOpen] = useState(false)
@@ -66,6 +69,7 @@ function MapComponent() {
     setDialogOpen(true)
   }
   const closeDialog = () => {
+    document.body.style.cursor = 'default'
     setDialogOpen(false)
   }
 
@@ -126,7 +130,7 @@ function MapComponent() {
       //Define interaction to allow bases drawing
       mapRef.current.addInteraction(baseInteraction)
 
-      // Event to call the function that will create the base once the geometry is defined in the map
+      //Event to call the function that will create the base once the geometry is defined in the map
       baseInteraction.on('drawend', (event) => {
         construirBaseSolar(event)
       })
@@ -145,6 +149,8 @@ function MapComponent() {
   return (
     <>
       <Container>
+        {/* <GoogleMaps></GoogleMaps> */}
+        {/* <CandidatosApp></CandidatosApp> */}
         {/* Campo  para introducir una direccion REVISAR: como hacer que este campo y candidatos se repartan el ancho*/}
         <Tooltip title={t('LOCATION.TOOLTIP_ADDRESS')} placement="top">
           <TextField
@@ -164,7 +170,7 @@ function MapComponent() {
           />
         </Tooltip>
         <TextField
-          //disabled REVISAR: Pendiente de resolver la activacion o no segun haya candidataos
+          disabled={candidatos.length === 0}
           id="candidatos"
           select
           label=""
@@ -186,7 +192,6 @@ function MapComponent() {
           className="map"
           style={{ width: '100%', height: '300px' }}
         ></div>
-
         {/* Boton para cambiar vista mapa vs satelite */}
         <Button
           variant="contained"
@@ -208,7 +213,9 @@ function MapComponent() {
         >
           {t(mapType)}
         </Button>
+        {/* REVISAR: al utilizar el mismo dialogo para crear y editar hay que crear una variable de estado que controle las acciones ejecutadas por los handlers */}
 
+        {/* Sin DialogProvider */}
         {isDialogOpen && (
           <DialogNewBaseSolar
             data={current}
@@ -287,6 +294,15 @@ function MapComponent() {
     //Activamos el dialogo de edicion de atributos de BaseSolar
     setCurrent(nuevaBaseSolar)
     console.log('activamos dialogo para current= ', current)
+    // Con DialogProvider
+    // openDialog(
+    //   <DialogNewBaseSolar
+    //     onClose={handleNewData}
+    //     onChange={handleChange}
+    //     onCancel={handleCancel}
+    //   />,
+    // )
+    //Sin DialogProvider
     openDialog()
   }
 
@@ -455,6 +471,7 @@ function MapComponent() {
   }
 
   function handleCancel(event, reason) {
+    alert(reason)
     if (reason !== 'backdropClick') {
       //REVISAR: si no es de nueva creacion, estamos eidtando no habria que borrar las geometrias
 

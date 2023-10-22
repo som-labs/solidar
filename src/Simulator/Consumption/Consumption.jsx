@@ -1,15 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
+
+// MUI objects
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
-
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import Box from '@mui/material/Box'
-
-//import { Alert } from '../components/Alert'
 import { DataGrid } from '@mui/x-data-grid'
 
 import { MuiFileInput } from 'mui-file-input'
@@ -19,16 +18,19 @@ import InputLabel from '@mui/material/InputLabel'
 import TipoConsumo from '../classes/TipoConsumo'
 import Tarifa from '../classes/Tarifa'
 
+// Componentes Solidar
+import MapaMesHora from './MapaMesHora'
+import DialogNewConsumption from './DialogNewConsumption'
+
+// Solidar objects
 import TCBContext from '../TCBContext'
 import TCB from '../classes/TCB'
-import MapaMesHora from './MapaMesHora'
-
-import DialogNewConsumption from './DialogNewConsumption'
 import { formatoValor } from '../classes/Utiles'
 
 //PENDIENTE: Decidir si mostramos los datos en formato tabla o creamos boxes segun diseño de Clara
 const ConsumptionStep = () => {
   const { t, i18n } = useTranslation()
+
   const [fuente, setFuente] = useState('')
   const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en TCB que se esta manipulando
   const { bases, setBases, tipoConsumo, setTipoConsumo } = useContext(TCBContext)
@@ -166,7 +168,7 @@ const ConsumptionStep = () => {
     //         key={1}
     //         icon={<DeleteIcon />}
     //         label="Delete"
-    //         onClick={actionA(params.id)}
+    //         onClick={()=>actionA(params.id)}
     //         />,
 
     //         <GridActionsCellItem
