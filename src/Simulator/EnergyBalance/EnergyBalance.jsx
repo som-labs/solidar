@@ -1,43 +1,31 @@
+import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import Typography from '@mui/material/Typography'
+import ReactMarkdown from 'react-markdown'
 import Container from '@mui/material/Container'
-//import GraficoA from '../components/graphics/GraficoA'
-import TCBContext from '../TCBContext'
-import React, { useContext, useState } from 'react'
-import TCB from '../classes/TCB'
+import Box from '@mui/material/Box'
 import { DataGrid } from '@mui/x-data-grid'
+
+import TCBContext from '../TCBContext'
+import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import Instalacion from '../classes/Instalacion'
-//import TCB from '../../classes/TCB'
+
+import { optimizador } from '../classes/optimizador'
+import calculaResultados from '../classes/calculaResultados'
+import ConsumoGeneracion3D from './ConsumoGeneracion3D'
+import PerfilDiario from './PerfilDiario'
 
 const EnergyBalanceStep = () => {
   const { t, i18n } = useTranslation()
+
   TCB.i18next = i18n
-  console.log(TCB.i18next)
   const { bases, setBases, tipoConsumo, setTipoConsumo } = useContext(TCBContext)
 
-  // let oldBases = [...bases]
-  // for (let i=0; i<TCB.BaseSolar.length; i++) {
-  // //TCB.BaseSolar.forEach (base => {
-  //     if (TCB.BaseSolar[i].requierePVGIS) {
-  //         // if (!base.angulosOptimos) {
-  //         //     if (base.inclinacionTejado === 0 && base.inclinacionPaneles === 0 && !base.inclinacionOptima) {
-  //         //         if (!window.confirm("Base: " + base.nombreBaseSolar + " con paneles a 0º de inclinación")) return false;
-  //         //     }
-  //         // }
-  //         // UTIL.debugLog("Base requiere PVGIS:", base);
-  //         console.log('cargariamos rendimiento de', oldBases[i].nombreBaseSolar)
-  //          //base.cargaRendimiento();
-  //          TCB.BaseSolar[i].instalacion = new Instalacion({paneles: 0, potenciaUnitaria: 450});
-  //           oldBases[i].paneles = 0
-  //           oldBases[i].potenciaUnitaria = 450
-  //           oldBases[i].potenciaTotal = 4.4
-
-  //          TCB.requiereOptimizador = true;
-  //      }
-  //  }
-  //  setBases(oldBases)
+  useEffect(() => {
+    console.log('a prepara')
+    prepara()
+  }, [])
 
   const columns = [
     // { field: 'idBaseSolar', headerName: 'ID', width: 50 },
@@ -46,42 +34,178 @@ const EnergyBalanceStep = () => {
       field: 'paneles',
       headerName: 'Paneles',
       width: 130,
-      align: 'right',
+      align: 'center',
       renderCell: (params) => {
         return UTIL.formatoValor('paneles', params.value)
       },
     },
-    //  { field: 'potenciaMaxima', headerName: 'Pot. Maxima', align:'right', renderCell: (params) => {
-    //      return UTIL.formatoValor('potenciaMaxima',params.value)}},
-    { field: 'potenciaUnitaria', headerName: 'Potencia Unitaria' },
-    { field: 'potenciaTotal', headerName: 'Potencia Total de la base' },
+    {
+      field: 'potenciaMaxima',
+      headerName: 'Pot. Maxima',
+      align: 'right',
+      renderCell: (params) => {
+        return UTIL.formatoValor('potenciaMaxima', params.value)
+      },
+    },
+    {
+      field: 'potenciaUnitaria',
+      headerName: 'Potencia Unitaria',
+      renderCell: (params) => {
+        return UTIL.formatoValor('potenciaUnitaria', params.value)
+      },
+    },
+    {
+      field: 'potenciaTotal',
+      headerName: 'Potencia Total de la base',
+      renderCell: (params) => {
+        return UTIL.formatoValor('potenciaTotal', params.value)
+      },
+    },
   ]
 
   function getRowId(row) {
     return row.idBaseSolar
   }
 
+  /**
+   * Función que se ejecuta antes de activar el panel de resultados
+   * @returns {boolean} true si todo ha ido bien false si algo ha fallado
+   */
+  async function prepara() {
+    //desabilitamos la posibilidad de dar al boton siguiente mientras estamos preparando los resultados
+    console.log('en prepara')
+    let cursorOriginal = document.body.style.cursor
+    document.body.style.cursor = 'progress'
+    // document.getElementById('botonSiguiente').disabled = true
+
+    //Si ha habido algún cambio que requiera la ejecución del optimizador lo ejecutamos
+    console.log('a optimizador ' + TCB.requiereOptimizador)
+    if (TCB.requiereOptimizador) {
+      // Comprobamos que estan cargados todos los rendimientos. Es el flag rendimientoCreado de cada BaseSolar
+      let waitLoop = 0
+      for (let base of TCB.BaseSolar) {
+        console.log(base)
+        var sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+        if (!base.rendimientoCreado) {
+          alert('Esperando datos PVGIS para base: ' + base.nombreBaseSolar)
+          //   if (TCB.importando) {
+          //     //document.getElementById('importar').innerHTML = TCB.i18next.t("importarProyecto_MSG_importando");
+          //   } else {
+          //     document.getElementById('resultadosResumen').innerHTML =
+          //       'Esperando PVGIS para base ' + base.idBaseSolar
+          //   }
+
+          while (
+            !base.rendimientoCreado &&
+            waitLoop++ < TCB.tiempoEsperaPVGIS &&
+            base.rendimientoCreado !== 'error'
+          ) {
+            // document.getElementById('resultadosResumen').innerHTML =
+            //   waitLoop + ' seg. (max: ' + TCB.tiempoEsperaPVGIS + ')'
+            await sleep(1000)
+          }
+          if (base.rendimientoCreado === 'error') {
+            alert('Error obteniendo datos de PVGIS')
+            base.rendimientoCreado = false
+            // document.getElementById('resultadosResumen').innerHTML = ' '
+            // TCB._tablaBasesAsignadas.clearAlert()
+            return
+          }
+          if (waitLoop >= TCB.tiempoEsperaPVGIS) {
+            alert('Tiempo de respuesta excesivo en la llamada a PVGIS')
+            // document.getElementById('resultadosResumen').innerHTML = ' '
+            // TCB._tablaBasesAsignadas.clearAlert()
+            return
+          }
+          //   document.getElementById('resultadosResumen').innerHTML = ' '
+          //   TCB._tablaBasesAsignadas.clearAlert()
+        }
+      }
+
+      // Se crea el objeto de consumo global de toda la configuración en caso de importación o si ha cambiado algo que requiere optimizador
+
+      // Se ejecuta el optimizador para determinar la configuración inicial propuesta
+      let pendiente = await optimizador(
+        TCB.BaseSolar,
+        TCB.consumo,
+        TCB.parametros.potenciaPanelInicio,
+      )
+      if (pendiente > 0) {
+        alert(
+          'No es posible instalar los paneles necesarios.\nPendiente: ' +
+            UTIL.formatoValor('energia', pendiente) +
+            '\nContinuamos con el máximo número de paneles posible',
+        )
+      }
+
+      // Se realiza el cálculo de todas las variables de energia del sistema
+      await calculaResultados()
+      TCB.requiereOptimizador = false
+    }
+
+    //Cada base ha sido asignada por el optimizador con el número de paneles óptimo o si es una importación con los paneles que se hubieran salvado en la simulacion previa. Mostramos esta asignación en la tabla
+    // TCB._tablaBasesAsignadas.clearData()
+    // for (let base of TCB.BaseSolar) {
+    //   TCB._tablaBasesAsignadas.updateOrAddData([
+    //     BaseSolar.getTabulatorRow('idBaseSolar', base.idBaseSolar),
+    //   ])
+    // }
+
+    let oldBases = [...bases]
+
+    TCB.BaseSolar.forEach((base) => {
+      const nIndex = oldBases.findIndex((t) => {
+        return t.idBaseSolar === base.idBaseSolar
+      })
+      oldBases[nIndex].paneles = base.instalacion.paneles
+      oldBases[nIndex].potenciaUnitaria = base.instalacion.potenciaUnitaria
+      oldBases[nIndex].potenciaTotal = base.instalacion.potenciaTotal
+    })
+
+    setBases(oldBases)
+
+    // Se muestran en pantalla los resultados
+    let status
+    if (TCB.balanceCreado) {
+      status = true
+    } else {
+      status = false
+    }
+
+    // //Volvemos a habilitar la secuencia del wizard
+    // document.getElementById('botonSiguiente').disabled = false
+    document.body.style.cursor = cursorOriginal
+    return status
+  }
+
   return (
     <>
       <Container>
         <Typography variant="h3">{t('ENERGY_BALANCE.TITLE')}</Typography>
-        <Typography variant="body">{t('ENERGY_BALANCE.DESCRIPTION')}</Typography>
-
+        <ReactMarkdown children={t('ENERGY_BALANCE.DESCRIPTION')} />
         <div>
           <Typography variant="body">{t('tabla bases asignadas')}</Typography>
           <DataGrid
             getRowId={getRowId}
             rows={bases}
             columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: { page: 0, pageSize: 5 },
-              },
-            }}
-            pageSizeOptions={[5, 10]}
-            //checkboxSelection
+            hideFooter={true}
           />
         </div>
+        <div>
+          <Typography variant="h5">
+            {t('LOCATION.MSG_AREA_TOTAL', {
+              areaTotal: UTIL.formatoValor(
+                'paneles',
+                Math.round(bases.reduce((sum, tBase) => sum + tBase.paneles, 0)),
+              ),
+            })}
+          </Typography>
+        </div>
+
+        <Box>
+          <ConsumoGeneracion3D></ConsumoGeneracion3D>
+        </Box>
 
         {/* <div className="form-group row justify-content-center">
                         <label className="col-md-2" data-i18n="cMaximoAnual_LBL"></label>

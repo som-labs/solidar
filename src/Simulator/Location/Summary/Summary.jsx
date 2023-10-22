@@ -48,12 +48,13 @@ const SummaryStep = () => {
           getRowId={getRowId}
           rows={bases}
           columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
+          hideFooter={true}
+          // initialState={{
+          //   pagination: {
+          //     paginationModel: { page: 0, pageSize: 5 },
+          //   },
+          // }}
+          // pageSizeOptions={[5, 10]}
         />
       </Container>
     </>

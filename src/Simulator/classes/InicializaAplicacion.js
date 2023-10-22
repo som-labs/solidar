@@ -1,16 +1,12 @@
 import TCB from './TCB'
 import * as UTIL from './Utiles'
 import Graficos from './Graficos'
-import { useTranslation } from 'react-i18next'
 
 // import { gestionParametros } from "./gestionParametros";
 
 /*global bootstrap, Tabulator, COLECTIVO */
 
 async function InicializaAplicacion() {
-  const { t, i18n } = useTranslation()
-
-  alert('en inicia')
   //Si recibimos argumento debug en la url ejecutamos con debug
   TCB.debug = UTIL.getParametrosEntrada('debug')
   UTIL.debugLog('_initEvents Debug activo: ' + TCB.debug)

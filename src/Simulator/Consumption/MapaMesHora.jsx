@@ -10,7 +10,6 @@ import Container from '@mui/material/Container'
 const MapaMesHora = (tconsumo) => {
   const { t, i18n } = useTranslation()
 
-  //REVISAR esta parte. Porque esta siendo llamada muchas veces y porque hay que usar children
   if (tconsumo.children === undefined) {
     return <></>
   }

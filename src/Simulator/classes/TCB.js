@@ -16,7 +16,7 @@ const COMUNIDAD = 'COMUNIDAD'
 /*global INDIVIDUAL, COLECTIVO, COMUNIDAD, ol*/
 const TCB = {
   //Variables globales de funcionamiento
-  debug: true,
+  debug: false,
   basePath: '',
   idSesion: '', //Identificador unico de sesión
 
