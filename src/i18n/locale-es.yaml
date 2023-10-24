@@ -163,6 +163,25 @@ ECONOMIC_BALANCE:
   TITLE: Balance Económico
   DESCRIPTION: |
     En esta pantalla conocerás cuánto tendrás que invertir en la instalación (teniendo en cuenta las subvenciones) cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión.
+  SUBVENCIONES: Subvenciones
+  IBI_TITLE: Reducción del IBI
+  IBI_DESCRIPTION: |
+    Si instalas placas solares pordrás optar a una reducción de IBI. El porcentaje de la reducción del IBI y la duración de la bonificación dependen del municipio en el que vivas.
+
+    *¿Dónde encuentro la bonificación que me corresponde por municipio?*
+
+    Rellena la tabla con el precio del IBI de la edificación y la bonificación que le corresponde por municipio.
+
+  EU_TITLE: Subvenciones EU Next Generation
+  EU_DESCRIPTION: |
+    Las subvenciones EU Next Generation reducen el importe total de la inversión entre un 40% y un 50%.
+
+    Escoge esta opción que represente tu instalación
+
+    *¿Cuales son las condiciones para acceder a las subvenciones Next Gen?*
+  SUBVENCION_SIN: Sin subvención EU
+  SUBVENCION_INDIVIDUAL: Instalación individual
+  SUBVENCION_COMUNITARIA: Instalación colectiva
 
 SUMMARY:
   TITLE: RESUMEN
@@ -507,9 +526,7 @@ botonAyuda_LBL:
   valorSubvencionEU_LBL: Valor de la subvención EU
   tipoSubvencionEU_LBL: Tipo subvención EU
   tipoSubvencionEU_TT: Si se fueran a solicitar la subvención de los fondos Next Generation indíquese si la instalación fuera colectiva (una comunidad de propietarios por ejemplo) o individual. La subvención no se concederá si la energía generada al año fuera superior al 80% de la energía consumida anualmente
-  sinSubvencion_LBL: Sin subvención EU
-  subvencionIndividual_LBL: Instalación individual
-  subvencionComunitaria_LBL: Instalación colectiva
+
   VANProyecto_LBL: Valor actual neto (VAN)
   VANProyecto_TT: El rendimiento de la inversión en la instalación fotovoltaica transcurridos los años que se muestran en la tabla
   TIRProyecto_LBL: Tasa interna de retorno (TIR)
