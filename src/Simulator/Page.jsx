@@ -13,6 +13,7 @@ import SummaryStep from './Summary/Summary'
 //import DialogProvider from '../components/DialogProvider'
 import TCBContext from './TCBContext'
 import MapContext from './MapContext'
+import EconomicContext from './EconomicBalance/EconomicContext'
 import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
 
@@ -51,7 +52,6 @@ export default function Page() {
       }
     }),
   )
-
   const [tipoConsumo, setTipoConsumo] = useState(
     TCB.TipoConsumo.map((tipoConsumo) => {
       return {
@@ -66,6 +66,13 @@ export default function Page() {
       }
     }),
   )
+  const [IBI, setIBI] = useState({
+    valorSubvencionIBI: 0,
+    porcientoSubvencionIBI: 0,
+    tiempoSubvencionIBI: 0,
+  })
+
+  const [subvencionEU, setSubvencionEU] = useState('Sin')
 
   const validaLocation = () => {
     if (TCB.BaseSolar.length > 0) {
@@ -175,10 +182,14 @@ export default function Page() {
                   label="energybalance"
                   title={t('MAIN.TAB_resultados')}
                 />
-                <EconomicBalanceStep
-                  label="economicbalance"
-                  title={t('MAIN.TAB_economico')}
-                />
+                <EconomicContext.Provider
+                  value={{ IBI, setIBI, subvencionEU, setSubvencionEU }} //, hucha, setHucha }}
+                >
+                  <EconomicBalanceStep
+                    label="economicbalance"
+                    title={t('MAIN.TAB_economico')}
+                  />
+                </EconomicContext.Provider>
                 <SummaryStep label="summary" title={t('MAIN.TAB_reporte')} />
               </Wizard>
             </MapContext.Provider>

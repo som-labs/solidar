@@ -241,11 +241,15 @@ const TCB = {
   valorSubvencionIBI: 0,
   porcientoSubvencionIBI: 0,
   valorSubvencionEU: 0,
-  tipoSubvencionEU: '',
+  tipoSubvencionEU: 'Sin',
   subvencionEU: {
     Individual: { '<=10kWp': 600, '>10kWp': 450 },
     Comunitaria: { '<=10kWp': 710, '>10kWp': 535 },
   },
+
+  coefHucha: 0,
+  cuotaHucha: 0,
+
   conversionCO2: {
     Peninsula: {
       renovable: 0.331,
