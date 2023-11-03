@@ -52,8 +52,15 @@ class Produccion extends DiaHora {
         this.precioInstalacion += _base.instalacion.precioInstalacion
       }
       //El precio de la instalacion total se resume en la instancia produccion global
-      /*    let i = TCB.precioInstalacion.precios.findIndex( rango => rango.desde <= this.potenciaTotal && rango.hasta >= this.potenciaTotal);
-      this.precioInstalacion = this.potenciaTotal * TCB.precioInstalacion.precios[i].precio * (1 + TCB.parametros.IVAinstalacion / 100); */
+      let i = TCB.precioInstalacion.precios.findIndex(
+        (rango) => rango.desde <= this.potenciaTotal && rango.hasta >= this.potenciaTotal,
+      )
+      this.precioInstalacion = parseInt(
+        this.potenciaTotal *
+          TCB.precioInstalacion.precios[i].precio *
+          (1 + TCB.parametros.IVAinstalacion / 100),
+      )
+      this.precioInstalacionCorregido = this.precioInstalacion
       TCB.produccionCreada = true
     }
   }

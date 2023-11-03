@@ -45,47 +45,45 @@ MAIN:
   botonSiguiente_TT: Següent
 
 LOCATION:
-  LABEL: LOCALIZACIÓN
+  LABEL: Localización
   TITLE: Localización
   DESCRIPTION: |
     En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.\n
     A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.\n Su rendimiento se calcula a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).
     Rellena el siguiente formulario:
 
-  LABEL_AREASDISPONIBLES: AREAS DISPONIBLES
   PROMPT_ADDRESS: Busca la dirección del edificio
   TOOLTIP_ADDRESS: Després d'indicar la ciutat i l'adreça d'on s'instal·laran els panells premeu la lupa
   PROMPT_DRAW: Dibuja las áreas disponibles del edificio en el mapa (?). Puedes añadir tantas áreas como quieras.
+  LABEL_BASE_NAME: Nom base
+  TOOLTIP_BASE_NAME: Identifica el nom d'aquesta base per a referències futures
+
   LABEL_TILT: INCLINACION
-  PROMPT_TILT: Indica la inclinación de cada una de las áreas definidas
+
   LABEL_AZIMUT: ORIENTACIÓN AL SUR
   PROMPT_AZIMUT: Señala la orientación del tejado respecto al sur (acimut) haciendo clicken las areas que esten inclinadas (?)
   LABEL_SUMMARY: RESUMEN
   PROMPT_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
-  MSG_alMenosUnaBase: Cal definir almenys una base en el mapa
-  MSG_definirBases: Cal definir las bases solares abans de seguir
+  ERROR_DEFINE_BASE: Cal definir las bases solares abans de seguir
   LABEL_SATELITE: Vista de satèl·lit
   LABEL_VECTOR: Vista del mapa
+  LABEL_AREA_REAL: Àrea corregida
+  TOOLTIP_AREA_REAL: Àrea real disponible corregida per la inclinació de la teulada
   MSG_AREA_TOTAL: (T)Area total disponible en esta configuración {{areaTotal}}
   candidatos_TT: Selecciona la direcció correcta o fes un senyal al mapa inferior amb una pulsació doble de ratolí
 
 CONSUMPTION:
   TITLE: Consumo
-  DESCRIPTION: |
-    Consumo eléctrico
-    En la siguiente pantalla necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.\n
-    Para calcular el coste del consumo necesitamos conocer tu tarifa y los precios por tramos horarios de tu comercializadora (a menos que tengas tarifa plana).\n
-    El documento de consumo CSV nos permitirá conocer tus hábitos de consumo saber en qué tramos horarios y en qué meses del año sueles consumir más energía.\n
-    Necesitamos conocer el precio de compensación por excedentes de tu comercializadora para calcular parte del ahorro en la factura. Recuerda que tu factura no será en ningún momento de un importe positivo.
-    ¿Qué es el precio de compensación por excedentes?
-    Rellena los campos de la siguiente tabla
-  TITLE_MAP_MONTH_HOUR: Gráfico de consumo anual para {{nombreTipoConsumo}}
-  DESC_MAP_MONTH_HOUR: El siguiente gráfico muestra la distribución de tu consumo eléctrico en el año por meses y horas. Puedes visualizar en que momentos y horas del año tu consumo es mayor o menor.
+  YAXIS_MAPA_CONSUMO_MES_HORA: Mes
+  XAXIS_MAPA_CONSUMO_MES_HORA: Hora
+  LABEL_MAPA_CONSUMO_MES_HORA: 'Màxim valor: {{maxConsumoMes}} kWh'
+  TITLE_MAPA_CONSUMO_MES_HORA: Consumeixo mig horari per mes relatius al màxim,
+  ERROR_DEFINIR_CONSUMO_REE: S'ha de definir un consum de base anual superior a 0 per al perfil REE
+  ERROR_AL_MENOS_UN_TIPOCONSUMO: Cal definir almenys un tipus de consum
+  ERROR_FALTA_FICHERO_CONSUMO: Cal definir el fitxer de consum abans de continuar
+  LABEL_BUTTON_NUEVO_TIPOCONSUMO: Nou tipus consum
+  TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Botó per crear un nou tipus de consum
 
-  MSG_alMenosUnTipoConsumo: Cal definir almenys un tipus de consum
-  MSG_definirFicheroConsumo: Cal definir el fitxer de consum abans de continuar
-  LABEL_botonNuevoTipoConsumo: Nou tipus consum
-  TT_botonNuevoTipoConsumo: Botó per crear un nou tipus de consum
   FORM_nuevoTipoConsumo: (T)Formulario para crear un nuevo tipo do consumo
   idTipoConsumo: Id
   LABEL_nombreTipoConsumo: Identificació del tipus consum
@@ -118,7 +116,6 @@ CONSUMPTION:
   consumo_MSG_errorCabeceras: Error de format CSV falta capçalera {{cabeceras}}
   consumo_MSG_resumen: '{{registros}} Registres de consum carregats des de {{desde}} fins a {{hasta}}'
   consumo_MSG_numeroLimitadoRegistros: "Avís:  només existeixen {{registros}} registres que no completen un any d'estadístiques"
-  consumo_MSG_definirPotenciaBaseREE: S'ha de definir un consum de base anual superior a 0 per al perfil REE
   consumo_MSG_nombreCSVPorDefinir: Por definir
   consumo_TT_descripcionTarifaP1: Tarifa P1 o punta (la més cara en 2.0TD)
   consumo_TT_descripcionTarifaP2: Tarifa P2 o vall (la intermèdia en 2.0TD)
@@ -313,16 +310,14 @@ mapa_MSG_insular: Compte estàs en territori no peninsular. Les tarifes 3.0TD no
 
 tabla base solar: _tablaBaseSolar
 idBaseSolar_LBL: ID
-nombreBaseSolar_LBL: Nom
-nombreBaseSolar_TT: Identifiqueu el nom d'aquesta base per a referències futures
+
 lonlatBaseSolar_LBL: Long-Lat
 lonlatBaseSolar_TT: Coordenadas geográficas de la base
 areaMapa_LBL: Superfície al mapa
 areaMapa_TT: Superfície mesurada al mapa en metres quadrats
 inclinacionTejado_LBL: Inclinació de la teulada
 inclinacionTejado_TT: Inclinació de la teulada mesurada respecte a l'horitzontal del terreny sobre el qual es muntaran els panells
-areaReal_LBL: Àrea corregida
-areaReal_TT: Àrea real disponible corregida per la inclinació de la teulada
+
 potenciaMaxima_LBL: Màxim kWp
 potenciaMaxima_TT: Potència màxima pic a instal·lar en aquesta àrea (Veure paràmetre de conversió)
 inclinacionPaneles_LBL: Inclinació del panell

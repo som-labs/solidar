@@ -48,46 +48,66 @@ LOCATION:
   LABEL: Localización
   TITLE: Localización
   DESCRIPTION: |
-    En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.
-
-    A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.
-
-    Su rendimiento se calcula a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).
-
-  LABEL_AREASDISPONIBLES: AREAS DISPONIBLES
+    En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.<br />
+    A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.<br />
+    Su rendimiento se calcula a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).<br />
+  DIALOG_NEW_BASE: Nueva base solar
+  DESCRIPTION_ADDRESS: En estos campos puedes introducir un localizador (region, ciudad, dirección) que te permitirá posicionar el mapa en la zona de trabajo deseada.
   PROMPT_ADDRESS: Busca la dirección del edificio
+  PROMPT_CANDIDATE: Seleccione la dirección que corresponda de la lista
   TOOLTIP_ADDRESS: Tras indicar ciudad y dirección de donde se instalarán los paneles púlse la lupa
-  PROMPT_DRAW: Dibuja las áreas disponibles del edificio en el mapa (?). Puedes añadir tantas áreas como quieras.
-  LABEL_TILT: INCLINACION
-  PROMPT_TILT: Indica la inclinación de cada una de las áreas definidas
-  LABEL_AZIMUT: ORIENTACIÓN AL SUR
-  PROMPT_AZIMUT: Señala la orientación del tejado respecto al sur (acimut) haciendo clicken las areas que esten inclinadas (?)
-  LABEL_SUMMARY: RESUMEN
+  PROMPT_DRAW: Dibuja en el mapa las áreas disponibles del edificio. En caso de alternativas, puedes dibujar tantas áreas como quieras. El sistema distribuirá los paneles de la forma mas eficiente.
+  LABEL_BASE_NAME: Nombre de la base solar
+  TOOLTIP_BASE_NAME: Identica el nombre de esta base para futuras referencias
+
+  LABEL_TILT: Inclinación de los paneles
+  TOOLTIP_TILT: Grados de inclinación (entre 0 y 90) sobre el tejado que tendrán los paneles. Si se marca ‘Óptimo’ no hace falta indicar ningún valor
+  DESCRIPTION_TILT: Aqui debes indicar el ángulo que tendrán los paneles con respecto al horizonte.
+  LABEL_OPTIMUM_TILT: Inclinación óptima
+  TOOLTIP_OPTIMUM_TILT: Marque este campo si desea que el sistema calcule el valor óptimo de la inclinación de los paneles
+
+  LABEL_AZIMUT: Orientación al sur (Acimut)
+  TOOLTIP_AZIMUT: El ángulo entre el sur con la proyección horizontal del sol. Si los paneles estuvieran orientados al sur el acimut será 0º hacial el este -90º y hacia el oeste 90º. Este campo se rellena indicando en el mapa la orientación que tendrán los paneles. Si no se completa se asume que es 0
+  DESCRIPTION_AZIMUT: Aqui debes indicar el ángulo que tendrán los paneles con respecto al sur geográfico.
+  LABEL_OPTIMUM_AZIMUT: Orientación óptima
+  PROMPT_AZIMUT: Señala la orientación del tejado respecto al sur (acimut) haciendo click en las areas que esten inclinadas (?)
+  TOOLTIP_OPTIMUM_AZIMUT: Marque este campo si desea que el sistema calcule el valor óptimo de la orientación de los paneles
+
+  LABEL_SUMMARY: Resumen
   PROMPT_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
-  MSG_alMenosUnaBase: Debe definir al menos una base en el mapa
-  MSG_definirBases: Debe definir las bases solares antes de continuar
+  ERROR_DEFINE_BASE: Debe definir las bases solares antes de continuar
   LABEL_SATELITE: Vista satélite
   LABEL_VECTOR: Vista mapa
+
+  LABEL_AREA_REAL: Area disponible
+  TOOLTIP_AREA_REAL: Area real disponible corregida por la inclinación del tejado
   MSG_AREA_TOTAL: Area total disponible en esta configuración {{areaTotal}}
   candidatos_TT: Selecciónese la dirección correcta o señálese en el mapa inferior con una pulsación doble de ratón
 
 CONSUMPTION:
   TITLE: Consumo
+
   DESCRIPTION: |
-    Consumo eléctrico
-    En la siguiente pantalla necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.
-    Para calcular el coste del consumo necesitamos conocer tu tarifa y los precios por tramos horarios de tu comercializadora (a menos que tengas tarifa plana).
-    El documento de consumo CSV nos permitirá conocer tus hábitos de consumo saber en qué tramos horarios y en qué meses del año sueles consumir más energía.\n
-    Necesitamos conocer el precio de compensación por excedentes de tu comercializadora para calcular parte del ahorro en la factura. Recuerda que tu factura no será en ningún momento de un importe positivo.
-    ¿Qué es el precio de compensación por excedentes?
+    A continuación necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.
+
+    El documento de consumo CSV nos permitirá conocer tus hábitos de consumo saber en qué tramos horarios y en qué meses del año sueles consumir más energía.
+
     Rellena los campos de la siguiente tabla
   TITLE_MAP_MONTH_HOUR: Gráfico de consumo anual para {{nombreTipoConsumo}}
   DESC_MAP_MONTH_HOUR: El siguiente gráfico muestra la distribución de tu consumo eléctrico en el año por meses y horas. Puedes visualizar en que momentos y horas del año tu consumo es mayor o menor.
+  TOTAL_DEMMAND: Demanda total de energia anual {{consumoTotal}}
 
-  MSG_alMenosUnTipoConsumo: Debe definir al menos un tipo de consumo
-  MSG_definirFicheroConsumo: Debe definir el fichero de consumos antes de continuar
-  LABEL_botonNuevoTipoConsumo: Nuevo tipo consumo
-  TT_botonNuevoTipoConsumo: Boton para crear un nuevo tipo de consumo
+  HOOVER_MAPA_CONSUMO_MES_HORA: Consumo medio <br>horario por mes
+  TITLE_MAPA_CONSUMO_MES_HORA: Consumo medio horario por mes relativos al máximo
+  XAXIS_MAPA_CONSUMO_MES_HORA: Hora
+  YAXIS_MAPA_CONSUMO_MES_HORA: Mes
+  LABEL_MAPA_CONSUMO_MES_HORA: 'Máximo valor: {{maxConsumoMes}} kWh'
+  ERROR_DEFINIR_CONSUMO_REE: Debe definir un consumo anual base mayor que 0 para el perfil de REE
+  ERROR_AL_MENOS_UN_TIPOCONSUMO: Debe definir al menos un tipo de consumo
+  ERROR_FALTA_FICHERO_CONSUMO: Debe definir el fichero de consumos antes de continuar
+  LABEL_BUTTON_NUEVO_TIPOCONSUMO: Nuevo tipo consumo
+  TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Boton para crear un nuevo tipo de consumo
+
   FORM_nuevoTipoConsumo: Formulario para crear un nuevo tipo de consumo
   idTipoConsumo: id
   LABEL_nombreTipoConsumo: Identificacion del tipo consumo
@@ -111,7 +131,7 @@ CONSUMPTION:
   botonSeleccionFichero_LBL:
   botonBorraTipoConsumo_TT: Borra el perfil de consumo seleccionado
   botonMuestraMapaTipoConsumo_TT: Muestra gráfico mapa de consumo de este perfil
-  botonMuestraTarifa_TT: Muestra precios de tarifa
+
   botonSeleccionFichero_TT: Seleccione el fichero de consumo
   consumo_MSG_ayudaTipoConsumoHdr: Ayuda definición tipo de consumo
   consumo_MSG_hayFincasAsociadas: No se puede borrar un tipo de consumo que tiene fincas asociadas
@@ -120,8 +140,25 @@ CONSUMPTION:
   consumo_MSG_errorCabeceras: Error formato CSV falta cabecera {{cabeceras}}
   consumo_MSG_resumen: '{{registros}} registros de consumo cargados desde {{desde}} hasta {{hasta}}'
   consumo_MSG_numeroLimitadoRegistros: Aviso-> solo existen {{registros}} registros que no completan un año de estadísticas
-  consumo_MSG_definirPotenciaBaseREE: Debe definir un consumo anual base mayor que 0 para el perfil de REE
+
   consumo_MSG_nombreCSVPorDefinir: Por definir
+
+TARIFA:
+  DESCRIPTION: |
+    Para calcular el coste del consumo necesitamos conocer tu tarifa y los precios por tramos horarios de tu comercializadora (a menos que tengas tarifa plana). Necesitamos conocer tambien el precio de compensación por excedentes de tu comercializadora para calcular parte del ahorro en la factura. Recuerda que tu factura no será en ningún momento de un importe positivo.
+  territorio_LBL: Territorio
+  LABEL_NOMBRE_TARIFA: Nombre de la tarifa
+  TOOLTIP__NOMBRE_TARIFA: El tipo de tarifa contratada con la compañía comercializadora
+  LABEL_P0: Compensación Excedentes
+  LABEL_P1: Tarifa P1
+  LABEL_P2: Tarifa P2
+  LABEL_P3: Tarifa P3
+  LABEL_P4: Tarifa P4
+  LABEL_P5: Tarifa P5
+  LABEL_P6: Tarifa P6
+  DIALOG_PRECIOS: Tarifa {{tarifa}} - Precios
+  LABEL_BUTTON_SHOW_PRICES: Precios
+  TOOLTIP_BUTTON_SHOW_PRICES: Muestra precios de tarifa
   consumo_TT_descripcionTarifaP1: Tarifa P1 o punta (la más cara en 2.0TD)
   consumo_TT_descripcionTarifaP2: Tarifa P2 o valle (la intermedia en 2.0TD)
   consumo_TT_descripcionTarifaP3: Tarifa P3 o llano (la más barata en 2.0TD)
@@ -132,18 +169,6 @@ CONSUMPTION:
   consumo_LBL_compensa: Compensa
   consumo_TT_compensa: Tarifa de compensación
   consumo_TT_valorCompensa: Indíquese el precio en euros sin IVA con los que la comercializadora paga la electricidad no consumida
-
-TARIFA:
-  territorio_LBL: Territorio
-  LABEL_nombreTarifa: Tarifa
-  TT_nombreTarifa: El tipo de tarifa contratada con la compañía comercializadora
-  Compensa_LBL: Excedentes
-  P1_LBL: Tarifa P1
-  P2_LBL: Tarifa P2
-  P3_LBL: Tarifa P3
-  P4_LBL: Tarifa P4
-  P5_LBL: Tarifa P5
-  P6_LBL: Tarifa P6
 
 ENERGY_BALANCE:
   TITLE: Balance de Energía
@@ -159,11 +184,11 @@ ENERGY_BALANCE:
   LABEL_LEYENDA_CONSUMO: Consumo
   LABEL_LEYENDA_DIA: Día
   LABEL_LEYENDA_HORA: Hora
+
 ECONOMIC_BALANCE:
   TITLE: Balance Económico
   DESCRIPTION: |
-    En esta pantalla conocerás cuánto tendrás que invertir en la instalación (teniendo en cuenta las subvenciones) cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión.
-  SUBVENCIONES: Subvenciones
+    En esta pantalla conocerás cuánto tendrás que invertir en la instalación, cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión, teniendo en cuenta las posibles subvenciones provenientes de fondos UE, bonificaciones de IBI y uso de bateria virtual en el caso que tu comercializadora te lo ofrezca.
   IBI_TITLE: Reducción del IBI
   IBI_DESCRIPTION: |
     Si instalas placas solares pordrás optar a una reducción de IBI. El porcentaje de la reducción del IBI y la duración de la bonificación dependen del municipio en el que vivas.
@@ -182,6 +207,25 @@ ECONOMIC_BALANCE:
   SUBVENCION_SIN: Sin subvención EU
   SUBVENCION_INDIVIDUAL: Instalación individual
   SUBVENCION_COMUNITARIA: Instalación colectiva
+  TITLE_INSTALLATION_COST: Precio de la instalación
+  DESCRIPTION_INSTALLATION_COST: |
+    A pesar de procurar mantener los precios actualizados debe considerarse este importe como una orientación provisional sobre el proyecto que un instalador pueda formular (sobre todo si cuenta con más información sobre el emplazamiento final).<br />
+    Aquí no está repercutidos algunos gastos como obra civil (si fuera necesaria) sustitución de aislante o tejas viejas en la cubierta medios de elevación si fueran necesarios modificaciones que la distribuidora o la Administración pudieran exigir a la instalación y algunos impuestos y tasas que el ayuntamiento pudiera cobrar (ICIO o licencia de obras).<br />
+  PROMPT_INSTALLATION_COST: Si tienes una oferta diferente, puedes cambiar el valor del importe en el sigiente campo.
+  TITLE_AMORTIZATION_TIME: Tiempo de amortización
+  DESCRIPTION_AMORTIZATION_TIME: |
+    Este es el número de años que tardarás en recuperar la inversión realizada
+  PROMPT_AMORTIZATION_TIME: Los paneles tienen una vida útil de 15 a 30 años (si se mantienen correctamente
+  LABEL_INSTALLATION_COST: Coste previsto de la instalación (€ sin IVA)
+  TITLE_VIRTUAL_BATTERY: Gestión hucha (Bateria virtual)
+  DESCRIPTION_VIRTUAL_BATTERY: |
+    En este bloque se define la forma en la que se compensan los excedentes económicos de cada mes incluyendo el concepto de batería virtual o hucha.
+  DESCRIPTION_RECOGNITION_VIRTUAL_BATTERY: '% Transferencia hucha:  es el porcentaje del excedente económico de cada mes que pasa a formar parte de la hucha.'
+  LABEL_RECOGNITION_VIRTUAL_BATTERY: '% transferencia hucha'
+  TOOLTIP_RECOGNITION_VIRTUAL_BATTERY: Porcentaje del saldo no compensado que pasa a la hucha
+  DESCRIPTION_FEE_VIRTUAL_BATTERY: 'Cuota gestión hucha: es la cuota mensual sin IVA que carga la empresa comercializadora por la gestíon de la hucha.'
+  LABEL_FEE_VIRTUAL_BATTERY: Cuota gestión hucha sin IVA
+  TOOLTIP_FEE_VIRTUAL_BATTERY: Cuota fija mensual en Euros sin IVA que la empresa comercializadora cobra por la gestión de la hucha
 
 SUMMARY:
   TITLE: RESUMEN
@@ -317,25 +361,17 @@ botonAyuda_LBL:
   mapa_MSG_insular: Cuidado esta usted en territorio no peninsular. Las tarifas 3.0TD no son las correctas.
   -tabla base solar: -tabla base solar
   idBaseSolar_LBL: id
-  nombreBaseSolar_LBL: Nombre
-  nombreBaseSolar_TT: Identique el nombre de esta base para futuras referencias
+
   lonlatBaseSolar_LBL: Long-Lat
   lonlatBaseSolar_TT: Coordenadas geográficas de la base
   areaMapa_LBL: Superficie en mapa
   areaMapa_TT: Superficie medida en el mapa en metros cuadrados
   inclinacionTejado_LBL: Inclinación del tejado
   inclinacionTejado_TT: Inclinación del tejado medida con respecto a la horizontal del terreno sobre el que se montarán los paneles
-  areaReal_LBL: Area disponible
-  areaReal_TT: Area real disponible corregida por la inclinación del tejado
+
   potenciaMaxima_LBL: Max. kWp
   potenciaMaxima_TT: Máxima potencia pico a instalar en esta base en funcion de la superficie disponible (Ver parametro de conversión)
-  inclinacionPaneles_LBL: Inclinación del panel
-  inclinacionPaneles_TT: Grados de inclinación (entre 0 y 90) sobre el tejado que tendrán los paneles. Si se marca ‘Óptimo’ no hace falta indicar ningún valor
-  inclinacionOptima_LBL: Inclinación óptima
-  inclinacionOptima_TT: Marque este campo si desea que el sistema calcule el valor óptimo de la inclinación de los paneles
-  inAcimut_LBL: Orientación (Acimut)
-  inAcimut_TT: El ángulo entre el sur con la proyección horizontal del sol. Si los paneles estuvieran orientados al sur el acimut será 0º hacial el este -90º y hacia el oeste 90º. Este campo se rellena indicando en el mapa la orientación que tendrán los paneles. Si no se completa se asume que es 0
-  botonAcimut_LBL:
+
   botonAcimut_TT: Puede definirlo mediante click en el mapa
   angulosOptimos_LBL: Angulos óptimos
   angulosOptimos_TT: Marque este campo si desea que el sistema calcule el valor óptimo de inclinación y acimut
@@ -393,7 +429,7 @@ botonAyuda_LBL:
   consumo_MSG_numeroLimitadoRegistros: Aviso-> solo existen {{registros}} registros que no completan un año de estadísticas
   consumo_MSG_alMenosUnTipoConsumo: Debe definir al menos un tipo de consumo
   consumo_MSG_definirFicheroConsumo: Debe definir el fichero de consumos antes de continuar
-  consumo_MSG_definirPotenciaBaseREE: Debe definir un consumo anual base mayor que 0 para el perfil de REE
+
   consumo_MSG_nombreCSVPorDefinir: Por definir
   consumo_TT_descripcionTarifaP1: Tarifa P1 o punta (la más cara en 2.0TD)
   consumo_TT_descripcionTarifaP2: Tarifa P2 o valle (la intermedia en 2.0TD)
@@ -407,8 +443,7 @@ botonAyuda_LBL:
   consumo_TT_valorCompensa: Indíquese el precio en euros sin IVA con los que la comercializadora paga la electricidad no consumida
 
   -tabla produccion: -tabla produccion
-  precioInstalacion_LBL: Precio de la instalación
-  precioInstalacion_TT: A pesar de procurar mantener los precios actualizados debe considerarse este importe como una orientación provisional sobre el proyecto que un instalador pueda formular (sobre todo si cuenta con más información sobre el emplazamiento final).\nAquí no está repercutidos algunos gastos como obra civil (si fuera necesaria) sustitución de aislante o tejas viejas en la cubierta medios de elevación si fueran necesarios modificaciones que la distribuidora o la Administración pudieran exigir a la instalación y algunos impuestos y tasas que el ayuntamiento pudiera cobrar (ICIO o licencia de obras)
+
   correccionPrecioInstalacion_LBL: Corrección precio en %
   correccionPrecioInstalacion_TT: Si bien procuramos utilizar precios actualizados el usuario puede alterar la estimación dada con el valor que aquí defina.\nIndique el pocentaje que desea aumentar (valor positivo) o disminuir (valor negativo) el precio de la instalación según sus condiciones particulares
   precioInstalacionCorregido_LBL: Precio de la instalación corregido
@@ -478,20 +513,12 @@ botonAyuda_LBL:
   -modulo economico: -modulo economico
   economico_MSG_ayudaBloqueSubvencionesHdr: Ayuda subvenciones y bonificaciones
   economico_MSG_ayudaBloqueSubvenciones: En este bloque se definen las posibles ayudas en forma de subvención o bonificación
-  economico_MSG_gestionExcedentesHdr: Ayuda gestión hucha (Bateria virtual)
-  economico_MSG_gestionExcedentes: 'En este bloque se define la forma en la que se compensan los excedentes económicos de cada mes incluyendo el concepto de batería virtual o hucha.<ul><li>% Transferencia hucha:  es el porcentaje del excedente económico de cada mes que pasa a formar parte de la hucha.</li><li>Cuota gestión hucha:  es la cuota mensual sin IVA que carga la empresa comercializadora por la gestíon de la hucha.</li></ul>'
+
   economico_MSG_disclaimerAhorro: Las estimaciones de ahorros producidos por autoconsumo e ingresos por energia excedente se han calculado asumiendo que tanto el precio de la energia adquirida como el de los excedentes se mantienen constantes durante los años de cálculo.
   economico_MSG_disclaimerAhorroHdr: Aviso Tabla de amotización
   economico_MSG_disclaimerPrecioInstalacion: En la estimación del coste de la instalación está repercutida la mano de obra y materiales. No están incluidos ni las tasas e impuestos municipales (ICIO) ni la obra civil y maquinaria de elevación (si fueran necesarias) ni las modificaciones que la distribuidora o la Administración exigiera tras comprobar la instalación realizada
   economico_MSG_disclaimerPrecioInstalacionHdr: Aviso sobre el coste de instalación
-  coefHuchaGlobal_LBL: '% transferencia hucha'
-  coefHuchaGlobal_TT: Porcentaje del saldo no compensado que pasa a la hucha
-  cuotaHuchaGlobal_LBL: Cuota gestión hucha
-  cuotaHuchaGlobal_TT: Cuota fija mensual en Euros sin IVA que la empresa comercializadora cobra por la gestión de la hucha
-  coefHucha_LBL: '% transferencia<br>hucha'
-  coefHucha_TT: Porcentaje del saldo no compensado que pasa a la hucha
-  cuotaHucha_LBL: Cuota gestión<br>hucha
-  cuotaHucha_TT: Cuota fija mensual en Euros sin IVA que la empresa comercializadora cobra por la gestión de la hucha
+
   ano_LBL: Año
   ano_TT: Periodo de amortización
   previo_LBL: Previo
@@ -558,13 +585,12 @@ botonAyuda_LBL:
   graficos_LBL_segunFuente: Distribución de energia segun fuente
   graficos_LBL_deRed: Red electrica
   graficos_LBL_dePaneles: '{{paneles}} Paneles'
-  graficos_LBL_graficasMes: Mes
-  graficos_LBL_maxConsumoMes: 'Máximo valor: {{maxConsumoMes}} kWh'
+
   graficos_LBL_mapaConsumo: Mapa de consumo horario en kWh
-  graficos_LBL_mapaConsumoMesHora: Consumo medio horario por mes relativos al máximo
+
   graficos_LBL_energiaRed: Energía obtenida de la red
   graficos_LBL_energiaPaneles: Energía obtenida de los paneles
-  graficos_LBL_tituloConsumoMedio: Consumo medio <br>horario por mes
+
   graficos_LBL_extraccionHucha: Extracción de la hucha
   graficos_LBL_huchaSaldo: Saldo en la hucha
   graficos_LBL_tituloBalanceEconomicoFinca: Balance económico mensual con {{potencia}} asignados.<br>Equivalente {{paneles}} paneles.

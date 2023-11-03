@@ -19,6 +19,7 @@ import { defaults } from 'ol/interaction/defaults'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
+import { Container } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
 import IconButton from '@mui/material/IconButton'
@@ -28,7 +29,9 @@ import Typography from '@mui/material/Typography'
 // Componentes Solidar
 import MapContext from '../MapContext'
 import DialogNewBaseSolar from './DialogNewBaseSolar'
-import { useDialog } from '../../components/DialogProvider'
+
+//REVISAR: uso de DialogProvider
+//import { useDialog } from '../../components/DialogProvider' //DialogProvider
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -53,33 +56,38 @@ function MapComponent() {
   const mapRef = useRef(map)
 
   // OpenLayers features manipulation
-  const { bases, setBases } = useContext(TCBContext)
+  const [current, setCurrent] = useState()
+  const { bases, setBases, tipoConsumo, setTipoConsumo } = useContext(TCBContext)
 
   // Address search states
   const [address, setAddress] = useState('')
   const [candidatos, setCandidatos] = useState([])
 
-  const [openDialog, closeDialog] = useDialog()
-  const [editing, setEditing] = useState(false)
+  // const [openDialog, closeDialog] = useDialog() //para DialogProvider
 
-  const openNewBaseSolarDialog = (base, modo) => {
-    console.log(base)
-    console.log(editing)
-    openDialog({
-      children: <DialogNewBaseSolar data={base} editing={modo} onClose={closeDialog} />,
-    })
+  // Control del dialogo de atributos de la BaseSolar
+  const [isDialogOpen, setDialogOpen] = useState(false)
+
+  const openDialog = () => {
+    setDialogOpen(true)
   }
+  const closeDialog = () => {
+    //REVISAR: por algun motivo despues del dialogo a veces se queda el cursor en progress
+    document.body.style.cursor = 'default'
+    setDialogOpen(false)
+  }
+  const [editing, setEditing] = useState(false)
 
   const baseInteraction = new Draw({
     source: TCB.origenDatosSolidar,
     type: 'Polygon',
     maxPoints: 3,
   })
-
   //Event to call the function that will create the base once the geometry is defined in the map
-  /*   baseInteraction.on('drawend', (event) => {
+  baseInteraction.on('drawend', (event) => {
+    setEditing(false)
     construirBaseSolar(event)
-  }) */
+  })
 
   const selectAltClick = useRef(
     new Select({
@@ -90,17 +98,16 @@ function MapComponent() {
     }),
   )
 
-  // selectAltClick.current.on('select', (event) => {
-  //   console.log('addInteracion con bases', bases)
-  //   editarBaseSolar(event)
-  // })
+  selectAltClick.current.on('select', (event) => {
+    setEditing(true)
+    console.log('addInteracion con bases', bases)
+    editarBaseSolar(event)
+  })
 
   useEffect(() => {
     // If there is not previous Map in MapContext create one
-    console.log('useEffect 1')
     if (!mapRef.current) {
       //Landbase Open Street Map
-      console.log('useEffect 1 nuevo mapa')
       const OpenS = new TileLayer({
         source: new OSM({
           crossOrigin: null,
@@ -137,6 +144,7 @@ function MapComponent() {
       //OpenLayers map creation
       mapRef.current = new Map({
         target: mapElement.current,
+        interactions: defaults().extend([selectAltClick.current]),
         layers: [OpenS, SAT, basesLayer.current],
         view: new View({
           center: fromLonLat(selectedCoord),
@@ -151,38 +159,14 @@ function MapComponent() {
 
       //Event to call the function that will create the base once the geometry is defined in the map
       baseInteraction.on('drawend', (event) => {
+        setEditing(false)
         construirBaseSolar(event)
       })
 
       //Store the map in MapContext
       setMap(mapRef.current)
     } else {
-      console.log('useEffect 1 viejo mapa')
       mapRef.current.setTarget(mapElement.current)
-      mapRef.current.removeInteraction(selectAltClick.current)
-      // console.log('useEffect 1 viejo mapa new Select', basesLayer.current)
-      // selectAltClick.current = new Select({
-      //   //style: selectStyle,
-      //   condition: function (mapBrowserEvent) {
-      //     return click(mapBrowserEvent) && altKeyOnly(mapBrowserEvent)
-      //   },
-      //   layers: [basesLayer.current],
-      // })
-
-      // selectAltClick.current.on('select', (event) => {
-      //   console.log('useEffect 1 viejo mapa en evento onSelect', bases)
-      //   editarBaseSolar(event)
-      // })
-      // console.log('useEffect 1 viejo mapa addInteraction', selectAltClick.current)
-      // mapRef.current.addInteraction(selectAltClick.current)
-    }
-  }, [])
-
-  useEffect(() => {
-    console.log('useEffect 2')
-    if (mapRef.current) {
-      console.log('useEffect 2 viejo mapa')
-
       mapRef.current.removeInteraction(selectAltClick.current)
       selectAltClick.current = new Select({
         //style: selectStyle,
@@ -193,17 +177,37 @@ function MapComponent() {
       })
 
       selectAltClick.current.on('select', (event) => {
-        console.log('useEffect 2 viejo mapa en evento onSelect', bases)
+        event.stopPropagation()
+        setEditing(true)
+        console.log('addInteracion con bases', bases)
         editarBaseSolar(event)
       })
-      console.log('useEffect 2 viejo mapa addInteraction', selectAltClick.current)
       mapRef.current.addInteraction(selectAltClick.current)
-    } else {
-      console.log('useEffect 2 sin mapa')
+    }
+  }, [])
+
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.removeInteraction(selectAltClick.current)
+      selectAltClick.current = new Select({
+        //style: selectStyle,
+        condition: function (mapBrowserEvent) {
+          return click(mapBrowserEvent) && altKeyOnly(mapBrowserEvent)
+        },
+        layers: [basesLayer.current],
+      })
+
+      selectAltClick.current.on('select', (event) => {
+        event.stopPropagation()
+        setEditing(true)
+        console.log('addInteracion con bases', bases)
+        editarBaseSolar(event)
+      })
+      mapRef.current.addInteraction(selectAltClick.current)
     }
   }, [bases])
 
-  async function editarBaseSolar(event) {
+  function editarBaseSolar(event) {
     if (event.selected.length > 0) {
       const id = event.selected[0].getId().split('.')
       console.log(id)
@@ -213,12 +217,13 @@ function MapComponent() {
 
       console.log('editariamos la siguiente base del context: ', bases[j])
 
-      setEditing(true)
-      openNewBaseSolarDialog(bases[j], true)
+      setCurrent(bases[j])
+      openDialog()
     }
   }
-  //map click handler
-  //Event when a base geometry has been created
+  // map click handler
+  // Event when a base geometry has been created
+
   async function construirBaseSolar(geoBaseSolar) {
     // Get unique featID
     TCB.featIdUnico++
@@ -244,6 +249,7 @@ function MapComponent() {
     const territorioEnEspana = await verificaTerritorio(puntoAplicacion_4326)
     if (!territorioEnEspana) {
       //Si no esta en España no seguimos
+      console.log(geoBaseSolar.feature)
       TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
       return false
     }
@@ -255,26 +261,47 @@ function MapComponent() {
     nuevaBaseSolar.idBaseSolar = TCB.featIdUnico.toString()
     nuevaBaseSolar.nombreBaseSolar = 'Base ' + nuevaBaseSolar.idBaseSolar
     nuevaBaseSolar.potenciaMaxima = areaMapa / TCB.parametros.conversionAreakWp
+
     nuevaBaseSolar.inclinacionPaneles = 'Optima'
     nuevaBaseSolar.inclinacionOptima = true
     nuevaBaseSolar.inAcimut = 'Optima'
     nuevaBaseSolar.inAcimutOptimo = true
     nuevaBaseSolar.angulosOptimos = true
+
     nuevaBaseSolar.requierePVGIS = true
     nuevaBaseSolar.lonlatBaseSolar =
       puntoAplicacion_4326[0].toFixed(4) + ',' + puntoAplicacion_4326[1].toFixed(4)
     nuevaBaseSolar.areaMapa = areaMapa
     nuevaBaseSolar.areaReal = areaMapa
 
-    //New point feature where the name label will be set
     let label = new Feature({ geometry: new Point(puntoAplicacion) })
     label.setId('BaseSolar.label.' + nuevaBaseSolar.idBaseSolar)
+    label.set('label', nuevaBaseSolar.nombreBaseSolar)
+    //await UTIL.setLabel(label, texto, color, bgcolor)
     TCB.origenDatosSolidar.addFeatures([label])
+    //     return label
+
+    // await nuevoLabel(
+    //   'BaseSolar.label.' + TCB.featIdUnico,
+    //   puntoAplicacion,
+    //   nuevaBaseSolar.nombreBaseSolar,
+    //   TCB.baseLabelColor,
+    //   TCB.baseLabelBGColor,
+    // )
 
     //Activamos el dialogo de edicion de atributos de BaseSolar
+    setCurrent(nuevaBaseSolar)
+    // Con DialogProvider
+    // openDialog(
+    //   <DialogNewBaseSolar
+    //     onClose={handleNewData}
+    //     onChange={handleChange}
+    //     onCancel={handleCancel}
+    //   />,
+    // )
+    //Sin DialogProvider
     setEditing(false)
-    console.log(3)
-    openNewBaseSolarDialog(nuevaBaseSolar, false)
+    openDialog()
   }
 
   /** Se utiliza para definir el label asociado a un objeto en el mapa
@@ -423,77 +450,77 @@ function MapComponent() {
     }
   }
 
-  // async function handleNewData() {
-  //   current.requierePVGIS = true
+  async function handleNewData() {
+    current.requierePVGIS = true
 
-  //   //Update label in source with nombreBaseSolar
-  //   const componentId = 'BaseSolar.label.' + current.idBaseSolar
-  //   const labelFeature = TCB.origenDatosSolidar.getFeatureById(componentId)
-  //   //labelFeature.set('label', current.nombreBaseSolar)
-  //   console.log(labelFeature)
-  //   console.log(current.nombreBaseSolar)
+    //Update label in source with nombreBaseSolar
+    const componentId = 'BaseSolar.label.' + current.idBaseSolar
+    const labelFeature = TCB.origenDatosSolidar.getFeatureById(componentId)
+    //labelFeature.set('label', current.nombreBaseSolar)
+    console.log(labelFeature)
+    console.log(current.nombreBaseSolar)
 
-  //   //let featureStyle = feature.getStyle()
-  //   //Construimos el style
-  //   // console.log(featureStyle)
-  //   // if (featureStyle === undefined || featureStyle === null) {
-  //   //feature.set('label', texto)
-  //   var featureStyle = new Style({
-  //     text: new Text({
-  //       font: '16px sans-serif',
-  //       textAlign: 'center',
-  //       text: current.nombreBaseSolar,
-  //       fill: new Fill({ color: TCB.baseLabelColor }),
-  //       backgroundFill: new Fill({ color: TCB.baseLabelBGColor }),
-  //       padding: [2, 2, 2, 2],
-  //     }),
-  //   })
-  //   console.log(featureStyle)
-  //   labelFeature.setStyle(featureStyle)
-  //   console.log('nuevo: ', labelFeature)
+    //let featureStyle = feature.getStyle()
+    //Construimos el style
+    // console.log(featureStyle)
+    // if (featureStyle === undefined || featureStyle === null) {
+    //feature.set('label', texto)
+    var featureStyle = new Style({
+      text: new Text({
+        font: '16px sans-serif',
+        textAlign: 'center',
+        text: current.nombreBaseSolar,
+        fill: new Fill({ color: TCB.baseLabelColor }),
+        backgroundFill: new Fill({ color: TCB.baseLabelBGColor }),
+        padding: [2, 2, 2, 2],
+      }),
+    })
+    console.log(featureStyle)
+    labelFeature.setStyle(featureStyle)
+    console.log('nuevo: ', labelFeature)
 
-  //   if (!editing) {
-  //     TCB.BaseSolar.push(new BaseSolar(current))
-  //     setBases([...bases, current])
-  //   } else {
-  //     //Find this edited base in TCB
-  //     const baseIndex = TCB.BaseSolar.findIndex((x) => {
-  //       return x.idBaseSolar === current.idBaseSolar
-  //     })
+    if (!editing) {
+      TCB.BaseSolar.push(new BaseSolar(current))
+      setBases([...bases, current])
+    } else {
+      //Find this edited base in TCB
+      const baseIndex = TCB.BaseSolar.findIndex((x) => {
+        return x.idBaseSolar === current.idBaseSolar
+      })
 
-  //     // Update all attributes in TCB
-  //     TCB.BaseSolar[baseIndex].updateBase(current)
+      // Update all attributes in TCB
+      TCB.BaseSolar[baseIndex].updateBase(current)
 
-  //     //Sbustitute new base in context
-  //     let prevBases = [...bases]
-  //     prevBases.splice(baseIndex, 1, current)
-  //     setBases(prevBases)
-  //   }
-  //   closeDialog()
-  //   setEditing(false)
-  // }
+      //Sbustitute new base in context
+      let prevBases = [...bases]
+      prevBases.splice(baseIndex, 1, current)
+      setBases(prevBases)
+    }
+    closeDialog()
+    setEditing(false)
+  }
 
-  // async function handleChange(target) {
-  //   const { name, value } = target
-  //   setCurrent((prevFormData) => ({ ...prevFormData, [name]: value }))
-  // }
+  async function handleChange(target) {
+    const { name, value } = target
+    setCurrent((prevFormData) => ({ ...prevFormData, [name]: value }))
+  }
 
-  // function handleCancel(event, reason) {
-  //   //REVISAR: por algun motivo en esta configuracion no esta llegando el reason como lo hace en el dialogo de consumption
-  //   if (reason !== 'backdropClick') {
-  //     //REVISAR: si no es de nueva creacion, estamos eidtando no habria que borrar las geometrias
-  //     if (!editing) {
-  //       for (const geoProp in current.geometria) {
-  //         if (current.geometria[geoProp]) {
-  //           const componentId = current.geometria[geoProp].getId()
-  //           const component = TCB.origenDatosSolidar.getFeatureById(componentId)
-  //           TCB.origenDatosSolidar.removeFeature(component)
-  //         }
-  //       }
-  //     }
-  //     closeDialog()
-  //   }
-  // }
+  function handleCancel(event, reason) {
+    //REVISAR: por algun motivo en esta configuracion no esta llegando el reason como lo hace en el dialogo de consumption
+    if (reason !== 'backdropClick') {
+      //REVISAR: si no es de nueva creacion, estamos eidtando no habria que borrar las geometrias
+      if (!editing) {
+        for (const geoProp in current.geometria) {
+          if (current.geometria[geoProp]) {
+            const componentId = current.geometria[geoProp].getId()
+            const component = TCB.origenDatosSolidar.getFeatureById(componentId)
+            TCB.origenDatosSolidar.removeFeature(component)
+          }
+        }
+      }
+      closeDialog()
+    }
+  }
 
   return (
     <>
@@ -501,7 +528,6 @@ function MapComponent() {
       {/* <CandidatosApp></CandidatosApp> */}
       {/* Campo  para introducir una direccion REVISAR: como hacer que este campo y candidatos se repartan el ancho*/}
       <Typography variant="body">{t('LOCATION.DESCRIPTION_ADDRESS')}</Typography>
-      <br />
       <Tooltip title={t('LOCATION.TOOLTIP_ADDRESS')} placement="top">
         <TextField
           onChange={(ev) => setAddress(ev.target.value)}
@@ -567,14 +593,14 @@ function MapComponent() {
         {t(mapType)}
       </Button>
 
-      {/* {isDialogOpen && (
+      {isDialogOpen && (
         <DialogNewBaseSolar
           data={current}
           onClose={handleNewData}
           onChange={handleChange}
           onCancel={handleCancel}
         />
-      )} */}
+      )}
     </>
   )
 }

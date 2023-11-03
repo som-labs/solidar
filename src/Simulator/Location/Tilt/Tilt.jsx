@@ -45,7 +45,7 @@ const TiltStep = () => {
   return (
     <>
       <Container>
-        <Typography variant="body">{t('LOCATION.PROMPT_TILT')}</Typography>
+        <Typography variant="body">{t('LOCATION.LABEL_TILT')}</Typography>
         {/* Aqui va el array de las inclinaciones de las bases */}
         <div className="gridBases">
           {bases.map((tBase) => (
