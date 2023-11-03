@@ -45,7 +45,7 @@ const SubvencionEU = () => {
               width: '100%',
             }}
           >
-            <Typography variant="h3">{t('ECONOMIC_BALANCE.EU_TITLE')}</Typography>
+            <Typography variant="h4">{t('ECONOMIC_BALANCE.EU_TITLE')}</Typography>
             <ReactMarkdown children={t('ECONOMIC_BALANCE.EU_DESCRIPTION')} />
 
             <ToggleButtonGroup

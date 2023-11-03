@@ -56,22 +56,18 @@ class Rendimiento extends DiaHora {
     var addurl
     this.unitarioTotal = 0
 
-    if (base.angulosOptimos) {
+    if (base.inclinacionOptima && base.inAcimutOptimo) {
       addurl = '&optimalangles=1'
     } else {
       if (base.inclinacionOptima) {
         addurl = '&optimalinclination=1'
       } else {
         if (base.inclinacionPaneles === '') base.inclinacionPaneles = 0
-        if (base.inclinacionTejado === '') base.inclinacionTejado = 0
-        let inclinacion =
-          parseFloat(base.inclinacionPaneles) + parseFloat(base.inclinacionTejado)
+        let inclinacion = parseFloat(base.inclinacionPaneles)
         addurl = '&angle=' + inclinacion
       }
-      if (base.inAcimut === '') {
-        base.inAcimut = 0
-      }
-      addurl += '&aspect=' + base.inAcimut
+
+      if (!base.inAcimutOptimo) addurl += '&aspect=' + base.inAcimut
     }
 
     if (TCB.parametros.perdidasSistema != 0) {

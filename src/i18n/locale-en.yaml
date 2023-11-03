@@ -45,47 +45,46 @@ MAIN:
   botonSiguiente_TT: Next
 
 LOCATION:
-  LABEL: LOCALIZACIÓN
+  LABEL: Localización
   TITLE: Localización
   DESCRIPTION: |
     En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.\n
     A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.\n Su rendimiento se calcula a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).
     Rellena el siguiente formulario:
 
-  LABEL_AREASDISPONIBLES: AREAS DISPONIBLES
   PROMPT_ADDRESS: Busca la dirección del edificio
   TOOLTIP_ADDRESS: After indicating city and direction where the panels will be installed click search icon
   PROMPT_DRAW: Dibuja las áreas disponibles del edificio en el mapa (?). Puedes añadir tantas áreas como quieras.
+  LABEL_BASE_NAME: Base name
+  TOOLTIP_BASE_NAME: Identify the name of this basis for future references
+
   LABEL_TILT: INCLINACION
-  PROMPT_TILT: Indica la inclinación de cada una de las áreas definidas
+
   LABEL_AZIMUT: ORIENTACIÓN AL SUR
   PROMPT_AZIMUT: Señala la orientación del tejado respecto al sur (acimut) haciendo clicken las areas que esten inclinadas (?)
-  LABEL_SUMMARY: RESUMEN
+  LABEL_SUMMARY: Summary
   PROMPT_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
-  MSG_alMenosUnaBase: You must define at least one base on the map
-  MSG_definirBases: You must define solar bases before continue
+  ERROR_DEFINE_BASE: You must define solar bases before continue
   LABEL_SATELITE: Satellite view
   LABEL_VECTOR: Map view
   MSG_AREA_TOTAL: (T)Area total disponible en esta configuración {{areaTotal}}
+  LABEL_AREA_REAL: Corrected area
+  TOOLTIP_AREA_REAL: Real area available corrected by the roof inclination
   candidatos_TT: Select the correct direction or sign up on the lower map with a double mouse pulsation
 
 CONSUMPTION:
-  TITLE: Consumo
-  DESCRIPTION: |
-    Consumo eléctrico
-    En la siguiente pantalla necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.\n
-    Para calcular el coste del consumo necesitamos conocer tu tarifa y los precios por tramos horarios de tu comercializadora (a menos que tengas tarifa plana).\n
-    El documento de consumo CSV nos permitirá conocer tus hábitos de consumo saber en qué tramos horarios y en qué meses del año sueles consumir más energía.\n
-    Necesitamos conocer el precio de compensación por excedentes de tu comercializadora para calcular parte del ahorro en la factura. Recuerda que tu factura no será en ningún momento de un importe positivo.
-    ¿Qué es el precio de compensación por excedentes?
-    Rellena los campos de la siguiente tabla
-  TITLE_MAP_MONTH_HOUR: Gráfico de consumo anual para {{nombreTipoConsumo}}
-  DESC_MAP_MONTH_HOUR: El siguiente gráfico muestra la distribución de tu consumo eléctrico en el año por meses y horas. Puedes visualizar en que momentos y horas del año tu consumo es mayor o menor.
+  TITLE: Consumption
+  HOOVER_MAPA_CONSUMO_MES_HORA: Average consumption <br> schedule per month
+  TITLE_MAPA_CONSUMO_MES_HORA: Average hourly consumption per month relative to the maximum
+  XAXIS_MAPA_CONSUMO_MES_HORA: Hour
+  YAXIS_MAPA_CONSUMO_MES_HORA: Month
+  LABEL_MAPA_CONSUMO_MES_HORA: 'Maximum value:  %%{{maxConsumoMes}} kWh'
+  ERROR_DEFINIR_CONSUMO_REE: Must define an annual base consumption greater than 0 for the REE profile
 
-  consumo_MSG_alMenosUnTipoConsumo: Must define at least one consumption type
-  consumo_MSG_definirFicheroConsumo: You must define the consumption file before continuing
-  LABEL_botonNuevoTipoConsumo: New consumption type
-  TT_botonNuevoTipoConsumo: Button to create new consumption type
+  ERROR_AL_MENOS_UN_TIPOCONSUMO: Must define at least one consumption type
+  ERROR_FALTA_FICHERO_CONSUMO: You must define the consumption file before continuing
+  LABEL_BUTTON_NUEVO_TIPOCONSUMO: New consumption type
+  TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Button to create new consumption type
   FORM_nuevoTipoConsumo: (T)Formulario para crear un nuevo tipo do consumo
   idTipoConsumo: id
   LABEL_nombreTipoConsumo: Consumption identification
@@ -118,7 +117,7 @@ CONSUMPTION:
   consumo_MSG_errorCabeceras: CSV Format Error Header {{cabeceras}}
   # consumo_MSG_resumen: %%{{registros}} Consumption records loaded from {{desde}} to {{hasta}}
   consumo_MSG_numeroLimitadoRegistros: Warning-> only {{registros}} records does not match one year
-  consumo_MSG_definirPotenciaBaseREE: Must define an annual base consumption greater than 0 for the REE profile
+
   consumo_MSG_nombreCSVPorDefinir: To be defined
   consumo_TT_descripcionTarifaP1: P1 rate or tip (the most expensive in 2.0TD)
   consumo_TT_descripcionTarifaP2: P2 rate or valley (the intermediate in 2.0TD)
@@ -154,6 +153,13 @@ ECONOMIC_BALANCE:
   TITLE: Economic Balance
   DESCRIPTION: |
     (T)En esta pantalla conocerás cuánto tendrás que invertir en la instalación (teniendo en cuenta las subvenciones) cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión.
+  TITLE_VIRTUAL_BATTERY: Hucha Help (virtual battery)
+  DESCRIPTION_VIRTUAL_BATTERY: |
+    This block defines the way in which the economic surpluses of each month are compensated including the concept of virtual battery or hucha. <ul> <li>% Hucha transfer:  it is the percentage of the economic surplus of each month that passes be part of the piggy bank.</li><li>Hucha management:  it is the monthly fee without VAT that the company marketed by the piggy bank. </li> </ul>
+  LABEL_RECOGNITION_VIRTUAL_BATTERY: '% Hucha transferència'
+  TOOLTIP_RECOGNITION_VIRTUAL_BATTERY: Percentage of the uncompensated balance that goes to the piggy bank
+  LABEL_FEE_VIRTUAL_BATTERY: piggy bank management fee (without VAT)
+  TOOLTIP_FEE_VIRTUAL_BATTERY: Fixed monthly fee in Euros without VAT that the marketing company charges for managing the piggy bank
 
 SUMMARY:
   TITLE: Summary
@@ -288,8 +294,7 @@ botonAyuda_LBL:
   mapa_MSG_insular: Be careful you are in non -peninsular territory. 3.0TD rates can be wrong (Please review).
   -tabla base solar: -tabla base solar
   idBaseSolar_LBL: id
-  nombreBaseSolar_LBL: Name
-  nombreBaseSolar_TT: Identify the name of this basis for future references
+
   lonlatBaseSolar_LBL: Long-Lat
   lonlatBaseSolar_TT: Base geographic coordinates
   areaMapa_LBL: Surface on map
@@ -418,20 +423,12 @@ botonAyuda_LBL:
   -modulo economico: -modulo economico
   economico_MSG_ayudaBloqueSubvencionesHdr: Help subsidies and bonuses
   economico_MSG_ayudaBloqueSubvenciones: This block defines possible aids in the form of subsidy or bonus
-  economico_MSG_gestionExcedentesHdr: Hucha Help (virtual battery)
-  # economico_MSG_gestionExcedentes: This block defines the way in which the economic surpluses of each month are compensated including the concept of virtual battery or hucha. <ul> <li>% Hucha transfer:  it is the percentage of the economic surplus of each month that passes be part of the piggy bank.</li><li>Hucha management:  it is the monthly fee without VAT that the company marketed by the piggy bank. </li> </ul>
+
   economico_MSG_disclaimerAhorro: Savings estimates produced by self -consumption and revenue from surplus energy have been calculated assuming that both the price of the energy acquired and that of surpluses remain constant during the years of calculation.
   economico_MSG_disclaimerAhorroHdr: Amortization warning
   economico_MSG_disclaimerPrecioInstalacion: In the estimate of the cost of the installation labor and materials are impacted. There are neither the municipal fees and taxes (ico) nor the civil works and elevation machinery (if necessary) nor the modifications that the distributor or the administration demanded after checking the installation carried out
   economico_MSG_disclaimerPrecioInstalacionHdr: Notice about the installation cost
-  # coefHuchaGlobal_LBL: %% Hucha transferència
-  coefHuchaGlobal_TT: Percentatge de l'equilibri no inclòs que passa a la Banc de Piggy
-  cuotaHuchaGlobal_LBL: Quota de gestió de Hucha
-  cuotaHuchaGlobal_TT: Taxa fixa mensual en euros sense IVA que la companyia de màrqueting cobra per la gestió del Piggy Bank
-  # coefHucha_LBL: %% Transferència <br> hucha
-  coefHucha_TT: Percentatge de l'equilibri no inclòs que passa a la Banc de Piggy
-  cuotaHucha_LBL: Quota de gestió <br> hucha
-  cuotaHucha_TT: Taxa fixa mensual en euros sense IVA que la companyia de màrqueting cobra per la gestió del Piggy Bank
+
   ano_LBL: Year
   ano_TT: Amortization period
   previo_LBL: Previous
@@ -502,13 +499,11 @@ botonAyuda_LBL:
   graficos_LBL_segunFuente: Energy distribution according to Source
   graficos_LBL_deRed: Electric Network
   # graficos_LBL_dePaneles: %%{{paneles}} panels
-  graficos_LBL_graficasMes: Month
-  # graficos_LBL_maxConsumoMes: Maximum value:  %%{{maxConsumoMes}} kWh
+
   graficos_LBL_mapaConsumo: Hourly consumption map in kWh
-  graficos_LBL_mapaConsumoMesHora: Average hourly consumption per month relative to the maximum
   graficos_LBL_energiaRed: Energy obtained from the network
   graficos_LBL_energiaPaneles: Energy obtained from the panels
-  graficos_LBL_tituloConsumoMedio: Average consumption <br> schedule per month
+
   graficos_LBL_extraccionHucha: Hucha extraction
   graficos_LBL_huchaSaldo: Balance in the piggy bank
   graficos_LBL_tituloBalanceEconomicoFinca: Monthly economic balance with {{potencia}} assigned. <br> equivalent {{paneles}} panels.

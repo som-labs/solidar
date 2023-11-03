@@ -14,6 +14,7 @@ import * as UTIL from '../classes/Utiles'
 import { optimizador } from '../classes/optimizador'
 import calculaResultados from '../classes/calculaResultados'
 import ConsumoGeneracion3D from './ConsumoGeneracion3D'
+import EnergyFlow from './EnergyFlow'
 import PerfilDiario from './PerfilDiario'
 
 const EnergyBalanceStep = () => {
@@ -29,11 +30,12 @@ const EnergyBalanceStep = () => {
 
   const columns = [
     // { field: 'idBaseSolar', headerName: 'ID', width: 50 },
-    { field: 'nombreBaseSolar', headerName: 'Nombre' },
+    { field: 'nombreBaseSolar', headerName: 'Nombre', headerAlign: 'center', width: 250 },
     {
       field: 'paneles',
       headerName: 'Paneles',
-      width: 130,
+      headerAlign: 'center',
+      flex: 0.5,
       align: 'center',
       renderCell: (params) => {
         return UTIL.formatoValor('paneles', params.value)
@@ -42,6 +44,8 @@ const EnergyBalanceStep = () => {
     {
       field: 'potenciaMaxima',
       headerName: 'Pot. Maxima',
+      headerAlign: 'center',
+      flex: 1,
       align: 'right',
       renderCell: (params) => {
         return UTIL.formatoValor('potenciaMaxima', params.value)
@@ -50,6 +54,9 @@ const EnergyBalanceStep = () => {
     {
       field: 'potenciaUnitaria',
       headerName: 'Potencia Unitaria',
+      headerAlign: 'center',
+      flex: 1,
+      align: 'right',
       renderCell: (params) => {
         return UTIL.formatoValor('potenciaUnitaria', params.value)
       },
@@ -57,6 +64,9 @@ const EnergyBalanceStep = () => {
     {
       field: 'potenciaTotal',
       headerName: 'Potencia Total de la base',
+      headerAlign: 'center',
+      flex: 1,
+      align: 'right',
       renderCell: (params) => {
         return UTIL.formatoValor('potenciaTotal', params.value)
       },
@@ -190,6 +200,14 @@ const EnergyBalanceStep = () => {
             rows={bases}
             columns={columns}
             hideFooter={true}
+            sx={{
+              boxShadow: 2,
+              border: 2,
+              borderColor: 'primary.light',
+              '& .MuiDataGrid-cell:hover': {
+                color: 'primary.main',
+              },
+            }}
           />
         </div>
         <div>
@@ -206,6 +224,7 @@ const EnergyBalanceStep = () => {
         <Box>
           <ConsumoGeneracion3D></ConsumoGeneracion3D>
         </Box>
+        <EnergyFlow></EnergyFlow>
 
         {/* <div className="form-group row justify-content-center">
                         <label className="col-md-2" data-i18n="cMaximoAnual_LBL"></label>
