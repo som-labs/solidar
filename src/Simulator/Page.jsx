@@ -3,14 +3,14 @@ import { useTranslation } from 'react-i18next'
 
 import Container from '@mui/material/Container'
 import AppFrame from '../components/AppFrame'
-
+import Alert from '@mui/material/Alert'
 import Wizard from '../components/Wizard'
 import LocationStep from './Location/Location'
 import ConsumptionStep from './Consumption/Consumption'
 import EnergyBalanceStep from './EnergyBalance/EnergyBalance'
 import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
 import SummaryStep from './Summary/Summary'
-//import DialogProvider from '../components/DialogProvider'
+import DialogProvider from '../components/DialogProvider'
 import TCBContext from './TCBContext'
 import MapContext from './MapContext'
 import EconomicContext from './EconomicBalance/EconomicContext'
@@ -22,7 +22,6 @@ import Consumo from './classes/Consumo'
 import Instalacion from './classes/Instalacion'
 
 InicializaAplicacion()
-TCB.debug = true
 
 export default function Page() {
   const { t, i18n } = useTranslation()
@@ -42,7 +41,6 @@ export default function Page() {
         potenciaMaxima: base.potenciaMaxima,
         inclinacionOptima: base.inclinacionOptima,
         inclinacionPaneles: base.inclinacionPaneles,
-        inclinacionTejado: base.inclinacionTejado,
         angulosOptimos: base.angulosOptimos,
         inAcimut: base.inAcimut,
         requierePVGIS: base.requierePVGIS,
@@ -72,7 +70,11 @@ export default function Page() {
     tiempoSubvencionIBI: 0,
   })
 
+  const [precioInstalacionCorregido, setPrecioInstalacionCorregido] = useState()
   const [subvencionEU, setSubvencionEU] = useState('Sin')
+  const [fee, setFee] = useState(0)
+  const [recognition, setRecognition] = useState(0)
+  const [amortizationTime, setAmortizationTime] = useState()
 
   const validaLocation = () => {
     if (TCB.BaseSolar.length > 0) {
@@ -83,11 +85,7 @@ export default function Page() {
         TCB.BaseSolar.forEach((base) => {
           if (base.requierePVGIS) {
             if (!base.angulosOptimos) {
-              if (
-                base.inclinacionTejado === 0 &&
-                base.inclinacionPaneles === 0 &&
-                !base.inclinacionOptima
-              ) {
+              if (base.inclinacionPaneles === 0 && !base.inclinacionOptima) {
                 if (
                   !window.confirm(
                     'Base: ' + base.nombreBaseSolar + ' con paneles a 0º de inclinación',
@@ -109,9 +107,22 @@ export default function Page() {
       }
       return false
     } else {
-      alert('LOCATION.MSG_definirBases')
+      showAlert(t('LOCATION.ERROR_DEFINE_BASE'), 'error')
       return false
     }
+  }
+
+  //REVISAR: como meter el codigo del alert en un componente reutilizable
+  const [alert, setAlert] = useState({ message: '', type: '' })
+
+  // Function to show an alert
+  const showAlert = (message, type) => {
+    setAlert({ message, type })
+  }
+
+  // Function to hide the alert
+  const hideAlert = () => {
+    setAlert({ message: '', type: '' })
   }
 
   const validaTipoConsumo = () => {
@@ -119,7 +130,7 @@ export default function Page() {
     console.log('Estamos en validaTipoConsumo')
 
     if (TCB.TipoConsumo.length === 0) {
-      alert(t('CONSUMPTION.MSG_definirFicheroConsumo'))
+      showAlert(t('CONSUMPTION.ERROR_AL_MENOS_UN_TIPOCONSUMO'), 'error')
       return false
     }
 
@@ -131,20 +142,21 @@ export default function Page() {
     for (const tipoConsumo of TCB.TipoConsumo) {
       if (tipoConsumo.fuente === 'REE') {
         if (!(tipoConsumo.consumoAnualREE > 0)) {
-          alert(
+          showAlert(
             tipoConsumo.nombreTipoConsumo +
               '\n' +
-              TCB.i18next.t('consumo_MSG_definirPotenciaBaseREE'),
+              TCB.i18next.t('consumo_MSG_definirPotenciaBaseREE', 'error'),
           )
           status = false
           break
         }
       } else if (tipoConsumo.fuente === 'CSV' || tipoConsumo.fuente === 'DATADIS') {
         if (tipoConsumo.ficheroCSV === null) {
-          alert(
+          showAlert(
             tipoConsumo.nombreTipoConsumo +
               '\n' +
-              TCB.i18next.t('consumo_MSG_definirFicheroConsumo'),
+              TCB.i18next.t('CONSUMPTION.ERROR_FALTA_FICHERO_CONSUMO'),
+            'error',
           )
           status = false
           break
@@ -163,39 +175,65 @@ export default function Page() {
   return (
     <>
       <AppFrame>
-        {/* <DialogProvider> */}
         <TCBContext.Provider value={{ bases, setBases, tipoConsumo, setTipoConsumo }}>
-          <Container>
-            <MapContext.Provider value={{ map, setMap }}>
-              <Wizard variant="tabs">
-                <LocationStep
-                  label="location"
-                  title={t('MAIN.TAB_localizacion')}
-                  next={validaLocation}
-                />
-                <ConsumptionStep
-                  label="consumption"
-                  title={t('MAIN.TAB_tipoConsumo')}
-                  next={validaTipoConsumo}
-                />
-                <EnergyBalanceStep
-                  label="energybalance"
-                  title={t('MAIN.TAB_resultados')}
-                />
-                <EconomicContext.Provider
-                  value={{ IBI, setIBI, subvencionEU, setSubvencionEU }} //, hucha, setHucha }}
-                >
-                  <EconomicBalanceStep
-                    label="economicbalance"
-                    title={t('MAIN.TAB_economico')}
-                  />
-                </EconomicContext.Provider>
-                <SummaryStep label="summary" title={t('MAIN.TAB_reporte')} />
-              </Wizard>
-            </MapContext.Provider>
-          </Container>
+          <DialogProvider>
+            <Container>
+              <EconomicContext.Provider
+                value={{
+                  IBI,
+                  setIBI,
+                  subvencionEU,
+                  setSubvencionEU,
+                  precioInstalacionCorregido,
+                  setPrecioInstalacionCorregido,
+                  recognition,
+                  setRecognition,
+                  fee,
+                  setFee,
+                  amortizationTime,
+                  setAmortizationTime,
+                }}
+              >
+                <MapContext.Provider value={{ map, setMap }}>
+                  <Wizard variant="tabs">
+                    <LocationStep
+                      label="location"
+                      title={t('MAIN.TAB_localizacion')}
+                      next={validaLocation}
+                    />
+                    <ConsumptionStep
+                      label="consumption"
+                      title={t('MAIN.TAB_tipoConsumo')}
+                      next={validaTipoConsumo}
+                    />
+                    <EnergyBalanceStep
+                      label="energybalance"
+                      title={t('MAIN.TAB_resultados')}
+                    />
+
+                    <EconomicBalanceStep
+                      label="economicbalance"
+                      title={t('MAIN.TAB_economico')}
+                    />
+
+                    <SummaryStep label="summary" title={t('MAIN.TAB_reporte')} />
+                  </Wizard>
+                </MapContext.Provider>
+              </EconomicContext.Provider>
+              <div>
+                {alert.message && (
+                  <Alert
+                    severity={alert.type}
+                    onClose={hideAlert}
+                    className={'centered-alert'}
+                  >
+                    {alert.message}
+                  </Alert>
+                )}
+              </div>
+            </Container>
+          </DialogProvider>
         </TCBContext.Provider>
-        {/* </DialogProvider> */}
       </AppFrame>
     </>
   )
