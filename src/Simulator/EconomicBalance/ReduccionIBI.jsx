@@ -12,28 +12,19 @@ import TCB from '../classes/TCB'
 
 const ReduccionIBI = () => {
   const { t, i18n } = useTranslation()
-
   const { IBI, setIBI } = useContext(EconomicContext)
 
-  console.log(IBI)
-
   const onChangeIBI = (event) => {
-    console.log(event.target)
     const { name, value } = event.target
     setIBI((prevIBI) => ({ ...prevIBI, [name]: value }))
     TCB[name] = value
-    console.log(IBI)
     if (
       TCB.valorSubvencionIBI !== 0 &&
       TCB.porcientoSubvencionIBI !== 0 &&
       TCB.tiempoSubvencionIBI !== 0
     ) {
-      console.log('cambiamos IBI', IBI)
       TCB.economico.calculoFinanciero(100, 100)
-
       //muestraBalanceFinanciero()
-    } else {
-      console.log('nada que cambiar')
     }
   }
 
@@ -49,7 +40,7 @@ const ReduccionIBI = () => {
             width: '100%',
           }}
         >
-          <Typography variant="h3">{t('ECONOMIC_BALANCE.IBI_TITLE')}</Typography>
+          <Typography variant="h4">{t('ECONOMIC_BALANCE.IBI_TITLE')}</Typography>
           <ReactMarkdown children={t('ECONOMIC_BALANCE.IBI_DESCRIPTION')} />
 
           <FormControl sx={{ m: 1, minWidth: 120 }}>

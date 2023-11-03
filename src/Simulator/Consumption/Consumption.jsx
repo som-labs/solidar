@@ -5,22 +5,22 @@ import { useTranslation } from 'react-i18next'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
+import AddIcon from '@mui/icons-material/Add'
+import Tooltip from '@mui/material/Tooltip'
 import Container from '@mui/material/Container'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import Box from '@mui/material/Box'
 import { DataGrid } from '@mui/x-data-grid'
-
-import { MuiFileInput } from 'mui-file-input'
-import Select from '@mui/material/Select'
-import { MenuItem } from '@mui/material'
-import InputLabel from '@mui/material/InputLabel'
-import TipoConsumo from '../classes/TipoConsumo'
-import Tarifa from '../classes/Tarifa'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import TextField from '@mui/material/TextField'
 
 // Componentes Solidar
 import MapaMesHora from './MapaMesHora'
+import { useDialog } from '../../components/DialogProvider'
 import DialogNewConsumption from './DialogNewConsumption'
+import PreciosTarifa from './PreciosTarifa'
 
 // Solidar objects
 import TCBContext from '../TCBContext'
@@ -31,72 +31,57 @@ import { formatoValor } from '../classes/Utiles'
 const ConsumptionStep = () => {
   const { t, i18n } = useTranslation()
 
-  const [fuente, setFuente] = useState('')
   const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en TCB que se esta manipulando
-  const { bases, setBases, tipoConsumo, setTipoConsumo } = useContext(TCBContext)
+  const { tipoConsumo, setTipoConsumo } = useContext(TCBContext)
+  const [openDialog, closeDialog] = useDialog()
 
   function getRowId(row) {
     return row.idTipoConsumo
   }
 
-  //PENDIENTE: esta funcion es por si se puede editar el TC desde la tabla
+  function openNewConsumptionDialog() {
+    const initialValues = {
+      nombreTipoConsumo: 'Consumo tipo ' + TCB.featIdUnico++,
+      fuente: 'CSV',
+      ficheroCSV: null,
+      consumoAnualREE: '',
+    }
+    openDialog({
+      children: <DialogNewConsumption data={initialValues} onClose={closeDialog} />,
+    })
+  }
+
+  //PENDIENTE: esta funcion es por si se puede editar el TC desde la tabla. Por ahora solo el nombre
   function changeTC(params, event) {
-    console.log(params)
-    //event.stopPropagation();
-    setActivo(
-      TCB.TipoConsumo.find((t) => {
-        return t.idTipoConsumo === params.row.idTipoConsumo
-      }),
-    )
     switch (params.field) {
       case 'nombreTipoConsumo':
-        cambiaNombreTipoConsumo(params.row)
-        break
-      case 'nombreTarifa':
-        cambiaNombreTarifa(params.row)
+        cambiaNombreTipoConsumo(params.row, event.target.value)
         break
     }
   }
 
   /**
-   * Gestiona el cambio de nombre del TipoConsumo teniendo en cuenta que la relacion entre Finca y TipoConsumo se basa en el nombre de éste.
-   * @param {Tabulator.cell} cell Identificación del TipoConsumo que estamos cambiando
-   */
-  function cambiaNombreTipoConsumo(row, evento) {
-    //REVISAR: No esta llegando el nuevo valor introducido en la celda
+   * Gestiona el cambio de nombre del TipoConsumo */
+  function cambiaNombreTipoConsumo(row, nuevoTipo) {
     //PENDIENTE: Verificar duplicidad de nombre
-    //PENDIENTE: Validar si hay fincas utilinzaod este tipo de consumo para el caso no INDIVIDUAL
-
-    console.log('cambio nombre de ', row.nombreTipoConsumo)
-    console.log(evento)
-
     let oldTipoConsumo = [...tipoConsumo]
     const nIndex = oldTipoConsumo.findIndex((t) => {
       return t.idTipoConsumo === row.idTipoConsumo
     })
-    oldTipoConsumo[nIndex].nombreTipoConsumo = row.nombreTipoConsumo
-    setActivo(TCB.TipoConsumo[nIndex])
-    activo.nombreTipoConsumo = row.nombreTipoConsumo
+
+    TCB.TipoConsumo[nIndex].nombreTipoConsumo = nuevoTipo
+    oldTipoConsumo[nIndex].nombreTipoConsumo = nuevoTipo
     setTipoConsumo(oldTipoConsumo)
-
-    // //Buscamos las fincas que tuvieran este TipoConsumo asociado y les cambiamos el nombre
-    // for (let finca of TCB.Finca) {
-    //     if (finca.nombreTipoConsumo === cell.getOldValue()) finca.nombreTipoConsumo = cell.getValue();
-    // }
-  }
-
-  function cambiaNombreTarifa(value) {
-    //PENDIENTE: si se puede editar desde la tabla hay que poner un select en esta columna
-    console.log('cambia nombre tarifa a ', value)
+    setActivo(TCB.TipoConsumo[nIndex])
   }
 
   function showGraphsTC(ev, tc) {
     ev.stopPropagation()
-    setActivo(
-      TCB.TipoConsumo.find((t) => {
-        return t.idTipoConsumo === tc.idTipoConsumo
-      }),
-    )
+    const nIndex = tipoConsumo.findIndex((t) => {
+      return t.idTipoConsumo === tc.idTipoConsumo
+    })
+    console.log(tipoConsumo[nIndex])
+    setActivo(tipoConsumo[nIndex])
   }
 
   function deleteTC(ev, tc) {
@@ -105,16 +90,6 @@ const ConsumptionStep = () => {
     const nIndex = prevTipoConsumo.findIndex((t) => {
       return t.idTipoConsumo === tc.idTipoConsumo
     })
-    //if (TCB.modoActivo !== INDIVIDUAL) { //Search Fincas using this TC
-    const _idx = TCB.Finca.findIndex((finca) => {
-      return finca.nombreTipoConsumo === tc.nombreTipoConsumo
-    })
-    if (_idx >= 0) {
-      //No finca is using this TC
-      alert('Hay fincas con este tipo de consumo') //PENDIENTE: incluir en mensajes
-      return
-    }
-    //}
     TCB.requiereOptimizador = true
     TCB.cambioTipoConsumo = true
     prevTipoConsumo.splice(nIndex, 1)
@@ -153,33 +128,6 @@ const ConsumptionStep = () => {
       valueFormatter: (params) => formatoValor('cTotalAnual', params.value),
     },
     {
-      field: 'nombreTarifa',
-      headerName: t('TARIFA.LABEL_nombreTarifa'),
-      type: 'text',
-      description: t('CONSUMPTION.TT_cTotalAnual'),
-    }, //PENDIENTE: Puede cambiar a select
-
-    //REVISAR: que pasa con esta definicion de actions. No funciona. Parece que llamam a las funciones multiples veces.
-    // Por ahora usamos el básico renderCell
-    // { field: 'actions',
-    //     type: 'actions',
-    //     getActions: (params) => [
-    //         <GridActionsCellItem
-    //         key={1}
-    //         icon={<DeleteIcon />}
-    //         label="Delete"
-    //         onClick={()=>actionA(params.id)}
-    //         />,
-
-    //         <GridActionsCellItem
-    //         key={2}
-    //         icon={<PrintIcon />}
-    //         label="Print"
-    //         onClick={actionB(params.id)}
-    //         />
-    //     ]
-    // },
-    {
       field: 'Actions',
       headerName: '',
       renderCell: (params) => {
@@ -212,11 +160,23 @@ const ConsumptionStep = () => {
     <>
       <Container>
         <Typography variant="h3">{t('CONSUMPTION.TITLE')}</Typography>
-        <Typography variant="body">{t('CONSUMPTION.DESCRIPTION')}</Typography>
-
+        <PreciosTarifa></PreciosTarifa>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('CONSUMPTION.DESCRIPTION'),
+          }}
+        />
         {/* Este boton permite crear un objeto TipoConsumo desde un formulario modal */}
         <div className="clipping-container">
-          <DialogNewConsumption></DialogNewConsumption>
+          <Tooltip
+            title={t('CONSUMPTION.TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO')}
+            placement="top"
+          >
+            <Button startIcon={<AddIcon />} onClick={openNewConsumptionDialog}>
+              {t('CONSUMPTION.LABEL_BUTTON_NUEVO_TIPOCONSUMO')}
+            </Button>
+          </Tooltip>
         </div>
 
         {/* Consumption types table 
@@ -228,17 +188,27 @@ const ConsumptionStep = () => {
           getRowId={getRowId}
           rows={tipoConsumo}
           columns={columns}
-          initialState={{
-            aggregation: {
-              model: {
-                cTotalAnual: 'sum',
-              },
+          hideFooter={true}
+          sx={{
+            boxShadow: 2,
+            border: 2,
+            borderColor: 'primary.light',
+            '& .MuiDataGrid-cell:hover': {
+              color: 'primary.main',
             },
           }}
           onCellEditStop={(params, event) => {
             changeTC(params, event)
           }}
         />
+        <Typography variant="h6">
+          {t('CONSUMPTION.TOTAL_DEMMAND', {
+            consumoTotal: formatoValor(
+              'energia',
+              Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
+            ),
+          })}
+        </Typography>
         {/* </div> */}
         <Box>
           <MapaMesHora>{activo}</MapaMesHora>

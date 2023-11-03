@@ -9,6 +9,8 @@
  * History
  * v 01/04/2023 - Version inicial documentada para Solidar.3
  */
+import { Vector as VectorSource } from 'ol/source'
+
 const INDIVIDUAL = 'INDIVIDUAL'
 const COLECTIVO = 'COLECTIVO'
 const COMUNIDAD = 'COMUNIDAD'
@@ -100,7 +102,7 @@ const TCB = {
 
   // Variables del mapa
   map: '', // Objeto OpenLayers base del mapa
-  origenDatosSolidar: '',
+  origenDatosSolidar: new VectorSource({ wrapX: false }),
   baseLabelColor: [0, 0, 0, 1],
   baseLabelBGColor: [168, 50, 153, 0.1],
   puntoConsumoLabelColor: [0, 0, 0, 1],
@@ -114,8 +116,10 @@ const TCB = {
   requiereOptimizador: true,
   ultimarefcat: '', //Ultima referencia catastral de la que se han cargado fincas
 
-  //Algunos valores por defecto
-  tarifaActiva: '2.0TD',
+  //Algunos valores por defecto y comunes para el caso INDIVIDUAL
+  nombreTarifaActiva: '2.0TD',
+  tarifaActiva: {},
+
   // Estos precios son los de SOM a agosto 2022 y no deberían estar aqui.
   tarifas: {
     '2.0TD': {
@@ -283,7 +287,6 @@ const TCB = {
         nombre: '',
         lonlatBase: '',
         areaMapa: '',
-        inclinacionTejado: '',
         areaReal: '',
         potenciaMaxima: '',
         inclinacionPaneles: '',

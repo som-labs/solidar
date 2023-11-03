@@ -42,9 +42,7 @@ function App() {
 
   return (
     <GlobalTheme>
-      <DialogProvider>
-        <RouterProvider router={router} />
-      </DialogProvider>
+      <RouterProvider router={router} />
     </GlobalTheme>
   )
 }

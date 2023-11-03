@@ -247,7 +247,6 @@ class Economico {
     const porcientoSubvencionIBI = TCB.porcientoSubvencionIBI
 
     // Calculo de la subvención EU
-    console.log(TCB.tipoSubvencionEU)
     const tipoSubvencionEU = TCB.tipoSubvencionEU
     var valorSubvencionEU
 
@@ -271,9 +270,9 @@ class Economico {
           100
       }
     }
-    console.log(valorSubvencionEU)
 
     //Preparación del cashflow
+    this.periodoAmortizacion = 0
     let cuotaPeriodo = [] //Es el resultado neto negativo de inversión o positivo de ganancia de cada año
     this.cashFlow = [] //Es un objeto unFlow por cada año
     let cuota //Resultado neto del año
@@ -284,11 +283,12 @@ class Economico {
       ano: i,
       ahorro: this.ahorroAnual,
       previo: 0,
-      inversion: (-TCB.produccion.precioInstalacion * coefInversion) / 100,
+      inversion: (-TCB.produccion.precioInstalacionCorregido * coefInversion) / 100,
       subvencion: 0,
       IBI: 0,
       pendiente:
-        (-TCB.produccion.precioInstalacion * coefInversion) / 100 + this.ahorroAnual,
+        (-TCB.produccion.precioInstalacionCorregido * coefInversion) / 100 +
+        this.ahorroAnual,
     }
     cuota = unFlow.inversion + unFlow.ahorro
     cuotaPeriodo.push(cuota)
@@ -305,7 +305,7 @@ class Economico {
       unFlow.ano = ++i
       unFlow.ahorro = this.ahorroAnual
       unFlow.previo = lastPendiente
-      unFlow.inversion = 0 //Cuidado probablemente en caso de prestamo cambie
+      unFlow.inversion = 0 //PENDIENTE: Cuidado probablemente en caso de prestamo cambie
       if (i == 2) {
         //La subvención se cobra con suerte despues de un año
         unFlow.subvencion = (valorSubvencionEU * coefInversion) / 100
@@ -324,6 +324,10 @@ class Economico {
       this.cashFlow.push(unFlow)
     }
 
+    this.periodoAmortizacion =
+      this.cashFlow.findIndex((c) => {
+        return c.pendiente > 0
+      }) - 1
     if (cuotaPeriodo[0] < 0) {
       this.VANProyecto = this.VAN(this.interesVAN, cuotaPeriodo)
       this.TIRProyecto = this.TIR(this.interesVAN * 2, cuotaPeriodo)

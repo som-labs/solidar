@@ -63,6 +63,7 @@ async function InicializaAplicacion() {
       'Error leyendo tarifas del servidor ' + err.message + '<br>Seguimos con TCB',
     )
   }
+  TCB.tarifaActiva = TCB.tarifas[TCB.nombreTarifaActiva]
   //}
 
   // // Se incializan los tooltips

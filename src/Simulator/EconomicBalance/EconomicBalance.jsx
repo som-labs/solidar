@@ -6,6 +6,9 @@ import Container from '@mui/material/Container'
 
 import ReduccionIBI from './ReduccionIBI'
 import SubvencionEU from './SubvencionEU'
+import InstallationCost from './InstallationCost'
+import VirtualBattery from './VirtualBattery'
+import AmortizationTime from './AmortizationTime'
 
 import TCB from '../classes/TCB'
 import Economico from '../classes/Economico'
@@ -21,7 +24,6 @@ const EconomicBalanceStep = () => {
 
   useEffect(() => {
     // El economico del consumo global*/
-
     TCB.economico = new Economico()
   }, [])
 
@@ -40,7 +42,6 @@ const EconomicBalanceStep = () => {
       <Container>
         <Typography variant="h3">{t('ECONOMIC_BALANCE.TITLE')}</Typography>
         <Typography variant="body">{t('ECONOMIC_BALANCE.DESCRIPTION')}</Typography>
-        <Typography variant="body">{t('ECONOMIC_BALANCE.SUBVENCIONES')}</Typography>
         <Box
           sx={{
             display: 'flex',
@@ -53,6 +54,12 @@ const EconomicBalanceStep = () => {
               display: 'flex',
               flexWrap: 'wrap',
               width: '50%',
+              boxShadow: 2,
+              border: 2,
+              borderColor: 'primary.light',
+              '& .MuiDataGrid-cell:hover': {
+                color: 'primary.main',
+              },
             }}
           >
             <ReduccionIBI></ReduccionIBI>
@@ -62,12 +69,73 @@ const EconomicBalanceStep = () => {
               display: 'flex',
               flexWrap: 'wrap',
               width: '50%',
+              boxShadow: 2,
+              border: 2,
+              borderColor: 'primary.light',
+              '& .MuiDataGrid-cell:hover': {
+                color: 'primary.main',
+              },
             }}
           >
             <SubvencionEU></SubvencionEU>
           </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              width: '50%',
+              boxShadow: 2,
+              border: 2,
+              borderColor: 'primary.light',
+              '& .MuiDataGrid-cell:hover': {
+                color: 'primary.main',
+              },
+            }}
+          >
+            <VirtualBattery></VirtualBattery>
+          </Box>
         </Box>
-        <Typography variant="h3">{t('ECONOMIC_BALANCE.SUMMARY')}</Typography>
+        <br />
+        <Box
+          sx={{
+            display: 'flex',
+            width: '100%',
+          }}
+        >
+          {/* REVISAR: Como asignar el espacio entre boxes para dejar 50% width en cada uno y un espacio intermedio usar flex=1*/}
+          <Box
+            sx={{
+              mr: '0.3rem',
+              display: 'flex',
+              flexWrap: 'wrap',
+              boxShadow: 2,
+              flex: 1,
+              border: 2,
+              borderColor: 'primary.light',
+              '& .MuiDataGrid-cell:hover': {
+                color: 'primary.main',
+              },
+            }}
+          >
+            <InstallationCost></InstallationCost>
+          </Box>
+          <Box
+            sx={{
+              ml: '0.3rem',
+              display: 'flex',
+              flexWrap: 'wrap',
+              boxShadow: 2,
+              flex: 1,
+              border: 2,
+              borderColor: 'primary.light',
+              '& .MuiDataGrid-cell:hover': {
+                color: 'primary.main',
+              },
+            }}
+          >
+            <AmortizationTime></AmortizationTime>
+          </Box>
+        </Box>
         <Typography variant="h3">{t('ECONOMIC_BALANCE.YEAR_SAVING')}</Typography>
         <Typography variant="h3">{t('ECONOMIC_BALANCE.MONTH_SAVING')}</Typography>
         <Typography variant="h3">{t('ECONOMIC_BALANCE.DETAILED')}</Typography>

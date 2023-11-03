@@ -10,9 +10,7 @@
  */
 
 import TCB from './TCB'
-import Style from 'ol/style/Style'
-import Fill from 'ol/style/Fill'
-import Text from 'ol/style/Text'
+import { Style, Fill, Text } from 'ol/style'
 
 /*global bootstrap, ol*/
 const campos = {
@@ -66,7 +64,6 @@ const campos = {
   areaReal: { unidad: ' m²', decimales: 2, salvar: true, mostrar: true },
   potenciaMaxima: { unidad: ' kWp', decimales: 3, salvar: true, mostrar: true },
   inclinacionPaneles: { unidad: 'º', decimales: 2, salvar: true, mostrar: true },
-  inclinacionTejado: { unidad: 'º', decimales: 2, salvar: true, mostrar: true },
   acimut: { unidad: 'º', decimales: 2, salvar: true, mostrar: true },
   inAcimut: { unidad: 'º', decimales: 2, salvar: true, mostrar: true },
   inclinacionOptima: { unidad: '', salvar: true, mostrar: true },
@@ -268,6 +265,7 @@ export const indiceDia = [
 function getParametrosEntrada(variable) {
   const argumentos = window.location.search
   const urlParametros = new URLSearchParams(argumentos)
+
   if (urlParametros.has(variable)) {
     return urlParametros.get(variable)
   } else {
@@ -331,6 +329,8 @@ function distancia(p0, p1) {
  */
 async function setLabel(feature, texto, colorArray, bgcolorArray) {
   //Identificamos el objeto de que se trata a partir del ID del feature recibido
+
+  console.log(feature)
   const componente = feature.getId().split('.')
   const nombreObjeto = componente[0]
   //Definimos la justificación del texto segun el objeto
@@ -343,20 +343,31 @@ async function setLabel(feature, texto, colorArray, bgcolorArray) {
       posicionTexto = 'start'
       break
   }
+  //let featureStyle = feature.getStyle()
   //Construimos el style
-  var Slabel = new Style({
-    text: new Text({
-      font: '16px sans-serif',
-      textAlign: posicionTexto,
-      text: texto,
-      fill: new Fill({ color: colorArray }),
-      backgroundFill: new Fill({ color: bgcolorArray }),
-      padding: [2, 2, 2, 2],
-    }),
+  // console.log(featureStyle)
+  // if (featureStyle === undefined || featureStyle === null) {
+  //feature.set('label', texto)
+  const mText = new Text({
+    font: '16px sans-serif',
+    textAlign: posicionTexto,
+    text: texto,
+    fill: new Fill({ color: colorArray }),
+    backgroundFill: new Fill({ color: bgcolorArray }),
+    padding: [2, 2, 2, 2],
   })
-  //lo asignamos al feature recibido
-  feature.setStyle(Slabel)
-  return Slabel
+  console.log(mText)
+  const featureStyle = new Style({
+    text: mText,
+  })
+  //}
+
+  console.log(featureStyle)
+  console.log(texto)
+  feature.setStyle(featureStyle)
+  console.log(feature.getStyle())
+  console.log('nuevo: ', feature)
+  return featureStyle
 }
 
 /**

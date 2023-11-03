@@ -4,8 +4,6 @@ import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 
-import Dialog from '@mui/material/Dialog'
-import AddIcon from '@mui/icons-material/Add'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
@@ -13,7 +11,6 @@ import DialogTitle from '@mui/material/DialogTitle'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
-import Select from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
 import { MuiFileInput } from 'mui-file-input'
 
@@ -21,22 +18,15 @@ import TipoConsumo from '../classes/TipoConsumo'
 import Tarifa from '../classes/Tarifa'
 import TCB from '../classes/TCB'
 import TCBContext from '../TCBContext'
+import * as UTIL from '../classes/Utiles'
 
-export default function DialogNewConsumption({ data }) {
+export default function DialogNewConsumption({ data, onClose }) {
   const { t, i18n } = useTranslation()
 
-  const initialValues = data || {
-    nombreTipoConsumo: '',
-    fuente: 'CSV',
-    nombreTarifa: '2.0TD',
-    ficheroCSV: null,
-    consumoAnualREE: '',
-  }
+  console.log(data)
+  const [formData, setFormData] = useState(data)
 
-  const [open, setOpen] = useState(false)
-  const [formData, setFormData] = useState(initialValues)
-
-  const { bases, setBases, tipoConsumo, setTipoConsumo } = useContext(TCBContext)
+  const { tipoConsumo, setTipoConsumo } = useContext(TCBContext)
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -47,39 +37,44 @@ export default function DialogNewConsumption({ data }) {
     setFormData((prevFormData) => ({ ...prevFormData, ['ficheroCSV']: event }))
   }
 
-  const handleClickOpen = () => {
-    setOpen(true)
-  }
-
   const handleCancel = (event, reason) => {
-    if (reason !== 'backdropClick') {
-      setOpen(false)
-    }
+    onClose()
   }
 
-  const handleClose = (event, reason) => {
-    if (reason === 'backdropClick') return
-    if (formData.ficheroCSV === null) {
-      alert(t('CONSUMO.MSG_alMenosUnTipoConsumo'))
+  async function handleClose(event, reason) {
+    console.log(Number(formData.consumoAnualREE))
+    if (
+      formData.fuente === 'REE' &&
+      (isNaN(Number(formData.consumoAnualREE)) || formData.consumoAnualREE === '')
+    ) {
+      alert(t('CONSUMPTION.ERROR_DEFINIR_CONSUMO_REE'))
       return
     }
-    setOpen(false)
-
-    // alert(`nombreTipoConsumo: ${formData.nombreTipoConsumo}, fuente: ${formData.fuente}, nombreTarifa: ${formData.nombreTarifa},
-    // fuente: ${formData.ficheroCSV.name}, consumoAnualREE: ${formData.consumoAnualREE}`);
+    if (formData.fuente !== 'REE' && formData.ficheroCSV === null) {
+      alert(t('CONSUMPTION.ERROR_FALTA_FICHERO_CONSUMO'))
+      return
+    }
 
     TCB.requiereOptimizador = true
     TCB.cambioTipoConsumo = true
 
     let nuevoTipoConsumo = {
-      idTipoConsumo: TCB.featIdUnico++,
+      idTipoConsumo: TCB.featIdUnico,
       nombreTipoConsumo: formData.nombreTipoConsumo,
       fuente: formData.fuente,
-      nombreTarifa: formData.nombreTarifa,
-      consumoAnualREE: '',
-      ficheroCSV: formData.ficheroCSV,
-      nombreFicheroCSV: formData.ficheroCSV.name,
+      nombreTarifa: TCB.nombreTarifaActiva,
       territorio: TCB.territorio,
+    }
+
+    if (nuevoTipoConsumo.fuente === 'REE') {
+      nuevoTipoConsumo.consumoAnualREE = formData.consumoAnualREE
+      nuevoTipoConsumo.ficheroCSV = await UTIL.getFileFromUrl('./datos/REE.csv')
+      console.log(nuevoTipoConsumo.ficheroCSV)
+      nuevoTipoConsumo.nombreFicheroCSV = ''
+    } else {
+      nuevoTipoConsumo.consumoAnualREE = ''
+      nuevoTipoConsumo.ficheroCSV = formData.ficheroCSV
+      nuevoTipoConsumo.nombreFicheroCSV = formData.ficheroCSV.name
     }
 
     let idxTC = TCB.TipoConsumo.push(new TipoConsumo(nuevoTipoConsumo))
@@ -99,7 +94,6 @@ export default function DialogNewConsumption({ data }) {
           )
           resolve(res)
         })
-
         cargaResPromise
           .then((respuesta) => {
             if (respuesta) {
@@ -118,23 +112,39 @@ export default function DialogNewConsumption({ data }) {
         alert(error)
       }
     }
+    onClose()
   }
 
   async function cargaCSV(objTipoConsumo, ficheroCSV, fuente) {
     TCB.cambioTipoConsumo = true
     objTipoConsumo.inicializa()
+
     objTipoConsumo.ficheroCSV = ficheroCSV
-    let opciones = {
-      delimiter: ';',
-      decimal: ',',
-      fechaHdr: 'FECHA',
-      horaHdr: 'HORA',
-      valorArr: ['CONSUMO', 'CONSUMO_KWH', 'AE_KWH'],
-      factor: 1,
+    let opciones
+
+    if (fuente === 'REE') {
+      opciones = {
+        delimiter: ';',
+        decimal: '.',
+        fechaHdr: 'FECHA',
+        horaHdr: 'HORA',
+        valorArr: [objTipoConsumo.tarifa.nombreTarifa],
+        factor: objTipoConsumo.consumoAnualREE,
+      }
+    } else {
+      opciones = {
+        delimiter: ';',
+        decimal: ',',
+        fechaHdr: 'FECHA',
+        horaHdr: 'HORA',
+        valorArr: ['CONSUMO', 'CONSUMO_KWH', 'AE_KWH'],
+        factor: 1,
+      }
     }
 
     //Si la fuente es DATADIS loadcsv debera cambiar el formato de fecha de AAAA/MM/DD a DD/MM/AAAA
     opciones.fechaSwp = fuente === 'DATADIS'
+
     let aStatus
     await objTipoConsumo
       .loadFromCSV(ficheroCSV, opciones)
@@ -146,62 +156,47 @@ export default function DialogNewConsumption({ data }) {
         aStatus = false
       })
 
-    // console.log('registros: '+ objTipoConsumo.numeroRegistros)
-    // if (objTipoConsumo.numeroRegistros > 0) {
-    //   let consumoMsg = TCB.i18next.t('consumo_MSG_resumen', {registros: objTipoConsumo.numeroRegistros,
-    //                             desde: objTipoConsumo.fechaInicio.toLocaleDateString(),
-    //                             hasta: objTipoConsumo.fechaFin.toLocaleDateString()});
-    //   document.getElementById("csvResumen").innerHTML = consumoMsg;
-
-    //   _tablaTipoConsumo.updateData([objTipoConsumo.select_tablaTipoConsumo()]);
-    //   muestraGraficosObjeto(objTipoConsumo);
-    setFormData(initialValues)
+    setFormData(data)
     return aStatus
   }
 
-  //PENDIENTE:Agregar gestion de la potencia REE
   return (
     <div>
-      <Tooltip title={t('CONSUMPTION.TT_botonNuevoTipoConsumo')} placement="top">
-        <Button startIcon={<AddIcon />} onClick={handleClickOpen}>
-          {t('CONSUMPTION.LABEL_botonNuevoTipoConsumo')}
-        </Button>
-      </Tooltip>
-      <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
-        <DialogTitle>{t('CONSUMPTION.FORM_nuevoTipoConsumo')}</DialogTitle>{' '}
-        {/* PENDIENTE: definir mensaje */}
-        <DialogContent>
-          <Box
-            component="form"
-            sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}
-          >
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <TextField
-                required
-                type="text"
-                onChange={handleChange}
-                label={t('CONSUMPTION.LABEL_nombreTipoConsumo')}
-                name="nombreTipoConsumo"
-                value={formData.nombreTipoConsumo}
-              />
-            </FormControl>
+      <DialogTitle>{t('CONSUMPTION.FORM_nuevoTipoConsumo')}</DialogTitle>{' '}
+      {/* PENDIENTE: definir mensaje */}
+      <DialogContent>
+        <Box
+          component="form"
+          sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}
+        >
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <TextField
+              required
+              type="text"
+              onChange={handleChange}
+              label={t('CONSUMPTION.LABEL_nombreTipoConsumo')}
+              name="nombreTipoConsumo"
+              value={formData.nombreTipoConsumo}
+            />
+          </FormControl>
 
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <TextField
-                sx={{ width: 200, height: 50 }}
-                select
-                id="tipo-simple-select"
-                onChange={handleChange}
-                label={t('CONSUMPTION.fuente_LBL')}
-                name="fuente"
-                defaultValue="CSV"
-              >
-                <MenuItem value={'CSV'}>CSV</MenuItem>
-                <MenuItem value={'DATADIS'}>DATADIS</MenuItem>
-                <MenuItem value={'REE'}>REE</MenuItem>
-              </TextField>
-            </FormControl>
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
+            <TextField
+              sx={{ width: 200, height: 50 }}
+              select
+              id="tipo-simple-select"
+              onChange={handleChange}
+              label={t('CONSUMPTION.fuente_LBL')}
+              name="fuente"
+              defaultValue="CSV"
+            >
+              <MenuItem value={'CSV'}>CSV</MenuItem>
+              <MenuItem value={'DATADIS'}>DATADIS</MenuItem>
+              <MenuItem value={'REE'}>REE</MenuItem>
+            </TextField>
+          </FormControl>
 
+          {formData.fuente !== 'REE' ? (
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <MuiFileInput
                 id="ficheroCSV"
@@ -212,28 +207,24 @@ export default function DialogNewConsumption({ data }) {
                 value={formData.ficheroCSV}
               />
             </FormControl>
-
+          ) : (
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <TextField
-                sx={{ width: 200, height: 50 }}
-                id="tarifa-simple-select"
-                select
-                label={t('TARIFA.nombreTarifa_LBL')}
+                id="consumoAnualREE"
+                type="text"
                 onChange={handleChange}
-                name="nombreTarifa"
-                defaultValue="2.0TD"
-              >
-                <MenuItem value={'2.0TD'}>2.0TD</MenuItem>
-                <MenuItem value={'3.0TD'}>3.0TD</MenuItem>
-              </TextField>
+                label="Consumo anual en kWh"
+                name="consumoAnualREE"
+                value={formData.consumoAnualREE}
+              />
             </FormControl>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCancel}>Cancel</Button>
-          <Button onClick={handleClose}>Ok</Button>
-        </DialogActions>
-      </Dialog>
+          )}
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleCancel}>Cancel</Button>
+        <Button onClick={handleClose}>Ok</Button>
+      </DialogActions>
     </div>
   )
 }

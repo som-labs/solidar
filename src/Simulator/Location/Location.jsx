@@ -1,25 +1,39 @@
-import React, { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+// MUI objects
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import ReactMarkdown from 'react-markdown'
+
+// Componentes Solidar
 import MapComponent from './MapComponent'
-import Summary from './Summary/Summary'
+import BasesSummary from './BasesSummary'
 
 const LocationStep = () => {
   const { t, i18n } = useTranslation()
 
   return (
     <>
-      <Container>
+      <Container
+        maxWidth="lg"
+        //REVISAR: se pretende definir el formato de los headers de las tablas pero solo funciona el BackgroundColor
+        // sx={{
+        //   width: '100%',
+        //   '.dataGrid-headers': {
+        //     backgroundColor: 'rgb(200, 249, 233)',
+        //     fontWeight: 'bold',
+        //     textAlign: 'center',
+        //   },
+        // }}
+      >
         <Typography variant="h3">{t('LOCATION.TITLE')}</Typography>
-        <ReactMarkdown children={t('LOCATION.DESCRIPTION')} />
-        <Typography variant="body">{t('LOCATION.PROMPT_DRAW')}</Typography>
-        <MapComponent />
-        <div>
-          <Summary></Summary>
-        </div>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('LOCATION.DESCRIPTION'),
+          }}
+        />
+        <MapComponent></MapComponent>
+        <BasesSummary></BasesSummary>
       </Container>
     </>
   )
