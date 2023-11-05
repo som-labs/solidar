@@ -866,16 +866,14 @@ function muestra(donde, valor) {
   }
 }
 
-//Hay que analizar porque no funcionan estas opciones
-//async function copyClipboard(text) {
-
-/*   navigator.clipboard.writeText("TEXT_TO_BE_COPIED")
-         .then(() => alert("Copied")) */
-
-/*   if (navigator && navigator.clipboard && navigator.clipboard.writeText)
-  return navigator.clipboard.writeText(text);
-  return Promise.reject('The Clipboard API is not available.');  */
-//}
+function deleteBaseGeometries(featId) {
+  // Delete OpenLayers geometries
+  for (const geoProp in TCB.Especificaciones.BaseSolar.geometrias) {
+    const componentId = 'BaseSolar.' + geoProp + '.' + featId
+    const component = TCB.origenDatosSolidar.getFeatureById(componentId)
+    TCB.origenDatosSolidar.removeFeature(component)
+  }
+}
 
 function selectTCB(tabla, campo, valor) {
   let recordSet = []
@@ -970,6 +968,7 @@ export {
   //copyClipboard,
   csvToArray,
   debugLog,
+  deleteBaseGeometries,
   difDays,
   distancia,
   dumpData,

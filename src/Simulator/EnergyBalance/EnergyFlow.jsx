@@ -251,14 +251,14 @@ const EnergyFlow = () => {
               alt="Energía vertida a la red"
               title="Energía vertida a la red"
             />
-            {/* 
+
             <svg
               ref={bar}
               xmlns="http://www.w3.org/2000/svg"
               width="100%"
               height="300"
             ></svg>
-            */}
+
             <CardMedia
               component="img"
               src="./datos/red.svg"

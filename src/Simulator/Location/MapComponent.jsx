@@ -60,11 +60,9 @@ function MapComponent() {
   const [candidatos, setCandidatos] = useState([])
 
   const [openDialog, closeDialog] = useDialog()
-  const [editing, setEditing] = useState(false)
+  // const [editing, setEditing] = useState(false)
 
   const openNewBaseSolarDialog = (base, modo) => {
-    console.log(base)
-    console.log(editing)
     openDialog({
       children: <DialogNewBaseSolar data={base} editing={modo} onClose={closeDialog} />,
     })
@@ -81,14 +79,14 @@ function MapComponent() {
     construirBaseSolar(event)
   }) */
 
-  const selectAltClick = useRef(
-    new Select({
-      condition: function (mapBrowserEvent) {
-        return click(mapBrowserEvent) && altKeyOnly(mapBrowserEvent)
-      },
-      layers: [basesLayer.current],
-    }),
-  )
+  // const selectAltClick = useRef(
+  //   new Select({
+  //     condition: function (mapBrowserEvent) {
+  //       return click(mapBrowserEvent) && altKeyOnly(mapBrowserEvent)
+  //     },
+  //     layers: [basesLayer.current],
+  //   }),
+  // )
 
   // selectAltClick.current.on('select', (event) => {
   //   console.log('addInteracion con bases', bases)
@@ -159,7 +157,7 @@ function MapComponent() {
     } else {
       console.log('useEffect 1 viejo mapa')
       mapRef.current.setTarget(mapElement.current)
-      mapRef.current.removeInteraction(selectAltClick.current)
+      // mapRef.current.removeInteraction(selectAltClick.current)
       // console.log('useEffect 1 viejo mapa new Select', basesLayer.current)
       // selectAltClick.current = new Select({
       //   //style: selectStyle,
@@ -178,45 +176,45 @@ function MapComponent() {
     }
   }, [])
 
-  useEffect(() => {
-    console.log('useEffect 2')
-    if (mapRef.current) {
-      console.log('useEffect 2 viejo mapa')
+  // useEffect(() => {
+  //   console.log('useEffect 2')
+  //   if (mapRef.current) {
+  //     console.log('useEffect 2 viejo mapa')
 
-      mapRef.current.removeInteraction(selectAltClick.current)
-      selectAltClick.current = new Select({
-        //style: selectStyle,
-        condition: function (mapBrowserEvent) {
-          return click(mapBrowserEvent) && altKeyOnly(mapBrowserEvent)
-        },
-        layers: [basesLayer.current],
-      })
+  //     mapRef.current.removeInteraction(selectAltClick.current)
+  //     selectAltClick.current = new Select({
+  //       //style: selectStyle,
+  //       condition: function (mapBrowserEvent) {
+  //         return click(mapBrowserEvent) && altKeyOnly(mapBrowserEvent)
+  //       },
+  //       layers: [basesLayer.current],
+  //     })
 
-      selectAltClick.current.on('select', (event) => {
-        console.log('useEffect 2 viejo mapa en evento onSelect', bases)
-        editarBaseSolar(event)
-      })
-      console.log('useEffect 2 viejo mapa addInteraction', selectAltClick.current)
-      mapRef.current.addInteraction(selectAltClick.current)
-    } else {
-      console.log('useEffect 2 sin mapa')
-    }
-  }, [bases])
+  //     selectAltClick.current.on('select', (event) => {
+  //       console.log('useEffect 2 viejo mapa en evento onSelect', bases)
+  //       editarBaseSolar(event)
+  //     })
+  //     console.log('useEffect 2 viejo mapa addInteraction', selectAltClick.current)
+  //     mapRef.current.addInteraction(selectAltClick.current)
+  //   } else {
+  //     console.log('useEffect 2 sin mapa')
+  //   }
+  // }, [bases])
 
-  async function editarBaseSolar(event) {
-    if (event.selected.length > 0) {
-      const id = event.selected[0].getId().split('.')
-      console.log(id)
-      let j = bases.findIndex((x) => {
-        return x.idBaseSolar === id[2]
-      })
+  // async function editarBaseSolar(event) {
+  //   if (event.selected.length > 0) {
+  //     const id = event.selected[0].getId().split('.')
+  //     console.log(id)
+  //     let j = bases.findIndex((x) => {
+  //       return x.idBaseSolar === id[2]
+  //     })
 
-      console.log('editariamos la siguiente base del context: ', bases[j])
+  //     console.log('editariamos la siguiente base del context: ', bases[j])
 
-      setEditing(true)
-      openNewBaseSolarDialog(bases[j], true)
-    }
-  }
+  //     setEditing(true)
+  //     openNewBaseSolarDialog(bases[j], true)
+  //   }
+  // }
   //map click handler
   //Event when a base geometry has been created
   async function construirBaseSolar(geoBaseSolar) {
@@ -272,9 +270,14 @@ function MapComponent() {
     TCB.origenDatosSolidar.addFeatures([label])
 
     //Activamos el dialogo de edicion de atributos de BaseSolar
-    setEditing(false)
-    console.log(3)
-    openNewBaseSolarDialog(nuevaBaseSolar, false)
+    // setEditing(false)
+    // console.log(3)
+    //openNewBaseSolarDialog(nuevaBaseSolar, false)
+    openDialog({
+      children: (
+        <DialogNewBaseSolar data={nuevaBaseSolar} editing={false} onClose={closeDialog} />
+      ),
+    })
   }
 
   /** Se utiliza para definir el label asociado a un objeto en el mapa
@@ -422,78 +425,6 @@ function MapComponent() {
       return false
     }
   }
-
-  // async function handleNewData() {
-  //   current.requierePVGIS = true
-
-  //   //Update label in source with nombreBaseSolar
-  //   const componentId = 'BaseSolar.label.' + current.idBaseSolar
-  //   const labelFeature = TCB.origenDatosSolidar.getFeatureById(componentId)
-  //   //labelFeature.set('label', current.nombreBaseSolar)
-  //   console.log(labelFeature)
-  //   console.log(current.nombreBaseSolar)
-
-  //   //let featureStyle = feature.getStyle()
-  //   //Construimos el style
-  //   // console.log(featureStyle)
-  //   // if (featureStyle === undefined || featureStyle === null) {
-  //   //feature.set('label', texto)
-  //   var featureStyle = new Style({
-  //     text: new Text({
-  //       font: '16px sans-serif',
-  //       textAlign: 'center',
-  //       text: current.nombreBaseSolar,
-  //       fill: new Fill({ color: TCB.baseLabelColor }),
-  //       backgroundFill: new Fill({ color: TCB.baseLabelBGColor }),
-  //       padding: [2, 2, 2, 2],
-  //     }),
-  //   })
-  //   console.log(featureStyle)
-  //   labelFeature.setStyle(featureStyle)
-  //   console.log('nuevo: ', labelFeature)
-
-  //   if (!editing) {
-  //     TCB.BaseSolar.push(new BaseSolar(current))
-  //     setBases([...bases, current])
-  //   } else {
-  //     //Find this edited base in TCB
-  //     const baseIndex = TCB.BaseSolar.findIndex((x) => {
-  //       return x.idBaseSolar === current.idBaseSolar
-  //     })
-
-  //     // Update all attributes in TCB
-  //     TCB.BaseSolar[baseIndex].updateBase(current)
-
-  //     //Sbustitute new base in context
-  //     let prevBases = [...bases]
-  //     prevBases.splice(baseIndex, 1, current)
-  //     setBases(prevBases)
-  //   }
-  //   closeDialog()
-  //   setEditing(false)
-  // }
-
-  // async function handleChange(target) {
-  //   const { name, value } = target
-  //   setCurrent((prevFormData) => ({ ...prevFormData, [name]: value }))
-  // }
-
-  // function handleCancel(event, reason) {
-  //   //REVISAR: por algun motivo en esta configuracion no esta llegando el reason como lo hace en el dialogo de consumption
-  //   if (reason !== 'backdropClick') {
-  //     //REVISAR: si no es de nueva creacion, estamos eidtando no habria que borrar las geometrias
-  //     if (!editing) {
-  //       for (const geoProp in current.geometria) {
-  //         if (current.geometria[geoProp]) {
-  //           const componentId = current.geometria[geoProp].getId()
-  //           const component = TCB.origenDatosSolidar.getFeatureById(componentId)
-  //           TCB.origenDatosSolidar.removeFeature(component)
-  //         }
-  //       }
-  //     }
-  //     closeDialog()
-  //   }
-  // }
 
   return (
     <>
