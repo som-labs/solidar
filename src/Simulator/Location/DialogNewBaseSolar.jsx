@@ -62,41 +62,18 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }))
   }
 
-  const handleCancel = (event, reason) => {
+  const handleCancel = () => {
+    if (!editing) {
+      //Cancelling a new base creation => delete previos geometry
+      UTIL.deleteBaseGeometries(data.idBaseSolar)
+    }
     onClose()
   }
 
   async function handleClose() {
-    // setFormData((prevFormData) => ({ ...prevFormData, ['requierePVGIS']: true }))
-
-    console.log('closing dialog')
     //Update label in source with nombreBaseSolar
     const componentId = 'BaseSolar.label.' + data.idBaseSolar
     const labelFeature = TCB.origenDatosSolidar.getFeatureById(componentId)
-    //labelFeature.set('label', current.nombreBaseSolar)
-
-    //let featureStyle = feature.getStyle()
-    //Construimos el style
-    // console.log(featureStyle)
-    // if (featureStyle === undefined || featureStyle === null) {
-    //feature.set('label', texto)
-
-    //Construimos el style
-    // var featureStyle = new Style({
-    //   text: new Text({
-    //     font: '16px sans-serif',
-    //     textAlign: 'center',
-    //     text: formData.nombreBaseSolar,
-    //     fill: new Fill({ color: TCB.baseLabelColor }),
-    //     backgroundFill: new Fill({ color: TCB.baseLabelBGColor }),
-    //     padding: [2, 2, 2, 2],
-    //   }),
-    // })
-    // console.log(featureStyle)
-    // labelFeature.setStyle(featureStyle)
-    // console.log('nuevo: ', labelFeature)
-    //
-
     await UTIL.setLabel(
       labelFeature,
       formData.nombreBaseSolar,
@@ -105,6 +82,7 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
     )
 
     if (!editing) {
+      //We are creating a new base
       TCB.BaseSolar.push(new BaseSolar(formData))
       setBases([...bases, formData])
     } else {
@@ -112,16 +90,13 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
       const baseIndex = TCB.BaseSolar.findIndex((x) => {
         return x.idBaseSolar === formData.idBaseSolar
       })
-
       // Update all attributes in TCB
       TCB.BaseSolar[baseIndex].updateBase(formData)
-
       //Substitute new base in context
       let prevBases = [...bases]
       prevBases.splice(baseIndex, 1, formData)
       setBases(prevBases)
     }
-
     onClose()
   }
 

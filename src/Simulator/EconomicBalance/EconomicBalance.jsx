@@ -102,7 +102,7 @@ const EconomicBalanceStep = () => {
             width: '100%',
           }}
         >
-          {/* REVISAR: Como asignar el espacio entre boxes para dejar 50% width en cada uno y un espacio intermedio usar flex=1*/}
+          {/* Asignar el espacio entre boxes para dejar 50% width en cada uno y un espacio intermedio usar flex=X como proporcion*/}
           <Box
             sx={{
               mr: '0.3rem',
