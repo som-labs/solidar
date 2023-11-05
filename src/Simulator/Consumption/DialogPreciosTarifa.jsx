@@ -50,7 +50,7 @@ export default function DialogPreciosTarifa({ tarifa, onClose }) {
   return (
     <div>
       <DialogTitle>{t('TARIFA.DIALOG_PRECIOS', { tarifa: tarifa.nombre })}</DialogTitle>{' '}
-      {/* PENDIENTE: definir mensaje */}
+      {/* PENDIENTE: definir esquema final de los precios */}
       <DialogContent>
         <Box
           component="form"

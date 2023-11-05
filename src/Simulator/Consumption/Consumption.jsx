@@ -26,6 +26,7 @@ import PreciosTarifa from './PreciosTarifa'
 import TCBContext from '../TCBContext'
 import TCB from '../classes/TCB'
 import { formatoValor } from '../classes/Utiles'
+import MapaDiaHora from './MapaDiaHora'
 
 //PENDIENTE: Decidir si mostramos los datos en formato tabla o creamos boxes segun diseño de Clara
 const ConsumptionStep = () => {
@@ -80,8 +81,8 @@ const ConsumptionStep = () => {
     const nIndex = tipoConsumo.findIndex((t) => {
       return t.idTipoConsumo === tc.idTipoConsumo
     })
-    console.log(tipoConsumo[nIndex])
-    setActivo(tipoConsumo[nIndex])
+    console.log(TCB.TipoConsumo[nIndex])
+    setActivo(TCB.TipoConsumo[nIndex])
   }
 
   function deleteTC(ev, tc) {
@@ -212,6 +213,9 @@ const ConsumptionStep = () => {
         {/* </div> */}
         <Box>
           <MapaMesHora>{activo}</MapaMesHora>
+        </Box>
+        <Box>
+          <MapaDiaHora>{activo}</MapaDiaHora>
         </Box>
       </Container>
     </>
