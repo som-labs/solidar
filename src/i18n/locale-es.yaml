@@ -81,7 +81,9 @@ LOCATION:
 
   LABEL_AREA_REAL: Area disponible
   TOOLTIP_AREA_REAL: Area real disponible corregida por la inclinación del tejado
-  MSG_AREA_TOTAL: Area total disponible en esta configuración {{areaTotal}}
+  MSG_AREA_TOTAL: |
+    Area total disponible en esta configuración {{areaTotal}} <br />
+    con una potencia instalada máxima de {{potenciaMaxima}}
   candidatos_TT: Selecciónese la dirección correcta o señálese en el mapa inferior con una pulsación doble de ratón
 
 CONSUMPTION:
