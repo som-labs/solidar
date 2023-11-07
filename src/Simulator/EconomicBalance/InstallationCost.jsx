@@ -23,7 +23,7 @@ const InstallationCost = () => {
     useContext(EconomicContext)
   const [error, setError] = useState(false)
 
-  //REVISAR: esta funcion deberia tener en cuenta el idioma para verificar si un string es numero o no. Pero no funcion.
+  //REVISAR: esta funcion deberia tener en cuenta el idioma para verificar si un string es numero o no. Pero no funciona.
   function isNumber(str) {
     // REVISAR: Try to parse the string using the user's locale
     try {

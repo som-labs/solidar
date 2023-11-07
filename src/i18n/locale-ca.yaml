@@ -78,6 +78,8 @@ CONSUMPTION:
   XAXIS_MAPA_CONSUMO_MES_HORA: Hora
   LABEL_MAPA_CONSUMO_MES_HORA: 'Màxim valor: {{maxConsumoMes}} kWh'
   TITLE_MAPA_CONSUMO_MES_HORA: Consumeixo mig horari per mes relatius al màxim,
+  LABEL_TITLE_MAP_MONTH_DAY: Mapa de consum horari en kWh
+
   ERROR_DEFINIR_CONSUMO_REE: S'ha de definir un consum de base anual superior a 0 per al perfil REE
   ERROR_AL_MENOS_UN_TIPOCONSUMO: Cal definir almenys un tipus de consum
   ERROR_FALTA_FICHERO_CONSUMO: Cal definir el fitxer de consum abans de continuar

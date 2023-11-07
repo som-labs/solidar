@@ -24,19 +24,18 @@ import * as UTIL from '../classes/Utiles'
 
 export default function PreciosTarifa() {
   const { t, i18n } = useTranslation()
-  const [formData, setFormData] = useState()
-  const { tipoConsumo, setTipoConsumo } = useContext(TCBContext)
-  const [precios, setPrecios] = useState(Object.entries(TCB.tarifaActiva.precios))
-  const [nombreTarifaActiva, setNombreTarifaActiva] = useState(TCB.nombreTarifaActiva)
 
-  const cambiaNombreTarifa = (event) => {
-    console.log('cambia nombre tarifa a ', event.target.value)
-    let nombreTarifa = event.target.value
-    if (nombreTarifa === '3.0TD') {
-      nombreTarifa += '-' + TCB.territorio
+  const [precios, setPrecios] = useState(Object.entries(TCB.tarifaActiva.precios))
+  //const [nombreTarifaActiva, setNombreTarifaActiva] = useState(TCB.nombreTarifaActiva)
+  const [tipoTarifa, setTipoTarifa] = useState(TCB.tipoTarifa)
+
+  let nombreTarifaActiva = TCB.nombreTarifaActiva
+  const cambiaTipoTarifa = (event) => {
+    if (event.target.value === '3.0TD') {
+      nombreTarifaActiva = '3.0TD-' + TCB.territorio
     }
-    setNombreTarifaActiva(nombreTarifa)
-    TCB.tarifaActiva = TCB.tarifas[nombreTarifa]
+    TCB.tarifaActiva = TCB.tarifas[nombreTarifaActiva]
+    setTipoTarifa(event.target.value)
     setPrecios(Object.entries(TCB.tarifaActiva.precios))
   }
 
@@ -44,11 +43,8 @@ export default function PreciosTarifa() {
     let prevPrecios = [...precios]
     prevPrecios[posicion][1] = nuevoValor
     setPrecios(prevPrecios)
+    TCB.tarifaActiva.precios[posicion] = nuevoValor
   }
-
-  console.log(TCB.tarifaActiva.precios)
-  const entries = Object.entries(TCB.tarifaActiva.precios)
-  console.log(entries)
 
   return (
     <div>
@@ -58,35 +54,42 @@ export default function PreciosTarifa() {
           __html: t('TARIFA.DESCRIPTION'),
         }}
       />
+      <br />
       <FormControl sx={{ m: 1, minWidth: 120 }}>
         <TextField
           sx={{ width: 200, height: 50 }}
           id="tarifa-simple-select"
           select
           label={t('TARIFA.LABEL_NOMBRE_TARIFA')}
-          onChange={cambiaNombreTarifa}
+          onChange={cambiaTipoTarifa}
           name="nombreTarifa"
-          value={nombreTarifaActiva}
+          value={tipoTarifa}
         >
           <MenuItem value={'2.0TD'}>2.0TD</MenuItem>
           <MenuItem value={'3.0TD'}>3.0TD</MenuItem>
         </TextField>
       </FormControl>
+      <br />
+      <br />
 
       <Box
         component="form"
         sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}
       >
-        {precios.map((precioP, i) => (
+        {/* REVISAR: porque sale en la consola el error de clave unica */}
+        {precios.map((precioP, index) => (
           <>
+            {/* REVISAR: por que no funciona? */}
+            {(index === 1 || index === 4) && <br />}
+
             {precioP[1] !== 0 ? (
               <Box>
                 <TextField
                   sx={{ width: 200, height: 50 }}
-                  key={i++}
+                  key={index}
                   type="text"
                   value={precioP[1]}
-                  onChange={(ev) => cambiaPrecio(i - 1, ev.target.value)}
+                  onChange={(ev) => cambiaPrecio(index, ev.target.value)}
                   label={t('TARIFA.LABEL_P' + precioP[0])}
                   name={precioP[0]}
                   InputProps={{
@@ -103,6 +106,7 @@ export default function PreciosTarifa() {
           </>
         ))}
       </Box>
+      <br />
     </div>
   )
 }

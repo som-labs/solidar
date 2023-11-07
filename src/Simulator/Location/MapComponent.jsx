@@ -74,31 +74,10 @@ function MapComponent() {
     maxPoints: 3,
   })
 
-  //Event to call the function that will create the base once the geometry is defined in the map
-  /*   baseInteraction.on('drawend', (event) => {
-    construirBaseSolar(event)
-  }) */
-
-  // const selectAltClick = useRef(
-  //   new Select({
-  //     condition: function (mapBrowserEvent) {
-  //       return click(mapBrowserEvent) && altKeyOnly(mapBrowserEvent)
-  //     },
-  //     layers: [basesLayer.current],
-  //   }),
-  // )
-
-  // selectAltClick.current.on('select', (event) => {
-  //   console.log('addInteracion con bases', bases)
-  //   editarBaseSolar(event)
-  // })
-
   useEffect(() => {
     // If there is not previous Map in MapContext create one
-    console.log('useEffect 1')
     if (!mapRef.current) {
       //Landbase Open Street Map
-      console.log('useEffect 1 nuevo mapa')
       const OpenS = new TileLayer({
         source: new OSM({
           crossOrigin: null,
@@ -155,67 +134,10 @@ function MapComponent() {
       //Store the map in MapContext
       setMap(mapRef.current)
     } else {
-      console.log('useEffect 1 viejo mapa')
       mapRef.current.setTarget(mapElement.current)
-      // mapRef.current.removeInteraction(selectAltClick.current)
-      // console.log('useEffect 1 viejo mapa new Select', basesLayer.current)
-      // selectAltClick.current = new Select({
-      //   //style: selectStyle,
-      //   condition: function (mapBrowserEvent) {
-      //     return click(mapBrowserEvent) && altKeyOnly(mapBrowserEvent)
-      //   },
-      //   layers: [basesLayer.current],
-      // })
-
-      // selectAltClick.current.on('select', (event) => {
-      //   console.log('useEffect 1 viejo mapa en evento onSelect', bases)
-      //   editarBaseSolar(event)
-      // })
-      // console.log('useEffect 1 viejo mapa addInteraction', selectAltClick.current)
-      // mapRef.current.addInteraction(selectAltClick.current)
     }
   }, [])
 
-  // useEffect(() => {
-  //   console.log('useEffect 2')
-  //   if (mapRef.current) {
-  //     console.log('useEffect 2 viejo mapa')
-
-  //     mapRef.current.removeInteraction(selectAltClick.current)
-  //     selectAltClick.current = new Select({
-  //       //style: selectStyle,
-  //       condition: function (mapBrowserEvent) {
-  //         return click(mapBrowserEvent) && altKeyOnly(mapBrowserEvent)
-  //       },
-  //       layers: [basesLayer.current],
-  //     })
-
-  //     selectAltClick.current.on('select', (event) => {
-  //       console.log('useEffect 2 viejo mapa en evento onSelect', bases)
-  //       editarBaseSolar(event)
-  //     })
-  //     console.log('useEffect 2 viejo mapa addInteraction', selectAltClick.current)
-  //     mapRef.current.addInteraction(selectAltClick.current)
-  //   } else {
-  //     console.log('useEffect 2 sin mapa')
-  //   }
-  // }, [bases])
-
-  // async function editarBaseSolar(event) {
-  //   if (event.selected.length > 0) {
-  //     const id = event.selected[0].getId().split('.')
-  //     console.log(id)
-  //     let j = bases.findIndex((x) => {
-  //       return x.idBaseSolar === id[2]
-  //     })
-
-  //     console.log('editariamos la siguiente base del context: ', bases[j])
-
-  //     setEditing(true)
-  //     openNewBaseSolarDialog(bases[j], true)
-  //   }
-  // }
-  //map click handler
   //Event when a base geometry has been created
   async function construirBaseSolar(geoBaseSolar) {
     // Get unique featID

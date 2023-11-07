@@ -79,6 +79,7 @@ CONSUMPTION:
   XAXIS_MAPA_CONSUMO_MES_HORA: Hour
   YAXIS_MAPA_CONSUMO_MES_HORA: Month
   LABEL_MAPA_CONSUMO_MES_HORA: 'Maximum value:  %%{{maxConsumoMes}} kWh'
+  LABEL_TITLE_MAP_MONTH_DAY: Hourly consumption map in kWh
   ERROR_DEFINIR_CONSUMO_REE: Must define an annual base consumption greater than 0 for the REE profile
 
   ERROR_AL_MENOS_UN_TIPOCONSUMO: Must define at least one consumption type
@@ -500,7 +501,6 @@ botonAyuda_LBL:
   graficos_LBL_deRed: Electric Network
   # graficos_LBL_dePaneles: %%{{paneles}} panels
 
-  graficos_LBL_mapaConsumo: Hourly consumption map in kWh
   graficos_LBL_energiaRed: Energy obtained from the network
   graficos_LBL_energiaPaneles: Energy obtained from the panels
 

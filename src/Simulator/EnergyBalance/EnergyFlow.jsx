@@ -222,6 +222,12 @@ const EnergyFlow = () => {
   return (
     <>
       <Container>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('ENERGY_BALANCE.FLOW_DESCRIPTION'),
+          }}
+        />
         <Box sx={{ display: 'flex' }}>
           <div ref={grafResumen}>
             <CardMedia

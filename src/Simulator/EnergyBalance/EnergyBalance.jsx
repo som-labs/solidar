@@ -192,7 +192,13 @@ const EnergyBalanceStep = () => {
     <>
       <Container>
         <Typography variant="h3">{t('ENERGY_BALANCE.TITLE')}</Typography>
-        <ReactMarkdown children={t('ENERGY_BALANCE.DESCRIPTION')} />
+
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('ENERGY_BALANCE.DESCRIPTION'),
+          }}
+        />
         <div>
           <Typography variant="body">{t('tabla bases asignadas')}</Typography>
           <DataGrid
@@ -212,11 +218,8 @@ const EnergyBalanceStep = () => {
         </div>
         <div>
           <Typography variant="h5">
-            {t('LOCATION.MSG_AREA_TOTAL', {
-              areaTotal: UTIL.formatoValor(
-                'paneles',
-                Math.round(bases.reduce((sum, tBase) => sum + tBase.paneles, 0)),
-              ),
+            {t('ENERGY_BALANCE.TOTAL_PANELS', {
+              paneles: Math.round(bases.reduce((sum, tBase) => sum + tBase.paneles, 0)),
             })}
           </Typography>
         </div>
@@ -224,6 +227,7 @@ const EnergyBalanceStep = () => {
         <Box>
           <ConsumoGeneracion3D></ConsumoGeneracion3D>
         </Box>
+
         <EnergyFlow></EnergyFlow>
 
         {/* <div className="form-group row justify-content-center">

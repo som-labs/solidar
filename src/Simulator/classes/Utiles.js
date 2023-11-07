@@ -330,7 +330,6 @@ function distancia(p0, p1) {
 async function setLabel(feature, texto, colorArray, bgcolorArray) {
   //Identificamos el objeto de que se trata a partir del ID del feature recibido
 
-  console.log(feature)
   const componente = feature.getId().split('.')
   const nombreObjeto = componente[0]
   //Definimos la justificación del texto segun el objeto
@@ -356,17 +355,11 @@ async function setLabel(feature, texto, colorArray, bgcolorArray) {
     backgroundFill: new Fill({ color: bgcolorArray }),
     padding: [2, 2, 2, 2],
   })
-  console.log(mText)
   const featureStyle = new Style({
     text: mText,
   })
   //}
-
-  console.log(featureStyle)
-  console.log(texto)
   feature.setStyle(featureStyle)
-  console.log(feature.getStyle())
-  console.log('nuevo: ', feature)
   return featureStyle
 }
 

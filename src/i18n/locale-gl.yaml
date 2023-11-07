@@ -78,6 +78,8 @@ CONSUMPTION:
   YAXIS_MAPA_CONSUMO_MES_HORA: Mes
   LABEL_MAPA_CONSUMO_MES_HORA: 'Máximo valor: {{maxConsumoMes}} kWh'
   TITLE_MAPA_CONSUMO_MES_HORA: Consumo horario medio por mes en relación ao máximo
+  LABEL_TITLE_MAP_MONTH_DAY: Mapa de consumo horario en kWh
+
   DIALOG_TITLE_NUEVO_TIPO_CONSUMO:
   ERROR_DEFINIR_CONSUMO_REE: Debe definir un consumo base anual superior a 0 para o perfil REE
 

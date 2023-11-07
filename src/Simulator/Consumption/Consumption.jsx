@@ -48,8 +48,17 @@ const ConsumptionStep = () => {
       consumoAnualREE: '',
     }
     openDialog({
-      children: <DialogNewConsumption data={initialValues} onClose={closeDialog} />,
+      children: <DialogNewConsumption data={initialValues} onClose={endDialog} />,
     })
+  }
+
+  //REVISAR: como hacer para que el dialogo funcion sincro y no se llame a showGraphs antes de que se termine de cargar el TipoConsumo
+  function endDialog(showGraphs, newTC) {
+    console.log('fin dialogo ', showGraphs, newTC)
+    // if (showGraphs) {
+    //   showGraphsTC(newTC)
+    // }
+    closeDialog()
   }
 
   //PENDIENTE: esta funcion es por si se puede editar el TC desde la tabla. Por ahora solo el nombre
@@ -76,12 +85,10 @@ const ConsumptionStep = () => {
     setActivo(TCB.TipoConsumo[nIndex])
   }
 
-  function showGraphsTC(ev, tc) {
-    ev.stopPropagation()
-    const nIndex = tipoConsumo.findIndex((t) => {
+  function showGraphsTC(tc) {
+    const nIndex = TCB.TipoConsumo.findIndex((t) => {
       return t.idTipoConsumo === tc.idTipoConsumo
     })
-    console.log(TCB.TipoConsumo[nIndex])
     setActivo(TCB.TipoConsumo[nIndex])
   }
 
@@ -138,7 +145,7 @@ const ConsumptionStep = () => {
               variant="contained"
               size="small"
               tabIndex={params.hasFocus ? 0 : -1}
-              onClick={(e) => showGraphsTC(e, params.row)}
+              onClick={() => showGraphsTC(params.row)}
             >
               <AnalyticsIcon />
             </IconButton>
@@ -179,11 +186,8 @@ const ConsumptionStep = () => {
             </Button>
           </Tooltip>
         </div>
-
         {/* Consumption types table 
-        REVISAR: seria bueno quitar el pagination que aparece y crear una fila al final que suma la energia consumida por la suma d los consumos (se supone que aggregation lo hace pero no funciona y tenga un boton para ver el grafico de la suma*/}
-
-        {/* <div style={{ height: 400, width: '100%' }}> */}
+        REVISAR: hay que permitir ver el gráfico de la suma de todos los consumos */}
         <DataGrid
           autoHeight
           getRowId={getRowId}
@@ -210,13 +214,17 @@ const ConsumptionStep = () => {
             ),
           })}
         </Typography>
-        {/* </div> */}
-        <Box>
-          <MapaMesHora>{activo}</MapaMesHora>
-        </Box>
-        <Box>
-          <MapaDiaHora>{activo}</MapaDiaHora>
-        </Box>
+
+        {activo && (
+          <>
+            <Box>
+              <MapaMesHora>{activo}</MapaMesHora>
+            </Box>
+            <Box>
+              <MapaDiaHora>{activo}</MapaDiaHora>
+            </Box>
+          </>
+        )}
       </Container>
     </>
   )
