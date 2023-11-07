@@ -64,6 +64,7 @@ async function InicializaAplicacion() {
     )
   }
   TCB.tarifaActiva = TCB.tarifas[TCB.nombreTarifaActiva]
+
   //}
 
   // // Se incializan los tooltips

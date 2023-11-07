@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import TCB from '../classes/TCB'
 import Plot from 'react-plotly.js'
@@ -13,14 +13,15 @@ import ProfileDayConsumption from './ProfileDayConsumption'
 
 const MapaDiaHora = (tconsumo) => {
   const { t, i18n } = useTranslation()
-  const [diaActivo, setdiaActivo] = useState([])
+  const [diaActivo, setdiaActivo] = useState()
+  //REVISAR: ussando el state no funcion
+  //const [consumo, setConsumo] = useState(tconsumo.children)
+  const consumo = tconsumo.children
   const divGraph = useRef()
 
   if (tconsumo.children === undefined) {
     return <></>
   }
-
-  const consumo = tconsumo.children
 
   const i18nextMes = () => {
     let _mes = []
@@ -57,35 +58,31 @@ const MapaDiaHora = (tconsumo) => {
     connectgaps: true,
     showscale: true,
     hovertemplate:
-      '%{yaxis.title.text}: %{y}<br>' +
-      '%{xaxis.title.text}: %{x}<br>' +
-      TCB.i18next.t('graficos_LBL_graficasConsumo') +
+      t('CONSUMPTION.YAXIS_MAPA_CONSUMO_MONTH_DAY_DAY') +
+      ': %{y}<br>' +
+      t('CONSUMPTION.XAXIS_MAPA_CONSUMO_MONTH_DAY_HOUR') +
+      ': %{x}<br>' +
+      t('CONSUMPTION.HOOVER_MAPA_CONSUMO_MONTH_DAY') +
       ': %{z:.2f} kWh',
   }
 
   const layout_resumen = {
-    xaxis: { title: TCB.i18next.t('graficos_LBL_graficasHora') },
+    xaxis: { title: t('CONSUMPTION.XAXIS_MAPA_CONSUMO_MES_HORA') },
     yaxis: {
-      title: TCB.i18next.t('graficos_LBL_graficasDia'),
       tickvals: UTIL.indiceDia.map((e) => {
         return e[1]
       }),
       ticktext: mesMapa,
-    },
-    title: {
-      text: TCB.i18next.t('graficos_LBL_mapaConsumo'),
-      xref: 'paper',
-      x: 0.5,
-      yref: 'paper',
-      y: 1.1,
+      tickangle: -45,
+      tickline: true,
     },
     zaxis: { title: 'kWh' },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
     autosize: true,
     margin: {
-      l: 50,
-      r: 30,
+      l: 60,
+      r: 0,
       b: 65,
       t: 25,
     },
@@ -96,10 +93,10 @@ const MapaDiaHora = (tconsumo) => {
         xref: 'x',
         yref: 'y',
         text: 'Inicio',
-        xanchor: 'right',
+        xanchor: 'left',
         textangle: 0,
-        ax: -20,
-        ay: 0,
+        ax: 2,
+        ay: 15,
       },
     ],
     shapes: [
@@ -126,15 +123,39 @@ const MapaDiaHora = (tconsumo) => {
   return (
     <>
       <Container>
-        <Typography variant="h4">
-          {t('CONSUMPTION.TITLE_MAP_MONTH_HOUR', {
-            nombreTipoConsumo: consumo.nombreTipoConsumo,
-          })}
-        </Typography>
-        <Box sx={{ display: 'flex', width: '100%' }}>
-          <Box sx={{ width: '50%' }}>
-            <Typography variant="body">{t('CONSUMPTION.DESC_MAP_MONTH_HOUR')}</Typography>
-            <br></br>
+        <Typography variant="h4">{t('CONSUMPTION.TITLE_MAP_MONTH_DAY')}</Typography>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('CONSUMPTION.DESC_MAP_MONTH_DAY'),
+          }}
+        />
+        <br></br>
+        {/*REVISAR: no esta funcionando bien el flex */}
+        <Box
+          sx={{
+            display: 'flex',
+            width: '100%',
+          }}
+        >
+          <Box
+            sx={{
+              ml: '0.3rem',
+              display: 'flex',
+              flexWrap: 'wrap',
+              boxShadow: 2,
+              flex: 1,
+              border: 2,
+              borderColor: 'primary.light',
+              '& .MuiDataGrid-cell:hover': {
+                color: 'primary.main',
+              },
+            }}
+            justifyContent="center"
+          >
+            <Typography variant="h5" align="center">
+              {t('CONSUMPTION.LABEL_TITLE_MAP_MONTH_DAY')}
+            </Typography>
             <br></br>
             <div ref={divGraph}>
               <Plot
@@ -145,8 +166,25 @@ const MapaDiaHora = (tconsumo) => {
               />
             </div>
           </Box>
-          <Box sx={{ width: '50%' }}>
-            <ProfileDayConsumption consumo={consumo} diaActivo={diaActivo} />
+
+          <Box
+            sx={{
+              ml: '0.3rem',
+              display: 'flex',
+              flexWrap: 'wrap',
+              boxShadow: 2,
+              flex: 1,
+              border: 2,
+              borderColor: 'primary.light',
+              '& .MuiDataGrid-cell:hover': {
+                color: 'primary.main',
+              },
+            }}
+            justifyContent="center"
+          >
+            <div id="profile">
+              <ProfileDayConsumption consumo={consumo} diaActivo={diaActivo} />
+            </div>
           </Box>
         </Box>
       </Container>

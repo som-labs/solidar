@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import TCB from '../classes/TCB'
 import Plot from 'react-plotly.js'
+
 import * as UTIL from '../classes/Utiles'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
@@ -9,19 +10,20 @@ import Container from '@mui/material/Container'
 const ProfileDayConsumption = (data) => {
   const { t, i18n } = useTranslation()
 
-  const [dia, setDia] = useState(data.diaActivo)
-  const [consumo, setConsumo] = useState(data.consumo)
+  //REVISAR: por que usando el state no funciona?
+  //const [consumo, setConsumo] = useState(data.consumo)
+  const consumo = data.consumo
 
-  console.dir(data.diaActivo)
-
+  if (data.diaActivo === undefined) return <></>
   const fecha = UTIL.fechaDesdeIndice(data.diaActivo)
-  console.log(fecha)
+  const dia = fecha[0]
+  const mes = TCB.i18next.t(UTIL.nombreMes[fecha[1]])
 
   var trace1 = {
     y: consumo.diaHora[data.diaActivo],
     type: 'scatter',
     showlegend: false,
-    name: TCB.i18next.t('graficos_LBL_graficasConsumo'),
+    name: t('CONSUMPTION.HOOVER_MAPA_CONSUMO_MONTH_DAY'),
     line: { shape: 'spline', width: 3, color: 'rgb(0,0,255' },
   }
 
@@ -44,25 +46,17 @@ const ProfileDayConsumption = (data) => {
       ],
     },
   }
+
   var layout = {
-    autosize: true,
     margin: {
-      l: 50,
-      r: 20,
+      l: 0,
+      r: 0,
       b: 65,
-      t: 25,
+      t: 0,
     },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
-    title:
-      TCB.i18next.t('graficos_LBL_graficasDia') +
-      ': ' +
-      fecha[0] +
-      ' - ' +
-      TCB.i18next.t(UTIL.nombreMes[parseInt(fecha[1])]),
-    x: 10,
-    y: 15,
-    xaxis: { title: TCB.i18next.t('graficos_LBL_graficasHora'), dtick: 4 },
+    xaxis: { title: t('CONSUMPTION.XAXIS_MAPA_CONSUMO_MONTH_DAY_HOUR'), dtick: 4 },
     yaxis: {
       title: 'kWh',
       showline: true,
@@ -76,10 +70,13 @@ const ProfileDayConsumption = (data) => {
   return (
     <>
       <Container>
-        <Typography variant="body">
-          {t('Aqui va el perfil diario de consumo y produccion')}
+        <Typography variant="h5">
+          {t('CONSUMPTION.LABEL_TITLE_PROFILE_DAY', {
+            dia: dia,
+            mes: mes,
+          })}
         </Typography>
-        <Plot data={[trace1, trace2]} layout={{ layout }} style={{ width: '100%' }} />
+        <Plot data={[trace1, trace2]} layout={{ layout }} />
       </Container>
     </>
   )

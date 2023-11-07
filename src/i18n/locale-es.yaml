@@ -82,8 +82,8 @@ LOCATION:
   LABEL_AREA_REAL: Area disponible
   TOOLTIP_AREA_REAL: Area real disponible corregida por la inclinación del tejado
   MSG_AREA_TOTAL: |
-    Area total disponible en esta configuración {{areaTotal}} <br />
-    con una potencia instalada máxima de {{potenciaMaxima}}
+    Area total disponible en esta configuración: {{areaTotal}} <br />
+    Potencia máxima a instalar: {{potenciaMaxima}}
   candidatos_TT: Selecciónese la dirección correcta o señálese en el mapa inferior con una pulsación doble de ratón
 
 CONSUMPTION:
@@ -104,6 +104,18 @@ CONSUMPTION:
   XAXIS_MAPA_CONSUMO_MES_HORA: Hora
   YAXIS_MAPA_CONSUMO_MES_HORA: Mes
   LABEL_MAPA_CONSUMO_MES_HORA: 'Máximo valor: {{maxConsumoMes}} kWh'
+
+  TITLE_MAP_MONTH_DAY: Valores diarios de consumo
+  DESC_MAP_MONTH_DAY: |
+    El consumo por horas varia depenediendo si se trata de un dia festivo o laboral. Los dias loborables hay un consumo mínimo durante las horas de trabajo, a no ser que teletrabajes.<br />
+    También varia según las estaciones del año y la zona geográfica. En el norte de España en invierno, el pico de consumo estña en las horas del amanecer y del anochecer con la calefacción, mientras que en el sur de España en verano el pico de consumo se encuentra e medio dia, por el aire acondicionado.<br />
+    Consejo: para aprovechar al máximo tu autoproducción, puedes intentar llevar a cabo tus tareas domésticas en horas de máxima producción.<br />
+  LABEL_TITLE_MAP_MONTH_DAY: Mapa de consumo horario en kWh
+  HOOVER_MAPA_CONSUMO_MONTH_DAY: Consumo horario
+  XAXIS_MAPA_CONSUMO_MONTH_DAY_HOUR: Hora
+  YAXIS_MAPA_CONSUMO_MONTH_DAY_DAY: Dia
+  LABEL_TITLE_PROFILE_DAY: 'Perfil diario del {{dia}} de {{mes}}'
+
   ERROR_DEFINIR_CONSUMO_REE: Debe definir un consumo anual base mayor que 0 para el perfil de REE
   ERROR_AL_MENOS_UN_TIPOCONSUMO: Debe definir al menos un tipo de consumo
   ERROR_FALTA_FICHERO_CONSUMO: Debe definir el fichero de consumos antes de continuar
@@ -175,10 +187,8 @@ TARIFA:
 ENERGY_BALANCE:
   TITLE: Balance de Energía
   DESCRIPTION: |
-    A partir de tu documento de consumo hemos hecho el cálculo del número de paneles que necesitarías para cubrirlo.
-
-    (i) Los paneles se asignan primero a las áreas más eficientes desde el punto de vista de rendimiento energético.
-
+    A partir de tu documento de consumo hemos hecho el cálculo del número de paneles que necesitarías para cubrirlo.<br />
+    (i) Los paneles se asignan primero a las áreas más eficientes desde el punto de vista de rendimiento energético.<br />
     En la siguiente tabla puedes cambiar el número de paneles en cada área individualmente.
 
   TITLE_GRAFICO_CONSUMOGENERACION3D: Gráfico resumen de consumos versus producción
@@ -186,6 +196,11 @@ ENERGY_BALANCE:
   LABEL_LEYENDA_CONSUMO: Consumo
   LABEL_LEYENDA_DIA: Día
   LABEL_LEYENDA_HORA: Hora
+  TOTAL_PANELS: 'Número total de paneles: {{paneles}}'
+  FLOW_DESCRIPTION: |
+    Parte de la electricidad producida en tu instalación fotovoltáica se autoconsumo. <br />
+    El resto de la electricidad producida no se consume,(por ejemplo porque no hay nadie en la vivienda en las horas centrales del dia, que es donde mas electicidad se produce) se vierte a la red (excedentes) <br />
+    Lo mas probable es que sin baterías no puedas cubrir tu cosumo total. El resto de la energía que te falte tendrás que obtenerla de la red.<br />
 
 ECONOMIC_BALANCE:
   TITLE: Balance Económico
@@ -232,6 +247,8 @@ ECONOMIC_BALANCE:
 SUMMARY:
   TITLE: RESUMEN
   DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
+
+BASIC:
 
 ene: enero
 feb: febrero
@@ -587,8 +604,6 @@ botonAyuda_LBL:
   graficos_LBL_segunFuente: Distribución de energia segun fuente
   graficos_LBL_deRed: Red electrica
   graficos_LBL_dePaneles: '{{paneles}} Paneles'
-
-  graficos_LBL_mapaConsumo: Mapa de consumo horario en kWh
 
   graficos_LBL_energiaRed: Energía obtenida de la red
   graficos_LBL_energiaPaneles: Energía obtenida de los paneles

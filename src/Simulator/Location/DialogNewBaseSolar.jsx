@@ -33,16 +33,36 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
   const [formData, setFormData] = useState(data)
   const { bases, setBases } = useContext(TCBContext)
 
+  let tData
+
   const setOptimalTilt = (event) => {
     const localEvent = { name: 'inclinacionPaneles', value: 'Optima' }
     handleChange(localEvent)
     handleChange(event.target)
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      ['areaReal']: prevFormData.areaMapa,
+    }))
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      ['potenciaMaxima']: prevFormData.areaReal / TCB.parametros.conversionAreakWp,
+    }))
   }
 
   const changeTilt = (event) => {
     const localEvent = { name: 'inclinacionOptima', value: false }
     handleChange(localEvent)
     handleChange(event.target)
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      ['areaReal']:
+        prevFormData.areaMapa /
+        Math.cos((prevFormData.inclinacionPaneles / 180) * Math.PI),
+    }))
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      ['potenciaMaxima']: prevFormData.areaReal / TCB.parametros.conversionAreakWp,
+    }))
   }
 
   const setOptimalAzimut = (event) => {

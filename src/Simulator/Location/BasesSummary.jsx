@@ -130,8 +130,7 @@ const BasesSummary = () => {
           }}
         />
       </Box>
-      {/* REVISAR: Alineacion center del resumen. Va bien si no se usa HTML.
-      REVISAR: Cual debería ser el colorbackground de los boxes con informacion relevante */}
+      {/* REVISAR: Cual debería ser el colorbackground de los boxes con informacion relevante */}
       <Box
         sx={{
           mt: '0.3rem',
@@ -147,6 +146,7 @@ const BasesSummary = () => {
           },
           backgroundColor: 'rgba(220, 249, 233, 1)',
         }}
+        justifyContent="center"
       >
         <Typography
           variant="h6"
