@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField'
 import ReactMarkdown from 'react-markdown'
 import Container from '@mui/material/Container'
 import FormControl from '@mui/material/FormControl'
+import InputAdornment from '@mui/material/InputAdornment'
 import { debounce } from '@mui/material/utils'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
@@ -63,12 +64,12 @@ const VirtualBattery = () => {
               label={t('ECONOMIC_BALANCE.LABEL_RECOGNITION_VIRTUAL_BATTERY')}
               name="coefHucha"
               InputProps={{
+                endAdornment: <InputAdornment position="start"> %</InputAdornment>,
                 inputProps: {
                   style: { textAlign: 'right' },
                 },
               }}
-              //REVISAR: Seria bueno poder expresar la cantidad con la unidad
-              value={recognition} //{UTIL.formatoValor('precioInstalacion', precioInstalacion)}
+              value={recognition}
             />
           </FormControl>
           <Typography variant="body">
@@ -84,12 +85,12 @@ const VirtualBattery = () => {
               label={t('ECONOMIC_BALANCE.LABEL_FEE_VIRTUAL_BATTERY')}
               name="cuotaHucha"
               InputProps={{
+                endAdornment: <InputAdornment position="start"> €</InputAdornment>,
                 inputProps: {
                   style: { textAlign: 'right' },
                 },
               }}
-              //REVISAR: Seria bueno poder expresar la cantidad con la unidad
-              value={fee} //{UTIL.formatoValor('precioInstalacion', precioInstalacion)}
+              value={fee}
             />
           </FormControl>
         </Box>

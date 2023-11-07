@@ -22,10 +22,7 @@ import * as UTIL from '../classes/Utiles'
 
 export default function DialogNewConsumption({ data, onClose }) {
   const { t, i18n } = useTranslation()
-
-  console.log(data)
   const [formData, setFormData] = useState(data)
-
   const { tipoConsumo, setTipoConsumo } = useContext(TCBContext)
 
   const handleChange = (event) => {
@@ -37,12 +34,11 @@ export default function DialogNewConsumption({ data, onClose }) {
     setFormData((prevFormData) => ({ ...prevFormData, ['ficheroCSV']: event }))
   }
 
-  const handleCancel = (event, reason) => {
-    onClose()
+  const handleCancel = () => {
+    onClose(false)
   }
 
-  async function handleClose(event, reason) {
-    console.log(Number(formData.consumoAnualREE))
+  async function handleClose() {
     if (
       formData.fuente === 'REE' &&
       (isNaN(Number(formData.consumoAnualREE)) || formData.consumoAnualREE === '')
@@ -110,9 +106,10 @@ export default function DialogNewConsumption({ data, onClose }) {
           })
       } catch (error) {
         alert(error)
+        onClose(false)
       }
     }
-    onClose()
+    onClose(true, TCB.TipoConsumo[idxTC - 1])
   }
 
   async function cargaCSV(objTipoConsumo, ficheroCSV, fuente) {
