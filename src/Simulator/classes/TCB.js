@@ -117,7 +117,8 @@ const TCB = {
   ultimarefcat: '', //Ultima referencia catastral de la que se han cargado fincas
 
   //Algunos valores por defecto y comunes para el caso INDIVIDUAL
-  nombreTarifaActiva: '2.0TD',
+  nombreTarifaActiva: '2.0TD', //El nombre de la tarifa activa en caso de 3.0TD incluye el territorio
+  tipoTarifa: '2.0TD', //Puede ser 2.0TD o 3.0TD
   tarifaActiva: {},
 
   // Estos precios son los de SOM a agosto 2022 y no deberían estar aqui.
