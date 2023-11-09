@@ -21,6 +21,7 @@ class BaseSolar {
     this.angulosOptimos = false
     this.inclinacionOptima = false
     this.inclinacionPaneles = 0
+    this.roofType = 'coplanar'
     this.inAcimut = 0
     this.inAcimutOptimo = false
 

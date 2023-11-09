@@ -60,12 +60,13 @@ LOCATION:
   LABEL_BASE_NAME: Nombre de la base solar
   TOOLTIP_BASE_NAME: Identica el nombre de esta base para futuras referencias
 
-  LABEL_TILT: Inclinación de los paneles
+  LABEL_TILT: Inclinación del tejado
   TOOLTIP_TILT: Grados de inclinación (entre 0 y 90) sobre el tejado que tendrán los paneles. Si se marca ‘Óptimo’ no hace falta indicar ningún valor
-  DESCRIPTION_TILT: Aqui debes indicar el ángulo que tendrán los paneles con respecto al horizonte.
+  DESCRIPTION_TILT: ¿que inclinación tiene el tejado?
   LABEL_OPTIMUM_TILT: Inclinación óptima
   TOOLTIP_OPTIMUM_TILT: Marque este campo si desea que el sistema calcule el valor óptimo de la inclinación de los paneles
-
+  DESCRIPTION_ROOFTYPE: Indicanos cúal es la configuracion de tu tejado<br />
+  HORIZONTAL_ROOF: En el caso de tejado horizontal te propondremos el ángulo óptimo de  los paneles al finalizar el cálculo.
   LABEL_AZIMUT: Orientación al sur (Acimut)
   TOOLTIP_AZIMUT: El ángulo entre el sur con la proyección horizontal del sol. Si los paneles estuvieran orientados al sur el acimut será 0º hacial el este -90º y hacia el oeste 90º. Este campo se rellena indicando en el mapa la orientación que tendrán los paneles. Si no se completa se asume que es 0
   DESCRIPTION_AZIMUT: Aqui debes indicar el ángulo que tendrán los paneles con respecto al sur geográfico.
