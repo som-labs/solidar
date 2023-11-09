@@ -4,6 +4,11 @@
   margin: 0;
 }
 
+.roofTypeButton {
+  width: '500px';
+  height: '500px';
+}
+
 .map-container {
   height: 200px;
   width: 50%;

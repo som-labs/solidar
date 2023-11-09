@@ -8,7 +8,7 @@ import { OSM, Vector as VectorSource, XYZ } from 'ol/source'
 import { Style, Fill, Stroke, Text } from 'ol/style'
 import VectorLayer from 'ol/layer/Vector'
 import Feature from 'ol/Feature'
-import { Point } from 'ol/geom'
+import { Point, LineString } from 'ol/geom'
 import { getArea } from 'ol/sphere'
 import { transform, fromLonLat } from 'ol/proj'
 import { Draw, Select } from 'ol/interaction'
@@ -61,12 +61,6 @@ function MapComponent() {
 
   const [openDialog, closeDialog] = useDialog()
   // const [editing, setEditing] = useState(false)
-
-  const openNewBaseSolarDialog = (base, modo) => {
-    openDialog({
-      children: <DialogNewBaseSolar data={base} editing={modo} onClose={closeDialog} />,
-    })
-  }
 
   const baseInteraction = new Draw({
     source: TCB.origenDatosSolidar,
@@ -146,8 +140,8 @@ function MapComponent() {
     // Construimos la geometria de la BaseSolar que es un paralelogramo a partir de tres puntos
     let geometria = geoBaseSolar.feature.getGeometry()
     let puntos = geometria.getCoordinates()[0]
-    /*     const largo1 = UTIL.distancia(puntos[0], puntos[1]);
-    const largo2 = UTIL.distancia(puntos[1], puntos[2]); */
+    const largo1 = UTIL.distancia(puntos[0], puntos[1])
+    const largo2 = UTIL.distancia(puntos[1], puntos[2])
     let nuevoY = puntos[2][1] - (puntos[1][1] - puntos[0][1])
     let nuevoX = puntos[0][0] - (puntos[1][0] - puntos[2][0])
     let nuevoPunto = [nuevoX, nuevoY]
@@ -168,6 +162,40 @@ function MapComponent() {
       return false
     }
 
+    //NUEVO: Calculo propuesta de acimut
+    const azimutLength = 100
+    let rotate = 0
+    let midPoint = [0, 0]
+    let coef
+    let alfa
+
+    if (largo2 > largo1) {
+      coef = (azimutLength / largo1) * 2
+      midPoint[0] = puntos[1][0] + (puntos[2][0] - puntos[1][0]) / 2
+      midPoint[1] = puntos[1][1] + (puntos[2][1] - puntos[1][1]) / 2
+    } else {
+      coef = (azimutLength / largo2) * 2
+      midPoint[0] = puntos[0][0] + (puntos[1][0] - puntos[0][0]) / 2
+      midPoint[1] = puntos[0][1] + (puntos[1][1] - puntos[0][1]) / 2
+    }
+
+    if (midPoint[1] > puntoAplicacion[1]) {
+      rotate = Math.PI
+    }
+
+    const geomAcimut = new LineString([puntoAplicacion, midPoint])
+    geomAcimut.scale(coef, coef, puntoAplicacion)
+    geomAcimut.rotate(rotate, puntoAplicacion)
+    const nPuntos = geomAcimut.getCoordinates()
+    alfa = Math.asin((nPuntos[1][0] - nPuntos[0][0]) / azimutLength)
+    let acimut = (alfa * 180) / Math.PI
+
+    var acimutLine = new Feature({
+      geometry: geomAcimut,
+    })
+    acimutLine.setId('BaseSolar.acimut.' + TCB.featIdUnico)
+    TCB.origenDatosSolidar.addFeature(acimutLine)
+
     //Preparamos los datos default para constuir un objeto BaseSolar
     geoBaseSolar.feature.setId('BaseSolar.area.' + TCB.featIdUnico)
     let nuevaBaseSolar = {}
@@ -175,11 +203,12 @@ function MapComponent() {
     nuevaBaseSolar.idBaseSolar = TCB.featIdUnico.toString()
     nuevaBaseSolar.nombreBaseSolar = 'Base ' + nuevaBaseSolar.idBaseSolar
     nuevaBaseSolar.potenciaMaxima = areaMapa / TCB.parametros.conversionAreakWp
-    nuevaBaseSolar.inclinacionPaneles = 'Optima'
-    nuevaBaseSolar.inclinacionOptima = true
-    nuevaBaseSolar.inAcimut = 'Optima'
-    nuevaBaseSolar.inAcimutOptimo = true
-    nuevaBaseSolar.angulosOptimos = true
+    nuevaBaseSolar.inclinacionPaneles = 0
+    nuevaBaseSolar.inclinacionOptima = false
+    nuevaBaseSolar.roofType = 'coplanar'
+    nuevaBaseSolar.inAcimut = acimut.toFixed(2)
+    nuevaBaseSolar.inAcimutOptimo = false
+    nuevaBaseSolar.angulosOptimos = false
     nuevaBaseSolar.requierePVGIS = true
     nuevaBaseSolar.lonlatBaseSolar =
       puntoAplicacion_4326[0].toFixed(4) + ',' + puntoAplicacion_4326[1].toFixed(4)
@@ -201,23 +230,6 @@ function MapComponent() {
       ),
     })
   }
-
-  /** Se utiliza para definir el label asociado a un objeto en el mapa
-   *
-   * @param {Object} id del objeto al que se asocia el label
-   * @param {Array(2)<Number>} punto coordenadas en las que se inserta
-   * @param {String} texto a poner en el label
-   * @param {Color} color color del texto
-   * @param {Color} bgcolor color de background
-   * @returns {Object} Objeto OpenLayers Label
-   */
-  // async function nuevoLabel(id, punto, texto, color, bgcolor) {
-  //   let label = new Feature({ geometry: new Point(punto) })
-  //   label.setId(id)
-  //   //await UTIL.setLabel(label, texto, color, bgcolor)
-  //   TCB.origenDatosSolidar.addFeatures([label])
-  //   return label
-  // }
 
   /** Vamos a verificar si el punto dado esta en España
   Devuelve false si no lo esta o alguno de los siguientes valores en caso de estar en España
@@ -419,15 +431,6 @@ function MapComponent() {
       >
         {t(mapType)}
       </Button>
-
-      {/* {isDialogOpen && (
-        <DialogNewBaseSolar
-          data={current}
-          onClose={handleNewData}
-          onChange={handleChange}
-          onCancel={handleCancel}
-        />
-      )} */}
     </>
   )
 }
