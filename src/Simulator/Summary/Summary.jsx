@@ -7,6 +7,9 @@ import Container from '@mui/material/Container'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 
+import BasesSummary from '../Location/BasesSummary'
+import ConsumptionSummary from '../Consumption/ConsumptionSummary'
+
 const SummaryStep = () => {
   const { t, i18n } = useTranslation()
 
@@ -16,6 +19,9 @@ const SummaryStep = () => {
         <Typography variant="h3">{t('SUMMARY.TITLE')}</Typography>
         <Typography variant="body">{t('SUMMARY.DESCRIPTION')}</Typography>
       </Container>
+
+      <BasesSummary></BasesSummary>
+      <ConsumptionSummary>{{ inSummary: false }}</ConsumptionSummary>
     </>
   )
 }

@@ -1,23 +1,29 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
+// MUI objects
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 
+// REACT Solidar Components
 import ReduccionIBI from './ReduccionIBI'
 import SubvencionEU from './SubvencionEU'
 import InstallationCost from './InstallationCost'
 import VirtualBattery from './VirtualBattery'
 import AmortizationTime from './AmortizationTime'
+import YearSaving from './YearSavings'
+import MonthSaving from './MonthSavings'
+import FinanceSummary from './FinanceSummary'
+import GraphAlternatives from './GraphAlternatives'
 
+// Solidar objects
 import TCB from '../classes/TCB'
 import Economico from '../classes/Economico'
 import { Box } from '@mui/material'
-import EconomicContext from './EconomicContext'
 
 const EconomicBalanceStep = () => {
   const { t, i18n } = useTranslation()
-
+  const [cashFlow, setCashFlow] = useState([])
   const [IBI, setIBI] = useState()
   const [EUBonus, setEUBonus] = useState()
   const [hucha, setHucha] = useState()
@@ -25,17 +31,9 @@ const EconomicBalanceStep = () => {
   useEffect(() => {
     // El economico del consumo global*/
     TCB.economico = new Economico()
+    setCashFlow(TCB.economico.cashFlow)
+    alert('useEffect economic')
   }, [])
-
-  /** Muestra la tabla de cashflow el VAN y el TIR
-   *
-   */
-  // async function muestraBalanceFinanciero() {
-  //   _tablaEconomico.setData(TCB.economico.cashFlow)
-
-  //   UTIL.muestra('VANProyecto', UTIL.formatoValor('dinero', TCB.economico.VANProyecto))
-  //   UTIL.muestra('TIRProyecto', UTIL.formatoValor('porciento', TCB.economico.TIRProyecto))
-  // }
 
   return (
     <>
@@ -136,12 +134,71 @@ const EconomicBalanceStep = () => {
             <AmortizationTime></AmortizationTime>
           </Box>
         </Box>
-        <Typography variant="h3">{t('ECONOMIC_BALANCE.YEAR_SAVING')}</Typography>
-        <Typography variant="h3">{t('ECONOMIC_BALANCE.MONTH_SAVING')}</Typography>
-        <Typography variant="h3">{t('ECONOMIC_BALANCE.DETAILED')}</Typography>
-        <Typography variant="h3">{t('ECONOMIC_BALANCE.FINANCE')}</Typography>
-        <Typography variant="body">VAN {TCB.economico.VANProyecto}</Typography>
-        <Typography variant="body">TIR {TCB.economico.TIRProyecto}</Typography>
+        <Box
+          sx={{
+            mr: '0.3rem',
+            display: 'flex',
+            flexWrap: 'wrap',
+            boxShadow: 2,
+            flex: 1,
+            border: 2,
+            borderColor: 'primary.light',
+            '& .MuiDataGrid-cell:hover': {
+              color: 'primary.main',
+            },
+          }}
+        >
+          <YearSaving></YearSaving>
+        </Box>
+        <Box
+          sx={{
+            mr: '0.3rem',
+            display: 'flex',
+            flexWrap: 'wrap',
+            boxShadow: 2,
+            flex: 1,
+            border: 2,
+            borderColor: 'primary.light',
+            '& .MuiDataGrid-cell:hover': {
+              color: 'primary.main',
+            },
+          }}
+        >
+          <MonthSaving></MonthSaving>
+        </Box>
+        <Box
+          sx={{
+            mr: '0.3rem',
+            display: 'flex',
+            flexWrap: 'wrap',
+            boxShadow: 2,
+            flex: 1,
+            border: 2,
+            borderColor: 'primary.light',
+            '& .MuiDataGrid-cell:hover': {
+              color: 'primary.main',
+            },
+          }}
+        >
+          <FinanceSummary cashFlow={cashFlow}></FinanceSummary>
+        </Box>
+        <Typography variant="h3">{t('ECONOMIC_BALANCE.SEGUNNUMEROPANELES')}</Typography>
+        <Box
+          sx={{
+            mr: '0.3rem',
+            display: 'flex',
+            flexWrap: 'wrap',
+            boxShadow: 2,
+            flex: 1,
+            border: 2,
+            borderColor: 'primary.light',
+            '& .MuiDataGrid-cell:hover': {
+              color: 'primary.main',
+            },
+          }}
+        >
+          {/* <GraphAlternatives></GraphAlternatives> */}
+        </Box>
       </Container>
     </>
   )

@@ -223,7 +223,10 @@ const TCB = {
     perdidasSistema: 20,
     interesVAN: 3,
     tecnologia: 'crystSi',
-    potenciaPanelInicio: 0.45,
+    potenciaPanelInicio: 0.505,
+    anchoPanel: 1.134,
+    largoPanel: 2.094,
+    margen: 0,
   },
 
   /** Constante donde se define el precio estimado de la instalación en base a la potencia instalada

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 
-// Componentes Solidar
+// REACT Solidar Components
 import MapComponent from './MapComponent'
 import BasesSummary from './BasesSummary'
 

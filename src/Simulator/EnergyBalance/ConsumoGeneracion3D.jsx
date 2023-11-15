@@ -1,16 +1,21 @@
 import React, { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import TCB from '../classes/TCB'
-import Plot from 'react-plotly.js'
-import * as UTIL from '../classes/Utiles'
 
-import Typography from '@mui/material/Typography'
+// Plotly objects
+import Plot from 'react-plotly.js'
+
+// MUI objects
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 
+// REACT Solidar Components
 import PerfilDiario from './PerfilDiario'
 
-const ConsumoGeneracion3D = () => {
+// Solidar objects
+import TCB from '../classes/TCB'
+import * as UTIL from '../classes/Utiles'
+
+export default function ConsumoGeneracion3D() {
   const { t, i18n } = useTranslation()
   const [diaActivo, setdiaActivo] = useState([])
   const mesMapa = Array.from(i18nextMes())
@@ -21,7 +26,7 @@ const ConsumoGeneracion3D = () => {
       let mes = parseInt(e.fecha.getMonth()) + 1
       return e.fecha.getDate() + '/' + mes
     }),
-    name: TCB.i18next.t('ENERGY_BALANCE.LABEL_LEYENDA_PRODUCCION'),
+    name: t('GRAPHICS.LABEL_PRODUCTION'),
     type: 'surface',
     colorscale: 'YlOrRd',
     opacity: 1,
@@ -32,11 +37,11 @@ const ConsumoGeneracion3D = () => {
       y: { show: true, usecolormap: true, project: { x: true } },
     },
     hovertemplate:
-      TCB.i18next.t('ENERGY_BALANCE.LABEL_LEYENDA_DIA') +
+      t('GRAPHICS.LABEL_DIA') +
       ': %{y}<br>' +
-      TCB.i18next.t('ENERGY_BALANCE.LABEL_LEYENDA_HORA') +
+      t('GRAPHICS.LABEL_HORA') +
       ': %{x}<br>' +
-      TCB.i18next.t('ENERGY_BALANCE.LABEL_LEYENDA_PRODUCCION') +
+      t('GRAPHICS.LABEL_PRODUCTION') +
       ': %{z:.2f} kWh',
   }
 
@@ -46,18 +51,18 @@ const ConsumoGeneracion3D = () => {
       let mes = parseInt(e.fecha.getMonth()) + 1
       return e.fecha.getDate() + '/' + mes
     }),
-    name: TCB.i18next.t('ENERGY_BALANCE.LABEL_LEYENDA_CONSUMO'),
+    name: t('GRAPHICS.LABEL_CONSUMPTION'),
     type: 'surface',
     colorscale: 'Picnic',
     opacity: 0.8,
     showlegend: true,
     showscale: false,
     hovertemplate:
-      TCB.i18next.t('ENERGY_BALANCE.LABEL_LEYENDA_DIA') +
+      t('GRAPHICS.LABEL_DIA') +
       ': %{y}<br>' +
-      TCB.i18next.t('ENERGY_BALANCE.LABEL_LEYENDA_HORA') +
+      t('GRAPHICS.LABEL_HORA') +
       ': %{x}<br>' +
-      TCB.i18next.t('ENERGY_BALANCE.LABEL_LEYENDA_CONSUMO') +
+      t('GRAPHICS.LABEL_CONSUMPTION') +
       ': %{z:.2f} kWh',
   }
 
@@ -79,10 +84,10 @@ const ConsumoGeneracion3D = () => {
     },
     scene: {
       camera: { eye: { x: -2, y: -1.5, z: 1 } },
-      //xaxis: { title: TCB.i18next.t('ENERGY_BALANCE.LABEL_LEYENDA_HORA') },
-      xaxis: { title: 'HORA' },
+      //xaxis: { title: t('GRAPHICS.LABEL_HORA') },
+      xaxis: { title: 'GRAPHICS.LABEL_HORA' },
       yaxis: {
-        title: TCB.i18next.t('ENERGY_BALANCE.LABEL_LEYENDA_DIA'),
+        title: t('GRAPHICS.LABEL_DIA'),
         tickvals: UTIL.indiceDia.map((e) => {
           return e[1]
         }),
@@ -108,7 +113,7 @@ const ConsumoGeneracion3D = () => {
 
   function i18nextMes() {
     let _mes = []
-    for (let i = 0; i < 12; _mes.push(TCB.i18next.t(UTIL.nombreMes[i++])));
+    for (let i = 0; i < 12; _mes.push(t(UTIL.nombreMes[i++])));
     return _mes
   }
 
@@ -132,5 +137,3 @@ const ConsumoGeneracion3D = () => {
     </>
   )
 }
-
-export default ConsumoGeneracion3D

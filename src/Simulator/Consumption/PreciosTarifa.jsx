@@ -2,25 +2,14 @@ import React, { useState, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogTitle from '@mui/material/DialogTitle'
 import InputAdornment from '@mui/material/InputAdornment'
 import Typography from '@mui/material/Typography'
-import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
-import Select from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
-import { MuiFileInput } from 'mui-file-input'
 
-import TipoConsumo from '../classes/TipoConsumo'
-import Tarifa from '../classes/Tarifa'
+// Solidar objects
 import TCB from '../classes/TCB'
-import TCBContext from '../TCBContext'
-import * as UTIL from '../classes/Utiles'
 
 export default function PreciosTarifa() {
   const { t, i18n } = useTranslation()
@@ -41,11 +30,11 @@ export default function PreciosTarifa() {
 
   const cambiaPrecio = (posicion, nuevoValor) => {
     let prevPrecios = [...precios]
-    prevPrecios[posicion][1] = nuevoValor
+    const index = posicion[1]
+    prevPrecios[index][1] = nuevoValor
     setPrecios(prevPrecios)
-    TCB.tarifaActiva.precios[posicion] = nuevoValor
+    TCB.tarifaActiva.precios[index] = nuevoValor
   }
-
   return (
     <div>
       <Typography
@@ -57,7 +46,7 @@ export default function PreciosTarifa() {
       <br />
       <FormControl sx={{ m: 1, minWidth: 120 }}>
         <TextField
-          sx={{ width: 200, height: 50 }}
+          sx={{ width: 200, height: 50, textAlign: 'center' }}
           id="tarifa-simple-select"
           select
           label={t('TARIFA.LABEL_NOMBRE_TARIFA')}
@@ -65,8 +54,12 @@ export default function PreciosTarifa() {
           name="nombreTarifa"
           value={tipoTarifa}
         >
-          <MenuItem value={'2.0TD'}>2.0TD</MenuItem>
-          <MenuItem value={'3.0TD'}>3.0TD</MenuItem>
+          <MenuItem key={1} value={'2.0TD'}>
+            2.0TD
+          </MenuItem>
+          <MenuItem key={2} value={'3.0TD'}>
+            3.0TD
+          </MenuItem>
         </TextField>
       </FormControl>
       <br />
@@ -77,29 +70,27 @@ export default function PreciosTarifa() {
         sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}
       >
         {/* REVISAR: porque sale en la consola el error de clave unica */}
-        {precios.map((precioP, index) => (
+        {precios.map((precioP) => (
           <>
-            {/* REVISAR: por que no funciona? */}
-            {(index === 1 || index === 4) && <br />}
+            {/* REVISAR: por que no funciona? Como hacer una matriz fija para 3.0TD*/}
+            {/* {(precioP[0] === 'P1' || precioP[0] === 'P4') && <br />} */}
 
             {precioP[1] !== 0 ? (
-              <Box>
-                <TextField
-                  sx={{ width: 200, height: 50 }}
-                  key={index}
-                  type="text"
-                  value={precioP[1]}
-                  onChange={(ev) => cambiaPrecio(index, ev.target.value)}
-                  label={t('TARIFA.LABEL_P' + precioP[0])}
-                  name={precioP[0]}
-                  InputProps={{
-                    endAdornment: <InputAdornment position="start"> €</InputAdornment>,
-                    inputProps: {
-                      style: { textAlign: 'right' },
-                    },
-                  }}
-                />
-              </Box>
+              <TextField
+                sx={{ width: 200, height: 50 }}
+                key={precioP[0]}
+                type="text"
+                value={precioP[1]}
+                onChange={(ev) => cambiaPrecio(precioP[0], ev.target.value)}
+                label={t('TARIFA.LABEL_P' + precioP[0])}
+                name={precioP[0]}
+                InputProps={{
+                  endAdornment: <InputAdornment position="start"> €</InputAdornment>,
+                  inputProps: {
+                    style: { textAlign: 'right' },
+                  },
+                }}
+              />
             ) : (
               ''
             )}

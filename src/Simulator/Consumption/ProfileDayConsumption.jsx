@@ -56,13 +56,13 @@ const ProfileDayConsumption = (data) => {
     },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
-    xaxis: { title: t('CONSUMPTION.XAXIS_MAPA_CONSUMO_MONTH_DAY_HOUR'), dtick: 4 },
+    xaxis: { title: t('GRAPHICS.LABEL_HORA'), dtick: 4 },
     yaxis: {
       title: 'kWh',
       showline: true,
       zeroline: true,
       zerolinecolor: '#969696',
-      gridcolor: '#bdbdbd',
+      gridcolor: 'black',
       gridwidth: 2,
     },
   }

@@ -62,8 +62,8 @@ class Rendimiento extends DiaHora {
       if (base.inclinacionOptima) {
         addurl = '&optimalinclination=1'
       } else {
-        if (base.inclinacionPaneles === '') base.inclinacionPaneles = 0
-        let inclinacion = parseFloat(base.inclinacionPaneles)
+        if (base.inclinacion === '') base.inclinacion = 0
+        let inclinacion = parseFloat(base.inclinacion)
         addurl = '&angle=' + inclinacion
       }
 

@@ -31,14 +31,10 @@ class Consumo extends DiaHora {
     UTIL.debugLog('Generando consumo global')
     super()
 
-    console.log('en consumo recibo ', consumo)
     if (consumo === undefined) {
       TCB.TipoConsumo.forEach((_tc) => {
-        console.log('procesando TC ', _tc)
         this.suma(_tc)
       })
-      console.log('consumo creado en consumo')
-      console.log(this)
     } else {
       //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto
       for (const objProp in consumo) {
