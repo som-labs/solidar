@@ -35,15 +35,16 @@ export default function Page() {
       return {
         idBaseSolar: base.idBaseSolar,
         nombreBaseSolar: base.nombreBaseSolar,
-        areaMapa: base.areaMapa,
+        //areaMapa: base.areaMapa,
         areaReal: base.areaReal,
         lonlatBaseSolar: base.lonlatBaseSolar,
         potenciaMaxima: base.potenciaMaxima,
+        roofType: base.roofType,
         inclinacionOptima: base.inclinacionOptima,
-        inclinacionPaneles: base.inclinacionPaneles,
+        inclinacion: base.inclinacion,
         angulosOptimos: base.angulosOptimos,
         inAcimut: base.inAcimut,
-        requierePVGIS: base.requierePVGIS,
+        //requierePVGIS: base.requierePVGIS,
         paneles: 0,
         potenciaTotal: 0,
         potenciaUnitaria: 0,
@@ -84,16 +85,6 @@ export default function Page() {
         let oldBases = [...bases]
         TCB.BaseSolar.forEach((base) => {
           if (base.requierePVGIS) {
-            if (!base.angulosOptimos) {
-              if (base.inclinacionPaneles === 0 && !base.inclinacionOptima) {
-                if (
-                  !window.confirm(
-                    'Base: ' + base.nombreBaseSolar + ' con paneles a 0º de inclinación',
-                  )
-                )
-                  return false
-              }
-            }
             UTIL.debugLog('Base requiere PVGIS:', base)
             base.cargaRendimiento()
             TCB.requiereOptimizador = true
@@ -198,25 +189,23 @@ export default function Page() {
                   <Wizard variant="tabs">
                     <LocationStep
                       label="location"
-                      title={t('MAIN.TAB_localizacion')}
+                      title={t('LOCATION.TITLE')}
                       next={validaLocation}
                     />
                     <ConsumptionStep
                       label="consumption"
-                      title={t('MAIN.TAB_tipoConsumo')}
+                      title={t('CONSUMPTION.TITLE')}
                       next={validaTipoConsumo}
                     />
                     <EnergyBalanceStep
                       label="energybalance"
-                      title={t('MAIN.TAB_resultados')}
+                      title={t('ENERGY_BALANCE.TITLE')}
                     />
-
                     <EconomicBalanceStep
                       label="economicbalance"
-                      title={t('MAIN.TAB_economico')}
+                      title={t('ECONOMIC_BALANCE.TITLE')}
                     />
-
-                    <SummaryStep label="summary" title={t('MAIN.TAB_reporte')} />
+                    <SummaryStep label="summary" title={t('SUMMARY.TITLE')} />
                   </Wizard>
                 </MapContext.Provider>
               </EconomicContext.Provider>

@@ -1,39 +1,90 @@
 import TCB from './TCB'
 import * as UTIL from './Utiles'
 import Rendimiento from './Rendimiento'
+import DiaHora from './DiaHora'
 /**
  * @class BaseSolar
  * @classdesc Clase para definir las bases solares en las que se instalarán las fuentes de producción
  */
-class BaseSolar {
+class BaseSolar extends DiaHora {
+  #inclinacion
+
   /**
    * @constructor
    * @param {Object} area Descripción de la base donde se instalarán los paneles
    */
   constructor(area) {
+    super()
+
+    Object.defineProperties(this, {
+      inclinacion: {
+        enumerable: true,
+        set(angulo) {
+          this.#inclinacion = angulo
+          this.configuraInclinacion()
+        },
+        get() {
+          return this.#inclinacion
+        },
+      },
+      potenciaMaxima: {
+        enumerable: true,
+        set(valor) {}, //Esta aqui para evitar error al intentar set desde update
+        get() {
+          return (
+            this.configuracion.columnas *
+            this.configuracion.filas *
+            TCB.parametros.potenciaPanelInicio
+          )
+        },
+      },
+      anchoReal: {
+        enumerable: true,
+        get() {
+          //El area corregida por la inclinacion del tejado
+          return this.ancho / Math.cos((this.#inclinacion * Math.PI) / 180)
+        },
+      },
+      areaReal: {
+        enumerable: true,
+        set(valor) {},
+        get() {
+          return this.anchoReal * this.cumbrera
+        },
+      },
+    })
+
+    console.log(area)
+    this.idBaseSolar = area.idBaseSolar
     this.nombreBaseSolar = area.nombreBaseSolar
-    this.areaMapa //El area en el mapa
-    this.areaReal //El area corregida por la inclinaciond e l tejado
-    this.lonlatBaseSolar
-    this.potenciaMaxima
+    this.lonlatBaseSolar = area.lonlatBaseSolar
 
-    //Angulos de la configuracion
-    this.angulosOptimos = false
-    this.inclinacionOptima = false
-    this.inclinacionPaneles = 0
-    this.roofType = 'coplanar'
-    this.inAcimut = 0
-    this.inAcimutOptimo = false
+    //Dimensiones
+    this.roofType = area.roofType // configuracion en el tejado coplanar => tejado inclinado, si no es horizontal
+    this.cumbrera = area.cumbrera //Longitud de la base en la parte alta cuando roofType === coplanar
+    this.ancho = area.ancho //Longitud de la dimension transversal a la cumbrera medida en el mapa
 
-    this.rendimientoCreado = false
+    this.configuracion = { filas: 0, columnas: 0 } //Configuracion de los paneles
+
+    //Angulos optimos de la configuracion
+    this.angulosOptimos = area.angulosOptimos
+    this.inclinacionOptima = area.inclinacionOptima
+    this.inAcimutOptimo = area.inAcimutOptimo
+
+    //La inclinacion real se gestiona por el setter ya que su cambio implica cambio de areas
+    //CUIDADO: roofType debe estar predefinido para que la configuración de paneles sea correcto.
+    this.inclinacion = area.inclinacion
+
+    this.inAcimut = area.inAcimut
+
+    this.rendimientoCreado = false //true si ya tiene cargados los datos de PVGIS y se ha calculado su rendimiento
     this.requierePVGIS = true //Flag para controlar si es necesario llamar a PVGIS o no despues de cambios
-
-    //this.geometria = { label: {}, area: {}, acimut: {}, symbol: {} }
 
     this.rendimiento = {}
     this.instalacion = {}
     this.produccion = {}
 
+    // Si hay una base como argumento de entrada se copian todas las propiedades a la nueva base
     this.updateBase(area)
     UTIL.debugLog('Nueva base solar ' + area.nombreBaseSolar + ' creada')
   }
@@ -47,15 +98,82 @@ class BaseSolar {
       this.rendimientoCreado = false
     }
     this.rendimiento = new Rendimiento(this)
+    this.rendimientoCreado = true
+  }
+
+  configuraInclinacion() {
+    let hColumnas
+    let hFilas
+    let hGap
+
+    let vColumnas
+    let vFilas
+    let vGap
+    // Caso coplanar
+    console.log('cumbrera ', this.cumbrera)
+    console.log('ancho: ', this.anchoReal)
+    if (this.roofType === 'coplanar') {
+      // Opcion largo panel paralelo a cumbrera
+      hColumnas = Math.trunc(
+        (this.cumbrera - 2 * TCB.parametros.margen) / TCB.parametros.largoPanel,
+      )
+      hFilas = Math.trunc(
+        (this.anchoReal - 2 * TCB.parametros.margen) / TCB.parametros.anchoPanel,
+      )
+      // Opcion largo panel perpendicular a cumpbrera
+      vColumnas = Math.trunc(
+        (this.cumbrera - 2 * TCB.parametros.margen) / TCB.parametros.anchoPanel,
+      )
+      vFilas = Math.trunc(
+        (this.anchoReal - 2 * TCB.parametros.margen) / TCB.parametros.largoPanel,
+      )
+    } else {
+      //Caso tejado horizonatl
+      const latitud = parseFloat(this.lonlatBaseSolar.split(',')[1])
+      // Opcion largo panel paralelo a la cumbrera
+      hGap =
+        TCB.parametros.anchoPanel * Math.cos((this.inclinacion * Math.PI) / 180) +
+        (TCB.parametros.anchoPanel * Math.sin((this.inclinacion * Math.PI) / 180)) /
+          Math.tan(((61 - latitud) * Math.PI) / 180)
+      hColumnas = Math.trunc(
+        (this.cumbrera - 2 * TCB.parametros.margen) / TCB.parametros.largoPanel,
+      )
+      hFilas = Math.trunc((this.anchoReal - 2 * TCB.parametros.margen) / hGap)
+
+      // Opcion largo panel perpendicular a cumpbrera
+      vGap =
+        TCB.parametros.largoPanel * Math.cos((this.inclinacion * Math.PI) / 180) +
+        (TCB.parametros.largoPanel * Math.sin((this.inclinacion * Math.PI) / 180)) /
+          Math.tan(((61 - latitud) * Math.PI) / 180)
+      vColumnas = Math.trunc(
+        (this.cumbrera - 2 * TCB.parametros.margen) / TCB.parametros.anchoPanel,
+      )
+      vFilas = Math.trunc((this.anchoReal - 2 * TCB.parametros.margen) / vGap)
+    }
+    // Elegimos la configuracion que nos permite mas paneles
+    this.configuracion =
+      hColumnas * hFilas > vColumnas * vFilas
+        ? { columnas: hColumnas, filas: hFilas, modo: 'horizontal' }
+        : { columnas: vColumnas, filas: vFilas, modo: 'vertical' }
+    console.log(this.configuracion)
   }
 
   updateBase(newData) {
     //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto
     for (const objProp in newData) {
       if (typeof newData[objProp] !== Object) {
+        // Si la propiedad es un objeto no lo copiamos
+
+        //console.log(objProp, Object.getOwnPropertyDescriptor(this, objProp))
+        //if (Object.getOwnPropertyDescriptor(this, objProp).writable !== undefined)
         if (objProp === 'fecha' && typeof newData[objProp] === 'string')
+          // Si la propiedad es modificable
+          // Si es una fecha en modo string la convertimos a Date
           newData[objProp] = new Date(newData[objProp])
-        this[objProp] = newData[objProp]
+        else {
+          //console.log(objProp, newData[objProp])
+          this[objProp] = newData[objProp]
+        }
       }
     }
   }

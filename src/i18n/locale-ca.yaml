@@ -32,50 +32,48 @@ HOME:
   SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION: (En desarrollo)
   FURTHER_INFORMATION_TITLE: Información de interés
 
-MAIN:
-  botonAnterior_TT: Anterior
-  TAB_localizacion: Ubicació
-  TAB_tipoConsumo: Tipus de consum
-  TAB_fincas: Partícips
-  TAB_resultados: Balanç energètic
-  TAB_economico: Balanç econòmic
-  TAB_reparto: Repartiment
-  TAB_graficos: Gràfics
-  TAB_reporte: Resum
-  botonSiguiente_TT: Següent
-
 LOCATION:
-  LABEL: Localización
-  TITLE: Localización
-  DESCRIPTION: |
-    En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.\n
-    A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.\n Su rendimiento se calcula a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).
-    Rellena el siguiente formulario:
+  LABEL: Ubicació
+  TITLE: Ubicació
 
-  PROMPT_ADDRESS: Busca la dirección del edificio
   TOOLTIP_ADDRESS: Després d'indicar la ciutat i l'adreça d'on s'instal·laran els panells premeu la lupa
+
   PROMPT_DRAW: Dibuja las áreas disponibles del edificio en el mapa (?). Puedes añadir tantas áreas como quieras.
   LABEL_BASE_NAME: Nom base
   TOOLTIP_BASE_NAME: Identifica el nom d'aquesta base per a referències futures
+  LABEL_TILT: Inclinació
+  TOOLTIP_TILT: Inclinació mesurada en grados (entre 0º y 90º) respecte a l'horitzontal del terreny sobre el qual es muntaran els panells
 
-  LABEL_TILT: INCLINACION
+  LABEL_AZIMUT: Orientació (Azimut)
+  TOOLTIP_AZIMUT: L'angle entre el sud amb la projecció horitzontal del sol. Si els panells estiguessin orientats al sud l'azimut serà 0º cap a l'est -90º i cap a l'oest 90º. Aquest camp s'emplena indicant al mapa l'orientació que tindran els panells. Si no es completa s'assumeix que és 0
 
-  LABEL_AZIMUT: ORIENTACIÓN AL SUR
-  PROMPT_AZIMUT: Señala la orientación del tejado respecto al sur (acimut) haciendo clicken las areas que esten inclinadas (?)
-  LABEL_SUMMARY: RESUMEN
-  PROMPT_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
+  LABEL_BASES_SUMMARY: Resumen
+  PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
   ERROR_DEFINE_BASE: Cal definir las bases solares abans de seguir
   LABEL_SATELITE: Vista de satèl·lit
   LABEL_VECTOR: Vista del mapa
   LABEL_AREA_REAL: Àrea corregida
   TOOLTIP_AREA_REAL: Àrea real disponible corregida per la inclinació de la teulada
   MSG_AREA_TOTAL: (T)Area total disponible en esta configuración {{areaTotal}}
+  LABEL_IDBASESOLAR: ID
+  LABEL_LONLAT_BASESOLAR: Long-Lat
+  TOOLTIP_LONLAT_BASESOLAR: Coordenadas geográficas de la base
+
+  potenciaMaxima_LBL: Màxim kWp
+  potenciaMaxima_TT: Potència màxima pic a instal·lar en aquesta àrea (Veure paràmetre de conversió)
+  inclinacionPaneles_LBL: Inclinació del panell
+  inclinacionPaneles_TT: Graus d'inclinació (entre 0 i 90) sobre la teulada que tindran els panells. Si es marca <Òptim> no cal indicar cap valor
+  inclinacionOptima_LBL: Inclinació òptima
+  inclinacionOptima_TT: Marca aquest camp si vols que el sistema calculi el valor òptim de la inclinació dels panells
+  angulosOptimos_LBL: Angles òptims
+  angulosOptimos_TT: Marca aquest camp si vols que el sistema calculi el valor òptim d’inclinació i azimut
+  botonBorraBase_LBL:
+  botonBorraBase_TT: Suprimeix la base seleccionada
+
   candidatos_TT: Selecciona la direcció correcta o fes un senyal al mapa inferior amb una pulsació doble de ratolí
 
 CONSUMPTION:
-  TITLE: Consumo
-  YAXIS_MAPA_CONSUMO_MES_HORA: Mes
-  XAXIS_MAPA_CONSUMO_MES_HORA: Hora
+  TITLE: Consum
   LABEL_MAPA_CONSUMO_MES_HORA: 'Màxim valor: {{maxConsumoMes}} kWh'
   TITLE_MAPA_CONSUMO_MES_HORA: Consumeixo mig horari per mes relatius al màxim,
   LABEL_TITLE_MAP_MONTH_DAY: Mapa de consum horari en kWh
@@ -86,21 +84,24 @@ CONSUMPTION:
   LABEL_BUTTON_NUEVO_TIPOCONSUMO: Nou tipus consum
   TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Botó per crear un nou tipus de consum
 
-  FORM_nuevoTipoConsumo: (T)Formulario para crear un nuevo tipo do consumo
+  LABEL_CTOTAL_ANUAL: Consum anual
+  TOOLTIP_CTOTAL_ANUAL: Consum elèctric anual
+
+  TITLE_DIALOG_NEW_CONSUMPTION: (T)Formulario para crear un nuevo tipo do consumo
   idTipoConsumo: Id
-  LABEL_nombreTipoConsumo: Identificació del tipus consum
-  TT_nombreTipoConsumo: Identifica el nom d’aquest consum per a referències futures
+  LABEL_NOMBRE_TIPO_CONSUMO: Identificació del tipus consum
+  TOOLTIP_NOMBRE_TIPO_CONSUMO: Identifica el nom d’aquest consum per a referències futures
+  LABEL_FUENTE: Font tipus
+  TOOLTIP_FUENTE: Seleccioneu el tipus de font des d'on es carregarà el perfil de consum
+  LABEL_NOMBRE_FICHERO_CSV: Fitxer consum horari (només CSV)
+  TOOLTIP_NOMBRE_FICHERO_CSV: Identifica el fitxer de consum horari descarregat des de la teva distribuïdora
+  LABEL_CONSUMO_ANUAL_REE: Consum anual en kWh
+  TOOLTIP_CONSUMO_ANUAL_REE: En cas d’optar pel perfil de tipus REE cal indicar el consum estimat anual en kWh
+
   nombreTipoConsumoDuplicado_MSG: El nombre del tipo de consumo no puede estar duplicado
   tipoConsumoDefault_MSG: Defina tipo de fichero a utilizar y tarifa aplicable
   fuenteTipoConsumoErronea_MSG: Posible error definiendo DATADIS cuando debería ser CSV o viceversa
-  LABEL_fuente: Font tipus
-  TT_fuente: Seleccioneu el tipus de font des d'on es carregarà el perfil de consum
-  LABEL_consumoAnualREE: Consum anual en kWh (només REE)
-  TT_consumoAnualREE: En cas d’optar pel perfil de tipus REE cal indicar el consum estimat anual en kWh
-  LABEL_nombreFicheroCSV: Fitxer consum horari (només CSV)
-  TT_nombreFicheroCSV: Identifica el fitxer de consum horari descarregat des de la teva distribuïdora
-  LABEL_cTotalAnual: Consum anual
-  TT_cTotalAnual: Consum elèctric anual
+
   tcMaximoAnual_LBL: Màxim consum horari anual
   numeroDias_LBL: Dies processats
   botonBorraTipoConsumo_LBL:
@@ -132,31 +133,57 @@ CONSUMPTION:
 
 TARIFA:
   territorio_LBL: Territori
-  LABEL_nombreTarifa: Tarifa
-  TT_nombreTarifa: El tipus de tarifa contractada amb l'empresa comercialitzadora
-  Compensa_LBL: Preu compensació excedents
-  P1_LBL: Tarifa P1
-  P2_LBL: Tarifa P2
-  P3_LBL: Tarifa P3
-  P4_LBL: Tarifa P4
-  P5_LBL: Tarifa P5
-  P6_LBL: Tarifa P6
+  LABEL_NOMBRE_TARIFA: Nom tarifa
+  TOOLTIP__NOMBRE_TARIFA: El tipus de tarifa contractada amb l'empresa comercialitzadora
+  LABEL_P0: Preu compensació excedents
+  LABEL_P1: Tarifa P1
+  LABEL_P2: Tarifa P2
+  LABEL_P3: Tarifa P3
+  LABEL_P4: Tarifa P4
+  LABEL_P5: Tarifa P5
+  LABEL_P6: Tarifa P6
 
 ENERGY_BALANCE:
-  TITLE: Balance de Energía
-  DESCRIPTION: |
-    A partir de tu documento de consumo hemos hecho el cálculo del número de paneles que necesitarías para cubrirlo. 
-    (i) Los paneles se asignan primero a las áreas más eficientes desde el punto de vista de rendimiento energético.
-    En la siguiente tabla puedes cambiar el número de paneles en cada área individualmente.
+  TITLE: Balanç energètic
+  LABEL_EXCEDENTE_ANUAL: Electricitat sobrant
+  TOOLTIP_EXCEDENTE_ANUAL: Electricitat sobrant bolcada a la xarxa
+  LABEL_AUTOCONSUMO: Autoconsum
+  LABEL_ENERGIA_RED: Energia obtinguda de la xarxa
+  LABEL_ENERGIA_PANELES: Energia obtinguda dels panells
+  TITLE_GRAPH_MONTH_ENERGY_BALANCE: Producció mitjana mensual amb {{potencia}} instal·lada / consum mitjà mensual
 
 ECONOMIC_BALANCE:
-  TITLE: Balance Económico
+  TITLE: Balanç econòmic
   DESCRIPTION: |
     En esta pantalla conocerás cuánto tendrás que invertir en la instalación (teniendo en cuenta las subvenciones) cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión.
+  LABEL_ANO: Any
+  TOOLTIP_ANO: Periode d'amortització
+  LABEL_PREVIO: Previ
+  TOOLTIP_PREVIO: L'import pendent d'amortitzar a l'inici del periode
+  LABEL_INVERSION: Inversió
+  TOOLTIP_INVERSION: La quantitat invertida durant el període
+  LABEL_AHORRO: Estalvi
+  TOOLTIP_AHORRO: Estalvi obtingut en el període
+  LABEL_IBI: Bonificació IBI
+  TOOLTIP_IBI: Descompte obtingut a l’IBI
+  LABEL_SUBVENCION: Subvenció UE
+  TOOLTIP_SUBVENCION: Subvenció obtenida de la UE
+  LABEL_PENDIENTE: Pendent
+  TOOLTIP_PENDIENTE: Pendent d’amortització al final del període
+  LABEL_VAN_PROYECTO: 'Valor actual net (VAN): {{VAN}}'
+  TOOLTIP_VAN_PROYECTO: Valor actual net (VAN)
+  LABEL_TIR_PROYECTO: 'Taxa interna de retorn (TIR): {{TIR}}'
+  TOOLTIP_TIR_PROYECTO: Taxa interna de retorn (TIR)
 
 SUMMARY:
-  TITLE: RESUMEN
+  TITLE: Resum
   DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
+
+GRAPHICS:
+  LABEL_CONSUMPTION: Consum
+  LABEL_PRODUCTION: Producción
+  LABEL_DIA: Día
+  LABEL_HORA: Hora
 
 ene: gen
 feb: feb
@@ -311,29 +338,6 @@ mapa_MSG_territorio: L’aplicació només és vàlida per a Espanya
 mapa_MSG_insular: Compte estàs en territori no peninsular. Les tarifes 3.0TD no són les correctes.
 
 tabla base solar: _tablaBaseSolar
-idBaseSolar_LBL: ID
-
-lonlatBaseSolar_LBL: Long-Lat
-lonlatBaseSolar_TT: Coordenadas geográficas de la base
-areaMapa_LBL: Superfície al mapa
-areaMapa_TT: Superfície mesurada al mapa en metres quadrats
-inclinacionTejado_LBL: Inclinació de la teulada
-inclinacionTejado_TT: Inclinació de la teulada mesurada respecte a l'horitzontal del terreny sobre el qual es muntaran els panells
-
-potenciaMaxima_LBL: Màxim kWp
-potenciaMaxima_TT: Potència màxima pic a instal·lar en aquesta àrea (Veure paràmetre de conversió)
-inclinacionPaneles_LBL: Inclinació del panell
-inclinacionPaneles_TT: Graus d'inclinació (entre 0 i 90) sobre la teulada que tindran els panells. Si es marca <Òptim> no cal indicar cap valor
-inclinacionOptima_LBL: Inclinació òptima
-inclinacionOptima_TT: Marca aquest camp si vols que el sistema calculi el valor òptim de la inclinació dels panells
-inAcimut_LBL: Orientació (Azimut)
-inAcimut_TT: L'angle entre el sud amb la projecció horitzontal del sol. Si els panells estiguessin orientats al sud l'azimut serà 0º cap a l'est -90º i cap a l'oest 90º. Aquest camp s'emplena indicant al mapa l'orientació que tindran els panells. Si no es completa s'assumeix que és 0
-botonAcimut_LBL:
-botonAcimut_TT: Pots definir-ho mitjançant clic al mapa
-angulosOptimos_LBL: Angles òptims
-angulosOptimos_TT: Marca aquest camp si vols que el sistema calculi el valor òptim d’inclinació i azimut
-botonBorraBase_LBL:
-botonBorraBase_TT: Suprimeix la base seleccionada
 
 tabla PuntoConsumo_LBL: tabla PuntoConsumo
 nombrePuntoConsumo_LBL: Nom
@@ -402,8 +406,7 @@ produccionMensual_LBL: Producció mensual
 produccionMensual_TT: Producció fotovoltaica mitjana mensula estimada
 deficitAnual_LBL: Electricitat comprada
 deficitAnual_TT: Electricitat que encara és necessàri comprar a la comercialitzadora després de la instal·lació fotovoltaica
-excedenteAnual_LBL: Electricitat sobrant
-excedenteAnual_TT: Electricitat sobrant bolcada a la xarxa
+
 energiaFaltante%Consumo_LBL: Percentatge d'electricitat comprada
 energiaFaltante%Consumo_TT: El percentatge de l’electricitat comprada respecte al consum total
 energiaSobrante%Produccion_LBL: Percentatge d'electricitat sobrant
@@ -433,20 +436,6 @@ resultados_LBL_basePropiedades: 'Base:  {{id}}'
 
 economico: economico
 tabla: tabla
-ano_LBL: Any
-año_TT: Periode d'amortització
-previo_LBL: Previ
-previo_TT: L'import pendent d'amortitzar a l'inici del periode
-inversion_LBL: Inversió
-inversion_TT: La quantitat invertida durant el període
-ahorro_LBL: Estalvi
-ahorro_TT: Estalvi obtingut en el període
-IBI_LBL: Bonificació IBI
-IBI_TT: Descompte obtingut a l’IBI
-subvencion_LBL: Subvenció UE
-subvencion_TT: Subvenció obtenida de la UE
-pendiente_LBL: Pendent
-pendiente_TT: Pendent d’amortització al final del període
 
 form: form
 gastoSinPlacasAnual_LBL: Despesa anual sense panells
@@ -472,10 +461,7 @@ tipoSubvencionEU_TT: Si s'anessin a sol·licitar la subvenció dels fons Next Ge
 sinSubvencion_LBL: Sense subvenció EU
 subvencionIndividual_LBL: Instal·lació individual
 subvencionComunitaria_LBL: Instal·lació col·lectiva
-VANProyecto_LBL: Valor actual net (VAN)
-VANProyecto_TT: Valor actual net (VAN)
-TIRProyecto_LBL: Taxa interna de retorn (TIR)
-TIRProyecto_TT: Taxa interna de retorn (TIR)
+
 precios_LBL_pendienteCalculo: Pendent
 
 graficos: graficos
@@ -484,7 +470,7 @@ graficos_LBL_balanceConsumo: Balanç mensual de consum amb {{potencia}} instal·
 graficos_LBL_balanceProduccion: Balance mensual de producció amb {{potencia}} instal·lada
 graficos_LBL_tituloBalanceEconomico: Balance econòmic mensual amb {{potencia}} instal·lada
 graficos_LBL_alternativasPotencia: Alternatives amb paneles de {{potencia}} instal·lats
-graficos_LBL_produccionMediaMensual: Producció mitjana mensual amb {{potencia}} instal·lada / consum mitjà mensual
+
 graficos_LBL_graficasProduccion: Producció
 graficos_LBL_graficasNoCompensado: No compensat
 graficos_LBL_graficasGastoConPaneles: Despesa amb paneles
@@ -495,7 +481,7 @@ graficos_LBL_graficasExcedente: Excedent
 graficos_LBL_graficasInversion: Inversió
 graficos_LBL_graficasAhorro: Estalvi
 graficos_LBL_graficasDeficit: Dèficit
-graficos_LBL_graficasAutoconsumo: Autoconsum
+
 graficos_LBL_graficasAutosuficiencia: Autosuficiència
 graficos_LBL_graficasprodvscons: Prod. vs. Cons.
 graficos_LBL_graficasDia: Dia

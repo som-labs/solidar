@@ -13,19 +13,19 @@ import Balance from './Balance'
 async function calculaResultados() {
   // Se genera un objeto produccion para cada una de las bases
   TCB.BaseSolar.forEach((base) => {
-    if (base.produccionCreada) {
-      base.produccion = {}
-      base.produccionCreada = false
-    }
+    // if (base.produccionCreada) {
+    //   base.produccion = {}
+    //   base.produccionCreada = false
+    // }
     base.produccion = new Produccion(base)
     base.produccion.produccionCreada = true
   })
 
   // Se genera un unico objeto produccion que totaliza la produccion de todas las bases
-  if (TCB.produccion.produccionCreada) {
-    TCB.produccion.produccion = {}
-    TCB.produccion.produccionCreada = false
-  }
+  // if (TCB.produccion.produccionCreada) {
+  //   TCB.produccion.produccion = {}
+  //   TCB.produccion.produccionCreada = false
+  // }
   TCB.produccion = new Produccion()
   TCB.produccion.produccionCreada = true
 
