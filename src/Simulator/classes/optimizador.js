@@ -11,13 +11,14 @@ import TCB from './TCB'
  * @param {Float} potenciaPanelInicio Potencia unitaria de cada panel
  * @returns {Float} energiaPendiente Es el valor de la energía que no ha podiodo ser asignada
  */
-async function optimizador(bases, consumo, potenciaPanelInicio) {
+function optimizador(bases, consumo, potenciaPanelInicio) {
   let energiaPendiente = consumo.cTotalAnual
   let energiaAsignada = 0
   let tmpPaneles
   TCB.totalPaneles = 0
 
-  // Ordenamos las bases de mayor a menos por su rendimiento. Intentaremos asignar la mayor produccion a la mas productiva
+  // Sort bases from higher to lower solar preformance.
+  // Assign the most production to the better performance up to the limit based on available area
   if (bases.length > 1)
     bases.sort((a, b) => b.rendimiento.unitarioTotal - a.rendimiento.unitarioTotal)
 
@@ -36,7 +37,7 @@ async function optimizador(bases, consumo, potenciaPanelInicio) {
         'kWp en la base ',
       bases[i].id,
     )
-    //Creamos una instalación por defecto que cubra el consumo maximo anual
+    //Create a new instalation on this base of tmpPaneles
     bases[i].instalacion = new Instalacion({
       paneles: tmpPaneles,
       potenciaUnitaria: potenciaPanelInicio,
@@ -47,9 +48,8 @@ async function optimizador(bases, consumo, potenciaPanelInicio) {
 
   return energiaPendiente
 }
-/**
- *
- * @param {Int} panelesNuevo Número total de paneles que se quieren instalar entre todas las bases
+/** Change number of paneles of the configuration
+ * @param {Int} panelesNuevo Total number of panels to install in all bases available
  * @returns {}
  */
 function nuevoTotalPaneles(panelesNuevo) {
@@ -58,7 +58,8 @@ function nuevoTotalPaneles(panelesNuevo) {
   let maxPanelesBase
 
   UTIL.debugLog('nuevo cantidad de paneles a asignar:' + panelesNuevo)
-  // Ordenamos las bases de mayor a menos por su rendimiento. Intentaremos asignar la mayor produccion a la mas productiva
+  // Sort bases from higher to lower solar preformance.
+  // Assign the most production to the better performance up to the limit based on available area
   if (TCB.BaseSolar.length > 1)
     TCB.BaseSolar.sort(
       (a, b) => b.rendimiento.unitarioTotal - a.rendimiento.unitarioTotal,
@@ -70,8 +71,6 @@ function nuevoTotalPaneles(panelesNuevo) {
     )
     tmpPaneles = maxPanelesBase > panelesPendientes ? panelesPendientes : maxPanelesBase
     UTIL.debugLog('asignados ' + tmpPaneles + ' a base ' + TCB.BaseSolar[i].idBaseSolar)
-    /*     TCB.BaseSolar[i].instalacion = new Instalacion({paneles: tmpPaneles, potenciaUnitaria:TCB.BaseSolar[i].instalacion.potenciaUnitaria});  */
-
     TCB.BaseSolar[i].instalacion.paneles = tmpPaneles
     panelesPendientes -= tmpPaneles
   }

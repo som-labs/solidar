@@ -31,7 +31,7 @@ class Instalacion {
       potenciaUnitaria: {
         enumerable: true,
         set(potencia) {
-          // actualiza proporcionalemnte el precio si ya tenia un precio asignado
+          // actualiza proporcionalmente el precio si ya tenia un precio asignado
           if (this.#precioInstalacion !== 0)
             this.#precioInstalacion *= potencia / this.#potenciaUnitaria
           else this.getPrecioInstalacion()
