@@ -1,24 +1,26 @@
 import React, { useState, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
+// MUI objects
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
-
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import TextField from '@mui/material/TextField'
 import { MuiFileInput } from 'mui-file-input'
 
+// REACT Solidar Components
+import TCBContext from '../TCBContext'
+
+// Solidar objects
+import TCB from '../classes/TCB'
+import * as UTIL from '../classes/Utiles'
 import TipoConsumo from '../classes/TipoConsumo'
 import Tarifa from '../classes/Tarifa'
-import TCB from '../classes/TCB'
-import TCBContext from '../TCBContext'
-import * as UTIL from '../classes/Utiles'
 
 export default function DialogNewConsumption({ data, onClose }) {
   const { t, i18n } = useTranslation()
@@ -65,7 +67,6 @@ export default function DialogNewConsumption({ data, onClose }) {
     if (nuevoTipoConsumo.fuente === 'REE') {
       nuevoTipoConsumo.consumoAnualREE = formData.consumoAnualREE
       nuevoTipoConsumo.ficheroCSV = await UTIL.getFileFromUrl('./datos/REE.csv')
-      console.log(nuevoTipoConsumo.ficheroCSV)
       nuevoTipoConsumo.nombreFicheroCSV = ''
     } else {
       nuevoTipoConsumo.consumoAnualREE = ''
@@ -109,6 +110,7 @@ export default function DialogNewConsumption({ data, onClose }) {
         onClose(false)
       }
     }
+    //If a new TipoConsumo is defined show graphs
     onClose(true, TCB.TipoConsumo[idxTC - 1])
   }
 
@@ -159,7 +161,7 @@ export default function DialogNewConsumption({ data, onClose }) {
 
   return (
     <div>
-      <DialogTitle>{t('CONSUMPTION.FORM_nuevoTipoConsumo')}</DialogTitle>{' '}
+      <DialogTitle>{t('CONSUMPTION.TITLE_DIALOG_NEW_CONSUMPTION')}</DialogTitle>{' '}
       {/* PENDIENTE: definir mensaje */}
       <DialogContent>
         <Box
@@ -171,7 +173,7 @@ export default function DialogNewConsumption({ data, onClose }) {
               required
               type="text"
               onChange={handleChange}
-              label={t('CONSUMPTION.LABEL_nombreTipoConsumo')}
+              label={t('CONSUMPTION.LABEL_NOMBRE_TIPO_CONSUMO')}
               name="nombreTipoConsumo"
               value={formData.nombreTipoConsumo}
             />
@@ -183,7 +185,7 @@ export default function DialogNewConsumption({ data, onClose }) {
               select
               id="tipo-simple-select"
               onChange={handleChange}
-              label={t('CONSUMPTION.fuente_LBL')}
+              label={t('CONSUMPTION.LABEL_FUENTE')}
               name="fuente"
               defaultValue="CSV"
             >
@@ -197,10 +199,10 @@ export default function DialogNewConsumption({ data, onClose }) {
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <MuiFileInput
                 id="ficheroCSV"
-                inputProps={{ accept: 'csv/*' }}
+                inputProps={{ accept: '.csv' }}
                 onChange={handleFile}
-                label="Fichero"
-                name={t('CONSUMPTION.nombreFicheroCSV_LBL')}
+                label={t('CONSUMPTION.LABEL_NOMBRE_FICHERO_CSV')}
+                name="ficheroCSV"
                 value={formData.ficheroCSV}
               />
             </FormControl>
@@ -210,7 +212,7 @@ export default function DialogNewConsumption({ data, onClose }) {
                 id="consumoAnualREE"
                 type="text"
                 onChange={handleChange}
-                label="Consumo anual en kWh"
+                label={t('CONSUMPTION.LABEL_CONSUMO_ANUAL_REE')}
                 name="consumoAnualREE"
                 value={formData.consumoAnualREE}
               />

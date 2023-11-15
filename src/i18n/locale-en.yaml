@@ -32,44 +32,49 @@ HOME:
   SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION: (En desarrollo)
   FURTHER_INFORMATION_TITLE: Información de interés
 
-MAIN:
-  botonAnterior_TT: Previous
-  TAB_localizacion: Location
-  TAB_tipoConsumo: Consumption type
-  TAB_fincas: Participants
-  TAB_resultados: Energy Balance
-  TAB_reparto: Distribution
-  TAB_economico: Economic balance
-  TAB_graficos: Graphics
-  TAB_reporte: Summary
-  botonSiguiente_TT: Next
-
 LOCATION:
-  LABEL: Localización
-  TITLE: Localización
+  LABEL: Location
+  TITLE: Location
   DESCRIPTION: |
     En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.\n
     A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.\n Su rendimiento se calcula a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).
     Rellena el siguiente formulario:
-
   PROMPT_ADDRESS: Busca la dirección del edificio
   TOOLTIP_ADDRESS: After indicating city and direction where the panels will be installed click search icon
   PROMPT_DRAW: Dibuja las áreas disponibles del edificio en el mapa (?). Puedes añadir tantas áreas como quieras.
   LABEL_BASE_NAME: Base name
   TOOLTIP_BASE_NAME: Identify the name of this basis for future references
+  LABEL_TILT: Tilt
+  TOOLTIP_TILT: Inclination en degrees (between 0º and 90º)measured with respect to the horizontal of the land on which the panels will be mounted
 
-  LABEL_TILT: INCLINACION
+  LABEL_AZIMUT: South Orientation (Azimuth)
+  TOOLTIP_AZIMUT: The angle between the south with the horizontal projection of the sun. If the panels were oriented to the south the azimuth will be 0º made the east -90º and west 90º. This field is filled by indicating on the map the orientation that the panels will have. If it is not completed it is assumed that it is 0
 
-  LABEL_AZIMUT: ORIENTACIÓN AL SUR
-  PROMPT_AZIMUT: Señala la orientación del tejado respecto al sur (acimut) haciendo clicken las areas que esten inclinadas (?)
-  LABEL_SUMMARY: Summary
-  PROMPT_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
+  LABEL_BASES_SUMMARY: Summary
+  PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
   ERROR_DEFINE_BASE: You must define solar bases before continue
   LABEL_SATELITE: Satellite view
   LABEL_VECTOR: Map view
   MSG_AREA_TOTAL: (T)Area total disponible en esta configuración {{areaTotal}}
   LABEL_AREA_REAL: Corrected area
   TOOLTIP_AREA_REAL: Real area available corrected by the roof inclination
+  LABEL_IDBASESOLAR: id
+  LABEL_LONLAT_BASESOLAR: Long-Lat
+  TOOLTIP_LONLAT_BASESOLAR: Base geographic coordinates
+
+  areaReal_LBL: Corrected area
+  areaReal_TT: Real area available corrected by the roof inclination
+  potenciaMaxima_LBL: Max. kWp
+  potenciaMaxima_TT: It is the maximum kWp to be installed in this base depending on the available area (see conversion parameter)
+  inclinacionPaneles_LBL: Panel inclination
+  inclinacionPaneles_TT: Degrees of inclination (between 0 and 90) on the roof that the panels will have. If ‘optimal’ is marked no value is necessary
+  inclinacionOptima_LBL: Optimal inclination
+  inclinacionOptima_TT: Mark this field if you want the system to calculate the optimal value of the inclination of the panels
+
+  angulosOptimos_LBL: Optimal angles
+  angulosOptimos_TT: Mark this field if you want the system to calculate the optimal value of inclination and azimut
+  botonBorraBase_TT: Delete the selected base
+
   candidatos_TT: Select the correct direction or sign up on the lower map with a double mouse pulsation
 
 CONSUMPTION:
@@ -86,21 +91,24 @@ CONSUMPTION:
   ERROR_FALTA_FICHERO_CONSUMO: You must define the consumption file before continuing
   LABEL_BUTTON_NUEVO_TIPOCONSUMO: New consumption type
   TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Button to create new consumption type
-  FORM_nuevoTipoConsumo: (T)Formulario para crear un nuevo tipo do consumo
+  LABEL_CTOTAL_ANUAL: Annual consumption
+  TOOLTIP_CTOTAL_ANUAL: Annual energy consumption of this profile
+
+  TITLE_DIALOG_NEW_CONSUMPTION: (T)Formulario para crear un nuevo tipo do consumo
+  LABEL_FUENTE: Source type
+  TOOLTIP_FUENTE: Select the source type from which the consumption profile will be loaded
+  LABEL_NOMBRE_FICHERO_CSV: Consumption file (only CSV)
+  TOOLTIP_NOMBRE_FICHERO_CSV: Identify the Consumption file downloaded from your distribution company
+  LABEL_CONSUMO_ANUAL_REE: Annual consumption in kWh
+  TOOLTIP_CONSUMO_ANUAL_REE: In case of opting for the REE type profile the estimated annual consumption must be indicated
+
   idTipoConsumo: id
   LABEL_nombreTipoConsumo: Consumption identification
   TT_nombreTipoConsumo: Identize the name of this consumption for future references
   nombreTipoConsumoDuplicado_MSG: The name of the type of consumption cannot be duplicate
   tipoConsumoDefault_MSG: Define type of file to use and applicable rate
   fuenteTipoConsumoErronea_MSG: Possible error defining datadis when it should be CSV or vice versa
-  LABEL_fuente: Source type
-  TT_fuente: Select the source type from which the consumption profile will be loaded
-  LABEL_consumoAnualREE: Annual consumption (only REE)
-  TT_consumoAnualREE: In case of opting for the REE type profile the estimated annual consumption must be indicated
-  LABEL_nombreFicheroCSV: Consumption file (only CSV)
-  TT_nombreFicheroCSV: Identify the Consumption file downloaded from your distribution company
-  LABEL_cTotalAnual: Annual consumption
-  TT_cTotalAnual: Annual energy consumption of this profile
+
   tcMaximoAnual_LBL: Maximum annual hourly consumption
   numeroDias_LBL: Processed days
   botonBorraTipoConsumo_LBL:
@@ -133,15 +141,15 @@ CONSUMPTION:
 
 TARIFA:
   territorio_LBL: Territory
-  LABEL_nombreTarifa: Fee
-  TT_nombreTarifa: The type of rate hired with the marketing company
-  Compensa_LBL: Compensation rate
-  P1_LBL: Price P1
-  P2_LBL: Price P2
-  P3_LBL: Price P3
-  P4_LBL: Price P4
-  P5_LBL: Price P5
-  P6_LBL: Price P6
+  LABEL_NOMBRE_TARIFA: Fee name
+  TOOLTIP__NOMBRE_TARIFA: The type of rate hired with the marketing company
+  LABEL_P0: Compensation rate
+  LABEL_P1: Price P1
+  LABEL_P2: Price P2
+  LABEL_P3: Price P3
+  LABEL_P4: Price P4
+  LABEL_P5: Price P5
+  LABEL_P6: Price P6
 
 ENERGY_BALANCE:
   TITLE: Energy Balance
@@ -149,6 +157,12 @@ ENERGY_BALANCE:
     (T) A partir de tu documento de consumo hemos hecho el cálculo del número de paneles que necesitarías para cubrirlo. 
     (i) Los paneles se asignan primero a las áreas más eficientes desde el punto de vista de rendimiento energético.
     En la siguiente tabla puedes cambiar el número de paneles en cada área individualmente.
+  LABEL_EXCEDENTE_ANUAL: Production poured into the grid
+  TOOLTIP_EXCEDENTE_ANUAL: Energy poured into the grid when production is higher than consumption
+  LABEL_AUTOCONSUMO: Self-consumption
+  LABEL_ENERGIA_RED: Energy obtained from the network
+  LABEL_ENERGIA_PANELES: Energy obtained from the panels
+  TITLE_GRAPH_MONTH_ENERGY_BALANCE: Monthly average production with {{potencia}} installed / average monthly consumption
 
 ECONOMIC_BALANCE:
   TITLE: Economic Balance
@@ -161,6 +175,24 @@ ECONOMIC_BALANCE:
   TOOLTIP_RECOGNITION_VIRTUAL_BATTERY: Percentage of the uncompensated balance that goes to the piggy bank
   LABEL_FEE_VIRTUAL_BATTERY: piggy bank management fee (without VAT)
   TOOLTIP_FEE_VIRTUAL_BATTERY: Fixed monthly fee in Euros without VAT that the marketing company charges for managing the piggy bank
+  LABEL_ANO: Year
+  TOOLTIP_ANO: Amortization period
+  LABEL_PREVIO: Previous
+  TOOLTIP_PREVIO: Pending amortization amount  at the beginning of the period
+  LABEL_INVERSION: Investment
+  TOOLTIP_INVERSION: The amount invested during the period
+  LABEL_AHORRO: Saving
+  TOOLTIP_AHORRO: Savings obtained in the period
+  IBI_LBL: IBI discount
+  IBI_TT: Discount obtained in the IBI
+  LABEL_SUBVENCION: Subsidy EU
+  TOOLTIP_SUBVENCION: Subsidy from EU
+  LABEL_PENDIENTE: Pending
+  TOOLTIP_PENDIENTE: Pending amortization at the end of the period
+  LABEL_VAN_PROYECTO: 'Net present value (NPV): {{VAN}}'
+  TOOLTIP_VAN_PROYECTO: Net present value (NPV)
+  LABEL_TIR_PROYECTO: 'Internal Rate of Return (TIR): {{TIR}}'
+  TOOLTIP_TIR_PROYECTO: Internal Rate of Return (TIR)
 
 SUMMARY:
   TITLE: Summary
@@ -293,31 +325,9 @@ botonAyuda_LBL:
   mapa_MSG_posicionConsumo: One click to position a new consumption
   mapa_MSG_territorio: The application is only valid for Spain
   mapa_MSG_insular: Be careful you are in non -peninsular territory. 3.0TD rates can be wrong (Please review).
-  -tabla base solar: -tabla base solar
-  idBaseSolar_LBL: id
 
-  lonlatBaseSolar_LBL: Long-Lat
-  lonlatBaseSolar_TT: Base geographic coordinates
-  areaMapa_LBL: Surface on map
-  areaMapa_TT: Surface measured on the map in square meters
-  inclinacionTejado_LBL: Roof inclination
-  inclinacionTejado_TT: Roof inclination measured with respect to the horizontal of the land on which the panels will be mounted
-  areaReal_LBL: Corrected area
-  areaReal_TT: Real area available corrected by the roof inclination
-  potenciaMaxima_LBL: Max. kWp
-  potenciaMaxima_TT: It is the maximum kWp to be installed in this base depending on the available area (see conversion parameter)
-  inclinacionPaneles_LBL: Panel inclination
-  inclinacionPaneles_TT: Degrees of inclination (between 0 and 90) on the roof that the panels will have. If ‘optimal’ is marked no value is necessary
-  inclinacionOptima_LBL: Optimal inclination
-  inclinacionOptima_TT: Mark this field if you want the system to calculate the optimal value of the inclination of the panels
-  inAcimut_LBL: Orientation (Azimuth)
-  inAcimut_TT: The angle between the south with the horizontal projection of the sun. If the panels were oriented to the south the azimuth will be 0º made the east -90º and west 90º. This field is filled by indicating on the map the orientation that the panels will have. If it is not completed it is assumed that it is 0
-  botonAcimut_LBL:
-  botonAcimut_TT: Can define clicking the map
-  angulosOptimos_LBL: Optimal angles
-  angulosOptimos_TT: Mark this field if you want the system to calculate the optimal value of inclination and azimut
-  botonBorraBase_LBL:
-  botonBorraBase_TT: Delete the selected base
+  -tabla base solar: -tabla base solar
+
   -tabla PuntoConsumo_LBL: -tabla PuntoConsumo_LBL
   nombrePuntoConsumo_LBL: Name
   nombrePuntoConsumo_TT: Identify the name of this point of consumption for future reference
@@ -393,8 +403,7 @@ botonAyuda_LBL:
   produccionMensual_TT: Estimated monthly average photovoltaic production
   deficitAnual_LBL: Consumption demanded from the grid
   deficitAnual_TT: Electricity that is still necessary to buy from the network after the photovoltaic installation
-  excedenteAnual_LBL: Production poured into the grid
-  excedenteAnual_TT: Energy poured into the grid when production is higher than consumption
+
   energiaFaltante%Consumo_LBL: Percentage of electricity purchased
   energiaFaltante%Consumo_TT: The percentage of the electricity bought with respect to total consumption
   energiaSobrante%Produccion_LBL: Percentage of excess electricity
@@ -430,20 +439,6 @@ botonAyuda_LBL:
   economico_MSG_disclaimerPrecioInstalacion: In the estimate of the cost of the installation labor and materials are impacted. There are neither the municipal fees and taxes (ico) nor the civil works and elevation machinery (if necessary) nor the modifications that the distributor or the administration demanded after checking the installation carried out
   economico_MSG_disclaimerPrecioInstalacionHdr: Notice about the installation cost
 
-  ano_LBL: Year
-  ano_TT: Amortization period
-  previo_LBL: Previous
-  previo_TT: Pending amortization amount  at the beginning of the period
-  inversion_LBL: Investment
-  inversion_TT: The amount invested during the period
-  ahorro_LBL: Saving
-  ahorro_TT: Savings obtained in the period
-  IBI_LBL: IBI discount
-  IBI_TT: Discount obtained in the IBI
-  subvencion_LBL: Subsidy EU
-  subvencion_TT: Subsidy from EU
-  pendiente_LBL: Pending
-  pendiente_TT: Pending amortization at the end of the period
   -formulario: -formulario
   gastoSinPlacasAnual_LBL: Annual expense without panels
   gastoSinPlacasAnual_TT: Annual electricity expenditure without solar panels. Only the variable part of the invoice is taken into account
@@ -467,10 +462,7 @@ botonAyuda_LBL:
   sinSubvencion_LBL: No subsidy EU
   subvencionIndividual_LBL: Individual installation
   subvencionComunitaria_LBL: Collective installation
-  VANProyecto_LBL: Net present value (NPV)
-  VANProyecto_TT: Net present value (NPV)
-  TIRProyecto_LBL: Internal Rate of Return (TIR)
-  TIRProyecto_TT: Internal Rate of Return (TIR)
+
   precios_LBL_pendienteCalculo: Pending
   -graficos: -graficos
   graficos_LBL_descripcion: Available graphics area
@@ -478,7 +470,7 @@ botonAyuda_LBL:
   graficos_LBL_balanceProduccion: Monthly production balance with {{potencia}} installed
   graficos_LBL_tituloBalanceEconomico: Monthly economic balance with {{potencia}} installed
   graficos_LBL_alternativasPotencia: Alternatives with panels of {{potencia}} installed
-  graficos_LBL_produccionMediaMensual: Monthly average production with {{potencia}} installed / average monthly consumption
+
   graficos_LBL_graficasProduccion: Production
   graficos_LBL_graficasNoCompensado: Not compensated
   graficos_LBL_graficasGastoConPaneles: Expense with panels
@@ -489,7 +481,7 @@ botonAyuda_LBL:
   graficos_LBL_graficasInversion: Investment
   graficos_LBL_graficasAhorro: Saving
   graficos_LBL_graficasDeficit: Deficit
-  graficos_LBL_graficasAutoconsumo: Self-consumption
+
   graficos_LBL_graficasAutosuficiencia: Self-sufficiency
   graficos_LBL_graficasprodvscons: Prod. Vs. Cons.
   graficos_LBL_graficasDia: Day
@@ -500,9 +492,6 @@ botonAyuda_LBL:
   graficos_LBL_segunFuente: Energy distribution according to Source
   graficos_LBL_deRed: Electric Network
   # graficos_LBL_dePaneles: %%{{paneles}} panels
-
-  graficos_LBL_energiaRed: Energy obtained from the network
-  graficos_LBL_energiaPaneles: Energy obtained from the panels
 
   graficos_LBL_extraccionHucha: Hucha extraction
   graficos_LBL_huchaSaldo: Balance in the piggy bank

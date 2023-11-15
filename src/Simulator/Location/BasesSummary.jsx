@@ -8,16 +8,16 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { Box } from '@mui/material'
 
-// Componentes Solidar
+// REACT Solidar Components
+import TCBContext from '../TCBContext'
 import DialogNewBaseSolar from './DialogNewBaseSolar'
 import { useDialog } from '../../components/DialogProvider'
 
 // Solidar objects
-import * as UTIL from '../classes/Utiles'
-import TCBContext from '../TCBContext'
 import TCB from '../classes/TCB'
+import * as UTIL from '../classes/Utiles'
 
-const BasesSummary = () => {
+export default function BasesSummary() {
   const { t, i18n } = useTranslation()
   const { bases, setBases } = useContext(TCBContext)
   const [openDialog, closeDialog] = useDialog()
@@ -26,7 +26,6 @@ const BasesSummary = () => {
     return row.idBaseSolar
   }
 
-  //PENDIENTE: la forma de definir el acimut y la inclinacion
   const columns = [
     {
       field: 'nombreBaseSolar',
@@ -49,13 +48,20 @@ const BasesSummary = () => {
       },
     },
     {
-      field: 'inclinacionPaneles',
-      headerName: 'Inclinación',
+      field: 'inclinacion',
+      headerName: t('LOCATION.LABEL_TILT'),
       headerAlign: 'center',
       flex: 1,
       align: 'center',
+      description: t('LOCATION.TOOLTIP_TILT'),
     },
-    { field: 'inAcimut', headerName: 'Acimut', flex: 1, align: 'center' },
+    {
+      field: 'inAcimut',
+      headerName: t('LOCATION.LABEL_AZIMUT'),
+      flex: 1,
+      align: 'center',
+      description: t('LOCATION.TOOLTIP_TILT'),
+    },
     {
       field: 'potenciaMaxima',
       headerName: 'Pot. Maxima',
@@ -111,8 +117,8 @@ const BasesSummary = () => {
 
   return (
     <>
-      <Typography variant="h3">{t('LOCATION.LABEL_SUMMARY')}</Typography>
-      <Typography variant="body">{t('LOCATION.PROMPT_SUMMARY')}</Typography>
+      <Typography variant="h3">{t('LOCATION.LABEL_BASES_SUMMARY')}</Typography>
+      <Typography variant="body">{t('LOCATION.PROMPT_BASES_SUMMARY')}</Typography>
       <Box>
         <DataGrid
           getRowId={getRowId}
@@ -159,11 +165,11 @@ const BasesSummary = () => {
               t('LOCATION.MSG_AREA_TOTAL', {
                 areaTotal: UTIL.formatoValor(
                   'superficie',
-                  Math.round(bases.reduce((sum, tBase) => sum + tBase.areaMapa, 0)),
+                  Math.round(bases.reduce((sum, tBase) => sum + tBase.areaReal, 0)),
                 ),
                 potenciaMaxima: UTIL.formatoValor(
                   'potenciaMaxima',
-                  Math.round(bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0)),
+                  Math.trunc(bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0)),
                 ),
               }),
             ),
@@ -173,5 +179,3 @@ const BasesSummary = () => {
     </>
   )
 }
-
-export default BasesSummary

@@ -1,16 +1,20 @@
 import React, { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
-import TCB from '../classes/TCB'
+
+// Plotly objects
 import Plot from 'react-plotly.js'
-// import TCBContext from '../../TCBContext'
+
+// MUI objects
+import Typography from '@mui/material/Typography'
+import { Box } from '@mui/material'
+
+// Solidar objects
 import * as UTIL from '../classes/Utiles'
 
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
-
-const MapaMesHora = (tconsumo) => {
+export default function MapaMesHora(tconsumo) {
   const { t, i18n } = useTranslation()
 
+  console.log(tconsumo)
   if (tconsumo.children === undefined) {
     return <></>
   }
@@ -62,9 +66,30 @@ const MapaMesHora = (tconsumo) => {
     sizes.push((radio * valor) / maxConsumoMes)
   }
 
+  function i18nextMes() {
+    let _mes = []
+    for (let i = 0; i < 12; _mes.push(t(UTIL.nombreMes[i++])));
+    return _mes
+  }
+
   return (
     <>
-      <Container>
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          boxShadow: 2,
+          flex: 1,
+          border: 2,
+          textAlign: 'center',
+          borderColor: 'primary.light',
+          '& .MuiDataGrid-cell:hover': {
+            color: 'primary.main',
+          },
+          // backgroundColor: 'rgba(220, 249, 233, 1)',
+        }}
+        justifyContent="center"
+      >
         <Typography variant="h4">
           {t('CONSUMPTION.TITLE_MAP_MONTH_HOUR', {
             nombreTipoConsumo: consumo.nombreTipoConsumo,
@@ -73,87 +98,81 @@ const MapaMesHora = (tconsumo) => {
         <Typography variant="body">{t('CONSUMPTION.DESC_MAP_MONTH_HOUR')}</Typography>
         <br></br>
         <br></br>
-        <Plot
-          data={[
-            {
-              type: 'scatter',
-              name: TCB.i18next.t('CONSUMPTION.HOOVER_MAPA_CONSUMO_MES_HORA'),
-              x: horas,
-              y: meses,
-              text: text,
-              mode: 'markers',
-              hovertemplate:
-                '%{yaxis.title.text}: %{y}<br>' +
-                '%{xaxis.title.text}: %{x}<br>' +
-                '%{text}',
-              marker: {
-                symbol: 'circle',
-                size: sizes,
-                color: colores, //'rgba(200, 50, 100, .7)',
-              },
-            },
-          ]}
-          layout={{
-            paper_bgcolor: 'rgba(0,0,0,0)',
-            plot_bgcolor: 'rgba(0,0,0,0)',
-            margin: {
-              l: 70,
-              r: 20,
-              b: 65,
-              t: 25,
-            },
-            title: {
-              text: TCB.i18next.t('CONSUMPTION.TITLE_MAPA_CONSUMO_MES_HORA'),
-              xref: 'x',
-              yref: 'y',
-              x: 12,
-              y: 14,
-            },
-            xaxis: {
-              title: TCB.i18next.t('CONSUMPTION.XAXIS_MAPA_CONSUMO_MES_HORA'),
-              showgrid: false,
-              showline: true,
-              linecolor: 'rgb(102, 102, 102)',
-              tickfont_color: 'rgb(102, 102, 102)',
-              showticklabels: true,
-              dtick: 2,
-              ticks: 'outside',
-              tickcolor: 'rgb(102, 102, 102)',
-            },
-            yaxis: {
-              title: TCB.i18next.t('CONSUMPTION.YAXIS_MAPA_CONSUMO_MES_HORA'),
-              ticktext: meses,
-            },
-            hovermode: 'closest',
-            annotations: [
+        <Box>
+          <Plot
+            data={[
               {
-                x: maxHora,
-                y: maxMes,
-                axref: 'x',
-                ayref: 'y',
+                type: 'scatter',
+                name: t('CONSUMPTION.HOOVER_MAPA_CONSUMO_MES_HORA'),
+                x: horas,
+                y: meses,
+                text: text,
+                mode: 'markers',
+                hovertemplate:
+                  '%{yaxis.title.text}: %{y}<br>' +
+                  '%{xaxis.title.text}: %{x}<br>' +
+                  '%{text}',
+                marker: {
+                  symbol: 'circle',
+                  size: sizes,
+                  color: colores, //'rgba(200, 50, 100, .7)',
+                },
+              },
+            ]}
+            layout={{
+              paper_bgcolor: 'rgba(0,0,0,0)',
+              plot_bgcolor: 'rgba(0,0,0,0)',
+              margin: {
+                l: 70,
+                r: 20,
+                b: 65,
+                t: 25,
+              },
+              title: {
+                text: t('CONSUMPTION.TITLE_MAPA_CONSUMO_MES_HORA'),
                 xref: 'x',
                 yref: 'y',
-                text: TCB.i18next.t('CONSUMPTION.LABEL_MAPA_CONSUMO_MES_HORA', {
-                  maxConsumoMes: maxConsumoMes.toFixed(2),
-                }),
-                showarrow: true,
-                arrowhead: 3,
-                xanchor: 'center',
-                ax: 12,
-                ay: 12,
+                x: 12,
+                y: 14,
               },
-            ],
-          }}
-        />
-      </Container>
+              xaxis: {
+                title: t('GRAPHICS.LABEL_HORA'),
+                showgrid: false,
+                showline: true,
+                linecolor: 'rgb(102, 102, 102)',
+                tickfont_color: 'rgb(102, 102, 102)',
+                showticklabels: true,
+                dtick: 2,
+                ticks: 'outside',
+                tickcolor: 'rgb(102, 102, 102)',
+              },
+              yaxis: {
+                title: t('CONSUMPTION.YAXIS_MAPA_CONSUMO_MES_HORA'),
+                ticktext: meses,
+              },
+              hovermode: 'closest',
+              annotations: [
+                {
+                  x: maxHora,
+                  y: maxMes,
+                  axref: 'x',
+                  ayref: 'y',
+                  xref: 'x',
+                  yref: 'y',
+                  text: t('CONSUMPTION.LABEL_MAPA_CONSUMO_MES_HORA', {
+                    maxConsumoMes: maxConsumoMes.toFixed(2),
+                  }),
+                  showarrow: true,
+                  arrowhead: 3,
+                  xanchor: 'center',
+                  ax: 12,
+                  ay: 12,
+                },
+              ],
+            }}
+          />
+        </Box>
+      </Box>
     </>
   )
 }
-
-function i18nextMes() {
-  let _mes = []
-  for (let i = 0; i < 12; _mes.push(TCB.i18next.t(UTIL.nombreMes[i++])));
-  return _mes
-}
-
-export default MapaMesHora

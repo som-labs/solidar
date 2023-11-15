@@ -20,7 +20,7 @@ const PerfilDiario = (diaActivo) => {
     y: TCB.consumo.diaHora[indexDay],
     type: 'scatter',
     showlegend: true,
-    name: TCB.i18next.t('ENERGY_BALANCE.LABEL_LEYENDA_CONSUMO'),
+    name: TCB.i18next.t('GRAPHICS.LABEL_CONSUMPTION'),
     line: { shape: 'line', width: 3, color: 'rgb(0,0,255' },
     fill: 'tozeroy',
   }
@@ -29,7 +29,7 @@ const PerfilDiario = (diaActivo) => {
     y: TCB.produccion.diaHora[indexDay],
     type: 'scatter',
     showlegend: true,
-    name: TCB.i18next.t('ENERGY_BALANCE.LABEL_LEYENDA_PRODUCCION'),
+    name: TCB.i18next.t('GRAPHICS.LABEL_PRODUCTION'),
     line: { shape: 'line', width: 3, color: 'rgb(0,255,0' },
     fill: 'tozeroy',
   }

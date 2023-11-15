@@ -11,12 +11,11 @@ import Feature from 'ol/Feature'
 import { Point, LineString } from 'ol/geom'
 import { getArea } from 'ol/sphere'
 import { transform, fromLonLat } from 'ol/proj'
-import { Draw, Select } from 'ol/interaction'
-import { altKeyOnly, click } from 'ol/events/condition.js'
-import { defaults } from 'ol/interaction/defaults'
+import { Draw } from 'ol/interaction'
 
 // MUI objects
 import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
@@ -25,7 +24,7 @@ import IconButton from '@mui/material/IconButton'
 import SearchIcon from '@mui/icons-material/Search'
 import Typography from '@mui/material/Typography'
 
-// Componentes Solidar
+// REACT Solidar Components
 import MapContext from '../MapContext'
 import DialogNewBaseSolar from './DialogNewBaseSolar'
 import { useDialog } from '../../components/DialogProvider'
@@ -33,13 +32,11 @@ import { useDialog } from '../../components/DialogProvider'
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import TCBContext from '../TCBContext'
-import BaseSolar from '../classes/BaseSolar'
 
 // REVISAR: Prueba autoselect para las direcciones junto con GoogleMaps.jsx
 import CandidatosApp from './CandidatosApp'
 
-function MapComponent() {
+export default function MapComponent() {
   const { t, i18n } = useTranslation()
 
   // Map state
@@ -52,15 +49,11 @@ function MapComponent() {
   const basesLayer = useRef()
   const mapRef = useRef(map)
 
-  // OpenLayers features manipulation
-  const { bases, setBases } = useContext(TCBContext)
-
   // Address search states
   const [address, setAddress] = useState('')
   const [candidatos, setCandidatos] = useState([])
 
   const [openDialog, closeDialog] = useDialog()
-  // const [editing, setEditing] = useState(false)
 
   const baseInteraction = new Draw({
     source: TCB.origenDatosSolidar,
@@ -140,8 +133,10 @@ function MapComponent() {
     // Construimos la geometria de la BaseSolar que es un paralelogramo a partir de tres puntos
     let geometria = geoBaseSolar.feature.getGeometry()
     let puntos = geometria.getCoordinates()[0]
-    const largo1 = UTIL.distancia(puntos[0], puntos[1])
-    const largo2 = UTIL.distancia(puntos[1], puntos[2])
+
+    // First two points define cumbrera
+    const cumbrera = UTIL.distancia(puntos[0], puntos[1])
+    const ancho = UTIL.distancia(puntos[1], puntos[2])
     let nuevoY = puntos[2][1] - (puntos[1][1] - puntos[0][1])
     let nuevoX = puntos[0][0] - (puntos[1][0] - puntos[2][0])
     let nuevoPunto = [nuevoX, nuevoY]
@@ -164,31 +159,41 @@ function MapComponent() {
 
     //NUEVO: Calculo propuesta de acimut
     const azimutLength = 100
-    let rotate = 0
     let midPoint = [0, 0]
     let coef
-    let alfa
 
-    if (largo2 > largo1) {
-      coef = (azimutLength / largo1) * 2
-      midPoint[0] = puntos[1][0] + (puntos[2][0] - puntos[1][0]) / 2
-      midPoint[1] = puntos[1][1] + (puntos[2][1] - puntos[1][1]) / 2
-    } else {
-      coef = (azimutLength / largo2) * 2
-      midPoint[0] = puntos[0][0] + (puntos[1][0] - puntos[0][0]) / 2
-      midPoint[1] = puntos[0][1] + (puntos[1][1] - puntos[0][1]) / 2
-    }
+    // Si el dibujo es libre
+    //    let rotate = 0
+    // if (largo2 > largo1) {
+    //   coef = (azimutLength / largo1) * 2
+    //   midPoint[0] = puntos[1][0] + (puntos[2][0] - puntos[1][0]) / 2
+    //   midPoint[1] = puntos[1][1] + (puntos[2][1] - puntos[1][1]) / 2
+    // } else {
+    //   coef = (azimutLength / largo2) * 2
+    //   midPoint[0] = puntos[0][0] + (puntos[1][0] - puntos[0][0]) / 2
+    //   midPoint[1] = puntos[0][1] + (puntos[1][1] - puntos[0][1]) / 2
+    // }
 
-    if (midPoint[1] > puntoAplicacion[1]) {
-      rotate = Math.PI
-    }
+    // if (midPoint[1] > puntoAplicacion[1]) {
+    //   rotate = Math.PI
+    // }
+
+    // Si primero se dibuja la cumbrera
+    midPoint[0] = puntos[2][0] + (puntos[3][0] - puntos[2][0]) / 2
+    midPoint[1] = puntos[2][1] + (puntos[3][1] - puntos[2][1]) / 2
+    coef = azimutLength / ancho
 
     const geomAcimut = new LineString([puntoAplicacion, midPoint])
     geomAcimut.scale(coef, coef, puntoAplicacion)
-    geomAcimut.rotate(rotate, puntoAplicacion)
-    const nPuntos = geomAcimut.getCoordinates()
-    alfa = Math.asin((nPuntos[1][0] - nPuntos[0][0]) / azimutLength)
-    let acimut = (alfa * 180) / Math.PI
+    const acimutCoordinates = geomAcimut.getCoordinates()
+    let point1 = acimutCoordinates[0]
+    let point2 = acimutCoordinates[1]
+
+    // Take into account angles are measured with 0 at south (axis -Y) and positive west (axis +X)
+    let acimut =
+      (Math.atan2(-1 * (point1[0] - point2[0]), point1[1] - point2[1]) * 180) / Math.PI
+
+    acimut = Math.trunc(acimut * 100) / 100
 
     var acimutLine = new Feature({
       geometry: geomAcimut,
@@ -200,10 +205,12 @@ function MapComponent() {
     geoBaseSolar.feature.setId('BaseSolar.area.' + TCB.featIdUnico)
     let nuevaBaseSolar = {}
     const areaMapa = getArea(geometria, { projection: 'EPSG:3857' })
+
     nuevaBaseSolar.idBaseSolar = TCB.featIdUnico.toString()
     nuevaBaseSolar.nombreBaseSolar = 'Base ' + nuevaBaseSolar.idBaseSolar
-    nuevaBaseSolar.potenciaMaxima = areaMapa / TCB.parametros.conversionAreakWp
-    nuevaBaseSolar.inclinacionPaneles = 0
+    nuevaBaseSolar.cumbrera = cumbrera
+    nuevaBaseSolar.ancho = ancho
+    nuevaBaseSolar.inclinacion = 0
     nuevaBaseSolar.inclinacionOptima = false
     nuevaBaseSolar.roofType = 'coplanar'
     nuevaBaseSolar.inAcimut = acimut.toFixed(2)
@@ -212,9 +219,8 @@ function MapComponent() {
     nuevaBaseSolar.requierePVGIS = true
     nuevaBaseSolar.lonlatBaseSolar =
       puntoAplicacion_4326[0].toFixed(4) + ',' + puntoAplicacion_4326[1].toFixed(4)
-    nuevaBaseSolar.areaMapa = areaMapa
-    nuevaBaseSolar.areaReal = areaMapa
-
+    //nuevaBaseSolar.areaMapa = areaMapa
+    //nuevaBaseSolar.areaReal = areaMapa
     //New point feature where the name label will be set
     let label = new Feature({ geometry: new Point(puntoAplicacion) })
     label.setId('BaseSolar.label.' + nuevaBaseSolar.idBaseSolar)
@@ -328,36 +334,37 @@ function MapComponent() {
     url += 'q=' + address
     UTIL.debugLog('Call Nominatim:' + url)
 
-    try {
-      const respCandidatos = await fetch(url)
-      if (respCandidatos.status === 200) {
-        var dataCartoCiudad = await respCandidatos.text()
-        var jsonAdd = JSON.parse(dataCartoCiudad)
-        let count = 0
-        var nitem = []
-        jsonAdd.forEach(function (item) {
-          nitem.push({
-            value: [item.lon, item.lat],
-            text: item.display_name.toString(),
-            key: count++,
-          })
+    //try {
+    const respCandidatos = await fetch(url)
+    if (respCandidatos.status === 200) {
+      var dataCartoCiudad = await respCandidatos.text()
+      var jsonAdd = JSON.parse(dataCartoCiudad)
+      let count = 0
+      var nitem = []
+      jsonAdd.forEach(function (item) {
+        nitem.push({
+          value: [item.lon, item.lat],
+          text: item.display_name.toString(),
+          key: count++,
         })
-        setCandidatos([...nitem])
+      })
+      setCandidatos([...nitem])
 
-        //REVISAR: cual es la forma correcta de desabilitar el select
-        if (count > 0) {
-          document.getElementById('candidatos').disabled = false
-        } else {
-          document.getElementById('candidatos').disabled = true
-        }
+      //REVISAR: porque no funciona si utilizo candidatos en lugar de nitem
+      if (count > 0) {
+        document.getElementById('candidatos').disabled = false
+        mapRef.current.getView().setCenter(fromLonLat(nitem[0].value))
       } else {
-        alert('Error conectando con Nominatim: ' + respCandidatos.status + '\n' + url)
-        return false
+        document.getElementById('candidatos').disabled = true
       }
-    } catch (err) {
-      alert(TCB.i18next.t('nominatim_MSG_errorFetch', { err: err.message, url: url }))
+    } else {
+      alert('Error conectando con Nominatim: ' + respCandidatos.status + '\n' + url)
       return false
     }
+    // } catch (err) {
+    //   alert(TCB.i18next.t('nominatim_MSG_errorFetch', { err: err.message, url: url }))
+    //   return false
+    // }
   }
 
   return (
@@ -367,44 +374,58 @@ function MapComponent() {
       {/* Campo  para introducir una direccion REVISAR: como hacer que este campo y candidatos se repartan el ancho*/}
       <Typography variant="body">{t('LOCATION.DESCRIPTION_ADDRESS')}</Typography>
       <br />
-      <Tooltip title={t('LOCATION.TOOLTIP_ADDRESS')} placement="top">
-        <TextField
-          onChange={(ev) => setAddress(ev.target.value)}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton edge="end" color="primary" onClick={findAddress}>
-                  <SearchIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          helperText={t('LOCATION.PROMPT_ADDRESS')}
-          value={address}
-          type="text"
-        />
-      </Tooltip>
-      <TextField
-        disabled={candidatos.length === 0}
-        id="candidatos"
-        select
-        label=""
-        helperText={t('LOCATION.PROMPT_CANDIDATE')}
-        defaultValue="" //REVISAR: como hacer que aparezca la primera direccion en la lista
-        onChange={(ev, value) => {
-          mapRef.current.getView().setCenter(fromLonLat(value.props.value))
+      <Box
+        sx={{
+          display: 'flex',
+          width: '100%',
         }}
       >
-        {candidatos.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.text}
-          </MenuItem>
-        ))}
-      </TextField>
+        <Tooltip title={t('LOCATION.TOOLTIP_ADDRESS')} placement="top">
+          <TextField
+            id="address"
+            onChange={(ev) => setAddress(ev.target.value)}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton edge="end" color="primary" onClick={findAddress}>
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            helperText={t('LOCATION.PROMPT_ADDRESS')}
+            value={address}
+            type="text"
+          />
+        </Tooltip>
+        <TextField
+          disabled={candidatos.length === 0}
+          id="candidatos"
+          select
+          label=""
+          helperText={t('LOCATION.PROMPT_CANDIDATE')}
+          value={candidatos.length > 0 ? candidatos[0].value : ''} //REVISAR: como hacer que aparezca la primera direccion en la lista
+          onChange={(ev, value) => {
+            mapRef.current.getView().setCenter(fromLonLat(value.props.value))
+          }}
+        >
+          {candidatos.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.text}
+            </MenuItem>
+          ))}
+        </TextField>
+      </Box>
       <br></br>
 
       {/* El mapa */}
-      <Typography variant="body">{t('LOCATION.PROMPT_DRAW')}</Typography>
+      <Typography
+        variant="body"
+        dangerouslySetInnerHTML={{
+          __html: t('LOCATION.PROMPT_DRAW'),
+        }}
+      />
+
       <div
         ref={mapElement}
         className="map"
@@ -434,4 +455,3 @@ function MapComponent() {
     </>
   )
 }
-export default MapComponent

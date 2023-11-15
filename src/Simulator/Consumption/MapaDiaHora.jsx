@@ -67,7 +67,7 @@ const MapaDiaHora = (tconsumo) => {
   }
 
   const layout_resumen = {
-    xaxis: { title: t('CONSUMPTION.XAXIS_MAPA_CONSUMO_MES_HORA') },
+    xaxis: { title: t('GRAPHICS.LABEL_HORA') },
     yaxis: {
       tickvals: UTIL.indiceDia.map((e) => {
         return e[1]
@@ -122,7 +122,7 @@ const MapaDiaHora = (tconsumo) => {
 
   return (
     <>
-      <Container>
+      <Box>
         <Typography variant="h4">{t('CONSUMPTION.TITLE_MAP_MONTH_DAY')}</Typography>
         <Typography
           variant="body"
@@ -130,43 +130,45 @@ const MapaDiaHora = (tconsumo) => {
             __html: t('CONSUMPTION.DESC_MAP_MONTH_DAY'),
           }}
         />
-        <br></br>
-        {/*REVISAR: no esta funcionando bien el flex */}
+      </Box>
+      <br></br>
+      {/*REVISAR: no esta funcionando bien el flex */}
+      <Box
+        sx={{
+          display: 'flex',
+          width: '100%',
+        }}
+        justifyContent="center"
+      >
         <Box
           sx={{
+            ml: '0.3rem',
             display: 'flex',
-            width: '100%',
+            flexWrap: 'wrap',
+            boxShadow: 2,
+            flex: 1,
+            border: 2,
+            borderColor: 'primary.light',
+            '& .MuiDataGrid-cell:hover': {
+              color: 'primary.main',
+            },
           }}
         >
-          <Box
-            sx={{
-              ml: '0.3rem',
-              display: 'flex',
-              flexWrap: 'wrap',
-              boxShadow: 2,
-              flex: 1,
-              border: 2,
-              borderColor: 'primary.light',
-              '& .MuiDataGrid-cell:hover': {
-                color: 'primary.main',
-              },
-            }}
-            justifyContent="center"
-          >
-            <Typography variant="h5" align="center">
-              {t('CONSUMPTION.LABEL_TITLE_MAP_MONTH_DAY')}
-            </Typography>
-            <br></br>
-            <div ref={divGraph}>
-              <Plot
-                data={[g_consumo]}
-                layout={layout_resumen}
-                style={{ width: '100%' }}
-                onClick={(event) => handleClick(event)}
-              />
-            </div>
-          </Box>
+          <Typography variant="h5" align="center">
+            {t('CONSUMPTION.LABEL_TITLE_MAP_MONTH_DAY')}
+          </Typography>
+          <br></br>
+          <div ref={divGraph}>
+            <Plot
+              data={[g_consumo]}
+              layout={layout_resumen}
+              style={{ width: '100%' }}
+              onClick={(event) => handleClick(event)}
+            />
+          </div>
+        </Box>
 
+        {diaActivo ? (
           <Box
             sx={{
               ml: '0.3rem',
@@ -180,14 +182,15 @@ const MapaDiaHora = (tconsumo) => {
                 color: 'primary.main',
               },
             }}
-            justifyContent="center"
           >
             <div id="profile">
               <ProfileDayConsumption consumo={consumo} diaActivo={diaActivo} />
             </div>
           </Box>
-        </Box>
-      </Container>
+        ) : (
+          <></>
+        )}
+      </Box>
     </>
   )
 }

@@ -1,11 +1,13 @@
-import React, { useState, useContext, useRef } from 'react'
+import React, { useState, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
+// OpenLayers objects
 import { LineString } from 'ol/geom'
 import Feature from 'ol/Feature'
 
+// MUI objects
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
@@ -13,26 +15,20 @@ import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
-import InputLabel from '@mui/material/InputLabel'
-import FormHelperText from '@mui/material/FormHelperText'
 import FormControlLabel from '@mui/material/FormControlLabel'
-import InputAdornment from '@mui/material/InputAdornment'
-import IconButton from '@mui/material/IconButton'
 import HomeIcon from '@mui/icons-material/Home'
 import ApartmentIcon from '@mui/icons-material/Apartment'
-import DoneOutlinedIcon from '@mui/icons-material/DoneOutlined'
-import Checkbox from '@mui/material/Checkbox'
 import Switch from '@mui/material/Switch'
-
-import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import TextField from '@mui/material/TextField'
-import BaseSolar from '../classes/BaseSolar'
-import * as UTIL from '../classes/Utiles'
+
+// REACT Solidar Components
+import TCB from '../classes/TCB'
+import TCBContext from '../TCBContext'
 
 // Solidar objects
-import TCBContext from '../TCBContext'
-import TCB from '../classes/TCB'
+import * as UTIL from '../classes/Utiles'
+import BaseSolar from '../classes/BaseSolar'
 
 export default function DialogNewBaseSolar({ data, editing, onClose }) {
   const { t, i18n } = useTranslation()
@@ -44,35 +40,29 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
   let newData
 
   const changeRoofType = (e, roofType) => {
-    console.log(roofType)
     handleChange({ name: 'roofType', value: roofType })
     if (roofType === 'coplanar') {
       newData = {
         roofType: 'coplanar',
         inclinacionOptima: false,
-        inclinacionPaneles: 0,
+        inclinacion: 0,
         areaReal: formData.areaMapa,
-        potenciaMaxima: formData.areaReal / TCB.parametros.conversionAreakWp,
       }
     } else if (roofType === 'horizontal') {
       newData = {
         roofType: 'horizontal',
         inclinacionOptima: true,
-        inclinacionPaneles: 'Optima',
+        inclinacion: 32, //El angulo optimo definitivo lo dará PVGIS pero para la peninsula esta entre 31º y 32º
         areaReal: formData.areaMapa,
-        potenciaMaxima: formData.areaReal / TCB.parametros.conversionAreakWp,
       }
     }
     multiChange(newData)
   }
 
   const changeTilt = (event) => {
-    //handleChange(event.target)
     const newData = {
-      inclinacionPaneles: event.target.value,
+      inclinacion: event.target.value,
       inclinacionOptima: false,
-      areaReal: formData.areaMapa / Math.cos((event.target.value / 180) * Math.PI),
-      potenciaMaxima: formData.areaReal / TCB.parametros.conversionAreakWp,
     }
     multiChange(newData)
   }
@@ -129,7 +119,6 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
   }
 
   function multiChange(newData) {
-    console.log(newData)
     let prevData = { ...formData }
     for (const prop in newData) {
       prevData[prop] = newData[prop]
@@ -146,7 +135,16 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
   }
 
   async function handleClose() {
-    //Update label in source with nombreBaseSolar
+    let baseIndex
+
+    // En caso de roofType coplanar pedimos confirmacion si la inclinacion es cero
+    if (formData.roofType === 'coplanar' && formData.inclinacion === 0) {
+      if (!window.confirm(t('LOCATION.ERROR_COPLANAR_NOANGLE'))) {
+        return
+      }
+    }
+
+    // Update label in source with nombreBaseSolar
     const componentId = 'BaseSolar.label.' + data.idBaseSolar
     const labelFeature = TCB.origenDatosSolidar.getFeatureById(componentId)
     await UTIL.setLabel(
@@ -157,20 +155,22 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
     )
 
     if (!editing) {
-      //We are creating a new base
-      TCB.BaseSolar.push(new BaseSolar(formData))
+      // We are creating a new base
+      baseIndex = TCB.BaseSolar.push(new BaseSolar(formData)) - 1
+      formData.potenciaMaxima = TCB.BaseSolar[baseIndex].potenciaMaxima
+      formData.areaReal = TCB.BaseSolar[baseIndex].areaReal
       setBases([...bases, formData])
     } else {
-      //Find this edited base in TCB
+      // Find this edited base in TCB
       const baseIndex = TCB.BaseSolar.findIndex((x) => {
         return x.idBaseSolar === formData.idBaseSolar
       })
       // Update all attributes in TCB
       TCB.BaseSolar[baseIndex].updateBase(formData)
-      console.log(TCB.BaseSolar[baseIndex])
-      //Substitute new base in context
+      formData.potenciaMaxima = TCB.BaseSolar[baseIndex].potenciaMaxima
+      formData.areaReal = TCB.BaseSolar[baseIndex].areaReal
+      // Substitute new base in context
       let prevBases = [...bases]
-      console.log(formData)
       prevBases.splice(baseIndex, 1, formData)
       setBases(prevBases)
     }
@@ -204,6 +204,7 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
               __html: t('LOCATION.DESCRIPTION_ROOFTYPE'),
             }}
           />
+          {/* PENDIENTE: hay que crear los iconos de los botones coplanar u horizontal */}
           <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
             <ToggleButtonGroup
               sx={{ flex: 2 }}
@@ -240,16 +241,15 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
                 sx={{ display: 'flex', flex: 2, flexDirection: 'row', flexWrap: 'wrap' }}
               >
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
-                  {/* <Typography variant="body">{t('LOCATION.DESCRIPTION_TILT')}</Typography> */}
+                  <br />
                   <Tooltip title={t('LOCATION.TOOLTIP_TILT')} placement="top">
-                    <br />
                     <TextField
                       required
                       type="text"
                       onChange={changeTilt}
                       label={t('LOCATION.LABEL_TILT')}
-                      name="inclinacionPaneles"
-                      value={formData.inclinacionPaneles}
+                      name="inclinacion"
+                      value={formData.inclinacion}
                     />
                   </Tooltip>
                 </FormControl>
@@ -292,8 +292,8 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCancel}>Cancel</Button>
-        <Button onClick={handleClose}>Ok</Button>
+        <Button onClick={handleCancel}>{t('BASIC.LABEL_CANCEL')}</Button>
+        <Button onClick={handleClose}>{t('BASIC.LABEL_OK')}</Button>
       </DialogActions>
     </div>
   )
