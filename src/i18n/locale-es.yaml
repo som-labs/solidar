@@ -39,54 +39,64 @@ LOCATION:
     En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.<br />
     A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.<br />
     Su rendimiento se calcula a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).<br />
-  DIALOG_NEW_BASE: Nueva base solar
   DESCRIPTION_ADDRESS: En estos campos puedes introducir un localizador (region, ciudad, dirección) que te permitirá posicionar el mapa en la zona de trabajo deseada.
   PROMPT_ADDRESS: Busca la dirección del edificio
   PROMPT_CANDIDATE: Seleccione la dirección que corresponda de la lista
-  TOOLTIP_ADDRESS: Tras indicar ciudad y dirección de donde se instalarán los paneles púlse la lupa
-
+  TOOLTIP_ADDRESS: A medida que escribas tendrás candidatos para seleccionar
   PROMPT_DRAW: |
     Dibuja en el mapa las áreas disponibles del edificio. En caso de alternativas, puedes dibujar tantas áreas como quieras. El sistema distribuirá los paneles de la forma mas eficiente.<br />
     En caso de instalación coplanar en tejado inclinado, los dos primeros puntos serán considerados la cumbrera (la parte alta del tejado)
-  LABEL_BASE_NAME: Nombre de la base solar
-  TOOLTIP_BASE_NAME: Identica el nombre de esta base para futuras referencias
-  LABEL_TILT: Inclinación del tejado
-  TOOLTIP_TILT: Inclinación en grados (entre 0º y 90º)  medida con respecto a la horizontal del terreno sobre el que se montarán los paneles
-  DESCRIPTION_TILT: ¿que inclinación tiene el tejado?
-  LABEL_OPTIMUM_TILT: Inclinación óptima
-  TOOLTIP_OPTIMUM_TILT: Marque este campo si desea que el sistema calcule el valor óptimo de la inclinación de los paneles
-  DESCRIPTION_ROOFTYPE: Indicanos cúal es la configuracion de tu tejado<br />
+  LABEL_SATELITE: Vista satélite
+  LABEL_VECTOR: Vista mapa
+  TOOLTIP_MAP_TYPE: Permite intercambiar entre vista satélite o mapa
+  TITLE_DIALOG_NEW_BASE: Nueva base solar
   HORIZONTAL_ROOF: En el caso de tejado horizontal te propondremos el ángulo óptimo de  los paneles al finalizar el cálculo.
-
-  LABEL_AZIMUT: Orientación al sur (Acimut)
-  TOOLTIP_AZIMUT: El ángulo entre el sur con la proyección horizontal del sol. Si los paneles estuvieran orientados al sur el acimut será 0º hacia el este -90º y hacia el oeste 90º. Este campo se rellena indicando en el mapa la orientación que tendrán los paneles. Si no se completa se asume que es 0
-  DESCRIPTION_AZIMUT: Debes indicar el ángulo que tendrán los paneles con respecto al sur geográfico. La primera porpuesta la hace la aplicación en base al area que has dibujado pero la puedes cambiar en este campo.
-
-  LABEL_OPTIMUM_AZIMUT: Orientación óptima
-  PROMPT_AZIMUT: Señala la orientación del tejado respecto al sur (acimut) haciendo click en las areas que esten inclinadas (?)
-  TOOLTIP_OPTIMUM_AZIMUT: Marque este campo si desea que el sistema calcule el valor óptimo de la orientación de los paneles
   ERROR_COPLANAR_NOANGLE: 'Instalación coplanar con tejado a 0º de inclinación?'
   LABEL_BASES_SUMMARY: Resumen
   PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
   ERROR_DEFINE_BASE: Debe definir las bases solares antes de continuar
-  LABEL_SATELITE: Vista satélite
-  LABEL_VECTOR: Vista mapa
-  LABEL_AREA_REAL: Area disponible
-  TOOLTIP_AREA_REAL: Area real disponible corregida por la inclinación del tejado
   MSG_AREA_TOTAL: |
     Area total disponible en esta configuración: {{areaTotal}} <br />
     Potencia máxima a instalar: {{potenciaMaxima}}
-  LABEL_IDBASESOLAR: id
-  LABEL_LONLAT_BASESOLAR: Long-Lat
-  TOOLTIP_LONLAT_BASESOLAR: Coordenadas geográficas de la base
+  ERROR_NOMINATIM_FETCH: Error ejecutando fecth en Nominatim.\n {{err}} \n {{url}}
+  ERROR_TERRITORIO: La aplicación solo es valida para España
 
-  potenciaMaxima_LBL: Max. kWp
-  potenciaMaxima_TT: Máxima potencia pico a instalar en esta base en funcion de la superficie disponible (Ver parametro de conversión)
-  angulosOptimos_LBL: Angulos óptimos
-  angulosOptimos_TT: Marque este campo si desea que el sistema calcule el valor óptimo de inclinación y acimut
-  botonBorraBase_LBL:
   botonBorraBase_TT: Borra la base seleccionada
-  candidatos_TT: Selecciónese la dirección correcta o señálese en el mapa inferior con una pulsación doble de ratón
+  posicionLonLat_LBL: Long-Lat
+  posicionLonLat_TT: No hace falta rellenar este campo solo se utiliza para centrar el mapa en estas coordenadas
+
+BaseSolar:
+  DESCRIPTION_roofType: Indicanos cúal es la configuracion de tu tejado<br />
+  LABEL_roofType: Tipo de montaje
+  LABEL_nombreBaseSolar: Nombre de la base solar
+  TOOLTIP_nombreBaseSolar: Identica el nombre de esta base para futuras referencias
+  LABEL_angulosOptimos: Angulos óptimos
+  TOOLTIP_angulosOptimos: Marque este campo si desea que el sistema calcule el valor óptimo de inclinación y acimut
+  DESCRIPTION_angulosOptimos: En este caso la aplicación te propondrá la mejor orientación geográfica (acimut) e inclinación de los paneles de modo que se obtenga el máximo rendimiento de la instalación.
+  LABEL_inclinacion: Inclinación
+  LABEL_inclinacionTejado: Inclinación del tejado
+  LABEL_inclinacionPaneles: Inclinación de los paneles
+  TOOLTIP_inclinacion: Inclinación en grados (entre 0º y 90º)  medida con respecto a la horizontal del terreno sobre el que se montarán los paneles
+  DESCRIPTION_inclinacionTejado: Indicanos la inclinación del tejado donde se montarán los paneles medida con respecto a la horizontal del terreno.
+  DESCRIPTION_inclinacionPaneles: Indicanos la inclinación de los paneles medida con respecto a la horizontal del terreno. Puedes seleccionar la opción Optima si quieres que el sistema lo calcule por ti.
+  LABEL_inclinacionOptima: Inclinación óptima
+  TOOLTIP_inclinacionOptima: Marque este campo si desea que el sistema calcule el valor óptimo de la inclinación de los paneles
+  LABEL_inAcimut: Orientación al sur (Acimut)
+  TOOLTIP_inAcimut: El ángulo entre el sur con la proyección horizontal del sol. Si los paneles estuvieran orientados al sur el acimut será 0º hacia el este -90º y hacia el oeste 90º. Este campo se rellena indicando en el mapa la orientación que tendrán los paneles. Si no se completa se asume que es 0
+  DESCRIPTION_inAcimut: Debes indicar la orientación que tendrán los paneles con respecto al sur geográfico. La primera propuesta la hace la aplicación en base al area que has dibujado pero la puedes cambiar en este campo.
+  LABEL_areaReal: Area disponible
+  TOOLTIP_areaReal: Area real disponible corregida por la inclinación del tejado
+  LABEL_panelesMaximo: Max. Paneles
+  TOOLTIP_panelesMaximo: Número máximo de paneles que se pueden instalar en este area
+  LABEL_potenciaMaxima: Max. kWp
+  TOOLTIP_potenciaMaxima: Máxima potencia pico a instalar en esta base en funcion de la superficie disponible (Ver parametro de conversión)
+  LABEL_anchoReal: Longitud transversal
+  LABEL_cumbrera: Longitud cumbrera
+  LABEL_columnas: Max. paneles columna
+  LABEL_filas: Max. paneles fila
+  LABEL_idBaseSolar: id
+  LABEL_lonlatBaseSolar: Long-Lat
+  TOOLTIP_lonlatBaseSolar: Coordenadas geográficas de la base
 
 CONSUMPTION:
   TITLE: Consumo
@@ -94,7 +104,6 @@ CONSUMPTION:
   DESCRIPTION: |
     A continuación necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.<br />
     El documento de consumo CSV nos permitirá conocer tus hábitos de consumo saber en qué tramos horarios y en qué meses del año sueles consumir más energía.<br />
-    Rellena los campos de la siguiente tabla:
   TITLE_MAP_MONTH_HOUR: Gráfico de consumo anual para {{nombreTipoConsumo}}
   DESC_MAP_MONTH_HOUR: El siguiente gráfico muestra la distribución de tu consumo eléctrico en el año por meses y horas. Puedes visualizar en que momentos y horas del año tu consumo es mayor o menor.
   TOTAL_DEMMAND: Demanda total de energia anual {{consumoTotal}}
@@ -159,7 +168,7 @@ CONSUMPTION:
 
 TARIFA:
   DESCRIPTION: |
-    Para calcular el coste del consumo necesitamos conocer tu tarifa y los precios por tramos horarios de tu comercializadora (a menos que tengas tarifa plana). Necesitamos conocer tambien el precio de compensación por excedentes de tu comercializadora para calcular parte del ahorro en la factura. Recuerda que tu factura no será en ningún momento de un importe positivo.
+    Para evaluar los posibles beneficios económicos que pudieras obtener de la instalación de los paneles necesitamos conocer tu tarifa y los precios por tramos horarios de tu comercializadora.Necesitamos conocer tambien el precio de compensación por excedentes de tu comercializadora para calcular parte del ahorro en la factura. Recuerda que tu factura no será en ningún momento de un importe positivo.
   territorio_LBL: Territorio
   LABEL_NOMBRE_TARIFA: Nombre de la tarifa
   TOOLTIP__NOMBRE_TARIFA: El tipo de tarifa contratada con la compañía comercializadora
@@ -222,13 +231,19 @@ ECONOMIC_BALANCE:
   TITLE: Balance Económico
   DESCRIPTION: |
     En esta pantalla conocerás cuánto tendrás que invertir en la instalación, cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión, teniendo en cuenta las posibles subvenciones provenientes de fondos UE, bonificaciones de IBI y uso de bateria virtual en el caso que tu comercializadora te lo ofrezca.
-  IBI_TITLE: Reducción del IBI
-  IBI_DESCRIPTION: |
+  TITLE_IBI: Reducción del IBI
+  DESCRIPTION_IBI: |
     Si instalas placas solares pordrás optar a una reducción de IBI. El porcentaje de la reducción del IBI y la duración de la bonificación dependen del municipio en el que vivas.
 
     *¿Dónde encuentro la bonificación que me corresponde por municipio?*
 
     Rellena la tabla con el precio del IBI de la edificación y la bonificación que le corresponde por municipio.
+  LABEL_IBI_VALOR: IBI (€)
+  TOOLTIP_IBI_VALOR: Rellénese si el municipio donde se realice la instalación bonifica el impuesto de bienes inmuebles.\nLa Fundación Renovables facilita una lista de municipios con bonificaciones en el IBI y reducciones en ICIO.
+  LABEL_IBI_PORCIENTO: Bonificación %
+  TOOLTIP_IBI_PORCIENTO: El porcentaje con el ayuntamiento bonifica el importe del IBI
+  LABEL_IBI_DURACION: Duración bonificación (años)
+  TOOLTIP_IBI_DURACION: El número de años durante los que se puede aplicar la bonificación en el IBI
 
   EU_TITLE: Subvenciones EU Next Generation
   EU_DESCRIPTION: |
@@ -316,77 +331,79 @@ nov: noviembre
 dic: diciembre
 valor_true: Verdadero
 valor_false: Falso
--Objetos solidar: -Objetos solidar
-objeto_BaseSolar: Base solar
-objeto_Rendimiento: Rendimiento según PVGIS
-objeto_Instalacion: Instalación
-objeto_Produccion: Producción
-objeto_PuntoConsumo: Punto de consumo
-objeto_TipoConsumo: Tipo de consumo
-objeto_Tarifa: Tarifa
-objeto_ficheroCSV: Fichero fuente
-objeto_Economico: Resumen Económico
--Titulos de cabecera: -Titulos de cabecera
-main_LBL_titulo: Simulador de producción fotovoltaica
-main_LBL_titulo_INDIVIDUAL: Simulador de producción fotovoltaica individual
-main_LBL_titulo_COLECTIVO: Simulador de producción fotovoltaica colectivo
-main_LBL_titulo_COMUNIDAD: Simulador de producción fotovoltaica comunitario
-main_TAB_bienvenida: Bienvenida
--Modales: -Modales
-main_TAB_cerrar: Cerrar
-main_TAB_noMostrarMas: No volver a mostrar este mensaje
--Formulario parametros: -Formulario parametros
-main_TAB_parametros: Parametros de la aplicación
-parametros_LBL_descripcion: Configuración de parámetros de la aplicación. Los cambios en estos valores no implican un recálculo de todo el conjunto es necesario volver a la pestaña Localización y calcular.
-conversionAreakWp_LBL: Metros cuadrados necesarios para instalar un kWp
-conversionAreakWp_TT: Este valor se utilizará para saber cuantos kWp se pueden instalar en un area definida. kWp maximo = area en metros cuadrados / este parametro
-impuestoElectrico_LBL: Impuesto eléctrico en %
-impuestoElectrico_TT: El impuesto especial sobre la electricidad
-IVAenergia_LBL: IVA aplicable a la energia en %
-IVAenergia_TT: El IVA que se repercute por el gasto en electricidad
-IVAinstalacion_LBL: IVA aplicable a la instalación en %
-IVAinstalacion_TT: El IVA que se repercute sobre el importe al que ascienda la instalación
-perdidasSistema_LBL: Pérdidas estimadas de la instalación en %
-perdidasSistema_TT: Las pérdidas estimas del sistema fotovoltaico debidas al deterioro de algunos componentes condiciones adversas inversores deficientes etc.
-interesVAN_LBL: Interés base (%) para calculo de VAN
-interesVAN_TT: Tasa de descuento a aplicar en el cálculo del valor actual neto
-potenciaPanelInicio_LBL: Potencia unitaria (kWp) panel inicio
-potenciaPanelInicio_TT: Potencia kWp del panel inicial utilizado en los cálculos
-tecnologia_LBL: Tecnología de los paneles
-tecnologia_TT: "Se pueden elegir tres tipos de paneles para realizar las estimaciones \n- los que tienen células de silicio cristalino\n- módulos de lámina delgada de seleniuro de cobre e indio (CuInSe) o seleniuro de cobre indio y galio (CuInGaSe)\n- módulos de lámina delgada de teluro de cadmio (CdTe)\n- Desconocido\nSi se elige alguna de las tres primeras opciones en el cálculo de la producción fotovoltaica se tendrá en cuenta el efecto de la temperatura. Si se elige la otra opción (desconocido) en el cálculo se asumirán unas pérdidas de potencia debido al efecto de la temperatura del 8% (valor genérico que se considera razonable para climas templados). El efecto de la distribución espectral de la irradiancia recibida sobre la producción sólo puede calcularse para las tecnologías de silicio cristalino y de CdTe."
-tecnologiaDesconocida_LBL: Desconocida
-tarifasLocales_LBL: Fichero de tarifas local
-ficheroTarifas_LBL: Fichero de tarifas local (ver ejemplo)
-ficheroTarifas_TT: El usuario puede personalizar un fichero con los precios que desee mientras cumpla con el formato dado en el ejemplo
-parametros_MSG_errorLecturaFicheroTarifas: Error leyendo fichero local de tarifas
--Formulario contacto: -Formulario contacto
-main_TAB_contacto: Contacto
-contacto_LBL_descripcion: Envianos tus comentarios. Intentaremos atenderte lo antes posible
-contacto_LBL_enviar: Enviar
-contacto_LBL_mensaje: Mensaje
-contacto_LBL_advertencia: Los datos que nos aportes en este formulario serán utilizados única y exclusivamente para contestar a tu solicitud y no serán almacenados en ningún fichero ni utlizados para ningún otro fin
-contacto_LBL_respuesta: Marca aquí si estás de acuerdo en recibir respuestas
-contacto_LBL_comentario: Haces un comentario
-contacto_LBL_mejora: Propones una mejora
-contacto_LBL_error: Reportas un error
-contacto_LBL_tipoPropuesta: ¿Qué nos dices?
-contacto_LBL_telefono: Teléfono
-contacto_LBL_email: email
-contacto_LBL_nombre: Nombre
--Menu de botones: -Menu de botones
-botonExportar_TT: Salvar proyecto
-botonContacto_TT: Formulario de contacto
-botonInformePDF_TT: Salvar informe en PDF
-botonParametros_TT: Parámetros
-botonInstrucciones_TT: Instrucciones
-botonAyuda_TT: Ayuda
-botonExportar_LBL:
-botonContacto_LBL:
-botonInformePDF_LBL:
-botonParametros_LBL:
-botonInstrucciones_LBL:
-botonAyuda_LBL:
-  -Titulos ayuda: -Titulos ayuda
+
+OBJECT:
+  LABEL_TITLE_PROPERTIES: Propiedades
+  BaseSolar: Base solar
+  Rendimiento: Rendimiento según PVGIS
+  Instalacion: Instalación
+  Produccion: Producción
+  TipoConsumo: Tipo de consumo
+  Tarifa: Tarifa
+  ficheroCSV: Fichero fuente
+  Economico: Resumen Económico
+CABECERA:
+  main_LBL_titulo: Simulador de producción fotovoltaica
+  main_LBL_titulo_INDIVIDUAL: Simulador de producción fotovoltaica individual
+  main_LBL_titulo_COLECTIVO: Simulador de producción fotovoltaica colectivo
+  main_LBL_titulo_COMUNIDAD: Simulador de producción fotovoltaica comunitario
+  main_TAB_bienvenida: Bienvenida
+-Modales:
+  main_TAB_cerrar: Cerrar
+  main_TAB_noMostrarMas: No volver a mostrar este mensaje
+PARAMETROS:
+  main_TAB_parametros: Parametros de la aplicación
+  parametros_LBL_descripcion: Configuración de parámetros de la aplicación. Los cambios en estos valores no implican un recálculo de todo el conjunto es necesario volver a la pestaña Localización y calcular.
+  conversionAreakWp_LBL: Metros cuadrados necesarios para instalar un kWp
+  conversionAreakWp_TT: Este valor se utilizará para saber cuantos kWp se pueden instalar en un area definida. kWp maximo = area en metros cuadrados / este parametro
+  impuestoElectrico_LBL: Impuesto eléctrico en %
+  impuestoElectrico_TT: El impuesto especial sobre la electricidad
+  IVAenergia_LBL: IVA aplicable a la energia en %
+  IVAenergia_TT: El IVA que se repercute por el gasto en electricidad
+  IVAinstalacion_LBL: IVA aplicable a la instalación en %
+  IVAinstalacion_TT: El IVA que se repercute sobre el importe al que ascienda la instalación
+  perdidasSistema_LBL: Pérdidas estimadas de la instalación en %
+  perdidasSistema_TT: Las pérdidas estimas del sistema fotovoltaico debidas al deterioro de algunos componentes condiciones adversas inversores deficientes etc.
+  interesVAN_LBL: Interés base (%) para calculo de VAN
+  interesVAN_TT: Tasa de descuento a aplicar en el cálculo del valor actual neto
+  potenciaPanelInicio_LBL: Potencia unitaria (kWp) panel inicio
+  potenciaPanelInicio_TT: Potencia kWp del panel inicial utilizado en los cálculos
+  tecnologia_LBL: Tecnología de los paneles
+  tecnologia_TT: "Se pueden elegir tres tipos de paneles para realizar las estimaciones \n- los que tienen células de silicio cristalino\n- módulos de lámina delgada de seleniuro de cobre e indio (CuInSe) o seleniuro de cobre indio y galio (CuInGaSe)\n- módulos de lámina delgada de teluro de cadmio (CdTe)\n- Desconocido\nSi se elige alguna de las tres primeras opciones en el cálculo de la producción fotovoltaica se tendrá en cuenta el efecto de la temperatura. Si se elige la otra opción (desconocido) en el cálculo se asumirán unas pérdidas de potencia debido al efecto de la temperatura del 8% (valor genérico que se considera razonable para climas templados). El efecto de la distribución espectral de la irradiancia recibida sobre la producción sólo puede calcularse para las tecnologías de silicio cristalino y de CdTe."
+  tecnologiaDesconocida_LBL: Desconocida
+  tarifasLocales_LBL: Fichero de tarifas local
+  ficheroTarifas_LBL: Fichero de tarifas local (ver ejemplo)
+  ficheroTarifas_TT: El usuario puede personalizar un fichero con los precios que desee mientras cumpla con el formato dado en el ejemplo
+  parametros_MSG_errorLecturaFicheroTarifas: Error leyendo fichero local de tarifas
+CONTACTO:
+  main_TAB_contacto: Contacto
+  contacto_LBL_descripcion: Envianos tus comentarios. Intentaremos atenderte lo antes posible
+  contacto_LBL_enviar: Enviar
+  contacto_LBL_mensaje: Mensaje
+  contacto_LBL_advertencia: Los datos que nos aportes en este formulario serán utilizados única y exclusivamente para contestar a tu solicitud y no serán almacenados en ningún fichero ni utlizados para ningún otro fin
+  contacto_LBL_respuesta: Marca aquí si estás de acuerdo en recibir respuestas
+  contacto_LBL_comentario: Haces un comentario
+  contacto_LBL_mejora: Propones una mejora
+  contacto_LBL_error: Reportas un error
+  contacto_LBL_tipoPropuesta: ¿Qué nos dices?
+  contacto_LBL_telefono: Teléfono
+  contacto_LBL_email: email
+  contacto_LBL_nombre: Nombre
+BOTONES:
+  botonExportar_TT: Salvar proyecto
+  botonContacto_TT: Formulario de contacto
+  botonInformePDF_TT: Salvar informe en PDF
+  botonParametros_TT: Parámetros
+  botonInstrucciones_TT: Instrucciones
+  botonAyuda_TT: Ayuda
+  botonExportar_LBL:
+  botonContacto_LBL:
+  botonInformePDF_LBL:
+  botonParametros_LBL:
+  botonInstrucciones_LBL:
+  botonAyuda_LBL:
+
+AYUDAS:
   ayuda_TIT_localizacion: En esta pestaña se identifican datos de localización geográfica
   ayuda_TIT_tipoConsumo: En esta pestaña se identifican datos de tarifas y consumos antes de la instalación
   ayuda_TIT_fincas: En esta pestaña se identifican los partícipes del proyecto
@@ -396,7 +413,8 @@ botonAyuda_LBL:
   ayuda_TIT_graficos: En esta pestaña se muestran algunos gráficos de referencia
   ayuda_TIT_panel: Panel de ayuda
   ayuda_TIT_reporte: Resumen de datos
-  -modulo proyecto: -modulo proyecto
+
+PROYECTO:
   nombreProyecto_LBL: Nombre del proyecto
   nombreProyecto_TT: Nombre que el usuario dé a esta simulación (p. ej. piso01 luzescalera01 garaje00…)
   importarProyecto_LBL: Importar proyecto
@@ -404,45 +422,26 @@ botonAyuda_LBL:
   importarProyecto_MSG_confirmaReemplazo: El proyecto existente será reemplazado por el importado
   importarProyecto_MSG_importando: Importando
   importarProyecto_MSG_success: Fichero importado satisfactoriamente
-  -modulo localizacion: -modulo localizacion
-  posicionLonLat_LBL: Long-Lat
-  posicionLonLat_TT: No hace falta rellenar este campo solo se utiliza para centrar el mapa en estas coordenadas
 
-  -el mapa: -el mapa
+MAPA:
   botonPuntoConsumo_LBL: Punto Consumo
   botonPuntoConsumo_TT: Boton para crear un nuevo punto de consumo
   botonBaseSolar_LBL: Base solar
   botonBaseSolar_TT: Boton para crear una nueva base para instalar paneles
   botonDeshacer_LBL: Deshacer
   botonDeshacer_TT: Permite anular el último vertice creado
-  botonTipoMapa_TT: Permite intercambiar entre vista sátelite o mapa
   botonShadow_LBL: Google Shadow
   botonShadow_TT: Abre ventana de Google Shadow centrada en este mapa
-  -mensajes mapa: -mensajes mapa
-  mapa_MSG_definePuntoConsumo: Debe definir al menos un punto de consumo en el mapa antes de seguir
 
-  mapa_MSG_cuantosPuntoConsumo: En modo {{modoActivo}} no pueden existir mas de un punto de consumo\nDebe borrar el existente antes de continuar
-  mapa_MSG_errorCatastroXY: Error consulta catastro-> {{descripcion}}
+MSGMAPA:
   mapa_MSG_Polygon: Defina el area en la que se instalarán los paneles. Solo son necesarios tres puntos. A continuación puede definir el acimut para cada una de ellas mediante el icono <i class='fa fa-compass'></i>
   mapa_MSG_LineString: De un punto para indicar la orientación geográfica de los paneles
   mapa_MSG_Point: Defina la ubicación del consumo
   mapa_MSG_nada: Seleccione el objeto a dibujar
   mapa_MSG_posicionConsumo: De un click para posicionar un nuevo consumo
-  mapa_MSG_territorio: La aplicación solo es valida para España
   mapa_MSG_insular: Cuidado esta usted en territorio no peninsular. Las tarifas 3.0TD no son las correctas.
 
-  -tabla base solar: -tabla base solar
-
-  -tabla PuntoConsumo_LBL: -tabla PuntoConsumo_LBL
-  nombrePuntoConsumo_LBL: Nombre
-  nombrePuntoConsumo_TT: Identifique el nombre de este punto de consumo para futuras referencias
-  lonlatPuntoConsumo_LBL: Long-Lat
-  lonlatPuntoConsumo_TT: Coordenadas geográficas de la base
-  refcat_LBL: Referencia catastral
-  refcat_TT: Identificación unica de DGC
-  direccion_LBL: Dirección
-  direccion_TT: Dirección postal oficial de DGC
-  -tabla rendimiento: -tabla rendimiento
+RENDIMIENTO:
   fechaInicio_LBL: Fecha inicio datos
   fechaFin_LBL: Fecha final datos
   horaInicio_LBL: Hora inicial datos
@@ -464,10 +463,9 @@ botonAyuda_LBL:
   acimut_LBL: Acimut de la base
   unitarioTotal_LBL: Energia anual / kWp instalado
   unitarioTotal_TT: Energia anual producida por cada kWp instalado
-  rendimiento_MSG_errorFetch: Error ejecutando fetch en PVGIS. Respuesta->
-  rendimiento_MSG_obteniendoPVGISdata: Obteniendo datos de PVGIS
+  ERROR_PVGIS_FETCH: Error ejecutando fecth en PVGIS.\n{{err}} \n {{url}}
 
-  -Modulo tipoConsumo: -Modulo tipoConsumo
+Modulo tipoConsumo:
   botonBorraTipoConsumo_LBL:
   botonMuestraMapaTipoConsumo_LBL:
   botonMuestraTarifa_LBL:
@@ -477,7 +475,7 @@ botonAyuda_LBL:
   botonMuestraTarifa_TT: Muestra precios de tarifa
   botonSeleccionFichero_TT: Seleccione el fichero de consumo
 
-  -tabla produccion: -tabla produccion
+PRODUCCION:
   correccionPrecioInstalacion_LBL: Corrección precio en %
   correccionPrecioInstalacion_TT: Si bien procuramos utilizar precios actualizados el usuario puede alterar la estimación dada con el valor que aquí defina.\nIndique el pocentaje que desea aumentar (valor positivo) o disminuir (valor negativo) el precio de la instalación según sus condiciones particulares
   precioInstalacionCorregido_LBL: Precio de la instalación corregido
@@ -486,7 +484,7 @@ botonAyuda_LBL:
   pTotalAnual_LBL: Producción anual
   pTotalAnual_TT: Producción fotovoltaica media anual estimada
 
-  -modulo resultados: -modulo resultados
+RESULTADOS:
   ConsumoDiurno_LBL: Consumo realizado en horas solares
   ConsumoDiurno_TT: Consumo realizado en horas en que los paneles tienen alguna producción
   maxPaneles_LBL: Max. Paneles en base
@@ -541,10 +539,10 @@ botonAyuda_LBL:
   resultados_LBL_graficoResumen: Gráfico resumen de consumos versus producción
   resultados_LBL_pendienteCalculo: Pendiente
   graficos_LBL_numeroMaximoPaneles: Límite paneles por area disponible
-  resultados_LBL_tituloPropiedades: Propiedades
+
   resultados_MSG_excesoPotencia: Hay un exceso de potencia en esta base en función del area dispoble
   resultados_LBL_basePropiedades: Base {{id}}
-  -modulo economico: -modulo economico
+ECONOMICO:
   economico_MSG_ayudaBloqueSubvencionesHdr: Ayuda subvenciones y bonificaciones
   economico_MSG_ayudaBloqueSubvenciones: En este bloque se definen las posibles ayudas en forma de subvención o bonificación
 
@@ -553,7 +551,7 @@ botonAyuda_LBL:
   economico_MSG_disclaimerPrecioInstalacion: En la estimación del coste de la instalación está repercutida la mano de obra y materiales. No están incluidos ni las tasas e impuestos municipales (ICIO) ni la obra civil y maquinaria de elevación (si fueran necesarias) ni las modificaciones que la distribuidora o la Administración exigiera tras comprobar la instalación realizada
   economico_MSG_disclaimerPrecioInstalacionHdr: Aviso sobre el coste de instalación
 
-  -formulario: -formulario
+FORMULARIO:
   gastoSinPlacasAnual_LBL: Gasto anual sin placas
   gastoSinPlacasAnual_TT: El gasto anual en electricidad sin paneles solares. Solo se tiene en cuenta la parte variable de la factura
   gastoConPlacasAnual_LBL: Gasto anual con placas
@@ -564,18 +562,13 @@ botonAyuda_LBL:
   ahorroAnualPorciento_TT: Ahorro anual en relación al gasto original
   noCompensadoAnual_LBL: Coste energía no compensada
   noCompensadoAnual_TT: El importe de la energía excedentaria que la comercializadora no compensará.\nLa ley (RD 244/2019) no permite que al consumidor se le abone ningún importe cuando el balance entre el coste de la energía sobrante y el de lo consumido de cualquier día resultara favorable al consumidor.\nSuele suceder cuando se instalan más paneles de los aconsejables cuando se consume muy por debajo de lo habitual (en vacaciones) o cuando el precio de compensación de la comercializadora fuera alto (muy improbable).
-  valorSubvencionIBI_LBL: IBI (€)
-  valorSubvencionIBI_TT: Rellénese si el municipio donde se realice la instalación bonifica el impuesto de bienes inmuebles.\nLa Fundación Renovables facilita una lista de municipios con bonificaciones en el IBI y reducciones en ICIO.
-  porcientoSubvencionIBI_LBL: Bonificación %
-  porcientoSubvencionIBI_TT: El porcentaje con el ayuntamiento bonifica el importe del IBI
-  tiempoSubvencionIBI_LBL: Duración bonificación (años)
-  tiempoSubvencionIBI_TT: El número de años durante los que se puede aplicar la bonificación en el IBI
+
   valorSubvencionEU_LBL: Valor de la subvención EU
   tipoSubvencionEU_LBL: Tipo subvención EU
   tipoSubvencionEU_TT: Si se fueran a solicitar la subvención de los fondos Next Generation indíquese si la instalación fuera colectiva (una comunidad de propietarios por ejemplo) o individual. La subvención no se concederá si la energía generada al año fuera superior al 80% de la energía consumida anualmente
 
   precios_LBL_pendienteCalculo: Pendiente
-  -graficos: -graficos
+graficos:
   graficos_LBL_descripcion: Área de gráficos disponibles
   graficos_LBL_balanceConsumo: Balance mensual de consumo con {{potencia}} instalados
   graficos_LBL_balanceProduccion: Balance mensual de producción con {{potencia}} instalados
@@ -607,65 +600,8 @@ botonAyuda_LBL:
   graficos_LBL_huchaSaldo: Saldo en la hucha
   graficos_LBL_tituloBalanceEconomicoFinca: Balance económico mensual con {{potencia}} asignados.<br>Equivalente {{paneles}} paneles.
   graficos_LBL_tituloBalanceEconomicoGlobal: Balance económico mensual con {{potencia}} asignados.
-  -objeto_Finca: -objeto_Finca
-  nombreFinca_LBL: Nombre de la finca
-  nombreFinca_TT: Nombre interno que le damos a la finca
-  bloque_LBL: Bloque
-  bloque_TT: Bloque según DGC
-  idFinca_LBL: Id. Finca
-  idFinca_TT: Identificación única de la finca en el proceso de reparto
-  escalera_LBL: Escalera
-  escalera_TT: Escalera según DGC
-  planta_LBL: Planta
-  planta_TT: Planta segñun DGC
-  puerta_LBL: Puerta
-  puerta_TT: Puerta según DGC
-  uso_LBL: Uso
-  uso_TT: Uso según DGC
-  grupo_LBL: Tipología
-  grupo_TT: Caracteristica de reparto
-  superficie_LBL: Superficie
-  superficie_TT: Superficie según DGC
-  participacion_LBL: Participación
-  participacion_TT: Coeficiente de participación en la propiedad según DGC
-  coefConsumo_LBL: Coeficiente de Consumo
-  coefConsumo_TT: Coeficiente de participación en el consumo
-  coefInversion_LBL: Coeficiente de Inversión
-  coefInversion_TT: Coeficiente de participación en la inversión
-  coefEnergia_LBL: Coeficiente de Energia
-  coefEnergia_TT: Coeficiente de participacion en la producción de energia
-  botonNuevaFinca_LBL: Crear finca
-  botonNuevaFinca_TT: Puede crear nuevas fincas para representar el consumo de zonas que no son participes
-  botonDescargaFincas_LBL: Descarga CSV
-  botonDescargaFincas_TT: Descarga la tabla actual a un fichero CSV
-  botonSubeFincas_LBL: Sube CSV
-  botonSubeFincas_TT: Puede aportar los datos de fincas desde un fichero CSV
-  finca_MSG_tipoConsumoDesconocido: Finca con tipo de consumo desconocido->
-  finca_MSG_accionFincas: Asignar tipo de consumo a las fincas que participan del proyecto o crear nuevas fincas. Si no dispone de datos Catastrales puede crear un fichero nuevo a partir <a href='./datos/fincas ejemplo.csv'>de este template</a>
-  finca_MSG_noTipoConsumoAsignado: Ninguna finca tiene tipo de consumo asignado
-  catastro_MSG_errorFetch: Error ejecutando fecth en Catastro.\n {{err}} \n {{url}}
-  nominatim_MSG_errorFetch: Error ejecutando fecth en Nominatim.\n {{err}} \n {{url}}
-  nominatim_MSG_errorBuscandoTerritorio: Nominatim Error buscando territorio status-> {{resp}}
-  produccionTotal_LBL: Producción asignada
-  ahorroFincaAnual_LBL: Ahorro
-  ahorroFincaAnual_TT: Ahorro obtenido en esta finca con este reparto de energía
-  botonValidaResultados_LBL: Validación
-  botonValidaResultados_TT: Realiza los cálculos de la asignación
-  -modulo reparto: -modulo reparto
-  reparto_MSG_accionReparto: Gestionar los coeficientes de producción e inversion asignados a las fincas que participan del proyecto
 
-  botonDescargaReparto_LBL: Descarga CSV
-  botonDescargaReparto_TT: Descarga la tabla actual a un fichero CSV
-  botonRepartoParticipacion_LBL: Asignacion por participación
-  botonRepartoParticipacion_TT: Realiza una distribución de energía e inversión basandose en la participación de la propiedad
-  botonRepartoConsumo_LBL: Asignación por consumo
-  botonRepartoConsumo_TT: Realiza una distribución de energía e inversión basandose en el consumo
-  coste_LBL: Coste instalación
-  botonRepartoParitario_LBL: Reparto paritario
-  botonCheckInversion_LBL: Inversión -> {{inversion}}<br>Asignado -> {{asignado}}
-  botonCheckEnergia_LBL: Coef. Energia -> {{coefEnergia}}
-  botonCheckParticipacion_LBL: Participacion -> {{participacion}}%
-  -modulo informe: -modulo informe
+INFORME:
   informe_LBL_datosDeConsumoGlobal: Consumo Global
   informe_LBL_produccionTotal: Producción total
   informe_LBL_produccionMediaEsperada: Producción media esperada

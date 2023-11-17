@@ -14,9 +14,7 @@ import TCB from '../classes/TCB'
 export default function FinanceSummary(props) {
   const { t, i18n } = useTranslation()
 
-  console.log(props)
   const { cashFlow } = props
-  console.log(cashFlow)
 
   function getRowId(row) {
     return row.ano

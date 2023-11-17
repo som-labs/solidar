@@ -39,8 +39,7 @@ class Rendimiento extends DiaHora {
     this.unitarioTotal
 
     if (base.requierePVGIS) {
-      this.rendimientoCreado = false
-      this.loadPVGISdata(base)
+      this.rendimientoCreado = this.loadPVGISdata(base)
     } else {
       //estamos importando
       //Asignacion propiedades contenidas en el objeto de entrada
@@ -56,7 +55,7 @@ class Rendimiento extends DiaHora {
     var addurl
     this.unitarioTotal = 0
 
-    if (base.inclinacionOptima && base.inAcimutOptimo) {
+    if (base.angulosOptimos) {
       addurl = '&optimalangles=1'
     } else {
       if (base.inclinacionOptima) {
@@ -66,8 +65,7 @@ class Rendimiento extends DiaHora {
         let inclinacion = parseFloat(base.inclinacion)
         addurl = '&angle=' + inclinacion
       }
-
-      if (!base.inAcimutOptimo) addurl += '&aspect=' + base.inAcimut
+      addurl += '&aspect=' + base.inAcimut
     }
 
     if (TCB.parametros.perdidasSistema != 0) {
@@ -166,8 +164,7 @@ class Rendimiento extends DiaHora {
         return true
       }
     } catch (err) {
-      alert(TCB.i18next.t('rendimiento_MSG_errorFetch') + err.message)
-      console.log('Error llamada PVGIS con :' + url)
+      alert(TCB.i18next.t('ERROR_PVGIS_FETCH', { err: err.message, url: url }))
       base.rendimientoCreado = 'error'
       return false
     }

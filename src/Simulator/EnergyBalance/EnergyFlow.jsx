@@ -9,6 +9,7 @@ import CardMedia from '@mui/material/CardMedia'
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
+import { Container } from '@mui/material'
 
 const EnergyFlow = () => {
   const { t, i18n } = useTranslation()
@@ -223,100 +224,102 @@ const EnergyFlow = () => {
 
   return (
     <>
-      <Box
-        ref={grafResumen}
-        sx={{
-          ml: '0.3rem',
-          display: 'flex',
-          flexWrap: 'wrap',
-          boxShadow: 2,
-          flex: 1,
-          border: 2,
-          borderColor: 'primary.light',
-          '& .MuiDataGrid-cell:hover': {
-            color: 'primary.main',
-          },
-        }}
-      >
-        <Box>
-          <Typography variant="h4">{t('ENERGY_BALANCE.FLOW_TITLE')}</Typography>
-          <Typography
-            variant="body"
-            dangerouslySetInnerHTML={{
-              __html: t('ENERGY_BALANCE.FLOW_DESCRIPTION'),
-            }}
-          />
-        </Box>
-        <br />
+      <Container>
         <Box
+          ref={grafResumen}
           sx={{
+            ml: '0.3rem',
             display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+            flexWrap: 'wrap',
+            boxShadow: 2,
+            flex: 1,
+            border: 2,
+            borderColor: 'primary.light',
+            '& .MuiDataGrid-cell:hover': {
+              color: 'primary.main',
+            },
           }}
         >
           <Box>
-            <CardMedia
-              component="img"
-              src="./datos/consumo.svg"
-              ref={graficoConsumo}
-              alt="Consumos Totales"
-              title="Consumos totales"
-              sx={{
-                height: 87,
-                width: 100,
-                position: 'relative',
+            <Typography variant="h4">{t('ENERGY_BALANCE.FLOW_TITLE')}</Typography>
+            <Typography
+              variant="body"
+              dangerouslySetInnerHTML={{
+                __html: t('ENERGY_BALANCE.FLOW_DESCRIPTION'),
               }}
-            />
-
-            <CardMedia
-              component="img"
-              src="./datos/red.svg"
-              ref={graficoExcedente}
-              sx={{
-                position: 'relative',
-                height: 87,
-                width: 100,
-              }}
-              alt="Energía vertida a la red"
-              title="Energía vertida a la red"
-            />
-
-            <svg
-              ref={bar}
-              xmlns="http://www.w3.org/2000/svg"
-              width="100vw"
-              height="300"
-            ></svg>
-
-            <CardMedia
-              component="img"
-              src="./datos/red.svg"
-              ref={graficoDeficit}
-              sx={{
-                position: 'relative',
-                height: 87,
-                width: 100,
-              }}
-              alt="Energia recibida de la red"
-              title="Energia recibida de la red"
-            />
-
-            <CardMedia
-              component="img"
-              src="./datos/paneles.svg"
-              ref={graficoProduccion}
-              sx={{
-                position: 'relative',
-                height: 87,
-                width: 100,
-              }}
-              alt="Producción en paneles"
-              title="Producción en paneles"
             />
           </Box>
+          <br />
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Box>
+              <CardMedia
+                component="img"
+                src="./datos/consumo.svg"
+                ref={graficoConsumo}
+                alt="Consumos Totales"
+                title="Consumos totales"
+                sx={{
+                  height: 87,
+                  width: 100,
+                  position: 'relative',
+                }}
+              />
+
+              <CardMedia
+                component="img"
+                src="./datos/red.svg"
+                ref={graficoExcedente}
+                sx={{
+                  position: 'relative',
+                  height: 87,
+                  width: 100,
+                }}
+                alt="Energía vertida a la red"
+                title="Energía vertida a la red"
+              />
+
+              <svg
+                ref={bar}
+                xmlns="http://www.w3.org/2000/svg"
+                width="100vw"
+                height="300"
+              ></svg>
+
+              <CardMedia
+                component="img"
+                src="./datos/red.svg"
+                ref={graficoDeficit}
+                sx={{
+                  position: 'relative',
+                  height: 87,
+                  width: 100,
+                }}
+                alt="Energia recibida de la red"
+                title="Energia recibida de la red"
+              />
+
+              <CardMedia
+                component="img"
+                src="./datos/paneles.svg"
+                ref={graficoProduccion}
+                sx={{
+                  position: 'relative',
+                  height: 87,
+                  width: 100,
+                }}
+                alt="Producción en paneles"
+                title="Producción en paneles"
+              />
+            </Box>
+          </Box>
         </Box>
-      </Box>
+      </Container>
     </>
   )
 }

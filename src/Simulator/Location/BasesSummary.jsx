@@ -29,45 +29,63 @@ export default function BasesSummary() {
   const columns = [
     {
       field: 'nombreBaseSolar',
-      headerName: t('LOCATION.LABEL_BASE_NAME'),
+      headerName: t('BaseSolar.LABEL_nombreBaseSolar'),
       headerClassName: 'dataGrid-headers',
       // renderHeader: () => <strong>{t('LOCATION.LABEL_BASE_NAME')}</strong>,
       headerAlign: 'center',
       width: 250,
-      description: t('LOCATION.TOOLTIP_BASE_NAME'),
+      description: t('BaseSolar.TOOLTIP_nombreBaseSolar'),
     },
     {
       field: 'areaReal',
-      headerName: t('LOCATION.LABEL_AREA_REAL'),
+      headerName: t('BaseSolar.LABEL_areaReal'),
       headerAlign: 'center',
       flex: 1,
       align: 'right',
-      description: t('LOCATION.TOOLTIP_AREA_REAL'),
+      description: t('BaseSolar.TOOLTIP_areaReal'),
       renderCell: (params) => {
         return UTIL.formatoValor('areaReal', params.value)
       },
     },
     {
       field: 'inclinacion',
-      headerName: t('LOCATION.LABEL_TILT'),
+      headerName: t('BaseSolar.LABEL_inclinacion'),
       headerAlign: 'center',
       flex: 1,
       align: 'center',
-      description: t('LOCATION.TOOLTIP_TILT'),
+      description: t('BaseSolar.TOOLTIP_inclinacion'),
+      renderCell: (params) => {
+        if (params.row.roofType === 'Optimos') return 'Optima'
+        if (params.row.roofType === 'Horizontal' && params.row.inclinacionOptima)
+          return 'Optima'
+        return UTIL.formatoValor('inclinacionPaneles', params.value)
+      },
     },
     {
       field: 'inAcimut',
-      headerName: t('LOCATION.LABEL_AZIMUT'),
+      headerName: t('BaseSolar.LABEL_inAcimut'),
       flex: 1,
       align: 'center',
-      description: t('LOCATION.TOOLTIP_TILT'),
+      description: t('BaseSolar.TOOLTIP_inAcimut'),
+      renderCell: (params) => {
+        if (params.row.roofType === 'Optimos') return 'Optimo'
+        else return UTIL.formatoValor('inAcimut', params.value)
+      },
+    },
+    {
+      field: 'panelesMaximo',
+      headerName: t('BaseSolar.LABEL_panelesMaximo'),
+      flex: 1,
+      align: 'center',
+      description: t('BaseSolar.TOOLTIP_panelesMaximo'),
     },
     {
       field: 'potenciaMaxima',
-      headerName: 'Pot. Maxima',
+      headerName: t('BaseSolar.LABEL_potenciaMaxima'),
       headerAlign: 'center',
       flex: 1,
       align: 'right',
+      description: t('BaseSolar.TOOLTIP_potenciaMaxima'),
       renderCell: (params) => {
         return UTIL.formatoValor('potenciaMaxima', params.value)
       },

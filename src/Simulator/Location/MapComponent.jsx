@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import { useState, useMemo, useRef, useEffect, useContext } from 'react'
+import { debounce } from '@mui/material/utils'
+
 import { useTranslation } from 'react-i18next'
 
 // OpenLayers objects
@@ -23,6 +25,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 import IconButton from '@mui/material/IconButton'
 import SearchIcon from '@mui/icons-material/Search'
 import Typography from '@mui/material/Typography'
+import Autocomplete from '@mui/material/Autocomplete'
 
 // REACT Solidar Components
 import MapContext from '../MapContext'
@@ -32,9 +35,6 @@ import { useDialog } from '../../components/DialogProvider'
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-
-// REVISAR: Prueba autoselect para las direcciones junto con GoogleMaps.jsx
-import CandidatosApp from './CandidatosApp'
 
 export default function MapComponent() {
   const { t, i18n } = useTranslation()
@@ -125,6 +125,13 @@ export default function MapComponent() {
     }
   }, [])
 
+  function endDialog(reason) {
+    alert(reason)
+    if (reason !== undefined) {
+      closeDialog()
+    }
+  }
+
   //Event when a base geometry has been created
   async function construirBaseSolar(geoBaseSolar) {
     // Get unique featID
@@ -134,6 +141,7 @@ export default function MapComponent() {
     let geometria = geoBaseSolar.feature.getGeometry()
     let puntos = geometria.getCoordinates()[0]
 
+    //PENDIENTE: Definir el punto 3 de modo que sea ortogonal con la cumbrera
     // First two points define cumbrera
     const cumbrera = UTIL.distancia(puntos[0], puntos[1])
     const ancho = UTIL.distancia(puntos[1], puntos[2])
@@ -158,7 +166,7 @@ export default function MapComponent() {
     }
 
     //NUEVO: Calculo propuesta de acimut
-    const azimutLength = 100
+    const azimutLength = 50
     let midPoint = [0, 0]
     let coef
 
@@ -183,11 +191,13 @@ export default function MapComponent() {
     midPoint[1] = puntos[2][1] + (puntos[3][1] - puntos[2][1]) / 2
     coef = azimutLength / ancho
 
+    //Dibujamos un acimut pequeño que aparecerá o no según la configuracion elegida
     const geomAcimut = new LineString([puntoAplicacion, midPoint])
     geomAcimut.scale(coef, coef, puntoAplicacion)
     const acimutCoordinates = geomAcimut.getCoordinates()
     let point1 = acimutCoordinates[0]
     let point2 = acimutCoordinates[1]
+    geomAcimut.scale(0.01, 0.01, puntoAplicacion)
 
     // Take into account angles are measured with 0 at south (axis -Y) and positive west (axis +X)
     let acimut =
@@ -204,35 +214,29 @@ export default function MapComponent() {
     //Preparamos los datos default para constuir un objeto BaseSolar
     geoBaseSolar.feature.setId('BaseSolar.area.' + TCB.featIdUnico)
     let nuevaBaseSolar = {}
-    const areaMapa = getArea(geometria, { projection: 'EPSG:3857' })
+    //const areaMapa = getArea(geometria, { projection: 'EPSG:3857' })
 
     nuevaBaseSolar.idBaseSolar = TCB.featIdUnico.toString()
     nuevaBaseSolar.nombreBaseSolar = 'Base ' + nuevaBaseSolar.idBaseSolar
     nuevaBaseSolar.cumbrera = cumbrera
     nuevaBaseSolar.ancho = ancho
     nuevaBaseSolar.inclinacion = 0
-    nuevaBaseSolar.inclinacionOptima = false
-    nuevaBaseSolar.roofType = 'coplanar'
+    nuevaBaseSolar.inclinacionOptima = true
+    nuevaBaseSolar.roofType = 'Optimos'
     nuevaBaseSolar.inAcimut = acimut.toFixed(2)
-    nuevaBaseSolar.inAcimutOptimo = false
-    nuevaBaseSolar.angulosOptimos = false
+    nuevaBaseSolar.angulosOptimos = true
     nuevaBaseSolar.requierePVGIS = true
     nuevaBaseSolar.lonlatBaseSolar =
       puntoAplicacion_4326[0].toFixed(4) + ',' + puntoAplicacion_4326[1].toFixed(4)
-    //nuevaBaseSolar.areaMapa = areaMapa
-    //nuevaBaseSolar.areaReal = areaMapa
     //New point feature where the name label will be set
     let label = new Feature({ geometry: new Point(puntoAplicacion) })
     label.setId('BaseSolar.label.' + nuevaBaseSolar.idBaseSolar)
     TCB.origenDatosSolidar.addFeatures([label])
 
     //Activamos el dialogo de edicion de atributos de BaseSolar
-    // setEditing(false)
-    // console.log(3)
-    //openNewBaseSolarDialog(nuevaBaseSolar, false)
     openDialog({
       children: (
-        <DialogNewBaseSolar data={nuevaBaseSolar} editing={false} onClose={closeDialog} />
+        <DialogNewBaseSolar data={nuevaBaseSolar} editing={false} onClose={endDialog} />
       ),
     })
   }
@@ -250,7 +254,7 @@ export default function MapComponent() {
 
     if (nominatimInfo === null) {
       // Las coordenadas no estan en España
-      alert(t('mapa_MSG_territorio')) //Quiere decir que no estamos en España
+      alert(t('LOCATION.ERROR_TERRITORIO')) //Quiere decir que no estamos en España
       TCB.territorio = ''
       return false
     } else if (!nominatimInfo) {
@@ -313,13 +317,16 @@ export default function MapComponent() {
         }
       } else {
         alert(
-          TCB.i18next.t('nominatim_MSG_errorFetch', { err: respTerritorio, url: url }),
+          TCB.i18next.t('LOCATION.ERROR_NOMINATIM_FETCH', {
+            err: respTerritorio,
+            url: url,
+          }),
         )
         await UTIL.copyClipboard(url)
         status = false
       }
     } catch (err) {
-      alert(TCB.i18next.t('nominatim_MSG_errorFetch', { err: err, url: url }))
+      alert(TCB.i18next.t('LOCATION.ERROR_NOMINATIM_FETCH', { err: err, url: url }))
       await UTIL.copyClipboard(url)
       status = false
     }
@@ -327,6 +334,7 @@ export default function MapComponent() {
     return status
   }
 
+  //REVISAR: como quitar este aviso
   async function findAddress() {
     setCandidatos([])
     let url =
@@ -334,90 +342,80 @@ export default function MapComponent() {
     url += 'q=' + address
     UTIL.debugLog('Call Nominatim:' + url)
 
-    //try {
-    const respCandidatos = await fetch(url)
-    if (respCandidatos.status === 200) {
-      var dataCartoCiudad = await respCandidatos.text()
-      var jsonAdd = JSON.parse(dataCartoCiudad)
-      let count = 0
-      var nitem = []
-      jsonAdd.forEach(function (item) {
-        nitem.push({
-          value: [item.lon, item.lat],
-          text: item.display_name.toString(),
-          key: count++,
+    try {
+      const respCandidatos = await fetch(url)
+      if (respCandidatos.status === 200) {
+        var dataCartoCiudad = await respCandidatos.text()
+        var jsonAdd = JSON.parse(dataCartoCiudad)
+        let count = 0
+        var nitem = []
+        jsonAdd.forEach(function (item) {
+          nitem.push({
+            value: [item.lon, item.lat],
+            text: item.display_name.toString(),
+            key: count++,
+          })
         })
-      })
-      setCandidatos([...nitem])
-
-      //REVISAR: porque no funciona si utilizo candidatos en lugar de nitem
-      if (count > 0) {
-        document.getElementById('candidatos').disabled = false
-        mapRef.current.getView().setCenter(fromLonLat(nitem[0].value))
+        setCandidatos([...nitem])
       } else {
-        document.getElementById('candidatos').disabled = true
+        alert(
+          t('ERROR_NOMINATIM_FETCH', {
+            err: 'Status: ' + respCandidatos.status,
+            url: url,
+          }),
+        )
+        return false
       }
-    } else {
-      alert('Error conectando con Nominatim: ' + respCandidatos.status + '\n' + url)
+    } catch (err) {
+      alert(t('ERROR_NOMINATIM_FETCH', { err: err.message, url: url }))
       return false
     }
-    // } catch (err) {
-    //   alert(TCB.i18next.t('nominatim_MSG_errorFetch', { err: err.message, url: url }))
-    //   return false
-    // }
   }
+
+  const ref = useRef()
+
+  useEffect(() => {
+    ref.current = findAddress
+  }, [findAddress])
+
+  const debouncedCallback = useMemo(() => {
+    const func = () => {
+      ref.current?.()
+    }
+
+    return debounce(func, 500)
+  }, [])
 
   return (
     <>
-      {/* <GoogleMaps></GoogleMaps> */}
-      {/* <CandidatosApp></CandidatosApp> */}
-      {/* Campo  para introducir una direccion REVISAR: como hacer que este campo y candidatos se repartan el ancho*/}
+      {/* Campo  para introducir una direccion */}
       <Typography variant="body">{t('LOCATION.DESCRIPTION_ADDRESS')}</Typography>
       <br />
-      <Box
-        sx={{
-          display: 'flex',
-          width: '100%',
+      <br />
+      <Autocomplete
+        options={candidatos}
+        filterOptions={(x) => x}
+        autoComplete
+        onChange={(ev, value) => {
+          mapRef.current.getView().setCenter(fromLonLat(value.value))
         }}
-      >
-        <Tooltip title={t('LOCATION.TOOLTIP_ADDRESS')} placement="top">
+        onInputChange={(ev, newValue) => {
+          if (ev.target.value.length > 3) {
+            setAddress(ev.target.value)
+            debouncedCallback()
+          }
+        }}
+        getOptionLabel={(option) => option.text}
+        renderInput={(params) => (
           <TextField
-            id="address"
-            onChange={(ev) => setAddress(ev.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton edge="end" color="primary" onClick={findAddress}>
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            helperText={t('LOCATION.PROMPT_ADDRESS')}
-            value={address}
-            type="text"
+            {...params}
+            label="Buscar lugar o dirección "
+            fullWidth
+            style={{ width: '100%' }}
           />
-        </Tooltip>
-        <TextField
-          disabled={candidatos.length === 0}
-          id="candidatos"
-          select
-          label=""
-          helperText={t('LOCATION.PROMPT_CANDIDATE')}
-          value={candidatos.length > 0 ? candidatos[0].value : ''} //REVISAR: como hacer que aparezca la primera direccion en la lista
-          onChange={(ev, value) => {
-            mapRef.current.getView().setCenter(fromLonLat(value.props.value))
-          }}
-        >
-          {candidatos.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.text}
-            </MenuItem>
-          ))}
-        </TextField>
-      </Box>
+        )}
+      />
       <br></br>
-
       {/* El mapa */}
       <Typography
         variant="body"
@@ -425,33 +423,33 @@ export default function MapComponent() {
           __html: t('LOCATION.PROMPT_DRAW'),
         }}
       />
-
       <div
         ref={mapElement}
         className="map"
         style={{ width: '100%', height: '300px' }}
       ></div>
-
       {/* Boton para cambiar vista mapa vs satelite */}
-      <Button
-        variant="contained"
-        onClick={() => {
-          if (mapType === 'LOCATION.LABEL_SATELITE') setMapType('LOCATION.LABEL_VECTOR')
-          else setMapType('LOCATION.LABEL_SATELITE')
-          let OpenS = map
-            .getLayers()
-            .getArray()
-            .find((layer) => layer.get('name') == 'OSM')
-          let SAT = map
-            .getLayers()
-            .getArray()
-            .find((layer) => layer.get('name') == 'SAT')
-          OpenS.setVisible(!OpenS.getVisible())
-          SAT.setVisible(!SAT.getVisible())
-        }}
-      >
-        {t(mapType)}
-      </Button>
+      <Tooltip title={t('LOCATION.TOOLTIP_MAP_TYPE')} placement="top">
+        <Button
+          variant="contained"
+          onClick={() => {
+            if (mapType === 'LOCATION.LABEL_SATELITE') setMapType('LOCATION.LABEL_VECTOR')
+            else setMapType('LOCATION.LABEL_SATELITE')
+            let OpenS = map
+              .getLayers()
+              .getArray()
+              .find((layer) => layer.get('name') == 'OSM')
+            let SAT = map
+              .getLayers()
+              .getArray()
+              .find((layer) => layer.get('name') == 'SAT')
+            OpenS.setVisible(!OpenS.getVisible())
+            SAT.setVisible(!SAT.getVisible())
+          }}
+        >
+          {t(mapType)}
+        </Button>
+      </Tooltip>
     </>
   )
 }

@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid'
+import InfoIcon from '@mui/icons-material/Info'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -20,11 +21,13 @@ import EnergyFlow from './EnergyFlow'
 import YearEnergyBalance from './YearEnergyBalance'
 import MonthEnergyBalance from './MonthEnergyBalance'
 import EnvironmentalImpact from './EnvironmentalImpact'
+import { useDialog } from '../../components/DialogProvider'
+import DialogProperties from '../components/DialogProperties'
 
 export default function EnergyBalanceStep() {
   const { t, i18n } = useTranslation()
   const [resumen, setResumen] = useState([])
-
+  const [openDialog, closeDialog] = useDialog()
   const { bases, setBases, tipoConsumo, setTipoConsumo } = useContext(TCBContext)
 
   function getRowId(row) {
@@ -79,78 +82,36 @@ export default function EnergyBalanceStep() {
         return UTIL.formatoValor('potenciaTotal', params.value)
       },
     },
+    {
+      field: 'actions',
+      type: 'actions',
+      getActions: (params) => [
+        <GridActionsCellItem
+          key={1}
+          icon={<InfoIcon />}
+          label="Delete"
+          onClick={() => showProperties(params.id)}
+        />,
+      ],
+    },
   ]
 
-  const wait = (seconds) => {
-    setTimeout(() => {
-      console.log(`Waited for ${seconds} seconds`)
-    }, seconds * 1000) // Convert seconds to milliseconds
+  function showProperties(id) {
+    const baseActiva = TCB.BaseSolar.find((base) => {
+      return base.idBaseSolar === id
+    })
+    openDialog({
+      children: (
+        <DialogProperties data={baseActiva} descripcion={'DDD'} onClose={closeDialog} />
+      ),
+    })
   }
 
+  //El proceso de PreparaEnergyBalance ha hecho cambios sobre las bases que se crearon en location por lo que se deben actualizar
+  // El optimizador ha asignado la instalacion
+  // El rendimiento ha podido cambiar la inclinacion y por lo tanto el area, la configuracion de paneles y la potenciaMaxima
+  // Si se usaron angulos optimos tambien ha cambiado el acimut.
   useEffect(() => {
-    let cursorOriginal = document.body.style.cursor
-    document.body.style.cursor = 'progress'
-
-    //PENDIENTE: desabilitariamos la posibilidad de dar al boton siguiente mientras estamos preparando los resultados
-    // document.getElementById('botonSiguiente').disabled = true
-
-    //Si ha habido algún cambio que requiera la ejecución del optimizador lo ejecutamos
-    console.log('a optimizador ' + TCB.requiereOptimizador)
-    if (TCB.requiereOptimizador) {
-      // Comprobamos que estan cargados todos los rendimientos. Es el flag rendimientoCreado de cada BaseSolar
-      let waitLoop = 0
-      for (let base of TCB.BaseSolar) {
-        //var sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
-        if (!base.rendimientoCreado) {
-          alert('Esperando datos PVGIS para base: ' + base.nombreBaseSolar)
-          //   if (TCB.importando) {
-          //     //document.getElementById('importar').innerHTML = TCB.i18next.t("importarProyecto_MSG_importando");
-          //   } else {
-          //     document.getElementById('resultadosResumen').innerHTML =
-          //       'Esperando PVGIS para base ' + base.idBaseSolar
-          //   }
-
-          while (
-            !base.rendimientoCreado &&
-            waitLoop++ < TCB.tiempoEsperaPVGIS &&
-            base.rendimientoCreado !== 'error'
-          ) {
-            wait(1)
-          }
-          if (base.rendimientoCreado === 'error') {
-            alert('Error obteniendo datos de PVGIS')
-            base.rendimientoCreado = false
-            // PENDIENTE: Reemplazar alert con error
-            return
-          }
-          if (waitLoop >= TCB.tiempoEsperaPVGIS) {
-            alert('Tiempo de respuesta excesivo en la llamada a PVGIS')
-            // PENDIENTE: reemplazar alert con confimr de espera
-            return
-          }
-          // PENDIENTE: limpiar alert
-        }
-      }
-
-      // Se ejecuta el optimizador para determinar la configuración inicial propuesta
-      let pendiente = optimizador(
-        TCB.BaseSolar,
-        TCB.consumo,
-        TCB.parametros.potenciaPanelInicio,
-      )
-      if (pendiente > 0) {
-        alert(
-          'No es posible instalar los paneles necesarios.\nPendiente: ' +
-            UTIL.formatoValor('energia', pendiente) +
-            '\nContinuamos con el máximo número de paneles posible',
-        )
-      }
-      document.body.style.cursor = cursorOriginal
-    }
-
-    // Cada base en TCB.BaseSolar ha sido asignada por el optimizador con el número de paneles óptimo.
-    // Si es una importación con los paneles que se hubieran salvado en la simulacion previa.
-    // Update local state to new configuration
     let oldBases = [...bases]
     TCB.BaseSolar.forEach((base) => {
       const nIndex = oldBases.findIndex((t) => {
@@ -159,14 +120,14 @@ export default function EnergyBalanceStep() {
       oldBases[nIndex].paneles = base.instalacion.paneles
       oldBases[nIndex].potenciaUnitaria = base.instalacion.potenciaUnitaria
       oldBases[nIndex].potenciaTotal = base.instalacion.potenciaTotal
+      oldBases[nIndex].potenciaMaxima = base.potenciaMaxima
+      oldBases[nIndex].areaReal = base.areaReal
+      oldBases[nIndex].inclinacion = base.inclinacion
+      oldBases[nIndex].inAcimut = base.inAcimut
+      oldBases[nIndex].panelesMaximo = base.panelesMaximo
     })
     setBases(oldBases)
-
-    //Volvemos a habilitar la secuencia del wizard
-    // document.getElementById('botonSiguiente').disabled = false
-
-    // return status
-    //}
+    setResumen(TCB.produccion.resumenMensual('suma'))
   }, [])
 
   useEffect(() => {
