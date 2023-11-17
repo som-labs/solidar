@@ -35,47 +35,41 @@ HOME:
 LOCATION:
   LABEL: Location
   TITLE: Location
-  DESCRIPTION: |
-    En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.\n
-    A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.\n Su rendimiento se calcula a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).
-    Rellena el siguiente formulario:
   PROMPT_ADDRESS: Busca la dirección del edificio
-  TOOLTIP_ADDRESS: After indicating city and direction where the panels will be installed click search icon
-  PROMPT_DRAW: Dibuja las áreas disponibles del edificio en el mapa (?). Puedes añadir tantas áreas como quieras.
-  LABEL_BASE_NAME: Base name
-  TOOLTIP_BASE_NAME: Identify the name of this basis for future references
-  LABEL_TILT: Tilt
-  TOOLTIP_TILT: Inclination en degrees (between 0º and 90º)measured with respect to the horizontal of the land on which the panels will be mounted
-
-  LABEL_AZIMUT: South Orientation (Azimuth)
-  TOOLTIP_AZIMUT: The angle between the south with the horizontal projection of the sun. If the panels were oriented to the south the azimuth will be 0º made the east -90º and west 90º. This field is filled by indicating on the map the orientation that the panels will have. If it is not completed it is assumed that it is 0
-
+  LABEL_SATELITE: Satellite view
+  LABEL_VECTOR: Map view
+  TOOLTIP_MAP_TYPE: Allows to exchange between Sátelite or Map
+  TITLE_DIALOG_NEW_BASE: New solar base
   LABEL_BASES_SUMMARY: Summary
   PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
   ERROR_DEFINE_BASE: You must define solar bases before continue
-  LABEL_SATELITE: Satellite view
-  LABEL_VECTOR: Map view
-  MSG_AREA_TOTAL: (T)Area total disponible en esta configuración {{areaTotal}}
-  LABEL_AREA_REAL: Corrected area
-  TOOLTIP_AREA_REAL: Real area available corrected by the roof inclination
-  LABEL_IDBASESOLAR: id
-  LABEL_LONLAT_BASESOLAR: Long-Lat
-  TOOLTIP_LONLAT_BASESOLAR: Base geographic coordinates
+  ERROR_NOMINATIM_FETCH: Error executing FECTH in nominatim. \n {{err}} \n {{url}}
+  ERROR_TERRITORIO: The application is only valid for Spain
 
-  areaReal_LBL: Corrected area
-  areaReal_TT: Real area available corrected by the roof inclination
-  potenciaMaxima_LBL: Max. kWp
-  potenciaMaxima_TT: It is the maximum kWp to be installed in this base depending on the available area (see conversion parameter)
-  inclinacionPaneles_LBL: Panel inclination
-  inclinacionPaneles_TT: Degrees of inclination (between 0 and 90) on the roof that the panels will have. If ‘optimal’ is marked no value is necessary
-  inclinacionOptima_LBL: Optimal inclination
-  inclinacionOptima_TT: Mark this field if you want the system to calculate the optimal value of the inclination of the panels
-
-  angulosOptimos_LBL: Optimal angles
-  angulosOptimos_TT: Mark this field if you want the system to calculate the optimal value of inclination and azimut
   botonBorraBase_TT: Delete the selected base
+  posicionLonLat_LBL: Long-Lat
+  posicionLonLat_TT: It is not necessary to fill this field it is only used to focus the map on these coordinates
 
-  candidatos_TT: Select the correct direction or sign up on the lower map with a double mouse pulsation
+BaseSolar:
+  LABEL_nombreBaseSolar: Base name
+  TOOLTIP_nombreBaseSolar: Identify the name of this basis for future references
+  LABEL_angulosOptimos: Optimal angles
+  TOOLTIP_angulosOptimos: Mark this field if you want the system to calculate the optimal value of inclination and azimut
+  LABEL_inclinacion: Tilt
+  LABEL_inclinacionTejado: Roof tilt
+  LABEL_inclinacionPaneles: Panels tilt
+  TOOLTIP_inclinacion: Inclination in degrees (between 0º and 90º) measured with respect to the horizontal of the land on which the panels will be mounted
+  LABEL_inclinacionOptima: Optimal inclination
+  TOOLTIP_inclinacionOptima: Mark this field if you want the system to calculate the optimal value of the inclination of the panels
+  LABEL_inAcimut: South Orientation (Azimuth)
+  TOOLTIP_inAcimut: The angle between the south with the horizontal projection of the sun. If the panels were oriented to the south the azimuth will be 0º made the east -90º and west 90º. This field is filled by indicating on the map the orientation that the panels will have. If it is not completed it is assumed that it is 0
+  LABEL_areaReal: Corrected area
+  TOOLTIP_areaReal: Real area available corrected by the roof inclination
+  LABEL_potenciaMaxima: Max. kWp
+  TOOLTIP_potenciaMaxima: It is the maximum kWp to be installed in this base depending on the available area (see conversion parameter)
+  LABEL_idBaseSolar: id
+  LABEL_lonlatBaseSolar: Long-Lat
+  TOOLTIP_lonlatBaseSolar: Base geographic coordinates
 
 CONSUMPTION:
   TITLE: Consumption
@@ -212,77 +206,82 @@ nov: November
 dic: December
 valor_true: True
 valor_false: False
--Objetos solidar: -Objetos solidar
-objeto_BaseSolar: Solar Base
-objeto_Rendimiento: Performance according to PVGIS
-objeto_Instalacion: Facility
-objeto_Produccion: Production
-objeto_PuntoConsumo: Consumption point
-objeto_TipoConsumo: Consumption type
-objeto_Tarifa: Fee
-objeto_ficheroCSV: Source File
-objeto_Economico: Economic Summary
--Titulos de cabecera: -Titulos de cabecera
-main_LBL_titulo: Individual photovoltaic production simulator
-main_LBL_titulo_INDIVIDUAL: Individual photovoltaic production simulator
-main_LBL_titulo_COLECTIVO: Collective photovoltaic production simulator
-main_LBL_titulo_COMUNIDAD: Individual photovoltaic production simulator
-main_TAB_bienvenida: Welcome
--Modales: -Modales
-main_TAB_cerrar: Close
-main_TAB_noMostrarMas: Do not show this message again
--Formulario parametros: -Formulario parametros
-main_TAB_parametros: Application parameters
-parametros_LBL_descripcion: Application parameters configuration. Changes in these values ​​do not imply a recalculation of the entire set it is necessary to return to the Location tab and recalculate.
-conversionAreakWp_LBL: kWp that can be installed per square meter available
-conversionAreakWp_TT: This value will be used to know how many KWP can be installed in a defined area. KWP maximum = area in square meters / this parameter
-impuestoElectrico_LBL: Electrical tax in %
-impuestoElectrico_TT: The Special Electricity Tax
-IVAenergia_LBL: VAT applicable to energy in %
-IVAenergia_TT: The VAT that is impact on electricity spending
-IVAinstalacion_LBL: VAT applicable to installation in %
-IVAinstalacion_TT: The VAT that is impact on the amount to which the installation ascends
-perdidasSistema_LBL: Estimated installation losses in %
-perdidasSistema_TT: The losses of the photovoltaic system due to the deterioration of some components adverse conditions poor investors etc.
-interesVAN_LBL: Base interest (%) for Van Calculation
-interesVAN_TT: Discount rate to apply in the calculation of the net current value
-potenciaPanelInicio_LBL: Unitary Power (kWp) Start Panel
-potenciaPanelInicio_TT: KWP power of the initial panel used in calculations
-tecnologia_LBL: Panel technology
-# tecnologia_TT: You can choose three types of panels to perform the estimates:  \n- those that have crystalline silicon cells \n- Modules of thin copper and Indian seleniuro lamina (CuInSe) or copper Indian and Gallic seleniuro (CuInGaSe) \n- Thin Cadmium Teluro (CdTe) \n- unknown. \nIf one of the first three options is chosen in the calculation of photovoltaic production the temperature effect will be taken into account. If the other option (unknown) is chosen in the calculation some power losses will be assumed due to the temperature effect of 8% (generic value that is considered reasonable for temperate climates). The effect of the spectral distribution of irradiance received on production can only be calculated for crystalline and CDTE silicon technologies.
-tecnologiaDesconocida_LBL: Unknown
-tarifasLocales_LBL: Local Rate file
-ficheroTarifas_LBL: Local Rate file (see example)
-ficheroTarifas_TT: The user can customize a file with different prices while complying with the format given in the example
-parametros_MSG_errorLecturaFicheroTarifas: Error reading local rate file
--Formulario contacto: -Formulario contacto
-main_TAB_contacto: Contact
-contacto_LBL_descripcion: Send us your comments. We will try to attend you as soon as possible
-contacto_LBL_enviar: Send
-contacto_LBL_mensaje: Message
-contacto_LBL_advertencia: The data that contributes to this form will be used solely and exclusively to answer your application and will not be stored in any file or used for any other purpose
-contacto_LBL_respuesta: Mark here if you agree to receive answers
-contacto_LBL_comentario: Make a comment
-contacto_LBL_mejora: Propose an improvement
-contacto_LBL_error: Report an error
-contacto_LBL_tipoPropuesta: What do you tell us?
-contacto_LBL_telefono: Phone
-contacto_LBL_email: e-mail
-contacto_LBL_nombre: Name
--Menu de botones: -Menu de botones
-botonExportar_TT: Save project
-botonContacto_TT: Contact / suggestions
-botonInformePDF_TT: Save PDF report
-botonParametros_TT: Parameters
-botonInstrucciones_TT: User instructions
-botonAyuda_TT: Help
-botonExportar_LBL:
-botonContacto_LBL:
-botonInformePDF_LBL:
-botonParametros_LBL:
-botonInstrucciones_LBL:
-botonAyuda_LBL:
-  -Titulos ayuda: -Titulos ayuda
+
+OBJECT:
+  LABEL_TITLE_PROPERTIES: Properties
+  BaseSolar: Solar Base
+  Rendimiento: Performance according to PVGIS
+  Instalacion: Facility
+  Produccion: Production
+  PuntoConsumo: Consumption point
+  TipoConsumo: Consumption type
+  Tarifa: Fee
+  ficheroCSV: Source File
+  Economico: Economic Summary
+
+CABECERA:
+  main_LBL_titulo: Individual photovoltaic production simulator
+  main_LBL_titulo_INDIVIDUAL: Individual photovoltaic production simulator
+  main_LBL_titulo_COLECTIVO: Collective photovoltaic production simulator
+  main_LBL_titulo_COMUNIDAD: Individual photovoltaic production simulator
+  main_TAB_bienvenida: Welcome
+
+MODALES:
+  main_TAB_cerrar: Close
+  main_TAB_noMostrarMas: Do not show this message again
+
+PARAMETROS:
+  main_TAB_parametros: Application parameters
+  parametros_LBL_descripcion: Application parameters configuration. Changes in these values ​​do not imply a recalculation of the entire set it is necessary to return to the Location tab and recalculate.
+  conversionAreakWp_LBL: kWp that can be installed per square meter available
+  conversionAreakWp_TT: This value will be used to know how many KWP can be installed in a defined area. KWP maximum = area in square meters / this parameter
+  impuestoElectrico_LBL: Electrical tax in %
+  impuestoElectrico_TT: The Special Electricity Tax
+  IVAenergia_LBL: VAT applicable to energy in %
+  IVAenergia_TT: The VAT that is impact on electricity spending
+  IVAinstalacion_LBL: VAT applicable to installation in %
+  IVAinstalacion_TT: The VAT that is impact on the amount to which the installation ascends
+  perdidasSistema_LBL: Estimated installation losses in %
+  perdidasSistema_TT: The losses of the photovoltaic system due to the deterioration of some components adverse conditions poor investors etc.
+  interesVAN_LBL: Base interest (%) for Van Calculation
+  interesVAN_TT: Discount rate to apply in the calculation of the net current value
+  potenciaPanelInicio_LBL: Unitary Power (kWp) Start Panel
+  potenciaPanelInicio_TT: KWP power of the initial panel used in calculations
+  tecnologia_LBL: Panel technology
+  # tecnologia_TT: You can choose three types of panels to perform the estimates:  \n- those that have crystalline silicon cells \n- Modules of thin copper and Indian seleniuro lamina (CuInSe) or copper Indian and Gallic seleniuro (CuInGaSe) \n- Thin Cadmium Teluro (CdTe) \n- unknown. \nIf one of the first three options is chosen in the calculation of photovoltaic production the temperature effect will be taken into account. If the other option (unknown) is chosen in the calculation some power losses will be assumed due to the temperature effect of 8% (generic value that is considered reasonable for temperate climates). The effect of the spectral distribution of irradiance received on production can only be calculated for crystalline and CDTE silicon technologies.
+  tecnologiaDesconocida_LBL: Unknown
+  tarifasLocales_LBL: Local Rate file
+  ficheroTarifas_LBL: Local Rate file (see example)
+  ficheroTarifas_TT: The user can customize a file with different prices while complying with the format given in the example
+  parametros_MSG_errorLecturaFicheroTarifas: Error reading local rate file
+CONTACTO:
+  main_TAB_contacto: Contact
+  contacto_LBL_descripcion: Send us your comments. We will try to attend you as soon as possible
+  contacto_LBL_enviar: Send
+  contacto_LBL_mensaje: Message
+  contacto_LBL_advertencia: The data that contributes to this form will be used solely and exclusively to answer your application and will not be stored in any file or used for any other purpose
+  contacto_LBL_respuesta: Mark here if you agree to receive answers
+  contacto_LBL_comentario: Make a comment
+  contacto_LBL_mejora: Propose an improvement
+  contacto_LBL_error: Report an error
+  contacto_LBL_tipoPropuesta: What do you tell us?
+  contacto_LBL_telefono: Phone
+  contacto_LBL_email: e-mail
+  contacto_LBL_nombre: Name
+BOTONES:
+  botonExportar_TT: Save project
+  botonContacto_TT: Contact / suggestions
+  botonInformePDF_TT: Save PDF report
+  botonParametros_TT: Parameters
+  botonInstrucciones_TT: User instructions
+  botonAyuda_TT: Help
+  botonExportar_LBL:
+  botonContacto_LBL:
+  botonInformePDF_LBL:
+  botonParametros_LBL:
+  botonInstrucciones_LBL:
+
+AYUDAS:
   ayuda_TIT_localizacion: Geographical location data are identified in this tab
   ayuda_TIT_tipoConsumo: In this tab data and consumption data are identified before installation
   ayuda_TIT_fincas: This tab identifies the participants of the project
@@ -292,7 +291,8 @@ botonAyuda_LBL:
   ayuda_TIT_graficos: In this tab some reference graphics are shown
   ayuda_TIT_panel: Help panel
   ayuda_TIT_reporte: Data Summary
-  -modulo proyecto: -modulo proyecto
+
+PROYECTO:
   nombreProyecto_LBL: Project name
   nombreProyecto_TT: Name that the user gives to this simulation (eg. apartment01 luzescalera01 garage00…)
   importarProyecto_LBL: Import project
@@ -300,21 +300,19 @@ botonAyuda_LBL:
   importarProyecto_MSG_confirmaReemplazo: The existing project will be replaced by the imported
   importarProyecto_MSG_importando: Importing
   importarProyecto_MSG_success: File imported succefully
-  -modulo localizacion: -modulo localizacion
-  posicionLonLat_LBL: Long-Lat
-  posicionLonLat_TT: It is not necessary to fill this field it is only used to focus the map on these coordinates
 
-  -el mapa: -el mapa
+MAPA:
   botonPuntoConsumo_LBL: Consumption point
   botonPuntoConsumo_TT: Button to create a new consumption point
   botonBaseSolar_LBL: Solar base
   botonBaseSolar_TT: Button to create a new base to install panels
   botonDeshacer_LBL: Undo
   botonDeshacer_TT: Allows to cancel the last vertex created
-  botonTipoMapa_TT: Allows to exchange between Sátelite or Map
+
   botonShadow_LBL: Google Shadow
   botonShadow_TT: Abre ventana de Google Shadow centrada en este mapa
-  -mensajes mapa: -mensajes mapa
+
+MSGMAPA:
   mapa_MSG_definePuntoConsumo: You must define at least one consumption point on the map before continuing
   mapa_MSG_cuantosPuntoConsumo: In {{modoActivo}} mode there can be no more than one consumption point \n nmust delete the existing one before coninuin
   mapa_MSG_errorCatastroXY: Assessment Error Catastro-> {{descripcion}}
@@ -323,12 +321,8 @@ botonAyuda_LBL:
   mapa_MSG_Point: Define consumption location
   mapa_MSG_nada: Select the object to draw
   mapa_MSG_posicionConsumo: One click to position a new consumption
-  mapa_MSG_territorio: The application is only valid for Spain
-  mapa_MSG_insular: Be careful you are in non -peninsular territory. 3.0TD rates can be wrong (Please review).
 
-  -tabla base solar: -tabla base solar
-
-  -tabla PuntoConsumo_LBL: -tabla PuntoConsumo_LBL
+tabla PuntoConsumo_LBL:
   nombrePuntoConsumo_LBL: Name
   nombrePuntoConsumo_TT: Identify the name of this point of consumption for future reference
   lonlatPuntoConsumo_LBL: Long-Lat
@@ -337,7 +331,7 @@ botonAyuda_LBL:
   refcat_TT: DGC unique identification
   direccion_LBL: Address
   direccion_TT: Official postal address of DGC
-  -tabla rendimiento: -tabla rendimiento
+tabla rendimiento:
   fechaInicio_LBL: Start Date Data
   fechaFin_LBL: Final Data Data
   horaInicio_LBL: Start time
@@ -359,10 +353,9 @@ botonAyuda_LBL:
   acimut_LBL: Base azimut
   unitarioTotal_LBL: Annual Energy by kWp installed
   unitarioTotal_TT: Annual Energy by kWp installed
-  rendimiento_MSG_errorFetch: Error running fetch in PVGIS. Answer->
-  rendimiento_MSG_obteniendoPVGISdata: Obtaining pvgis data
+  ERROR_PVGIS_FETCH: Error running fetch in PVGIS.\n{{err}} \n {{url}}
 
-  -tabla produccion: -tabla produccion
+tabla produccion:
   precioInstalacion_LBL: Estimated installation cost
   precioInstalacion_TT: Despite trying to keep prices updated this amount should be considered as a provisional guideline on the project that an installer can formulate (especially if he has more information about the final location).\nSome expenses are not included here as civil works ( if necessary) replacement of insulation or old tiles on the roof lifting means if necessary modifications that the distributor or the Administration may require of the installation and some taxes and fees that the city council may collect (ICIO or building license )
   correccionPrecioInstalacion_LBL: Price correction in %
@@ -372,7 +365,7 @@ botonAyuda_LBL:
   pMaximoAnual_LBL: Annual maximum production
   pTotalAnual_LBL: Annual production
   pTotalAnual_TT: Annual energy produced
-  -modulo resultados: -modulo resultados
+modulo resultados:
   ConsumoDiurno_LBL: Consumption made in solar hours
   ConsumoDiurno_TT: Consumption made in hours when the panels have some production
   maxPaneles_LBL: Max. Base panels
@@ -427,10 +420,10 @@ botonAyuda_LBL:
   resultados_LBL_graficoResumen: Graphic consumption summary versus production
   resultados_LBL_pendienteCalculo: Pending
   graficos_LBL_numeroMaximoPaneles: Limit panels by available surface
-  resultados_LBL_tituloPropiedades: Properties
+
   resultados_MSG_excesoPotencia: There is an excess of power in this base based on the available area
   resultados_LBL_basePropiedades: Base {{id}}
-  -modulo economico: -modulo economico
+modulo economico:
   economico_MSG_ayudaBloqueSubvencionesHdr: Help subsidies and bonuses
   economico_MSG_ayudaBloqueSubvenciones: This block defines possible aids in the form of subsidy or bonus
 
@@ -439,7 +432,7 @@ botonAyuda_LBL:
   economico_MSG_disclaimerPrecioInstalacion: In the estimate of the cost of the installation labor and materials are impacted. There are neither the municipal fees and taxes (ico) nor the civil works and elevation machinery (if necessary) nor the modifications that the distributor or the administration demanded after checking the installation carried out
   economico_MSG_disclaimerPrecioInstalacionHdr: Notice about the installation cost
 
-  -formulario: -formulario
+formulario:
   gastoSinPlacasAnual_LBL: Annual expense without panels
   gastoSinPlacasAnual_TT: Annual electricity expenditure without solar panels. Only the variable part of the invoice is taken into account
   gastoConPlacasAnual_LBL: Annual expenditure with panels
@@ -464,7 +457,7 @@ botonAyuda_LBL:
   subvencionComunitaria_LBL: Collective installation
 
   precios_LBL_pendienteCalculo: Pending
-  -graficos: -graficos
+graficos:
   graficos_LBL_descripcion: Available graphics area
   graficos_LBL_balanceConsumo: Monthly consumption balance with {{potencia}} installed
   graficos_LBL_balanceProduccion: Monthly production balance with {{potencia}} installed
@@ -497,64 +490,8 @@ botonAyuda_LBL:
   graficos_LBL_huchaSaldo: Balance in the piggy bank
   graficos_LBL_tituloBalanceEconomicoFinca: Monthly economic balance with {{potencia}} assigned. <br> equivalent {{paneles}} panels.
   graficos_LBL_tituloBalanceEconomicoGlobal: Monthly economic balance with {{potencia}} assigned.
-  -objeto_Finca: -objeto_Finca
-  nombreFinca_LBL: Unit name
-  nombreFinca_TT: Internal name given to the unit
-  bloque_LBL: Block
-  bloque_TT: Block according to DGC
-  idFinca_LBL: Unit Id
-  idFinca_TT: Unique identification given to the unit in the distribution process
-  escalera_LBL: Ladder
-  escalera_TT: Ladder according to DGC
-  planta_LBL: Floor
-  planta_TT: Floor accorfing to DGC
-  puerta_LBL: Door
-  puerta_TT: Door according to DGC
-  uso_LBL: Use
-  uso_TT: Use according to DGC
-  grupo_LBL: Typology
-  grupo_TT: Delivery characteristic
-  superficie_LBL: Surface
-  superficie_TT: Surface according to DGC
-  participacion_LBL: Stake
-  participacion_TT: Property participation coefficient according to DGC
-  coefConsumo_LBL: Coefficient of consumption
-  coefConsumo_TT: Coefficient of participation in consumption
-  coefInversion_LBL: Investment coefficient
-  coefInversion_TT: Investment participation coefficient
-  coefEnergia_LBL: Energy coefficient
-  coefEnergia_TT: Energy production coefficient
-  botonNuevaFinca_LBL: Create unit
-  botonNuevaFinca_TT: You can create new units to represent the consumption of areas that are not participating
-  botonDescargaFincas_LBL: Download CSV
-  botonDescargaFincas_TT: Download the current table to a CSV file
-  botonSubeFincas_LBL: Upload CSV
-  botonSubeFincas_TT: You can provide units data from a CSV file
-  finca_MSG_tipoConsumoDesconocido: Finca with unknown consumption type->
-  finca_MSG_accionFincas: Assign consumption type to units that participate in the project or create new units. If you do not have cadastral data you can create a new file from <a href='./datos/fincas example.csv'> this template </a>
-  finca_MSG_noTipoConsumoAsignado: No finca has consumption type assigned
-  catastro_MSG_errorFetch: Error executing FECTH in cadastre. \n {{err}} \n {{url}}
-  nominatim_MSG_errorFetch: Error executing FECTH in nominatim. \n {{err}} \n {{url}}
-  nominatim_MSG_errorBuscandoTerritorio: Nominatim Error looking for territory status-> {{resp}}
-  produccionTotal_LBL: Assigned production
-  ahorroFincaAnual_LBL: Saving
-  ahorroFincaAnual_TT: Savings obtained in this unit with this energy assignment
-  botonValidaResultados_LBL: Validation
-  botonValidaResultados_TT: Perform the assignment calculations
-  -modulo reparto: -modulo reparto
-  reparto_MSG_accionReparto: Manage the production and investment coefficients assigned to the fincasinvolved in the project
-  botonDescargaReparto_LBL: Download CSV
-  botonDescargaReparto_TT: Download the current table to a CSV file
-  botonRepartoParticipacion_LBL: Assignment by participation
-  botonRepartoParticipacion_TT: Make a distribution of energy and investment based on the participation of property
-  botonRepartoConsumo_LBL: Assignment by Consumption
-  botonRepartoConsumo_TT: Make a distribution of energy and investment based on consumption
-  coste_LBL: Installation cost
-  botonRepartoParitario_LBL: Joint cast
-  botonCheckInversion_LBL: Investment -> {{inversion}} <br> assigned -> {{asignado}}
-  botonCheckEnergia_LBL: COEF. Energy -> {{coefEnergia}}
-  botonCheckParticipacion_LBL: Participation -> {{participacion}}%
-  -modulo informe: -modulo informe
+
+modulo informe:
   informe_LBL_datosDeConsumoGlobal: Global consumption
   informe_LBL_produccionTotal: Total production
   informe_LBL_produccionMediaEsperada: Expected average production

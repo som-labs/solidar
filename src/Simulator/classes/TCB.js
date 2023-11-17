@@ -226,7 +226,7 @@ const TCB = {
     potenciaPanelInicio: 0.505,
     anchoPanel: 1.134,
     largoPanel: 2.094,
-    margen: 0,
+    margen: 0.5,
   },
 
   /** Constante donde se define el precio estimado de la instalación en base a la potencia instalada

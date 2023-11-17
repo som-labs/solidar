@@ -39,6 +39,7 @@ class Produccion extends DiaHora {
     // Generamos la produccion de esa base multiplicando la matriz de rendimiento unitario por la potencia instalada
     if (base !== undefined) {
       UTIL.debugLog('Creando producción para base:' + base.nombreBaseSolar)
+
       this.escala(base.rendimiento, base.instalacion.potenciaTotal / 1000)
       this.potenciaTotal = base.instalacion.potenciaTotal
       base.produccionCreada = true

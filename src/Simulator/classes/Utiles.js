@@ -26,58 +26,67 @@ const campos = {
   fecha: { unidad: 'fecha', salvar: false, mostrar: true },
   pdfpieDePagina: { unidad: 'fecha', decimales: 'larga', mostrar: true },
 
+  maximoAnual: {
+    unidad: ' kWh',
+    decimales: 2,
+    salvar: true,
+    mostrar: false,
+    antes: 'maximoAnual',
+  },
+  totalAnual: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: false },
   // Especificos
   /* Proyecto */
   nombreProyecto: { unidad: '', salvar: true, mostrar: true },
   fechaproyecto: { unidad: 'fecha', decimales: 'larga', mostrar: true },
   posicionLonLat: { antes: 'campoLONLAT' },
 
-  // Punto de consumo:
-  lonlatPuntoConsumo: { unidad: '', salvar: true, mostrar: true },
-  idPuntoConsumo: { unidad: '', salvar: true, mostrar: false },
-  nombrePuntoConsumo: { unidad: '', decimales: 0, salvar: true, mostrar: true },
-  territorio: { unidad: '', salvar: true, mostrar: true },
-  refcat: { unidad: '', salvar: true, mostrar: true },
-  direccion: { unidad: '', decimales: 0, salvar: true, mostrar: true },
-  fincasCargadas: { unidad: '', decimales: 0, salvar: true, mostrar: false },
-
-  /* Fincas */
-  idFinca: { unidad: '', salvar: true, mostrar: false },
-  nombreFinca: { unidad: '', salvar: true, mostrar: true },
-  bloque: { unidad: '', salvar: true, mostrar: true },
-  escalera: { unidad: '', salvar: true, mostrar: true },
-  planta: { unidad: '', salvar: true, mostrar: true },
-  puerta: { unidad: '', salvar: true, mostrar: true },
-  participacion: { unidad: '%', decimales: 2, salvar: true, mostrar: true },
-  coefHucha: { unidad: '%', decimales: 0, salvar: true, mostrar: true },
-  cuotaHucha: { unidad: ' €', decimales: 2, salvar: true, mostrar: true },
-  coefHuchaGlobal: { unidad: '%', decimales: 2, salvar: true, mostrar: true },
-  cuotaHuchaGlobal: { unidad: ' €', decimales: 2, salvar: true, mostrar: true },
-  coste: { unidad: ' €', decimales: 2, salvar: true, mostrar: true },
-
   // BaseSolar:
-  idBaseSolar: { unidad: '', decimales: 0, salvar: true, mostrar: false },
-  nombreBaseSolar: { unidad: '', decimales: 0, salvar: true, mostrar: true },
-  lonlatBaseSolar: { unidad: '', salvar: true, mostrar: true },
+  idBaseSolar: { unidad: '', decimales: 0, salvar: true, mostrar: false, order: 1 },
+  nombreBaseSolar: { unidad: '', decimales: 0, salvar: true, mostrar: true, order: 2 },
+  lonlatBaseSolar: { unidad: '', salvar: true, mostrar: true, order: 3 },
+  roofType: { unidad: '', salvar: true, mostrar: true, order: 4 },
+  cumbrera: { unidad: 'm', decimales: 1, salvar: true, mostrar: true, order: 5 },
+  columnas: { unidad: '', decimales: 0, salvar: true, mostrar: true, order: 6 },
+  anchoReal: { unidad: 'm', decimales: 1, salvar: true, mostrar: true, order: 7 },
+  filas: { unidad: '', decimales: 0, salvar: true, mostrar: true, order: 8 },
+  panelesMaximo: { unidad: '', decimales: 0, salvar: true, mostrar: true, order: 9 },
   tipoBaseSolar: { unidad: '', decimales: 0, salvar: false, mostrar: false },
-  areaMapa: { unidad: ' m²', decimales: 2, salvar: true, mostrar: true, antes: 'area' },
-  areaReal: { unidad: ' m²', decimales: 2, salvar: true, mostrar: true },
-  potenciaMaxima: { unidad: ' kWp', decimales: 3, salvar: true, mostrar: true },
-  inclinacionPaneles: { unidad: 'º', decimales: 2, salvar: true, mostrar: true },
-  acimut: { unidad: 'º', decimales: 2, salvar: true, mostrar: true },
-  inAcimut: { unidad: 'º', decimales: 2, salvar: true, mostrar: true },
-  inclinacionOptima: { unidad: '', salvar: true, mostrar: true },
-  angulosOptimos: { unidad: '', salvar: true, mostrar: true },
+  areaReal: { unidad: ' m²', decimales: 2, salvar: true, mostrar: true, order: 10 },
+  acimut: { unidad: 'º', decimales: 2, salvar: true, mostrar: true, order: 11 },
+  inAcimut: { unidad: 'º', decimales: 2, salvar: true, mostrar: true, order: 12 },
+  inclinacionOptima: { unidad: '', salvar: true, mostrar: true, order: 13 },
+  angulosOptimos: { unidad: '', salvar: true, mostrar: true, order: 14 },
+  inclinacion: {
+    unidad: 'º',
+    decimales: 2,
+    salvar: true,
+    mostrar: true,
+    order: 15,
+  },
+  potenciaMaxima: {
+    unidad: ' kWp',
+    decimales: 3,
+    salvar: true,
+    mostrar: true,
+    order: 16,
+  },
+
   requierePVGIS: { unidad: '', salvar: true, mostrar: false },
 
   /* instalacion */
-  potenciaUnitaria: { unidad: ' kWp', decimales: 3, salvar: true, mostrar: true },
-  paneles: { unidad: '', decimales: 0, salvar: true, mostrar: true },
-  potenciaTotal: { unidad: ' kWp', decimales: 3, salvar: true, mostrar: true },
+  potenciaUnitaria: {
+    unidad: ' kWp',
+    decimales: 3,
+    salvar: true,
+    mostrar: true,
+    order: 1,
+  },
+  paneles: { unidad: '', decimales: 0, salvar: true, mostrar: true, order: 2 },
+  potenciaTotal: { unidad: ' kWp', decimales: 3, salvar: true, mostrar: true, order: 3 },
 
   /* produccion */
   produccionCreada: { unidad: '', salvar: false, mostrar: false },
-  pTotalAnual: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true },
+  pTotalAnual: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true, order: 1 },
   cnumeroDias: { unidad: '', salvar: true, mostrar: false },
   pMaximoAnual: {
     unidad: ' kWh',
@@ -85,22 +94,41 @@ const campos = {
     salvar: true,
     mostrar: true,
     antes: 'maximoAnual',
+    order: 2,
   },
 
   /* rendimiento */
-  unitarioTotal: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true },
-  produccionTotal: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true },
-  system_loss: { unidad: '%', decimales: 2, salvar: false, mostrar: true },
-  technology: { unidad: '', salvar: false, mostrar: true },
-  inclinacionOptimal: { unidad: '', salvar: false, mostrar: true },
-  acimutOptimal: { unidad: '', salvar: false, mostrar: true },
-  radiation_db: { unidad: '', decimales: 0, salvar: false, mostrar: true },
-  meteo_db: { unidad: '', salvar: false, mostrar: true },
+  unitarioTotal: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true, order: 1 },
+  produccionTotal: {
+    unidad: ' kWh',
+    decimales: 2,
+    salvar: true,
+    mostrar: true,
+    order: 2,
+  },
+  system_loss: { unidad: '%', decimales: 2, salvar: false, mostrar: true, order: 3 },
+  technology: { unidad: '', salvar: false, mostrar: true, order: 4 },
+  inclinacionOptimal: { unidad: '', salvar: false, mostrar: true, order: 5 },
+  acimutOptimal: { unidad: '', salvar: false, mostrar: true, order: 6 },
+  radiation_db: { unidad: '', decimales: 0, salvar: false, mostrar: true, order: 7 },
+  meteo_db: { unidad: '', salvar: false, mostrar: true, order: 8 },
   year_min: { unidad: '', decimales: 0, salvar: false, mostrar: false },
   year_max: { unidad: '', decimales: 0, salvar: false, mostrar: false },
   rendimientoCreado: { unidad: '', salvar: false, mostrar: false },
-  PVGISfechaInicio: { unidad: 'fecha', decimales: 'corta', salvar: false, mostrar: true },
-  PVGISfechaFin: { unidad: 'fecha', decimales: 'corta', salvar: false, mostrar: true },
+  PVGISfechaInicio: {
+    unidad: 'fecha',
+    decimales: 'corta',
+    salvar: false,
+    mostrar: true,
+    order: 9,
+  },
+  PVGISfechaFin: {
+    unidad: 'fecha',
+    decimales: 'corta',
+    salvar: false,
+    mostrar: true,
+    order: 10,
+  },
 
   /* TipoConsumo */
   idTipoConsumo: { unidad: '', decimales: 0, salvar: true, mostrar: false },
@@ -208,7 +236,7 @@ const campos = {
   horaInicio: { unidad: '', salvar: true, mostrar: false },
   horaFin: { unidad: '', salvar: true, mostrar: false },
   fechaFin: { unidad: 'fecha', salvar: true, mostrar: false },
-  inclinacion: { unidad: 'º', decimales: 2, salvar: true, mostrar: true },
+
   lon: { unidad: '', decimales: 2, salvar: true, mostrar: true },
   lat: { unidad: '', decimales: 2, salvar: true, mostrar: true },
 }
@@ -794,8 +822,8 @@ function obtenerPropiedades(objeto, nivel) {
       let tipoPropiedad = typeof objeto[prop]
       if (tipoPropiedad === 'object') {
         if (objeto[prop] instanceof Date) {
-          //prop_val[actobj].push({'nombre': prop, 'valor': objeto[prop].toLocaleDateString() });
-          prop_val[actobj].push({ nombre: prop, valor: objeto[prop] })
+          if (campos[prop] !== undefined && campos[prop].mostrar)
+            prop_val[actobj].push({ nombre: prop, valor: objeto[prop] })
         } else {
           if (prop !== 'geometria') {
             let actobj = objeto.constructor.name
@@ -804,7 +832,8 @@ function obtenerPropiedades(objeto, nivel) {
           }
         }
       } else {
-        prop_val[actobj].push({ nombre: prop, valor: objeto[prop] })
+        if (campos[prop] !== undefined && campos[prop].mostrar)
+          prop_val[actobj].push({ nombre: prop, valor: objeto[prop] })
       }
     } else {
       // hay que ver como hacemos con el precio de Tarifa que es un array
