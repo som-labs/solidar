@@ -14,12 +14,14 @@ import DialogProvider from '../components/DialogProvider'
 import TCBContext from './TCBContext'
 import MapContext from './MapContext'
 import EconomicContext from './EconomicBalance/EconomicContext'
+import PreparaEnergyBalance from './EnergyBalance/PreparaEnergyBalance'
 import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
 
 import InicializaAplicacion from './classes/InicializaAplicacion'
 import Consumo from './classes/Consumo'
 import Instalacion from './classes/Instalacion'
+import calculaResultados from './classes/calculaResultados'
 
 InicializaAplicacion()
 
@@ -39,6 +41,7 @@ export default function Page() {
         areaReal: base.areaReal,
         lonlatBaseSolar: base.lonlatBaseSolar,
         potenciaMaxima: base.potenciaMaxima,
+        panelesMaximo: base.panelesMaximo,
         roofType: base.roofType,
         inclinacionOptima: base.inclinacionOptima,
         inclinacion: base.inclinacion,
@@ -116,20 +119,13 @@ export default function Page() {
     setAlert({ message: '', type: '' })
   }
 
-  const validaTipoConsumo = () => {
-    // Si no ha habido ningún cambio seguimos adelante
-    console.log('Estamos en validaTipoConsumo')
-
+  async function validaTipoConsumo() {
     if (TCB.TipoConsumo.length === 0) {
       showAlert(t('CONSUMPTION.ERROR_AL_MENOS_UN_TIPOCONSUMO'), 'error')
       return false
     }
 
     let status = true
-    // Se verifica que cada TipoConsumo definido se le ha cargado el CSV correspondiente
-    //let consumoTotal = 0;
-    //for (let tipoConsumo of TCB.TipoConsumo) consumoTotal +=  tipoConsumo.cTotalAnual;
-
     for (const tipoConsumo of TCB.TipoConsumo) {
       if (tipoConsumo.fuente === 'REE') {
         if (!(tipoConsumo.consumoAnualREE > 0)) {
@@ -154,13 +150,13 @@ export default function Page() {
         }
       }
     }
-
     //Crearemos el consumo global como suma de todos los tipos de consumo definidos
     if (status) {
       TCB.consumo = new Consumo()
       TCB.cambioTipoConsumo = true
     }
-    return status
+
+    status = await PreparaEnergyBalance()
   }
 
   return (

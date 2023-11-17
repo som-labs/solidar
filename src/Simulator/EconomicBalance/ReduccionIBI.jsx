@@ -40,15 +40,15 @@ const ReduccionIBI = () => {
             width: '100%',
           }}
         >
-          <Typography variant="h4">{t('ECONOMIC_BALANCE.IBI_TITLE')}</Typography>
-          <ReactMarkdown children={t('ECONOMIC_BALANCE.IBI_DESCRIPTION')} />
+          <Typography variant="h4">{t('ECONOMIC_BALANCE.TITLE_IBI')}</Typography>
+          <ReactMarkdown children={t('ECONOMIC_BALANCE.DESCRIPTION_IBI')} />
 
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <TextField
               required
               type="text"
               onChange={onChangeIBI}
-              label={t('ECONOMIC_BALANCE.IBI_VALOR')}
+              label={t('ECONOMIC_BALANCE.LABEL_IBI_VALOR')}
               name="valorSubvencionIBI"
               value={IBI.valorSubvencionIBI}
             />
@@ -59,7 +59,7 @@ const ReduccionIBI = () => {
               required
               type="text"
               onChange={onChangeIBI}
-              label={t('ECONOMIC_BALANCE.IBI_PORCIENTO')}
+              label={t('ECONOMIC_BALANCE.LABEL_IBI_PORCIENTO')}
               name="porcientoSubvencionIBI"
               value={IBI.porcientoSubvencionIBI}
             />
@@ -70,7 +70,7 @@ const ReduccionIBI = () => {
               required
               type="text"
               onChange={onChangeIBI}
-              label={t('ECONOMIC_BALANCE.IBI_DURACION')}
+              label={t('ECONOMIC_BALANCE.LABEL_IBI_DURACION')}
               name="tiempoSubvencionIBI"
               value={IBI.tiempoSubvencionIBI}
             />

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // OpenLayers objects
@@ -33,27 +33,57 @@ import BaseSolar from '../classes/BaseSolar'
 export default function DialogNewBaseSolar({ data, editing, onClose }) {
   const { t, i18n } = useTranslation()
 
-  const [formData, setFormData] = useState(data)
+  const [formData, setFormData] = useState({})
   const { bases, setBases } = useContext(TCBContext)
 
-  console.log(data)
+  //REVISAR: falta controlar la salida con backdrop click para borrar la geometria previamente creada
+  useEffect(() => {
+    setFormData(data)
+  }, [])
   let newData
 
   const changeRoofType = (e, roofType) => {
     handleChange({ name: 'roofType', value: roofType })
-    if (roofType === 'coplanar') {
-      newData = {
-        roofType: 'coplanar',
-        inclinacionOptima: false,
-        inclinacion: 0,
-        areaReal: formData.areaMapa,
+    //Al crear la geometria de la base hemos construido un acimut.
+    //El acimut se debe dibujar solo si la configuración no es de angulos optimos
+    //Cuando cambia la configuracion debemos hacer aparecer el acimut
+    const componente = 'BaseSolar.acimut.' + formData.idBaseSolar
+    const featAcimut = TCB.origenDatosSolidar.getFeatureById(componente)
+    const geomAcimut = featAcimut.getGeometry()
+    const alfa = 50 / geomAcimut.getLength()
+
+    switch (roofType) {
+      case 'Coplanar':
+        newData = {
+          roofType: 'Coplanar',
+          inclinacionOptima: false,
+          angulosOptimos: false,
+          inclinacion: 0,
+          requierePVGIS: true,
+        }
+        geomAcimut.scale(alfa, alfa, geomAcimut.getCoordinates()[0])
+        break
+      case 'Horizontal': {
+        newData = {
+          roofType: 'Horizontal',
+          inclinacionOptima: true,
+          angulosOptimos: false,
+          inclinacion: '', //El angulo optimo definitivo lo dará PVGIS pero para la peninsula esta entre 31º y 32º
+          requierePVGIS: true,
+        }
+
+        geomAcimut.scale(alfa, alfa, geomAcimut.getCoordinates()[0])
+        break
       }
-    } else if (roofType === 'horizontal') {
-      newData = {
-        roofType: 'horizontal',
-        inclinacionOptima: true,
-        inclinacion: 32, //El angulo optimo definitivo lo dará PVGIS pero para la peninsula esta entre 31º y 32º
-        areaReal: formData.areaMapa,
+      case 'Optimos': {
+        newData = {
+          roofType: 'Optimos',
+          angulosOptimos: true,
+          inclinacionOptima: true,
+          requierePVGIS: true,
+        }
+        geomAcimut.scale(0.01, 0.01, geomAcimut.getCoordinates()[0])
+        break
       }
     }
     multiChange(newData)
@@ -63,16 +93,20 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
     const newData = {
       inclinacion: event.target.value,
       inclinacionOptima: false,
+      angulosOptimos: false,
+      requierePVGIS: true,
     }
     multiChange(newData)
   }
 
-  const setOptimalAzimut = () => {
-    const componente = 'BaseSolar.acimut.' + formData.idBaseSolar
-    const featAcimut = TCB.origenDatosSolidar.getFeatureById(componente)
-    TCB.origenDatosSolidar.removeFeature(featAcimut)
-    handleChange({ name: 'inAcimut', value: 'Optima' })
-    handleChange({ name: 'inAcimutOptimo', value: true })
+  const setOptimalTilt = (event) => {
+    const newData = {
+      inclinacion: event.target.checked ? '' : 0,
+      inclinacionOptima: event.target.checked,
+      angulosOptimos: false,
+      requierePVGIS: true,
+    }
+    multiChange(newData)
   }
 
   const changeAzimut = (event) => {
@@ -84,7 +118,6 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
 
     componente = 'BaseSolar.acimut.' + formData.idBaseSolar
     featAcimut = TCB.origenDatosSolidar.getFeatureById(componente)
-    console.log(featAcimut)
     if (featAcimut) {
       geomAcimut = featAcimut.getGeometry().clone()
       angle = ((event.target.value - data.inAcimut) / 180) * Math.PI
@@ -104,17 +137,18 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
       console.log(featAcimut)
     }
 
-    console.log(geomAcimut.getCoordinates()[0])
     geomAcimut.rotate(angle, geomAcimut.getCoordinates()[0])
     featAcimut.setGeometry(geomAcimut)
-
-    handleChange({ name: 'inAcimutOptimo', value: false })
-    handleChange({ name: 'inAcimut', value: parseFloat(event.target.value) })
+    const newData = {
+      angulosOptimos: false,
+      inAcimut: parseFloat(event.target.value),
+      requierePVGIS: true,
+    }
+    multiChange(newData)
   }
 
   async function handleChange(target) {
     const { name, value } = target
-    console.log(name, value)
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }))
   }
 
@@ -129,16 +163,16 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
   const handleCancel = () => {
     if (!editing) {
       //Cancelling a new base creation => delete previos geometry
-      UTIL.deleteBaseGeometries(data.idBaseSolar)
+      UTIL.deleteBaseGeometries(formData.idBaseSolar)
     }
-    onClose()
+    onClose('Cancel')
   }
 
   async function handleClose() {
     let baseIndex
 
     // En caso de roofType coplanar pedimos confirmacion si la inclinacion es cero
-    if (formData.roofType === 'coplanar' && formData.inclinacion === 0) {
+    if (formData.roofType === 'Coplanar' && formData.inclinacion === 0) {
       if (!window.confirm(t('LOCATION.ERROR_COPLANAR_NOANGLE'))) {
         return
       }
@@ -159,6 +193,7 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
       baseIndex = TCB.BaseSolar.push(new BaseSolar(formData)) - 1
       formData.potenciaMaxima = TCB.BaseSolar[baseIndex].potenciaMaxima
       formData.areaReal = TCB.BaseSolar[baseIndex].areaReal
+      formData.panelesMaximo = TCB.BaseSolar[baseIndex].panelesMaximo
       setBases([...bases, formData])
     } else {
       // Find this edited base in TCB
@@ -169,30 +204,32 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
       TCB.BaseSolar[baseIndex].updateBase(formData)
       formData.potenciaMaxima = TCB.BaseSolar[baseIndex].potenciaMaxima
       formData.areaReal = TCB.BaseSolar[baseIndex].areaReal
+      formData.panelesMaximo = TCB.BaseSolar[baseIndex].panelesMaximo
+
       // Substitute new base in context
       let prevBases = [...bases]
       prevBases.splice(baseIndex, 1, formData)
       setBases(prevBases)
     }
 
-    onClose()
+    onClose('Save')
   }
 
   return (
     <div>
-      <DialogTitle>{t('LOCATION.DIALOG_NEW_BASE')}</DialogTitle>{' '}
+      <DialogTitle>{t('LOCATION.TITLE_DIALOG_NEW_BASE')}</DialogTitle>{' '}
       <DialogContent>
         <Box
           component="form"
           sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}
         >
           <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <Tooltip title={t('LOCATION.TOOLTIP_BASE_NAME')} placement="top">
+            <Tooltip title={t('BaseSolar.TOOLTIP_nombreBaseSolar')} placement="top">
               <TextField
                 required
                 type="text"
                 onChange={(e) => handleChange(e.target)}
-                label={t('LOCATION.LABEL_BASE_NAME')}
+                label={t('BaseSolar.LABEL_nombreBaseSolar')}
                 name="nombreBaseSolar"
                 value={formData.nombreBaseSolar}
               />
@@ -201,7 +238,7 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
           <Typography
             variant="body"
             dangerouslySetInnerHTML={{
-              __html: t('LOCATION.DESCRIPTION_ROOFTYPE'),
+              __html: t('BaseSolar.DESCRIPTION_roofType'),
             }}
           />
           {/* PENDIENTE: hay que crear los iconos de los botones coplanar u horizontal */}
@@ -215,80 +252,146 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
               orientation="horizontal"
             >
               <ToggleButton
-                value="coplanar"
+                value="Coplanar"
                 sx={{ flex: 1 }}
                 className={'roofTypeButton'}
               >
                 <HomeIcon />
               </ToggleButton>
               <ToggleButton
-                value="horizontal"
+                value="Horizontal"
                 sx={{ flex: 1 }}
                 className={'roofTypeButton'}
               >
                 <ApartmentIcon />
               </ToggleButton>
+              <ToggleButton value="Optimos" sx={{ flex: 1 }} className={'roofTypeButton'}>
+                {t('BaseSolar.LABEL_angulosOptimos')}
+              </ToggleButton>
             </ToggleButtonGroup>
-
-            {/* <Box
-              sx={{ display: 'flex', flex: 2, flexDirection: 'column', flexWrap: 'wrap' }}
-            > */}
           </Box>
 
-          {formData.roofType === 'coplanar' ? (
+          {formData.roofType === 'Coplanar' && (
             <>
               <Box
-                sx={{ display: 'flex', flex: 2, flexDirection: 'row', flexWrap: 'wrap' }}
+                sx={{
+                  display: 'flex',
+                  flex: 2,
+                  flexDirection: 'column',
+                  flexWrap: 'wrap',
+                }}
               >
+                <Typography variant="body">
+                  {t('BaseSolar.DESCRIPTION_inclinacionTejado')}
+                </Typography>
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
                   <br />
-                  <Tooltip title={t('LOCATION.TOOLTIP_TILT')} placement="top">
+                  <Tooltip title={t('BaseSolar.TOOLTIP_inclinacion')} placement="top">
                     <TextField
                       required
                       type="text"
                       onChange={changeTilt}
-                      label={t('LOCATION.LABEL_TILT')}
+                      label={t('BaseSolar.LABEL_inclinacionTejado')}
                       name="inclinacion"
                       value={formData.inclinacion}
                     />
                   </Tooltip>
                 </FormControl>
-              </Box>
-            </>
-          ) : (
-            <>
-              <Box>
-                <Typography variant="body">{t('LOCATION.HORIZONTAL_ROOF')}</Typography>
                 <br />
+                <Typography variant="body">
+                  {t('BaseSolar.DESCRIPTION_inAcimut')}
+                </Typography>
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                  <Tooltip title={t('BaseSolar.TOOLTIP_inAcimut')} placement="top">
+                    <TextField
+                      required
+                      type="text"
+                      onChange={(e) => handleChange(e.target)}
+                      onBlur={changeAzimut}
+                      label={t('BaseSolar.LABEL_inAcimut')}
+                      name="inAcimut"
+                      value={formData.inAcimut}
+                    />
+                  </Tooltip>
+                </FormControl>
               </Box>
             </>
           )}
 
-          <Typography variant="body">{t('LOCATION.DESCRIPTION_AZIMUT')}</Typography>
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <TextField
-              required
-              type="text"
-              onChange={(e) => handleChange(e.target)}
-              onBlur={changeAzimut}
-              label={t('LOCATION.LABEL_AZIMUT')}
-              name="inAcimut"
-              value={formData.inAcimut}
-            />
-          </FormControl>
-          <Tooltip title={t('LOCATION.TOOLTIP_OPTIMUM_AZIMUT')} placement="bottom">
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={formData.inAcimutOptimo}
-                  name="inAcimutOptimo"
-                  onChange={setOptimalAzimut}
-                  color="primary"
-                />
-              }
-              label={t('LOCATION.LABEL_OPTIMUM_AZIMUT')}
-            />
-          </Tooltip>
+          {formData.roofType === 'Horizontal' && (
+            <>
+              <Typography variant="body">
+                {t('BaseSolar.DESCRIPTION_inclinacionPaneles')}
+              </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flex: 2,
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  alignmentBaseline: true,
+                }}
+                verticalAlign="center"
+              >
+                {/* REVISAR: Como hacer para que el campo y el switch salgan alineados */}
+                <Tooltip
+                  title={t('BaseSolar.TOOLTIP_inclinacionOptima')}
+                  placement="bottom"
+                >
+                  <FormControl sx={{ m: 1, minWidth: 120 }}>
+                    <br />
+                    <Tooltip title={t('BaseSolar.TOOLTIP_inclinacion')} placement="top">
+                      <TextField
+                        required
+                        type="text"
+                        onChange={changeTilt}
+                        label={t('BaseSolar.LABEL_inclinacionPaneles')}
+                        name="inclinacion"
+                        value={formData.inclinacion}
+                      />
+                    </Tooltip>
+                  </FormControl>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.inclinacionOptima}
+                        name="inclinacionOptima"
+                        onChange={setOptimalTilt}
+                        color="primary"
+                      />
+                    }
+                    label={t('BaseSolar.LABEL_inclinacionOptima')}
+                  />
+                </Tooltip>
+                <Typography variant="body">
+                  {t('BaseSolar.DESCRIPTION_inAcimut')}
+                </Typography>
+                <Tooltip title={t('BaseSolar.TOOLTIP_inAcimut')} placement="top">
+                  <FormControl sx={{ m: 1, minWidth: 120 }}>
+                    <TextField
+                      required
+                      type="text"
+                      onChange={(e) => handleChange(e.target)}
+                      onBlur={changeAzimut}
+                      label={t('BaseSolar.LABEL_inAcimut')}
+                      name="inAcimut"
+                      value={formData.inAcimut}
+                    />
+                  </FormControl>
+                </Tooltip>
+              </Box>
+            </>
+          )}
+
+          {formData.roofType === 'Optimos' && (
+            <>
+              <Box>
+                <Typography variant="body">
+                  {t('BaseSolar.DESCRIPTION_angulosOptimos')}
+                </Typography>
+              </Box>
+            </>
+          )}
         </Box>
       </DialogContent>
       <DialogActions>

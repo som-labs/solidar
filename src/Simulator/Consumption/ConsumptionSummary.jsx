@@ -26,8 +26,66 @@ import { formatoValor } from '../classes/Utiles'
 import MapaDiaHora from './MapaDiaHora'
 
 //PENDIENTE: Decidir si mostramos los datos en formato tabla o creamos boxes segun diseño de Clara
-export default function ConsumptionSummary(inSummary) {
+export default function ConsumptionSummary() {
   const { t, i18n } = useTranslation()
+
+  const columns = [
+    {
+      field: 'nombreTipoConsumo',
+      headerName: t('CONSUMPTION.LABEL_NOMBRE_TIPO_CONSUMO'),
+      editable: true,
+      flex: 1,
+      description: t('CONSUMPTION.TOOLTIP_NOMBRE_TIPO_CONSUMO'),
+    },
+    {
+      field: 'fuente',
+      headerName: t('CONSUMPTION.LABEL_FUENTE'),
+      type: 'select',
+      description: t('CONSUMPTION.TOOLTIP_FUENTE'),
+    },
+    {
+      field: 'nombreFicheroCSV',
+      headerName: t('CONSUMPTION.LABEL_NOMBRE_FICHERO_CSV'),
+      type: 'text',
+      flex: 1,
+      description: t('CONSUMPTION.TOOLTIP_NOMBRE_FICHERO_CSV'),
+    },
+    {
+      field: 'cTotalAnual',
+      headerName: t('CONSUMPTION.LABEL_CTOTAL_ANUAL'),
+      type: 'number',
+      width: 150,
+      description: t('CONSUMPTION.TOOLTIP_CTOTAL_ANUAL'),
+      valueFormatter: (params) => formatoValor('cTotalAnual', params.value),
+    },
+    {
+      field: 'Actions',
+      headerName: '',
+      renderCell: (params) => {
+        return (
+          <Box>
+            <IconButton
+              variant="contained"
+              size="small"
+              tabIndex={params.hasFocus ? 0 : -1}
+              onClick={() => showGraphsTC(params.row)}
+            >
+              <AnalyticsIcon />
+            </IconButton>
+
+            <IconButton
+              variant="contained"
+              size="small"
+              tabIndex={params.hasFocus ? 0 : -1}
+              onClick={(e) => deleteTC(e, params.row)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Box>
+        )
+      },
+    },
+  ]
 
   const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en TCB que se esta manipulando
   const { tipoConsumo, setTipoConsumo } = useContext(TCBContext)
@@ -103,67 +161,6 @@ export default function ConsumptionSummary(inSummary) {
     setActivo(undefined)
   }
 
-  const columns = [
-    {
-      field: 'nombreTipoConsumo',
-      headerName: t('CONSUMPTION.LABEL_NOMBRE_TIPO_CONSUMO'),
-      editable: true,
-      flex: 1,
-      description: t('CONSUMPTION.TOOLTIP_NOMBRE_TIPO_CONSUMO'),
-    },
-    {
-      field: 'fuente',
-      headerName: t('CONSUMPTION.LABEL_FUENTE'),
-      type: 'select',
-      description: t('CONSUMPTION.TOOLTIP_FUENTE'),
-    },
-    {
-      field: 'nombreFicheroCSV',
-      headerName: t('CONSUMPTION.LABEL_NOMBRE_FICHERO_CSV'),
-      type: 'text',
-      flex: 1,
-      description: t('CONSUMPTION.TOOLTIP_NOMBRE_FICHERO_CSV'),
-    },
-    {
-      field: 'cTotalAnual',
-      headerName: t('CONSUMPTION.LABEL_CTOTAL_ANUAL'),
-      type: 'number',
-      width: 150,
-      description: t('CONSUMPTION.TOOLTIP_CTOTAL_ANUAL'),
-      valueFormatter: (params) => formatoValor('cTotalAnual', params.value),
-    },
-  ]
-
-  if (inSummary) {
-    columns.push({
-      field: 'Actions',
-      headerName: '',
-      renderCell: (params) => {
-        return (
-          <Box>
-            <IconButton
-              variant="contained"
-              size="small"
-              tabIndex={params.hasFocus ? 0 : -1}
-              onClick={() => showGraphsTC(params.row)}
-            >
-              <AnalyticsIcon />
-            </IconButton>
-
-            <IconButton
-              variant="contained"
-              size="small"
-              tabIndex={params.hasFocus ? 0 : -1}
-              onClick={(e) => deleteTC(e, params.row)}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Box>
-        )
-      },
-    })
-  }
-
   return (
     <>
       <Box>
@@ -198,14 +195,50 @@ export default function ConsumptionSummary(inSummary) {
           changeTC(params, event)
         }}
       />
-      <Typography variant="h6">
-        {t('CONSUMPTION.TOTAL_DEMMAND', {
-          consumoTotal: formatoValor(
-            'energia',
-            Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
-          ),
-        })}
-      </Typography>
+
+      <Box
+        sx={{
+          mt: '0.3rem',
+          display: 'flex',
+          flexWrap: 'wrap',
+          boxShadow: 2,
+          flex: 1,
+          border: 2,
+          textAlign: 'center',
+          borderColor: 'primary.light',
+          '& .MuiDataGrid-cell:hover': {
+            color: 'primary.main',
+          },
+          backgroundColor: 'rgba(220, 249, 233, 1)',
+        }}
+        justifyContent="center"
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            textAlign: 'center',
+          }}
+          textAlign={'center'}
+          dangerouslySetInnerHTML={{
+            __html: t(
+              t('CONSUMPTION.TOTAL_DEMMAND', {
+                consumoTotal: formatoValor(
+                  'energia',
+                  Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
+                ),
+              }),
+            ),
+          }}
+        />
+      </Box>
+
+      {t('CONSUMPTION.TOTAL_DEMMAND', {
+        consumoTotal: formatoValor(
+          'energia',
+          Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
+        ),
+      })}
+      <Typography variant="h6"></Typography>
 
       {activo && (
         <>

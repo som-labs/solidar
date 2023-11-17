@@ -32,7 +32,6 @@ const EconomicBalanceStep = () => {
     // El economico del consumo global*/
     TCB.economico = new Economico()
     setCashFlow(TCB.economico.cashFlow)
-    alert('useEffect economic')
   }, [])
 
   return (

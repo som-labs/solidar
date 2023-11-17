@@ -14,6 +14,7 @@ import ProfileDayConsumption from './ProfileDayConsumption'
 const MapaDiaHora = (tconsumo) => {
   const { t, i18n } = useTranslation()
   const [diaActivo, setdiaActivo] = useState()
+
   //REVISAR: ussando el state no funcion
   //const [consumo, setConsumo] = useState(tconsumo.children)
   const consumo = tconsumo.children
