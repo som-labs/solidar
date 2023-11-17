@@ -29,8 +29,7 @@ export default function GraphAlternatives() {
   let numeroMaximoPaneles = 0
   let configuracionOriginal = []
   for (let i = 0; i < TCB.BaseSolar.length; i++) {
-    numeroMaximoPaneles +=
-      TCB.BaseSolar[i].configuracion.columnas * TCB.BaseSolar[i].configuracion.filas
+    numeroMaximoPaneles += TCB.BaseSolar[i].columnas * TCB.BaseSolar[i].filas
     configuracionOriginal.push({ base: i, paneles: TCB.BaseSolar[i].instalacion.paneles })
   }
 

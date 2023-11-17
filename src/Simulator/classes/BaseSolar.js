@@ -31,50 +31,55 @@ class BaseSolar extends DiaHora {
         enumerable: true,
         set(valor) {}, //Esta aqui para evitar error al intentar set desde update
         get() {
-          return (
-            this.configuracion.columnas *
-            this.configuracion.filas *
-            TCB.parametros.potenciaPanelInicio
-          )
+          return this.columnas * this.filas * TCB.parametros.potenciaPanelInicio
         },
       },
       anchoReal: {
         enumerable: true,
         get() {
-          //El area corregida por la inclinacion del tejado
+          //El ancho corregido por la inclinacion del tejado
           return this.ancho / Math.cos((this.#inclinacion * Math.PI) / 180)
         },
       },
       areaReal: {
         enumerable: true,
-        set(valor) {},
+        set(valor) {}, //Esta aqui para evitar error al intentar set desde update
         get() {
           return this.anchoReal * this.cumbrera
         },
       },
+      panelesMaximo: {
+        enumerable: true,
+        set(valor) {}, //Esta aqui para evitar error al intentar set desde update
+        get() {
+          return this.filas * this.columnas
+        },
+      },
     })
 
-    console.log(area)
     this.idBaseSolar = area.idBaseSolar
     this.nombreBaseSolar = area.nombreBaseSolar
     this.lonlatBaseSolar = area.lonlatBaseSolar
 
-    //Dimensiones
-    this.roofType = area.roofType // configuracion en el tejado coplanar => tejado inclinado, si no es horizontal
+    //Dimensiones. El ancho es la dirección perpendicular a la cumbrera
+    this.roofType = area.roofType // configuracion en el tejado
+    //                                coplanar => tejado inclinado
+    //                                horizontal => paneles inclinados
+    //                                optimos => PVGIS determinará la inclinación y el acimut
     this.cumbrera = area.cumbrera //Longitud de la base en la parte alta cuando roofType === coplanar
     this.ancho = area.ancho //Longitud de la dimension transversal a la cumbrera medida en el mapa
 
-    this.configuracion = { filas: 0, columnas: 0 } //Configuracion de los paneles
+    //Configuracion de los paneles
+    this.filas = 0
+    this.columnas = 0
 
     //Angulos optimos de la configuracion
     this.angulosOptimos = area.angulosOptimos
     this.inclinacionOptima = area.inclinacionOptima
-    this.inAcimutOptimo = area.inAcimutOptimo
 
     //La inclinacion real se gestiona por el setter ya que su cambio implica cambio de areas
     //CUIDADO: roofType debe estar predefinido para que la configuración de paneles sea correcto.
     this.inclinacion = area.inclinacion
-
     this.inAcimut = area.inAcimut
 
     this.rendimientoCreado = false //true si ya tiene cargados los datos de PVGIS y se ha calculado su rendimiento
@@ -98,7 +103,6 @@ class BaseSolar extends DiaHora {
       this.rendimientoCreado = false
     }
     this.rendimiento = new Rendimiento(this)
-    this.rendimientoCreado = true
   }
 
   configuraInclinacion() {
@@ -110,8 +114,6 @@ class BaseSolar extends DiaHora {
     let vFilas
     let vGap
     // Caso coplanar
-    console.log('cumbrera ', this.cumbrera)
-    console.log('ancho: ', this.anchoReal)
     if (this.roofType === 'coplanar') {
       // Opcion largo panel paralelo a cumbrera
       hColumnas = Math.trunc(
@@ -151,11 +153,15 @@ class BaseSolar extends DiaHora {
       vFilas = Math.trunc((this.anchoReal - 2 * TCB.parametros.margen) / vGap)
     }
     // Elegimos la configuracion que nos permite mas paneles
-    this.configuracion =
-      hColumnas * hFilas > vColumnas * vFilas
-        ? { columnas: hColumnas, filas: hFilas, modo: 'horizontal' }
-        : { columnas: vColumnas, filas: vFilas, modo: 'vertical' }
-    console.log(this.configuracion)
+    if (hColumnas * hFilas > vColumnas * vFilas) {
+      this.columnas = hColumnas
+      this.filas = hFilas
+      this.modoInstalacion = 'Horizontal'
+    } else {
+      this.columnas = vColumnas
+      this.filas = vFilas
+      this.modoInstalacion = 'Vertical'
+    }
   }
 
   updateBase(newData) {
