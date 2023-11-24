@@ -98,13 +98,29 @@ BaseSolar:
   LABEL_lonlatBaseSolar: Long-Lat
   TOOLTIP_lonlatBaseSolar: Coordenadas geográficas de la base
 
+TipoConsumo:
+  idTipoConsumo: id
+  LABEL_nombreTipoConsumo: Nombre
+  TOOLTIP_nombreTipoConsumo: Identique el nombre de este consumo para futuras referencias
+  LABEL_fuente: Fuente
+  TOOLTIP_fuente: Seleccione el tipo de fuente desde donde se cargará el perfil de consumo
+  LABEL_nombreFicheroCSV: Nombre fichero fuente
+  TOOLTIP_nombreFicheroCSV: Nombre fichero fuente seleccionado
+  LABEL_consumoAnualREE: Consumo anual REE
+  TOOLTIP_consumoAnualREE: En caso de optar por el perfil tipo REE debe indicar el consumo anual estimado en kWh
+  LABEL_cTotalAnual: Consumo anual
+  TOOLTIP_cTotalAnual: Consumo eléctrico anual
+
+Consumo:
+  LABEL_cTotalAnual: Consumo anual
+  TOOLTIP_cTotalAnual: Consumo eléctrico anual
+
 CONSUMPTION:
   TITLE: Consumo
-
   DESCRIPTION: |
     A continuación necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.<br />
     El documento de consumo CSV nos permitirá conocer tus hábitos de consumo saber en qué tramos horarios y en qué meses del año sueles consumir más energía.<br />
-  TITLE_MAP_MONTH_HOUR: Gráfico de consumo anual para {{nombreTipoConsumo}}
+  TITLE_MAP_MONTH_HOUR: Gráfico de consumo anual para {{nombre}}
   DESC_MAP_MONTH_HOUR: El siguiente gráfico muestra la distribución de tu consumo eléctrico en el año por meses y horas. Puedes visualizar en que momentos y horas del año tu consumo es mayor o menor.
   TOTAL_DEMMAND: Demanda total de energia anual {{consumoTotal}}
 
@@ -124,25 +140,13 @@ CONSUMPTION:
   XAXIS_MAPA_CONSUMO_MONTH_DAY_HOUR: Hora
   YAXIS_MAPA_CONSUMO_MONTH_DAY_DAY: Dia
   LABEL_TITLE_PROFILE_DAY: 'Perfil diario del {{dia}} de {{mes}}'
-
-  LABEL_CTOTAL_ANUAL: Consumo anual
-  TOOLTIP_CTOTAL_ANUAL: Consumo eléctrico anual
   ERROR_DEFINIR_CONSUMO_REE: Debe definir un consumo anual base mayor que 0 para el perfil de REE
   ERROR_AL_MENOS_UN_TIPOCONSUMO: Debe definir al menos un tipo de consumo
   ERROR_FALTA_FICHERO_CONSUMO: Debe definir el fichero de consumos antes de continuar
   LABEL_BUTTON_NUEVO_TIPOCONSUMO: Nuevo tipo consumo
   TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Boton para crear un nuevo tipo de consumo
   TITLE_DIALOG_NEW_CONSUMPTION: Formulario para crear un nuevo tipo de consumo
-  LABEL_NOMBRE_TIPO_CONSUMO: Identificacion del tipo consumo
-  TOOLTIP_NOMBRE_TIPO_CONSUMO: Identique el nombre de este consumo para futuras referencias
-  LABEL_FUENTE: Tipo de fuente
-  TOOLTIP_FUENTE: Seleccione el tipo de fuente desde donde se cargará el perfil de consumo
-  LABEL_NOMBRE_FICHERO_CSV: Nombre fichero fuente
-  TOOLTIP_NOMBRE_FICHERO_CSV: Nombre fichero fuente seleccionado
-  LABEL_CONSUMO_ANUAL_REE: Consumo anual en kWh
-  TOOLTIP_CONSUMO_ANUAL_REE: En caso de optar por el perfil tipo REE debe indicar el consumo anual estimado en kWh
 
-  idTipoConsumo: id
   nombreTipoConsumoDuplicado_MSG: El nombre del tipo de consumo no puede estar duplicado
   tipoConsumoDefault_MSG: Defina tipo de fichero a utilizar y tarifa aplicable
   fuenteTipoConsumoErronea_MSG: Posible error definiendo DATADIS cuando debería ser CSV o viceversa
@@ -238,12 +242,6 @@ ECONOMIC_BALANCE:
     *¿Dónde encuentro la bonificación que me corresponde por municipio?*
 
     Rellena la tabla con el precio del IBI de la edificación y la bonificación que le corresponde por municipio.
-  LABEL_IBI_VALOR: IBI (€)
-  TOOLTIP_IBI_VALOR: Rellénese si el municipio donde se realice la instalación bonifica el impuesto de bienes inmuebles.\nLa Fundación Renovables facilita una lista de municipios con bonificaciones en el IBI y reducciones en ICIO.
-  LABEL_IBI_PORCIENTO: Bonificación %
-  TOOLTIP_IBI_PORCIENTO: El porcentaje con el ayuntamiento bonifica el importe del IBI
-  LABEL_IBI_DURACION: Duración bonificación (años)
-  TOOLTIP_IBI_DURACION: El número de años durante los que se puede aplicar la bonificación en el IBI
 
   EU_TITLE: Subvenciones EU Next Generation
   EU_DESCRIPTION: |
@@ -252,9 +250,6 @@ ECONOMIC_BALANCE:
     Escoge esta opción que represente tu instalación
 
     *¿Cuales son las condiciones para acceder a las subvenciones Next Gen?*
-  SUBVENCION_SIN: Sin subvención EU
-  SUBVENCION_INDIVIDUAL: Instalación individual
-  SUBVENCION_COMUNITARIA: Instalación colectiva
   TITLE_INSTALLATION_COST: Precio de la instalación
   DESCRIPTION_INSTALLATION_COST: |
     A pesar de procurar mantener los precios actualizados debe considerarse este importe como una orientación provisional sobre el proyecto que un instalador pueda formular (sobre todo si cuenta con más información sobre el emplazamiento final).<br />
@@ -306,6 +301,25 @@ ECONOMIC_BALANCE:
 SUMMARY:
   TITLE: RESUMEN
   DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
+  TITLE_AUTOPRODUCCION: Autoproducción
+  DESCRIPTION_AUTOPRODUCCION: ''
+  LABEL_AREAS_ESCOGIDAS: <strong>áreas escogidas</strong> de {{areasDisponibles}} áreas disponibles
+  LABEL_PANELES_SUGERIDOS: paneles solares sugeridos
+  LABEL_PRODUCCION_ANUAL: kwh <br />produccion anual
+
+  TITLE_CONSUMO: Consumo
+  DESCRIPTION_CONSUMO: ''
+  TITLE_ECONOMIC_BALANCE: Balance económico
+  DESCRIPTION_ECONOMIC_BALANCE: ''
+  LABEL_COSTE_INSTALACION: coste de la instalación
+  LABEL_AMORTIZACION: Años de amortización
+  LABEL_SUBVENCIONES: de ayudas y subvenciones
+  TITLE_ENERGY_BALANCE: Balance energético
+  DESCRIPTION_ENERGY_BALANCE: ''
+  LABEL_AUTOCONSUMO: del consumo será autoproducido
+  LABEL_AVISO: Aviso
+  LABEL_disclaimer1: "<p>Todas las estimaciones dadas se han realizado con la mayor precisión posible con la mejor intención y sin ningún compromiso.</p><p class='text-danger fw-bold'>Especial mención debemos hacer en cuanto al precio estimado de la instalación. Existe una alta volatilidad en este factor y no podemos garantizar que refleje la realidad del mercado en cada momento y territorio por lo que hemos incluido un campo que te permite corregir ese precio según las recomendaciones de tu instalador.</p>"
+  LABEL_disclaimer2: SOM Energia no tiene ningún interés económico ni directo ni indirecto en este estudio salvo contribuir a una transición energética justa con los usuarios eficiente descentralizada y limpia.
 
 BASIC:
   LABEL_OK: Guardar
@@ -351,6 +365,7 @@ CABECERA:
 -Modales:
   main_TAB_cerrar: Cerrar
   main_TAB_noMostrarMas: No volver a mostrar este mensaje
+
 PARAMETROS:
   main_TAB_parametros: Parametros de la aplicación
   parametros_LBL_descripcion: Configuración de parámetros de la aplicación. Los cambios en estos valores no implican un recálculo de todo el conjunto es necesario volver a la pestaña Localización y calcular.
@@ -375,6 +390,7 @@ PARAMETROS:
   ficheroTarifas_LBL: Fichero de tarifas local (ver ejemplo)
   ficheroTarifas_TT: El usuario puede personalizar un fichero con los precios que desee mientras cumpla con el formato dado en el ejemplo
   parametros_MSG_errorLecturaFicheroTarifas: Error leyendo fichero local de tarifas
+
 CONTACTO:
   main_TAB_contacto: Contacto
   contacto_LBL_descripcion: Envianos tus comentarios. Intentaremos atenderte lo antes posible
@@ -389,6 +405,7 @@ CONTACTO:
   contacto_LBL_telefono: Teléfono
   contacto_LBL_email: email
   contacto_LBL_nombre: Nombre
+
 BOTONES:
   botonExportar_TT: Salvar proyecto
   botonContacto_TT: Formulario de contacto
@@ -465,24 +482,21 @@ RENDIMIENTO:
   unitarioTotal_TT: Energia anual producida por cada kWp instalado
   ERROR_PVGIS_FETCH: Error ejecutando fecth en PVGIS.\n{{err}} \n {{url}}
 
-Modulo tipoConsumo:
-  botonBorraTipoConsumo_LBL:
-  botonMuestraMapaTipoConsumo_LBL:
-  botonMuestraTarifa_LBL:
-  botonSeleccionFichero_LBL:
-  botonBorraTipoConsumo_TT: Borra el perfil de consumo seleccionado
-  botonMuestraMapaTipoConsumo_TT: Muestra gráfico mapa de consumo de este perfil
-  botonMuestraTarifa_TT: Muestra precios de tarifa
-  botonSeleccionFichero_TT: Seleccione el fichero de consumo
+Balance:
+  LABEL_excedenteAnual: Excedente
 
-PRODUCCION:
+Produccion:
+  LABEL_autoconsumoMedioAnual: Autoconsumo medio anual
+  TOOLTIP_autoconsumoMedioAnual: Porcentaje medio de la energía fotovoltaica que se consume al año (no siempre se consume toda).
+
   correccionPrecioInstalacion_LBL: Corrección precio en %
   correccionPrecioInstalacion_TT: Si bien procuramos utilizar precios actualizados el usuario puede alterar la estimación dada con el valor que aquí defina.\nIndique el pocentaje que desea aumentar (valor positivo) o disminuir (valor negativo) el precio de la instalación según sus condiciones particulares
   precioInstalacionCorregido_LBL: Precio de la instalación corregido
   precioInstalacionCorregido_TT: Precio de la instalación corregido por el factor de corrección indicado
+
   pMaximoAnual_LBL: Producción diaria máxima
-  pTotalAnual_LBL: Producción anual
-  pTotalAnual_TT: Producción fotovoltaica media anual estimada
+  LABEL_pTotalAnual: Producción anual
+  TOOLTIP_pTotalAnual: Producción fotovoltaica media anual estimada
 
 RESULTADOS:
   ConsumoDiurno_LBL: Consumo realizado en horas solares
@@ -524,8 +538,7 @@ RESULTADOS:
   Consumo%Produccion_TT: Porcentaje del consumo respecto a la producción. Para poder optar a la subvención de los Fondos Next Generation este porcentaje ha de ser siempre superior al 80%
   Produccion%Consumo_LBL: Porcentaje de la producción respecto del consumo
   Produccion%Consumo_TT: Porcentaje de la energía fotovoltaica producida respecto a la consumida
-  autoconsumoMedioAnual_LBL: Autoconsumo medio anual
-  autoconsumoMedioAnual_TT: Porcentaje medio de la energía fotovoltaica que se consume al año (no siempre se consume toda).
+
   autosuficienciaMediaAnual_LBL: Autosuficiencia media anual
   autosuficienciaMediaAnual_TT: Porcentaje medio de la energía consumida proveniente de los paneles solares. Es una medida de independencia respecto a la red eléctrica
   autosuficienciaMaxima_LBL: Autosuficiencia máxima
@@ -542,32 +555,38 @@ RESULTADOS:
 
   resultados_MSG_excesoPotencia: Hay un exceso de potencia en esta base en función del area dispoble
   resultados_LBL_basePropiedades: Base {{id}}
-ECONOMICO:
+
+Economico:
   economico_MSG_ayudaBloqueSubvencionesHdr: Ayuda subvenciones y bonificaciones
   economico_MSG_ayudaBloqueSubvenciones: En este bloque se definen las posibles ayudas en forma de subvención o bonificación
-
   economico_MSG_disclaimerAhorro: Las estimaciones de ahorros producidos por autoconsumo e ingresos por energia excedente se han calculado asumiendo que tanto el precio de la energia adquirida como el de los excedentes se mantienen constantes durante los años de cálculo.
   economico_MSG_disclaimerAhorroHdr: Aviso Tabla de amotización
   economico_MSG_disclaimerPrecioInstalacion: En la estimación del coste de la instalación está repercutida la mano de obra y materiales. No están incluidos ni las tasas e impuestos municipales (ICIO) ni la obra civil y maquinaria de elevación (si fueran necesarias) ni las modificaciones que la distribuidora o la Administración exigiera tras comprobar la instalación realizada
   economico_MSG_disclaimerPrecioInstalacionHdr: Aviso sobre el coste de instalación
 
-FORMULARIO:
-  gastoSinPlacasAnual_LBL: Gasto anual sin placas
-  gastoSinPlacasAnual_TT: El gasto anual en electricidad sin paneles solares. Solo se tiene en cuenta la parte variable de la factura
-  gastoConPlacasAnual_LBL: Gasto anual con placas
-  gastoConPlacasAnual_TT: El gasto anual estimado en electricidad con paneles solares. Sólo se tiene en cuenta la parte variable de la factura
-  ahorroAnual_LBL: Ahorro anual
-  ahorroAnual_TT: Diferencia gasto anual en electricidad con y sin paneles solares
-  ahorroAnualPorciento_LBL: Ahorro anual / gasto original
-  ahorroAnualPorciento_TT: Ahorro anual en relación al gasto original
-  noCompensadoAnual_LBL: Coste energía no compensada
-  noCompensadoAnual_TT: El importe de la energía excedentaria que la comercializadora no compensará.\nLa ley (RD 244/2019) no permite que al consumidor se le abone ningún importe cuando el balance entre el coste de la energía sobrante y el de lo consumido de cualquier día resultara favorable al consumidor.\nSuele suceder cuando se instalan más paneles de los aconsejables cuando se consume muy por debajo de lo habitual (en vacaciones) o cuando el precio de compensación de la comercializadora fuera alto (muy improbable).
+  LABEL_gastoSinPlacasAnual: Gasto anual sin placas
+  TOOLTIP_gastoSinPlacasAnual: El gasto anual en electricidad sin paneles solares. Solo se tiene en cuenta la parte variable de la factura
+  LABEL_gastoConPlacasAnual: Gasto anual con placas
+  TOOLTIP_gastoConPlacasAnual: El gasto anual estimado en electricidad con paneles solares. Sólo se tiene en cuenta la parte variable de la factura
+  LABEL_ahorroAnualPorciento: Ahorro anual / gasto original
+  TOOLTIP_ahorroAnualPorciento: Ahorro anual en relación al gasto original
+  LABEL_ahorroAnual: Ahorro anual
+  TOOLTIP_ahorroAnual_TT: Diferencia gasto anual en electricidad con y sin paneles solares
+  LABEL_noCompensadoAnual: Coste energía no compensada
+  TOOLTIP_noCompensadoAnual: El importe de la energía excedentaria que la comercializadora no compensará.\nLa ley (RD 244/2019) no permite que al consumidor se le abone ningún importe cuando el balance entre el coste de la energía sobrante y el de lo consumido de cualquier día resultara favorable al consumidor.\nSuele suceder cuando se instalan más paneles de los aconsejables cuando se consume muy por debajo de lo habitual (en vacaciones) o cuando el precio de compensación de la comercializadora fuera alto (muy improbable).
+  LABEL_valorSubvencionEU: Valor de la subvención EU
+  LABEL_tipoSubvencionEU: Tipo subvención EU
+  TOOLTIP_tipoSubvencionEU: Si se fueran a solicitar la subvención de los fondos Next Generation indíquese si la instalación fuera colectiva (una comunidad de propietarios por ejemplo) o individual. La subvención no se concederá si la energía generada al año fuera superior al 80% de la energía consumida anualmente
+  LABEL_sinSubvencion: Sin subvención
+  LABEL_subvencionIndividual: Instalación individual
+  LABEL_subvencionComunitaria: Instalación colectiva
+  LABEL_valorSubvencionIBI: IBI (€)
+  TOOLTIP_valorSubvencionIBI: Rellénese si el municipio donde se realice la instalación bonifica el impuesto de bienes inmuebles.\nLa Fundación Renovables facilita una lista de municipios con bonificaciones en el IBI y reducciones en ICIO.
+  LABEL_porcientoSubvencionIBI: Bonificación %
+  TOOLTIP_porcientoSubvencionIBI: El porcentaje con el ayuntamiento bonifica el importe del IBI
+  LABEL_tiempoSubvencionIBI: Duración bonificación (años)
+  TOOLTIP_tiempoSubvencionIBI: El número de años durante los que se puede aplicar la bonificación en el IBI
 
-  valorSubvencionEU_LBL: Valor de la subvención EU
-  tipoSubvencionEU_LBL: Tipo subvención EU
-  tipoSubvencionEU_TT: Si se fueran a solicitar la subvención de los fondos Next Generation indíquese si la instalación fuera colectiva (una comunidad de propietarios por ejemplo) o individual. La subvención no se concederá si la energía generada al año fuera superior al 80% de la energía consumida anualmente
-
-  precios_LBL_pendienteCalculo: Pendiente
 graficos:
   graficos_LBL_descripcion: Área de gráficos disponibles
   graficos_LBL_balanceConsumo: Balance mensual de consumo con {{potencia}} instalados
@@ -615,9 +634,9 @@ INFORME:
   informe_LBL_numeroRegistros: Registros
   informe_LBL_desde: Desde
   informe_LBL_hasta: Hasta
-  informe_LBL_disclaimer1: "<p>Todas las estimaciones dadas se han realizado con la mayor precisión posible con la mejor intención y sin ningún compromiso.</p><p class='text-danger fw-bold'>Especial mención debemos hacer en cuanto al precio estimado de la instalación. Existe una alta volatilidad en este factor y no podemos garantizar que refleje la realidad del mercado en cada momento y territorio por lo que hemos incluido un campo que te permite corregir ese precio según las recomendaciones de tu instalador.</p>"
+
   informe_LBL_disclaimer1pdf: 'Todas las estimaciones dadas se han realizado con la mayor precisión posible con la mejor intención y sin ningún compromiso. Especial mención debemos hacer en cuanto al precio estimado de la instalación. Existe una alta volatilidad en este factor y no podemos garantizar que refleje la realidad del mercado en cada momento y territorio por lo que hemos incluido un campo que te permite corregir ese precio según las recomendaciones de tu instalador.Som Energia no tiene ningún interés económico ni directo ni indirecto en este estudio salvo contribuir a una transición energética justa con los usuarios eficiente descentralizada y limpia.'
-  informe_LBL_disclaimer2: SOM Energia no tiene ningún interés económico ni directo ni indirecto en este estudio salvo contribuir a una transición energética justa con los usuarios eficiente descentralizada y limpia.
+
   informe_LBL_formatoPDF: Genera en formato PDF
   informe_LBL_balanceEnergia: Balance energía
   informe_LBL_localizacion: Localización

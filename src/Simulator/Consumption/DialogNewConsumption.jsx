@@ -96,6 +96,7 @@ export default function DialogNewConsumption({ data, onClose }) {
             if (respuesta) {
               nuevoTipoConsumo.cTotalAnual = TCB.TipoConsumo[idxTC - 1].cTotalAnual
               setTipoConsumo([...tipoConsumo, nuevoTipoConsumo])
+              console.log(nuevoTipoConsumo)
             } else {
               console.log('cargaCSV devolvio error ', respuesta)
               TCB.TipoConsumo.splice(idxTC - 1, 1)
@@ -111,7 +112,11 @@ export default function DialogNewConsumption({ data, onClose }) {
       }
     }
     //If a new TipoConsumo is defined show graphs
-    onClose(true, TCB.TipoConsumo[idxTC - 1])
+    //REVISAR: en 117 la fecha es un obj y en 118 un string?
+    console.log(nuevoTipoConsumo)
+    console.log(TCB.TipoConsumo[idxTC - 1])
+    console.log(typeof TCB.TipoConsumo[idxTC - 1].idxTable[0].fecha)
+    onClose(true, nuevoTipoConsumo)
   }
 
   async function cargaCSV(objTipoConsumo, ficheroCSV, fuente) {
@@ -173,7 +178,7 @@ export default function DialogNewConsumption({ data, onClose }) {
               required
               type="text"
               onChange={handleChange}
-              label={t('CONSUMPTION.LABEL_NOMBRE_TIPO_CONSUMO')}
+              label={t('TipoConsumo.LABEL_nombreTipoConsumo')}
               name="nombreTipoConsumo"
               value={formData.nombreTipoConsumo}
             />
@@ -185,7 +190,7 @@ export default function DialogNewConsumption({ data, onClose }) {
               select
               id="tipo-simple-select"
               onChange={handleChange}
-              label={t('CONSUMPTION.LABEL_FUENTE')}
+              label={t('TipoConsumo.LABEL_fuente')}
               name="fuente"
               defaultValue="CSV"
             >
@@ -201,7 +206,7 @@ export default function DialogNewConsumption({ data, onClose }) {
                 id="ficheroCSV"
                 inputProps={{ accept: '.csv' }}
                 onChange={handleFile}
-                label={t('CONSUMPTION.LABEL_NOMBRE_FICHERO_CSV')}
+                label={t('TipoConsumo.LABEL_nombreFicheroCSV')}
                 name="ficheroCSV"
                 value={formData.ficheroCSV}
               />
@@ -212,7 +217,7 @@ export default function DialogNewConsumption({ data, onClose }) {
                 id="consumoAnualREE"
                 type="text"
                 onChange={handleChange}
-                label={t('CONSUMPTION.LABEL_CONSUMO_ANUAL_REE')}
+                label={t('TipoConsumo.LABEL_consumoAnualREE')}
                 name="consumoAnualREE"
                 value={formData.consumoAnualREE}
               />

@@ -241,7 +241,6 @@ class DiaHora {
           this.horaFin = hora
           this.numeroRegistros = lineas.length
           this.datosCargados = true
-
           this.sintesis()
           resolve()
         } catch (error) {

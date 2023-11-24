@@ -70,7 +70,25 @@ BaseSolar:
   LABEL_lonlatBaseSolar: Long-Lat
   TOOLTIP_lonlatBaseSolar: Coordenadas geográficas de la base
 
+TipoConsumo:
+  idTipoConsumo: Id
+  LABEL_nombreTipoConsumo: Identificación do tipo de consumo
+  TOOLTIP_nombreTipoConsumo: Identiza o nome deste consumo para futuras referencias
+  LABEL_fuente: Tipo Fonte
+  TOOLTIP_fuente: Seleccione o tipo de fonte desde o que se cargará o perfil de consumo
+  LABEL_nombreFicheroCSV: Ficheiro de consumo de horas (solo CSV)
+  TOOLTIP_nombreFicheroCSV: Identifique o ficheiro de consumo descargado do seu distribuidor
+  LABEL_consumoAnualREE: Consumo anual en kWh
+  TOOLTIP_consumoAnualREE: En caso de optar polo perfil do tipo REE o consumo anual estimado debe indicar
+  LABEL_cTotalAnual: Consumo anual
+  TOOLTIP_cTotalAnual: Consumo anual de electricidade
+
+Consumo:
+  LABEL_cTotalAnual: Consumo anual
+  TOOLTIP_cTotalAnual: Consumo anual de electricidade
+
 CONSUMPTION:
+  LABEL: Consumo
   TITLE: Consumo
 
   LABEL_MAPA_CONSUMO_MES_HORA: 'Máximo valor: {{maxConsumoMes}} kWh'
@@ -84,19 +102,9 @@ CONSUMPTION:
   ERROR_FALTA_FICHERO_CONSUMO: Debes definir o ficheiro de consumo antes de continuar
   LABEL_BUTTON_NUEVO_TIPOCONSUMO: Nuevo tipo consumo
   TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Boton para crear un nuevo tipo de consumo
-  LABEL_CTOTAL_ANUAL: Consumo anual
-  TOOLTIP_CTOTAL_ANUAL: Consumo anual de electricidade
-  TITLE_DIALOG_NEW_CONSUMPTION: (T)Formulario para crear un nuevo tipo do consumo
-  LABEL_NOMBRE_TIPO_CONSUMO: Identificación do tipo de consumo
-  TOOLTIP_NOMBRE_TIPO_CONSUMO: Identiza o nome deste consumo para futuras referencias
-  LABEL_FUENTE: Tipo Fonte
-  TOOLTIP_FUENTE: Seleccione o tipo de fonte desde o que se cargará o perfil de consumo
-  LABEL_NOMBRE_FICHERO_CSV: Ficheiro de consumo de horas (solo CSV)
-  TOOLTIP_NOMBRE_FICHERO_CSV: Identifique o ficheiro de consumo descargado do seu distribuidor
-  LABEL_CONSUMO_ANUAL_REE: Consumo anual en kWh
-  TOOLTIP_CONSUMO_ANUAL_REE: En caso de optar polo perfil do tipo REE o consumo anual estimado debe indicar
 
-idTipoConsumo: Id
+  TITLE_DIALOG_NEW_CONSUMPTION: (T)Formulario para crear un nuevo tipo do consumo
+
 nombreTipoConsumoDuplicado_MSG: El nombre del tipo de consumo no puede estar duplicado
 tipoConsumoDefault_MSG: Defina tipo de fichero a utilizar y tarifa aplicable
 fuenteTipoConsumoErronea_MSG: Posible error definiendo DATADIS cuando debería ser CSV o viceversa
@@ -119,17 +127,6 @@ consumo_MSG_errorCabeceras: Cabeceira de erro de formato CSV {{cabeceras}}
 consumo_MSG_resumen: '{{registros}} Rexistros de consumo cargados desde {{desde}} ata {{hasta}}'
 consumo_MSG_numeroLimitadoRegistros: 'Aviso:  só existen {{registros}} rexistros que non completan un ano de estatísticas'
 
-consumo_TT_descripcionTarifaP1: Tarifa P1 o punta (a máis cara en 2.0TD)
-consumo_TT_descripcionTarifaP2: Tarifa ou val P2 (o intermedio en 2.0TD)
-consumo_TT_descripcionTarifaP3: Tarifa P3 ou llano (o máis barato en 2.0TD)
-consumo_TT_descripcionTarifaP4: Tarifa P4
-consumo_TT_descripcionTarifaP5: Tarifa P5
-consumo_TT_descripcionTarifaP6: Tarifa P6
-consumo_TT_valorTarifa: Indique o prezo en euros sen IVE desta taxa
-consumo_LBL_compensa: Compensa
-consumo_TT_compensa: Taxa de compensación
-consumo_TT_valorCompensa: Indique o prezo en euros sen IVE co que o comerciante paga a electricidade non consumida
-
 TARIFA:
   territorio_LBL: Territorio
   LABEL_NOMBRE_TARIFA: Nom taxa
@@ -141,6 +138,17 @@ TARIFA:
   LABEL_P4: Tarifa P4
   LABEL_P5: Tarifa P5
   LABEL_P6: Tarifa P6
+
+  consumo_TT_descripcionTarifaP1: Tarifa P1 o punta (a máis cara en 2.0TD)
+  consumo_TT_descripcionTarifaP2: Tarifa ou val P2 (o intermedio en 2.0TD)
+  consumo_TT_descripcionTarifaP3: Tarifa P3 ou llano (o máis barato en 2.0TD)
+  consumo_TT_descripcionTarifaP4: Tarifa P4
+  consumo_TT_descripcionTarifaP5: Tarifa P5
+  consumo_TT_descripcionTarifaP6: Tarifa P6
+  consumo_TT_valorTarifa: Indique o prezo en euros sen IVE desta taxa
+  consumo_LBL_compensa: Compensa
+  consumo_TT_compensa: Taxa de compensación
+  consumo_TT_valorCompensa: Indique o prezo en euros sen IVE co que o comerciante paga a electricidade non consumida
 
 ENERGY_BALANCE:
   TITLE: Balance de Energía
@@ -159,13 +167,6 @@ ECONOMIC_BALANCE:
   TITLE: Balance Económico
   DESCRIPTION: |
     En esta pantalla conocerás cuánto tendrás que invertir en la instalación (teniendo en cuenta las subvenciones) cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión.
-
-  LABEL_IBI_VALOR: IBI (€)
-  TOOLTIP_IBI_VALOR: Cubrir se o concello onde se realiza a instalación subvenciona o imposto de bens inmobles.\nFundación Renovables facilita unha relación dos concellos con bonificacións e reducións do IBI no ICIO.
-  LABEL_IBI_PORCIENTO: '% de subvención'
-  TOOLTIP_IBI_PORCIENTO: A porcentaxe co concello bonos o importe do IBI
-  LABEL_IBI_DURACION: Duración (anos)
-  TOOLTIP_IBI_DURACION: O número de anos durante os cales pódese aplicar o bono no IBI
 
   LABEL_ANO: Año
   TOOLTIP_ANO: Periodo de amortización
@@ -365,7 +366,7 @@ RENDIMIENTO:
   unitarioTotal_TT: Enerxía anual producida por kWp instalada
   ERROR_PVGIS_FETCH: Erro ao executar fecth en PVGIS.\n{{err}} \n {{url}}
 
-PRODUCCION:
+Produccion:
   precioInstalacion_LBL: Custo estimado de instalación
   precioInstalacion_TT: A pesar de intentar manter os prezos actualizados esta cantidade debe considerarse como unha orientación provisional no proxecto que un instalador pode formular (especialmente se ten máis información sobre o sitio final). Se é necesario) substitución de illamento ou tellas antigas na cuberta Levantar significa se é necesario modificacións que o distribuidor ou administración poida requirir a instalación e algúns impostos e taxas que o Concello podería cobrar (ICIO ou licenza de licenza de obras)
   correccionPrecioInstalacion_LBL: Corrección de prezos en %
@@ -373,8 +374,8 @@ PRODUCCION:
   precioInstalacionCorregido_LBL: Prezo da instalación corrixida xx
   precioInstalacionCorregido_TT: Prezo de instalación corrixido polo factor de corrección indicado
   pMaximoAnual_LBL: Produción máxima anual
-  pTotalAnual_LBL: Produción anual
-  pTotalAnual_TT: Enerxía anual producida
+  LABEL_pTotalAnual: Produción anual
+  TOOLTIP_pTotalAnual: Enerxía anual producida
 RESULTADOS:
   botonInfoBase_LBL:
   botonInfoBase_TT: Información detallada de la base seleccionada
@@ -424,30 +425,31 @@ RESULTADOS:
   resultados_MSG_excesoPotencia: Hai un exceso de potencia nesta base baseándose na área de Apoble
   resultados_LBL_basePropiedades: 'Base:  {{id}}'
 
-ECONOMICO:
+Economico:
+  LABEL_gastoSinPlacasAnual: Gasto anual sen paneis
+  TOOLTIP_gastoSinPlacasAnual: Gasto de electricidade anual sen paneis solares. Só se ten en conta a parte variable da factura
+  LABEL_gastoConPlacasAnual: Gasto anual con paneis
+  TOOLTIP_gastoConPlacasAnual: O gasto anual estimado en electricidade con paneis solares. Só se ten en conta a parte variable da factura
+  LABEL_ahorroAnualPorciento: Aforro anual / gasto orixinal
+  TOOLTIP_ahorroAnualPorciento: Aforro anual en relación co gasto orixinal
+  LABEL_ahorroAnual: Aforro anual
+  TOOLTIP_ahorroAnual: Diferenza anual de gasto en electricidade con e sen paneis solares
+  LABEL_noCompensadoAnual: Custo enerxía non compensada
+  TOOLTIP_noCompensadoAnual: A cantidade de enerxía excedente que o comerciante non compensará. Será favorable para o consumidor.\nN normalmente ocorre cando se instalan máis paneis que os recomendables cando se consumen moi por debaixo do habitual (de vacacións) ou cando o prezo de compensación de O comerciante era alto (moi improbable).
+  LABEL_valorSubvencionEU: Valor de la subvención EU
+  LABEL_tipoSubvencionEU: Subvención da UE
+  TOOLTIP_tipoSubvencionEU: No caso de solicitar a subvención de financiamento Next Generation indicar se a instalación foi colectiva (unha comunidade de propietarios por exemplo) ou individual. Non se concederá a subvención se a enerxía xerada ao ano supera o 80% da enerxía consumida anualmente.
+  LABEL_sinSubvencion: Sen subvención
+  LABEL_subvencionIndividual: Instalación individual
+  LABEL_subvencionComunitaria: Instalación colectiva
+  LABEL_valorSubvencionIBI: IBI (€)
+  TOOLTIP_valorSubvencionIBI: Cubrir se o concello onde se realiza a instalación subvenciona o imposto de bens inmobles.\nFundación Renovables facilita unha relación dos concellos con bonificacións e reducións do IBI no ICIO.
+  LABEL_porcientoSubvencionIBI: '% de subvención'
+  TOOLTIP_porcientoSubvencionIBI: A porcentaxe co concello bonos o importe do IBI
+  LABEL_tiempoSubvencionIBI: Duración (anos)
+  TOOLTIP_tiempoSubvencionIBI: O número de anos durante os cales pódese aplicar o bono no IBI
 
-FORMULARIO:
-  gastoSinPlacasAnual_LBL: Gasto anual sen paneis
-  gastoSinPlacasAnual_TT: Gasto de electricidade anual sen paneis solares. Só se ten en conta a parte variable da factura
-  gastoConPlacasAnual_LBL: Gasto anual con paneis
-  gastoConPlacasAnual_TT: O gasto anual estimado en electricidade con paneis solares. Só se ten en conta a parte variable da factura
-  ahorroAnual_LBL: Aforro anual
-  ahorroAnual_TT: Diferenza anual de gasto en electricidade con e sen paneis solares
-  ahorroAnualPorciento_LBL: Aforro anual / gasto orixinal
-  ahorroAnualPorciento_TT: Aforro anual en relación co gasto orixinal
-  noCompensadoAnual_LBL: Custo enerxético non compensado
-  noCompensadoAnual_TT: A cantidade de enerxía excedente que o comerciante non compensará. Será favorable para o consumidor.\nN normalmente ocorre cando se instalan máis paneis que os recomendables cando se consumen moi por debaixo do habitual (de vacacións) ou cando o prezo de compensación de O comerciante era alto (moi improbable).
-
-  valorSubvencionEU_LBL: Valor de la subvención EU
-  tipoSubvencionEU_LBL: Subvención da UE
-  tipoSubvencionEU_TT: No caso de solicitar a subvención de financiamento Next Generation indicar se a instalación foi colectiva (unha comunidade de propietarios por exemplo) ou individual. Non se concederá a subvención se a enerxía xerada ao ano supera o 80% da enerxía consumida anualmente.
-  sinSubvencion_LBL: Sen subvención UE
-  subvencionIndividual_LBL: Instalación individual
-  subvencionComunitaria_LBL: Instalación colectiva
-
-  precios_LBL_pendienteCalculo: Pendente
-
-  graficos: graficos
+graficos:
   graficos_LBL_descripcion: Área de gráficos dispoñibles
   graficos_LBL_balanceConsumo: Balance mensual de consumo con {{potencia}} instalados
   graficos_LBL_balanceProduccion: Balance mensual de produción con {{potencia}} instalados

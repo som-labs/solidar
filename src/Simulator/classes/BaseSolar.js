@@ -79,7 +79,9 @@ class BaseSolar extends DiaHora {
 
     //La inclinacion real se gestiona por el setter ya que su cambio implica cambio de areas
     //CUIDADO: roofType debe estar predefinido para que la configuración de paneles sea correcto.
-    this.inclinacion = area.inclinacion
+    this.#inclinacion = area.inclinacion
+    this.configuraInclinacion()
+
     this.inAcimut = area.inAcimut
 
     this.rendimientoCreado = false //true si ya tiene cargados los datos de PVGIS y se ha calculado su rendimiento
@@ -106,6 +108,7 @@ class BaseSolar extends DiaHora {
   }
 
   configuraInclinacion() {
+    console.log(this)
     let hColumnas
     let hFilas
     let hGap
@@ -130,28 +133,34 @@ class BaseSolar extends DiaHora {
         (this.anchoReal - 2 * TCB.parametros.margen) / TCB.parametros.largoPanel,
       )
     } else {
-      //Caso tejado horizonatl
+      //Caso tejado horizontal
       const latitud = parseFloat(this.lonlatBaseSolar.split(',')[1])
       // Opcion largo panel paralelo a la cumbrera
       hGap =
-        TCB.parametros.anchoPanel * Math.cos((this.inclinacion * Math.PI) / 180) +
-        (TCB.parametros.anchoPanel * Math.sin((this.inclinacion * Math.PI) / 180)) /
+        TCB.parametros.anchoPanel * Math.cos((this.#inclinacion * Math.PI) / 180) +
+        (TCB.parametros.anchoPanel * Math.sin((this.#inclinacion * Math.PI) / 180)) /
           Math.tan(((61 - latitud) * Math.PI) / 180)
       hColumnas = Math.trunc(
         (this.cumbrera - 2 * TCB.parametros.margen) / TCB.parametros.largoPanel,
       )
       hFilas = Math.trunc((this.anchoReal - 2 * TCB.parametros.margen) / hGap)
+      //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
+      hFilas = hFilas === 0 ? 1 : hFilas
 
+      console.log(hGap, hColumnas, hFilas)
       // Opcion largo panel perpendicular a cumpbrera
       vGap =
-        TCB.parametros.largoPanel * Math.cos((this.inclinacion * Math.PI) / 180) +
-        (TCB.parametros.largoPanel * Math.sin((this.inclinacion * Math.PI) / 180)) /
+        TCB.parametros.largoPanel * Math.cos((this.#inclinacion * Math.PI) / 180) +
+        (TCB.parametros.largoPanel * Math.sin((this.#inclinacion * Math.PI) / 180)) /
           Math.tan(((61 - latitud) * Math.PI) / 180)
       vColumnas = Math.trunc(
         (this.cumbrera - 2 * TCB.parametros.margen) / TCB.parametros.anchoPanel,
       )
       vFilas = Math.trunc((this.anchoReal - 2 * TCB.parametros.margen) / vGap)
+      //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
+      vFilas = vFilas === 0 ? 1 : vFilas
     }
+    console.log(vGap, vColumnas, vFilas)
     // Elegimos la configuracion que nos permite mas paneles
     if (hColumnas * hFilas > vColumnas * vFilas) {
       this.columnas = hColumnas
@@ -162,6 +171,7 @@ class BaseSolar extends DiaHora {
       this.filas = vFilas
       this.modoInstalacion = 'Vertical'
     }
+    console.log(this.modoInstalacion)
   }
 
   updateBase(newData) {
