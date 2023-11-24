@@ -47,7 +47,8 @@ const ProfileDayConsumption = (data) => {
     },
   }
 
-  var layout = {
+  const layout = {
+    xaxis: { title: t('GRAPHICS.LABEL_HORA') },
     margin: {
       l: 0,
       r: 0,
@@ -56,28 +57,25 @@ const ProfileDayConsumption = (data) => {
     },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
-    xaxis: { title: t('GRAPHICS.LABEL_HORA'), dtick: 4 },
     yaxis: {
       title: 'kWh',
-      showline: true,
-      zeroline: true,
-      zerolinecolor: '#969696',
+      // showline: false,
+      // zeroline: false,
+      // zerolinecolor: 'black',
       gridcolor: 'black',
-      gridwidth: 2,
+      gridwidth: 1,
     },
   }
 
   return (
     <>
-      <Container>
-        <Typography variant="h5">
-          {t('CONSUMPTION.LABEL_TITLE_PROFILE_DAY', {
-            dia: dia,
-            mes: mes,
-          })}
-        </Typography>
-        <Plot data={[trace1, trace2]} layout={{ layout }} />
-      </Container>
+      <Typography variant="h5" align="center">
+        {t('CONSUMPTION.LABEL_TITLE_PROFILE_DAY', {
+          dia: dia,
+          mes: mes,
+        })}
+      </Typography>
+      <Plot data={[trace1, trace2]} layout={layout} />
     </>
   )
 }

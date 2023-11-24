@@ -68,32 +68,34 @@ BaseSolar:
   LABEL_lonlatBaseSolar: Long-Lat
   TOOLTIP_lonlatBaseSolar: Coordenadas geográficas de la base
 
+TipoConsumo:
+  idTipoConsumo: Id
+  LABEL_nombreTipoConsumo: Identificació del tipus consum
+  TOOLTIP_nombreTipoConsumo: Identifica el nom d’aquest consum per a referències futures
+  LABEL_fuente: Font tipus
+  TOOLTIP_fuente: Seleccioneu el tipus de font des d'on es carregarà el perfil de consum
+  LABEL_nombreFicheroCSV: Fitxer consum horari (només CSV)
+  TOOLTIP_nombreFicheroCSV: Identifica el fitxer de consum horari descarregat des de la teva distribuïdora
+  LABEL_consumoAnualREE: Consum anual en kWh
+  TOOLTIP_consumoAnualREE: En cas d’optar pel perfil de tipus REE cal indicar el consum estimat anual en kWh
+  LABEL_cTotalAnual: Consum anual
+  TOOLTIP_cTotalAnual: Consum elèctric anual
+
+Consumo:
+  LABEL_cTotalAnual: Consum anual
+  TOOLTIP_cTotalAnual: Consum elèctric anual
+
 CONSUMPTION:
   TITLE: Consum
   LABEL_MAPA_CONSUMO_MES_HORA: 'Màxim valor: {{maxConsumoMes}} kWh'
   TITLE_MAPA_CONSUMO_MES_HORA: Consumeixo mig horari per mes relatius al màxim,
   LABEL_TITLE_MAP_MONTH_DAY: Mapa de consum horari en kWh
-
   ERROR_DEFINIR_CONSUMO_REE: S'ha de definir un consum de base anual superior a 0 per al perfil REE
   ERROR_AL_MENOS_UN_TIPOCONSUMO: Cal definir almenys un tipus de consum
   ERROR_FALTA_FICHERO_CONSUMO: Cal definir el fitxer de consum abans de continuar
   LABEL_BUTTON_NUEVO_TIPOCONSUMO: Nou tipus consum
   TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Botó per crear un nou tipus de consum
-
-  LABEL_CTOTAL_ANUAL: Consum anual
-  TOOLTIP_CTOTAL_ANUAL: Consum elèctric anual
-
   TITLE_DIALOG_NEW_CONSUMPTION: (T)Formulario para crear un nuevo tipo do consumo
-  idTipoConsumo: Id
-  LABEL_NOMBRE_TIPO_CONSUMO: Identificació del tipus consum
-  TOOLTIP_NOMBRE_TIPO_CONSUMO: Identifica el nom d’aquest consum per a referències futures
-  LABEL_FUENTE: Font tipus
-  TOOLTIP_FUENTE: Seleccioneu el tipus de font des d'on es carregarà el perfil de consum
-  LABEL_NOMBRE_FICHERO_CSV: Fitxer consum horari (només CSV)
-  TOOLTIP_NOMBRE_FICHERO_CSV: Identifica el fitxer de consum horari descarregat des de la teva distribuïdora
-  LABEL_CONSUMO_ANUAL_REE: Consum anual en kWh
-  TOOLTIP_CONSUMO_ANUAL_REE: En cas d’optar pel perfil de tipus REE cal indicar el consum estimat anual en kWh
-
   nombreTipoConsumoDuplicado_MSG: El nombre del tipo de consumo no puede estar duplicado
   tipoConsumoDefault_MSG: Defina tipo de fichero a utilizar y tarifa aplicable
   fuenteTipoConsumoErronea_MSG: Posible error definiendo DATADIS cuando debería ser CSV o viceversa
@@ -116,16 +118,6 @@ CONSUMPTION:
   consumo_MSG_resumen: '{{registros}} Registres de consum carregats des de {{desde}} fins a {{hasta}}'
   consumo_MSG_numeroLimitadoRegistros: "Avís:  només existeixen {{registros}} registres que no completen un any d'estadístiques"
   consumo_MSG_nombreCSVPorDefinir: Por definir
-  consumo_TT_descripcionTarifaP1: Tarifa P1 o punta (la més cara en 2.0TD)
-  consumo_TT_descripcionTarifaP2: Tarifa P2 o vall (la intermèdia en 2.0TD)
-  consumo_TT_descripcionTarifaP3: Tarifa P3 o llano (la més barata en 2.0TD)
-  consumo_TT_descripcionTarifaP4: Tarifa p4
-  consumo_TT_descripcionTarifaP5: Tarifa P5
-  consumo_TT_descripcionTarifaP6: Tarifa P6
-  consumo_TT_valorTarifa: Indica el preu en euros sense IVA d'aquesta tarifa
-  consumo_LBL_compensa: Compensa
-  consumo_TT_compensa: Tarifa de compensació
-  consumo_TT_valorCompensa: Indica el preu en euros sense IVA amb què la comercialitzadora paga l'electricitat no consumida
 
 TARIFA:
   territorio_LBL: Territori
@@ -138,6 +130,16 @@ TARIFA:
   LABEL_P4: Tarifa P4
   LABEL_P5: Tarifa P5
   LABEL_P6: Tarifa P6
+  consumo_TT_descripcionTarifaP1: Tarifa P1 o punta (la més cara en 2.0TD)
+  consumo_TT_descripcionTarifaP2: Tarifa P2 o vall (la intermèdia en 2.0TD)
+  consumo_TT_descripcionTarifaP3: Tarifa P3 o llano (la més barata en 2.0TD)
+  consumo_TT_descripcionTarifaP4: Tarifa p4
+  consumo_TT_descripcionTarifaP5: Tarifa P5
+  consumo_TT_descripcionTarifaP6: Tarifa P6
+  consumo_TT_valorTarifa: Indica el preu en euros sense IVA d'aquesta tarifa
+  consumo_LBL_compensa: Compensa
+  consumo_TT_compensa: Tarifa de compensació
+  consumo_TT_valorCompensa: Indica el preu en euros sense IVA amb què la comercialitzadora paga l'electricitat no consumida
 
 ENERGY_BALANCE:
   TITLE: Balanç energètic
@@ -152,13 +154,6 @@ ECONOMIC_BALANCE:
   TITLE: Balanç econòmic
   DESCRIPTION: |
     En esta pantalla conocerás cuánto tendrás que invertir en la instalación (teniendo en cuenta las subvenciones) cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión.
-
-  LABEL_IBI_VALOR: IBI (€)
-  TOOLTIP_IBI_VALOR: Empleneu-ho si el municipi on es realitza la instal·lació bonifica l'impost de béns immobles.\nLa Fundación Renovables facilita una llista de municipis amb bonificacions a l'IBI i reduccions a ICIO.
-  LABEL_IBI_PORCIENTO: Bonificació %
-  TOOLTIP_IBI_PORCIENTO: El percentatge que l’Ajuntament bonifica de l’import de l’IBI
-  LABEL_IBI_DURACION: Durada (anys)
-  TOOLTIP_IBI_DURACION: El nombre d’anys durant els quals es pot aplicar la bonificació a l’IBI
 
   LABEL_ANO: Any
   TOOLTIP_ANO: Periode d'amortització
@@ -366,7 +361,7 @@ unitarioTotal_LBL: kWh anual per kWp instal·lat
 unitarioTotal_TT: Són els kWh anuals que es poden obtenir per cada kWp instal·lat en aquesta base
 ERROR_PVGIS_FETCH: Error executant fecth en PVGIS.\n{{err}} \n {{url}}
 
-PRODUCCION:
+Produccion:
   precioInstalacion_LBL: Cost d’instal·lació estimat
   precioInstalacion_TT: "Tot i intentar mantenir els preus actualitzats aquesta quantitat s’hauria de considerar com una orientació provisional del projecte que un instal·lador pot formular (sobretot si té més informació sobre el lloc final). \n Aquí no estan repercutides algunes despeses:  obra civil (si fos necessària) substitució de l’aïllament o les teules antigues de la coberta mitjans d'elevació si calguessin modificacions que la distribuïdora o l'Administració poguessin requerir per a la instal·lació i alguns impostos i taxes que l'ajuntament podria cobrar (ICIO o llicència d'obres)"
   correccionPrecioInstalacion_LBL: Correcció de preu en %
@@ -374,8 +369,8 @@ PRODUCCION:
   precioInstalacionCorregido_LBL: Preu de la instal·lació corregit
   precioInstalacionCorregido_TT: Preu de la instal·lació corregit pel factor de correcció indicat
   pMaximoAnual_LBL: Producció diària màxima
-  pTotalAnual_LBL: Producció anual
-  pTotalAnual_TT: Producció fotovoltaica mitjana anual estimada
+  LABEL_pTotalAnual: Producció anual
+  TOOLTIP_pTotalAnual: Producció fotovoltaica mitjana anual estimada
 
 RESULTADOS:
   botonInfoBase_LBL:
@@ -426,55 +421,55 @@ RESULTADOS:
   resultados_MSG_excesoPotencia: Hi ha un excés de potència en aquesta base en funció a l'àrea disponible
   resultados_LBL_basePropiedades: 'Base:  {{id}}'
 
-economico: economico
-tabla: tabla
+Economico:
+  LABEL_gastoSinPlacasAnual: Despesa anual sense panells
+  TOOLTIP_gastoSinPlacasAnual: Despesa elèctrica anual sense panaells solars. Només es té en compte la part variable de la factura
+  LABEL_gastoConPlacasAnual: Despesa anual amb panells
+  TOOLTIP_gastoConPlacasAnual: La despesa anual estimada en electricitat amb panells solars. Només es té en compte la part variable de la factura
+  LABEL_ahorroAnualPorciento: Estalvi anual / despesa original
+  TOOLTIP_ahorroAnualPorciento: Estalvi anual en relació amb la despesa original
+  LABEL_ahorroAnual: Estalvi anual
+  TOOLTIP_ahorroAnual: Diferència de despesa anual en electricitat amb i sense panells solars
+  LABEL_noCompensadoAnual: Cost energia no compensada
+  TOOLTIP_noCompensadoAnual: L'import de l'energia excedentària que la comercialitzadora no compensarà.\n La llei (RD 244/2019) no permet que al consumidor se li aboni cap import quan el balanç entre el cost de l'energia sobrant i el consumit de qualsevol dia resultés favorable al consumidor.\n Sol succeir quan s'instal·len més panells dels aconsellables quan es consumeix molt per sota del que és habitual (en vacances) o quan el preu de compensació de la comercialitzadora fos alt (molt improbable).
+  LABEL_valorSubvencionEU: Valor de subvenció UE
+  LABEL_tipoSubvencionEU: Tipus subvenció fons UE
+  TOOLTIP_tipoSubvencionEU: Si s'anessin a sol·licitar la subvenció dels fons Next Generation indiqui's si la instal·lació fos col·lectiva (una comunitat de propietaris per exemple) o individual. La subvenció no es concedirà si lenergia generada al any fos superior al 80% de lenergia consumida anualment
+  LABEL_sinSubvencion: Sense subvenció
+  LABEL_subvencionIndividual: Instal·lació individual
+  LABEL_subvencionComunitaria: Instal·lació col·lectiva
+  LABEL_valorSubvencionIBI: IBI (€)
+  TOOLTIP_valorSubvencionIBI: Empleneu-ho si el municipi on es realitza la instal·lació bonifica l'impost de béns immobles.\nLa Fundación Renovables facilita una llista de municipis amb bonificacions a l'IBI i reduccions a ICIO.
+  LABEL_porcientoSubvencionIBI: Bonificació %
+  TOOLTIP_porcientoSubvencionIBI: El percentatge que l’Ajuntament bonifica de l’import de l’IBI
+  LABEL_tiempoSubvencionIBI: Durada (anys)
+  TOOLTIP_tiempoSubvencionIBI: El nombre d’anys durant els quals es pot aplicar la bonificació a l’IBI
 
-form: form
-gastoSinPlacasAnual_LBL: Despesa anual sense panells
-gastoSinPlacasAnual_TT: Despesa elèctrica anual sense panaells solars. Només es té en compte la part variable de la factura
-gastoConPlacasAnual_LBL: Despesa anual amb panells
-gastoConPlacasAnual_TT: La despesa anual estimada en electricitat amb panells solars. Només es té en compte la part variable de la factura
-ahorroAnual_LBL: Estalvi anual
-ahorroAnual_TT: Diferència de despesa anual en electricitat amb i sense panells solars
-ahorroAnualPorciento_LBL: Estalvi anual / despesa original
-ahorroAnualPorciento_TT: Estalvi anual en relació amb la despesa original
-noCompensadoAnual_LBL: Cost energia no compensada
-noCompensadoAnual_TT: L'import de l'energia excedentària que la comercialitzadora no compensarà.\n La llei (RD 244/2019) no permet que al consumidor se li aboni cap import quan el balanç entre el cost de l'energia sobrant i el consumit de qualsevol dia resultés favorable al consumidor.\n Sol succeir quan s'instal·len més panells dels aconsellables quan es consumeix molt per sota del que és habitual (en vacances) o quan el preu de compensació de la comercialitzadora fos alt (molt improbable).
+graficos:
+  graficos_LBL_descripcion: Àrea de gràfics disponibles
+  graficos_LBL_balanceConsumo: Balanç mensual de consum amb {{potencia}} instal·lada
+  graficos_LBL_balanceProduccion: Balance mensual de producció amb {{potencia}} instal·lada
+  graficos_LBL_tituloBalanceEconomico: Balance econòmic mensual amb {{potencia}} instal·lada
+  graficos_LBL_alternativasPotencia: Alternatives amb paneles de {{potencia}} instal·lats
 
-valorSubvencionEU_LBL: Valor de subvenció UE
-tipoSubvencionEU_LBL: Tipus subvenció fons UE
-tipoSubvencionEU_TT: Si s'anessin a sol·licitar la subvenció dels fons Next Generation indiqui's si la instal·lació fos col·lectiva (una comunitat de propietaris per exemple) o individual. La subvenció no es concedirà si lenergia generada al any fos superior al 80% de lenergia consumida anualment
-sinSubvencion_LBL: Sense subvenció EU
-subvencionIndividual_LBL: Instal·lació individual
-subvencionComunitaria_LBL: Instal·lació col·lectiva
+  graficos_LBL_graficasProduccion: Producció
+  graficos_LBL_graficasNoCompensado: No compensat
+  graficos_LBL_graficasGastoConPaneles: Despesa amb paneles
+  graficos_LBL_graficasGastoSinPaneles: Despesa sense panells
+  graficos_LBL_graficasConsumo: Consum
+  graficos_LBL_graficasCompensacion: Reducció per compensació
+  graficos_LBL_graficasExcedente: Excedent
+  graficos_LBL_graficasInversion: Inversió
+  graficos_LBL_graficasAhorro: Estalvi
+  graficos_LBL_graficasDeficit: Dèficit
 
-precios_LBL_pendienteCalculo: Pendent
-
-graficos: graficos
-graficos_LBL_descripcion: Àrea de gràfics disponibles
-graficos_LBL_balanceConsumo: Balanç mensual de consum amb {{potencia}} instal·lada
-graficos_LBL_balanceProduccion: Balance mensual de producció amb {{potencia}} instal·lada
-graficos_LBL_tituloBalanceEconomico: Balance econòmic mensual amb {{potencia}} instal·lada
-graficos_LBL_alternativasPotencia: Alternatives amb paneles de {{potencia}} instal·lats
-
-graficos_LBL_graficasProduccion: Producció
-graficos_LBL_graficasNoCompensado: No compensat
-graficos_LBL_graficasGastoConPaneles: Despesa amb paneles
-graficos_LBL_graficasGastoSinPaneles: Despesa sense panells
-graficos_LBL_graficasConsumo: Consum
-graficos_LBL_graficasCompensacion: Reducció per compensació
-graficos_LBL_graficasExcedente: Excedent
-graficos_LBL_graficasInversion: Inversió
-graficos_LBL_graficasAhorro: Estalvi
-graficos_LBL_graficasDeficit: Dèficit
-
-graficos_LBL_graficasAutosuficiencia: Autosuficiència
-graficos_LBL_graficasprodvscons: Prod. vs. Cons.
-graficos_LBL_graficasDia: Dia
-graficos_LBL_graficasHora: Hora
-graficos_LBL_cambiaPaneles: Clic canvia a {{paneles}} panells
-graficos_LBL_paneles: Panells
-graficos_LBL_panelesActuales: Panells actuals {{paneles}}
+  graficos_LBL_graficasAutosuficiencia: Autosuficiència
+  graficos_LBL_graficasprodvscons: Prod. vs. Cons.
+  graficos_LBL_graficasDia: Dia
+  graficos_LBL_graficasHora: Hora
+  graficos_LBL_cambiaPaneles: Clic canvia a {{paneles}} panells
+  graficos_LBL_paneles: Panells
+  graficos_LBL_panelesActuales: Panells actuals {{paneles}}
 
 catastro_MSG_errorFetch: Error en executar fecth a Cadastre. \n {{err}} \n {{url}}
 

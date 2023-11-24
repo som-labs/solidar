@@ -4,23 +4,24 @@ import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
-import ReactMarkdown from 'react-markdown'
 import Container from '@mui/material/Container'
 import FormControl from '@mui/material/FormControl'
-import { debounce } from '@mui/material/utils'
-import Button from '@mui/material/Button'
-import Tooltip from '@mui/material/Tooltip'
 import InputAdornment from '@mui/material/InputAdornment'
 
-import * as UTIL from '../classes/Utiles'
 import EconomicContext from './EconomicContext'
+
+import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
 
 const InstallationCost = () => {
   const { t, i18n } = useTranslation()
 
-  const { precioInstalacionCorregido, setPrecioInstalacionCorregido } =
-    useContext(EconomicContext)
+  const {
+    precioInstalacionCorregido,
+    setPrecioInstalacionCorregido,
+    setCashFlow,
+    setPeriodoAmortizacion,
+  } = useContext(EconomicContext)
   const [error, setError] = useState(false)
 
   //REVISAR: esta funcion deberia tener en cuenta el idioma para verificar si un string es numero o no. Pero no funciona.
@@ -51,8 +52,11 @@ const InstallationCost = () => {
       const intPrecio = parseInt(precioInstalacionCorregido)
       if (intPrecio > 0) {
         TCB.produccion.precioInstalacionCorregido = intPrecio
-        setPrecioInstalacionCorregido(intPrecio)
+
         TCB.economico.calculoFinanciero(100, 100)
+        setPrecioInstalacionCorregido(intPrecio)
+        setCashFlow(TCB.economico.cashFlow)
+        setPeriodoAmortizacion(TCB.economico.periodoAmortizacion)
         setError(false)
       } else {
         setError(true)

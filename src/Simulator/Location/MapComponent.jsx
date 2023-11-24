@@ -7,23 +7,17 @@ import { useTranslation } from 'react-i18next'
 import { Map, View } from 'ol'
 import TileLayer from 'ol/layer/Tile'
 import { OSM, Vector as VectorSource, XYZ } from 'ol/source'
-import { Style, Fill, Stroke, Text } from 'ol/style'
+import { Style, Fill, Stroke } from 'ol/style'
 import VectorLayer from 'ol/layer/Vector'
 import Feature from 'ol/Feature'
 import { Point, LineString } from 'ol/geom'
-import { getArea } from 'ol/sphere'
 import { transform, fromLonLat } from 'ol/proj'
 import { Draw } from 'ol/interaction'
 
 // MUI objects
 import Button from '@mui/material/Button'
-import Box from '@mui/material/Box'
 import Tooltip from '@mui/material/Tooltip'
-import MenuItem from '@mui/material/MenuItem'
 import TextField from '@mui/material/TextField'
-import InputAdornment from '@mui/material/InputAdornment'
-import IconButton from '@mui/material/IconButton'
-import SearchIcon from '@mui/icons-material/Search'
 import Typography from '@mui/material/Typography'
 import Autocomplete from '@mui/material/Autocomplete'
 
@@ -126,7 +120,7 @@ export default function MapComponent() {
   }, [])
 
   function endDialog(reason) {
-    alert(reason)
+    //alert(reason) //Para ver por donde salimos cuando bakdropclick
     if (reason !== undefined) {
       closeDialog()
     }
@@ -261,9 +255,14 @@ export default function MapComponent() {
       //Ha habido un error en la llamada a Nominatim
       return false
     } else {
-      //Todo correcto
-      TCB.territorio = nominatimInfo.zona
-      return true
+      //Verificamos que la base creada esta en el mismo territorio si es que ya habia otras creadas.
+      if (TCB.territorio !== '' && TCB.territorio !== nominatimInfo.zona) {
+        alert(t('LOCATION.ERROR_MISMO_TERRITORIO'))
+        return false
+      } else {
+        TCB.territorio = nominatimInfo.zona
+        return true
+      }
     }
   }
 

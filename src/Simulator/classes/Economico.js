@@ -246,6 +246,12 @@ class Economico {
     const tiempoSubvencionIBI = TCB.tiempoSubvencionIBI
     const porcientoSubvencionIBI = TCB.porcientoSubvencionIBI
 
+    console.log(
+      TCB.valorSubvencionIBI,
+      TCB.tiempoSubvencionIBI,
+      TCB.porcientoSubvencionIBI,
+    )
+
     // Calculo de la subvención EU
     const tipoSubvencionEU = TCB.tipoSubvencionEU
     var valorSubvencionEU
@@ -324,10 +330,9 @@ class Economico {
       this.cashFlow.push(unFlow)
     }
 
-    this.periodoAmortizacion =
-      this.cashFlow.findIndex((c) => {
-        return c.pendiente > 0
-      }) - 1
+    this.periodoAmortizacion = this.cashFlow.findIndex((c) => {
+      return c.pendiente > 0
+    })
     if (cuotaPeriodo[0] < 0) {
       this.VANProyecto = this.VAN(this.interesVAN, cuotaPeriodo)
       this.TIRProyecto = this.TIR(this.interesVAN * 2, cuotaPeriodo)

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -7,23 +7,22 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import AddIcon from '@mui/icons-material/Add'
 import Tooltip from '@mui/material/Tooltip'
-import Container from '@mui/material/Container'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import Box from '@mui/material/Box'
 import { DataGrid } from '@mui/x-data-grid'
 
 // REACT Solidar Components
+import TCBContext from '../TCBContext'
 import MapaMesHora from './MapaMesHora'
+import MapaDiaHora from './MapaDiaHora'
 import { useDialog } from '../../components/DialogProvider'
 import DialogNewConsumption from './DialogNewConsumption'
-import PreciosTarifa from './PreciosTarifa'
 
 // Solidar objects
-import TCBContext from '../TCBContext'
 import TCB from '../classes/TCB'
 import { formatoValor } from '../classes/Utiles'
-import MapaDiaHora from './MapaDiaHora'
+import { Container } from '@mui/material'
 
 //PENDIENTE: Decidir si mostramos los datos en formato tabla o creamos boxes segun diseño de Clara
 export default function ConsumptionSummary() {
@@ -32,30 +31,30 @@ export default function ConsumptionSummary() {
   const columns = [
     {
       field: 'nombreTipoConsumo',
-      headerName: t('CONSUMPTION.LABEL_NOMBRE_TIPO_CONSUMO'),
+      headerName: t('TipoConsumo.LABEL_nombreTipoConsumo'),
       editable: true,
       flex: 1,
-      description: t('CONSUMPTION.TOOLTIP_NOMBRE_TIPO_CONSUMO'),
+      description: t('TipoConsumo.TOOLTIP_nombreTipoConsumo'),
     },
     {
       field: 'fuente',
-      headerName: t('CONSUMPTION.LABEL_FUENTE'),
+      headerName: t('TipoConsumo.LABEL_fuente'),
       type: 'select',
-      description: t('CONSUMPTION.TOOLTIP_FUENTE'),
+      description: t('TipoConsumo.TOOLTIP_fuente'),
     },
     {
       field: 'nombreFicheroCSV',
-      headerName: t('CONSUMPTION.LABEL_NOMBRE_FICHERO_CSV'),
+      headerName: t('TipoConsumo.LABEL_nombreFicheroCSV'),
       type: 'text',
       flex: 1,
-      description: t('CONSUMPTION.TOOLTIP_NOMBRE_FICHERO_CSV'),
+      description: t('TipoConsumo.TOOLTIP_nombreFicheroCSV'),
     },
     {
       field: 'cTotalAnual',
-      headerName: t('CONSUMPTION.LABEL_CTOTAL_ANUAL'),
+      headerName: t('TipoConsumo.LABEL_cTotalAnual'),
       type: 'number',
       width: 150,
-      description: t('CONSUMPTION.TOOLTIP_CTOTAL_ANUAL'),
+      description: t('TipoConsumo.TOOLTIP_cTotalAnual'),
       valueFormatter: (params) => formatoValor('cTotalAnual', params.value),
     },
     {
@@ -87,7 +86,7 @@ export default function ConsumptionSummary() {
     },
   ]
 
-  const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en TCB que se esta manipulando
+  const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
   const { tipoConsumo, setTipoConsumo } = useContext(TCBContext)
   const [openDialog, closeDialog] = useDialog()
 
@@ -107,12 +106,12 @@ export default function ConsumptionSummary() {
     })
   }
 
-  //REVISAR: como hacer para que el dialogo funcion sincro y no se llame a showGraphs antes de que se termine de cargar el TipoConsumo
-  function endDialog(showGraphs, newTC) {
-    console.log('fin dialogo ', showGraphs, newTC)
-    // if (showGraphs) {
-    //   showGraphsTC(newTC)
-    // }
+  //REVISAR: como hacer para que el dialogo funcione sincro y no se llame a showGraphs antes de que se termine de cargar el TipoConsumo
+  function endDialog(showGraphs, nuevoTipoConsumo) {
+    console.log('fin dialogo ', showGraphs, nuevoTipoConsumo)
+    if (showGraphs) {
+      //setActivo({ ...nuevoTipoConsumo })
+    }
     closeDialog()
   }
 
@@ -141,10 +140,12 @@ export default function ConsumptionSummary() {
   }
 
   function showGraphsTC(tc) {
-    const nIndex = TCB.TipoConsumo.findIndex((t) => {
-      return t.idTipoConsumo === tc.idTipoConsumo
-    })
-    setActivo(TCB.TipoConsumo[nIndex])
+    // console.log(tc)
+    // const nIndex = TCB.TipoConsumo.findIndex((t) => {
+    //   return t.idTipoConsumo === tc.idTipoConsumo
+    // })
+    console.log(tc)
+    setActivo(tc)
   }
 
   function deleteTC(ev, tc) {
@@ -163,93 +164,119 @@ export default function ConsumptionSummary() {
 
   return (
     <>
-      <Box>
-        {/* Este boton permite crear un objeto TipoConsumo desde un formulario modal */}
-        <br />
-        <Tooltip
-          title={t('CONSUMPTION.TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO')}
-          placement="top"
-        >
-          <Button startIcon={<AddIcon />} onClick={openNewConsumptionDialog}>
-            {t('CONSUMPTION.LABEL_BUTTON_NUEVO_TIPOCONSUMO')}
-          </Button>
-        </Tooltip>
-      </Box>
-      {/* Consumption types table 
+      <Container>
+        <Box>
+          {/* Este boton permite crear un objeto TipoConsumo desde un formulario modal */}
+          <br />
+          <Tooltip
+            title={t('CONSUMPTION.TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO')}
+            placement="top"
+          >
+            <Button startIcon={<AddIcon />} onClick={openNewConsumptionDialog}>
+              {t('CONSUMPTION.LABEL_BUTTON_NUEVO_TIPOCONSUMO')}
+            </Button>
+          </Tooltip>
+        </Box>
+        {/* Consumption types table 
         REVISAR: hay que permitir ver el gráfico de la suma de todos los consumos */}
-      <DataGrid
-        autoHeight
-        getRowId={getRowId}
-        rows={tipoConsumo}
-        columns={columns}
-        hideFooter={true}
-        sx={{
-          boxShadow: 2,
-          border: 2,
-          borderColor: 'primary.light',
-          '& .MuiDataGrid-cell:hover': {
-            color: 'primary.main',
-          },
-        }}
-        onCellEditStop={(params, event) => {
-          changeTC(params, event)
-        }}
-      />
-
-      <Box
-        sx={{
-          mt: '0.3rem',
-          display: 'flex',
-          flexWrap: 'wrap',
-          boxShadow: 2,
-          flex: 1,
-          border: 2,
-          textAlign: 'center',
-          borderColor: 'primary.light',
-          '& .MuiDataGrid-cell:hover': {
-            color: 'primary.main',
-          },
-          backgroundColor: 'rgba(220, 249, 233, 1)',
-        }}
-        justifyContent="center"
-      >
-        <Typography
-          variant="h6"
+        <DataGrid
+          autoHeight
+          getRowId={getRowId}
+          rows={tipoConsumo}
+          columns={columns}
+          hideFooter={true}
           sx={{
-            textAlign: 'center',
+            boxShadow: 2,
+            border: 2,
+            borderColor: 'primary.light',
+            '& .MuiDataGrid-cell:hover': {
+              color: 'primary.main',
+            },
           }}
-          textAlign={'center'}
-          dangerouslySetInnerHTML={{
-            __html: t(
-              t('CONSUMPTION.TOTAL_DEMMAND', {
-                consumoTotal: formatoValor(
-                  'energia',
-                  Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
-                ),
-              }),
-            ),
+          onCellEditStop={(params, event) => {
+            changeTC(params, event)
           }}
         />
-      </Box>
 
-      {t('CONSUMPTION.TOTAL_DEMMAND', {
-        consumoTotal: formatoValor(
-          'energia',
-          Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
-        ),
-      })}
-      <Typography variant="h6"></Typography>
+        <Box
+          sx={{
+            mt: '0.3rem',
+            display: 'flex',
+            flexWrap: 'wrap',
+            boxShadow: 2,
+            flex: 1,
+            border: 2,
+            textAlign: 'center',
+            borderColor: 'primary.light',
+            '& .MuiDataGrid-cell:hover': {
+              color: 'primary.main',
+            },
+            backgroundColor: 'rgba(220, 249, 233, 1)',
+          }}
+          justifyContent="center"
+        >
+          <Typography
+            variant="h6"
+            sx={{
+              textAlign: 'center',
+            }}
+            textAlign={'center'}
+            dangerouslySetInnerHTML={{
+              __html: t(
+                t('CONSUMPTION.TOTAL_DEMMAND', {
+                  consumoTotal: formatoValor(
+                    'energia',
+                    Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
+                  ),
+                }),
+              ),
+            }}
+          />
+        </Box>
 
-      {activo && (
-        <>
-          <Box>
-            <MapaMesHora>{activo}</MapaMesHora>
-          </Box>
-          <Box>
-            <MapaDiaHora>{activo}</MapaDiaHora>
-          </Box>
-        </>
-      )}
+        {t('CONSUMPTION.TOTAL_DEMMAND', {
+          consumoTotal: formatoValor(
+            'energia',
+            Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
+          ),
+        })}
+        <Typography variant="h6"></Typography>
+
+        {activo && (
+          <>
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                width: '100%',
+                boxShadow: 2,
+                border: 2,
+                borderColor: 'primary.light',
+                '& .MuiDataGrid-cell:hover': {
+                  color: 'primary.main',
+                },
+              }}
+            >
+              <MapaMesHora activo={activo}></MapaMesHora>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                width: '100%',
+                boxShadow: 2,
+                border: 2,
+                borderColor: 'primary.light',
+                '& .MuiDataGrid-cell:hover': {
+                  color: 'primary.main',
+                },
+              }}
+            >
+              <MapaDiaHora activo={activo}></MapaDiaHora>
+            </Box>
+          </>
+        )}
+      </Container>
     </>
   )
 }

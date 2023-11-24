@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Plotly objects
@@ -9,17 +9,19 @@ import Typography from '@mui/material/Typography'
 import { Box } from '@mui/material'
 
 // Solidar objects
+import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
+import { isEmpty } from 'ol/extent'
 
-export default function MapaMesHora(tconsumo) {
+export default function MapaMesHora({ activo }) {
   const { t, i18n } = useTranslation()
 
-  console.log(tconsumo)
-  if (tconsumo.children === undefined) {
-    return <></>
-  }
-
-  const consumo = tconsumo.children
+  console.log(activo)
+  if (activo === isEmpty) return
+  const consumo = TCB.TipoConsumo.find((t) => {
+    return t.idTipoConsumo === activo.idTipoConsumo
+  })
+  console.log(consumo)
 
   let maxHora
   let maxMes
@@ -33,7 +35,7 @@ export default function MapaMesHora(tconsumo) {
   let maxConsumoMes = -Infinity
   let radio = 20
   const mesMapa = Array.from(i18nextMes())
-
+  console.log(typeof consumo.idxTable[0].fecha)
   for (let hora = 0; hora < 24; hora++) {
     let _valorHora = consumo.getHora(hora)
     let _consMes = new Array(12).fill(0)
@@ -83,16 +85,13 @@ export default function MapaMesHora(tconsumo) {
           border: 2,
           textAlign: 'center',
           borderColor: 'primary.light',
-          '& .MuiDataGrid-cell:hover': {
-            color: 'primary.main',
-          },
           // backgroundColor: 'rgba(220, 249, 233, 1)',
         }}
         justifyContent="center"
       >
         <Typography variant="h4">
           {t('CONSUMPTION.TITLE_MAP_MONTH_HOUR', {
-            nombreTipoConsumo: consumo.nombreTipoConsumo,
+            nombreTipoConsumo: activo.nombreTipoConsumo,
           })}
         </Typography>
         <Typography variant="body">{t('CONSUMPTION.DESC_MAP_MONTH_HOUR')}</Typography>

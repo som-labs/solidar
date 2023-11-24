@@ -71,6 +71,23 @@ BaseSolar:
   LABEL_lonlatBaseSolar: Long-Lat
   TOOLTIP_lonlatBaseSolar: Base geographic coordinates
 
+TipoConsumo:
+  idTipoConsumo: id
+  LABEL_nombreTipoConsumo: Consumption identification
+  TOOLTIP_nombreTipoConsumo: Identize the name of this consumption for future references
+  LABEL_fuente: Source type
+  TOOLTIP_fuente: Select the source type from which the consumption profile will be loaded
+  LABEL_nombreFicheroCSV: Consumption file (only CSV)
+  TOOLTIP_nombreFicheroCSV: Identify the Consumption file downloaded from your distribution company
+  LABEL_consumoAnualREE: Annual consumption in kWh
+  TOOLTIP_consumoAnualREE: In case of opting for the REE type profile the estimated annual consumption must be indicated
+  LABEL_cTotalAnual: Annual consumption
+  TOOLTIP_cTotalAnual: Annual energy consumption of this profile
+
+Consumo:
+  LABEL_cTotalAnual: Annual consumption
+  TOOLTIP_cTotalAnual: Annual energy consumption of this profile
+
 CONSUMPTION:
   TITLE: Consumption
   HOOVER_MAPA_CONSUMO_MES_HORA: Average consumption <br> schedule per month
@@ -80,29 +97,16 @@ CONSUMPTION:
   LABEL_MAPA_CONSUMO_MES_HORA: 'Maximum value:  %%{{maxConsumoMes}} kWh'
   LABEL_TITLE_MAP_MONTH_DAY: Hourly consumption map in kWh
   ERROR_DEFINIR_CONSUMO_REE: Must define an annual base consumption greater than 0 for the REE profile
-
   ERROR_AL_MENOS_UN_TIPOCONSUMO: Must define at least one consumption type
   ERROR_FALTA_FICHERO_CONSUMO: You must define the consumption file before continuing
   LABEL_BUTTON_NUEVO_TIPOCONSUMO: New consumption type
   TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Button to create new consumption type
-  LABEL_CTOTAL_ANUAL: Annual consumption
-  TOOLTIP_CTOTAL_ANUAL: Annual energy consumption of this profile
 
   TITLE_DIALOG_NEW_CONSUMPTION: (T)Formulario para crear un nuevo tipo do consumo
-  LABEL_FUENTE: Source type
-  TOOLTIP_FUENTE: Select the source type from which the consumption profile will be loaded
-  LABEL_NOMBRE_FICHERO_CSV: Consumption file (only CSV)
-  TOOLTIP_NOMBRE_FICHERO_CSV: Identify the Consumption file downloaded from your distribution company
-  LABEL_CONSUMO_ANUAL_REE: Annual consumption in kWh
-  TOOLTIP_CONSUMO_ANUAL_REE: In case of opting for the REE type profile the estimated annual consumption must be indicated
 
-  idTipoConsumo: id
-  LABEL_nombreTipoConsumo: Consumption identification
-  TT_nombreTipoConsumo: Identize the name of this consumption for future references
   nombreTipoConsumoDuplicado_MSG: The name of the type of consumption cannot be duplicate
   tipoConsumoDefault_MSG: Define type of file to use and applicable rate
   fuenteTipoConsumoErronea_MSG: Possible error defining datadis when it should be CSV or vice versa
-
   tcMaximoAnual_LBL: Maximum annual hourly consumption
   numeroDias_LBL: Processed days
   botonBorraTipoConsumo_LBL:
@@ -120,18 +124,7 @@ CONSUMPTION:
   consumo_MSG_errorCabeceras: CSV Format Error Header {{cabeceras}}
   # consumo_MSG_resumen: %%{{registros}} Consumption records loaded from {{desde}} to {{hasta}}
   consumo_MSG_numeroLimitadoRegistros: Warning-> only {{registros}} records does not match one year
-
   consumo_MSG_nombreCSVPorDefinir: To be defined
-  consumo_TT_descripcionTarifaP1: P1 rate or tip (the most expensive in 2.0TD)
-  consumo_TT_descripcionTarifaP2: P2 rate or valley (the intermediate in 2.0TD)
-  consumo_TT_descripcionTarifaP3: P3 rate or llano (the cheapest in 2.0TD)
-  consumo_TT_descripcionTarifaP4: P4 rate
-  consumo_TT_descripcionTarifaP5: P5 rate
-  consumo_TT_descripcionTarifaP6: P6 rate
-  consumo_TT_valorTarifa: Indicate the price in euros without VAT of this rate
-  consumo_LBL_compensa: Compensates
-  consumo_TT_compensa: Compensation rate
-  consumo_TT_valorCompensa: Indicate the price in euros without VAT with which the electricity company pays the electricity not consumed
 
 TARIFA:
   territorio_LBL: Territory
@@ -144,6 +137,16 @@ TARIFA:
   LABEL_P4: Price P4
   LABEL_P5: Price P5
   LABEL_P6: Price P6
+  consumo_TT_descripcionTarifaP1: P1 rate or tip (the most expensive in 2.0TD)
+  consumo_TT_descripcionTarifaP2: P2 rate or valley (the intermediate in 2.0TD)
+  consumo_TT_descripcionTarifaP3: P3 rate or llano (the cheapest in 2.0TD)
+  consumo_TT_descripcionTarifaP4: P4 rate
+  consumo_TT_descripcionTarifaP5: P5 rate
+  consumo_TT_descripcionTarifaP6: P6 rate
+  consumo_TT_valorTarifa: Indicate the price in euros without VAT of this rate
+  consumo_LBL_compensa: Compensates
+  consumo_TT_compensa: Compensation rate
+  consumo_TT_valorCompensa: Indicate the price in euros without VAT with which the electricity company pays the electricity not consumed
 
 ENERGY_BALANCE:
   TITLE: Energy Balance
@@ -322,16 +325,7 @@ MSGMAPA:
   mapa_MSG_nada: Select the object to draw
   mapa_MSG_posicionConsumo: One click to position a new consumption
 
-tabla PuntoConsumo_LBL:
-  nombrePuntoConsumo_LBL: Name
-  nombrePuntoConsumo_TT: Identify the name of this point of consumption for future reference
-  lonlatPuntoConsumo_LBL: Long-Lat
-  lonlatPuntoConsumo_TT: Geographic coordinates of the base
-  refcat_LBL: Cadastral reference
-  refcat_TT: DGC unique identification
-  direccion_LBL: Address
-  direccion_TT: Official postal address of DGC
-tabla rendimiento:
+Rendimiento:
   fechaInicio_LBL: Start Date Data
   fechaFin_LBL: Final Data Data
   horaInicio_LBL: Start time
@@ -355,7 +349,7 @@ tabla rendimiento:
   unitarioTotal_TT: Annual Energy by kWp installed
   ERROR_PVGIS_FETCH: Error running fetch in PVGIS.\n{{err}} \n {{url}}
 
-tabla produccion:
+Produccion:
   precioInstalacion_LBL: Estimated installation cost
   precioInstalacion_TT: Despite trying to keep prices updated this amount should be considered as a provisional guideline on the project that an installer can formulate (especially if he has more information about the final location).\nSome expenses are not included here as civil works ( if necessary) replacement of insulation or old tiles on the roof lifting means if necessary modifications that the distributor or the Administration may require of the installation and some taxes and fees that the city council may collect (ICIO or building license )
   correccionPrecioInstalacion_LBL: Price correction in %
@@ -363,9 +357,10 @@ tabla produccion:
   precioInstalacionCorregido_LBL: Corrected installation price
   precioInstalacionCorregido_TT: Price of the installation corrected by the indicated correction factor
   pMaximoAnual_LBL: Annual maximum production
-  pTotalAnual_LBL: Annual production
-  pTotalAnual_TT: Annual energy produced
-modulo resultados:
+
+  LABEL_pTotalAnual: Annual production
+  TOOLTIP_pTotalAnual: Annual energy produced
+Resultados:
   ConsumoDiurno_LBL: Consumption made in solar hours
   ConsumoDiurno_TT: Consumption made in hours when the panels have some production
   maxPaneles_LBL: Max. Base panels
@@ -423,7 +418,7 @@ modulo resultados:
 
   resultados_MSG_excesoPotencia: There is an excess of power in this base based on the available area
   resultados_LBL_basePropiedades: Base {{id}}
-modulo economico:
+Economico:
   economico_MSG_ayudaBloqueSubvencionesHdr: Help subsidies and bonuses
   economico_MSG_ayudaBloqueSubvenciones: This block defines possible aids in the form of subsidy or bonus
 
@@ -432,29 +427,28 @@ modulo economico:
   economico_MSG_disclaimerPrecioInstalacion: In the estimate of the cost of the installation labor and materials are impacted. There are neither the municipal fees and taxes (ico) nor the civil works and elevation machinery (if necessary) nor the modifications that the distributor or the administration demanded after checking the installation carried out
   economico_MSG_disclaimerPrecioInstalacionHdr: Notice about the installation cost
 
-formulario:
-  gastoSinPlacasAnual_LBL: Annual expense without panels
-  gastoSinPlacasAnual_TT: Annual electricity expenditure without solar panels. Only the variable part of the invoice is taken into account
-  gastoConPlacasAnual_LBL: Annual expenditure with panels
-  gastoConPlacasAnual_TT: The estimated annual expenditure on electricity with solar panels. Only the variable part of the invoice is taken into account
-  ahorroAnual_LBL: Annual savings
-  ahorroAnual_TT: Annual spending difference in electricity with and without solar panels
-  ahorroAnualPorciento_LBL: Annual savings / original expense
-  ahorroAnualPorciento_TT: Annual savings in relation to the original expense
-  noCompensadoAnual_LBL: Energy cost not compensated
-  noCompensadoAnual_TT: The amount of surplus energy that the electricity company will not compensate.\n The Law (RD 244/2019) does not allow the consumer to pay any amount when the balance between the cost of the excess energy and that of the consumed of any day will be favorable to the consumer.\n It usually happens when more panels are installed than the advisable ones when consumed well below the usual (on vacation) or when the compensation price of the company is high (very unlikely).
-  valorSubvencionIBI_LBL: IBI (€)
-  valorSubvencionIBI_TT: Fill if the municipality where the installation is carried out bonuses the real estate tax.\nThe Fundación Renovables facilitates a list of municipalities with bonuses in the IBI and ICO reductions.
-  porcientoSubvencionIBI_LBL: Bonus %
-  porcientoSubvencionIBI_TT: The percentage with the City Council bonuses the amount of the IBI
-  tiempoSubvencionIBI_LBL: Bonus duration (years)
-  tiempoSubvencionIBI_TT: The number of years during which the bonus can be applied in the IBI
-  valorSubvencionEU_LBL: EU subsidy value
-  tipoSubvencionEU_LBL: EU funds subsidy type
-  tipoSubvencionEU_TT: If the Next Generation funding subsidy were to be applied for indicate if the installation was collective (a community of owners for example) or individual. The subsidy will not be granted if the energy generated per year exceeds 80% of the energy consumed annually.
-  sinSubvencion_LBL: No subsidy EU
-  subvencionIndividual_LBL: Individual installation
-  subvencionComunitaria_LBL: Collective installation
+  LABEL_gastoSinPlacasAnual: Annual expense without panels
+  TOOLTIP_gastoSinPlacasAnual: Annual electricity expenditure without solar panels. Only the variable part of the invoice is taken into account
+  LABEL_gastoConPlacasAnual: Annual expenditure with panels
+  TOOLTIP_gastoConPlacasAnual: The estimated annual expenditure on electricity with solar panels. Only the variable part of the invoice is taken into account
+  LABEL_ahorroAnualPorciento: Annual savings / original expense
+  TOOLTIP_ahorroAnualPorciento: Annual savings in relation to the original expense
+  LABEL_ahorroAnual: Annual savings
+  TOOLTIP_ahorroAnual: Annual spending difference in electricity with and without solar panels
+  LABEL_noCompensadoAnual: Energy cost not compensated
+  TOOLTIP_noCompensadoAnual: The amount of surplus energy that the electricity company will not compensate.\n The Law (RD 244/2019) does not allow the consumer to pay any amount when the balance between the cost of the excess energy and that of the consumed of any day will be favorable to the consumer.\n It usually happens when more panels are installed than the advisable ones when consumed well below the usual (on vacation) or when the compensation price of the company is high (very unlikely).
+  LABEL_valorSubvencionEU: EU subsidy value
+  LABEL_tipoSubvencionEU: EU funds subsidy type
+  TOOLTIP_tipoSubvencionEU: If the Next Generation funding subsidy were to be applied for indicate if the installation was collective (a community of owners for example) or individual. The subsidy will not be granted if the energy generated per year exceeds 80% of the energy consumed annually.
+  LABEL_sinSubvencion: No subsidy
+  LABEL_subvencionIndividual: Individual installation
+  LABEL_subvencionComunitaria: Collective installation
+  LABEL_valorSubvencionIBI: IBI (€)
+  TOOLTIP_valorSubvencionIBI: Fill if the municipality where the installation is carried out bonuses the real estate tax.\nThe Fundación Renovables facilitates a list of municipalities with bonuses in the IBI and ICO reductions.
+  LABEL_porcientoSubvencionIBI: Bonus %
+  TOOLTIP_porcientoSubvencionIBI: The percentage with the City Council bonuses the amount of the IBI
+  LABEL_tiempoSubvencionIBI: Bonus duration (years)
+  TOOLTIP_tiempoSubvencionIBI: The number of years during which the bonus can be applied in the IBI
 
   precios_LBL_pendienteCalculo: Pending
 graficos:
@@ -491,7 +485,7 @@ graficos:
   graficos_LBL_tituloBalanceEconomicoFinca: Monthly economic balance with {{potencia}} assigned. <br> equivalent {{paneles}} panels.
   graficos_LBL_tituloBalanceEconomicoGlobal: Monthly economic balance with {{potencia}} assigned.
 
-modulo informe:
+INFORME:
   informe_LBL_datosDeConsumoGlobal: Global consumption
   informe_LBL_produccionTotal: Total production
   informe_LBL_produccionMediaEsperada: Expected average production

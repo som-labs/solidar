@@ -39,8 +39,10 @@ const EnergyFlow = () => {
     svg.setAttribute('height', 9 * altoLinea)
     svg.innerHTML = ''
 
-    const panel = grafResumen.current
+    const panel = document.getElementById('rootBox')
+    //const panel = grafResumen.current
     const anchoPanel = panel.offsetWidth * 0.9
+
     const anchoEnergia =
       TCB.balance.autoconsumo + TCB.balance.deficitAnual + TCB.balance.excedenteAnual
 
@@ -62,7 +64,7 @@ const EnergyFlow = () => {
       leftMargin,
       linea,
       wConsumo,
-      t('CONSUMPTION.LABEL_TOTAL_ANUAL'),
+      t('Consumo.LABEL_cTotalAnual'),
       stFlujo,
       stTitulo,
     )
@@ -235,12 +237,13 @@ const EnergyFlow = () => {
             flex: 1,
             border: 2,
             borderColor: 'primary.light',
-            '& .MuiDataGrid-cell:hover': {
-              color: 'primary.main',
-            },
           }}
         >
-          <Box>
+          <Box
+            sx={{
+              mb: 3,
+            }}
+          >
             <Typography variant="h4">{t('ENERGY_BALANCE.FLOW_TITLE')}</Typography>
             <Typography
               variant="body"
@@ -249,12 +252,16 @@ const EnergyFlow = () => {
               }}
             />
           </Box>
-          <br />
+
           <Box
+            id="rootBox"
             sx={{
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
+              width: '100%',
+              ml: 25,
+              mb: 3,
             }}
           >
             <Box>
