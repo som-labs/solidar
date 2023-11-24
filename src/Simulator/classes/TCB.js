@@ -31,7 +31,7 @@ const TCB = {
   modoActivo: INDIVIDUAL,
 
   nombreProyecto: '',
-  territorio: 'Peninsula',
+  territorio: '',
 
   importando: false, //Es verdadero durante el proceso de importacion
   //Donde se guardan los datos a exportar
