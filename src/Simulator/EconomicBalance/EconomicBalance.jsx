@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
+import { Box } from '@mui/material'
 
 // REACT Solidar Components
 import ReduccionIBI from './ReduccionIBI'
@@ -16,22 +17,40 @@ import MonthSaving from './MonthSavings'
 import FinanceSummary from './FinanceSummary'
 import GraphAlternatives from './GraphAlternatives'
 
+// REACT Solidar Components
+import EconomicContext from '../EconomicBalance/EconomicContext'
+
 // Solidar objects
 import TCB from '../classes/TCB'
 import Economico from '../classes/Economico'
-import { Box } from '@mui/material'
 
 const EconomicBalanceStep = () => {
   const { t, i18n } = useTranslation()
-  const [cashFlow, setCashFlow] = useState([])
-  const [IBI, setIBI] = useState()
-  const [EUBonus, setEUBonus] = useState()
-  const [hucha, setHucha] = useState()
+
+  const {
+    IBI,
+    setIBI,
+    subvencionEU,
+    setSubvencionEU,
+    valorSubvencionEU,
+    setValorSubvencionEU,
+    precioInstalacionCorregido,
+    setPrecioInstalacionCorregido,
+    recognition,
+    setRecognition,
+    fee,
+    setFee,
+    periodoAmortizacion,
+    setPeriodoAmortizacion,
+    cashFlow,
+    setCashFlow,
+  } = useContext(EconomicContext)
 
   useEffect(() => {
     // El economico del consumo global*/
     TCB.economico = new Economico()
     setCashFlow(TCB.economico.cashFlow)
+    setPeriodoAmortizacion(TCB.economico.periodoAmortizacion)
   }, [])
 
   return (
@@ -54,9 +73,6 @@ const EconomicBalanceStep = () => {
               boxShadow: 2,
               border: 2,
               borderColor: 'primary.light',
-              '& .MuiDataGrid-cell:hover': {
-                color: 'primary.main',
-              },
             }}
           >
             <ReduccionIBI></ReduccionIBI>
@@ -69,9 +85,6 @@ const EconomicBalanceStep = () => {
               boxShadow: 2,
               border: 2,
               borderColor: 'primary.light',
-              '& .MuiDataGrid-cell:hover': {
-                color: 'primary.main',
-              },
             }}
           >
             <SubvencionEU></SubvencionEU>
@@ -84,9 +97,6 @@ const EconomicBalanceStep = () => {
               boxShadow: 2,
               border: 2,
               borderColor: 'primary.light',
-              '& .MuiDataGrid-cell:hover': {
-                color: 'primary.main',
-              },
             }}
           >
             <VirtualBattery></VirtualBattery>
@@ -109,9 +119,6 @@ const EconomicBalanceStep = () => {
               flex: 1,
               border: 2,
               borderColor: 'primary.light',
-              '& .MuiDataGrid-cell:hover': {
-                color: 'primary.main',
-              },
             }}
           >
             <InstallationCost></InstallationCost>
@@ -125,9 +132,6 @@ const EconomicBalanceStep = () => {
               flex: 1,
               border: 2,
               borderColor: 'primary.light',
-              '& .MuiDataGrid-cell:hover': {
-                color: 'primary.main',
-              },
             }}
           >
             <AmortizationTime></AmortizationTime>
@@ -142,9 +146,6 @@ const EconomicBalanceStep = () => {
             flex: 1,
             border: 2,
             borderColor: 'primary.light',
-            '& .MuiDataGrid-cell:hover': {
-              color: 'primary.main',
-            },
           }}
         >
           <YearSaving></YearSaving>
@@ -158,9 +159,6 @@ const EconomicBalanceStep = () => {
             flex: 1,
             border: 2,
             borderColor: 'primary.light',
-            '& .MuiDataGrid-cell:hover': {
-              color: 'primary.main',
-            },
           }}
         >
           <MonthSaving></MonthSaving>
@@ -174,12 +172,9 @@ const EconomicBalanceStep = () => {
             flex: 1,
             border: 2,
             borderColor: 'primary.light',
-            '& .MuiDataGrid-cell:hover': {
-              color: 'primary.main',
-            },
           }}
         >
-          <FinanceSummary cashFlow={cashFlow}></FinanceSummary>
+          <FinanceSummary></FinanceSummary>
         </Box>
         <Typography variant="h3">{t('ECONOMIC_BALANCE.SEGUNNUMEROPANELES')}</Typography>
         <Box
@@ -191,9 +186,6 @@ const EconomicBalanceStep = () => {
             flex: 1,
             border: 2,
             borderColor: 'primary.light',
-            '& .MuiDataGrid-cell:hover': {
-              color: 'primary.main',
-            },
           }}
         >
           {/* <GraphAlternatives></GraphAlternatives> */}

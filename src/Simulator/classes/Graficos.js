@@ -512,7 +512,7 @@ class Graficos {
       hovertemplate:
         '%{yaxis.title.text}: %{y}<br>' +
         '%{xaxis.title.text}: %{x}<br>' +
-        TCB.i18next.t('graficos_LBL_graficasConsumo') +
+        TCB.i18next.t('CONSUMPTION.HOOVER_MAPA_CONSUMO_MONTH_DAY') +
         ': %{z:.2f} kWh',
     }
 

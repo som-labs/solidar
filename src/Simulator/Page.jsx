@@ -68,6 +68,7 @@ export default function Page() {
       }
     }),
   )
+
   const [IBI, setIBI] = useState({
     valorSubvencionIBI: 0,
     porcientoSubvencionIBI: 0,
@@ -76,9 +77,11 @@ export default function Page() {
 
   const [precioInstalacionCorregido, setPrecioInstalacionCorregido] = useState()
   const [subvencionEU, setSubvencionEU] = useState('Sin')
+  const [valorSubvencionEU, setValorSubvencionEU] = useState(0)
   const [fee, setFee] = useState(0)
   const [recognition, setRecognition] = useState(0)
-  const [amortizationTime, setAmortizationTime] = useState()
+  const [periodoAmortizacion, setPeriodoAmortizacion] = useState()
+  const [cashFlow, setCashFlow] = useState([])
 
   const validaLocation = () => {
     if (TCB.BaseSolar.length > 0) {
@@ -171,14 +174,18 @@ export default function Page() {
                   setIBI,
                   subvencionEU,
                   setSubvencionEU,
+                  valorSubvencionEU,
+                  setValorSubvencionEU,
                   precioInstalacionCorregido,
                   setPrecioInstalacionCorregido,
                   recognition,
                   setRecognition,
                   fee,
                   setFee,
-                  amortizationTime,
-                  setAmortizationTime,
+                  periodoAmortizacion,
+                  setPeriodoAmortizacion,
+                  cashFlow,
+                  setCashFlow,
                 }}
               >
                 <MapContext.Provider value={{ map, setMap }}>

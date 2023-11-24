@@ -19,15 +19,26 @@ import TCB from '../classes/TCB'
 const VirtualBattery = () => {
   const { t, i18n } = useTranslation()
 
-  const { recognition, setRecognition, fee, setFee } = useContext(EconomicContext)
+  const {
+    recognition,
+    setRecognition,
+    fee,
+    setFee,
+    setCashFlow,
+    setPeriodoAmortizacion,
+  } = useContext(EconomicContext)
 
   const changeFee = () => {
     TCB.cuotaHucha = parseFloat(fee)
     TCB.economico.calculoFinanciero(100, 100)
+    setCashFlow(TCB.economico.cashFlow)
+    setPeriodoAmortizacion(TCB.economico.periodoAmortizacion)
   }
   const changeRecognition = () => {
     TCB.coefHucha = parseFloat(recognition)
     TCB.economico.calculoFinanciero(100, 100)
+    setCashFlow(TCB.economico.cashFlow)
+    setPeriodoAmortizacion(TCB.economico.periodoAmortizacion)
   }
 
   useEffect(() => {

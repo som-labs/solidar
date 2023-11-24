@@ -10,12 +10,14 @@ import Container from '@mui/material/Container'
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
+import EconomicContext from './EconomicContext'
 
-export default function FinanceSummary(props) {
+export default function FinanceSummary() {
   const { t, i18n } = useTranslation()
 
-  const { cashFlow } = props
-
+  const { cashFlow } = useContext(EconomicContext)
+  if (cashFlow === undefined) return
+  console.log(cashFlow)
   function getRowId(row) {
     return row.ano
   }
@@ -34,6 +36,9 @@ export default function FinanceSummary(props) {
       editable: true,
       flex: 1,
       description: t('ECONOMIC_BALANCE.TOOLTIP_PREVIO'),
+      renderCell: (params) => {
+        return UTIL.formatoValor('dinero', params.value)
+      },
     },
     {
       field: 'inversion',
@@ -41,6 +46,9 @@ export default function FinanceSummary(props) {
       editable: true,
       flex: 1,
       description: t('ECONOMIC_BALANCE.TOOLTIP_INVERSION'),
+      renderCell: (params) => {
+        return UTIL.formatoValor('dinero', params.value)
+      },
     },
     {
       field: 'ahorro',
@@ -48,6 +56,9 @@ export default function FinanceSummary(props) {
       editable: true,
       flex: 1,
       description: t('ECONOMIC_BALANCE.TOOLTIP_AHORRO'),
+      renderCell: (params) => {
+        return UTIL.formatoValor('dinero', params.value)
+      },
     },
     {
       field: 'subvencion',
@@ -55,6 +66,9 @@ export default function FinanceSummary(props) {
       editable: true,
       flex: 1,
       description: t('ECONOMIC_BALANCE.TOOLTIP_SUBVENCION'),
+      renderCell: (params) => {
+        return UTIL.formatoValor('dinero', params.value)
+      },
     },
     {
       field: 'IBI',
@@ -62,6 +76,9 @@ export default function FinanceSummary(props) {
       editable: true,
       flex: 1,
       description: t('ECONOMIC_BALANCE.TOOLTIP_IBI'),
+      renderCell: (params) => {
+        return UTIL.formatoValor('dinero', params.value)
+      },
     },
     {
       field: 'pendiente',
@@ -69,6 +86,9 @@ export default function FinanceSummary(props) {
       editable: true,
       flex: 1,
       description: t('ECONOMIC_BALANCE.TOOLTIP_PENDIENTE'),
+      renderCell: (params) => {
+        return UTIL.formatoValor('dinero', params.value)
+      },
     },
   ]
   return (
@@ -93,14 +113,9 @@ export default function FinanceSummary(props) {
             rows={cashFlow}
             columns={columns}
             hideFooter={true}
-            sx={{
-              boxShadow: 2,
-              border: 2,
-              borderColor: 'primary.light',
-              '& .MuiDataGrid-cell:hover': {
-                color: 'primary.main',
-              },
-            }}
+            getRowStyle={(params) => ({
+              backgroundColor: params.row.pendiente < 0 ? 'red' : 'inherit',
+            })}
           />
         </Box>
         <Box

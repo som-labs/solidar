@@ -33,7 +33,7 @@ import BaseSolar from '../classes/BaseSolar'
 export default function DialogNewBaseSolar({ data, editing, onClose }) {
   const { t, i18n } = useTranslation()
 
-  const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState(data)
   const { bases, setBases } = useContext(TCBContext)
 
   //REVISAR: falta controlar la salida con backdrop click para borrar la geometria previamente creada
@@ -190,6 +190,7 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
 
     if (!editing) {
       // We are creating a new base
+      console.log(formData)
       baseIndex = TCB.BaseSolar.push(new BaseSolar(formData)) - 1
       formData.potenciaMaxima = TCB.BaseSolar[baseIndex].potenciaMaxima
       formData.areaReal = TCB.BaseSolar[baseIndex].areaReal

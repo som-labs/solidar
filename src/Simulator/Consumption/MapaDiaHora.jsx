@@ -11,18 +11,20 @@ import Box from '@mui/material/Box'
 
 import ProfileDayConsumption from './ProfileDayConsumption'
 
-const MapaDiaHora = (tconsumo) => {
+export default function MapaDiaHora({ activo }) {
   const { t, i18n } = useTranslation()
   const [diaActivo, setdiaActivo] = useState()
 
   //REVISAR: ussando el state no funcion
   //const [consumo, setConsumo] = useState(tconsumo.children)
-  const consumo = tconsumo.children
   const divGraph = useRef()
 
-  if (tconsumo.children === undefined) {
-    return <></>
-  }
+  if (activo === undefined) return
+  console.log(activo)
+  const consumo = TCB.TipoConsumo.find((t) => {
+    return t.idTipoConsumo === activo.idTipoConsumo
+  })
+  console.log(consumo)
 
   const i18nextMes = () => {
     let _mes = []
@@ -68,7 +70,7 @@ const MapaDiaHora = (tconsumo) => {
   }
 
   const layout_resumen = {
-    xaxis: { title: t('GRAPHICS.LABEL_HORA') },
+    xaxis: { title: t('GRAPHICS.LABEL_HORA'), dtick: 2 },
     yaxis: {
       tickvals: UTIL.indiceDia.map((e) => {
         return e[1]
@@ -134,66 +136,55 @@ const MapaDiaHora = (tconsumo) => {
       </Box>
       <br></br>
       {/*REVISAR: no esta funcionando bien el flex */}
+
       <Box
+        id="divGraph"
         sx={{
+          ml: '0.3rem',
           display: 'flex',
+          flexWrap: 'wrap',
           width: '100%',
+          boxShadow: 2,
+          border: 2,
+          borderColor: 'primary.light',
         }}
         justifyContent="center"
       >
+        <Typography variant="h5" align="center">
+          {t('CONSUMPTION.LABEL_TITLE_MAP_MONTH_DAY')}
+        </Typography>
+        <br></br>
+        <div ref={divGraph}>
+          <Plot
+            data={[g_consumo]}
+            layout={layout_resumen}
+            style={{ width: '100%' }}
+            onClick={(event) => handleClick(event)}
+          />
+        </div>
+      </Box>
+
+      {diaActivo ? (
         <Box
           sx={{
             ml: '0.3rem',
             display: 'flex',
             flexWrap: 'wrap',
+            width: '100%',
             boxShadow: 2,
-            flex: 1,
+
             border: 2,
             borderColor: 'primary.light',
-            '& .MuiDataGrid-cell:hover': {
-              color: 'primary.main',
-            },
           }}
+          justifyContent="center"
         >
-          <Typography variant="h5" align="center">
-            {t('CONSUMPTION.LABEL_TITLE_MAP_MONTH_DAY')}
-          </Typography>
-          <br></br>
-          <div ref={divGraph}>
-            <Plot
-              data={[g_consumo]}
-              layout={layout_resumen}
-              style={{ width: '100%' }}
-              onClick={(event) => handleClick(event)}
-            />
+          <div id="profile">
+            <ProfileDayConsumption consumo={consumo} diaActivo={diaActivo} />
           </div>
         </Box>
-
-        {diaActivo ? (
-          <Box
-            sx={{
-              ml: '0.3rem',
-              display: 'flex',
-              flexWrap: 'wrap',
-              boxShadow: 2,
-              flex: 1,
-              border: 2,
-              borderColor: 'primary.light',
-              '& .MuiDataGrid-cell:hover': {
-                color: 'primary.main',
-              },
-            }}
-          >
-            <div id="profile">
-              <ProfileDayConsumption consumo={consumo} diaActivo={diaActivo} />
-            </div>
-          </Box>
-        ) : (
-          <></>
-        )}
-      </Box>
+      ) : (
+        <></>
+      )}
     </>
   )
 }
-
-export default MapaDiaHora

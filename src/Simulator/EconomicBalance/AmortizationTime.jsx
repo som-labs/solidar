@@ -20,11 +20,7 @@ const AmortizationTime = () => {
   const { t, i18n } = useTranslation()
 
   useContext(EconomicContext)
-  const { amortizationTime, setAmortizationTime } = useContext(EconomicContext)
-
-  useEffect(() => {
-    setAmortizationTime(TCB.economico.amortizationTime)
-  }, [])
+  const { periodoAmortizacion } = useContext(EconomicContext)
 
   return (
     <>
@@ -49,7 +45,7 @@ const AmortizationTime = () => {
           />
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <Typography variant="h4" color={'green'} textAlign={'center'}>
-              {TCB.economico.periodoAmortizacion}
+              {periodoAmortizacion}
             </Typography>
             <Typography variant="body">
               {t('ECONOMIC_BALANCE.PROMPT_AMORTIZATION_TIME')}
