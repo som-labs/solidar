@@ -9,6 +9,7 @@ import Grid from '@mui/material/Grid'
 
 // REACT Solidar Components
 import EconomicContext from '../EconomicBalance/EconomicContext'
+import GraphBoxSavings from '../EconomicBalance/GraphBoxSavings'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
@@ -42,7 +43,7 @@ export default function SummaryEconomicBalance() {
               flexWrap: 'wrap',
               width: '100%',
               justifyContent: 'center',
-              allignItems: 'center',
+              alignItems: 'center',
             }}
           >
             <Box
@@ -55,7 +56,7 @@ export default function SummaryEconomicBalance() {
                 //border: 2,
                 // borderColor: 'primary.light',
                 justifyContent: 'center',
-                allignItems: 'center',
+                alignItems: 'center',
               }}
             >
               <Typography variant="h4" color={'green'}>
@@ -79,7 +80,7 @@ export default function SummaryEconomicBalance() {
                 //border: 2,
                 borderColor: 'green',
                 justifyContent: 'center',
-                allignItems: 'center',
+                alignItems: 'center',
                 borderLeft: '3px dashed green',
                 borderRight: '3px dashed green',
               }}
@@ -101,7 +102,7 @@ export default function SummaryEconomicBalance() {
                 //border: 2,
                 // borderColor: 'primary.light',
                 justifyContent: 'center',
-                allignItems: 'center',
+                alignItems: 'center',
               }}
             >
               <Typography variant="h4" color={'green'}>
@@ -121,7 +122,7 @@ export default function SummaryEconomicBalance() {
           </Box>
           <br />
           <br />
-          <Box
+          {/* <Box
             sx={{
               mr: '0.3rem',
               display: 'flex',
@@ -131,7 +132,7 @@ export default function SummaryEconomicBalance() {
               border: 2,
               borderColor: 'primary.light',
               justifyContent: 'center',
-              allignItems: 'center',
+              alignItems: 'center',
             }}
           >
             <Box
@@ -156,7 +157,7 @@ export default function SummaryEconomicBalance() {
                 sx={{
                   mr: '0.3rem',
                   display: 'flex',
-                  allignItems: 'center',
+                  alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
@@ -169,7 +170,7 @@ export default function SummaryEconomicBalance() {
                 sx={{
                   mr: '0.3rem',
                   display: 'flex',
-                  allignItems: 'center',
+                  alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
@@ -192,7 +193,7 @@ export default function SummaryEconomicBalance() {
                   ),
                   mr: '0.3rem',
                   display: 'flex',
-                  allignItems: 'center',
+                  alignItems: 'center',
                   justifyContent: 'center',
                   backgroundColor: 'rgba(0,0,0,0)',
                   flexFlow: 'column',
@@ -221,7 +222,7 @@ export default function SummaryEconomicBalance() {
                   ),
                   mr: '0.3rem',
                   display: 'flex',
-                  allignItems: 'center',
+                  alignItems: 'center',
                   justifyContent: 'center',
                   backgroundColor: '#FFB266',
                 }}
@@ -231,7 +232,7 @@ export default function SummaryEconomicBalance() {
                 sx={{
                   mr: '0.3rem',
                   display: 'flex',
-                  allignItems: 'center',
+                  alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
@@ -244,7 +245,7 @@ export default function SummaryEconomicBalance() {
                 sx={{
                   mr: '0.3rem',
                   display: 'flex',
-                  allignItems: 'center',
+                  alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
@@ -269,7 +270,7 @@ export default function SummaryEconomicBalance() {
                   ),
                   mr: '0.3rem',
                   display: 'flex',
-                  allignItems: 'center',
+                  alignItems: 'center',
                   justifyContent: 'center',
                   backgroundColor: 'rgba(0,0,0,0)',
                 }}
@@ -283,7 +284,7 @@ export default function SummaryEconomicBalance() {
                   ),
                   mr: '0.3rem',
                   display: 'flex',
-                  allignItems: 'center',
+                  alignItems: 'center',
                   justifyContent: 'center',
                   backgroundColor: 'grey',
                 }}
@@ -293,7 +294,7 @@ export default function SummaryEconomicBalance() {
                 sx={{
                   mr: '0.3rem',
                   display: 'flex',
-                  allignItems: 'center',
+                  alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
@@ -306,7 +307,7 @@ export default function SummaryEconomicBalance() {
                 sx={{
                   mr: '0.3rem',
                   display: 'flex',
-                  allignItems: 'center',
+                  alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
@@ -315,8 +316,8 @@ export default function SummaryEconomicBalance() {
                 </Typography>
               </Box>
             </Box>
-          </Box>
-
+          </Box> */}
+          <GraphBoxSavings></GraphBoxSavings>
           <Box
             sx={{
               display: 'flex',

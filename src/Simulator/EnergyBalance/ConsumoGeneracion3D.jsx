@@ -72,30 +72,22 @@ export default function ConsumoGeneracion3D() {
       xanchor: 'left',
       y: 1.1,
     },
-    paper_bgcolor: 'rgba(0,0,0,0)',
-    plot_bgcolor: 'rgba(0,0,0,0)',
-    title: {
-      text: 'Titulo',
-      // t('ENERGY_BALANCE.LABEL_LEYENDA_PRODUCCION') +
-      // ' vs ' +
-      // t('ENERGY_BALANCE.LABEL_LEYENDA_CONSUMO'),
-      x: 0.1,
-      y: 0.1,
+    paper_bgcolor: 'rgba(10,0,0,1)',
+    plot_bgcolor: 'rgba(10,0,0,0)',
+    xaxis: { title: 'pericles' }, //{ title: t('GRAPHICS.LABEL_HORA') },
+    yaxis: {
+      title: t('GRAPHICS.LABEL_DIA'),
+      tickvals: UTIL.indiceDia.map((e) => {
+        return e[1]
+      }),
+      ticktext: mesMapa,
     },
+    zaxis: { title: 'kWh' },
     scene: {
       camera: { eye: { x: -2, y: -1.5, z: 1 } },
       //xaxis: { title: t('GRAPHICS.LABEL_HORA') },
-      xaxis: { title: 'GRAPHICS.LABEL_HORA' },
-      yaxis: {
-        title: t('GRAPHICS.LABEL_DIA'),
-        tickvals: UTIL.indiceDia.map((e) => {
-          return e[1]
-        }),
-        ticktext: mesMapa,
-      },
-      zaxis: { title: 'kWh' },
     },
-    autosize: false,
+    autosize: true,
     margin: {
       l: 0,
       r: 0,

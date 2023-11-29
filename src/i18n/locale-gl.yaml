@@ -163,6 +163,18 @@ ENERGY_BALANCE:
   LABEL_ENERGIA_PANELES: Enerxía obtida dos paneis
   TITLE_GRAPH_MONTH_ENERGY_BALANCE: Produción media mensual con {{potencia}} instalado / consumo mensual medio
 
+  MSG_disclaimerProduccion: |
+    Aviso-> Datos para estimar a produción de paneis solares obtéñense de PVGIS. <a href:"https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en">Ver documentación aqui</a>
+    <br /><br />
+    Tócanse en conta: <ul> <li> A temperatura do aire a 2 metros e a velocidade do vento a 10 metros </li> <li> O efecto da temperatura no rendemento </li> <li> A variación Do espectro electromagnético ao longo do día </li> <li> A aerosoles medios no ambiente (non cambios repentinos) </li> </ul> 
+    Non se teñen en conta os seguintes: <ul><li>o efecto das nevadas</li><li>a acumulación de po e sucidade nos paneis</li><li>perda por sombras próximas</li></ul><br>
+
+  LABEL_fuenteInfoCO2: Datos de conversion para {{territorio}}
+  LABEL_kgCO2AnualRenovable: se enerxia é <br />de fonte renovable
+  TOOLTIP_kgCO2AnualRenovable: O CO2 (kg) non se expulsou á atmosfera se a orixe da enerxía era peninsular e renovable. Pódese modificar na xanela do parámetro.
+  LABEL_kgCO2AnualNoRenovable: se enerxia é <br />de fonte no renovable
+  TOOLTIP_kgCO2AnualNoRenovable: O CO2 (kg) non se expulsou á atmosfera se a orixe da enerxía era peninsular e non -non. Pódese modificar na xanela do parámetro.
+
 ECONOMIC_BALANCE:
   TITLE: Balance Económico
   DESCRIPTION: |
@@ -412,11 +424,7 @@ RESULTADOS:
   autosuficienciaMediaAnual_TT: Porcentaxe media de enerxía consumida por paneis solares. É unha medida de independencia respecto da rede de electricidade
   autosuficienciaMaxima_LBL: Autosuficiencia máxima
   autosuficienciaMaxima_TT: A máxima auto -suficiencia que se podería conseguir se se poida consumir todo o excedente fotovoltaico (xa sexa con baterías e/ou cambiando hábitos de consumo).
-  fuenteInfoCO2_LBL: Datos de conversion para {{territorio}}
-  kgCO2AnualRenovable_LBL: kg de CO2 aforrado ao ano se é de fonte renovable
-  kgCO2AnualRenovable_TT: O CO2 (kg) non se expulsou á atmosfera se a orixe da enerxía era peninsular e renovable. Pódese modificar na xanela do parámetro.
-  kgCO2AnualNoRenovable_LBL: Kg de CO2 ao ano gardado se non se pode producir fonte
-  kgCO2AnualNoRenovable_TT: O CO2 (kg) non se expulsou á atmosfera se a orixe da enerxía era peninsular e non -non. Pódese modificar na xanela do parámetro.
+
   limiteSubvencionEU_LBL: Límite de subvencións da UE
   resultados_LBL_graficoResumen: Gráfica de resumo do consumo fronte á produción
   resultados_LBL_pendienteCalculo: Pendente

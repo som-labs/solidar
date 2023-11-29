@@ -10,7 +10,8 @@ import Tooltip from '@mui/material/Tooltip'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import Box from '@mui/material/Box'
-import { DataGrid } from '@mui/x-data-grid'
+
+import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid'
 
 // REACT Solidar Components
 import TCBContext from '../TCBContext'
@@ -162,21 +163,61 @@ export default function ConsumptionSummary() {
     setActivo(undefined)
   }
 
+  function newConsumption() {
+    return (
+      <GridToolbarContainer>
+        <Tooltip
+          title={t('CONSUMPTION.TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO')}
+          placement="top"
+        >
+          <Button startIcon={<AddIcon />} onClick={openNewConsumptionDialog}>
+            {t('CONSUMPTION.LABEL_BUTTON_NUEVO_TIPOCONSUMO')}
+          </Button>
+        </Tooltip>
+      </GridToolbarContainer>
+    )
+  }
+
+  function footerSummary() {
+    return (
+      <Box
+        sx={{
+          mt: '0.3rem',
+          display: 'flex',
+          flexWrap: 'wrap',
+          boxShadow: 2,
+          flex: 1,
+          border: 2,
+          textAlign: 'center',
+          borderColor: 'primary.light',
+          backgroundColor: 'rgba(220, 249, 233, 1)',
+        }}
+        justifyContent="center"
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            textAlign: 'center',
+          }}
+          textAlign={'center'}
+          dangerouslySetInnerHTML={{
+            __html: t(
+              t('CONSUMPTION.TOTAL_DEMMAND', {
+                consumoTotal: formatoValor(
+                  'energia',
+                  Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
+                ),
+              }),
+            ),
+          }}
+        />
+      </Box>
+    )
+  }
+
   return (
     <>
       <Container>
-        <Box>
-          {/* Este boton permite crear un objeto TipoConsumo desde un formulario modal */}
-          <br />
-          <Tooltip
-            title={t('CONSUMPTION.TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO')}
-            placement="top"
-          >
-            <Button startIcon={<AddIcon />} onClick={openNewConsumptionDialog}>
-              {t('CONSUMPTION.LABEL_BUTTON_NUEVO_TIPOCONSUMO')}
-            </Button>
-          </Tooltip>
-        </Box>
         {/* Consumption types table 
         REVISAR: hay que permitir ver el gráfico de la suma de todos los consumos */}
         <DataGrid
@@ -184,7 +225,7 @@ export default function ConsumptionSummary() {
           getRowId={getRowId}
           rows={tipoConsumo}
           columns={columns}
-          hideFooter={true}
+          hideFooter={false}
           sx={{
             boxShadow: 2,
             border: 2,
@@ -196,50 +237,8 @@ export default function ConsumptionSummary() {
           onCellEditStop={(params, event) => {
             changeTC(params, event)
           }}
+          slots={{ toolbar: newConsumption, footer: footerSummary }}
         />
-
-        <Box
-          sx={{
-            mt: '0.3rem',
-            display: 'flex',
-            flexWrap: 'wrap',
-            boxShadow: 2,
-            flex: 1,
-            border: 2,
-            textAlign: 'center',
-            borderColor: 'primary.light',
-            '& .MuiDataGrid-cell:hover': {
-              color: 'primary.main',
-            },
-            backgroundColor: 'rgba(220, 249, 233, 1)',
-          }}
-          justifyContent="center"
-        >
-          <Typography
-            variant="h6"
-            sx={{
-              textAlign: 'center',
-            }}
-            textAlign={'center'}
-            dangerouslySetInnerHTML={{
-              __html: t(
-                t('CONSUMPTION.TOTAL_DEMMAND', {
-                  consumoTotal: formatoValor(
-                    'energia',
-                    Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
-                  ),
-                }),
-              ),
-            }}
-          />
-        </Box>
-
-        {t('CONSUMPTION.TOTAL_DEMMAND', {
-          consumoTotal: formatoValor(
-            'energia',
-            Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
-          ),
-        })}
         <Typography variant="h6"></Typography>
 
         {activo && (
@@ -252,9 +251,6 @@ export default function ConsumptionSummary() {
                 boxShadow: 2,
                 border: 2,
                 borderColor: 'primary.light',
-                '& .MuiDataGrid-cell:hover': {
-                  color: 'primary.main',
-                },
               }}
             >
               <MapaMesHora activo={activo}></MapaMesHora>
@@ -267,9 +263,6 @@ export default function ConsumptionSummary() {
                 boxShadow: 2,
                 border: 2,
                 borderColor: 'primary.light',
-                '& .MuiDataGrid-cell:hover': {
-                  color: 'primary.main',
-                },
               }}
             >
               <MapaDiaHora activo={activo}></MapaDiaHora>

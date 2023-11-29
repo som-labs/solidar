@@ -133,28 +133,10 @@ export default function BasesSummary() {
     })
   }
 
-  return (
-    <>
-      <Typography variant="h3">{t('LOCATION.LABEL_BASES_SUMMARY')}</Typography>
-      <Typography variant="body">{t('LOCATION.PROMPT_BASES_SUMMARY')}</Typography>
-      <Box>
-        <DataGrid
-          getRowId={getRowId}
-          rows={bases}
-          columns={columns}
-          hideFooter={true}
-          autoHeight
-          sx={{
-            boxShadow: 2,
-            border: 2,
-            borderColor: 'primary.light',
-            '& .MuiDataGrid-cell:hover': {
-              color: 'primary.main',
-            },
-          }}
-        />
-      </Box>
-      {/* REVISAR: Cual debería ser el colorbackground de los boxes con informacion relevante */}
+  function footerSummary() {
+    // REVISAR: Cual debería ser el colorbackground de los boxes con informacion relevante */
+
+    return (
       <Box
         sx={{
           mt: '0.3rem',
@@ -165,9 +147,6 @@ export default function BasesSummary() {
           border: 2,
           textAlign: 'center',
           borderColor: 'primary.light',
-          '& .MuiDataGrid-cell:hover': {
-            color: 'primary.main',
-          },
           backgroundColor: 'rgba(220, 249, 233, 1)',
         }}
         justifyContent="center"
@@ -179,19 +158,39 @@ export default function BasesSummary() {
           }}
           textAlign={'center'}
           dangerouslySetInnerHTML={{
-            __html: t(
-              t('LOCATION.MSG_AREA_TOTAL', {
-                areaTotal: UTIL.formatoValor(
-                  'superficie',
-                  Math.round(bases.reduce((sum, tBase) => sum + tBase.areaReal, 0)),
-                ),
-                potenciaMaxima: UTIL.formatoValor(
-                  'potenciaMaxima',
-                  Math.trunc(bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0)),
-                ),
-              }),
-            ),
+            __html: t('LOCATION.MSG_AREA_TOTAL', {
+              areaTotal: UTIL.formatoValor(
+                'areaReal',
+                Math.round(bases.reduce((sum, tBase) => sum + tBase.areaReal, 0)),
+              ),
+              potenciaMaxima: UTIL.formatoValor(
+                'potenciaMaxima',
+                Math.trunc(bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0)),
+              ),
+            }),
           }}
+        />
+      </Box>
+    )
+  }
+
+  return (
+    <>
+      <Typography variant="h3">{t('LOCATION.LABEL_BASES_SUMMARY')}</Typography>
+      <Typography variant="body">{t('LOCATION.PROMPT_BASES_SUMMARY')}</Typography>
+      <Box>
+        <DataGrid
+          getRowId={getRowId}
+          rows={bases}
+          columns={columns}
+          hideFooter={false}
+          autoHeight
+          sx={{
+            boxShadow: 2,
+            border: 2,
+            borderColor: 'primary.light',
+          }}
+          slots={{ footer: footerSummary }}
         />
       </Box>
     </>

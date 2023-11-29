@@ -160,7 +160,16 @@ ENERGY_BALANCE:
   LABEL_ENERGIA_RED: Energy obtained from the network
   LABEL_ENERGIA_PANELES: Energy obtained from the panels
   TITLE_GRAPH_MONTH_ENERGY_BALANCE: Monthly average production with {{potencia}} installed / average monthly consumption
-
+  resultados_MSG_disclaimerProduccion: |
+    NOTICE-> Data for estimating the production of solar panels are obtained from Pvgis. <a href:"https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en">Ver documentación aqui</a>
+    <br /><br />
+    They are taken into account:  <ul> <li> The air temperature at 2 meters and the wind speed at 10 meters </li> <li> The effect of the temperature on the performance </li> <li> The Variation of the electromagnetic spectrum throughout the day </li> <li> The average aerosols in the environment (not sudden changes) </li> </ul>
+    The following are not taken into account:  <ul><li>the effect of snowfall</li><li>the accumulation of dust and dirt on the panels</li><li>loss due to close shadows</li> </ul><br>
+  LABEL_fuenteInfoCO2: Conversion data for {{territorio}}
+  LABEL_kgCO2AnualRenovable: If energy is provided <br />from renewable source
+  TOOLTIP_kgCO2AnualRenovable: CO2 (kg) not expelled to the atmosphere if the origin of energy were peninsular and renewable. It can be modified in the parameter window.
+  LABEL_kgCO2AnualNoRenovable: If energy is provided <br />from non renewable source
+  TOOLTIP_kgCO2AnualNoRenovable: CO2 (kg) not expelled to the atmosphere if the origin of energy were peninsular and non -renewable. It can be modified in the parameter window.
 ECONOMIC_BALANCE:
   TITLE: Economic Balance
   DESCRIPTION: |
@@ -368,9 +377,7 @@ Resultados:
   resultados_LBL_repartoPorGrupoHdr: Group consumption and assignment to common zones
   resultados_asignacionZonasComunes_LBL: Percentage allocation to common zones
   resultados_asignacionZonasComunes_TT: It represents the percentage of the total production reserved for each common zone
-  resultados_MSG_disclaimerProduccion: NOTICE-> Data for estimating the production of solar panels are obtained from Pvgis. According to their documentation
-  # resultados_MSG_disclaimerProduccionSi: They are taken into account:  <ul> <li> The air temperature at 2 meters and the wind speed at 10 meters </li> <li> The effect of the temperature on the performance </li> <li> The Variation of the electromagnetic spectrum throughout the day </li> <li> The average aerosols in the environment (not sudden changes) </li> </ul>
-  # resultados_MSG_disclaimerProduccionNo: The following are not taken into account:  <ul><li>the effect of snowfall</li><li>the accumulation of dust and dirt on the panels</li><li>loss due to close shadows</li> </ul><br>
+
   botonInfoBase_LBL:
   botonInfoBase_TT: Detailed information of the selected base
   potenciaUnitaria_LBL: Power per panel in kWp
@@ -406,11 +413,7 @@ Resultados:
   autosuficienciaMediaAnual_TT: Average percentage of energy consumed from solar panels. It is a measure of independence regarding the electricity grid
   autosuficienciaMaxima_LBL: Maximum self-sufficiency
   autosuficienciaMaxima_TT: The maximum self-sufficiency that could be achieved if all the photovoltaic surplus could be consumed (either with batteries and/or by changing consumption habits).\nThe theoretical maximum number of panels is reached when this variable reaches 100%.
-  fuenteInfoCO2_LBL: Conversion data for {{territorio}}
-  kgCO2AnualRenovable_LBL: kg of CO2 saved per year if renewable source
-  kgCO2AnualRenovable_TT: CO2 (kg) not expelled to the atmosphere if the origin of energy were peninsular and renewable. It can be modified in the parameter window.
-  kgCO2AnualNoRenovable_LBL: Kg of CO2 per year saved if non -renewable source
-  kgCO2AnualNoRenovable_TT: CO2 (kg) not expelled to the atmosphere if the origin of energy were peninsular and non -renewable. It can be modified in the parameter window.
+
   limiteSubvencionEU_LBL: EU grant limit
   resultados_LBL_graficoResumen: Graphic consumption summary versus production
   resultados_LBL_pendienteCalculo: Pending

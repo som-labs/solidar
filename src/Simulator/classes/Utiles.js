@@ -51,7 +51,7 @@ const campos = {
   filas: { unidad: '', decimales: 0, salvar: true, mostrar: true, order: 8 },
   panelesMaximo: { unidad: '', decimales: 0, salvar: true, mostrar: true, order: 9 },
   tipoBaseSolar: { unidad: '', decimales: 0, salvar: false, mostrar: false },
-  areaReal: { unidad: ' m²', decimales: 2, salvar: true, mostrar: true, order: 10 },
+  areaReal: { unidad: ' m²', decimales: 0, salvar: true, mostrar: true, order: 10 },
   acimut: { unidad: 'º', decimales: 2, salvar: true, mostrar: true, order: 11 },
   inAcimut: { unidad: 'º', decimales: 2, salvar: true, mostrar: true, order: 12 },
   inclinacionOptima: { unidad: '', salvar: true, mostrar: true, order: 13 },
@@ -65,7 +65,7 @@ const campos = {
   },
   potenciaMaxima: {
     unidad: ' kWp',
-    decimales: 3,
+    decimales: 0,
     salvar: true,
     mostrar: true,
     order: 16,

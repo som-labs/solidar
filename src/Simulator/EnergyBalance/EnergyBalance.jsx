@@ -26,11 +26,14 @@ import DialogProperties from '../components/DialogProperties'
 
 export default function EnergyBalanceStep() {
   const { t, i18n } = useTranslation()
-  const [resumen, setResumen] = useState([])
+  const [monthlyData, setMonthlyData] = useState({})
+  const [yearlyData, setYearlyData] = useState({})
   const [openDialog, closeDialog] = useDialog()
-  const { bases, setBases, tipoConsumo, setTipoConsumo } = useContext(TCBContext)
+  const { bases, setBases } = useContext(TCBContext)
 
-  function getRowId(row) {
+  // const [gridRows, setGridRows] = useState(rows)
+
+  const getRowId = (row) => {
     return row.idBaseSolar
   }
 
@@ -44,12 +47,21 @@ export default function EnergyBalanceStep() {
     },
     {
       field: 'paneles',
+      editable: true,
       headerName: 'Paneles',
       headerAlign: 'center',
       flex: 0.5,
       align: 'center',
       renderCell: (params) => {
         return UTIL.formatoValor('paneles', params.value)
+      },
+      preProcessEditCellProps: (params) => {
+        console.log(params)
+        const hasError =
+          params.props.value * params.row.potenciaUnitaria > params.row.potenciaMaxima
+        console.log(hasError)
+        if (hasError) alert(t('resultados_MSG_excesoPotencia'))
+        return { ...params.props, error: hasError }
       },
     },
     {
@@ -64,6 +76,7 @@ export default function EnergyBalanceStep() {
     },
     {
       field: 'potenciaUnitaria',
+      editable: true,
       headerName: 'Potencia Unitaria',
       headerAlign: 'center',
       flex: 1,
@@ -107,7 +120,34 @@ export default function EnergyBalanceStep() {
     })
   }
 
-  //El proceso de PreparaEnergyBalance ha hecho cambios sobre las bases que se crearon en location por lo que se deben actualizar
+  function footerSummary() {
+    return (
+      <Box
+        sx={{
+          mt: '0.3rem',
+          display: 'flex',
+          flexWrap: 'wrap',
+          boxShadow: 2,
+          flex: 1,
+          border: 2,
+          textAlign: 'center',
+          borderColor: 'primary.light',
+          backgroundColor: 'rgba(220, 249, 233, 1)',
+        }}
+        justifyContent="center"
+      >
+        <Typography variant="h5">
+          {t('ENERGY_BALANCE.TOTAL_PANELS', {
+            paneles: Math.round(
+              bases.reduce((sum, tBase) => sum + parseInt(tBase.paneles), 0),
+            ),
+          })}
+        </Typography>
+      </Box>
+    )
+  }
+
+  // El proceso de PreparaEnergyBalance ejecutado como exit del wizard ha hecho cambios sobre las bases que se crearon en location por lo que se deben actualizar
   // El optimizador ha asignado la instalacion
   // El rendimiento ha podido cambiar la inclinacion y por lo tanto el area, la configuracion de paneles y la potenciaMaxima
   // Si se usaron angulos optimos tambien ha cambiado el acimut.
@@ -127,54 +167,109 @@ export default function EnergyBalanceStep() {
       oldBases[nIndex].panelesMaximo = base.panelesMaximo
     })
     setBases(oldBases)
-    setResumen(TCB.produccion.resumenMensual('suma'))
+    setMonthlyData({
+      deficit: TCB.balance.resumenMensual('deficit'),
+      autoconsumo: TCB.balance.resumenMensual('autoconsumo'),
+      excedente: TCB.balance.resumenMensual('excedente'),
+    })
+    setYearlyData({
+      consumo: TCB.consumo.cTotalAnual,
+      produccion: TCB.produccion.pTotalAnual,
+      deficit: TCB.balance.deficitAnual,
+      autoconsumo: TCB.balance.autoconsumo,
+      excedente: TCB.balance.excedenteAnual,
+    })
   }, [])
 
   useEffect(() => {
     // Se realiza el cálculo de todas las variables de energia del sistema
+    console.log('a calcula resultados')
     calculaResultados()
-    setResumen(TCB.produccion.resumenMensual('suma'))
+    setMonthlyData({
+      deficit: TCB.balance.resumenMensual('deficit'),
+      autoconsumo: TCB.balance.resumenMensual('autoconsumo'),
+      excedente: TCB.balance.resumenMensual('excedente'),
+    })
+    setYearlyData({
+      consumo: TCB.consumo.cTotalAnual,
+      produccion: TCB.produccion.pTotalAnual,
+      deficit: TCB.balance.deficitAnual,
+      autoconsumo: TCB.balance.autoconsumo,
+      excedente: TCB.balance.excedenteAnual,
+    })
   }, [bases])
+
+  /**
+   * Funcion para gestionar el evento generado por cambio de paneles o potenciaUnitaria en la tabla de bases
+   * @param {params} DataGrid parmas object {field, row} que ha cambiado de valor
+   * @param {string} propiedad Puede ser paneles o potenica unitaria
+   */
+
+  function nuevaInstalacion(params, event) {
+    let tmpPaneles = params.field === 'paneles' ? event.target.value : params.row.paneles
+    let tmpPotenciaUnitaria =
+      params.field === 'potenciaUnitaria'
+        ? event.target.value
+        : params.row.potenciaUnitaria
+
+    let baseActiva = TCB.BaseSolar.find((base) => {
+      return base.idBaseSolar === params.id
+    })
+    baseActiva.instalacion.potenciaUnitaria = tmpPotenciaUnitaria
+    baseActiva.instalacion.paneles = tmpPaneles
+    TCB.totalPaneles = TCB.BaseSolar.reduce((a, b) => {
+      return a + b.instalacion.paneles
+    }, 0)
+
+    const updateBases = bases.map((row) => {
+      if (row.idBaseSolar === params.id) {
+        return {
+          ...row,
+          [params.field]: event.target.value,
+          ['potenciaTotal']: tmpPaneles * tmpPotenciaUnitaria,
+        }
+      }
+      return row
+    })
+    setBases(updateBases)
+  }
 
   return (
     <>
       <Container>
-        <Typography variant="h3">{t('ENERGY_BALANCE.TITLE')}</Typography>
+        <Box>
+          <Typography variant="h3">{t('ENERGY_BALANCE.TITLE')}</Typography>
 
-        <Typography
-          variant="body"
-          dangerouslySetInnerHTML={{
-            __html: t('ENERGY_BALANCE.DESCRIPTION'),
-          }}
-        />
-        <div>
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('ENERGY_BALANCE.DESCRIPTION'),
+            }}
+          />
+
           <Typography variant="body">{t('tabla bases asignadas')}</Typography>
           <DataGrid
             getRowId={getRowId}
+            autoHeight
+            onCellEditStop={(params, event) => {
+              nuevaInstalacion(params, event)
+            }}
             rows={bases}
             columns={columns}
-            hideFooter={true}
+            hideFooter={false}
             sx={{
               boxShadow: 2,
               border: 2,
               borderColor: 'primary.light',
             }}
+            slots={{ footer: footerSummary }}
           />
-        </div>
-        <div>
-          <Typography variant="h5">
-            {t('ENERGY_BALANCE.TOTAL_PANELS', {
-              paneles: Math.round(bases.reduce((sum, tBase) => sum + tBase.paneles, 0)),
-            })}
-          </Typography>
-        </div>
-
-        <Box>
-          <ConsumoGeneracion3D></ConsumoGeneracion3D>
         </Box>
-        <EnergyFlow></EnergyFlow>
+
+        <ConsumoGeneracion3D></ConsumoGeneracion3D>
+        <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
         <YearEnergyBalance></YearEnergyBalance>
-        <MonthEnergyBalance resumen={resumen}></MonthEnergyBalance>
+        <MonthEnergyBalance monthlyData={monthlyData}></MonthEnergyBalance>
         <EnvironmentalImpact></EnvironmentalImpact>
       </Container>
     </>
