@@ -15,7 +15,8 @@ import TCB from '../classes/TCB'
 
 export default function MonthEnergyBalance(props) {
   const { t, i18n } = useTranslation()
-  const { resumen } = props
+
+  const { autoconsumo, excedente, deficit } = props.monthlyData
 
   const i18nextMes = () => {
     let _mes = []
@@ -24,24 +25,32 @@ export default function MonthEnergyBalance(props) {
   }
   const mesMapa = Array.from(i18nextMes())
 
-  var resConsumo = TCB.consumo.resumenMensual('suma')
-  var trace1 = {
+  const trace_excedente = {
     x: mesMapa,
-    y: resConsumo,
-    type: 'scatter',
-    name: t('GRAPHICS.LABEL_CONSUMPTION'),
+    y: excedente,
+    name: TCB.i18next.t('graficos_LBL_graficasExcedente'),
+    type: 'bar',
   }
 
-  var trace2 = {
+  const trace_deficit = {
     x: mesMapa,
-    y: resumen,
-    type: 'scatter',
-    name: t('GRAPHICS.LABEL_PRODUCTION'),
+    y: deficit,
+    name: TCB.i18next.t('graficos_LBL_graficasDeficit'),
+    type: 'bar',
   }
 
-  var layout = {
+  const trace_autoconsumo = {
+    x: mesMapa,
+    y: autoconsumo,
+    name: TCB.i18next.t('graficos_LBL_graficasAutoconsumo'),
+    type: 'bar',
+  }
+
+  const layout = {
+    legend: { orientation: 'h' },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
+    barmode: 'stack',
     yaxis: {
       title: 'kWh',
     },
@@ -74,7 +83,11 @@ export default function MonthEnergyBalance(props) {
               potencia: UTIL.formatoValor('potencia', TCB.produccion.potenciaTotal),
             })}
           </Typography>
-          <Plot data={[trace1, trace2]} layout={layout} style={{ width: '100%' }} />
+          <Plot
+            data={[trace_deficit, trace_autoconsumo, trace_excedente]}
+            layout={layout}
+            style={{ width: '100%' }}
+          />
 
           <br />
         </Box>

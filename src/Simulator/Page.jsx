@@ -2,26 +2,31 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import Container from '@mui/material/Container'
-import AppFrame from '../components/AppFrame'
+
 import Alert from '@mui/material/Alert'
+
+import AppFrame from '../components/AppFrame'
 import Wizard from '../components/Wizard'
+import DialogProvider from '../components/DialogProvider'
+
 import LocationStep from './Location/Location'
 import ConsumptionStep from './Consumption/Consumption'
 import EnergyBalanceStep from './EnergyBalance/EnergyBalance'
 import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
 import SummaryStep from './Summary/Summary'
-import DialogProvider from '../components/DialogProvider'
+
 import TCBContext from './TCBContext'
 import MapContext from './MapContext'
 import EconomicContext from './EconomicBalance/EconomicContext'
+
 import PreparaEnergyBalance from './EnergyBalance/PreparaEnergyBalance'
+
 import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
 
 import InicializaAplicacion from './classes/InicializaAplicacion'
 import Consumo from './classes/Consumo'
-import Instalacion from './classes/Instalacion'
-import calculaResultados from './classes/calculaResultados'
+import Economico from './classes/Economico'
 
 InicializaAplicacion()
 
@@ -82,6 +87,7 @@ export default function Page() {
   const [recognition, setRecognition] = useState(0)
   const [periodoAmortizacion, setPeriodoAmortizacion] = useState()
   const [cashFlow, setCashFlow] = useState([])
+  const [ecoData, setEcoData] = useState({})
 
   const validaLocation = () => {
     if (TCB.BaseSolar.length > 0) {
@@ -160,6 +166,7 @@ export default function Page() {
     }
 
     status = await PreparaEnergyBalance()
+    setEcoData(TCB.economico)
   }
 
   return (
@@ -186,6 +193,8 @@ export default function Page() {
                   setPeriodoAmortizacion,
                   cashFlow,
                   setCashFlow,
+                  ecoData,
+                  setEcoData,
                 }}
               >
                 <MapContext.Provider value={{ map, setMap }}>

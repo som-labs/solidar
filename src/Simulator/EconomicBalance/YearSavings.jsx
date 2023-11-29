@@ -1,19 +1,11 @@
-import { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
-import ReactMarkdown from 'react-markdown'
 import Container from '@mui/material/Container'
-import FormControl from '@mui/material/FormControl'
-import { debounce } from '@mui/material/utils'
-import Button from '@mui/material/Button'
-import Tooltip from '@mui/material/Tooltip'
-import InputAdornment from '@mui/material/InputAdornment'
+import GraphBoxSavings from './GraphBoxSavings'
 
 import * as UTIL from '../classes/Utiles'
-import EconomicContext from './EconomicContext'
 import TCB from '../classes/TCB'
 
 export default function YearSaving() {
@@ -47,6 +39,7 @@ export default function YearSaving() {
           <Typography variant="h5">
             {t('ECONOMIC_BALANCE.GRAPH_TITLE_YEAR_SAVINGS')}
           </Typography>
+          <GraphBoxSavings></GraphBoxSavings>
           <br />
         </Box>
       </Container>

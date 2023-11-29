@@ -134,8 +134,6 @@ export default function MapaDiaHora({ activo }) {
           }}
         />
       </Box>
-      <br></br>
-      {/*REVISAR: no esta funcionando bien el flex */}
 
       <Box
         id="divGraph"
