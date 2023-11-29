@@ -1,19 +1,21 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
+import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import CardMedia from '@mui/material/CardMedia'
 
 // Solidar objects
-import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import { Container } from '@mui/material'
 
-const EnergyFlow = () => {
+export default function EnergyFlow(props) {
   const { t, i18n } = useTranslation()
 
+  const [anchoPanel, setAnchoPanel] = useState()
+  const [leftMargin, setLeftMargin] = useState()
+  const [dibujo, setDibujo] = useState(false)
   const grafResumen = useRef()
   const graficoConsumo = useRef()
   const graficoExcedente = useRef()
@@ -29,38 +31,34 @@ const EnergyFlow = () => {
   const stFlujo = 'fill: white; stroke: black; border-radius: 1em'
   const stTitulo = 'font-size: 13px; text-anchor: middle; dominant-baseline: middle'
 
+  const { consumo, produccion, deficit, autoconsumo, excedente } = props.yearlyData
+
   useEffect(() => {
-    GestionResultados_BalanceResultados()
+    if (grafResumen.current) {
+      setAnchoPanel(grafResumen.current.getBoundingClientRect().width * 0.9)
+      setLeftMargin(grafResumen.current.getBoundingClientRect().width * 0.05)
+      setDibujo(true)
+    }
   }, [])
 
-  const GestionResultados_BalanceResultados = () => {
-    const svg = bar.current
+  if (dibujo) {
+    bar.current.innerHTML = ''
     var altoLinea = 25
-    svg.setAttribute('height', 9 * altoLinea)
-    svg.innerHTML = ''
-
-    const panel = document.getElementById('rootBox')
-    //const panel = grafResumen.current
-    const anchoPanel = panel.offsetWidth * 0.9
-
-    const anchoEnergia =
-      TCB.balance.autoconsumo + TCB.balance.deficitAnual + TCB.balance.excedenteAnual
-
+    const anchoEnergia = autoconsumo + deficit + excedente
     const scale = anchoPanel / anchoEnergia
 
-    const wConsumo = TCB.consumo.cTotalAnual * scale
-    const wProduccion = TCB.produccion.pTotalAnual * scale
-    const wDeficit = TCB.balance.deficitAnual * scale
-    const wAutoconsumo = TCB.balance.autoconsumo * scale
-    const wExcedente = TCB.balance.excedenteAnual * scale
+    const wConsumo = consumo * scale
+    const wProduccion = produccion * scale
+    const wDeficit = deficit * scale
+    const wAutoconsumo = autoconsumo * scale
+    const wExcedente = excedente * scale
 
-    const leftMargin = panel.offsetWidth * 0.05
     let linea
     let gSymbol
 
     linea = 1
     _drawRectText(
-      svg,
+      bar.current,
       leftMargin,
       linea,
       wConsumo,
@@ -74,7 +72,7 @@ const EnergyFlow = () => {
     gSymbol.style.display = 'inline-block'
 
     _drawRectText(
-      svg,
+      bar.current,
       leftMargin + wDeficit + wAutoconsumo,
       linea,
       wExcedente,
@@ -90,115 +88,106 @@ const EnergyFlow = () => {
 
     linea = 2
     _drawRectText(
-      svg,
+      bar.current,
       leftMargin,
       linea,
       wConsumo,
-      UTIL.formatoValor('energia', TCB.consumo.cTotalAnual),
+      UTIL.formatoValor('energia', consumo),
       stConsumo,
       stTitulo,
     )
     _drawRectText(
-      svg,
+      bar.current,
       leftMargin + wDeficit + wAutoconsumo,
       linea,
       wExcedente,
-      UTIL.formatoValor('energia', TCB.balance.excedenteAnual),
+      UTIL.formatoValor('energia', excedente),
       stExcedente,
       stTitulo,
     )
 
     linea = 3
     _drawRectText(
-      svg,
+      bar.current,
       leftMargin,
       linea,
       wDeficit,
-      UTIL.formatoValor(
-        'porciento',
-        (TCB.balance.deficitAnual / TCB.consumo.cTotalAnual) * 100,
-      ),
+      UTIL.formatoValor('porciento', (deficit / consumo) * 100),
       stDeficit,
       stTitulo,
     )
     _drawRectText(
-      svg,
+      bar.current,
       leftMargin + wDeficit,
       linea,
       wAutoconsumo,
-      UTIL.formatoValor(
-        'porciento',
-        (TCB.balance.autoconsumo / TCB.consumo.cTotalAnual) * 100,
-      ),
+      UTIL.formatoValor('porciento', (autoconsumo / consumo) * 100),
       stAutoconsumo,
       stTitulo,
     )
-    _drawArrow(svg, leftMargin + wConsumo + wExcedente / 2 - 10, linea, 4, 'Excedente')
-    _drawArrow(svg, leftMargin + wDeficit / 2 - 10, linea + 1, 4, 'Deficit')
+    _drawArrow(
+      bar.current,
+      leftMargin + wConsumo + wExcedente / 2 - 10,
+      linea,
+      4,
+      'Excedente',
+    )
+    _drawArrow(bar.current, leftMargin + wDeficit / 2 - 10, linea + 1, 4, 'Deficit')
 
     linea = 5
     _drawElipseText(
-      svg,
+      bar.current,
       leftMargin + wDeficit + wAutoconsumo / 2,
       linea,
       wAutoconsumo / 2,
-      [
-        t('ENERGY_BALANCE.LABEL_AUTOCONSUMO'),
-        UTIL.formatoValor('energia', TCB.balance.autoconsumo),
-      ],
+      [t('ENERGY_BALANCE.LABEL_AUTOCONSUMO'), UTIL.formatoValor('energia', autoconsumo)],
       stAutoconsumo,
       stTitulo,
     )
 
     linea = 7
     _drawRectText(
-      svg,
+      bar.current,
       leftMargin + wDeficit,
       linea,
       wAutoconsumo,
-      UTIL.formatoValor(
-        'porciento',
-        (TCB.balance.autoconsumo / TCB.produccion.pTotalAnual) * 100,
-      ),
+      UTIL.formatoValor('porciento', (autoconsumo / produccion) * 100),
       stAutoconsumo,
       stTitulo,
     )
     _drawRectText(
-      svg,
+      bar.current,
       leftMargin + wDeficit + wAutoconsumo,
       linea,
       wExcedente,
-      UTIL.formatoValor(
-        'porciento',
-        (TCB.balance.excedenteAnual / TCB.produccion.pTotalAnual) * 100,
-      ),
+      UTIL.formatoValor('porciento', (excedente / produccion) * 100),
       stExcedente,
       stTitulo,
     )
 
     linea = 8
     _drawRectText(
-      svg,
+      bar.current,
       leftMargin,
       linea,
       wDeficit,
-      UTIL.formatoValor('energia', TCB.balance.deficitAnual),
+      UTIL.formatoValor('energia', deficit),
       stDeficit,
       stTitulo,
     )
     _drawRectText(
-      svg,
+      bar.current,
       leftMargin + wDeficit,
       linea,
       wProduccion,
-      UTIL.formatoValor('energia', TCB.produccion.pTotalAnual),
+      UTIL.formatoValor('energia', produccion),
       stProduccion,
       stTitulo,
     )
 
     linea = 9
     _drawRectText(
-      svg,
+      bar.current,
       leftMargin,
       linea,
       wDeficit,
@@ -211,7 +200,7 @@ const EnergyFlow = () => {
     gSymbol.style.display = 'inline-block'
 
     _drawRectText(
-      svg,
+      bar.current,
       leftMargin + wDeficit,
       linea,
       wProduccion,
@@ -223,7 +212,6 @@ const EnergyFlow = () => {
     gSymbol.style.left = (leftMargin + wDeficit + wProduccion / 2 - 150).toFixed(0) + 'px'
     gSymbol.style.display = 'inline-block'
   }
-
   return (
     <>
       <Container>
@@ -231,17 +219,17 @@ const EnergyFlow = () => {
           ref={grafResumen}
           sx={{
             ml: '0.3rem',
-            display: 'flex',
-            flexWrap: 'wrap',
             boxShadow: 2,
-            flex: 1,
+            width: '100%',
             border: 2,
             borderColor: 'primary.light',
           }}
         >
           <Box
             sx={{
+              display: 'flex',
               mb: 3,
+              flexDirection: 'column',
             }}
           >
             <Typography variant="h4">{t('ENERGY_BALANCE.FLOW_TITLE')}</Typography>
@@ -256,11 +244,8 @@ const EnergyFlow = () => {
           <Box
             id="rootBox"
             sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
               width: '100%',
-              ml: 25,
+              ml: 0,
               mb: 3,
             }}
           >
@@ -290,14 +275,14 @@ const EnergyFlow = () => {
                 alt="Energía vertida a la red"
                 title="Energía vertida a la red"
               />
-
-              <svg
-                ref={bar}
-                xmlns="http://www.w3.org/2000/svg"
-                width="100vw"
-                height="300"
-              ></svg>
-
+              <Box sx={{ width: '100%', height: parseInt(10 * altoLinea), mt: 1 }}>
+                <svg
+                  ref={bar}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="100%"
+                  height="100%"
+                ></svg>
+              </Box>
               <CardMedia
                 component="img"
                 src="./datos/red.svg"
@@ -326,6 +311,12 @@ const EnergyFlow = () => {
             </Box>
           </Box>
         </Box>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('ENERGY_BALANCE.MSG_disclaimerProduccion'),
+          }}
+        />
       </Container>
     </>
   )
@@ -344,7 +335,6 @@ const EnergyFlow = () => {
 function _drawRectText(svg, x, linea, ancho, texto, estiloR, estiloT) {
   // variable for the namespace
   const svgns = 'http://www.w3.org/2000/svg'
-
   const altoLinea = 25
   let y = (linea - 1) * altoLinea
 
@@ -416,4 +406,3 @@ function _drawArrow(svg, x, linea, lineas, tipoFlecha) {
 
   svg.appendChild(img)
 }
-export default EnergyFlow

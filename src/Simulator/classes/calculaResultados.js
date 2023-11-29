@@ -1,6 +1,7 @@
 import TCB from './TCB'
 import Produccion from './Produccion'
 import Balance from './Balance'
+import Economico from './Economico'
 /**
  * Esta funcion realiza los calculos del balance de energia para la configuracion de bases y consumos existentes.
  * Construye la produccion de cada base
@@ -41,6 +42,9 @@ async function calculaResultados() {
   }
   TCB.balance = new Balance(TCB.produccion, TCB.consumo, 100)
   TCB.balanceCreado = true
+
+  TCB.economico = new Economico()
+
   return
 }
 

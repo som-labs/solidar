@@ -96,7 +96,7 @@ export default function SummaryAutoproduccion() {
               flexWrap: 'wrap',
               width: '100%',
               justifyContent: 'center',
-              allignItems: 'center',
+              alignItems: 'center',
               mb: '1rem',
             }}
           >
@@ -110,7 +110,7 @@ export default function SummaryAutoproduccion() {
                 //border: 2,
                 // borderColor: 'primary.light',
                 justifyContent: 'center',
-                allignItems: 'center',
+                alignItems: 'center',
               }}
             >
               <Typography variant="h4" color={'green'}>
@@ -136,7 +136,7 @@ export default function SummaryAutoproduccion() {
                 //border: 2,
                 borderColor: 'green',
                 justifyContent: 'center',
-                allignItems: 'center',
+                alignItems: 'center',
                 borderLeft: '3px dashed green',
                 borderRight: '3px dashed green',
               }}
@@ -158,7 +158,7 @@ export default function SummaryAutoproduccion() {
                 //border: 2,
                 // borderColor: 'primary.light',
                 justifyContent: 'center',
-                allignItems: 'center',
+                alignItems: 'center',
               }}
             >
               <Typography variant="h4" color={'green'}>

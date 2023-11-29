@@ -17,7 +17,7 @@ export default function FinanceSummary() {
 
   const { cashFlow } = useContext(EconomicContext)
   if (cashFlow === undefined) return
-  console.log(cashFlow)
+
   function getRowId(row) {
     return row.ano
   }

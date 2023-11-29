@@ -302,7 +302,6 @@ class Economico {
 
     // Se genera la tabla hasta alcanzar el retorno de la inversión o la finalización de la subvención de IBI
     while (unFlow.ano < 10 || unFlow.pendiente < 0) {
-      console.log(unFlow)
       //Puede ser que la cuota de la hucha haga que el ahorro sea negativo. En ese caso mostramos los resultados de 10 años
       if (unFlow.ano > 10 && unFlow.ahorro < 0) break
 

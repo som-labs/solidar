@@ -11,9 +11,7 @@ import TCBContext from '../TCBContext'
 import PreciosTarifa from '../Consumption/PreciosTarifa'
 
 // Solidar objects
-import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import { Dialog } from '@mui/material'
 
 export default function SummaryConsumption() {
   const { t, i18n } = useTranslation()

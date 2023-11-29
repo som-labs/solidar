@@ -327,32 +327,29 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
               <Box
                 sx={{
                   display: 'flex',
-                  flex: 2,
                   flexDirection: 'row',
                   flexWrap: 'wrap',
-                  alignmentBaseline: true,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
-                verticalAlign="center"
               >
-                {/* REVISAR: Como hacer para que el campo y el switch salgan alineados */}
+                <FormControl sx={{ display: 'flex', flex: 1, mr: 6 }}>
+                  <Tooltip title={t('BaseSolar.TOOLTIP_inclinacion')} placement="top">
+                    <TextField
+                      type="text"
+                      onChange={changeTilt}
+                      label={t('BaseSolar.LABEL_inclinacionPaneles')}
+                      name="inclinacion"
+                      value={formData.inclinacion}
+                    />
+                  </Tooltip>
+                </FormControl>
                 <Tooltip
                   title={t('BaseSolar.TOOLTIP_inclinacionOptima')}
                   placement="bottom"
                 >
-                  <FormControl sx={{ m: 1, minWidth: 120 }}>
-                    <br />
-                    <Tooltip title={t('BaseSolar.TOOLTIP_inclinacion')} placement="top">
-                      <TextField
-                        required
-                        type="text"
-                        onChange={changeTilt}
-                        label={t('BaseSolar.LABEL_inclinacionPaneles')}
-                        name="inclinacion"
-                        value={formData.inclinacion}
-                      />
-                    </Tooltip>
-                  </FormControl>
                   <FormControlLabel
+                    sx={{ display: 'flex', flex: 1 }}
                     control={
                       <Switch
                         checked={formData.inclinacionOptima}
@@ -364,6 +361,7 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
                     label={t('BaseSolar.LABEL_inclinacionOptima')}
                   />
                 </Tooltip>
+
                 <Typography variant="body">
                   {t('BaseSolar.DESCRIPTION_inAcimut')}
                 </Typography>
