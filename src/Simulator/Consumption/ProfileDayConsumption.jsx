@@ -7,6 +7,7 @@ import * as UTIL from '../classes/Utiles'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 
+//REVISAR: no aparece los valores de consumo en el eje Y
 const ProfileDayConsumption = (data) => {
   const { t, i18n } = useTranslation()
 
@@ -15,11 +16,15 @@ const ProfileDayConsumption = (data) => {
   const consumo = data.consumo
 
   if (data.diaActivo === undefined) return <></>
+
   const fecha = UTIL.fechaDesdeIndice(data.diaActivo)
   const dia = fecha[0]
   const mes = TCB.i18next.t(UTIL.nombreMes[fecha[1]])
+  let horas = []
+  for (let i = 0; i < 24; i++) horas.push(i)
 
   var trace1 = {
+    x: horas,
     y: consumo.diaHora[data.diaActivo],
     type: 'scatter',
     showlegend: false,
@@ -28,8 +33,10 @@ const ProfileDayConsumption = (data) => {
   }
 
   var trace2 = {
+    x: horas,
     y: consumo.diaHora[data.diaActivo],
     type: 'bar',
+    name: t('CONSUMPTION.HOOVER_MAPA_CONSUMO_MES_HORA'),
     showlegend: false,
     width: 0.1,
     hoverinfo: 'none',
@@ -48,7 +55,12 @@ const ProfileDayConsumption = (data) => {
   }
 
   const layout = {
-    xaxis: { title: t('GRAPHICS.LABEL_HORA') },
+    autosize: true,
+    xaxis: {
+      title: t('GRAPHICS.LABEL_HORA'),
+      dtick: 2,
+      zeroline: true,
+    },
     margin: {
       l: 0,
       r: 0,
@@ -59,10 +71,11 @@ const ProfileDayConsumption = (data) => {
     plot_bgcolor: 'rgba(0,0,0,0)',
     yaxis: {
       title: 'kWh',
-      // showline: false,
-      // zeroline: false,
-      // zerolinecolor: 'black',
-      gridcolor: 'black',
+      textcolor: 'red',
+      showline: true,
+      zeroline: true,
+      zerolinecolor: '#969696',
+      gridcolor: '#bdbdbd',
       gridwidth: 1,
     },
   }

@@ -30,13 +30,13 @@ const VirtualBattery = () => {
 
   const changeFee = () => {
     TCB.cuotaHucha = parseFloat(fee)
-    TCB.economico.calculoFinanciero(100, 100)
+    TCB.economico.correccionExcedentes(100, 100)
     setCashFlow(TCB.economico.cashFlow)
     setPeriodoAmortizacion(TCB.economico.periodoAmortizacion)
   }
   const changeRecognition = () => {
     TCB.coefHucha = parseFloat(recognition)
-    TCB.economico.calculoFinanciero(100, 100)
+    TCB.economico.correccionExcedentes(100, 100)
     setCashFlow(TCB.economico.cashFlow)
     setPeriodoAmortizacion(TCB.economico.periodoAmortizacion)
   }
@@ -61,7 +61,12 @@ const VirtualBattery = () => {
           <Typography variant="h4">
             {t('ECONOMIC_BALANCE.TITLE_VIRTUAL_BATTERY')}
           </Typography>
-          <ReactMarkdown children={t('ECONOMIC_BALANCE.DESCRIPTION_VIRTUAL_BATTERY')} />
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('ECONOMIC_BALANCE.DESCRIPTION_VIRTUAL_BATTERY'),
+            }}
+          />
           <Typography variant="body">
             {t('ECONOMIC_BALANCE.DESCRIPTION_RECOGNITION_VIRTUAL_BATTERY')}
           </Typography>

@@ -150,6 +150,18 @@ ENERGY_BALANCE:
   LABEL_ENERGIA_PANELES: Energia obtinguda dels panells
   TITLE_GRAPH_MONTH_ENERGY_BALANCE: Producció mitjana mensual amb {{potencia}} instal·lada / consum mitjà mensual
 
+  MSG_disclaimerProduccion: |
+    Notificació-> Les dades per estimar la producció de panells solars s'obtenen de PVGIS. <a href:"https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en">Ver documentación aqui</a>
+    <br /><br />
+    Es tenen en compte: <ul> <li> La temperatura de l'aire a 2 metres i la velocitat del vent a 10 metres </li> <li> L'efecte de la temperatura sobre el rendiment </li> <li> La variació de l’espectre electromagnètic durant tot el dia </li> <li> Els aerosols mitjans de l’entorn (no canvis sobtats) </li> </ul> ",
+    "resultados_MSG_disclaimerProduccionNo":"No són tinguts en compte:<ul><li>l'efecte de les nevades</li><li>l'acumulació de pols i brutícia als panells</li><li>les pèrdues per ombres properes</li> </ul><br>
+
+  LABEL_fuenteInfoCO2: Dades de conversió per  {{territorio}}
+
+  TOOLTIP_kgCO2AnualRenovable: CO2 (kg) no expulsats a l’atmosfera si l’origen de l’energia fos peninsular i renovable. Es pot modificar a la finestra de Paràmetres.
+
+  TOOLTIP_kgCO2AnualNoRenovable: CO2 (kg) no expulsats a l’atmosfera si l’origen de l’energia fos peninsular i no renovable. Es pot modificar a la finestra de Paràmetres.
+
 ECONOMIC_BALANCE:
   TITLE: Balanç econòmic
   DESCRIPTION: |
@@ -408,11 +420,7 @@ RESULTADOS:
   autosuficienciaMediaAnual_TT: Percentatge mitjà d’energia consumida procedent dels panells solars. És una mesura d’independència respecte a la xarxa elèctrica
   autosuficienciaMaxima_LBL: Autosuficiència màxima
   autosuficienciaMaxima_TT: La màxima auto-suficiència que es podria aconseguir si es pogués consumir tot el excedent fotovoltaic (ja sigui amb bateries i/o canviant els hàbits de consum).
-  fuenteInfoCO2_LBL: Dades de conversió per  {{territorio}}
-  kgCO2AnualRenovable_LBL: kg de CO2 anuals estalviats amb font renovable
-  kgCO2AnualRenovable_TT: CO2 (kg) no expulsats a l’atmosfera si l’origen de l’energia fos peninsular i renovable. Es pot modificar a la finestra de Paràmetres.
-  kgCO2AnualNoRenovable_LBL: Kg de CO2 per any estalviats si la font no és renovable
-  kgCO2AnualNoRenovable_TT: CO2 (kg) no expulsats a l’atmosfera si l’origen de l’energia fos peninsular i no renovable. Es pot modificar a la finestra de Paràmetres.
+
   limiteSubvencionEU_LBL: Limite subvenció EU
   resultados_LBL_graficoResumen: Gràfic resum de consums versus producció
   resultados_LBL_pendienteCalculo: Pendent
