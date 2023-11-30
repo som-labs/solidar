@@ -36,15 +36,11 @@ async function calculaResultados() {
     TCB.conversionCO2[TCB.territorio].norenovable * TCB.produccion.pTotalAnual
 
   // Construccion objeto Balance global
-  if (TCB.balanceCreado) {
-    TCB.balance = {}
-    TCB.balanceCreado = false
-  }
   TCB.balance = new Balance(TCB.produccion, TCB.consumo, 100)
   TCB.balanceCreado = true
+  console.log(TCB.balance)
 
   TCB.economico = new Economico()
-
   return
 }
 

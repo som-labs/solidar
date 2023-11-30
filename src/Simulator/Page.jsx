@@ -83,10 +83,8 @@ export default function Page() {
   const [precioInstalacionCorregido, setPrecioInstalacionCorregido] = useState()
   const [subvencionEU, setSubvencionEU] = useState('Sin')
   const [valorSubvencionEU, setValorSubvencionEU] = useState(0)
-  const [fee, setFee] = useState(0)
-  const [recognition, setRecognition] = useState(0)
-  const [periodoAmortizacion, setPeriodoAmortizacion] = useState()
-  const [cashFlow, setCashFlow] = useState([])
+  const [cuotaHucha, setCuotaHucha] = useState(0)
+  const [coefHucha, setCoefHucha] = useState(0)
   const [ecoData, setEcoData] = useState({})
 
   const validaLocation = () => {
@@ -165,6 +163,8 @@ export default function Page() {
       TCB.cambioTipoConsumo = true
     }
 
+    console.log(TCB.consumo)
+    //Se crearan los objetos produccion, balance y economico
     status = await PreparaEnergyBalance()
     setEcoData(TCB.economico)
   }
@@ -185,14 +185,10 @@ export default function Page() {
                   setValorSubvencionEU,
                   precioInstalacionCorregido,
                   setPrecioInstalacionCorregido,
-                  recognition,
-                  setRecognition,
-                  fee,
-                  setFee,
-                  periodoAmortizacion,
-                  setPeriodoAmortizacion,
-                  cashFlow,
-                  setCashFlow,
+                  cuotaHucha,
+                  setCuotaHucha,
+                  coefHucha,
+                  setCoefHucha,
                   ecoData,
                   setEcoData,
                 }}

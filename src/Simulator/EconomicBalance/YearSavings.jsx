@@ -1,15 +1,21 @@
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
+// MUI objects
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import GraphBoxSavings from './GraphBoxSavings'
 
+// REACT Solidar Components
+import EconomicContext from './EconomicContext'
+
+// Solidar objects
 import * as UTIL from '../classes/Utiles'
-import TCB from '../classes/TCB'
 
 export default function YearSaving() {
   const { t, i18n } = useTranslation()
+  const { ecoData } = useContext(EconomicContext)
 
   return (
     <>
@@ -30,7 +36,7 @@ export default function YearSaving() {
               __html: t('ECONOMIC_BALANCE.DESCRIPTION_YEAR_SAVINGS', {
                 porcientoAhorro: UTIL.formatoValor(
                   'porciento',
-                  (TCB.economico.ahorroAnual / TCB.economico.gastoSinPlacasAnual) * 100,
+                  (ecoData.ahorroAnual / ecoData.gastoSinPlacasAnual) * 100,
                 ),
               }),
             }}

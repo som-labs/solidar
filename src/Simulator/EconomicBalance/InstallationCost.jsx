@@ -16,12 +16,8 @@ import TCB from '../classes/TCB'
 const InstallationCost = () => {
   const { t, i18n } = useTranslation()
 
-  const {
-    precioInstalacionCorregido,
-    setPrecioInstalacionCorregido,
-    setCashFlow,
-    setPeriodoAmortizacion,
-  } = useContext(EconomicContext)
+  const { precioInstalacionCorregido, setPrecioInstalacionCorregido, setEcoData } =
+    useContext(EconomicContext)
   const [error, setError] = useState(false)
 
   //REVISAR: esta funcion deberia tener en cuenta el idioma para verificar si un string es numero o no. Pero no funciona.
@@ -55,8 +51,7 @@ const InstallationCost = () => {
 
         TCB.economico.calculoFinanciero(100, 100)
         setPrecioInstalacionCorregido(intPrecio)
-        setCashFlow(TCB.economico.cashFlow)
-        setPeriodoAmortizacion(TCB.economico.periodoAmortizacion)
+        setEcoData(TCB.economico)
         setError(false)
       } else {
         setError(true)

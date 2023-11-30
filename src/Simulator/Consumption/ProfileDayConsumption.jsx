@@ -10,10 +10,7 @@ import Container from '@mui/material/Container'
 //REVISAR: no aparece los valores de consumo en el eje Y
 const ProfileDayConsumption = (data) => {
   const { t, i18n } = useTranslation()
-
-  //REVISAR: por que usando el state no funciona?
-  //const [consumo, setConsumo] = useState(data.consumo)
-  const consumo = data.consumo
+  const [consumo, setConsumo] = useState(data.consumo)
 
   if (data.diaActivo === undefined) return <></>
 

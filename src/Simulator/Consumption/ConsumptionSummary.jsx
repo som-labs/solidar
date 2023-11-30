@@ -219,7 +219,7 @@ export default function ConsumptionSummary() {
     <>
       <Container>
         {/* Consumption types table 
-        REVISAR: hay que permitir ver el gráfico de la suma de todos los consumos */}
+        PENDIENTE: hay que permitir ver el gráfico de la suma de todos los consumos */}
         <DataGrid
           autoHeight
           getRowId={getRowId}

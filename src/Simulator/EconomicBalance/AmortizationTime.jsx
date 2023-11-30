@@ -1,22 +1,17 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
-
+// MUI objects
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-
 import Container from '@mui/material/Container'
 import FormControl from '@mui/material/FormControl'
-
+// REACT Solidar Components
 import EconomicContext from './EconomicContext'
 
-import * as UTIL from '../classes/Utiles'
-import TCB from '../classes/TCB'
-
-const AmortizationTime = () => {
+export default function AmortizationTime() {
   const { t, i18n } = useTranslation()
 
-  useContext(EconomicContext)
-  const { periodoAmortizacion } = useContext(EconomicContext)
+  const { ecoData } = useContext(EconomicContext)
 
   return (
     <>
@@ -41,7 +36,7 @@ const AmortizationTime = () => {
           />
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <Typography variant="h4" color={'green'} textAlign={'center'}>
-              {periodoAmortizacion}
+              {ecoData.periodoAmortizacion}
             </Typography>
             <Typography variant="body">
               {t('ECONOMIC_BALANCE.PROMPT_AMORTIZATION_TIME')}
@@ -53,5 +48,3 @@ const AmortizationTime = () => {
     </>
   )
 }
-
-export default AmortizationTime

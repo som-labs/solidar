@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import FormControl from '@mui/material/FormControl'
 import TextField from '@mui/material/TextField'
+import InputAdornment from '@mui/material/InputAdornment'
 
 // REACT Solidar Components
 import EconomicContext from './EconomicContext'
@@ -16,22 +17,20 @@ import TCB from '../classes/TCB'
 
 const ReduccionIBI = () => {
   const { t, i18n } = useTranslation()
-  const { IBI, setIBI, setCashFlow, setPeriodoAmortizacion } = useContext(EconomicContext)
+
+  const { IBI, setIBI, ecoData, setEcoData } = useContext(EconomicContext)
+  const [_IBI, _setIBI] = useState(IBI)
+
+  const setNewIBI = () => {
+    TCB.economico.calculoFinanciero(100, 100)
+    setIBI(_IBI)
+    setEcoData(TCB.economico)
+  }
 
   const onChangeIBI = (event) => {
     const { name, value } = event.target
-    console.log(name, value)
-    setIBI((prevIBI) => ({ ...prevIBI, [name]: value }))
+    _setIBI((prevIBI) => ({ ...prevIBI, [name]: value }))
     TCB[name] = value
-    if (
-      TCB.valorSubvencionIBI * TCB.porcientoSubvencionIBI * TCB.tiempoSubvencionIBI !==
-      0
-    ) {
-      TCB.economico.calculoFinanciero(100, 100)
-      setCashFlow(TCB.economico.cashFlow)
-      setPeriodoAmortizacion(TCB.economico.periodoAmortizacion)
-      //muestraBalanceFinanciero()
-    }
   }
 
   return (
@@ -60,9 +59,16 @@ const ReduccionIBI = () => {
               required
               type="text"
               onChange={onChangeIBI}
+              onBlur={setNewIBI}
               label={t('Economico.LABEL_valorSubvencionIBI')}
               name="valorSubvencionIBI"
-              value={IBI.valorSubvencionIBI}
+              value={_IBI.valorSubvencionIBI}
+              InputProps={{
+                endAdornment: <InputAdornment position="start"> €</InputAdornment>,
+                inputProps: {
+                  style: { textAlign: 'right' },
+                },
+              }}
             />
           </FormControl>
 
@@ -71,9 +77,16 @@ const ReduccionIBI = () => {
               required
               type="text"
               onChange={onChangeIBI}
+              onBlur={setNewIBI}
               label={t('Economico.LABEL_porcientoSubvencionIBI')}
               name="porcientoSubvencionIBI"
-              value={IBI.porcientoSubvencionIBI}
+              value={_IBI.porcientoSubvencionIBI}
+              InputProps={{
+                endAdornment: <InputAdornment position="start"> %</InputAdornment>,
+                inputProps: {
+                  style: { textAlign: 'right' },
+                },
+              }}
             />
           </FormControl>
 
@@ -82,9 +95,16 @@ const ReduccionIBI = () => {
               required
               type="text"
               onChange={onChangeIBI}
+              onBlur={setNewIBI}
               label={t('Economico.LABEL_tiempoSubvencionIBI')}
               name="tiempoSubvencionIBI"
-              value={IBI.tiempoSubvencionIBI}
+              value={_IBI.tiempoSubvencionIBI}
+              InputProps={{
+                endAdornment: <InputAdornment position="start"></InputAdornment>,
+                inputProps: {
+                  style: { textAlign: 'right' },
+                },
+              }}
             />
           </FormControl>
         </Box>

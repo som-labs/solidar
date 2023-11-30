@@ -1,20 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
 // MUI objects
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid'
 import InfoIcon from '@mui/icons-material/Info'
-
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-
 // REACT Solidar Components
 import TCBContext from '../TCBContext'
-import { optimizador } from '../classes/optimizador'
+import EconomicContext from '../EconomicBalance/EconomicContext'
 import calculaResultados from '../classes/calculaResultados'
 import ConsumoGeneracion3D from './ConsumoGeneracion3D'
 import EnergyFlow from './EnergyFlow'
@@ -26,10 +23,13 @@ import DialogProperties from '../components/DialogProperties'
 
 export default function EnergyBalanceStep() {
   const { t, i18n } = useTranslation()
+
   const [monthlyData, setMonthlyData] = useState({})
   const [yearlyData, setYearlyData] = useState({})
   const [openDialog, closeDialog] = useDialog()
+
   const { bases, setBases } = useContext(TCBContext)
+  const { setEcoData } = useContext(EconomicContext)
 
   // const [gridRows, setGridRows] = useState(rows)
 
@@ -41,7 +41,8 @@ export default function EnergyBalanceStep() {
     // { field: 'idBaseSolar', headerName: 'ID', width: 50 },
     {
       field: 'nombreBaseSolar',
-      headerName: 'Nombre',
+      headerName: t('BaseSolar.LABEL_nombreBaseSolar'),
+      headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       width: 250,
     },
@@ -49,24 +50,46 @@ export default function EnergyBalanceStep() {
       field: 'paneles',
       editable: true,
       headerName: 'Paneles',
+      headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       flex: 0.5,
       align: 'center',
       renderCell: (params) => {
         return UTIL.formatoValor('paneles', params.value)
       },
+      //REVISAR: validacion de paneles
       preProcessEditCellProps: (params) => {
         console.log(params)
-        const hasError =
-          params.props.value * params.row.potenciaUnitaria > params.row.potenciaMaxima
+        const { props, row } = params
+        console.log(props, row)
+        const hasError = props.value > row.panelesMaximo
         console.log(hasError)
-        if (hasError) alert(t('resultados_MSG_excesoPotencia'))
-        return { ...params.props, error: hasError }
+        if (hasError) {
+          alert(t('resultados_MSG_excesoPotencia'))
+          console.log({
+            ...params.props,
+            value: row.panelesMaximo,
+            error: hasError,
+          })
+          return { ...params.props, value: row.panelesMaximo, error: hasError }
+        }
+        console.log(params)
+        return params
       },
+    },
+    {
+      field: 'panelesMaximo',
+      headerName: t('BaseSolar.LABEL_panelesMaximo'),
+      headerClassName: 'super-app-theme--header',
+      headerAlign: 'center',
+      flex: 1,
+      align: 'center',
+      description: t('BaseSolar.TOOLTIP_panelesMaximo'),
     },
     {
       field: 'potenciaMaxima',
       headerName: 'Pot. Maxima',
+      headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       flex: 1,
       align: 'right',
@@ -78,6 +101,7 @@ export default function EnergyBalanceStep() {
       field: 'potenciaUnitaria',
       editable: true,
       headerName: 'Potencia Unitaria',
+      headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       flex: 1,
       align: 'right',
@@ -88,6 +112,7 @@ export default function EnergyBalanceStep() {
     {
       field: 'potenciaTotal',
       headerName: 'Potencia Total de la base',
+      headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       flex: 1,
       align: 'right',
@@ -182,7 +207,7 @@ export default function EnergyBalanceStep() {
   }, [])
 
   useEffect(() => {
-    // Se realiza el cálculo de todas las variables de energia del sistema
+    // Cuando cambian las base se realiza el cálculo de todas las variables del sistema
     console.log('a calcula resultados')
     calculaResultados()
     setMonthlyData({
@@ -197,6 +222,7 @@ export default function EnergyBalanceStep() {
       autoconsumo: TCB.balance.autoconsumo,
       excedente: TCB.balance.excedenteAnual,
     })
+    setEcoData(TCB.economico)
   }, [bases])
 
   /**
@@ -206,10 +232,20 @@ export default function EnergyBalanceStep() {
    */
 
   function nuevaInstalacion(params, event) {
-    let tmpPaneles = params.field === 'paneles' ? event.target.value : params.row.paneles
+    let tmpPaneles
+    if (params.field === 'paneles') {
+      tmpPaneles = parseInt(event.target.value)
+      if (tmpPaneles > params.row.panelesMaximo) {
+        alert('error')
+        return
+        // tmpPaneles = params.row.panelesMaximo
+        // params.row.paneles = params.row.panelesMaximo
+        // console.log(bases)
+      }
+    }
     let tmpPotenciaUnitaria =
       params.field === 'potenciaUnitaria'
-        ? event.target.value
+        ? parseFloat(event.target.value)
         : params.row.potenciaUnitaria
 
     let baseActiva = TCB.BaseSolar.find((base) => {
@@ -217,6 +253,7 @@ export default function EnergyBalanceStep() {
     })
     baseActiva.instalacion.potenciaUnitaria = tmpPotenciaUnitaria
     baseActiva.instalacion.paneles = tmpPaneles
+
     TCB.totalPaneles = TCB.BaseSolar.reduce((a, b) => {
       return a + b.instalacion.paneles
     }, 0)
