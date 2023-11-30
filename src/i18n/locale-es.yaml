@@ -259,10 +259,11 @@ ECONOMIC_BALANCE:
   EU_TITLE: Subvenciones EU Next Generation
   EU_DESCRIPTION: |
     Las subvenciones EU Next Generation reducen el importe total de la inversión entre un 40% y un 50%.
-
     Escoge esta opción que represente tu instalación
-
     *¿Cuales son las condiciones para acceder a las subvenciones Next Gen?*
+  LABEL_Consumo%Produccion_LBL: Porcentaje del consumo respecto a la producción
+  TOOLTIP_Consumo%Produccion: Porcentaje del consumo respecto a la producción. Para poder optar a la subvención de los Fondos Next Generation este porcentaje ha de ser siempre superior al 80%
+  DESCRIPTION_Consumo%Produccion: Para poder optar a la subvención de los Fondos Next Generation el porcentaje del consumo respecto a la producción ha de ser siempre superior al 80%. En esta configuración este valor es de {{Consumo_Produccion}}
   TITLE_INSTALLATION_COST: Precio de la instalación
   DESCRIPTION_INSTALLATION_COST: |
     A pesar de procurar mantener los precios actualizados debe considerarse este importe como una orientación provisional sobre el proyecto que un instalador pueda formular (sobre todo si cuenta con más información sobre el emplazamiento final).<br />
@@ -310,6 +311,8 @@ ECONOMIC_BALANCE:
   TOOLTIP_VAN_PROYECTO: El rendimiento de la inversión en la instalación fotovoltaica transcurridos los años que se muestran en la tabla
   LABEL_TIR_PROYECTO: 'Tasa interna de retorno (TIR): {{TIR}}'
   TOOLTIP_TIR_PROYECTO: Indicador de la rentabilidad del proyecto fotovoltaico transcurridos los años que se muestran en la tabla
+  DESCRIPTION_DATA_AS_PANELS: 'En el siguiente gráfico puedes obeservar la relación existente entre las variables: Inversion necesaria, Ahorro obtenido, porcentajes de autoconsumo y autosuficiencia, asi como la tasa interna de retorno en función del número de paneles instalados.'
+  TITLE_DATA_AS_PANELS: Gráfico alternativas según número de paneles
 
 SUMMARY:
   TITLE: RESUMEN
@@ -543,8 +546,7 @@ RESULTS:
   energiaFaltante%Consumo_TT: El porcentaje de la electricidad comprada respecto al consumo total
   energiaSobrante%Produccion_LBL: Porcentaje de electricidad sobrante
   energiaSobrante%Produccion_TT: El porcentaje de la electricidad sobrante respecto a la producida
-  Consumo%Produccion_LBL: Porcentaje del consumo respecto a la producción
-  Consumo%Produccion_TT: Porcentaje del consumo respecto a la producción. Para poder optar a la subvención de los Fondos Next Generation este porcentaje ha de ser siempre superior al 80%
+
   Produccion%Consumo_LBL: Porcentaje de la producción respecto del consumo
   Produccion%Consumo_TT: Porcentaje de la energía fotovoltaica producida respecto a la consumida
 
@@ -553,10 +555,8 @@ RESULTS:
   autosuficienciaMaxima_LBL: Autosuficiencia máxima
   autosuficienciaMaxima_TT: La autosuficiencia máxima que se podría alcanzar si todo el excedente fotovoltaico se pudiera consumir (bien con baterías y/o cambiando los hábitos de consumo).\nSe alcanza el número máximo teórico de paneles al llegar en esta variable al 100%.
 
-  limiteSubvencionEU_LBL: Limite subvención EU
   resultados_LBL_graficoResumen: Gráfico resumen de consumos versus producción
   resultados_LBL_pendienteCalculo: Pendiente
-  graficos_LBL_numeroMaximoPaneles: Límite paneles por area disponible
 
   resultados_MSG_excesoPotencia: Hay un exceso de potencia en esta base en función del area dispoble
   resultados_LBL_basePropiedades: Base {{id}}
@@ -592,34 +592,35 @@ Economico:
   LABEL_tiempoSubvencionIBI: Duración bonificación (años)
   TOOLTIP_tiempoSubvencionIBI: El número de años durante los que se puede aplicar la bonificación en el IBI
 
-graficos:
-  graficos_LBL_descripcion: Área de gráficos disponibles
+GRAFICOS:
+  LABEL_panelesActuales: Paneles actuales {{paneles}}
+  LABEL_limiteSubvencionEU: Limite subvención EU
+  LABEL_numeroMaximoPaneles: Límite paneles por area disponible
+
+  LABEL_graficasNoCompensado: No compensado
+  LABEL_graficasGastoConPaneles: Gasto con paneles
+  LABEL_graficasGastoSinPaneles: Gasto sin paneles
+  LABEL_graficasCompensacion: Reducción por compensación
+  LABEL_graficasAutoconsumo: Reducción por autoconsumo
+
   graficos_LBL_balanceConsumo: Balance mensual de consumo con {{potencia}} instalados
   graficos_LBL_balanceProduccion: Balance mensual de producción con {{potencia}} instalados
   graficos_LBL_tituloBalanceEconomico: Balance económico mensual con {{potencia}} instalados
   graficos_LBL_alternativasPotencia: Alternativas con paneles de {{potencia}} instalados
-
   graficos_LBL_produccionMediaMensual: Producción media mensual con {{potencia}} instalados / consumo medio mensual
 
-  graficos_LBL_graficasNoCompensado: No compensado
-  graficos_LBL_graficasGastoConPaneles: Gasto con paneles
-  graficos_LBL_graficasGastoSinPaneles: Gasto sin paneles
-
-  graficos_LBL_graficasCompensacion: Reducción por compensación
   graficos_LBL_graficasExcedente: Excedente
   graficos_LBL_graficasInversion: Inversión
   graficos_LBL_graficasAhorro: Ahorro
   graficos_LBL_graficasDeficit: Déficit
-
   graficos_LBL_graficasAutosuficiencia: Autosuficiencia
   graficos_LBL_graficasprodvscons: Prod. vs Cons.
   graficos_LBL_cambiaPaneles: Click cambia a {{paneles}} paneles
   graficos_LBL_paneles: Paneles
-  graficos_LBL_panelesActuales: Paneles actuales {{paneles}}
+
   graficos_LBL_segunFuente: Distribución de energia segun fuente
   graficos_LBL_deRed: Red electrica
   graficos_LBL_dePaneles: '{{paneles}} Paneles'
-
   graficos_LBL_extraccionHucha: Extracción de la hucha
   graficos_LBL_huchaSaldo: Saldo en la hucha
   graficos_LBL_tituloBalanceEconomicoFinca: Balance económico mensual con {{potencia}} asignados.<br>Equivalente {{paneles}} paneles.

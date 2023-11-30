@@ -13,31 +13,23 @@ import EconomicContext from './EconomicContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'
+import * as UTIL from '../classes/Utiles'
 
-const SubvencionEU = () => {
+export default function SubvencionEU() {
   const { t, i18n } = useTranslation()
 
-  const {
-    subvencionEU,
-    setSubvencionEU,
-    valorSubvencionEU,
-    setValorSubvencionEU,
-    setCashFlow,
-    setPeriodoAmortizacion,
-  } = useContext(EconomicContext)
+  const { subvencionEU, setSubvencionEU, setValorSubvencionEU, ecoData, setEcoData } =
+    useContext(EconomicContext)
 
   const onChangeEU = (event, tipoSubvencion) => {
-    setSubvencionEU(tipoSubvencion)
     TCB.tipoSubvencionEU = tipoSubvencion
     TCB.economico.calculoFinanciero(100, 100)
-    console.log(TCB.valorSubvencionEU)
 
+    setSubvencionEU(tipoSubvencion)
     setValorSubvencionEU(TCB.valorSubvencionEU)
-    setCashFlow(TCB.economico.cashFlow)
-    setPeriodoAmortizacion(TCB.economico.periodoAmortizacion)
+    setEcoData(TCB.economico)
   }
 
-  console.log(TCB.valorSubvencionEU)
   if ((TCB.consumo.cTotalAnual / TCB.produccion.pTotalAnual) * 100 < 80) {
     setSubvencionEU('Sin')
     return (
@@ -47,7 +39,12 @@ const SubvencionEU = () => {
           variant="body"
           textAlign={'center'}
           dangerouslySetInnerHTML={{
-            __html: t('ECONOMIC_BALANCE.EU_DESCRIPTION'),
+            __html: t('ECONOMIC_BALANCE.DESCRIPTION_Consumo%Produccion', {
+              Consumo_Produccion: UTIL.formatoValor(
+                'porciento',
+                (TCB.consumo.cTotalAnual / TCB.produccion.pTotalAnual) * 100,
+              ),
+            }),
           }}
         />
       </Container>
@@ -97,5 +94,3 @@ const SubvencionEU = () => {
     )
   }
 }
-
-export default SubvencionEU

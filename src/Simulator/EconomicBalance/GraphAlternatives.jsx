@@ -8,6 +8,9 @@ import Plot from 'react-plotly.js'
 import Typography from '@mui/material/Typography'
 import { Box } from '@mui/material'
 
+// REACT Solidar Components
+import EconomicContext from './EconomicContext'
+
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
@@ -16,6 +19,7 @@ import calculaResultados from '../classes/calculaResultados'
 
 export default function GraphAlternatives() {
   const { t, i18n } = useTranslation()
+  const { ecoData } = useContext(EconomicContext)
 
   var paneles = []
   var autoconsumo = []
@@ -99,32 +103,38 @@ export default function GraphAlternatives() {
   }
 
   //A efectos de la produccion en funcion del numero de paneles se asume que todas las bases tienen la misma potencia unitaria
-  const potencia_kWp = TCB.BaseSolar[0].instalacion.potenciaUnitaria
+
+  const maxPrecio = precioInstalacion[4]
+  let tickVals = []
+  for (let i = 0; i <= 10; i++) tickVals.push(Math.trunc((i * 0.1 * maxPrecio) / 10) * 10)
   var trace_TIR = {
     x: paneles,
     y: TIR,
     name: 'TIR(%)',
+    yaxis: 'y',
     type: 'scatter',
   }
 
   var trace_autosuficiencia = {
     x: paneles,
     y: autosuficiencia,
-    name: TCB.i18next.t('Autosuficiencia') + '(%)',
+    name: t('Autosuficiencia') + '(%)',
+    yaxis: 'y',
     type: 'scatter',
   }
 
   var trace_autoconsumo = {
     x: paneles,
     y: autoconsumo,
-    name: TCB.i18next.t('Autoconsumo') + '(%)',
+    name: t('Autoconsumo') + '(%)',
+    yaxis: 'y',
     type: 'scatter',
   }
 
   var trace_precioInstalacion = {
     x: paneles,
     y: precioInstalacion,
-    name: TCB.i18next.t('Inversion') + '(€)',
+    name: t('Inversion') + '(€)',
     yaxis: 'y2',
     type: 'scatter',
   }
@@ -132,34 +142,70 @@ export default function GraphAlternatives() {
   var trace_ahorroAnual = {
     x: paneles,
     y: ahorroAnual,
-    name: TCB.i18next.t('Ahorro') + '(€)',
+    name: t('Ahorro') + '(€)',
     yaxis: 'y2',
     type: 'scatter',
   }
-
+  console.log(paneles)
   var layout = {
-    // paper_bgcolor: 'rgba(0,0,0,0)',
-    // plot_bgcolor: 'rgba(0,0,0,0)',
-    width: '100%',
-    height: 500,
-    title: TCB.i18next.t('graficos_LBL_alternativasPotencia', {
-      potencia: UTIL.formatoValor('potencia', potencia_kWp),
-    }),
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    autosize: true,
+    margin: {
+      l: 40,
+      r: 60,
+      b: 0,
+      t: 10,
+    },
+    // width: '100%',
+    // height: 500,
     xaxis: {
-      title: TCB.i18next.t('paneles'),
+      tick0: 1,
+      showgrid: false,
+      showline: true,
+      linecolor: 'primary.light',
+      tickfont_color: 'primary.light',
+      showticklabels: true,
+      dtick: 1,
+      ticks: 'outside',
+      tickcolor: 'primary.light',
+      range: [1, paneles[4]],
     },
     yaxis: {
       title: '%',
+      showticklabels: true,
+      showgrid: true,
+      showline: true,
+      linecolor: 'primary.light',
+      tickfont_color: 'primary.light',
+      ticks: 'outside',
+      tickcolor: 'primary.light',
+      tickmode: 'auto',
+      nticks: 20,
+      range: [0, 100],
     },
     yaxis2: {
-      title: 'Euros',
+      // title: 'Euros',
       overlaying: 'y',
       side: 'right',
+      showticklabels: true,
+      showgrid: true,
+      gridwidth: 0.1,
+      gridcolor: 'red',
+      showline: true,
+      linecolor: 'primary.light',
+      tickfont_color: 'primary.light',
+      ticks: 'outside',
+      tickcolor: 'primary.light',
+      ticksuffix: '€',
+      tickvals: tickVals,
+      range: [0, maxPrecio],
     },
     legend: {
-      x: 1.1,
-      y: 1,
-      orientation: 'v',
+      x: 0.1,
+      y: -0.1,
+      xref: 'paper',
+      orientation: 'h',
     },
     shapes: [
       {
@@ -174,14 +220,16 @@ export default function GraphAlternatives() {
     annotations: [
       {
         x: TCB.totalPaneles,
-        y: 100,
+        y: 95,
         xref: 'x',
         yref: 'y',
-        text: TCB.totalPaneles + ' ' + TCB.i18next.t('graficos_LBL_paneles'),
+        text: t('GRAFICOS.LABEL_panelesActuales', {
+          paneles: TCB.totalPaneles,
+        }),
         showarrow: true,
         arrowhead: 2,
         xanchor: 'left',
-        hovertext: TCB.i18next.t('graficos_LBL_panelesActuales', {
+        hovertext: t('GRAFICOS.LABEL_panelesActuales', {
           paneles: TCB.totalPaneles,
         }),
         ax: 20,
@@ -189,68 +237,65 @@ export default function GraphAlternatives() {
       },
     ],
   }
-  //   if (numeroMaximoPaneles === paneles[4]) {
-  //     layout.annotations.push({
-  //       x: numeroMaximoPaneles,
-  //       y: 100,
-  //       xref: 'x',
-  //       yref: 'y',
-  //       text: TCB.i18next.t('graficos_LBL_numeroMaximoPaneles', {
-  //         paneles: numeroMaximoPaneles,
-  //       }),
-  //       showarrow: true,
-  //       arrowhead: 3,
-  //       xanchor: 'right',
-  //       hovertext: TCB.i18next.t('graficos_LBL_maximoPanelesExplicacion', {
-  //         area: UTIL.formatoValor('superficie', TCB.areaTotal),
-  //       }),
-  //       ax: -20,
-  //       ay: -5,
-  //     })
-  //     layout.shapes.push({
-  //       type: 'line',
-  //       x0: numeroMaximoPaneles,
-  //       y0: 0,
-  //       x1: numeroMaximoPaneles,
-  //       y1: 100,
-  //       line: { color: 'rgb(250, 20, 0)', width: 2 },
-  //     })
-  //   }
 
-  //   if (limiteSubvencion !== undefined) {
-  //     layout.annotations.push({
-  //       x: limiteSubvencion,
-  //       y: 80,
-  //       xref: 'x',
-  //       yref: 'y',
-  //       text: TCB.i18next.t('limiteSubvencionEU_LBL'),
-  //       showarrow: true,
-  //       arrowhead: 3,
-  //       xanchor: 'left',
-  //       hovertext:
-  //         limiteSubvencion.toFixed(1) + ' ' + TCB.i18next.t('graficos_LBL_paneles'),
-  //       ax: 20,
-  //       ay: 0,
-  //     })
-  //     layout.shapes.push(
-  //       {
-  //         type: 'line',
-  //         x0: 0,
-  //         y0: 80,
-  //         x1: limiteSubvencion,
-  //         y1: 80,
-  //         line: { color: 'rgb(87, 202, 0)', width: 2 },
-  //       },
-  //       {
-  //         type: 'line',
-  //         x0: limiteSubvencion,
-  //         y0: 0,
-  //         x1: limiteSubvencion,
-  //         y1: 80,
-  //         line: { color: 'rgb(87, 202, 0)', width: 2 },
-  //       },
-  //     )
-  //   }
+  if (numeroMaximoPaneles === paneles[4]) {
+    layout.annotations.push({
+      x: numeroMaximoPaneles,
+      y: 85,
+      xref: 'x',
+      yref: 'y',
+      text: t('GRAFICOS.LABEL_numeroMaximoPaneles', {
+        paneles: numeroMaximoPaneles,
+      }),
+      showarrow: true,
+      arrowhead: 3,
+      xanchor: 'right',
+      ax: -20,
+      ay: 0,
+    })
+    layout.shapes.push({
+      type: 'line',
+      x0: numeroMaximoPaneles,
+      y0: 0,
+      x1: numeroMaximoPaneles,
+      y1: 100,
+      line: { color: 'rgb(250, 20, 0)', width: 2 },
+    })
+  }
+
+  if (limiteSubvencion !== undefined) {
+    layout.annotations.push({
+      x: limiteSubvencion,
+      y: 65,
+      xref: 'x',
+      yref: 'y',
+      text: t('GRAFICOS.LABEL_limiteSubvencionEU'),
+      showarrow: true,
+      arrowhead: 3,
+      xanchor: 'left',
+      hovertext: limiteSubvencion.toFixed(1) + ' ' + t('graficos_LBL_paneles'),
+      ax: 20,
+      ay: 0,
+    })
+    layout.shapes.push(
+      {
+        type: 'line',
+        x0: 0,
+        y0: 80,
+        x1: limiteSubvencion,
+        y1: 80,
+        line: { color: 'rgb(87, 202, 0)', width: 2 },
+      },
+      {
+        type: 'line',
+        x0: limiteSubvencion,
+        y0: 0,
+        x1: limiteSubvencion,
+        y1: 80,
+        line: { color: 'rgb(87, 202, 0)', width: 2 },
+      },
+    )
+  }
 
   function handleClick(evt) {
     console.log(evt)
@@ -314,36 +359,34 @@ export default function GraphAlternatives() {
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
-          boxShadow: 2,
           flex: 1,
           border: 2,
           textAlign: 'center',
           borderColor: 'primary.light',
-          '& .MuiDataGrid-cell:hover': {
-            color: 'primary.main',
-          },
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexFlow: 'column',
           // backgroundColor: 'rgba(220, 249, 233, 1)',
         }}
         justifyContent="center"
       >
-        <Typography variant="h4">{t('Grafico alternativas')}</Typography>
-        <Typography variant="body">{t('abc')}</Typography>
-        <br></br>
-        <br></br>
-        <Box>
-          <Plot
-            data={[
-              trace_TIR,
-              trace_autoconsumo,
-              trace_autosuficiencia,
-              trace_precioInstalacion,
-              trace_ahorroAnual,
-            ]}
-            layout={{ layout }}
-            style={{ width: '100%' }}
-            onClick={(event) => handleClick(event)}
-          />
-        </Box>
+        <Typography variant="h4" sx={{ mb: '1rem' }}>
+          {t('ECONOMIC_BALANCE.TITLE_DATA_AS_PANELS')}
+        </Typography>
+
+        <Plot
+          data={[
+            trace_TIR,
+            trace_autoconsumo,
+            trace_autosuficiencia,
+            trace_precioInstalacion,
+            trace_ahorroAnual,
+          ]}
+          layout={layout}
+          style={{ width: '90%' }}
+          config={{ displayModeBar: false }}
+          onClick={(event) => handleClick(event)}
+        />
       </Box>
     </>
   )
