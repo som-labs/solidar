@@ -6,7 +6,6 @@ import Plot from 'react-plotly.js'
 import * as UTIL from '../classes/Utiles'
 
 import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 
 import ProfileDayConsumption from './ProfileDayConsumption'
@@ -14,9 +13,6 @@ import ProfileDayConsumption from './ProfileDayConsumption'
 export default function MapaDiaHora({ activo }) {
   const { t, i18n } = useTranslation()
   const [diaActivo, setdiaActivo] = useState()
-
-  //REVISAR: ussando el state no funcion
-  //const [consumo, setConsumo] = useState(tconsumo.children)
   const divGraph = useRef()
 
   if (activo === undefined) return

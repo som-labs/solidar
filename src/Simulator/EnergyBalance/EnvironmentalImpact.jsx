@@ -15,7 +15,6 @@ export default function EnvironmentalImpact() {
   const radiusRenovable = parseInt(
     (radiusNoRenovable * TCB.CO2AnualRenovable) / TCB.CO2AnualNoRenovable,
   )
-  //REVISAR: falta centrar los circulos
   //REVISAR: que color poner para que con fondo oscuro los circulos se vean bien
   return (
     <>
