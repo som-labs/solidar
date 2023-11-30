@@ -108,7 +108,6 @@ class BaseSolar extends DiaHora {
   }
 
   configuraInclinacion() {
-    console.log(this)
     let hColumnas
     let hFilas
     let hGap

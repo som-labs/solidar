@@ -123,7 +123,7 @@ export default function MapaMesHora({ activo }) {
               plot_bgcolor: 'rgba(0,0,0,0)',
               margin: {
                 l: 70,
-                r: 20,
+                r: 0,
                 b: 65,
                 t: 25,
               },

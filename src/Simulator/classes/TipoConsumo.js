@@ -33,7 +33,7 @@ class TipoConsumo extends DiaHora {
 
     this.nombreTarifa //Por decidir si es necesairo duplicar o no
     this.territorio //Por decidir si es necesairo duplicar o no
-    this.tarifa = {} //Es un objeto Tarifa
+    // this.tarifa = {} //Es un objeto Tarifa
 
     //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto
     for (const objProp in tipo) {
@@ -67,7 +67,7 @@ class TipoConsumo extends DiaHora {
     row.consumoAnualREE = this.consumoAnualREE
     row.nombreFicheroCSV = this.nombreFicheroCSV
     row.cTotalAnual = this.cTotalAnual
-    row.nombreTarifa = this.tarifa.nombreTarifa
+    // row.nombreTarifa = this.tarifa.nombreTarifa
     return row
   }
   /**
@@ -84,15 +84,15 @@ class TipoConsumo extends DiaHora {
 
   sintetizaTiposConsumo(tipo2, factor) {
     if (factor === undefined) factor = 1
-    if (this.nombreTarifa === undefined) {
-      this.nombreTarifa = tipo2.nombreTarifa
-      this.territorio = tipo2.territorio
-      Object.assign(this.tarifa, tipo2.tarifa)
-    }
-    if (this.tarifa.nombreTarifa !== tipo2.tarifa.nombreTarifa) {
-      alert('No se pueden sintetizar tipos de consumo con tarifas diferentes')
-      return null
-    }
+    // if (this.nombreTarifa === undefined) {
+    //   this.nombreTarifa = tipo2.nombreTarifa
+    //   this.territorio = tipo2.territorio
+    //   Object.assign(this.tarifa, tipo2.tarifa)
+    // }
+    // if (this.tarifa.nombreTarifa !== tipo2.tarifa.nombreTarifa) {
+    //   alert('No se pueden sintetizar tipos de consumo con tarifas diferentes')
+    //   return null
+    // }
     super.sintetizaDiaHora(tipo2, factor)
   }
 }

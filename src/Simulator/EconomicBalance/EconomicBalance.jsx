@@ -1,4 +1,3 @@
-import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -17,41 +16,8 @@ import MonthSaving from './MonthSavings'
 import FinanceSummary from './FinanceSummary'
 import GraphAlternatives from './GraphAlternatives'
 
-// REACT Solidar Components
-import EconomicContext from '../EconomicBalance/EconomicContext'
-
-// Solidar objects
-import TCB from '../classes/TCB'
-import Economico from '../classes/Economico'
-
 export default function EconomicBalanceStep() {
   const { t, i18n } = useTranslation()
-
-  const {
-    IBI,
-    setIBI,
-    subvencionEU,
-    setSubvencionEU,
-    valorSubvencionEU,
-    setValorSubvencionEU,
-    precioInstalacionCorregido,
-    setPrecioInstalacionCorregido,
-    recognition,
-    setRecognition,
-    fee,
-    setFee,
-    periodoAmortizacion,
-    setPeriodoAmortizacion,
-    cashFlow,
-    setCashFlow,
-  } = useContext(EconomicContext)
-
-  useEffect(() => {
-    // El economico del consumo global*/
-    TCB.economico = new Economico()
-    setCashFlow(TCB.economico.cashFlow)
-    setPeriodoAmortizacion(TCB.economico.periodoAmortizacion)
-  }, [])
 
   return (
     <>
@@ -70,12 +36,9 @@ export default function EconomicBalanceStep() {
               display: 'flex',
               flexWrap: 'wrap',
               flex: 1,
-              // width: '50%',
-              boxShadow: 2,
               border: 2,
               borderColor: 'primary.light',
               mr: '0.3rem',
-              mb: '0.3rem',
               borderRadius: 4,
             }}
           >
@@ -86,12 +49,9 @@ export default function EconomicBalanceStep() {
               display: 'flex',
               flexWrap: 'wrap',
               flex: 1,
-              // width: '50%',
-              boxShadow: 2,
               border: 2,
               borderColor: 'primary.light',
               mr: '0.3rem',
-              mb: '0.3rem',
               borderRadius: 4,
             }}
           >
@@ -103,11 +63,9 @@ export default function EconomicBalanceStep() {
               flexWrap: 'wrap',
               flex: 1,
               width: '50%',
-              boxShadow: 2,
               border: 2,
               borderColor: 'primary.light',
               mr: '0.3rem',
-              mb: '0.3rem',
               borderRadius: 4,
             }}
           >
@@ -121,17 +79,14 @@ export default function EconomicBalanceStep() {
             width: '100%',
           }}
         >
-          {/* Asignar el espacio entre boxes para dejar 50% width en cada uno y un espacio intermedio usar flex=X como proporcion*/}
           <Box
             sx={{
               display: 'flex',
               flexWrap: 'wrap',
-              boxShadow: 2,
               flex: 1,
               border: 2,
               borderColor: 'primary.light',
               mr: '0.3rem',
-              mb: '0.3rem',
               borderRadius: 4,
             }}
           >
@@ -141,12 +96,10 @@ export default function EconomicBalanceStep() {
             sx={{
               display: 'flex',
               flexWrap: 'wrap',
-              boxShadow: 2,
               flex: 1,
               border: 2,
               borderColor: 'primary.light',
               mr: '0.3rem',
-              mb: '0.3rem',
               borderRadius: 4,
             }}
           >
@@ -157,57 +110,63 @@ export default function EconomicBalanceStep() {
           sx={{
             display: 'flex',
             flexWrap: 'wrap',
-            boxShadow: 2,
             flex: 1,
             border: 2,
             width: '80%',
             borderColor: 'primary.light',
-            mr: '0.3rem',
-            mb: '0.3rem',
             borderRadius: 4,
+            mt: '1rem',
+            ml: 15,
           }}
         >
           <YearSaving></YearSaving>
         </Box>
         <Box
           sx={{
-            mr: '0.3rem',
             display: 'flex',
             flexWrap: 'wrap',
             boxShadow: 2,
             flex: 1,
             border: 2,
             borderColor: 'primary.light',
+            borderRadius: 4,
+            mt: '1rem',
           }}
         >
-          <MonthSaving economico={TCB.economico}></MonthSaving>
+          <MonthSaving></MonthSaving>
         </Box>
         <Box
           sx={{
-            mr: '0.3rem',
             display: 'flex',
             flexWrap: 'wrap',
             boxShadow: 2,
             flex: 1,
             border: 2,
             borderColor: 'primary.light',
+            borderRadius: 4,
+            mt: '1rem',
           }}
         >
           <FinanceSummary></FinanceSummary>
         </Box>
-        <Typography variant="h3">{t('ECONOMIC_BALANCE.SEGUNNUMEROPANELES')}</Typography>
+        <Typography variant="h6" sx={{ mt: '1rem' }}>
+          {t('ECONOMIC_BALANCE.DESCRIPTION_DATA_AS_PANELS')}
+        </Typography>
         <Box
           sx={{
-            mr: '0.3rem',
+            mt: '1rem',
             display: 'flex',
             flexWrap: 'wrap',
-            boxShadow: 2,
+
             flex: 1,
-            border: 2,
+            border: 1,
             borderColor: 'primary.light',
+            borderRadius: 4,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
-          {/* <GraphAlternatives></GraphAlternatives> */}
+          <GraphAlternatives></GraphAlternatives>
         </Box>
       </Container>
     </>

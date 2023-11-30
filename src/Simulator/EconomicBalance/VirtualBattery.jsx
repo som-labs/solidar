@@ -1,50 +1,44 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+// MUI objects
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
-import ReactMarkdown from 'react-markdown'
 import Container from '@mui/material/Container'
 import FormControl from '@mui/material/FormControl'
 import InputAdornment from '@mui/material/InputAdornment'
-import { debounce } from '@mui/material/utils'
-import Button from '@mui/material/Button'
-import Tooltip from '@mui/material/Tooltip'
 
-import * as UTIL from '../classes/Utiles'
+// REACT Solidar Components
 import EconomicContext from './EconomicContext'
+
+// Solidar objects
 import TCB from '../classes/TCB'
 
-const VirtualBattery = () => {
+export default function VirtualBattery() {
   const { t, i18n } = useTranslation()
 
-  const {
-    recognition,
-    setRecognition,
-    fee,
-    setFee,
-    setCashFlow,
-    setPeriodoAmortizacion,
-  } = useContext(EconomicContext)
+  const { cuotaHucha, setCuotaHucha, coefHucha, setCoefHucha, setEcoData } =
+    useContext(EconomicContext)
 
-  const changeFee = () => {
-    TCB.cuotaHucha = parseFloat(fee)
-    TCB.economico.correccionExcedentes(100, 100)
-    setCashFlow(TCB.economico.cashFlow)
-    setPeriodoAmortizacion(TCB.economico.periodoAmortizacion)
-  }
-  const changeRecognition = () => {
-    TCB.coefHucha = parseFloat(recognition)
-    TCB.economico.correccionExcedentes(100, 100)
-    setCashFlow(TCB.economico.cashFlow)
-    setPeriodoAmortizacion(TCB.economico.periodoAmortizacion)
+  const [cuota, setCuota] = useState(cuotaHucha)
+  const [coef, setCoef] = useState(coefHucha)
+
+  const changeCuotaHucha = () => {
+    TCB.cuotaHucha = parseFloat(cuota)
+    setCuotaHucha(cuota)
+    TCB.economico.correccionExcedentes(coef, cuota)
+    TCB.economico.calculoFinanciero(100, 100)
+    setEcoData(TCB.economico)
   }
 
-  useEffect(() => {
-    setFee(TCB.cuotaHucha)
-    setRecognition(TCB.coefHucha)
-  }, [])
+  const changeCoefHucha = () => {
+    TCB.coefHucha = parseFloat(coef)
+    setCoefHucha(coef)
+    TCB.economico.correccionExcedentes(coef, cuota)
+    TCB.economico.calculoFinanciero(100, 100)
+    setEcoData(TCB.economico)
+  }
 
   return (
     <>
@@ -73,9 +67,9 @@ const VirtualBattery = () => {
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <TextField
               type="text"
-              onBlur={changeRecognition}
+              onBlur={changeCoefHucha}
               onChange={(event) => {
-                setRecognition(event.target.value)
+                setCoef(event.target.value)
               }}
               label={t('ECONOMIC_BALANCE.LABEL_RECOGNITION_VIRTUAL_BATTERY')}
               name="coefHucha"
@@ -85,7 +79,7 @@ const VirtualBattery = () => {
                   style: { textAlign: 'right' },
                 },
               }}
-              value={recognition}
+              value={coef}
             />
           </FormControl>
           <Typography variant="body">
@@ -94,9 +88,9 @@ const VirtualBattery = () => {
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <TextField
               type="text"
-              onBlur={changeFee}
+              onBlur={changeCuotaHucha}
               onChange={(event) => {
-                setFee(event.target.value)
+                setCuota(event.target.value)
               }}
               label={t('ECONOMIC_BALANCE.LABEL_FEE_VIRTUAL_BATTERY')}
               name="cuotaHucha"
@@ -106,7 +100,7 @@ const VirtualBattery = () => {
                   style: { textAlign: 'right' },
                 },
               }}
-              value={fee}
+              value={cuota}
             />
           </FormControl>
         </Box>
@@ -114,5 +108,3 @@ const VirtualBattery = () => {
     </>
   )
 }
-
-export default VirtualBattery

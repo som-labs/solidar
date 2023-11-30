@@ -79,7 +79,8 @@ class Economico {
     // )
     //Aqui empiezan los cambios
     let _tc = TCB.TipoConsumo[0]
-    this.tarifa = _tc.tarifa
+    // this.tarifa = TCB.tarifaActiva
+    // console.log(this.tarifa)
 
     //Vamos a calcular el precio de la energia cada dia
     for (let dia = 0; dia < 365; dia++) {
@@ -92,32 +93,36 @@ class Economico {
 
       //Vamos a calcular el precio de la energia cada hora
       for (let hora = 0; hora < 24; hora++) {
-        if (this.tarifa.nombreTarifa === '2.0TD') {
+        if (TCB.tipoTarifa === '2.0TD') {
           if (diaSemana == 0 || diaSemana == 6) {
             //es un fin de semana por lo que tarifa P3 todo el dia
-            this.diaHoraTarifaOriginal[dia][hora] = this.tarifa.precios[3]
+            this.diaHoraTarifaOriginal[dia][hora] = TCB.tarifaActiva.precios[3]
           } else {
             this.diaHoraTarifaOriginal[dia][hora] =
-              this.tarifa.precios[this.tarifa.horas[hora]]
+              TCB.tarifaActiva.precios[TCB.tarifaActiva.horas[hora]]
           }
         } else {
           if (diaSemana == 0 || diaSemana == 6) {
-            this.diaHoraTarifaOriginal[dia][hora] = this.tarifa.precios[6] //es un fin de semana por lo que tarifa P6 todo el dia
+            this.diaHoraTarifaOriginal[dia][hora] = TCB.tarifaActiva.precios[6] //es un fin de semana por lo que tarifa P6 todo el dia
           } else {
             this.diaHoraTarifaOriginal[dia][hora] =
-              this.tarifa.precios[[this.tarifa.horas[this.idxTable[dia].mes][hora]]]
+              TCB.tarifaActiva.precios[
+                [TCB.tarifaActiva.horas[this.idxTable[dia].mes][hora]]
+              ]
           }
         }
 
         // La tarifa original es -> this.diaHoraTarifaOriginal[dia][hora]
         // El consumo original es -> _tc[0].diaHora[dia][hora]
         this.diaHoraPrecioOriginal[dia][hora] =
-          _tc.diaHora[dia][hora] * this.diaHoraTarifaOriginal[dia][hora] * coefImpuesto
+          TCB.consumo.diaHora[dia][hora] *
+          this.diaHoraTarifaOriginal[dia][hora] *
+          coefImpuesto
 
         // Determinamos el precio de esa hora (la tarifa) segun sea el balance es decir teniendo en cuanta los paneles. Si es negativo compensa
         if (TCB.balance.diaHora[dia][hora] < 0) {
           //Aportamos energia a la red de distribución
-          this.diaHoraTarifaConPaneles[dia][hora] = this.tarifa.precios[0] //Es el precio de compensacion
+          this.diaHoraTarifaConPaneles[dia][hora] = TCB.tarifaActiva.precios[0] //Es el precio de compensacion
           this.idxTable[dia].ahorradoAutoconsumo += this.diaHoraPrecioOriginal[dia][hora] //Ahorro del gasto original
 
           this.diaHoraPrecioConPaneles[dia][hora] +=
@@ -245,12 +250,6 @@ class Economico {
     const valorSubvencionIBI = TCB.valorSubvencionIBI
     const tiempoSubvencionIBI = TCB.tiempoSubvencionIBI
     const porcientoSubvencionIBI = TCB.porcientoSubvencionIBI
-
-    console.log(
-      TCB.valorSubvencionIBI,
-      TCB.tiempoSubvencionIBI,
-      TCB.porcientoSubvencionIBI,
-    )
 
     // Calculo de la subvención EU
     const tipoSubvencionEU = TCB.tipoSubvencionEU
