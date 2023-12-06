@@ -261,25 +261,24 @@ Modales:
   main_TAB_noMostrarMas: Non mostre esta mensaxe de novo
 
 PARAMETROS:
-  main_TAB_parametros: Parámetros de aplicación
-  parametros_LBL_descripcion: Configuración dos parámetros da aplicación. Os cambios nestes valores non implican un recálculo de todo o conxunto cómpre volver á pestana Localización e calcular.
-  conversionAreakWp_LBL: Metros cuadrados necesarios para instalar un kWp
-  conversionAreakWp_TT: Este valor utilizarase para saber cantos kWp se poden instalar nunha área definida. kWp máximo = área en metros cadrados / Este parámetro
-  impuestoElectrico_LBL: Imposto eléctrico en %
-  impuestoElectrico_TT: O imposto especial sobre a electricidade
-  IVAenergia_LBL: IVE aplicable á enerxía en %
-  IVAenergia_TT: O IVE que ten un impacto no gasto en electricidade
-  IVAinstalacion_LBL: IVE aplicable á instalación en %
-  IVAinstalacion_TT: O IVE que ten un impacto na cantidade á que ascende a instalación
-  perdidasSistema_LBL: Perdas estimadas de instalación en %
-  perdidasSistema_TT: As perdas do sistema fotovoltaico debido á deterioración dalgúns compoñentes condicións adversas investidores pobres etc.
-  interesVAN_LBL: Interese base (%) para o cálculo da furgoneta
-  interesVAN_TT: Taxa de desconto para aplicar no cálculo do valor neto actual
-  potenciaPanelInicio_LBL: Panel de inicio de potencia unitaria (KWP)
-  potenciaPanelInicio_TT: Potencia KWP do panel inicial usado nos cálculos
-  tecnologia_LBL: Tecnoloxía dos paneis
-  tecnologia_TT: "Podes escoller tres tipos de paneis para realizar as estimacións: \n- aqueles que teñen células de silicio cristalino\n- módulos de cobre delgado e lámina india Seleniuro (Cuinse) ou cobre indio e galo seleniuro (cuingase) \n - Módulos de teluro de Cadmium Teluro (CDTE) \n-desconocido\nescolle unha das tres primeiras opcións no cálculo da produción fotovoltaica terá en conta o efecto de temperatura. Se se elixe a outra opción (descoñecida) no cálculo asumiranse algunhas perdas de enerxía debido ao efecto de temperatura do 8% (valor xenérico que se considera razoable para climas temperados). O efecto da distribución espectral da irradiación recibida na produción só se pode calcular para tecnoloxías de silicio cristalino e CDTE."
-  tecnologiaDesconocida_LBL: Descoñecido
+  DIALOG_TITLE: Parámetros de aplicación
+  DIALOG_DESCRIPTION: Configuración dos parámetros da aplicación. Os cambios nestes valores non implican un recálculo de todo o conxunto cómpre volver á pestana Localización e calcular.
+  LABEL_impuestoElectrico: Imposto eléctrico en %
+  TOOLTIP_impuestoElectrico: O imposto especial sobre a electricidade
+  LABEL_IVAenergia: IVE aplicable á enerxía en %
+  TOOLTIP_IVAenergia: O IVE que ten un impacto no gasto en electricidade
+  LABEL_IVAinstalacion: IVE aplicable á instalación en %
+  TOOLTIP_IVAinstalacion: O IVE que ten un impacto na cantidade á que ascende a instalación
+  LABEL_perdidasSistema: Perdas estimadas de instalación en %
+  TOOLTIP_perdidasSistema: As perdas do sistema fotovoltaico debido á deterioración dalgúns compoñentes condicións adversas investidores pobres etc.
+  LABEL_interesVAN: Interese base (%) para o cálculo da furgoneta
+  TOOLTIP_interesVAN: Taxa de desconto para aplicar no cálculo do valor neto actual
+  LABEL_potenciaPanelInicio: Panel de inicio de potencia unitaria (KWP)
+  TOOLTIP_potenciaPanelInicio: Potencia KWP do panel inicial usado nos cálculos
+  LABEL_tecnologia: Tecnoloxía dos paneis
+  TOOLTIP_tecnologia: "Podes escoller tres tipos de paneis para realizar as estimacións: \n- aqueles que teñen células de silicio cristalino\n- módulos de cobre delgado e lámina india Seleniuro (Cuinse) ou cobre indio e galo seleniuro (cuingase) \n - Módulos de teluro de Cadmium Teluro (CDTE) \n-desconocido\nescolle unha das tres primeiras opcións no cálculo da produción fotovoltaica terá en conta o efecto de temperatura. Se se elixe a outra opción (descoñecida) no cálculo asumiranse algunhas perdas de enerxía debido ao efecto de temperatura do 8% (valor xenérico que se considera razoable para climas temperados). O efecto da distribución espectral da irradiación recibida na produción só se pode calcular para tecnoloxías de silicio cristalino e CDTE."
+  LABEL_tecnologiaDesconocida: Descoñecido
+
   tarifasLocales_LBL: Ficheiro de taxa local
   ficheroTarifas_LBL: Ficheiro de taxa local (ver exemplo)
   ficheroTarifas_TT: O usuario pode personalizar un ficheiro cos prezos que desexa ao cumprir o formato dado no exemplo

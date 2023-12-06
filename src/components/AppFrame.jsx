@@ -11,6 +11,8 @@ import Footer from './Footer'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { ScrollRestoration } from 'react-router-dom'
+import DialogProvider from './DialogProvider'
+import MenuParameters from '../Simulator/components/MenuParameters'
 
 export default function AppFrame({ children }) {
   const { t, i18n } = useTranslation()
@@ -37,50 +39,53 @@ export default function AppFrame({ children }) {
   return (
     <>
       <ScrollRestoration /> {/* Scroll up on page switch */}
-      <AppBar position="static" enableColorOnDark>
-        <Toolbar>
-          {/* Page selector for small devices */}
-          <PagesMenu
-            pages={pages}
-            sx={{
-              display: {
-                xs: 'inline',
-                sm: 'none',
-              },
-            }}
-          />
+      <DialogProvider>
+        <AppBar position="static" enableColorOnDark>
+          <Toolbar>
+            {/* Page selector for small devices */}
+            <PagesMenu
+              pages={pages}
+              sx={{
+                display: {
+                  xs: 'inline',
+                  sm: 'none',
+                },
+              }}
+            />
 
-          {/* Logo */}
-          <img src={logo} width="32px" style={{ marginInline: '.5rem' }} />
+            {/* Logo */}
+            <img src={logo} width="32px" style={{ marginInline: '.5rem' }} />
 
-          {/* App name */}
-          <Typography
-            variant="h5"
-            component="div"
-            sx={{
-              flexGrow: 1,
-              textTransform: 'uppercase',
-            }}
-          >
-            {title}
-          </Typography>
+            {/* App name */}
+            <Typography
+              variant="h5"
+              component="div"
+              sx={{
+                flexGrow: 1,
+                textTransform: 'uppercase',
+              }}
+            >
+              {title}
+            </Typography>
 
-          {/* Page selector for bigger devices */}
-          <PagesButtons
-            pages={pages}
-            sx={{
-              display: {
-                xs: 'none',
-                sm: 'inline',
-              },
-            }}
-          />
+            {/* Page selector for bigger devices */}
+            <PagesButtons
+              pages={pages}
+              sx={{
+                display: {
+                  xs: 'none',
+                  sm: 'inline',
+                },
+              }}
+            />
 
-          {/* Tool buttons */}
-          <ColorModeButton />
-          <LanguageMenu />
-        </Toolbar>
-      </AppBar>
+            {/* Tool buttons */}
+            <ColorModeButton />
+            <LanguageMenu />
+            <MenuParameters />
+          </Toolbar>
+        </AppBar>
+      </DialogProvider>
       <Box sx={{ minHeight: 'calc( 100vh - 7rem )' }}>{children}</Box>
       <Footer />
     </>

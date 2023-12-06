@@ -311,12 +311,6 @@ export default function EnergyFlow(props) {
             </Box>
           </Box>
         </Box>
-        <Typography
-          variant="body"
-          dangerouslySetInnerHTML={{
-            __html: t('ENERGY_BALANCE.MSG_disclaimerProduccion'),
-          }}
-        />
       </Container>
     </>
   )

@@ -8,7 +8,7 @@ import { DataGrid } from '@mui/x-data-grid'
 
 // REACT Solidar Components
 import TCBContext from '../TCBContext'
-import PreciosTarifa from '../Consumption/PreciosTarifa'
+import SummaryPreciosTarifa from './SummaryPreciosTarifa'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
@@ -45,7 +45,7 @@ export default function SummaryConsumption() {
         <Typography variant="h3" textAlign={'center'}>
           {t('SUMMARY.TITLE_CONSUMO')}
         </Typography>
-        <PreciosTarifa></PreciosTarifa>
+        <SummaryPreciosTarifa></SummaryPreciosTarifa>
         <Typography variant="body">{t('SUMMARY.DESCRIPTION_CONSUMO')}</Typography>
         <DataGrid
           autoHeight

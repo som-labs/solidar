@@ -1,16 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import TCB from '../classes/TCB'
 import Plot from 'react-plotly.js'
 
 import * as UTIL from '../classes/Utiles'
 import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
 
 //REVISAR: no aparece los valores de consumo en el eje Y
 const ProfileDayConsumption = (data) => {
   const { t, i18n } = useTranslation()
-  const [consumo, setConsumo] = useState(data.consumo)
+  const [consumo] = useState(data.consumo)
 
   if (data.diaActivo === undefined) return <></>
 
@@ -52,30 +51,35 @@ const ProfileDayConsumption = (data) => {
   }
 
   const layout = {
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
     autosize: true,
-    xaxis: {
-      title: t('GRAPHICS.LABEL_HORA'),
-      dtick: 2,
-      zeroline: true,
-    },
     margin: {
-      l: 0,
+      l: 40,
       r: 0,
       b: 65,
       t: 0,
     },
-    paper_bgcolor: 'rgba(0,0,0,0)',
-    plot_bgcolor: 'rgba(0,0,0,0)',
+    xaxis: {
+      title: t('GRAPHICS.LABEL_HORA'),
+      dtick: 1,
+      zeroline: false,
+    },
     yaxis: {
-      title: 'kWh',
-      textcolor: 'red',
-      showline: true,
       zeroline: true,
-      zerolinecolor: '#969696',
-      gridcolor: '#bdbdbd',
-      gridwidth: 1,
+      title: 'kWh',
+      showticklabels: true,
+      showgrid: true,
+      showline: true,
+      linecolor: 'primary.light',
+      tickfont_color: 'primary.light',
+      ticks: 'outside',
+      tickcolor: 'primary.light',
+      tickmode: 'auto',
+      range: [0, consumo.cMaximoAnual],
     },
   }
+  console.log(consumo.cMaximoAnual)
 
   return (
     <>

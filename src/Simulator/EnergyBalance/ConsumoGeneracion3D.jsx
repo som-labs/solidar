@@ -68,13 +68,14 @@ export default function ConsumoGeneracion3D() {
 
   var layout_resumen = {
     legend: {
-      x: 0.5,
+      x: 0.2,
       xanchor: 'left',
-      y: 1.1,
+      y: 1.0,
+      orientation: 'h',
     },
-    paper_bgcolor: 'rgba(10,0,0,1)',
-    plot_bgcolor: 'rgba(10,0,0,0)',
-    xaxis: { title: 'pericles' }, //{ title: t('GRAPHICS.LABEL_HORA') },
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    xaxis: { title: 'dia' }, //{ title: t('GRAPHICS.LABEL_HORA') },
     yaxis: {
       title: t('GRAPHICS.LABEL_DIA'),
       tickvals: UTIL.indiceDia.map((e) => {
@@ -91,8 +92,8 @@ export default function ConsumoGeneracion3D() {
     margin: {
       l: 0,
       r: 0,
-      b: 65,
-      t: 25,
+      b: 0,
+      t: 0,
     },
   }
 
@@ -113,17 +114,18 @@ export default function ConsumoGeneracion3D() {
     <>
       <Container>
         <Box sx={{ display: 'flex' }}>
-          <Box sx={{ width: '50%' }}>
+          <Box sx={{ display: 'flex', flex: 1 }}>
             <Plot
               data={[g_produccion, g_consumo]}
-              layout={{ layout_resumen }}
-              style={{ width: '100%' }}
+              layout={layout_resumen}
               onClick={(event) => handleClick(event)}
             />
           </Box>
-          <Box sx={{ width: '50%' }}>
-            <PerfilDiario> {diaActivo} </PerfilDiario>
-          </Box>
+          {diaActivo && (
+            <Box sx={{ display: 'flex', flex: 1 }}>
+              <PerfilDiario> {diaActivo} </PerfilDiario>
+            </Box>
+          )}
         </Box>
       </Container>
     </>

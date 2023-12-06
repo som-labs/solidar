@@ -14,8 +14,9 @@ import { Vector as VectorSource } from 'ol/source'
 const INDIVIDUAL = 'INDIVIDUAL'
 const COLECTIVO = 'COLECTIVO'
 const COMUNIDAD = 'COMUNIDAD'
+const DESARROLLO = 'DESARROLLO'
 
-/*global INDIVIDUAL, COLECTIVO, COMUNIDAD, ol*/
+/*global INDIVIDUAL, COLECTIVO, COMUNIDAD, DESARROLLO, ol*/
 const TCB = {
   //Variables globales de funcionamiento
   debug: false,
@@ -27,7 +28,7 @@ const TCB = {
     Colectivo: Existe solo un punto de consumo, multiples bases, hay fincas y un unico reparto
     Comunidad: Existen multiples puntos de consumo, cada uno de ellos con fincas y un unico reparto */
 
-  modos: [INDIVIDUAL, COLECTIVO, COMUNIDAD],
+  modos: [INDIVIDUAL, COLECTIVO, COMUNIDAD, DESARROLLO],
   modoActivo: INDIVIDUAL,
 
   nombreProyecto: '',
@@ -115,11 +116,6 @@ const TCB = {
   economicoCreado: false,
   requiereOptimizador: true,
   ultimarefcat: '', //Ultima referencia catastral de la que se han cargado fincas
-
-  //Algunos valores por defecto y comunes para el caso INDIVIDUAL
-  nombreTarifaActiva: '2.0TD', //El nombre de la tarifa activa en caso de 3.0TD incluye el territorio
-  tipoTarifa: '2.0TD', //Puede ser 2.0TD o 3.0TD
-  tarifaActiva: {},
 
   // Estos precios son los de SOM a agosto 2022 y no deberían estar aqui.
   tarifas: {
@@ -213,10 +209,14 @@ const TCB = {
       ],
     },
   },
+  //Algunos valores por defecto
+  nombreTarifaActiva: '2.0TD', //El nombre de la tarifa activa en caso de 3.0TD incluye el territorio
+  tipoTarifa: '2.0TD', //Puede ser 2.0TD o 3.0TD
+  tarifaActiva: {},
 
   // Parametros por defecto
   parametros: {
-    conversionAreakWp: 6,
+    // conversionAreakWp: 6,
     impuestoElectrico: 5.113,
     IVAenergia: 5.0,
     IVAinstalacion: 21.0,

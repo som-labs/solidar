@@ -6,28 +6,21 @@ import TCB from './TCB'
 
 class Tarifa {
   /**
-   *
-   * @param {string} nombreTarifa El formato del nombre de la tarifa es X.0TD-R
-   *    nombreTarifa = [ 2.0TD, 3.0TD]
-   *    territorio = ['Peninsula', 'Islas Baleares', 'Canarias', 'Melilla', 'Ceuta']
+   * @param {string} nombreTarifa El formato del nombre de la tarifa es X.0TD-Y
+   *    X - nombreTarifa = [ 2.0TD, 3.0TD]
+   *    Y - territorio = ['Peninsula', 'Islas Baleares', 'Canarias', 'Melilla', 'Ceuta']
    */
-  constructor(nombreTarifa, territorio) {
+  constructor(nombreTarifa) {
     this.idTarifa = TCB.featIdUnico++
     this.nombreTarifa = nombreTarifa
-    this.territorio = territorio
-    let ctarifa =
-      nombreTarifa === '2.0TD' ? nombreTarifa : nombreTarifa + '-' + territorio
-    this.precios = Array.from(TCB.tarifas[ctarifa].precios)
-    this.horas = TCB.tarifas[ctarifa].horas
+    this.precios = Array.from(TCB.tarifas[nombreTarifa].precios)
+    this.horas = TCB.tarifas[nombreTarifa].horas
   }
 
-  setTarifa(nombreTarifa, territorio) {
+  setTarifa(nombreTarifa) {
     this.nombreTarifa = nombreTarifa
-    this.territorio = territorio
-    let ctarifa =
-      nombreTarifa === '2.0TD' ? nombreTarifa : nombreTarifa + '-' + territorio
-    this.precios = Array.from(TCB.tarifas[ctarifa].precios)
-    this.horas = TCB.tarifas[ctarifa].horas
+    this.precios = Array.from(TCB.tarifas[nombreTarifa].precios)
+    this.horas = TCB.tarifas[nombreTarifa].horas
   }
 
   getTarifa() {
