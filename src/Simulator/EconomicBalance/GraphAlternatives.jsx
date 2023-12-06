@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Plotly objects
@@ -13,7 +13,6 @@ import EconomicContext from './EconomicContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'
-import * as UTIL from '../classes/Utiles'
 import { nuevoTotalPaneles } from '../classes/optimizador'
 import calculaResultados from '../classes/calculaResultados'
 
@@ -60,11 +59,6 @@ export default function GraphAlternatives() {
       // Se realizan todos los calculos
       calculaResultados()
 
-      // El grafico de alternativas se genera solo para consumo individual
-      //   TCB.Participes[0].balance = TCB.balance;
-      //   TCB.Participes[0].economico = new Economico(TCB.Participes[0]);
-      //   TCB.economico = TCB.Participes[0].economico;
-
       // Se extraen los valores de las variables que forman parte del grafico
       paneles.push(intento)
       autoconsumo.push((TCB.balance.autoconsumo / TCB.produccion.pTotalAnual) * 100)
@@ -83,10 +77,6 @@ export default function GraphAlternatives() {
   }
 
   calculaResultados()
-  // El grafico de alternativas se genera solo para consumo individual
-  //   TCB.Participes[0].balance = TCB.balance;
-  //   TCB.Participes[0].economico = new Economico(TCB.Participes[0]);
-  //   TCB.economico = TCB.Participes[0].economico;
 
   //Buscamos punto en el que la produccion represente el 80% del consumo anual total para definir el limite subvencion EU
   let i = 0
@@ -191,7 +181,7 @@ export default function GraphAlternatives() {
       showticklabels: true,
       showgrid: true,
       gridwidth: 0.1,
-      gridcolor: 'red',
+      gridcolor: 'primary.light',
       showline: true,
       linecolor: 'primary.light',
       tickfont_color: 'primary.light',

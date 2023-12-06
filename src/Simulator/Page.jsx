@@ -26,7 +26,6 @@ import * as UTIL from './classes/Utiles'
 
 import InicializaAplicacion from './classes/InicializaAplicacion'
 import Consumo from './classes/Consumo'
-import Economico from './classes/Economico'
 
 InicializaAplicacion()
 

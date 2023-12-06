@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react'
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects

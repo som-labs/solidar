@@ -160,12 +160,12 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
     setFormData(prevData)
   }
 
-  const handleCancel = () => {
-    if (!editing) {
-      //Cancelling a new base creation => delete previos geometry
-      UTIL.deleteBaseGeometries(formData.idBaseSolar)
-    }
-    onClose('Cancel')
+  const handleCancel = (event) => {
+    // if (!editing) {
+    //   //Cancelling a new base creation => delete previos geometry
+    //   UTIL.deleteBaseGeometries(formData.idBaseSolar)
+    // }
+    onClose(event)
   }
 
   async function handleClose() {

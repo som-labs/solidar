@@ -1,10 +1,7 @@
 import TCB from './TCB'
 import * as UTIL from './Utiles'
-import Graficos from './Graficos'
 
-// import { gestionParametros } from "./gestionParametros";
-
-/*global bootstrap, Tabulator, COLECTIVO */
+/*global bootstrap, Tabulator, COLECTIVO, DESARROLLO */
 
 async function InicializaAplicacion() {
   //Si recibimos argumento debug en la url ejecutamos con debug
@@ -28,9 +25,13 @@ async function InicializaAplicacion() {
   // _menu.classList.add('h2');
 
   // Define la url base de la aplicación
-  let fullPath = window.location.href
-  let ipos = fullPath.lastIndexOf('/')
-  TCB.basePath = fullPath.slice(0, ipos + 1)
+  if (TCB.modoActivo === 'DESARROLLO') {
+    TCB.basePath = 'http://localhost/SOM/REACT/solidar/'
+  } else {
+    let fullPath = window.location.href
+    let ipos = fullPath.lastIndexOf('/')
+    TCB.basePath = fullPath.slice(0, ipos + 1)
+  }
   UTIL.debugLog('_initEvents ejecutando desde ' + TCB.basePath)
 
   // lectura del fichero de precios de instalación del servidor. Si falla se usan las de la TCB
@@ -73,10 +74,10 @@ async function InicializaAplicacion() {
 
   // Added line to avoid changing many lines of code in components coming from
   //TCB.i18next = i18n
-  UTIL.debugLog('Ejecucion instancia en idioma ' + TCB.i18next.language)
+  //UTIL.debugLog('Ejecucion instancia en idioma ' + TCB.i18next.language)
 
   //Inicializacion graficos Plotly
-  TCB.graficos = new Graficos()
+  //TCB.graficos = new Graficos()
 
   // // Evento del boton de instrucciones
   // document.getElementById('botonInstrucciones').addEventListener("click", async function handleChange() {

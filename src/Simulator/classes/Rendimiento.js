@@ -75,9 +75,12 @@ class Rendimiento extends DiaHora {
     addurl += '&pvtechchoice=' + TCB.parametros.tecnologia
     let [lon, lat] = base.lonlatBaseSolar.split(',')
 
-    let basePath = 'http://localhost/SOM/REACT/solidar/src/Simulator/'
+    //TCB.basePath = 'http://localhost/SOM/REACT/solidar/src/Simulator/'
+
+    console.log(typeof TCB.basePath)
+    console.log(TCB.basePath)
     let url =
-      basePath +
+      TCB.basePath +
       'proxy PVGIS.php?' +
       'idSesion=' +
       TCB.idSesion +
@@ -88,6 +91,7 @@ class Rendimiento extends DiaHora {
       addurl
 
     UTIL.debugLog('PVGIS url:' + url)
+    console.log(url)
     try {
       const respuesta = await fetch(url)
       if (respuesta.status === 200) {

@@ -1,4 +1,3 @@
-import { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Plotly objects
@@ -28,21 +27,21 @@ export default function MonthEnergyBalance(props) {
   const trace_excedente = {
     x: mesMapa,
     y: excedente,
-    name: TCB.i18next.t('graficos_LBL_graficasExcedente'),
+    name: TCB.i18next.t('GRAFICOS.LABEL_graficasExcedente'),
     type: 'bar',
   }
 
   const trace_deficit = {
     x: mesMapa,
     y: deficit,
-    name: TCB.i18next.t('graficos_LBL_graficasDeficit'),
+    name: TCB.i18next.t('GRAFICOS.LABEL_graficasDeficit'),
     type: 'bar',
   }
 
   const trace_autoconsumo = {
     x: mesMapa,
     y: autoconsumo,
-    name: TCB.i18next.t('graficos_LBL_graficasAutoconsumo'),
+    name: TCB.i18next.t('GRAFICOS.LABEL_graficasAutoconsumo'),
     type: 'bar',
   }
 

@@ -27,7 +27,6 @@ export default function MapaMesHora({ activo }) {
   let maxMes
   let horas = []
   let meses = []
-
   let colores = []
   let valores = []
   let text = []
@@ -35,12 +34,18 @@ export default function MapaMesHora({ activo }) {
   let maxConsumoMes = -Infinity
   let radio = 20
   const mesMapa = Array.from(i18nextMes())
+
+  console.log(consumo)
   console.log(typeof consumo.idxTable[0].fecha)
+  console.log('FECHA: ', consumo.idxTable[0])
+  console.log('CONSUMO TABLE:', consumo)
   for (let hora = 0; hora < 24; hora++) {
     let _valorHora = consumo.getHora(hora)
     let _consMes = new Array(12).fill(0)
     let _diasMes = new Array(12).fill(0)
     for (let dia = 0; dia < 365; dia++) {
+      // console.log('FECHA CONSUMO: ', consumo.idxTable[dia].fecha)
+      // console.log('FECHA CONSUMO GET MONTH: ', consumo.idxTable[dia].fecha.getMonth())
       _consMes[consumo.idxTable[dia].fecha.getMonth()] += _valorHora[dia]
       _diasMes[consumo.idxTable[dia].fecha.getMonth()]++
     }
@@ -54,8 +59,10 @@ export default function MapaMesHora({ activo }) {
         maxMes = mes
       }
       valores.push(valor)
-      text.push(valor.toFixed(2) + 'kWh')
+      text.push(valor.toFixed(6) + 'kWh')
     }
+    console.log(_consMes)
+    console.log(_diasMes)
   }
 
   let tono

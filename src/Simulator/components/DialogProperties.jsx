@@ -11,15 +11,7 @@ import { useTranslation } from 'react-i18next'
 // MUI objects
 import Box from '@mui/material/Box'
 import { Table, TableRow, TableCell } from '@mui/material'
-import Button from '@mui/material/Button'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogTitle from '@mui/material/DialogTitle'
-import Tooltip from '@mui/material/Tooltip'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import TextField from '@mui/material/TextField'
-import { MuiFileInput } from 'mui-file-input'
+import { Typography } from '@mui/material'
 
 // REACT Solidar Components
 import TCBContext from '../TCBContext'
@@ -27,14 +19,12 @@ import TCBContext from '../TCBContext'
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import TipoConsumo from '../classes/TipoConsumo'
-import Tarifa from '../classes/Tarifa'
-import { Typography } from '@mui/material'
 
 export default function DialogProperties({ data, onClose }) {
   const { t, i18n } = useTranslation()
   const [objeto, setObjeto] = useState(data)
 
+  console.log('EN DIALOGO DE PROPIEDADES')
   const vectorPropiedades = UTIL.obtenerPropiedades(objeto, 0)
   for (let val in vectorPropiedades) {
     //console.log(val, vectorPropiedades[val])
@@ -43,6 +33,7 @@ export default function DialogProperties({ data, onClose }) {
       else return UTIL.campos[a.nombre].order - UTIL.campos[b.nombre].order
     })
   }
+  console.log(vectorPropiedades)
   return (
     <>
       <Box>

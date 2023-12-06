@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 // MUI objects
 import Typography from '@mui/material/Typography'
@@ -6,6 +6,10 @@ import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid'
 import InfoIcon from '@mui/icons-material/Info'
+import clsx from 'clsx'
+
+//React global components
+import CollapsibleCard from '../components/CollapsibleCard'
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
@@ -38,7 +42,6 @@ export default function EnergyBalanceStep() {
   }
 
   const columns = [
-    // { field: 'idBaseSolar', headerName: 'ID', width: 50 },
     {
       field: 'nombreBaseSolar',
       headerName: t('BaseSolar.LABEL_nombreBaseSolar'),
@@ -57,25 +60,32 @@ export default function EnergyBalanceStep() {
       renderCell: (params) => {
         return UTIL.formatoValor('paneles', params.value)
       },
-      //REVISAR: validacion de paneles
-      preProcessEditCellProps: (params) => {
+      cellClassName: (params) => {
         console.log(params)
-        const { props, row } = params
-        console.log(props, row)
-        const hasError = props.value > row.panelesMaximo
-        console.log(hasError)
-        if (hasError) {
-          alert(t('resultados_MSG_excesoPotencia'))
-          console.log({
-            ...params.props,
-            value: row.panelesMaximo,
-            error: hasError,
-          })
-          return { ...params.props, value: row.panelesMaximo, error: hasError }
-        }
-        console.log(params)
-        return params
+        return clsx('super-app', {
+          negative: params.value > params.row.panelesMaximo,
+          positive: params.value <= params.row.panelesMaximo,
+        })
       },
+
+      //REVISAR: validacion de paneles
+      // preProcessEditCellProps: (params) => {
+      //   console.log(params)
+      //   const { props, row } = params
+      //   const hasError = props.value > row.panelesMaximo
+      //   console.log(hasError)
+      //   if (hasError) {
+      //     alert(t('resultados_MSG_excesoPotencia'))
+      //     return {
+      //       ...params,
+      //       //value: row.panelesMaximo,
+      //       error: hasError,
+      //       //unstable_updateValueOnRender: false,
+      //     }
+      //   }
+      //   console.log(params)
+      //   return params
+      // },
     },
     {
       field: 'panelesMaximo',
@@ -232,15 +242,19 @@ export default function EnergyBalanceStep() {
    */
 
   function nuevaInstalacion(params, event) {
+    console.log(bases)
+    console.log('PARAMS:', params)
     let tmpPaneles
     if (params.field === 'paneles') {
       tmpPaneles = parseInt(event.target.value)
+      console.log('CONDICION: ', tmpPaneles > params.row.panelesMaximo)
+      console.log('CONDICION VALUES: ', tmpPaneles, params.row.panelesMaximo)
       if (tmpPaneles > params.row.panelesMaximo) {
-        alert('error')
-        return
-        // tmpPaneles = params.row.panelesMaximo
-        // params.row.paneles = params.row.panelesMaximo
-        // console.log(bases)
+        alert(
+          'Esta asignando mas paneles que los ' +
+            params.row.panelesMaximo +
+            ' que estimamos se pueden instalar en el area definida',
+        )
       }
     }
     let tmpPotenciaUnitaria =
@@ -248,16 +262,19 @@ export default function EnergyBalanceStep() {
         ? parseFloat(event.target.value)
         : params.row.potenciaUnitaria
 
+    //Update this BaseSolar panels and potenciaUnitaria in TCB
     let baseActiva = TCB.BaseSolar.find((base) => {
       return base.idBaseSolar === params.id
     })
     baseActiva.instalacion.potenciaUnitaria = tmpPotenciaUnitaria
     baseActiva.instalacion.paneles = tmpPaneles
 
-    TCB.totalPaneles = TCB.BaseSolar.reduce((a, b) => {
-      return a + b.instalacion.paneles
+    //Update total number of panels in TCB
+    TCB.totalPaneles = bases.reduce((a, b) => {
+      return a + b.paneles
     }, 0)
 
+    //Update bases in TCBContext
     const updateBases = bases.map((row) => {
       if (row.idBaseSolar === params.id) {
         return {
@@ -265,16 +282,31 @@ export default function EnergyBalanceStep() {
           [params.field]: event.target.value,
           ['potenciaTotal']: tmpPaneles * tmpPotenciaUnitaria,
         }
+      } else {
+        return row
       }
-      return row
     })
+    console.log(updateBases)
     setBases(updateBases)
   }
 
   return (
     <>
       <Container>
-        <Box>
+        <Box
+          sx={{
+            '& .super-app.negative': {
+              backgroundColor: '#ff0000',
+              color: '#1a3e72',
+              fontWeight: '400',
+            },
+            '& .super-app.positive': {
+              backgroundColor: 'rgba(157, 255, 118, 0.49)',
+              color: '#1a3e72',
+              fontWeight: '400',
+            },
+          }}
+        >
           <Typography variant="h3">{t('ENERGY_BALANCE.TITLE')}</Typography>
 
           <Typography
@@ -295,8 +327,6 @@ export default function EnergyBalanceStep() {
             columns={columns}
             hideFooter={false}
             sx={{
-              boxShadow: 2,
-              border: 2,
               borderColor: 'primary.light',
             }}
             slots={{ footer: footerSummary }}
@@ -305,6 +335,14 @@ export default function EnergyBalanceStep() {
 
         <ConsumoGeneracion3D></ConsumoGeneracion3D>
         <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
+        <CollapsibleCard
+          title={t('BASIC.LABEL_AVISO')}
+          titleVariant="body"
+          titleSX={{ color: 'blue', mb: '-1rem' }}
+          descriptionVariant="body"
+          descriptionSX={{ fontSize: '15px' }}
+          description={t('ENERGY_BALANCE.MSG_disclaimerProduccion')}
+        ></CollapsibleCard>
         <YearEnergyBalance></YearEnergyBalance>
         <MonthEnergyBalance monthlyData={monthlyData}></MonthEnergyBalance>
         <EnvironmentalImpact></EnvironmentalImpact>
