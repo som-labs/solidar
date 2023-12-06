@@ -243,25 +243,24 @@ MODALES:
   main_TAB_noMostrarMas: Do not show this message again
 
 PARAMETROS:
-  main_TAB_parametros: Application parameters
-  parametros_LBL_descripcion: Application parameters configuration. Changes in these values ​​do not imply a recalculation of the entire set it is necessary to return to the Location tab and recalculate.
-  conversionAreakWp_LBL: kWp that can be installed per square meter available
-  conversionAreakWp_TT: This value will be used to know how many KWP can be installed in a defined area. KWP maximum = area in square meters / this parameter
-  impuestoElectrico_LBL: Electrical tax in %
-  impuestoElectrico_TT: The Special Electricity Tax
-  IVAenergia_LBL: VAT applicable to energy in %
-  IVAenergia_TT: The VAT that is impact on electricity spending
-  IVAinstalacion_LBL: VAT applicable to installation in %
-  IVAinstalacion_TT: The VAT that is impact on the amount to which the installation ascends
-  perdidasSistema_LBL: Estimated installation losses in %
-  perdidasSistema_TT: The losses of the photovoltaic system due to the deterioration of some components adverse conditions poor investors etc.
-  interesVAN_LBL: Base interest (%) for Van Calculation
-  interesVAN_TT: Discount rate to apply in the calculation of the net current value
-  potenciaPanelInicio_LBL: Unitary Power (kWp) Start Panel
-  potenciaPanelInicio_TT: KWP power of the initial panel used in calculations
-  tecnologia_LBL: Panel technology
-  # tecnologia_TT: You can choose three types of panels to perform the estimates:  \n- those that have crystalline silicon cells \n- Modules of thin copper and Indian seleniuro lamina (CuInSe) or copper Indian and Gallic seleniuro (CuInGaSe) \n- Thin Cadmium Teluro (CdTe) \n- unknown. \nIf one of the first three options is chosen in the calculation of photovoltaic production the temperature effect will be taken into account. If the other option (unknown) is chosen in the calculation some power losses will be assumed due to the temperature effect of 8% (generic value that is considered reasonable for temperate climates). The effect of the spectral distribution of irradiance received on production can only be calculated for crystalline and CDTE silicon technologies.
-  tecnologiaDesconocida_LBL: Unknown
+  DIALOG_TITLE: Application parameters
+  DIALOG_DESCRIPTION: Application parameters configuration. Changes in these values ​​do not imply a recalculation of the entire set it is necessary to return to the Location tab and recalculate.
+  LABEL_impuestoElectrico: Electrical tax in %
+  TOOLTIP_impuestoElectrico: The Special Electricity Tax
+  LABEL_IVAenergia: VAT applicable to energy in %
+  TOOLTIP_IVAenergia: The VAT that is impact on electricity spending
+  LABEL_IVAinstalacion: VAT applicable to installation in %
+  TOOLTIP_IVAinstalacion: The VAT that is impact on the amount to which the installation ascends
+  LABEL_perdidasSistema: Estimated installation losses in %
+  TOOLTIP_perdidasSistema: The losses of the photovoltaic system due to the deterioration of some components adverse conditions poor investors etc.
+  LABEL_interesVAN: Base interest (%) for Van Calculation
+  TOOLTIP_interesVAN: Discount rate to apply in the calculation of the net current value
+  LABEL_potenciaPanelInicio: Unitary Power (kWp) Start Panel
+  TOOLTIP_potenciaPanelInicio: KWP power of the initial panel used in calculations
+  LABEL_tecnologia: Panel technology
+  TOOLTIP_tecnologia: "You can choose three types of panels to perform the estimates:  \n- those that have crystalline silicon cells \n- Modules of thin copper and Indian seleniuro lamina (CuInSe) or copper Indian and Gallic seleniuro (CuInGaSe) \n- Thin Cadmium Teluro (CdTe) \n- unknown. \nIf one of the first three options is chosen in the calculation of photovoltaic production the temperature effect will be taken into account. If the other option (unknown) is chosen in the calculation some power losses will be assumed due to the temperature effect of 8% (generic value that is considered reasonable for temperate climates). The effect of the spectral distribution of irradiance received on production can only be calculated for crystalline and CDTE silicon technologies."
+  LABEL_tecnologiaDesconocida: Unknown
+
   tarifasLocales_LBL: Local Rate file
   ficheroTarifas_LBL: Local Rate file (see example)
   ficheroTarifas_TT: The user can customize a file with different prices while complying with the format given in the example
@@ -454,7 +453,15 @@ Economico:
   TOOLTIP_tiempoSubvencionIBI: The number of years during which the bonus can be applied in the IBI
 
   precios_LBL_pendienteCalculo: Pending
-graficos:
+GRAFICOS:
+  LABEL_panelesActuales: Current panels {{paneles}}
+  LABEL_graficasNoCompensado: Not compensated
+  LABEL_graficasGastoConPaneles: Expense with panels
+  LABEL_graficasGastoSinPaneles: Expense without panels
+  LABEL_graficasCompensacion: Compensation reduction
+  LABEL_graficasExcedente: Excess
+  LABEL_graficasDeficit: Deficit
+
   graficos_LBL_descripcion: Available graphics area
   graficos_LBL_balanceConsumo: Monthly consumption balance with {{potencia}} installed
   graficos_LBL_balanceProduccion: Monthly production balance with {{potencia}} installed
@@ -462,23 +469,16 @@ graficos:
   graficos_LBL_alternativasPotencia: Alternatives with panels of {{potencia}} installed
 
   graficos_LBL_graficasProduccion: Production
-  graficos_LBL_graficasNoCompensado: Not compensated
-  graficos_LBL_graficasGastoConPaneles: Expense with panels
-  graficos_LBL_graficasGastoSinPaneles: Expense without panels
   graficos_LBL_graficasConsumo: Consumption
-  graficos_LBL_graficasCompensacion: Compensation reduction
-  graficos_LBL_graficasExcedente: Excess
   graficos_LBL_graficasInversion: Investment
   graficos_LBL_graficasAhorro: Saving
-  graficos_LBL_graficasDeficit: Deficit
-
   graficos_LBL_graficasAutosuficiencia: Self-sufficiency
   graficos_LBL_graficasprodvscons: Prod. Vs. Cons.
   graficos_LBL_graficasDia: Day
   graficos_LBL_graficasHora: Hour
   graficos_LBL_cambiaPaneles: Click changes to {{paneles}} panels
   graficos_LBL_paneles: Panels
-  graficos_LBL_panelesActuales: Current panels {{paneles}}
+
   graficos_LBL_segunFuente: Energy distribution according to Source
   graficos_LBL_deRed: Electric Network
   # graficos_LBL_dePaneles: %%{{paneles}} panels

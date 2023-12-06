@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import Box from '@mui/material/Box'
@@ -7,9 +7,13 @@ import Container from '@mui/material/Container'
 
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
+import { useTheme } from '@mui/material/styles'
+//import { ColorModeContext } from '../../components/GlobalTheme'
 
 export default function EnvironmentalImpact() {
   const { t, i18n } = useTranslation()
+  const theme = useTheme()
+  //const { current } = React.useContext(ColorModeContext)
 
   const radiusNoRenovable = 200
   const radiusRenovable = parseInt(
@@ -68,7 +72,7 @@ export default function EnvironmentalImpact() {
                   width: radiusRenovable + 'px',
                   height: radiusRenovable + 'px',
                   borderRadius: '50%',
-                  backgroundColor: 'black',
+                  backgroundColor: theme.palette.circulo.main,
                   justifyContent: 'center',
                   alignItems: 'center',
                   verticalAlign: 'center',
@@ -102,7 +106,7 @@ export default function EnvironmentalImpact() {
                   width: radiusNoRenovable + 'px',
                   height: radiusNoRenovable + 'px',
                   borderRadius: '50%',
-                  backgroundColor: 'black',
+                  backgroundColor: theme.palette.circulo.main,
                   justifyContent: 'center',
                   alignItems: 'center',
                   verticalAlign: 'center',
