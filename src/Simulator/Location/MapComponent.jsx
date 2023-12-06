@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect, useContext } from 'react'
+import { useState, useMemo, useRef, useEffect, useContext, useCallback } from 'react'
 import { debounce } from '@mui/material/utils'
 
 import { useTranslation } from 'react-i18next'
@@ -15,11 +15,7 @@ import { transform, fromLonLat } from 'ol/proj'
 import { Draw } from 'ol/interaction'
 
 // MUI objects
-import Button from '@mui/material/Button'
-import Tooltip from '@mui/material/Tooltip'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import Autocomplete from '@mui/material/Autocomplete'
+import { Button, Tooltip, TextField, Typography, Autocomplete } from '@mui/material'
 
 // REACT Solidar Components
 import MapContext from '../MapContext'
@@ -35,7 +31,7 @@ export default function MapComponent() {
 
   // Map state
   const [mapType, setMapType] = useState('LOCATION.LABEL_SATELITE')
-  const [selectedCoord, setSelectedCoord] = useState([-3.7, 40.45])
+  const [selectedCoord] = useState([-3.7, 40.45])
 
   const { map, setMap } = useContext(MapContext)
 
@@ -121,8 +117,14 @@ export default function MapComponent() {
 
   function endDialog(reason) {
     //alert(reason) //Para ver por donde salimos cuando bakdropclick
-    if (reason !== undefined) {
+    console.log(typeof reason)
+    if (typeof reason === 'string') {
       closeDialog()
+    } else {
+      //Cancelling a new base creation => delete previos geometry
+      UTIL.deleteBaseGeometries(TCB.featIdUnico.toString())
+
+      console.log('borrar')
     }
   }
 
@@ -230,7 +232,12 @@ export default function MapComponent() {
     //Activamos el dialogo de edicion de atributos de BaseSolar
     openDialog({
       children: (
-        <DialogNewBaseSolar data={nuevaBaseSolar} editing={false} onClose={endDialog} />
+        <DialogNewBaseSolar
+          data={nuevaBaseSolar}
+          editing={false}
+          onClose={(cause) => endDialog(cause)}
+          closeOnClickBackdrop={false}
+        />
       ),
     })
   }
@@ -334,7 +341,7 @@ export default function MapComponent() {
   }
 
   //REVISAR: como quitar este aviso
-  async function findAddress() {
+  const findAddress = useCallback(async () => {
     setCandidatos([])
     let url =
       'https://nominatim.openstreetmap.org/search?format=json&polygon_geojson=1&addressdetails=1&countrycodes=es&'
@@ -355,6 +362,7 @@ export default function MapComponent() {
             key: count++,
           })
         })
+        console.log([...nitem])
         setCandidatos([...nitem])
       } else {
         alert(
@@ -369,7 +377,7 @@ export default function MapComponent() {
       alert(t('ERROR_NOMINATIM_FETCH', { err: err.message, url: url }))
       return false
     }
-  }
+  }, [address, t])
 
   const ref = useRef()
 

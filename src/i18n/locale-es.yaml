@@ -229,8 +229,8 @@ ENERGY_BALANCE:
 
   TITLE_GRAPH_MONTH_ENERGY_BALANCE: Autoconsumo, consumo de la red y excedentes
   MSG_disclaimerProduccion: |
-    Aviso-> Los datos para la estimación de la producción de los paneles solares se obtienen de PVGIS. <a href:"https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en">Ver documentación aqui</a>
-    <br /><br />
+    Los datos para la estimación de la producción de los paneles solares se obtienen de PVGIS. <a href:"https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en">Ver documentación aqui</a>
+    <br />
     Son tenidos en cuenta: <ul><li>la temperatura del aire a 2 metros y la velocidad del viento a 10 metros</li><li>el efecto de la temperatura en el rendimiento</li><li>la variación del espectro electromagnético a lo largo del día</li><li>el promedio de aerosoles en el ambiente (no los cambios bruscos)</li></ul>
     No son tenidos en cuenta: <ul><li>el efecto de las nevadas</li><li>la acumulación de polvo y suciedad en los paneles</li><li>las pérdidas por sombras próximas</li></ul><br>
 
@@ -333,13 +333,14 @@ SUMMARY:
   TITLE_ENERGY_BALANCE: Balance energético
   DESCRIPTION_ENERGY_BALANCE: ''
   LABEL_AUTOCONSUMO: del consumo será autoproducido
-  LABEL_AVISO: Aviso
+
   LABEL_disclaimer1: "<p>Todas las estimaciones dadas se han realizado con la mayor precisión posible con la mejor intención y sin ningún compromiso.</p><p class='text-danger fw-bold'>Especial mención debemos hacer en cuanto al precio estimado de la instalación. Existe una alta volatilidad en este factor y no podemos garantizar que refleje la realidad del mercado en cada momento y territorio por lo que hemos incluido un campo que te permite corregir ese precio según las recomendaciones de tu instalador.</p>"
   LABEL_disclaimer2: SOM Energia no tiene ningún interés económico ni directo ni indirecto en este estudio salvo contribuir a una transición energética justa con los usuarios eficiente descentralizada y limpia.
 
 BASIC:
   LABEL_OK: Guardar
   LABEL_CANCEL: Cancelar
+  LABEL_AVISO: Aviso
 
 GRAPHICS:
   LABEL_CONSUMPTION: Consumo
@@ -383,25 +384,31 @@ CABECERA:
   main_TAB_noMostrarMas: No volver a mostrar este mensaje
 
 PARAMETROS:
-  main_TAB_parametros: Parametros de la aplicación
-  parametros_LBL_descripcion: Configuración de parámetros de la aplicación. Los cambios en estos valores no implican un recálculo de todo el conjunto es necesario volver a la pestaña Localización y calcular.
-  conversionAreakWp_LBL: Metros cuadrados necesarios para instalar un kWp
-  conversionAreakWp_TT: Este valor se utilizará para saber cuantos kWp se pueden instalar en un area definida. kWp maximo = area en metros cuadrados / este parametro
-  impuestoElectrico_LBL: Impuesto eléctrico en %
-  impuestoElectrico_TT: El impuesto especial sobre la electricidad
-  IVAenergia_LBL: IVA aplicable a la energia en %
-  IVAenergia_TT: El IVA que se repercute por el gasto en electricidad
-  IVAinstalacion_LBL: IVA aplicable a la instalación en %
-  IVAinstalacion_TT: El IVA que se repercute sobre el importe al que ascienda la instalación
-  perdidasSistema_LBL: Pérdidas estimadas de la instalación en %
-  perdidasSistema_TT: Las pérdidas estimas del sistema fotovoltaico debidas al deterioro de algunos componentes condiciones adversas inversores deficientes etc.
-  interesVAN_LBL: Interés base (%) para calculo de VAN
-  interesVAN_TT: Tasa de descuento a aplicar en el cálculo del valor actual neto
-  potenciaPanelInicio_LBL: Potencia unitaria (kWp) panel inicio
-  potenciaPanelInicio_TT: Potencia kWp del panel inicial utilizado en los cálculos
-  tecnologia_LBL: Tecnología de los paneles
-  tecnologia_TT: "Se pueden elegir tres tipos de paneles para realizar las estimaciones \n- los que tienen células de silicio cristalino\n- módulos de lámina delgada de seleniuro de cobre e indio (CuInSe) o seleniuro de cobre indio y galio (CuInGaSe)\n- módulos de lámina delgada de teluro de cadmio (CdTe)\n- Desconocido\nSi se elige alguna de las tres primeras opciones en el cálculo de la producción fotovoltaica se tendrá en cuenta el efecto de la temperatura. Si se elige la otra opción (desconocido) en el cálculo se asumirán unas pérdidas de potencia debido al efecto de la temperatura del 8% (valor genérico que se considera razonable para climas templados). El efecto de la distribución espectral de la irradiancia recibida sobre la producción sólo puede calcularse para las tecnologías de silicio cristalino y de CdTe."
-  tecnologiaDesconocida_LBL: Desconocida
+  DIALOG_TITLE: Parametros de la aplicación
+  DIALOG_DESCRIPTION: |
+    Los cambios en estos valores <strong>no implican un recálculo de todo el conjunto</strong>, es necesario volver a la pestaña Localización y calcular.
+  LABEL_impuestoElectrico: Impuesto eléctrico en %
+  TOOLTIP_impuestoElectrico: El impuesto especial sobre la electricidad
+  LABEL_IVAenergia: IVA aplicable a la energia en %
+  TOOLTIP_IVAenergia: El IVA que se repercute por el gasto en electricidad
+  LABEL_IVAinstalacion: IVA aplicable a la instalación en %
+  TOOLTIP_IVAinstalacion: El IVA que se repercute sobre el importe al que ascienda la instalación
+  LABEL_perdidasSistema: Pérdidas estimadas de la instalación en %
+  TOOLTIP_perdidasSistema: Las pérdidas estimas del sistema fotovoltaico debidas al deterioro de algunos componentes condiciones adversas inversores deficientes etc.
+  LABEL_interesVAN: Interés base (%) para calculo de VAN
+  TOOLTIP_interesVAN: Tasa de descuento a aplicar en el cálculo del valor actual neto
+  LABEL_potenciaPanelInicio: Potencia unitaria (kWp) panel inicio
+  TOOLTIP_potenciaPanelInicio: Potencia kWp del panel inicial utilizado en los cálculos
+  LABEL_tecnologia: Tecnología de los paneles
+  TOOLTIP_tecnologia: "Se pueden elegir tres tipos de paneles para realizar las estimaciones \n- los que tienen células de silicio cristalino\n- módulos de lámina delgada de seleniuro de cobre e indio (CuInSe) o seleniuro de cobre indio y galio (CuInGaSe)\n- módulos de lámina delgada de teluro de cadmio (CdTe)\n- Desconocido\nSi se elige alguna de las tres primeras opciones en el cálculo de la producción fotovoltaica se tendrá en cuenta el efecto de la temperatura. Si se elige la otra opción (desconocido) en el cálculo se asumirán unas pérdidas de potencia debido al efecto de la temperatura del 8% (valor genérico que se considera razonable para climas templados). El efecto de la distribución espectral de la irradiancia recibida sobre la producción sólo puede calcularse para las tecnologías de silicio cristalino y de CdTe."
+  LABEL_tecnologiaDesconocida: Desconocida
+  LABEL_largoPanel: Largo del panel propuesto en metros
+  TOOLTIP_largoPanel: A efectos del cálculo del número de paneles
+  LABEL_anchoPanel: Ancho del panel propuesto en metros
+  TOOLTIP_anchoPanel: A efectos del cálculo del número de paneles
+  LABEL_margen: Margen de instalación en metros
+  TOOLTIP_margen: Distancia dejada alrededor de la instalación a efectos de mantenimiento
+
   tarifasLocales_LBL: Fichero de tarifas local
   ficheroTarifas_LBL: Fichero de tarifas local (ver ejemplo)
   ficheroTarifas_TT: El usuario puede personalizar un fichero con los precios que desee mientras cumpla con el formato dado en el ejemplo
@@ -600,8 +607,12 @@ GRAFICOS:
   LABEL_graficasNoCompensado: No compensado
   LABEL_graficasGastoConPaneles: Gasto con paneles
   LABEL_graficasGastoSinPaneles: Gasto sin paneles
-  LABEL_graficasCompensacion: Reducción por compensación
-  LABEL_graficasAutoconsumo: Reducción por autoconsumo
+  LABEL_graficasReduccionCompensacion: Reducción por compensación
+  LABEL_graficasReduccionAutoconsumo: Reducción por autoconsumo
+
+  LABEL_graficasExcedente: Excedente
+  LABEL_graficasDeficit: Déficit
+  LABEL_graficasAutoconsumo: Autoconsumo
 
   graficos_LBL_balanceConsumo: Balance mensual de consumo con {{potencia}} instalados
   graficos_LBL_balanceProduccion: Balance mensual de producción con {{potencia}} instalados
@@ -609,10 +620,9 @@ GRAFICOS:
   graficos_LBL_alternativasPotencia: Alternativas con paneles de {{potencia}} instalados
   graficos_LBL_produccionMediaMensual: Producción media mensual con {{potencia}} instalados / consumo medio mensual
 
-  graficos_LBL_graficasExcedente: Excedente
   graficos_LBL_graficasInversion: Inversión
   graficos_LBL_graficasAhorro: Ahorro
-  graficos_LBL_graficasDeficit: Déficit
+
   graficos_LBL_graficasAutosuficiencia: Autosuficiencia
   graficos_LBL_graficasprodvscons: Prod. vs Cons.
   graficos_LBL_cambiaPaneles: Click cambia a {{paneles}} paneles

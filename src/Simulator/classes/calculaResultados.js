@@ -38,8 +38,6 @@ async function calculaResultados() {
   // Construccion objeto Balance global
   TCB.balance = new Balance(TCB.produccion, TCB.consumo, 100)
   TCB.balanceCreado = true
-  console.log(TCB.balance)
-
   TCB.economico = new Economico()
   return
 }

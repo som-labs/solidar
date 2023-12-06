@@ -64,9 +64,10 @@ class DiaHora {
       fechaHdr: 'FECHA',
       horaHdr: 'HORA',
       factor: 1,
-      metodo: 'SUSTITUYE',
+      metodo: 'PROMEDIO', //'SUSTITUYE',
     },
   ) {
+    console.log(options)
     this.datosCargados = false
     var lastLine
     this.maximoAnual = -Infinity
@@ -97,6 +98,7 @@ class DiaHora {
         //Verificamos las cabeceras del fichero CSV
         try {
           var headers = data.slice(0, data.indexOf('\n')).split(options.delimiter)
+          console.log(headers, options)
           for (let i = 0; i < headers.length; i++) {
             headers[i] = headers[i].trim().toUpperCase()
             if (headers[i] === options.fechaHdr) chkFecha = true
@@ -354,6 +356,7 @@ class DiaHora {
    * @param {Array(24)<number>} unDia.valores Valores a insertar en esta fila
    */
   mete(unDia, metodo) {
+    console.log(metodo)
     let _dia = unDia.fecha.getDate()
     let _mes = unDia.fecha.getMonth()
     var indiceDia = UTIL.indiceDesdeDiaMes(_dia, _mes)
@@ -361,13 +364,26 @@ class DiaHora {
       if (metodo === 'PROMEDIO') {
         if (this.idxTable[indiceDia].previos > 0) {
           //Implica que ya habia registros previos para ese dia por lo que recalculamos el promedio
+          if (indiceDia === 0 && hora === 0)
+            console.log(
+              this.diaHora[indiceDia][hora],
+              this.idxTable[indiceDia].previos,
+              unDia.valores[hora],
+            )
           unDia.valores[hora] =
             (this.diaHora[indiceDia][hora] * this.idxTable[indiceDia].previos +
               unDia.valores[hora]) /
             (this.idxTable[indiceDia].previos + 1)
+          if (indiceDia === 0 && hora === 0)
+            console.log(
+              this.diaHora[indiceDia][hora],
+              this.idxTable[indiceDia].previos,
+              unDia.valores[hora],
+            )
         }
       }
       this.diaHora[indiceDia][hora] = unDia.valores[hora]
+      if (indiceDia === 0 && hora === 0) console.log(this.diaHora[indiceDia][hora])
     }
 
     this.idxTable[indiceDia].fecha = unDia.fecha

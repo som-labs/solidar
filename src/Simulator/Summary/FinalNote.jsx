@@ -19,7 +19,7 @@ export default function FinalNote() {
         <Button variant="contained" startIcon={<Download />} size="large">
           Descarga Informe Completo
         </Button>
-        <Typography variant="h4">{t('SUMMARY.LABEL_AVISO')}</Typography>
+        <Typography variant="h4">{t('BASIC.LABEL_AVISO')}</Typography>
         <Typography
           variant="body"
           dangerouslySetInnerHTML={{

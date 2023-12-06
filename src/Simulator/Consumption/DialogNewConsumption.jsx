@@ -2,15 +2,10 @@ import React, { useState, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
+import { Box, Button, MenuItem, FormControl, TextField } from '@mui/material'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
-import Tooltip from '@mui/material/Tooltip'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import TextField from '@mui/material/TextField'
 import { MuiFileInput } from 'mui-file-input'
 
 // REACT Solidar Components
@@ -61,7 +56,6 @@ export default function DialogNewConsumption({ data, onClose }) {
       nombreTipoConsumo: formData.nombreTipoConsumo,
       fuente: formData.fuente,
       nombreTarifa: TCB.nombreTarifaActiva,
-      territorio: TCB.territorio,
     }
 
     if (nuevoTipoConsumo.fuente === 'REE') {
@@ -73,12 +67,7 @@ export default function DialogNewConsumption({ data, onClose }) {
       nuevoTipoConsumo.ficheroCSV = formData.ficheroCSV
       nuevoTipoConsumo.nombreFicheroCSV = formData.ficheroCSV.name
     }
-
     let idxTC = TCB.TipoConsumo.push(new TipoConsumo(nuevoTipoConsumo))
-    TCB.TipoConsumo[idxTC - 1].tarifa = new Tarifa(
-      nuevoTipoConsumo.nombreTarifa,
-      nuevoTipoConsumo.territorio,
-    )
 
     //Si se ha pasado un inputFile como argumento se carga
     if (formData.ficheroCSV !== '') {
@@ -132,7 +121,7 @@ export default function DialogNewConsumption({ data, onClose }) {
         decimal: '.',
         fechaHdr: 'FECHA',
         horaHdr: 'HORA',
-        valorArr: [objTipoConsumo.tarifa.nombreTarifa],
+        valorArr: [TCB.tipoTarifa],
         factor: objTipoConsumo.consumoAnualREE,
       }
     } else {
@@ -143,6 +132,7 @@ export default function DialogNewConsumption({ data, onClose }) {
         horaHdr: 'HORA',
         valorArr: ['CONSUMO', 'CONSUMO_KWH', 'AE_KWH'],
         factor: 1,
+        metodo: 'PROMEDIO',
       }
     }
 
@@ -161,9 +151,11 @@ export default function DialogNewConsumption({ data, onClose }) {
       })
 
     setFormData(data)
+    console.log('CONSUMO: ' + objTipoConsumo.cMaximoAnual)
     return aStatus
   }
 
+  console.log('OPEN CONSUMPTION DIALOG')
   return (
     <div>
       <DialogTitle>{t('CONSUMPTION.TITLE_DIALOG_NEW_CONSUMPTION')}</DialogTitle>{' '}

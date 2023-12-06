@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import { useState, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -111,7 +111,8 @@ export default function ConsumptionSummary() {
   function endDialog(showGraphs, nuevoTipoConsumo) {
     console.log('fin dialogo ', showGraphs, nuevoTipoConsumo)
     if (showGraphs) {
-      //setActivo({ ...nuevoTipoConsumo })
+      //showGraphsTC(nuevoTipoConsumo)
+      //setActivo(nuevoTipoConsumo)
     }
     closeDialog()
   }
@@ -201,14 +202,12 @@ export default function ConsumptionSummary() {
           }}
           textAlign={'center'}
           dangerouslySetInnerHTML={{
-            __html: t(
-              t('CONSUMPTION.TOTAL_DEMMAND', {
-                consumoTotal: formatoValor(
-                  'energia',
-                  Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
-                ),
-              }),
-            ),
+            __html: t('CONSUMPTION.TOTAL_DEMMAND', {
+              consumoTotal: formatoValor(
+                'energia',
+                Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
+              ),
+            }),
           }}
         />
       </Box>

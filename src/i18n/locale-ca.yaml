@@ -247,25 +247,24 @@ main_TAB_cerrar: Tanca
 main_TAB_noMostrarMas: No torneu a mostrar aquest missatge
 
 PARAMETROS:
-  main_TAB_parametros: Paràmetres de l'aplicació
-  parametros_LBL_descripcion: Configuració de paràmetres de l'aplicació. Els canvis en aquests valors no impliquen un recàlcul de tot el conjunt cal tornar a la pestanya Ubicació i calcular
-  conversionAreakWp_LBL: Metres quadrats necessaris per instal·lar un kWp
-  conversionAreakWp_TT: Aquest valor s'utilitzarà per saber quants kWp es poden instal·lar en una àrea definida. kWp maxim = àrea en metres quadrats / aquest paràmetre
-  impuestoElectrico_LBL: Impost elèctric en %
-  impuestoElectrico_TT: 'L’impost especial sobre l’electricitat'
-  IVAenergia_LBL: IVA aplicable a l’energia en %
-  IVAenergia_TT: L'IVA que es repercuteix per la despesa en electricitat
-  IVAinstalacion_LBL: IVA aplicable a la instal·lació en %
-  IVAinstalacion_TT: L'IVA que es repercuteix sobre l'import a què ascendeixi la instal·lació
-  perdidasSistema_LBL: Pèrdues de l’instal·lació estimades en %
-  perdidasSistema_TT: Les pèrdues estimades del sistema fotovoltaic degudes al deteriorament d'alguns components condicions adverses inversors deficients etc.
-  interesVAN_LBL: Interès base (%) per al càlcul de VAN
-  interesVAN_TT: Taxa de descompte a aplicar en el càlcul del valor actual net
-  potenciaPanelInicio_LBL: Potència unitària (kWp) panell inici
-  potenciaPanelInicio_TT: Potència kWp del panell inicial utilitzat en els càlculs
-  tecnologia_LBL: Tecnologia dels panells
-  tecnologia_TT: "Pots triar tres tipus de panells per realitzar les estimacions:  \n- Els que tenen cèl·lules de silici cristal·lí \n- mòduls de làmina prima de seleniur de coure i indi (CulnSe) o seleniur de coure indi i gal·li (CuInGaSe) \n - Mòduls de làmina prima de teluro de cadmi (CdTe) \n- Desconegut \n Si es tria una de les tres primeres opcions en el càlcul de la producció fotovoltaica es tindrà en compte l'efecte de la temperatura. Si es tria l’altra opció (desconegut) en el càlcul s’assumiran unes pèrdues d’energia a causa de l’efecte de temperatura del 8% (valor genèric que es considera raonable pels climes temperats). L’efecte de la distribució espectral de la irradiància rebuda en la producció només es pot calcular per a les tecnologies de silici cristal·lí i de CdTe."
-  tecnologiaDesconeguda_LBL: Desconeguda
+  DIALOG_TITLE: Paràmetres de l'aplicació
+  DIALOG_DESCRIPTION: Configuració de paràmetres de l'aplicació. Els canvis en aquests valors no impliquen un recàlcul de tot el conjunt cal tornar a la pestanya Ubicació i calcular
+  LABEL_impuestoElectrico: Impost elèctric en %
+  TOOLTIP_impuestoElectrico: 'L’impost especial sobre l’electricitat'
+  LABEL_IVAenergia: IVA aplicable a l’energia en %
+  TOOLTIP_IVAenergia: L'IVA que es repercuteix per la despesa en electricitat
+  LABEL_IVAinstalacion: IVA aplicable a la instal·lació en %
+  TOOLTIP_IVAinstalacion: L'IVA que es repercuteix sobre l'import a què ascendeixi la instal·lació
+  LABEL_perdidasSistema: Pèrdues de l’instal·lació estimades en %
+  TOOLTIP_perdidasSistema: Les pèrdues estimades del sistema fotovoltaic degudes al deteriorament d'alguns components condicions adverses inversors deficients etc.
+  LABEL_interesVAN: Interès base (%) per al càlcul de VAN
+  TOOLTIP_interesVAN: Taxa de descompte a aplicar en el càlcul del valor actual net
+  LABEL_potenciaPanelInicio: Potència unitària (kWp) panell inici
+  TOOLTIP_potenciaPanelInicio: Potència kWp del panell inicial utilitzat en els càlculs
+  LABEL_tecnologia: Tecnologia dels panells
+  TOOLTIP_tecnologia: "Pots triar tres tipus de panells per realitzar les estimacions:  \n- Els que tenen cèl·lules de silici cristal·lí \n- mòduls de làmina prima de seleniur de coure i indi (CulnSe) o seleniur de coure indi i gal·li (CuInGaSe) \n - Mòduls de làmina prima de teluro de cadmi (CdTe) \n- Desconegut \n Si es tria una de les tres primeres opcions en el càlcul de la producció fotovoltaica es tindrà en compte l'efecte de la temperatura. Si es tria l’altra opció (desconegut) en el càlcul s’assumiran unes pèrdues d’energia a causa de l’efecte de temperatura del 8% (valor genèric que es considera raonable pels climes temperats). L’efecte de la distribució espectral de la irradiància rebuda en la producció només es pot calcular per a les tecnologies de silici cristal·lí i de CdTe."
+  LABEL_tecnologiaDesconocida: Desconeguda
+
   tarifasLocales_LBL: Fitxer de tarifes locals
   ficheroTarifas_LBL: Fitxer de tarifes local (veu l'exemple)
   ficheroTarifas_TT: L'usuari pot personalitzar un fitxer amb els preus que vulgui tot complint el format indicat a l'exemple
@@ -453,7 +452,16 @@ Economico:
   LABEL_tiempoSubvencionIBI: Durada (anys)
   TOOLTIP_tiempoSubvencionIBI: El nombre d’anys durant els quals es pot aplicar la bonificació a l’IBI
 
-graficos:
+GRAFICOS:
+  LABEL_panelesActuales: Panells actuals {{paneles}}
+  LABEL_graficasNoCompensado: No compensat
+  LABEL_graficasGastoConPaneles: Despesa amb paneles
+  LABEL_graficasGastoSinPaneles: Despesa sense panells
+  LABEL_graficasCompensacion: Reducció per compensació
+
+  LABEL_graficasExcedente: Excedent
+  LABEL_graficasDeficit: Dèficit
+
   graficos_LBL_descripcion: Àrea de gràfics disponibles
   graficos_LBL_balanceConsumo: Balanç mensual de consum amb {{potencia}} instal·lada
   graficos_LBL_balanceProduccion: Balance mensual de producció amb {{potencia}} instal·lada
@@ -461,15 +469,9 @@ graficos:
   graficos_LBL_alternativasPotencia: Alternatives amb paneles de {{potencia}} instal·lats
 
   graficos_LBL_graficasProduccion: Producció
-  graficos_LBL_graficasNoCompensado: No compensat
-  graficos_LBL_graficasGastoConPaneles: Despesa amb paneles
-  graficos_LBL_graficasGastoSinPaneles: Despesa sense panells
   graficos_LBL_graficasConsumo: Consum
-  graficos_LBL_graficasCompensacion: Reducció per compensació
-  graficos_LBL_graficasExcedente: Excedent
   graficos_LBL_graficasInversion: Inversió
   graficos_LBL_graficasAhorro: Estalvi
-  graficos_LBL_graficasDeficit: Dèficit
 
   graficos_LBL_graficasAutosuficiencia: Autosuficiència
   graficos_LBL_graficasprodvscons: Prod. vs. Cons.
@@ -477,7 +479,6 @@ graficos:
   graficos_LBL_graficasHora: Hora
   graficos_LBL_cambiaPaneles: Clic canvia a {{paneles}} panells
   graficos_LBL_paneles: Panells
-  graficos_LBL_panelesActuales: Panells actuals {{paneles}}
 
 catastro_MSG_errorFetch: Error en executar fecth a Cadastre. \n {{err}} \n {{url}}
 
