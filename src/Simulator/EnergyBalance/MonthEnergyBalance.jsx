@@ -53,43 +53,32 @@ export default function MonthEnergyBalance(props) {
     yaxis: {
       title: 'kWh',
     },
+    margin: { b: 10, t: 20, r: 10 },
   }
 
   return (
     <>
       <Container>
-        <Box
-          component="form"
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            flexWrap: 'wrap',
-            width: '100%',
+        <Typography variant="h4">
+          {t('ENERGY_BALANCE.TITLE_MONTH_ENERGY_BALANCE')}
+        </Typography>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('ENERGY_BALANCE.DESCRIPTION_MONTH_ENERGY_BALANCE'),
           }}
-        >
-          <Typography variant="h4">
-            {t('ENERGY_BALANCE.TITLE_MONTH_ENERGY_BALANCE')}
-          </Typography>
-          <Typography
-            variant="body"
-            dangerouslySetInnerHTML={{
-              __html: t('ENERGY_BALANCE.DESCRIPTION_MONTH_ENERGY_BALANCE'),
-            }}
-          />
-          <br />
-          <Typography variant="h5" textAlign={'center'}>
-            {t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_ENERGY_BALANCE', {
-              potencia: UTIL.formatoValor('potencia', TCB.produccion.potenciaTotal),
-            })}
-          </Typography>
-          <Plot
-            data={[trace_deficit, trace_autoconsumo, trace_excedente]}
-            layout={layout}
-            style={{ width: '100%' }}
-          />
+        />
+        <Typography variant="h5" textAlign={'center'} sx={{ mt: '1rem' }}>
+          {t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_ENERGY_BALANCE', {
+            potencia: UTIL.formatoValor('potencia', TCB.produccion.potenciaTotal),
+          })}
+        </Typography>
+        <Plot
+          data={[trace_deficit, trace_autoconsumo, trace_excedente]}
+          layout={layout}
+        />
 
-          <br />
-        </Box>
+        <br />
       </Container>
     </>
   )

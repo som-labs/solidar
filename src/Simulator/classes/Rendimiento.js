@@ -75,7 +75,8 @@ class Rendimiento extends DiaHora {
     addurl += '&pvtechchoice=' + TCB.parametros.tecnologia
     let [lon, lat] = base.lonlatBaseSolar.split(',')
 
-    //TCB.basePath = 'http://localhost/SOM/REACT/solidar/src/Simulator/'
+    if (TCB.modoActivo === 'DESARROLLO')
+      TCB.basePath = 'http://localhost/SOM/REACT/solidar/src/Simulator/'
 
     console.log(typeof TCB.basePath)
     console.log(TCB.basePath)

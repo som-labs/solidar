@@ -335,13 +335,6 @@ export default function GraphAlternatives() {
   //         });
   //     }
   // }
-  console.log(
-    trace_TIR,
-    trace_autoconsumo,
-    trace_autosuficiencia,
-    trace_precioInstalacion,
-    trace_ahorroAnual,
-  )
 
   return (
     <>
@@ -373,7 +366,6 @@ export default function GraphAlternatives() {
             trace_ahorroAnual,
           ]}
           layout={layout}
-          style={{ width: '90%' }}
           config={{ displayModeBar: false }}
           onClick={(event) => handleClick(event)}
         />

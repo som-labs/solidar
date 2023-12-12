@@ -10,11 +10,13 @@ import clsx from 'clsx'
 
 //React global components
 import CollapsibleCard from '../components/CollapsibleCard'
+
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
+
 // REACT Solidar Components
-import TCBContext from '../TCBContext'
+import InputContext from '../InputContext'
 import EconomicContext from '../EconomicBalance/EconomicContext'
 import calculaResultados from '../classes/calculaResultados'
 import ConsumoGeneracion3D from './ConsumoGeneracion3D'
@@ -32,7 +34,7 @@ export default function EnergyBalanceStep() {
   const [yearlyData, setYearlyData] = useState({})
   const [openDialog, closeDialog] = useDialog()
 
-  const { bases, setBases } = useContext(TCBContext)
+  const { bases, setBases } = useContext(InputContext)
   const { setEcoData } = useContext(EconomicContext)
 
   // const [gridRows, setGridRows] = useState(rows)
@@ -61,7 +63,6 @@ export default function EnergyBalanceStep() {
         return UTIL.formatoValor('paneles', params.value)
       },
       cellClassName: (params) => {
-        console.log(params)
         return clsx('super-app', {
           negative: params.value > params.row.panelesMaximo,
           positive: params.value <= params.row.panelesMaximo,
@@ -218,7 +219,6 @@ export default function EnergyBalanceStep() {
 
   useEffect(() => {
     // Cuando cambian las base se realiza el cálculo de todas las variables del sistema
-    console.log('a calcula resultados')
     calculaResultados()
     setMonthlyData({
       deficit: TCB.balance.resumenMensual('deficit'),
@@ -274,7 +274,7 @@ export default function EnergyBalanceStep() {
       return a + b.paneles
     }, 0)
 
-    //Update bases in TCBContext
+    //Update bases in InputContext
     const updateBases = bases.map((row) => {
       if (row.idBaseSolar === params.id) {
         return {
@@ -305,6 +305,7 @@ export default function EnergyBalanceStep() {
               color: '#1a3e72',
               fontWeight: '400',
             },
+            mb: '1rem',
           }}
         >
           <Typography variant="h3">{t('ENERGY_BALANCE.TITLE')}</Typography>
@@ -333,8 +334,31 @@ export default function EnergyBalanceStep() {
           />
         </Box>
 
-        <ConsumoGeneracion3D></ConsumoGeneracion3D>
-        <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            flex: 1,
+            border: 2,
+            borderColor: 'primary.light',
+            mb: '1rem',
+            borderRadius: 4,
+          }}
+        >
+          <ConsumoGeneracion3D></ConsumoGeneracion3D>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            flex: 1,
+            border: 2,
+            borderColor: 'primary.light',
+            borderRadius: 4,
+          }}
+        >
+          <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
+        </Box>
         <CollapsibleCard
           title={t('BASIC.LABEL_AVISO')}
           titleVariant="body"
@@ -343,9 +367,48 @@ export default function EnergyBalanceStep() {
           descriptionSX={{ fontSize: '15px' }}
           description={t('ENERGY_BALANCE.MSG_disclaimerProduccion')}
         ></CollapsibleCard>
-        <YearEnergyBalance></YearEnergyBalance>
-        <MonthEnergyBalance monthlyData={monthlyData}></MonthEnergyBalance>
-        <EnvironmentalImpact></EnvironmentalImpact>
+        {/* <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            flex: 1,
+            border: 2,
+            borderColor: 'primary.light',
+            mt: '1rem',
+            mb: '1rem',
+            borderRadius: 4,
+          }}
+        >
+          <YearEnergyBalance></YearEnergyBalance>
+        </Box> */}
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            flex: 1,
+            border: 2,
+            borderColor: 'primary.light',
+            mt: '1rem',
+            mb: '1rem',
+            borderRadius: 4,
+          }}
+        >
+          <MonthEnergyBalance monthlyData={monthlyData}></MonthEnergyBalance>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            flex: 1,
+            border: 2,
+            borderColor: 'primary.light',
+            mt: '1rem',
+            mb: '1rem',
+            borderRadius: 4,
+          }}
+        >
+          <EnvironmentalImpact></EnvironmentalImpact>
+        </Box>
       </Container>
     </>
   )

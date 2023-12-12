@@ -77,7 +77,6 @@ export default function PreciosTarifa() {
       TCB.tarifaActiva.precios[posicion] = parseFloat(nuevoValor)
     }
   }
-  console.log(precios)
   if (precios.length !== 0) {
     return (
       <>
