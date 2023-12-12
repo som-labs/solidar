@@ -266,19 +266,19 @@ PARAMETROS:
   ficheroTarifas_TT: The user can customize a file with different prices while complying with the format given in the example
   parametros_MSG_errorLecturaFicheroTarifas: Error reading local rate file
 CONTACTO:
-  main_TAB_contacto: Contact
-  contacto_LBL_descripcion: Send us your comments. We will try to attend you as soon as possible
-  contacto_LBL_enviar: Send
-  contacto_LBL_mensaje: Message
-  contacto_LBL_advertencia: The data that contributes to this form will be used solely and exclusively to answer your application and will not be stored in any file or used for any other purpose
-  contacto_LBL_respuesta: Mark here if you agree to receive answers
-  contacto_LBL_comentario: Make a comment
-  contacto_LBL_mejora: Propose an improvement
-  contacto_LBL_error: Report an error
-  contacto_LBL_tipoPropuesta: What do you tell us?
-  contacto_LBL_telefono: Phone
-  contacto_LBL_email: e-mail
-  contacto_LBL_nombre: Name
+  DIALOG_TITLE: Contact
+  LABEL_descripcion: Send us your comments. We will try to attend you as soon as possible
+  LABEL_enviar: Send
+  LABEL_mensaje: Message
+  LABEL_advertencia: The data that contributes to this form will be used solely and exclusively to answer your application and will not be stored in any file or used for any other purpose
+  LABEL_respuesta: Mark here if you agree to receive answers
+  LABEL_comentario: Make a comment
+  LABEL_mejora: Propose an improvement
+  LABEL_error: Report an error
+  LABEL_tipoPropuesta: What do you tell us?
+  LABEL_telefono: Phone
+  LABEL_email: e-mail
+  LABEL_nombre: Name
 BOTONES:
   botonExportar_TT: Save project
   botonContacto_TT: Contact / suggestions

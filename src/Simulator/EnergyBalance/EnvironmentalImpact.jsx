@@ -24,7 +24,6 @@ export default function EnvironmentalImpact() {
     <>
       <Container>
         <Box
-          component="form"
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -46,7 +45,6 @@ export default function EnvironmentalImpact() {
           </Typography>
           <br />
           <Box
-            component="form"
             sx={{
               display: 'flex',
               flexDirection: 'row',

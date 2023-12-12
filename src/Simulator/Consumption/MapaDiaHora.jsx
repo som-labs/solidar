@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 
 import ProfileDayConsumption from './ProfileDayConsumption'
+import { Container } from '@mui/material'
 
 export default function MapaDiaHora({ activo }) {
   const { t, i18n } = useTranslation()
@@ -16,11 +17,11 @@ export default function MapaDiaHora({ activo }) {
   const divGraph = useRef()
 
   if (activo === undefined) return
-  console.log(activo)
-  const consumo = TCB.TipoConsumo.find((t) => {
-    return t.idTipoConsumo === activo.idTipoConsumo
-  })
-  console.log(consumo)
+  // console.log(activo)
+  // const consumo = TCB.TipoConsumo.find((t) => {
+  //   return t.idTipoConsumo === activo.idTipoConsumo
+  // })
+  const consumo = activo
 
   const i18nextMes = () => {
     let _mes = []
@@ -72,7 +73,7 @@ export default function MapaDiaHora({ activo }) {
         return e[1]
       }),
       ticktext: mesMapa,
-      tickangle: -45,
+      tickangle: 0,
       tickline: true,
     },
     zaxis: { title: 'kWh' },
@@ -120,11 +121,20 @@ export default function MapaDiaHora({ activo }) {
   }
 
   return (
-    <>
-      <Box>
+    <Container>
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          flex: 1,
+          textAlign: 'center',
+        }}
+        justifyContent="center"
+      >
         <Typography variant="h4">{t('CONSUMPTION.TITLE_MAP_MONTH_DAY')}</Typography>
         <Typography
           variant="body"
+          textAlign={'left'}
           dangerouslySetInnerHTML={{
             __html: t('CONSUMPTION.DESC_MAP_MONTH_DAY'),
           }}
@@ -138,16 +148,12 @@ export default function MapaDiaHora({ activo }) {
           display: 'flex',
           flexWrap: 'wrap',
           width: '100%',
-          boxShadow: 2,
-          border: 2,
-          borderColor: 'primary.light',
         }}
         justifyContent="center"
       >
         <Typography variant="h5" align="center">
           {t('CONSUMPTION.LABEL_TITLE_MAP_MONTH_DAY')}
         </Typography>
-        <br></br>
         <div ref={divGraph}>
           <Plot
             data={[g_consumo]}
@@ -166,7 +172,6 @@ export default function MapaDiaHora({ activo }) {
             flexWrap: 'wrap',
             width: '100%',
             boxShadow: 2,
-
             border: 2,
             borderColor: 'primary.light',
           }}
@@ -179,6 +184,6 @@ export default function MapaDiaHora({ activo }) {
       ) : (
         <></>
       )}
-    </>
+    </Container>
   )
 }

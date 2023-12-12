@@ -55,7 +55,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 })
 
 function DialogContainer(props) {
-  console.log(props)
   const { children, open, onClose, onKill, fullScreenBelow = 'md', ...extraprops } = props
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down(fullScreenBelow))
@@ -83,12 +82,11 @@ export default function DialogProvider({ children }) {
     setDialogs((dialogs) => [...dialogs, dialog])
   }
 
-  const closeDialog = (a) => {
+  const closeDialog = (args) => {
     setDialogs((dialogs) => {
       const latestDialog = dialogs.pop()
       if (!latestDialog) return dialogs
-      if (a === undefined) a = 'backdrop'
-      if (latestDialog.children.props.onClose) latestDialog.children.props.onClose(a)
+      if (latestDialog.children.props.onClose) latestDialog.children.props.onClose(args)
       return [...dialogs].concat({ ...latestDialog, open: false })
     })
   }

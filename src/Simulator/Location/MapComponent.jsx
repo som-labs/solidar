@@ -10,7 +10,7 @@ import { OSM, Vector as VectorSource, XYZ } from 'ol/source'
 import { Style, Fill, Stroke } from 'ol/style'
 import VectorLayer from 'ol/layer/Vector'
 import Feature from 'ol/Feature'
-import { Point, LineString } from 'ol/geom'
+import { Point, LineString, Polygon } from 'ol/geom'
 import { transform, fromLonLat } from 'ol/proj'
 import { Draw } from 'ol/interaction'
 
@@ -49,6 +49,44 @@ export default function MapComponent() {
     source: TCB.origenDatosSolidar,
     type: 'Polygon',
     maxPoints: 3,
+    //Esta funcion permite generar un rectangulo ortogonal al primer segmento dibujado, la cumbrera.
+    geometryFunction: function (coordinates, geometry) {
+      let newCoordinates = coordinates[0].slice()
+
+      if (newCoordinates.length === 3) {
+        const firstPoint = newCoordinates[0]
+        const fixPoint = newCoordinates[1]
+        let floatPoint = newCoordinates[2]
+        const dx = fixPoint[0] - firstPoint[0]
+        const dy = fixPoint[1] - firstPoint[1]
+        const dpx = floatPoint[0] - firstPoint[0]
+        const dpy = floatPoint[1] - firstPoint[1]
+
+        const rotationBase = Math.atan2(dy, dx)
+        const rotationFloat = Math.atan2(dpy, dpx)
+        let rotation
+        if (rotationFloat > rotationBase) rotation = rotationBase + Math.PI / 2
+        else rotation = rotationBase - Math.PI / 2
+
+        const radius = UTIL.distancia(floatPoint, fixPoint)
+        floatPoint[0] = fixPoint[0] + radius * Math.cos(rotation)
+        floatPoint[1] = fixPoint[1] + radius * Math.sin(rotation)
+        newCoordinates[2] = floatPoint
+
+        let nuevoY = floatPoint[1] - (fixPoint[1] - firstPoint[1])
+        let nuevoX = firstPoint[0] - (fixPoint[0] - floatPoint[0])
+        let nuevoPunto = [nuevoX, nuevoY]
+        newCoordinates.splice(3, 0, nuevoPunto)
+        newCoordinates.splice(4, 0, firstPoint)
+      }
+
+      if (!geometry) {
+        geometry = new Polygon([newCoordinates]) //[newCoordinates])
+      } else {
+        geometry.setCoordinates([newCoordinates]) //[newCoordinates])
+      }
+      return geometry
+    },
   })
 
   useEffect(() => {
@@ -116,15 +154,12 @@ export default function MapComponent() {
   }, [])
 
   function endDialog(reason) {
-    //alert(reason) //Para ver por donde salimos cuando bakdropclick
-    console.log(typeof reason)
-    if (typeof reason === 'string') {
+    if (reason === undefined) return
+    if (reason === 'save') {
       closeDialog()
     } else {
-      //Cancelling a new base creation => delete previos geometry
       UTIL.deleteBaseGeometries(TCB.featIdUnico.toString())
-
-      console.log('borrar')
+      closeDialog()
     }
   }
 
@@ -137,15 +172,9 @@ export default function MapComponent() {
     let geometria = geoBaseSolar.feature.getGeometry()
     let puntos = geometria.getCoordinates()[0]
 
-    //PENDIENTE: Definir el punto 3 de modo que sea ortogonal con la cumbrera
-    // First two points define cumbrera
+    // // First two points define cumbrera
     const cumbrera = UTIL.distancia(puntos[0], puntos[1])
     const ancho = UTIL.distancia(puntos[1], puntos[2])
-    let nuevoY = puntos[2][1] - (puntos[1][1] - puntos[0][1])
-    let nuevoX = puntos[0][0] - (puntos[1][0] - puntos[2][0])
-    let nuevoPunto = [nuevoX, nuevoY]
-    puntos.splice(3, 0, nuevoPunto)
-    geoBaseSolar.feature.getGeometry().setCoordinates([puntos])
 
     // Calculamos una coordenada central para esta base que utilizaremos en PVGIS y donde la rotularemos
     const puntoAplicacion = geometria.getInteriorPoint().getCoordinates()

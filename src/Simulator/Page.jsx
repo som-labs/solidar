@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import Container from '@mui/material/Container'
 
 import Alert from '@mui/material/Alert'
-
+import BasicAlert from '../Simulator/components/BasicAlert'
 import AppFrame from '../components/AppFrame'
 import Wizard from '../components/Wizard'
 import DialogProvider from '../components/DialogProvider'
@@ -15,7 +15,7 @@ import EnergyBalanceStep from './EnergyBalance/EnergyBalance'
 import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
 import SummaryStep from './Summary/Summary'
 
-import TCBContext from './TCBContext'
+import InputContext from './InputContext'
 import MapContext from './MapContext'
 import EconomicContext from './EconomicBalance/EconomicContext'
 
@@ -114,9 +114,10 @@ export default function Page() {
 
   //REVISAR: como meter el codigo del alert en un componente reutilizable
   const [alert, setAlert] = useState({ message: '', type: '' })
-
+  //REVISAR: porque no funcion el BasicAlert
   // Function to show an alert
   const showAlert = (message, type) => {
+    // BasicAlert({ title: 'Titulo', contents: 'Contenido a mostrar', type: '' })
     setAlert({ message, type })
   }
 
@@ -171,7 +172,14 @@ export default function Page() {
   return (
     <>
       <AppFrame>
-        <TCBContext.Provider value={{ bases, setBases, tipoConsumo, setTipoConsumo }}>
+        <InputContext.Provider
+          value={{
+            bases,
+            setBases,
+            tipoConsumo,
+            setTipoConsumo,
+          }}
+        >
           <DialogProvider>
             <Container>
               <EconomicContext.Provider
@@ -229,7 +237,7 @@ export default function Page() {
               </div>
             </Container>
           </DialogProvider>
-        </TCBContext.Provider>
+        </InputContext.Provider>
       </AppFrame>
     </>
   )

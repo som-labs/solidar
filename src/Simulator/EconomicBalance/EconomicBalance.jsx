@@ -157,7 +157,6 @@ export default function EconomicBalanceStep() {
             mt: '1rem',
             display: 'flex',
             flexWrap: 'wrap',
-
             flex: 1,
             border: 1,
             borderColor: 'primary.light',

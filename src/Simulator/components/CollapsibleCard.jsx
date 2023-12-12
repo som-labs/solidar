@@ -12,7 +12,6 @@ const CollapsibleCard = (props) => {
 
   // const [title, setTitle] = useState(content.title)
   // const [description, setDescription] = useState(content.description)
-  console.log(props)
   const handleExpandClick = () => {
     setExpanded(!expanded)
   }

@@ -285,19 +285,19 @@ PARAMETROS:
   parametros_MSG_errorLecturaFicheroTarifas: Produciuse un erro ao ler o ficheiro de taxas locais
 
 CONTACTO:
-  main_TAB_contacto: Contacto
-  contacto_LBL_descripcion: Envíanos os teus comentarios. Intentaremos axudarche o antes posible
-  contacto_LBL_enviar: Enviar
-  contacto_LBL_mensaje: Mensaxe
-  contacto_LBL_advertencia: Os datos que contribúan a este formulario utilizaranse exclusivamente e exclusivamente para responder á súa aplicación e non se almacenarán en ningún ficheiro nin se empregarán para ningún outro propósito
-  contacto_LBL_respuesta: Marca aquí se acepta recibir respostas
-  contacto_LBL_comentario: Fas un comentario
-  contacto_LBL_mejora: Propoñes unha mellora
-  contacto_LBL_error: Informas dun erro
-  contacto_LBL_tipoPropuesta: Que nos dis?
-  contacto_LBL_telefono: Teléfono
-  contacto_LBL_email: correo electrónico
-  contacto_LBL_nombre: Nome
+  DIALOG_TITLE: Contacto
+  LABEL_descripcion: Envíanos os teus comentarios. Intentaremos axudarche o antes posible
+  LABEL_enviar: Enviar
+  LABEL_mensaje: Mensaxe
+  LABEL_advertencia: Os datos que contribúan a este formulario utilizaranse exclusivamente e exclusivamente para responder á súa aplicación e non se almacenarán en ningún ficheiro nin se empregarán para ningún outro propósito
+  LABEL_respuesta: Marca aquí se acepta recibir respostas
+  LABEL_comentario: Fas un comentario
+  LABEL_mejora: Propoñes unha mellora
+  LABEL_error: Informas dun erro
+  LABEL_tipoPropuesta: Que nos dis?
+  LABEL_telefono: Teléfono
+  LABEL_email: correo electrónico
+  LABEL_nombre: Nome
 
 BOTONES:
   botonExportar_TT: Gardar proxecto
