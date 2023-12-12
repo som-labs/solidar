@@ -24,7 +24,7 @@ import TextField from '@mui/material/TextField'
 
 // REACT Solidar Components
 import TCB from '../classes/TCB'
-import TCBContext from '../TCBContext'
+import InputContext from '../InputContext'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
@@ -34,7 +34,7 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
   const { t, i18n } = useTranslation()
 
   const [formData, setFormData] = useState(data)
-  const { bases, setBases } = useContext(TCBContext)
+  const { bases, setBases } = useContext(InputContext)
 
   //REVISAR: falta controlar la salida con backdrop click para borrar la geometria previamente creada
   useEffect(() => {
@@ -161,14 +161,11 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
   }
 
   const handleCancel = (event) => {
-    // if (!editing) {
-    //   //Cancelling a new base creation => delete previos geometry
-    //   UTIL.deleteBaseGeometries(formData.idBaseSolar)
-    // }
-    onClose(event)
+    console.log(event)
+    onClose(event.target.id)
   }
 
-  async function handleClose() {
+  async function handleClose(event) {
     let baseIndex
 
     // En caso de roofType coplanar pedimos confirmacion si la inclinacion es cero
@@ -213,7 +210,7 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
       setBases(prevBases)
     }
 
-    onClose('Save')
+    onClose(event.target.id)
   }
 
   return (
@@ -394,8 +391,12 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCancel}>{t('BASIC.LABEL_CANCEL')}</Button>
-        <Button onClick={handleClose}>{t('BASIC.LABEL_OK')}</Button>
+        <Button onClick={handleCancel} id="cancel">
+          {t('BASIC.LABEL_CANCEL')}
+        </Button>
+        <Button onClick={handleClose} id="save">
+          {t('BASIC.LABEL_OK')}
+        </Button>
       </DialogActions>
     </div>
   )

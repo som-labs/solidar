@@ -9,6 +9,7 @@ import CardMedia from '@mui/material/CardMedia'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
+import TCB from '../classes/TCB'
 
 export default function EnergyFlow(props) {
   const { t, i18n } = useTranslation()
@@ -218,11 +219,7 @@ export default function EnergyFlow(props) {
         <Box
           ref={grafResumen}
           sx={{
-            ml: '0.3rem',
-            boxShadow: 2,
             width: '100%',
-            border: 2,
-            borderColor: 'primary.light',
           }}
         >
           <Box
@@ -311,6 +308,31 @@ export default function EnergyFlow(props) {
             </Box>
           </Box>
         </Box>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('ENERGY_BALANCE.DESCRIPTION_YEAR_ENERGY_BALANCE', {
+              consumoTotal: UTIL.formatoValor('energia', TCB.consumo.cTotalAnual),
+              porcientoAutoconsumo: UTIL.formatoValor(
+                'porciento',
+                (TCB.balance.autoconsumo / TCB.consumo.cTotalAnual) * 100,
+              ),
+              porcientoDemanda: UTIL.formatoValor(
+                'porciento',
+                (TCB.balance.deficitAnual / TCB.consumo.cTotalAnual) * 100,
+              ),
+              porcientoAutoproduccion: UTIL.formatoValor(
+                'porciento',
+                (TCB.balance.autoconsumo / TCB.produccion.pTotalAnual) * 100,
+              ),
+              produccionTotal: UTIL.formatoValor('energia', TCB.produccion.pTotalAnual),
+              porcientoVertido: UTIL.formatoValor(
+                'porciento',
+                (TCB.balance.excedenteAnual / TCB.produccion.pTotalAnual) * 100,
+              ),
+            }),
+          }}
+        />
       </Container>
     </>
   )

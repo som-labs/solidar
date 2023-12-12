@@ -24,7 +24,7 @@ const ConsumptionStep = () => {
         />
         <br />
         <PreciosTarifa></PreciosTarifa>
-        <Box>
+        <Box sx={{ mt: '1rem' }}>
           <Typography
             variant="body"
             dangerouslySetInnerHTML={{

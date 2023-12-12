@@ -7,7 +7,7 @@ import Container from '@mui/material/Container'
 import { DataGrid } from '@mui/x-data-grid'
 
 // REACT Solidar Components
-import TCBContext from '../TCBContext'
+import InputContext from '../InputContext'
 import SummaryPreciosTarifa from './SummaryPreciosTarifa'
 
 // Solidar objects
@@ -15,7 +15,7 @@ import * as UTIL from '../classes/Utiles'
 
 export default function SummaryConsumption() {
   const { t, i18n } = useTranslation()
-  const { tipoConsumo, setTipoConsumo } = useContext(TCBContext)
+  const { tipoConsumo, setTipoConsumo } = useContext(InputContext)
 
   const columns = [
     {

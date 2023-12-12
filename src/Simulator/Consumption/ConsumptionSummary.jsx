@@ -14,7 +14,7 @@ import Box from '@mui/material/Box'
 import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid'
 
 // REACT Solidar Components
-import TCBContext from '../TCBContext'
+import InputContext from '../InputContext'
 import MapaMesHora from './MapaMesHora'
 import MapaDiaHora from './MapaDiaHora'
 import { useDialog } from '../../components/DialogProvider'
@@ -24,6 +24,7 @@ import DialogNewConsumption from './DialogNewConsumption'
 import TCB from '../classes/TCB'
 import { formatoValor } from '../classes/Utiles'
 import { Container } from '@mui/material'
+import TipoConsumo from '../classes/TipoConsumo'
 
 //PENDIENTE: Decidir si mostramos los datos en formato tabla o creamos boxes segun diseño de Clara
 export default function ConsumptionSummary() {
@@ -88,7 +89,7 @@ export default function ConsumptionSummary() {
   ]
 
   const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
-  const { tipoConsumo, setTipoConsumo } = useContext(TCBContext)
+  const { tipoConsumo, setTipoConsumo } = useContext(InputContext)
   const [openDialog, closeDialog] = useDialog()
 
   function getRowId(row) {
@@ -103,17 +104,24 @@ export default function ConsumptionSummary() {
       consumoAnualREE: '',
     }
     openDialog({
-      children: <DialogNewConsumption data={initialValues} onClose={endDialog} />,
+      children: (
+        <DialogNewConsumption
+          data={initialValues}
+          onClose={(cause) => endDialog(cause)}
+        ></DialogNewConsumption>
+      ),
     })
   }
 
   //REVISAR: como hacer para que el dialogo funcione sincro y no se llame a showGraphs antes de que se termine de cargar el TipoConsumo
-  function endDialog(showGraphs, nuevoTipoConsumo) {
-    console.log('fin dialogo ', showGraphs, nuevoTipoConsumo)
-    if (showGraphs) {
-      //showGraphsTC(nuevoTipoConsumo)
-      //setActivo(nuevoTipoConsumo)
-    }
+  function endDialog(closingEvent, tc) {
+    if (closingEvent === undefined) return
+    console.log('fin dialogo ', closingEvent)
+
+    // if (closingEvent.target.id === 'save') {
+    //   console.log(tc)
+    //   setActivo(TCB.TipoConsumo[TCB.TipoConsumo.length - 1])
+    // }
     closeDialog()
   }
 
@@ -141,13 +149,14 @@ export default function ConsumptionSummary() {
     setActivo(TCB.TipoConsumo[nIndex])
   }
 
+  // showGraphsTC recibe una fila del datagrid y activa el objeto TipoConsumo de TCB que correponde
   function showGraphsTC(tc) {
-    // console.log(tc)
-    // const nIndex = TCB.TipoConsumo.findIndex((t) => {
-    //   return t.idTipoConsumo === tc.idTipoConsumo
-    // })
     console.log(tc)
-    setActivo(tc)
+    setActivo(
+      TCB.TipoConsumo.find((t) => {
+        return t.idTipoConsumo === tc.idTipoConsumo
+      }),
+    )
   }
 
   function deleteTC(ev, tc) {
@@ -191,7 +200,7 @@ export default function ConsumptionSummary() {
           border: 2,
           textAlign: 'center',
           borderColor: 'primary.light',
-          backgroundColor: 'rgba(220, 249, 233, 1)',
+          backgroundColor: 'grey',
         }}
         justifyContent="center"
       >
@@ -210,8 +219,27 @@ export default function ConsumptionSummary() {
             }),
           }}
         />
+        <Tooltip
+          title={t('CONSUMPTION.TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO')}
+          placement="top"
+        >
+          <IconButton variant="contained" size="small" onClick={showGraphTotales}>
+            <AnalyticsIcon />
+          </IconButton>
+        </Tooltip>
       </Box>
     )
+  }
+
+  function showGraphTotales() {
+    if (tipoConsumo.length > 0) {
+      const dummyType = new TipoConsumo({ nombreTipoConsumo: 'Totales' })
+      TCB.TipoConsumo.forEach((tc) => {
+        dummyType.suma(tc)
+      })
+      dummyType.fechaInicio = new Date(2023, 1, 1)
+      setActivo(dummyType)
+    }
   }
 
   return (
@@ -246,10 +274,12 @@ export default function ConsumptionSummary() {
               sx={{
                 display: 'flex',
                 flexWrap: 'wrap',
-                width: '100%',
-                boxShadow: 2,
+                flex: 1,
                 border: 2,
                 borderColor: 'primary.light',
+                mt: '1rem',
+                mb: '1rem',
+                borderRadius: 4,
               }}
             >
               <MapaMesHora activo={activo}></MapaMesHora>
@@ -258,10 +288,12 @@ export default function ConsumptionSummary() {
               sx={{
                 display: 'flex',
                 flexWrap: 'wrap',
-                width: '100%',
-                boxShadow: 2,
+                flex: 1,
                 border: 2,
                 borderColor: 'primary.light',
+                mt: '1rem',
+                mb: '1rem',
+                borderRadius: 4,
               }}
             >
               <MapaDiaHora activo={activo}></MapaDiaHora>

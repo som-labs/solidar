@@ -1,5 +1,5 @@
 import React from 'react'
 
-const TCBContext = React.createContext([])
+const TCBContext = React.createContext({})
 
 export default TCBContext
