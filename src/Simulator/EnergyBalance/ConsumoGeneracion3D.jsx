@@ -9,7 +9,8 @@ import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 
 // REACT Solidar Components
-import PerfilDiario from './PerfilDiario'
+import { useDialog } from '../../components/DialogProvider'
+import ProfileDay from './ProfileDay'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -17,9 +18,9 @@ import * as UTIL from '../classes/Utiles'
 
 export default function ConsumoGeneracion3D() {
   const { t, i18n } = useTranslation()
-  const [diaActivo, setdiaActivo] = useState([])
-  const mesMapa = Array.from(i18nextMes())
+  const [openDialog, closeDialog] = useDialog()
 
+  const meses = Array.from(i18nextMes())
   var g_produccion = {
     z: TCB.produccion.diaHora,
     y: TCB.consumo.idxTable.map((e) => {
@@ -33,8 +34,18 @@ export default function ConsumoGeneracion3D() {
     showlegend: true,
     showscale: false,
     contours: {
-      x: { show: true, usecolormap: true, project: { y: true } },
-      y: { show: true, usecolormap: true, project: { x: true } },
+      x: {
+        show: true,
+        usecolormap: true,
+        highlightcolor: '#42f5e3',
+        project: { x: true },
+      },
+      y: {
+        show: true,
+        usecolormap: true,
+        highlightcolor: '#42f5e3',
+        project: { y: true },
+      },
     },
     hovertemplate:
       t('GRAPHICS.LABEL_DIA') +
@@ -64,44 +75,75 @@ export default function ConsumoGeneracion3D() {
       ': %{x}<br>' +
       t('GRAPHICS.LABEL_CONSUMPTION') +
       ': %{z:.2f} kWh',
-  }
-
-  var layout_resumen = {
-    legend: {
-      x: 0.2,
-      xanchor: 'left',
-      y: 1.0,
-      orientation: 'h',
+    contours: {
+      x: {
+        show: true,
+        usecolormap: true,
+        highlightcolor: 'blue',
+        project: { x: true },
+      },
+      y: {
+        show: true,
+        usecolormap: true,
+        highlightcolor: 'blue',
+        project: { y: true },
+      },
     },
+  }
+  const layout = {
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
-    xaxis: { title: 'dia' }, //{ title: t('GRAPHICS.LABEL_HORA') },
-    yaxis: {
-      title: t('GRAPHICS.LABEL_DIA'),
-      tickvals: UTIL.indiceDia.map((e) => {
-        return e[1]
-      }),
-      ticktext: mesMapa,
-    },
-    zaxis: { title: 'kWh' },
+    width: '100%',
     scene: {
-      camera: { eye: { x: -2, y: -1.5, z: 1 } },
-      //xaxis: { title: t('GRAPHICS.LABEL_HORA') },
+      zaxis: { title: 'kWh' },
+      camera: { eye: { x: -2.5, y: -2.5, z: 1 } },
+      clickmode: 'event+select',
+      xaxis: { title: t('GRAPHICS.LABEL_HORA'), dtick: 4 },
+      yaxis: {
+        title_standoff: 1,
+        title_position: 'left',
+        title: t('GRAPHICS.LABEL_MES'),
+        tickvals: UTIL.indiceDia.map((e) => {
+          return e[1]
+        }),
+        ticktext: meses,
+        tickangle: -10,
+        tickline: true,
+      },
+      aspectratio: {
+        // Define the aspect ratio to elongate one specific axis (e.g., the x-axis)
+        x: 2,
+        y: 2,
+        z: 1,
+      },
     },
-    autosize: true,
+    legend: {
+      x: 0.3,
+      xref: 'paper',
+      y: 0.95,
+      yref: 'paper',
+      orientation: 'h',
+    },
     margin: {
-      l: 0,
+      l: 50,
       r: 0,
-      b: 0,
+      b: 10,
       t: 0,
     },
+  }
+  const config = {
+    // Disable selection to prevent click events from being sent
+    // This prevents the selection of data points on click
+    displayModeBar: false,
   }
 
   const handleClick = (event) => {
     let fecha = event.points[0].y.split('/').map((a) => {
       return parseInt(a)
     })
-    setdiaActivo(fecha)
+    openDialog({
+      children: <ProfileDay> {fecha} </ProfileDay>,
+    })
   }
 
   function i18nextMes() {
@@ -112,22 +154,12 @@ export default function ConsumoGeneracion3D() {
 
   return (
     <>
-      <Container>
-        <Box sx={{ display: 'flex' }}>
-          <Box sx={{ display: 'flex', flex: 1 }}>
-            <Plot
-              data={[g_produccion, g_consumo]}
-              layout={layout_resumen}
-              onClick={(event) => handleClick(event)}
-            />
-          </Box>
-          {diaActivo && (
-            <Box sx={{ display: 'flex', flex: 1 }}>
-              <PerfilDiario> {diaActivo} </PerfilDiario>
-            </Box>
-          )}
-        </Box>
-      </Container>
+      <Plot
+        data={[g_produccion, g_consumo]}
+        layout={layout}
+        onClick={handleClick}
+        config={config}
+      />
     </>
   )
 }

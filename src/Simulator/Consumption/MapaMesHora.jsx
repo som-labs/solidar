@@ -6,7 +6,7 @@ import Plot from 'react-plotly.js'
 
 // MUI objects
 import Typography from '@mui/material/Typography'
-import { Box } from '@mui/material'
+import { Box, Container } from '@mui/material'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -16,12 +16,13 @@ import { isEmpty } from 'ol/extent'
 export default function MapaMesHora({ activo }) {
   const { t, i18n } = useTranslation()
 
-  console.log(activo)
+  // console.log(activo)
   if (activo === isEmpty) return
-  const consumo = TCB.TipoConsumo.find((t) => {
-    return t.idTipoConsumo === activo.idTipoConsumo
-  })
-  console.log(consumo)
+  // const consumo = TCB.TipoConsumo.find((t) => {
+  //   return t.idTipoConsumo === activo.idTipoConsumo
+  // })
+  // console.log(consumo)
+  const consumo = activo
 
   let maxHora
   let maxMes
@@ -35,10 +36,11 @@ export default function MapaMesHora({ activo }) {
   let radio = 20
   const mesMapa = Array.from(i18nextMes())
 
-  console.log(consumo)
-  console.log(typeof consumo.idxTable[0].fecha)
-  console.log('FECHA: ', consumo.idxTable[0])
-  console.log('CONSUMO TABLE:', consumo)
+  // console.log(consumo)
+  // console.log(typeof consumo.idxTable[0].fecha)
+  // console.log('FECHA: ', consumo.idxTable[0])
+  // console.log('CONSUMO TABLE:', consumo)
+
   for (let hora = 0; hora < 24; hora++) {
     let _valorHora = consumo.getHora(hora)
     let _consMes = new Array(12).fill(0)
@@ -61,8 +63,6 @@ export default function MapaMesHora({ activo }) {
       valores.push(valor)
       text.push(valor.toFixed(6) + 'kWh')
     }
-    console.log(_consMes)
-    console.log(_diasMes)
   }
 
   let tono
@@ -81,18 +81,115 @@ export default function MapaMesHora({ activo }) {
     return _mes
   }
 
+  // Function to convert the MapaMesHora data to CSV format
+  const convertToCSV = () => {
+    const strHeader =
+      i18nextMes().reduce((result, str) => result + ',' + str, 'Hora') + '\n'
+    console.log(strHeader)
+    let csv = Array(12).fill('')
+
+    for (let hora = 0; hora < 24; hora++) {
+      let valorHoraMes = [hora + 1]
+      for (let mes = 0; mes < 12; mes++) {
+        valorHoraMes.push(valores[hora * 12 + mes])
+      }
+      csv[hora] = [...valorHoraMes].join(',') // + '\n'
+    }
+    const finalRows = [...csv].join('\n')
+    return strHeader + finalRows
+  }
+
+  // Function to handle CSV export only for Fernando example
+  const handleExportCSV = () => {
+    const csvData = convertToCSV()
+    const blob = new Blob([csvData], { type: 'text/csv' })
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'resumenMesHora.csv')
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
+  const data = {
+    type: 'scatter',
+    name: t('CONSUMPTION.HOOVER_MAPA_CONSUMO_MES_HORA'),
+    x: horas,
+    y: meses,
+    text: text,
+    mode: 'markers',
+    hovertemplate:
+      '%{yaxis.title.text}: %{y}<br>' + '%{xaxis.title.text}: %{x}<br>' + '%{text}',
+    marker: {
+      symbol: 'circle',
+      size: sizes,
+      color: colores, //'rgba(200, 50, 100, .7)',
+    },
+  }
+
+  const layout = {
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    margin: {
+      l: 70,
+      r: 0,
+      b: 65,
+      t: 25,
+    },
+
+    xaxis: {
+      title: t('GRAPHICS.LABEL_HORA'),
+      showgrid: false,
+      showline: true,
+      linecolor: 'rgb(102, 102, 102)',
+      tickfont_color: 'rgb(102, 102, 102)',
+      showticklabels: true,
+      dtick: 2,
+      ticks: 'outside',
+      tickcolor: 'rgb(102, 102, 102)',
+    },
+    yaxis: {
+      title: t('CONSUMPTION.YAXIS_MAPA_CONSUMO_MES_HORA'),
+      ticktext: meses,
+      title_standoff: 40,
+      showticklabels: true,
+    },
+    hovermode: 'closest',
+    annotations: [
+      {
+        x: maxHora,
+        y: maxMes,
+        axref: 'x',
+        ayref: 'y',
+        xref: 'x',
+        yref: 'y',
+        text: t('CONSUMPTION.LABEL_MAPA_CONSUMO_MES_HORA', {
+          maxConsumoMes: maxConsumoMes.toFixed(2),
+        }),
+        showarrow: true,
+        arrowhead: 3,
+        xanchor: 'center',
+        ax: 12,
+        ay: 12,
+      },
+    ],
+  }
+
+  const config = {
+    // Disable selection to prevent click events from being sent
+    // This prevents the selection of data points on click
+    displayModeBar: false,
+  }
+
   return (
-    <>
+    <Container>
       <Box
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
-          boxShadow: 2,
           flex: 1,
-          border: 2,
           textAlign: 'center',
-          borderColor: 'primary.light',
-          // backgroundColor: 'rgba(220, 249, 233, 1)',
         }}
         justifyContent="center"
       >
@@ -102,83 +199,11 @@ export default function MapaMesHora({ activo }) {
           })}
         </Typography>
         <Typography variant="body">{t('CONSUMPTION.DESC_MAP_MONTH_HOUR')}</Typography>
-        <br></br>
-        <br></br>
         <Box>
-          <Plot
-            data={[
-              {
-                type: 'scatter',
-                name: t('CONSUMPTION.HOOVER_MAPA_CONSUMO_MES_HORA'),
-                x: horas,
-                y: meses,
-                text: text,
-                mode: 'markers',
-                hovertemplate:
-                  '%{yaxis.title.text}: %{y}<br>' +
-                  '%{xaxis.title.text}: %{x}<br>' +
-                  '%{text}',
-                marker: {
-                  symbol: 'circle',
-                  size: sizes,
-                  color: colores, //'rgba(200, 50, 100, .7)',
-                },
-              },
-            ]}
-            layout={{
-              paper_bgcolor: 'rgba(0,0,0,0)',
-              plot_bgcolor: 'rgba(0,0,0,0)',
-              margin: {
-                l: 70,
-                r: 0,
-                b: 65,
-                t: 25,
-              },
-              title: {
-                text: t('CONSUMPTION.TITLE_MAPA_CONSUMO_MES_HORA'),
-                xref: 'x',
-                yref: 'y',
-                x: 12,
-                y: 14,
-              },
-              xaxis: {
-                title: t('GRAPHICS.LABEL_HORA'),
-                showgrid: false,
-                showline: true,
-                linecolor: 'rgb(102, 102, 102)',
-                tickfont_color: 'rgb(102, 102, 102)',
-                showticklabels: true,
-                dtick: 2,
-                ticks: 'outside',
-                tickcolor: 'rgb(102, 102, 102)',
-              },
-              yaxis: {
-                title: t('CONSUMPTION.YAXIS_MAPA_CONSUMO_MES_HORA'),
-                ticktext: meses,
-              },
-              hovermode: 'closest',
-              annotations: [
-                {
-                  x: maxHora,
-                  y: maxMes,
-                  axref: 'x',
-                  ayref: 'y',
-                  xref: 'x',
-                  yref: 'y',
-                  text: t('CONSUMPTION.LABEL_MAPA_CONSUMO_MES_HORA', {
-                    maxConsumoMes: maxConsumoMes.toFixed(2),
-                  }),
-                  showarrow: true,
-                  arrowhead: 3,
-                  xanchor: 'center',
-                  ax: 12,
-                  ay: 12,
-                },
-              ],
-            }}
-          />
+          <Plot data={[data]} layout={layout} config={config} />
         </Box>
+        {/* <Button onClick={handleExportCSV}>Export to CSV</Button> */}
       </Box>
-    </>
+    </Container>
   )
 }

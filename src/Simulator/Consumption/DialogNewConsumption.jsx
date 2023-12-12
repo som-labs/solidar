@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -7,20 +7,23 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import { MuiFileInput } from 'mui-file-input'
+import Alert from '../components/Alert'
 
 // REACT Solidar Components
-import TCBContext from '../TCBContext'
+import { useDialog } from '../../components/DialogProvider'
+import InputContext from '../InputContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 import TipoConsumo from '../classes/TipoConsumo'
-import Tarifa from '../classes/Tarifa'
 
 export default function DialogNewConsumption({ data, onClose }) {
   const { t, i18n } = useTranslation()
   const [formData, setFormData] = useState(data)
-  const { tipoConsumo, setTipoConsumo } = useContext(TCBContext)
+  const { tipoConsumo, setTipoConsumo } = useContext(InputContext)
+  const REE = useRef()
+  const [openDialog, closeDialog] = useDialog()
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -31,20 +34,46 @@ export default function DialogNewConsumption({ data, onClose }) {
     setFormData((prevFormData) => ({ ...prevFormData, ['ficheroCSV']: event }))
   }
 
-  const handleCancel = () => {
-    onClose(false)
+  const handleCancel = (event) => {
+    onClose(event)
   }
 
-  async function handleClose() {
+  async function handleClose(event) {
+    const localEvent = event
+    console.log(localEvent)
+
     if (
       formData.fuente === 'REE' &&
       (isNaN(Number(formData.consumoAnualREE)) || formData.consumoAnualREE === '')
     ) {
-      alert(t('CONSUMPTION.ERROR_DEFINIR_CONSUMO_REE'))
+      openDialog({
+        children: (
+          <Alert
+            contents={{
+              title: 'Error definiendo fuente',
+              description: t('CONSUMPTION.ERROR_DEFINIR_CONSUMO_REE'),
+            }}
+            onClose={() => {
+              REE.current.focus()
+              closeDialog()
+            }}
+          ></Alert>
+        ),
+      })
       return
     }
     if (formData.fuente !== 'REE' && formData.ficheroCSV === null) {
-      alert(t('CONSUMPTION.ERROR_FALTA_FICHERO_CONSUMO'))
+      openDialog({
+        children: (
+          <Alert
+            contents={{
+              title: 'Error definiendo fuente',
+              description: t('CONSUMPTION.ERROR_FALTA_FICHERO_CONSUMO'),
+            }}
+            onClose={closeDialog}
+          ></Alert>
+        ),
+      })
       return
     }
 
@@ -97,7 +126,7 @@ export default function DialogNewConsumption({ data, onClose }) {
           })
       } catch (error) {
         alert(error)
-        onClose(false)
+        onClose({ graph: false })
       }
     }
     //If a new TipoConsumo is defined show graphs
@@ -105,7 +134,7 @@ export default function DialogNewConsumption({ data, onClose }) {
     console.log(nuevoTipoConsumo)
     console.log(TCB.TipoConsumo[idxTC - 1])
     console.log(typeof TCB.TipoConsumo[idxTC - 1].idxTable[0].fecha)
-    onClose(true, nuevoTipoConsumo)
+    onClose(event)
   }
 
   async function cargaCSV(objTipoConsumo, ficheroCSV, fuente) {
@@ -207,6 +236,7 @@ export default function DialogNewConsumption({ data, onClose }) {
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <TextField
                 id="consumoAnualREE"
+                ref={REE}
                 type="text"
                 onChange={handleChange}
                 label={t('TipoConsumo.LABEL_consumoAnualREE')}
@@ -218,8 +248,12 @@ export default function DialogNewConsumption({ data, onClose }) {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCancel}>Cancel</Button>
-        <Button onClick={handleClose}>Ok</Button>
+        <Button id="cancel" onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button id="save" onClick={handleClose}>
+          Ok
+        </Button>
       </DialogActions>
     </div>
   )

@@ -9,7 +9,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import { Box } from '@mui/material'
 
 // REACT Solidar Components
-import TCBContext from '../TCBContext'
+import InputContext from '../InputContext'
 import DialogNewBaseSolar from './DialogNewBaseSolar'
 import { useDialog } from '../../components/DialogProvider'
 
@@ -19,7 +19,7 @@ import * as UTIL from '../classes/Utiles'
 
 export default function BasesSummary() {
   const { t, i18n } = useTranslation()
-  const { bases, setBases } = useContext(TCBContext)
+  const { bases, setBases } = useContext(InputContext)
   const [openDialog, closeDialog] = useDialog()
 
   const getRowId = (row) => {
@@ -147,7 +147,7 @@ export default function BasesSummary() {
           border: 2,
           textAlign: 'center',
           borderColor: 'primary.light',
-          backgroundColor: 'rgba(220, 249, 233, 1)',
+          backgroundColor: 'grey',
         }}
         justifyContent="center"
       >

@@ -11,12 +11,28 @@ import Footer from './Footer'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { ScrollRestoration } from 'react-router-dom'
+import { useState } from 'react'
 import DialogProvider from './DialogProvider'
-import MenuParameters from '../Simulator/components/MenuParameters'
+import TCBContext from '../Simulator/TCBContext'
+import MenuParameters from '../Simulator/Parameters/MenuParameters'
+import Contact from '../Simulator/Contact/Contact'
 
 export default function AppFrame({ children }) {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
+
+  const [parameters, setParameters] = useState({
+    impuestoElectrico: 5.113,
+    IVAenergia: 5.0,
+    IVAinstalacion: 21.0,
+    perdidasSistema: 20,
+    interesVAN: 3,
+    tecnologia: 'crystSi',
+    potenciaPanelInicio: 0.505,
+    anchoPanel: 1.134,
+    largoPanel: 2.094,
+    margen: 0.5,
+  })
 
   const title = 'Solidar'
   const logo = '/logo.svg'
@@ -78,11 +94,18 @@ export default function AppFrame({ children }) {
                 },
               }}
             />
-
-            {/* Tool buttons */}
-            <ColorModeButton />
-            <LanguageMenu />
-            <MenuParameters />
+            <TCBContext.Provider
+              value={{
+                parameters,
+                setParameters,
+              }}
+            >
+              {/* Tool buttons */}
+              <ColorModeButton />
+              <LanguageMenu />
+              <MenuParameters />
+              <Contact />
+            </TCBContext.Provider>
           </Toolbar>
         </AppBar>
       </DialogProvider>

@@ -79,7 +79,6 @@ const ProfileDayConsumption = (data) => {
       range: [0, consumo.cMaximoAnual],
     },
   }
-  console.log(consumo.cMaximoAnual)
 
   return (
     <>

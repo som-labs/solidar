@@ -14,7 +14,7 @@ import { Table, TableRow, TableCell } from '@mui/material'
 import { Typography } from '@mui/material'
 
 // REACT Solidar Components
-import TCBContext from '../TCBContext'
+import InputContext from '../InputContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'

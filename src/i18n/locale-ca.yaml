@@ -271,19 +271,19 @@ PARAMETROS:
   parametros_MSG_errorLecturaFicheroTarifas: Error llegint fitxer local de tarifes
 
 CONTACTO:
-  main_TAB_contacto: Contacte
-  contacto_LBL_descripcion: Envia'ns els teus comentaris. Intentarem atendre't el més aviat possible
-  contacto_LBL_enviar: Enviar
-  contacto_LBL_mensaje: Missatge
-  contacto_LBL_advertencia: Les dades que ens aportis en aquest formulari seran utilitzades únicament i exclusivament per contestar la teva sol·licitud i no seran emmagatzemades en cap fitxer ni utilitzades per a cap altre fi
-  contacto_LBL_respuesta: Marca aquí si estàs d'acord en rebre respostes
-  contacto_LBL_comentario: Fes un comentari
-  contacto_LBL_mejora: Proposa una millora
-  contacto_LBL_error: Informa d’un error
-  contacto_LBL_tipoPropuesta: Què ens dius?
-  contacto_LBL_telefono: Telèfon
-  contacto_LBL_email: correu electrònic
-  contacto_LBL_nombre: Nom
+  DIALOG_TITLE: Contacte
+  LABEL_descripcion: Envia'ns els teus comentaris. Intentarem atendre't el més aviat possible
+  LABEL_enviar: Enviar
+  LABEL_mensaje: Missatge
+  LABEL_advertencia: Les dades que ens aportis en aquest formulari seran utilitzades únicament i exclusivament per contestar la teva sol·licitud i no seran emmagatzemades en cap fitxer ni utilitzades per a cap altre fi
+  LABEL_respuesta: Marca aquí si estàs d'acord en rebre respostes
+  LABEL_comentario: Fes un comentari
+  LABEL_mejora: Proposa una millora
+  LABEL_error: Informa d’un error
+  LABEL_tipoPropuesta: Què ens dius?
+  LABEL_telefono: Telèfon
+  LABEL_email: correu electrònic
+  LABEL_nombre: Nom
 
 BOTONES:
   botonExportar_TT: Guardar el projecte

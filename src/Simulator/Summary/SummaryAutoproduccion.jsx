@@ -7,7 +7,7 @@ import Box from '@mui/material/Box'
 import { DataGrid } from '@mui/x-data-grid'
 
 // REACT Solidar Components
-import TCBContext from '../TCBContext'
+import InputContext from '../InputContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -16,7 +16,7 @@ import { Container } from '@mui/material'
 
 export default function SummaryAutoproduccion() {
   const { t, i18n } = useTranslation()
-  const { bases, setBases } = useContext(TCBContext)
+  const { bases, setBases } = useContext(InputContext)
 
   let areasEscogidas = 0
   let areasDisponibles = 0

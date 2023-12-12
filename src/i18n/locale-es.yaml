@@ -340,6 +340,7 @@ SUMMARY:
 BASIC:
   LABEL_OK: Guardar
   LABEL_CANCEL: Cancelar
+  LABEL_SEND: Enviar
   LABEL_AVISO: Aviso
 
 GRAPHICS:
@@ -347,6 +348,7 @@ GRAPHICS:
   LABEL_PRODUCTION: Producción
   LABEL_DIA: Día
   LABEL_HORA: Hora
+  LABEL_MES: Mes
 
 ene: enero
 feb: febrero
@@ -415,19 +417,19 @@ PARAMETROS:
   parametros_MSG_errorLecturaFicheroTarifas: Error leyendo fichero local de tarifas
 
 CONTACTO:
-  main_TAB_contacto: Contacto
-  contacto_LBL_descripcion: Envianos tus comentarios. Intentaremos atenderte lo antes posible
-  contacto_LBL_enviar: Enviar
-  contacto_LBL_mensaje: Mensaje
-  contacto_LBL_advertencia: Los datos que nos aportes en este formulario serán utilizados única y exclusivamente para contestar a tu solicitud y no serán almacenados en ningún fichero ni utlizados para ningún otro fin
-  contacto_LBL_respuesta: Marca aquí si estás de acuerdo en recibir respuestas
-  contacto_LBL_comentario: Haces un comentario
-  contacto_LBL_mejora: Propones una mejora
-  contacto_LBL_error: Reportas un error
-  contacto_LBL_tipoPropuesta: ¿Qué nos dices?
-  contacto_LBL_telefono: Teléfono
-  contacto_LBL_email: email
-  contacto_LBL_nombre: Nombre
+  DIALOG_TITLE: Formulario de contacto
+  LABEL_descripcion: Envianos tus comentarios. Intentaremos atenderte lo antes posible
+  LABEL_enviar: Enviar
+  LABEL_mensaje: Mensaje
+  LABEL_advertencia: Los datos que nos aportes en este formulario serán utilizados única y exclusivamente para contestar a tu solicitud y no serán almacenados en ningún fichero ni utlizados para ningún otro fin
+  LABEL_respuesta: Marca aquí si estás de acuerdo en recibir respuestas
+  LABEL_comentario: Haces un comentario
+  LABEL_mejora: Propones una mejora
+  LABEL_error: Reportas un error
+  LABEL_tipoPropuesta: ¿Qué nos dices?
+  LABEL_telefono: Teléfono
+  LABEL_email: email
+  LABEL_nombre: Nombre
 
 BOTONES:
   botonExportar_TT: Salvar proyecto
@@ -613,6 +615,7 @@ GRAFICOS:
   LABEL_graficasExcedente: Excedente
   LABEL_graficasDeficit: Déficit
   LABEL_graficasAutoconsumo: Autoconsumo
+  LABEL_graficasCompensacion: Compensado
 
   graficos_LBL_balanceConsumo: Balance mensual de consumo con {{potencia}} instalados
   graficos_LBL_balanceProduccion: Balance mensual de producción con {{potencia}} instalados
