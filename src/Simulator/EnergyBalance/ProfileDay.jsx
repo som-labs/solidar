@@ -5,7 +5,7 @@ import * as UTIL from '../classes/Utiles'
 
 import { Box, Typography, Container } from '@mui/material'
 
-const PerfilDiario = (diaActivo) => {
+export default function ProfileDay(diaActivo) {
   const { t, i18n } = useTranslation()
 
   if (diaActivo.children[1].length === 0) {
@@ -100,5 +100,3 @@ const PerfilDiario = (diaActivo) => {
     </Container>
   )
 }
-
-export default PerfilDiario
