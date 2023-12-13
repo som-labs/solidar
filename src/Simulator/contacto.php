@@ -36,7 +36,7 @@ $headers = 'From: '.$email_from."\r\n".
 'Content-Type: text/html; charset=UTF-8;' .
 'X-Mailer: PHP/' . phpversion();
 
-//REVISAR: error al enviar el email
+//REVISAR: error al enviar el email en modo desarrollo
 if (mail($email_to, $email_subject, $email_message, $headers)) {
     echo '<script language="javascript">
         alert("¡El formulario se ha enviado con éxito!");

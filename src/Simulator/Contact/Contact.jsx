@@ -53,7 +53,7 @@ export default function Contact() {
       })
       .then((data) => {
         // Handle the response data from the PHP file
-        console.log(data)
+        alert(data)
       })
       .catch((error) => {
         // Handle any errors that occurred during the fetch
@@ -63,15 +63,16 @@ export default function Contact() {
 
   function openDialogContact() {
     const storedName = sessionStorage.getItem('contacto')
+
     let parsedMessage = JSON.parse(storedName)
-    parsedMessage = { ...parsedMessage, mensaje: '' }
-    console.log('SENTTODIALOG 1', parsedMessage)
+    parsedMessage.mensaje = ''
     setContactData(parsedMessage)
-    console.log('SENTTODIALOG 2', contactData)
+
+    //REVISAR: En esta llamada si uso contactData como argumento initialData el campo mensaje mantiene el valor original como si la setContactData no hiciera nada, si se usa parsedMessage funcion bien
     openDialog({
       children: (
         <DialogContact
-          initialData={contactData}
+          initialData={contactData} //si uso parsedMessage -> OK
           recoverFormData={getContactFromDialog}
           onClose={() => {}}
         />
@@ -83,7 +84,6 @@ export default function Contact() {
     // console.log('REASON', reason)
     // console.log('SETFROMDIALOG', formData)
 
-    console.log(reason, formData)
     setContactData(formData)
     if (reason === 'save') {
       sendEmail(formData)
