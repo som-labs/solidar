@@ -112,15 +112,13 @@ export default function Page() {
     }
   }
 
-  //REVISAR: como meter el codigo del alert en un componente reutilizable
   const [alert, setAlert] = useState({ message: '', type: '' })
-  //REVISAR: porque no funcion el BasicAlert
-  // Function to show an alert
+  //REVISAR: como meter el codigo del alert en un componente reutilizable porque no funciona el BasicAlert
+
   const showAlert = (message, type) => {
     // BasicAlert({ title: 'Titulo', contents: 'Contenido a mostrar', type: '' })
     setAlert({ message, type })
   }
-
   // Function to hide the alert
   const hideAlert = () => {
     setAlert({ message: '', type: '' })
