@@ -23,9 +23,9 @@ export default function DialogContact({ initialData, recoverFormData, onClose })
   const [formData, setFormData] = useState(initialData)
 
   useEffect(() => {
-    console.log(initialData)
+    console.log('INITIALDATA', initialData)
     setFormData(initialData)
-  }, [])
+  }, [initialData])
 
   const handleInputChange = (e) => {
     let { name, value } = e.target

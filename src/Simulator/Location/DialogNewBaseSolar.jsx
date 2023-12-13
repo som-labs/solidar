@@ -25,6 +25,8 @@ import TextField from '@mui/material/TextField'
 // REACT Solidar Components
 import TCB from '../classes/TCB'
 import InputContext from '../InputContext'
+import coplanarSvgFile from '../datos/coplanar.svg'
+import horizontalSvgFile from '../datos/horizontal.svg'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
@@ -161,17 +163,15 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
   }
 
   const handleCancel = (event) => {
-    console.log(event)
     onClose(event.target.id)
   }
 
   async function handleClose(event) {
     let baseIndex
-
     // En caso de roofType coplanar pedimos confirmacion si la inclinacion es cero
     if (formData.roofType === 'Coplanar' && formData.inclinacion === 0) {
       if (!window.confirm(t('LOCATION.ERROR_COPLANAR_NOANGLE'))) {
-        return
+        onClose('cancel')
       }
     }
 
@@ -254,14 +254,16 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
                 sx={{ flex: 1 }}
                 className={'roofTypeButton'}
               >
-                <HomeIcon />
+                <img src={coplanarSvgFile} width="70" height="70" alt="SVG Image" />
+                {/* <HomeIcon /> */}
               </ToggleButton>
               <ToggleButton
                 value="Horizontal"
                 sx={{ flex: 1 }}
                 className={'roofTypeButton'}
               >
-                <ApartmentIcon />
+                <img src={horizontalSvgFile} width="70" height="70" alt="SVG Image" />
+                {/* <ApartmentIcon /> */}
               </ToggleButton>
               <ToggleButton value="Optimos" sx={{ flex: 1 }} className={'roofTypeButton'}>
                 {t('BaseSolar.LABEL_angulosOptimos')}
