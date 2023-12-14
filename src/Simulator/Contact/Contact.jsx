@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -25,15 +24,13 @@ export default function Contact() {
     mensaje: '',
   }
 
-  const [contactData, setContactData] = useState(defaultData)
+  //PENDIENTE: convertir a push
 
-  function sendEmail(formData) {
+  function sendEmail(message) {
     // Convert the object to a query string
-    console.log(contactData)
-    //console.log(formData)
-    //const queryString = Object.keys(contactData)
-    const queryString = Object.keys(contactData)
-      .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(contactData[key])}`)
+    console.log(message)
+    const queryString = Object.keys(message)
+      .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(message[key])}`)
       .join('&')
 
     if (TCB.modoActivo === 'DESARROLLO')
@@ -42,7 +39,7 @@ export default function Contact() {
     // URL of the PHP file including the query string
     const phpFileURL = TCB.basePath + `contacto.php?${queryString}`
     console.log(phpFileURL)
-    console.log(JSON.stringify(formData))
+
     // Fetch request to the PHP file
     fetch(phpFileURL)
       .then((response) => {
@@ -62,33 +59,24 @@ export default function Contact() {
   }
 
   function openDialogContact() {
-    const storedName = sessionStorage.getItem('contacto')
+    const storedMessage = sessionStorage.getItem('message')
+    let previousMessage = storedMessage === null ? defaultData : JSON.parse(storedMessage)
+    previousMessage.mensaje = ''
 
-    let parsedMessage = JSON.parse(storedName)
-    parsedMessage.mensaje = ''
-    setContactData(parsedMessage)
-
-    //REVISAR: En esta llamada si uso contactData como argumento initialData el campo mensaje mantiene el valor original como si la setContactData no hiciera nada, si se usa parsedMessage funcion bien
     openDialog({
       children: (
         <DialogContact
-          initialData={contactData} //si uso parsedMessage -> OK
+          initialData={previousMessage}
           recoverFormData={getContactFromDialog}
-          onClose={() => {}}
+          onClose={closeDialog}
         />
       ),
     })
   }
 
-  function getContactFromDialog(reason, formData) {
-    // console.log('REASON', reason)
-    // console.log('SETFROMDIALOG', formData)
-
-    setContactData(formData)
-    if (reason === 'save') {
-      sendEmail(formData)
-      sessionStorage.setItem('contacto', JSON.stringify(formData))
-    }
+  function getContactFromDialog(formData) {
+    sendEmail(formData)
+    sessionStorage.setItem('message', JSON.stringify(formData))
     closeDialog()
   }
 
