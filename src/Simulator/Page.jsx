@@ -4,10 +4,9 @@ import { useTranslation } from 'react-i18next'
 import Container from '@mui/material/Container'
 
 import Alert from '@mui/material/Alert'
-import BasicAlert from '../Simulator/components/BasicAlert'
+import BasicAlert from './components/BasicAlert'
 import AppFrame from '../components/AppFrame'
 import Wizard from '../components/Wizard'
-import DialogProvider from '../components/DialogProvider'
 
 import LocationStep from './Location/Location'
 import ConsumptionStep from './Consumption/Consumption'
@@ -26,38 +25,19 @@ import * as UTIL from './classes/Utiles'
 
 import InicializaAplicacion from './classes/InicializaAplicacion'
 import Consumo from './classes/Consumo'
+import { useDialog } from '../components/DialogProvider'
 
 InicializaAplicacion()
 
 export default function Page() {
   const { t, i18n } = useTranslation()
+  const [openDialog, closeDialog] = useDialog()
+  const [bases, setBases] = useState([])
 
   useEffect(() => {}, [])
 
   const [map, setMap] = useState()
 
-  const [bases, setBases] = useState(
-    TCB.BaseSolar.map((base) => {
-      return {
-        idBaseSolar: base.idBaseSolar,
-        nombreBaseSolar: base.nombreBaseSolar,
-        //areaMapa: base.areaMapa,
-        areaReal: base.areaReal,
-        lonlatBaseSolar: base.lonlatBaseSolar,
-        potenciaMaxima: base.potenciaMaxima,
-        panelesMaximo: base.panelesMaximo,
-        roofType: base.roofType,
-        inclinacionOptima: base.inclinacionOptima,
-        inclinacion: base.inclinacion,
-        angulosOptimos: base.angulosOptimos,
-        inAcimut: base.inAcimut,
-        //requierePVGIS: base.requierePVGIS,
-        paneles: 0,
-        potenciaTotal: 0,
-        potenciaUnitaria: 0,
-      }
-    }),
-  )
   const [tipoConsumo, setTipoConsumo] = useState(
     TCB.TipoConsumo.map((tipoConsumo) => {
       return {
@@ -107,26 +87,28 @@ export default function Page() {
       }
       return false
     } else {
-      showAlert(t('LOCATION.ERROR_DEFINE_BASE'), 'error')
+      showAlert('VALIDACION', t('LOCATION.ERROR_DEFINE_BASE'), 'error')
       return false
     }
   }
 
-  const [alert, setAlert] = useState({ message: '', type: '' })
   //REVISAR: como meter el codigo del alert en un componente reutilizable porque no funciona el BasicAlert
-
-  const showAlert = (message, type) => {
-    // BasicAlert({ title: 'Titulo', contents: 'Contenido a mostrar', type: '' })
-    setAlert({ message, type })
-  }
-  // Function to hide the alert
-  const hideAlert = () => {
-    setAlert({ message: '', type: '' })
+  const showAlert = (title, message, type) => {
+    openDialog({
+      children: (
+        <BasicAlert
+          title={title}
+          contents={message}
+          type={type}
+          onClose={() => closeDialog()}
+        ></BasicAlert>
+      ),
+    })
   }
 
   async function validaTipoConsumo() {
     if (TCB.TipoConsumo.length === 0) {
-      showAlert(t('CONSUMPTION.ERROR_AL_MENOS_UN_TIPOCONSUMO'), 'error')
+      showAlert('VALIDACION', t('CONSUMPTION.ERROR_AL_MENOS_UN_TIPOCONSUMO'), 'error')
       return false
     }
 
@@ -137,7 +119,7 @@ export default function Page() {
           showAlert(
             tipoConsumo.nombreTipoConsumo +
               '\n' +
-              TCB.i18next.t('consumo_MSG_definirPotenciaBaseREE', 'error'),
+              t('consumo_MSG_definirPotenciaBaseREE', 'error'),
           )
           status = false
           break
@@ -178,63 +160,50 @@ export default function Page() {
             setTipoConsumo,
           }}
         >
-          <DialogProvider>
-            <Container>
-              <EconomicContext.Provider
-                value={{
-                  IBI,
-                  setIBI,
-                  subvencionEU,
-                  setSubvencionEU,
-                  valorSubvencionEU,
-                  setValorSubvencionEU,
-                  precioInstalacionCorregido,
-                  setPrecioInstalacionCorregido,
-                  cuotaHucha,
-                  setCuotaHucha,
-                  coefHucha,
-                  setCoefHucha,
-                  ecoData,
-                  setEcoData,
-                }}
-              >
-                <MapContext.Provider value={{ map, setMap }}>
-                  <Wizard variant="tabs">
-                    <LocationStep
-                      label="location"
-                      title={t('LOCATION.TITLE')}
-                      next={validaLocation}
-                    />
-                    <ConsumptionStep
-                      label="consumption"
-                      title={t('CONSUMPTION.TITLE')}
-                      next={validaTipoConsumo}
-                    />
-                    <EnergyBalanceStep
-                      label="energybalance"
-                      title={t('ENERGY_BALANCE.TITLE')}
-                    />
-                    <EconomicBalanceStep
-                      label="economicbalance"
-                      title={t('ECONOMIC_BALANCE.TITLE')}
-                    />
-                    <SummaryStep label="summary" title={t('SUMMARY.TITLE')} />
-                  </Wizard>
-                </MapContext.Provider>
-              </EconomicContext.Provider>
-              <div>
-                {alert.message && (
-                  <Alert
-                    severity={alert.type}
-                    onClose={hideAlert}
-                    className={'centered-alert'}
-                  >
-                    {alert.message}
-                  </Alert>
-                )}
-              </div>
-            </Container>
-          </DialogProvider>
+          <Container>
+            <EconomicContext.Provider
+              value={{
+                IBI,
+                setIBI,
+                subvencionEU,
+                setSubvencionEU,
+                valorSubvencionEU,
+                setValorSubvencionEU,
+                precioInstalacionCorregido,
+                setPrecioInstalacionCorregido,
+                cuotaHucha,
+                setCuotaHucha,
+                coefHucha,
+                setCoefHucha,
+                ecoData,
+                setEcoData,
+              }}
+            >
+              <MapContext.Provider value={{ map, setMap }}>
+                <Wizard variant="tabs">
+                  <LocationStep
+                    label="location"
+                    title={t('LOCATION.TITLE')}
+                    next={validaLocation}
+                  />
+                  <ConsumptionStep
+                    label="consumption"
+                    title={t('CONSUMPTION.TITLE')}
+                    next={validaTipoConsumo}
+                  />
+                  <EnergyBalanceStep
+                    label="energybalance"
+                    title={t('ENERGY_BALANCE.TITLE')}
+                  />
+                  <EconomicBalanceStep
+                    label="economicbalance"
+                    title={t('ECONOMIC_BALANCE.TITLE')}
+                  />
+                  <SummaryStep label="summary" title={t('SUMMARY.TITLE')} />
+                </Wizard>
+              </MapContext.Provider>
+            </EconomicContext.Provider>
+          </Container>
         </InputContext.Provider>
       </AppFrame>
     </>

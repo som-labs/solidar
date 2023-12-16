@@ -49,6 +49,7 @@ export default function SummaryConsumption() {
         <Typography variant="body">{t('SUMMARY.DESCRIPTION_CONSUMO')}</Typography>
         <DataGrid
           autoHeight
+          rowHeight={30}
           getRowId={getRowId}
           rows={tipoConsumo}
           columns={columns}
@@ -57,6 +58,7 @@ export default function SummaryConsumption() {
             boxShadow: 2,
             border: 2,
             borderColor: 'primary.light',
+            mb: '0.5rem',
           }}
         />
       </Container>

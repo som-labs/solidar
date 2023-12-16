@@ -21,13 +21,16 @@ import { Button, Tooltip, TextField, Typography, Autocomplete } from '@mui/mater
 import MapContext from '../MapContext'
 import DialogNewBaseSolar from './DialogNewBaseSolar'
 import { useDialog } from '../../components/DialogProvider'
+import InputContext from '../InputContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
+import BaseSolar from '../classes/BaseSolar'
 
 export default function MapComponent() {
   const { t, i18n } = useTranslation()
+  const { bases, setBases } = useContext(InputContext)
 
   // Map state
   const [mapType, setMapType] = useState('LOCATION.LABEL_SATELITE')
@@ -153,9 +156,24 @@ export default function MapComponent() {
     }
   }, [])
 
-  function endDialog(reason) {
+  function endDialog(reason, formData) {
     if (reason === undefined) return
     if (reason === 'save') {
+      // Update label in source with nombreBaseSolar
+      const componentId = 'BaseSolar.label.' + TCB.featIdUnico.toString()
+      const labelFeature = TCB.origenDatosSolidar.getFeatureById(componentId)
+      UTIL.setLabel(
+        labelFeature,
+        formData.nombreBaseSolar,
+        TCB.baseLabelColor,
+        TCB.baseLabelBGColor,
+      )
+      // We are creating a new base
+      const baseIndex = TCB.BaseSolar.push(new BaseSolar(formData)) - 1
+      formData.potenciaMaxima = TCB.BaseSolar[baseIndex].potenciaMaxima
+      formData.areaReal = TCB.BaseSolar[baseIndex].areaReal
+      formData.panelesMaximo = TCB.BaseSolar[baseIndex].panelesMaximo
+      setBases((prevBases) => [...prevBases, formData])
       closeDialog()
     } else {
       UTIL.deleteBaseGeometries(TCB.featIdUnico.toString())
@@ -264,8 +282,7 @@ export default function MapComponent() {
         <DialogNewBaseSolar
           data={nuevaBaseSolar}
           editing={false}
-          onClose={(cause) => endDialog(cause)}
-          closeOnClickBackdrop={false}
+          onClose={(cause, formData) => endDialog(cause, formData)}
         />
       ),
     })
@@ -369,7 +386,6 @@ export default function MapComponent() {
     return status
   }
 
-  //REVISAR: como quitar este aviso
   const findAddress = useCallback(async () => {
     setCandidatos([])
     let url =
@@ -425,8 +441,9 @@ export default function MapComponent() {
   return (
     <>
       {/* Campo  para introducir una direccion */}
-      <Typography variant="body">{t('LOCATION.DESCRIPTION_ADDRESS')}</Typography>
       <br />
+      <Typography variant="body">{t('LOCATION.DESCRIPTION_ADDRESS')}</Typography>
+
       <br />
       <Autocomplete
         options={candidatos}

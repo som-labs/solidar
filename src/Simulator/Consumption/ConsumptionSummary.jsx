@@ -19,16 +19,18 @@ import MapaMesHora from './MapaMesHora'
 import MapaDiaHora from './MapaDiaHora'
 import { useDialog } from '../../components/DialogProvider'
 import DialogNewConsumption from './DialogNewConsumption'
+import { FooterBox, InfoBox } from '../../components/SLDRComponents'
 
 // Solidar objects
 import TCB from '../classes/TCB'
+import * as UTIL from '../classes/Utiles'
 import { formatoValor } from '../classes/Utiles'
 import { Container } from '@mui/material'
 import TipoConsumo from '../classes/TipoConsumo'
 
 //PENDIENTE: Decidir si mostramos los datos en formato tabla o creamos boxes segun diseño de Clara
 export default function ConsumptionSummary() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const columns = [
     {
@@ -107,21 +109,111 @@ export default function ConsumptionSummary() {
       children: (
         <DialogNewConsumption
           data={initialValues}
-          onClose={(cause) => endDialog(cause)}
+          onClose={(cause, formData) => endDialog(cause, formData)}
         ></DialogNewConsumption>
       ),
     })
   }
 
-  //REVISAR: como hacer para que el dialogo funcione sincro y no se llame a showGraphs antes de que se termine de cargar el TipoConsumo
-  function endDialog(closingEvent, tc) {
-    if (closingEvent === undefined) return
-    console.log('fin dialogo ', closingEvent)
+  async function cargaCSV(objTipoConsumo, ficheroCSV, fuente) {
+    TCB.cambioTipoConsumo = true
+    objTipoConsumo.inicializa()
 
-    // if (closingEvent.target.id === 'save') {
-    //   console.log(tc)
-    //   setActivo(TCB.TipoConsumo[TCB.TipoConsumo.length - 1])
-    // }
+    objTipoConsumo.ficheroCSV = ficheroCSV
+    let opciones
+
+    if (fuente === 'REE') {
+      opciones = {
+        delimiter: ';',
+        decimal: '.',
+        fechaHdr: 'FECHA',
+        horaHdr: 'HORA',
+        valorArr: [TCB.tipoTarifa],
+        factor: objTipoConsumo.consumoAnualREE,
+      }
+    } else {
+      opciones = {
+        delimiter: ';',
+        decimal: ',',
+        fechaHdr: 'FECHA',
+        horaHdr: 'HORA',
+        valorArr: ['CONSUMO', 'CONSUMO_KWH', 'AE_KWH'],
+        factor: 1,
+        metodo: 'PROMEDIO',
+      }
+    }
+
+    //Si la fuente es DATADIS loadcsv debera cambiar el formato de fecha de AAAA/MM/DD a DD/MM/AAAA
+    opciones.fechaSwp = fuente === 'DATADIS'
+    let aStatus
+    await objTipoConsumo
+      .loadFromCSV(ficheroCSV, opciones)
+      .then((r) => {
+        aStatus = true
+      })
+      .catch((e) => {
+        alert(e)
+        aStatus = false
+      })
+    return aStatus
+  }
+
+  async function endDialog(reason, formData) {
+    if (reason === undefined) return
+    if (reason === 'save') {
+      TCB.requiereOptimizador = true
+      TCB.cambioTipoConsumo = true
+
+      let nuevoTipoConsumo = {
+        idTipoConsumo: TCB.featIdUnico,
+        nombreTipoConsumo: formData.nombreTipoConsumo,
+        fuente: formData.fuente,
+        nombreTarifa: TCB.nombreTarifaActiva,
+      }
+
+      if (nuevoTipoConsumo.fuente === 'REE') {
+        nuevoTipoConsumo.consumoAnualREE = formData.consumoAnualREE
+        nuevoTipoConsumo.ficheroCSV = await UTIL.getFileFromUrl('./datos/REE.csv')
+        nuevoTipoConsumo.nombreFicheroCSV = ''
+      } else {
+        nuevoTipoConsumo.consumoAnualREE = ''
+        nuevoTipoConsumo.ficheroCSV = formData.ficheroCSV
+        nuevoTipoConsumo.nombreFicheroCSV = formData.ficheroCSV.name
+      }
+      let idxTC = TCB.TipoConsumo.push(new TipoConsumo(nuevoTipoConsumo))
+
+      //Si se ha pasado un inputFile como argumento se carga
+      if (formData.ficheroCSV !== '') {
+        try {
+          let cargaResPromise = new Promise((resolve) => {
+            let res = cargaCSV(
+              TCB.TipoConsumo[idxTC - 1],
+              TCB.TipoConsumo[idxTC - 1].ficheroCSV,
+              TCB.TipoConsumo[idxTC - 1].fuente,
+            )
+            resolve(res)
+          })
+          cargaResPromise
+            .then((respuesta) => {
+              if (respuesta) {
+                nuevoTipoConsumo.cTotalAnual = TCB.TipoConsumo[idxTC - 1].cTotalAnual
+                setTipoConsumo((prevTipos) => [...prevTipos, nuevoTipoConsumo])
+                showGraphsTC(nuevoTipoConsumo)
+              } else {
+                console.log('cargaCSV devolvio error ', respuesta)
+                TCB.TipoConsumo.splice(idxTC - 1, 1)
+              }
+            })
+            .catch((error) => {
+              console.log('cargaCSV catch ', error)
+              TCB.TipoConsumo.splice(idxTC - 1, 1)
+            })
+        } catch (error) {
+          alert(error)
+          closeDialog()
+        }
+      }
+    }
     closeDialog()
   }
 
@@ -151,7 +243,6 @@ export default function ConsumptionSummary() {
 
   // showGraphsTC recibe una fila del datagrid y activa el objeto TipoConsumo de TCB que correponde
   function showGraphsTC(tc) {
-    console.log(tc)
     setActivo(
       TCB.TipoConsumo.find((t) => {
         return t.idTipoConsumo === tc.idTipoConsumo
@@ -190,20 +281,7 @@ export default function ConsumptionSummary() {
 
   function footerSummary() {
     return (
-      <Box
-        sx={{
-          mt: '0.3rem',
-          display: 'flex',
-          flexWrap: 'wrap',
-          boxShadow: 2,
-          flex: 1,
-          border: 2,
-          textAlign: 'center',
-          borderColor: 'primary.light',
-          backgroundColor: 'grey',
-        }}
-        justifyContent="center"
-      >
+      <FooterBox>
         <Typography
           variant="h6"
           sx={{
@@ -227,7 +305,7 @@ export default function ConsumptionSummary() {
             <AnalyticsIcon />
           </IconButton>
         </Tooltip>
-      </Box>
+      </FooterBox>
     )
   }
 
@@ -244,9 +322,7 @@ export default function ConsumptionSummary() {
 
   return (
     <>
-      <Container>
-        {/* Consumption types table 
-        PENDIENTE: hay que permitir ver el gráfico de la suma de todos los consumos */}
+      <InfoBox>
         <DataGrid
           autoHeight
           getRowId={getRowId}
@@ -254,53 +330,24 @@ export default function ConsumptionSummary() {
           columns={columns}
           hideFooter={false}
           sx={{
-            boxShadow: 2,
-            border: 2,
-            borderColor: 'primary.light',
-            '& .MuiDataGrid-cell:hover': {
-              color: 'primary.main',
-            },
+            mb: '1rem',
           }}
           onCellEditStop={(params, event) => {
             changeTC(params, event)
           }}
           slots={{ toolbar: newConsumption, footer: footerSummary }}
         />
-        <Typography variant="h6"></Typography>
-
-        {activo && (
-          <>
-            <Box
-              sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                flex: 1,
-                border: 2,
-                borderColor: 'primary.light',
-                mt: '1rem',
-                mb: '1rem',
-                borderRadius: 4,
-              }}
-            >
-              <MapaMesHora activo={activo}></MapaMesHora>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                flex: 1,
-                border: 2,
-                borderColor: 'primary.light',
-                mt: '1rem',
-                mb: '1rem',
-                borderRadius: 4,
-              }}
-            >
-              <MapaDiaHora activo={activo}></MapaDiaHora>
-            </Box>
-          </>
-        )}
-      </Container>
+      </InfoBox>
+      {activo && (
+        <>
+          <InfoBox>
+            <MapaMesHora activo={activo}></MapaMesHora>
+          </InfoBox>
+          <InfoBox>
+            <MapaDiaHora activo={activo}></MapaDiaHora>
+          </InfoBox>
+        </>
+      )}
     </>
   )
 }

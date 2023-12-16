@@ -136,7 +136,7 @@ export default function GraphAlternatives() {
     yaxis: 'y2',
     type: 'scatter',
   }
-  console.log(paneles)
+
   var layout = {
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
@@ -286,7 +286,7 @@ export default function GraphAlternatives() {
       },
     )
   }
-
+  //PENDIENTE: decidir si el click permite cambiar los paneles
   function handleClick(evt) {
     console.log(evt)
   }
@@ -338,38 +338,22 @@ export default function GraphAlternatives() {
 
   return (
     <>
-      <Box
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          flex: 1,
-          border: 2,
-          textAlign: 'center',
-          borderColor: 'primary.light',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexFlow: 'column',
-          // backgroundColor: 'rgba(220, 249, 233, 1)',
-        }}
-        justifyContent="center"
-      >
-        <Typography variant="h4" sx={{ mb: '1rem' }}>
-          {t('ECONOMIC_BALANCE.TITLE_DATA_AS_PANELS')}
-        </Typography>
+      <Typography variant="h4" sx={{ mb: '1rem' }}>
+        {t('ECONOMIC_BALANCE.TITLE_DATA_AS_PANELS')}
+      </Typography>
 
-        <Plot
-          data={[
-            trace_TIR,
-            trace_autoconsumo,
-            trace_autosuficiencia,
-            trace_precioInstalacion,
-            trace_ahorroAnual,
-          ]}
-          layout={layout}
-          config={{ displayModeBar: false }}
-          onClick={(event) => handleClick(event)}
-        />
-      </Box>
+      <Plot
+        data={[
+          trace_TIR,
+          trace_autoconsumo,
+          trace_autosuficiencia,
+          trace_precioInstalacion,
+          trace_ahorroAnual,
+        ]}
+        layout={layout}
+        config={{ displayModeBar: false }}
+        onClick={(event) => handleClick(event)}
+      />
     </>
   )
 }

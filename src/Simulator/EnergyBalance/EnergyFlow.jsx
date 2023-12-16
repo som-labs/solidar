@@ -229,7 +229,9 @@ export default function EnergyFlow(props) {
               flexDirection: 'column',
             }}
           >
-            <Typography variant="h4">{t('ENERGY_BALANCE.FLOW_TITLE')}</Typography>
+            <Typography variant="h4" textAlign={'center'}>
+              {t('ENERGY_BALANCE.FLOW_TITLE')}
+            </Typography>
             <Typography
               variant="body"
               dangerouslySetInnerHTML={{

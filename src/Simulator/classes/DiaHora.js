@@ -97,7 +97,6 @@ class DiaHora {
         //Verificamos las cabeceras del fichero CSV
         try {
           var headers = data.slice(0, data.indexOf('\n')).split(options.delimiter)
-          console.log(headers, options)
           for (let i = 0; i < headers.length; i++) {
             headers[i] = headers[i].trim().toUpperCase()
             if (headers[i] === options.fechaHdr) chkFecha = true

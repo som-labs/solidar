@@ -24,7 +24,6 @@ import TextField from '@mui/material/TextField'
 
 // REACT Solidar Components
 import TCB from '../classes/TCB'
-import InputContext from '../InputContext'
 import coplanarSvgFile from '../datos/coplanar.svg'
 import horizontalSvgFile from '../datos/horizontal.svg'
 
@@ -33,12 +32,9 @@ import * as UTIL from '../classes/Utiles'
 import BaseSolar from '../classes/BaseSolar'
 
 export default function DialogNewBaseSolar({ data, editing, onClose }) {
-  const { t, i18n } = useTranslation()
-
+  const { t } = useTranslation()
   const [formData, setFormData] = useState(data)
-  const { bases, setBases } = useContext(InputContext)
 
-  //REVISAR: falta controlar la salida con backdrop click para borrar la geometria previamente creada
   useEffect(() => {
     setFormData(data)
   }, [])
@@ -167,50 +163,13 @@ export default function DialogNewBaseSolar({ data, editing, onClose }) {
   }
 
   async function handleClose(event) {
-    let baseIndex
     // En caso de roofType coplanar pedimos confirmacion si la inclinacion es cero
     if (formData.roofType === 'Coplanar' && formData.inclinacion === 0) {
       if (!window.confirm(t('LOCATION.ERROR_COPLANAR_NOANGLE'))) {
         onClose('cancel')
       }
     }
-
-    // Update label in source with nombreBaseSolar
-    const componentId = 'BaseSolar.label.' + data.idBaseSolar
-    const labelFeature = TCB.origenDatosSolidar.getFeatureById(componentId)
-    await UTIL.setLabel(
-      labelFeature,
-      formData.nombreBaseSolar,
-      TCB.baseLabelColor,
-      TCB.baseLabelBGColor,
-    )
-
-    if (!editing) {
-      // We are creating a new base
-      console.log(formData)
-      baseIndex = TCB.BaseSolar.push(new BaseSolar(formData)) - 1
-      formData.potenciaMaxima = TCB.BaseSolar[baseIndex].potenciaMaxima
-      formData.areaReal = TCB.BaseSolar[baseIndex].areaReal
-      formData.panelesMaximo = TCB.BaseSolar[baseIndex].panelesMaximo
-      setBases([...bases, formData])
-    } else {
-      // Find this edited base in TCB
-      const baseIndex = TCB.BaseSolar.findIndex((x) => {
-        return x.idBaseSolar === formData.idBaseSolar
-      })
-      // Update all attributes in TCB
-      TCB.BaseSolar[baseIndex].updateBase(formData)
-      formData.potenciaMaxima = TCB.BaseSolar[baseIndex].potenciaMaxima
-      formData.areaReal = TCB.BaseSolar[baseIndex].areaReal
-      formData.panelesMaximo = TCB.BaseSolar[baseIndex].panelesMaximo
-
-      // Substitute new base in context
-      let prevBases = [...bases]
-      prevBases.splice(baseIndex, 1, formData)
-      setBases(prevBases)
-    }
-
-    onClose(event.target.id)
+    onClose(event.target.id, formData)
   }
 
   return (

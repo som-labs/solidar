@@ -161,6 +161,10 @@ ENERGY_BALANCE:
   TOOLTIP_kgCO2AnualRenovable: CO2 (kg) no expulsats a l’atmosfera si l’origen de l’energia fos peninsular i renovable. Es pot modificar a la finestra de Paràmetres.
 
   TOOLTIP_kgCO2AnualNoRenovable: CO2 (kg) no expulsats a l’atmosfera si l’origen de l’energia fos peninsular i no renovable. Es pot modificar a la finestra de Paràmetres.
+  LABEL_consumoMensual: Consum mensual
+  TOOLTIP_consumoMensual: Consum mitjà mensual d'electricitat
+  LABEL_produccionMensual: Producció mensual
+  TOOLTIP_produccionMensual: Producció fotovoltaica mitjana mensula estimada
 
 ECONOMIC_BALANCE:
   TITLE: Balanç econòmic
@@ -398,10 +402,7 @@ RESULTADOS:
   consumoDiario_TT: Consum mitjà diari d'electricitat
   produccionDiaria_LBL: Producció diària
   produccionDiaria_TT: Producció fotovoltaica mitjana diària estimada
-  consumoMensual_LBL: Consum mensual
-  consumoMensual_TT: Consum mitjà mensual d'electricitat
-  produccionMensual_LBL: Producció mensual
-  produccionMensual_TT: Producció fotovoltaica mitjana mensula estimada
+
   deficitAnual_LBL: Electricitat comprada
   deficitAnual_TT: Electricitat que encara és necessàri comprar a la comercialitzadora després de la instal·lació fotovoltaica
 

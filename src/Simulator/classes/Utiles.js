@@ -11,6 +11,7 @@
 
 import TCB from './TCB'
 import { Style, Fill, Text } from 'ol/style'
+import { useTranslation } from 'react-i18next'
 
 /*global bootstrap, ol*/
 const campos = {
@@ -284,6 +285,14 @@ export const indiceDia = [
   [10, 304, 333],
   [11, 334, 364],
 ]
+
+const ValidateDecimal = (language, inputValue) => {
+  const number = 1.1
+  const decimalSeparator = number.toLocaleString(language).substring(1, 2)
+
+  const decimalRegex = new RegExp(`^\\d*${decimalSeparator}?\\d*$`)
+  return decimalRegex.test(inputValue)
+}
 
 /** Devuelve el valor de la variable en los argumentos de entrada de la URL
  * @memberof UTIL
@@ -1018,6 +1027,7 @@ export {
   suma,
   swapTabla,
   swapObjeto,
+  ValidateDecimal,
   campos,
 }
 window.dumpData = dumpData

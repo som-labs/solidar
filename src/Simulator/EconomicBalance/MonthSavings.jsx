@@ -15,9 +15,6 @@ export default function MonthSaving() {
   const { t, i18n } = useTranslation()
 
   const { ecoData, coefHucha } = useContext(EconomicContext)
-
-  console.log(ecoData)
-
   const i18nextMes = () => {
     let _mes = []
     for (let i = 0; i < 12; _mes.push(t(UTIL.nombreMes[i++])));
@@ -148,31 +145,21 @@ export default function MonthSaving() {
   return (
     <>
       <Container>
-        <Box
-          component="form"
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            flexWrap: 'wrap',
-            width: '100%',
+        <Typography variant="h4" textAlign={'center'}>
+          {t('ECONOMIC_BALANCE.TITLE_MONTH_SAVINGS')}
+        </Typography>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('ECONOMIC_BALANCE.DESCRIPTION_MONTH_SAVINGS'),
           }}
-        >
-          <Typography variant="h4">
-            {t('ECONOMIC_BALANCE.TITLE_MONTH_SAVINGS')}
-          </Typography>
-          <Typography
-            variant="body"
-            dangerouslySetInnerHTML={{
-              __html: t('ECONOMIC_BALANCE.DESCRIPTION_MONTH_SAVINGS'),
-            }}
-          />
+        />
 
-          <Typography variant="h5">
-            {t('ECONOMIC_BALANCE.GRAPH_TITLE_MONTH_SAVINGS')}
-          </Typography>
-          <Plot data={data} layout={layout} style={{ width: '100%' }} />
-          <br />
-        </Box>
+        <Typography variant="h5">
+          {t('ECONOMIC_BALANCE.GRAPH_TITLE_MONTH_SAVINGS')}
+        </Typography>
+        <Plot data={data} layout={layout} style={{ width: '100%' }} />
+        <br />
       </Container>
     </>
   )

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import InputAdornment from '@mui/material/InputAdornment'
@@ -20,7 +20,6 @@ export default function SummaryPreciosTarifa() {
   useEffect(() => {
     if (TCB.tipoTarifa === '2.0TD') setNPrecios(4)
     else setNPrecios(7)
-
     setPrecios(Object.entries(TCB.tarifaActiva.precios).slice(1, nPrecios))
   }, [])
 
@@ -43,20 +42,35 @@ export default function SummaryPreciosTarifa() {
           {t('TARIFA.LABEL_P0')}
         </Grid>
         <Grid item xs={6}>
-          {TCB.tarifas[TCB.nombreTarifaActiva].precios[0]}
+          {TCB.tarifas[TCB.nombreTarifaActiva].precios[0] + ' €/kWh'}
         </Grid>
       </Grid>
 
-      <Grid container spacing={1} alignItems="center" justifyContent="space-evenly">
+      <Grid
+        container
+        spacing={1}
+        alignItems="center"
+        justifyContent="space-evenly"
+        sx={{ mb: '1rem' }}
+      >
         {precios.map((precioP) => (
-          <>
-            <Grid item xs={2} sx={{ border: 1 }}>
+          <Fragment key={precioP[0]}>
+            <Grid item xs={1} sx={{ border: 0, textAlign: 'right', padding: 1 }}>
               {'P' + precioP[0]}
             </Grid>
-            <Grid item xs={2} sx={{ border: 1 }}>
-              {precioP[1]}
+            <Grid
+              item
+              xs={3}
+              sx={{
+                border: 1,
+                textAlign: 'right',
+                padding: 0.5,
+                borderColor: 'primary.light',
+              }}
+            >
+              {precioP[1] + ' €/kWh'}
             </Grid>
-          </>
+          </Fragment>
         ))}
       </Grid>
     </>

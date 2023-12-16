@@ -58,6 +58,7 @@ function DialogContainer(props) {
   const { children, open, onClose, onKill, fullScreenBelow = 'md', ...extraprops } = props
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down(fullScreenBelow))
+
   return (
     <Dialog
       TransitionComponent={Transition}
