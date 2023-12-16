@@ -38,14 +38,9 @@ $headers = 'From: '.$email_from."\r\n".
 
 //REVISAR: error al enviar el email en modo desarrollo
 if (mail($email_to, $email_subject, $email_message, $headers)) {
-    echo '<script language="javascript">
-        alert("¡El formulario se ha enviado con éxito!");
-        </script>'; 
+    echo "¡El formulario se ha enviado con éxito!";
 } else {
     $errorMessage = error_get_last()['message'] ?? 'Error desconocido';
-    echo '<script language="javascript">
-        alert("Error envio de correo. " . $errorMessage . ");"
-        window.location.href="index.html";
-        </script>';
+    echo "Error envio de correo: " . $errorMessage;
 }
 ?>

@@ -20,34 +20,25 @@ export default function YearSaving() {
   return (
     <>
       <Container>
-        <Box
-          component="form"
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            flexWrap: 'wrap',
-            width: '100%',
+        <Typography variant="h4" textAlign={'center'}>
+          {t('ECONOMIC_BALANCE.TITLE_YEAR_SAVINGS')}
+        </Typography>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('ECONOMIC_BALANCE.DESCRIPTION_YEAR_SAVINGS', {
+              porcientoAhorro: UTIL.formatoValor(
+                'porciento',
+                (ecoData.ahorroAnual / ecoData.gastoSinPlacasAnual) * 100,
+              ),
+            }),
           }}
-        >
-          <Typography variant="h4">{t('ECONOMIC_BALANCE.TITLE_YEAR_SAVINGS')}</Typography>
-          <Typography
-            variant="body"
-            dangerouslySetInnerHTML={{
-              __html: t('ECONOMIC_BALANCE.DESCRIPTION_YEAR_SAVINGS', {
-                porcientoAhorro: UTIL.formatoValor(
-                  'porciento',
-                  (ecoData.ahorroAnual / ecoData.gastoSinPlacasAnual) * 100,
-                ),
-              }),
-            }}
-          />
+        />
 
-          <Typography variant="h5">
-            {t('ECONOMIC_BALANCE.GRAPH_TITLE_YEAR_SAVINGS')}
-          </Typography>
-          <GraphBoxSavings></GraphBoxSavings>
-          <br />
-        </Box>
+        <Typography variant="h5">
+          {t('ECONOMIC_BALANCE.GRAPH_TITLE_YEAR_SAVINGS')}
+        </Typography>
+        <GraphBoxSavings></GraphBoxSavings>
       </Container>
     </>
   )

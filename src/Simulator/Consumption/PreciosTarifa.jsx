@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import InputAdornment from '@mui/material/InputAdornment'
@@ -53,24 +53,8 @@ export default function PreciosTarifa() {
     setPrecios(Object.entries(TCB.tarifaActiva.precios))
   }
 
-  const getDecimalSeparator = () => {
-    const number = 1.1
-    return number.toLocaleString().substring(1, 2)
-  }
-  //REVISAR: No esta aceptando el separador
-  const validateDecimal = (inputValue) => {
-    const decimalSeparator = getDecimalSeparator()
-    console.log('separador ' + decimalSeparator)
-
-    //const decimalRegex = new RegExp(`^(\\d*\\${decimalSeparator}?\\d*$`)
-    const decimalRegex = new RegExp(`^(\\d*)\\.?\\d*$`)
-    console.log(decimalRegex.test(inputValue))
-    return decimalRegex.test(inputValue)
-  }
-
   const cambiaPrecio = (posicion, nuevoValor) => {
-    console.log(nuevoValor)
-    if (validateDecimal(nuevoValor)) {
+    if (UTIL.ValidateDecimal(i18n.language, nuevoValor)) {
       let prevPrecios = [...precios]
       prevPrecios[posicion][1] = nuevoValor //parseFloat(nuevoValor)
       setPrecios(prevPrecios)
@@ -101,7 +85,7 @@ export default function PreciosTarifa() {
 
         <Grid container spacing={1} alignItems="center" justifyContent="space-evenly">
           {precios.map((precioP) => (
-            <React.Fragment key={precioP[0]}>
+            <Fragment key={precioP[0]}>
               {precioP[0] < nPrecios && (
                 <Grid item xs>
                   <TextField
@@ -120,7 +104,7 @@ export default function PreciosTarifa() {
                   ></TextField>
                 </Grid>
               )}
-            </React.Fragment>
+            </Fragment>
           ))}
         </Grid>
       </>

@@ -12,7 +12,7 @@ import EconomicContext from '../EconomicBalance/EconomicContext'
 import * as UTIL from '../classes/Utiles'
 
 export default function GraphBoxSavings() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const { ecoData } = useContext(EconomicContext)
 
@@ -28,6 +28,7 @@ export default function GraphBoxSavings() {
         borderColor: 'primary.light',
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: 'white',
       }}
     >
       <Box

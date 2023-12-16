@@ -181,6 +181,7 @@ export default function SummaryAutoproduccion() {
           columns={columns}
           hideFooter={true}
           autoHeight
+          rowHeight={30}
           sx={{
             boxShadow: 2,
             border: 2,

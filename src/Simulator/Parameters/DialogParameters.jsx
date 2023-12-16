@@ -1,12 +1,7 @@
-/* Función para mostrar el formulario modal de propiedades de un objeto generico
-@param: objeto -> es el objeto del que se mostrará todas las propiedades que devuelve getOwnPropertyDescriptors en la función
-                obtenerPropiedades. La llamada es recursiva, si una propiedad es un objeto se mostrarán la propiedades de ese
-                objeto tambien.
-@param: descripcion -> titulo del <body> del formulario modal
- */
-
 import { useState, Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
+
+//PENDIENTE: convertir a formix
 
 // MUI objects
 import {

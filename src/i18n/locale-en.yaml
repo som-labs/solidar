@@ -170,6 +170,11 @@ ENERGY_BALANCE:
   TOOLTIP_kgCO2AnualRenovable: CO2 (kg) not expelled to the atmosphere if the origin of energy were peninsular and renewable. It can be modified in the parameter window.
   LABEL_kgCO2AnualNoRenovable: If energy is provided <br />from non renewable source
   TOOLTIP_kgCO2AnualNoRenovable: CO2 (kg) not expelled to the atmosphere if the origin of energy were peninsular and non -renewable. It can be modified in the parameter window.
+  LABEL_consumoMensual: Monthly consumption
+  TOOLTIP_consumoMensual: Average monthly consumption of electricity
+  LABEL_produccionMensual: Monthly production
+  TOOLTIP_produccionMensual: Estimated monthly average photovoltaic production
+
 ECONOMIC_BALANCE:
   TITLE: Economic Balance
   DESCRIPTION: |
@@ -391,10 +396,7 @@ Resultados:
   consumoDiario_TT: Average Daily Electricity Consumption
   produccionDiaria_LBL: Daily production
   produccionDiaria_TT: Estimated average daily photovoltaic production
-  consumoMensual_LBL: Monthly consumption
-  consumoMensual_TT: Average monthly consumption of electricity
-  produccionMensual_LBL: Monthly production
-  produccionMensual_TT: Estimated monthly average photovoltaic production
+
   deficitAnual_LBL: Consumption demanded from the grid
   deficitAnual_TT: Electricity that is still necessary to buy from the network after the photovoltaic installation
 

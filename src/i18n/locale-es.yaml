@@ -226,7 +226,7 @@ ENERGY_BALANCE:
     La <strong>autoproducción</strong> es mayor en verano (mas horas de luz) que en invierno.<br />
     El <strong>consumo</strong> varia según los meses y la zona geográfica: en el norte de España elconsumo más alto se produce en los meses de invierno y mientras que en sur los picos de cosnumo se producen en verano. En general los meses de primavera y otoño son las mas estables en toda España.<br />
     En el siguiente gráfico se ve la comparación entre tu consumo y tu autoproducción mes a mes.
-
+  TITLE_GRAPH_MONTH_CONSUMO_PRODUCCION: Autoproducción y consumo mensual
   TITLE_GRAPH_MONTH_ENERGY_BALANCE: Autoconsumo, consumo de la red y excedentes
   MSG_disclaimerProduccion: |
     Los datos para la estimación de la producción de los paneles solares se obtienen de PVGIS. <a href:"https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en">Ver documentación aqui</a>
@@ -243,6 +243,10 @@ ENERGY_BALANCE:
   TOOLTIP_kgCO2AnualRenovable: CO2 (kg) no expulsados a la atmósfera si el origen de la energía fuera peninsular y renovable. Se puede modificar en la ventana de Parámetros.
   LABEL_kgCO2AnualNoRenovable: Si la electricidad contratada proviene de <br /><strong>fuentes no renovables</strong>
   TOOLTIP_kgCO2AnualNoRenovable: CO2 (kg) no expulsados a la atmósfera si el origen de la energía fuera peninsular y no renovable. Se puede modificar en la ventana de Parámetros.
+  LABEL_consumoMensual: Consumo mensual
+  TOOLTIP_consumoMensual: Consumo medio mensual de electricidad
+  LABEL_produccionMensual: Producción mensual
+  TOOLTIP_produccionMensual: Producción fotovoltaica media mensual estimada
 
 ECONOMIC_BALANCE:
   TITLE: Balance Económico
@@ -545,10 +549,7 @@ RESULTS:
   consumoDiario_TT: Consumo medio diario de electricidad
   produccionDiaria_LBL: Producción diaria
   produccionDiaria_TT: Producción fotovoltaica diaria estimada
-  consumoMensual_LBL: Consumo mensual
-  consumoMensual_TT: Consumo medio mensual de electricidad
-  produccionMensual_LBL: Producción mensual
-  produccionMensual_TT: Producción fotovoltaica media mensual estimada
+
   deficitAnual_LBL: Electricidad comprada
   deficitAnual_TT: Electricidad que aún se precisa comprar a la comercializadora tras la instalación fotovoltaica
   energiaFaltante%Consumo_LBL: Porcentaje de electricidad comprada

@@ -9,6 +9,20 @@
   height: '500px';
 }
 
+.footerSummary {
+  display: 'flex';
+  border: 1;
+  flex: 1;
+  background-color: 'blue';
+  margin-top: '1rem';
+}
+
+.inputField {
+  background-color: '#f2f2f2';
+  padding: '10px';
+  border-radius: '4px';
+}
+
 .map-container {
   height: 200px;
   width: 50%;

@@ -1,12 +1,11 @@
-import React, { useContext, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Plotly objects
 import Plot from 'react-plotly.js'
 
 // MUI objects
-import Container from '@mui/material/Container'
-import Box from '@mui/material/Box'
+import { Typography, Container } from '@mui/material'
 
 // REACT Solidar Components
 import { useDialog } from '../../components/DialogProvider'
@@ -17,8 +16,30 @@ import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 export default function ConsumoGeneracion3D() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
+  const graphElement = useRef()
+  const graphWidth = useRef()
+
+  useEffect(() => {
+    // Function to get the width of the element
+    const getWidth = () => {
+      if (graphElement.current) {
+        graphWidth.current = graphElement.current.offsetWidth
+      }
+    }
+
+    // Call the function to get the width after initial render
+    getWidth()
+
+    // // Add event listener for resizing (optional)
+    // window.addEventListener('resize', getWidth)
+
+    // // Cleanup by removing the event listener on component unmount (optional)
+    // return () => {
+    //   window.removeEventListener('resize', getWidth)
+    // }
+  }, [])
 
   const meses = Array.from(i18nextMes())
   var g_produccion = {
@@ -88,17 +109,18 @@ export default function ConsumoGeneracion3D() {
         highlightcolor: 'blue',
         project: { y: true },
       },
+      type: 'fill',
     },
   }
   const layout = {
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
-    width: '100%',
+    width: graphWidth.current,
     scene: {
       zaxis: { title: 'kWh' },
       camera: { eye: { x: -2.5, y: -2.5, z: 1 } },
       clickmode: 'event+select',
-      xaxis: { title: t('GRAPHICS.LABEL_HORA'), dtick: 4 },
+      xaxis: { title: t('GRAPHICS.LABEL_HORA'), dtick: 2 },
       yaxis: {
         title_standoff: 1,
         title_position: 'left',
@@ -125,7 +147,7 @@ export default function ConsumoGeneracion3D() {
       orientation: 'h',
     },
     margin: {
-      l: 50,
+      l: 0,
       r: 0,
       b: 10,
       t: 0,
@@ -153,13 +175,16 @@ export default function ConsumoGeneracion3D() {
   }
 
   return (
-    <>
+    <Container ref={graphElement}>
+      <Typography variant="h4" textAlign={'center'}>
+        {t('ENERGY_BALANCE.3D_TITLE')}
+      </Typography>
       <Plot
         data={[g_produccion, g_consumo]}
         layout={layout}
         onClick={handleClick}
         config={config}
       />
-    </>
+    </Container>
   )
 }
