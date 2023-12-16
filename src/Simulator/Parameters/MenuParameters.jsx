@@ -13,18 +13,14 @@ import DialogParameters from './DialogParameters'
 import TCB from '../classes/TCB'
 import TCBContext from '../TCBContext'
 
-//REVISAR: logica porque no actualiza el cambio de un parametro dinamicamente
 export default function MenuParameter() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
 
   const { parameters, setParameters } = useContext(TCBContext)
   const [newParameters, setNewParameters] = useState(parameters)
 
   function openParameters() {
-    console.log(TCB.parametros)
-    console.log(parameters)
-    console.log(newParameters)
     openDialog({
       children: (
         <DialogParameters

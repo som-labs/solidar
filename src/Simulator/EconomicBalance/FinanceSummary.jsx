@@ -12,6 +12,7 @@ import EconomicContext from './EconomicContext'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
+import { FooterBox } from '../../components/SLDRComponents'
 
 export default function FinanceSummary() {
   const { t, i18n } = useTranslation()
@@ -26,22 +27,22 @@ export default function FinanceSummary() {
 
   function footerSummary() {
     return (
-      <Box
-        component="form"
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'wrap',
-          width: '100%',
-          mt: '0.3rem',
-          mb: '0.3rem',
-          flex: 1,
-          border: 2,
-          textAlign: 'center',
-          borderColor: 'primary.light',
-          backgroundColor: 'rgba(220, 249, 233, 1)',
-        }}
-        justifyContent="center"
+      <FooterBox
+      // component="form"
+      // sx={{
+      //   display: 'flex',
+      //   flexDirection: 'column',
+      //   flexWrap: 'wrap',
+      //   width: '100%',
+      //   mt: '0.3rem',
+      //   mb: '0.3rem',
+      //   flex: 1,
+      //   border: 2,
+      //   textAlign: 'center',
+      //   borderColor: 'primary.light',
+      //   backgroundColor: 'rgba(220, 249, 233, 1)',
+      // }}
+      // justifyContent="center"
       >
         <Typography variant="h5">
           {t('ECONOMIC_BALANCE.LABEL_VAN_PROYECTO', {
@@ -53,7 +54,7 @@ export default function FinanceSummary() {
             TIR: UTIL.formatoValor('porciento', ecoData.TIRProyecto),
           })}
         </Typography>
-      </Box>
+      </FooterBox>
     )
   }
   const columns = [
@@ -162,12 +163,12 @@ export default function FinanceSummary() {
             },
           }}
         >
-          <Typography variant="h4">
+          <Typography variant="h4" textAlign={'center'}>
             {t('ECONOMIC_BALANCE.TITLE_FINANCE_SUMMARY')}
           </Typography>
           <br />
           <DataGrid
-            rowHeight={35}
+            rowHeight={30}
             autoHeight
             getRowId={getRowId}
             rows={ecoData.cashFlow}

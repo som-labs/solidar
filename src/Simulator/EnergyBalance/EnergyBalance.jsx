@@ -21,17 +21,19 @@ import EconomicContext from '../EconomicBalance/EconomicContext'
 import calculaResultados from '../classes/calculaResultados'
 import ConsumoGeneracion3D from './ConsumoGeneracion3D'
 import EnergyFlow from './EnergyFlow'
-import YearEnergyBalance from './YearEnergyBalance'
+import { FooterBox, InfoBox } from '../../components/SLDRComponents'
+import MonthThreeParts from './MonthThreeParts'
 import MonthEnergyBalance from './MonthEnergyBalance'
 import EnvironmentalImpact from './EnvironmentalImpact'
 import { useDialog } from '../../components/DialogProvider'
 import DialogProperties from '../components/DialogProperties'
 
 export default function EnergyBalanceStep() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const [monthlyData, setMonthlyData] = useState({})
   const [yearlyData, setYearlyData] = useState({})
+  const [monthlyConsumoProduccion, setMonthlyConsumoProduccion] = useState({})
   const [openDialog, closeDialog] = useDialog()
 
   const { bases, setBases } = useContext(InputContext)
@@ -68,25 +70,6 @@ export default function EnergyBalanceStep() {
           positive: params.value <= params.row.panelesMaximo,
         })
       },
-
-      //REVISAR: validacion de paneles
-      // preProcessEditCellProps: (params) => {
-      //   console.log(params)
-      //   const { props, row } = params
-      //   const hasError = props.value > row.panelesMaximo
-      //   console.log(hasError)
-      //   if (hasError) {
-      //     alert(t('resultados_MSG_excesoPotencia'))
-      //     return {
-      //       ...params,
-      //       //value: row.panelesMaximo,
-      //       error: hasError,
-      //       //unstable_updateValueOnRender: false,
-      //     }
-      //   }
-      //   console.log(params)
-      //   return params
-      // },
     },
     {
       field: 'panelesMaximo',
@@ -158,20 +141,7 @@ export default function EnergyBalanceStep() {
 
   function footerSummary() {
     return (
-      <Box
-        sx={{
-          mt: '0.3rem',
-          display: 'flex',
-          flexWrap: 'wrap',
-          boxShadow: 2,
-          flex: 1,
-          border: 2,
-          textAlign: 'center',
-          borderColor: 'primary.light',
-          backgroundColor: 'rgba(220, 249, 233, 1)',
-        }}
-        justifyContent="center"
-      >
+      <FooterBox>
         <Typography variant="h5">
           {t('ENERGY_BALANCE.TOTAL_PANELS', {
             paneles: Math.round(
@@ -179,7 +149,7 @@ export default function EnergyBalanceStep() {
             ),
           })}
         </Typography>
-      </Box>
+      </FooterBox>
     )
   }
 
@@ -215,6 +185,10 @@ export default function EnergyBalanceStep() {
       autoconsumo: TCB.balance.autoconsumo,
       excedente: TCB.balance.excedenteAnual,
     })
+    setMonthlyConsumoProduccion({
+      consumo: TCB.consumo.resumenMensual('suma'),
+      produccion: TCB.produccion.resumenMensual('suma'),
+    })
   }, [])
 
   useEffect(() => {
@@ -225,12 +199,17 @@ export default function EnergyBalanceStep() {
       autoconsumo: TCB.balance.resumenMensual('autoconsumo'),
       excedente: TCB.balance.resumenMensual('excedente'),
     })
+
     setYearlyData({
       consumo: TCB.consumo.cTotalAnual,
       produccion: TCB.produccion.pTotalAnual,
       deficit: TCB.balance.deficitAnual,
       autoconsumo: TCB.balance.autoconsumo,
       excedente: TCB.balance.excedenteAnual,
+    })
+    setMonthlyConsumoProduccion({
+      consumo: TCB.consumo.resumenMensual('suma'),
+      produccion: TCB.produccion.resumenMensual('suma'),
     })
     setEcoData(TCB.economico)
   }, [bases])
@@ -242,13 +221,9 @@ export default function EnergyBalanceStep() {
    */
 
   function nuevaInstalacion(params, event) {
-    console.log(bases)
-    console.log('PARAMS:', params)
     let tmpPaneles
     if (params.field === 'paneles') {
       tmpPaneles = parseInt(event.target.value)
-      console.log('CONDICION: ', tmpPaneles > params.row.panelesMaximo)
-      console.log('CONDICION VALUES: ', tmpPaneles, params.row.panelesMaximo)
       if (tmpPaneles > params.row.panelesMaximo) {
         alert(
           'Esta asignando mas paneles que los ' +
@@ -286,7 +261,6 @@ export default function EnergyBalanceStep() {
         return row
       }
     })
-    console.log(updateBases)
     setBases(updateBases)
   }
 
@@ -305,7 +279,6 @@ export default function EnergyBalanceStep() {
               color: '#1a3e72',
               fontWeight: '400',
             },
-            mb: '1rem',
           }}
         >
           <Typography variant="h3">{t('ENERGY_BALANCE.TITLE')}</Typography>
@@ -316,49 +289,31 @@ export default function EnergyBalanceStep() {
               __html: t('ENERGY_BALANCE.DESCRIPTION'),
             }}
           />
+          <br />
+          <Typography variant="body">{t('Tabla bases asignadas')}</Typography>
 
-          <Typography variant="body">{t('tabla bases asignadas')}</Typography>
-          <DataGrid
-            getRowId={getRowId}
-            autoHeight
-            onCellEditStop={(params, event) => {
-              nuevaInstalacion(params, event)
-            }}
-            rows={bases}
-            columns={columns}
-            hideFooter={false}
-            sx={{
-              borderColor: 'primary.light',
-            }}
-            slots={{ footer: footerSummary }}
-          />
+          <InfoBox>
+            <DataGrid
+              getRowId={getRowId}
+              autoHeight
+              onCellEditStop={(params, event) => {
+                nuevaInstalacion(params, event)
+              }}
+              rows={bases}
+              columns={columns}
+              hideFooter={false}
+              slots={{ footer: footerSummary }}
+            />
+          </InfoBox>
         </Box>
 
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            flex: 1,
-            border: 2,
-            borderColor: 'primary.light',
-            mb: '1rem',
-            borderRadius: 4,
-          }}
-        >
+        <InfoBox>
           <ConsumoGeneracion3D></ConsumoGeneracion3D>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            flex: 1,
-            border: 2,
-            borderColor: 'primary.light',
-            borderRadius: 4,
-          }}
-        >
+        </InfoBox>
+        {/* </Box> */}
+        <InfoBox>
           <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
-        </Box>
+        </InfoBox>
         <CollapsibleCard
           title={t('BASIC.LABEL_AVISO')}
           titleVariant="body"
@@ -367,48 +322,15 @@ export default function EnergyBalanceStep() {
           descriptionSX={{ fontSize: '15px' }}
           description={t('ENERGY_BALANCE.MSG_disclaimerProduccion')}
         ></CollapsibleCard>
-        {/* <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            flex: 1,
-            border: 2,
-            borderColor: 'primary.light',
-            mt: '1rem',
-            mb: '1rem',
-            borderRadius: 4,
-          }}
-        >
-          <YearEnergyBalance></YearEnergyBalance>
-        </Box> */}
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            flex: 1,
-            border: 2,
-            borderColor: 'primary.light',
-            mt: '1rem',
-            mb: '1rem',
-            borderRadius: 4,
-          }}
-        >
-          <MonthEnergyBalance monthlyData={monthlyData}></MonthEnergyBalance>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            flex: 1,
-            border: 2,
-            borderColor: 'primary.light',
-            mt: '1rem',
-            mb: '1rem',
-            borderRadius: 4,
-          }}
-        >
+        <InfoBox>
+          <MonthEnergyBalance monthlyData={monthlyConsumoProduccion}></MonthEnergyBalance>
+        </InfoBox>
+        <InfoBox>
+          <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>
+        </InfoBox>
+        <InfoBox>
           <EnvironmentalImpact></EnvironmentalImpact>
-        </Box>
+        </InfoBox>
       </Container>
     </>
   )

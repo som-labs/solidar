@@ -13,20 +13,12 @@ import { Container } from '@mui/material'
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
 
-export default function MonthEnergyBalance(props) {
+export default function MonthThreeParts(props) {
   const { t } = useTranslation()
-  //const { consumo, produccion } = props.monthlyConsumoProduccion
+  const { autoconsumo, excedente, deficit } = props.monthlyData
 
   const graphElement = useRef()
   const graphWidth = useRef()
-  const maxMonth = useRef()
-  const minMonth = useRef()
-
-  const consumo = TCB.consumo.resumenMensual('suma')
-  const produccion = TCB.produccion.resumenMensual('suma')
-  maxMonth.current = Math.max(Math.max(...consumo), Math.max(...produccion))
-  minMonth.current = Math.min(Math.min(...consumo), Math.min(...produccion))
-  const delta = (maxMonth.current - minMonth.current) / 7
 
   useEffect(() => {
     // Function to get the width of the element
@@ -35,21 +27,8 @@ export default function MonthEnergyBalance(props) {
         graphWidth.current = graphElement.current.offsetWidth
       }
     }
-
     // Call the function to get the width after initial render
     getWidth()
-
-    // // Add event listener for resizing (optional)
-    // window.addEventListener('resize', getWidth)
-
-    // // Cleanup by removing the event listener on component unmount (optional)
-    // return () => {
-    //   window.removeEventListener('resize', getWidth)
-    // }
-    console.log('C', consumo, Math.max(...consumo))
-
-    maxMonth.current = Math.max(Math.max(...consumo), Math.max(...produccion))
-    minMonth.current = Math.min(Math.min(...consumo), Math.min(...produccion))
   }, [])
 
   const i18nextMes = () => {
@@ -59,22 +38,28 @@ export default function MonthEnergyBalance(props) {
   }
   const mesMapa = Array.from(i18nextMes())
 
-  var trace1 = {
+  const trace_excedente = {
     x: mesMapa,
-    y: consumo,
-    type: 'scatter',
-    name: TCB.i18next.t('ENERGY_BALANCE.LABEL_consumoMensual'),
+    y: excedente,
+    name: TCB.i18next.t('GRAFICOS.LABEL_graficasExcedente'),
+    type: 'bar',
   }
 
-  console.log(maxMonth.current)
-  var trace2 = {
+  const trace_deficit = {
     x: mesMapa,
-    y: produccion,
-    type: 'scatter',
-    name: t('ENERGY_BALANCE.LABEL_produccionMensual'),
+    y: deficit,
+    name: TCB.i18next.t('GRAFICOS.LABEL_graficasDeficit'),
+    type: 'bar',
   }
 
-  var layout = {
+  const trace_autoconsumo = {
+    x: mesMapa,
+    y: autoconsumo,
+    name: TCB.i18next.t('GRAFICOS.LABEL_graficasAutoconsumo'),
+    type: 'bar',
+  }
+
+  const layout = {
     legend: {
       x: 0.3,
       xref: 'paper',
@@ -82,10 +67,9 @@ export default function MonthEnergyBalance(props) {
       yref: 'paper',
       orientation: 'h',
     },
-
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
-    width: 0.9 * graphWidth.current,
+    barmode: 'stack',
     autosize: true,
     yaxis: {
       zeroline: true,
@@ -94,17 +78,15 @@ export default function MonthEnergyBalance(props) {
       showgrid: true,
       gridwidth: 1,
       gridcolor: 'grey',
-      nticks: 7,
-      range: [0, maxMonth.current + delta],
     },
-
-    margin: { b: 30, t: 50, r: 10, l: 100 },
+    width: graphWidth.current * 0.9,
+    margin: { b: 10, t: 20, r: 40, l: 100 },
   }
 
   return (
     <Container ref={graphElement}>
       <Typography variant="h4" textAlign={'center'}>
-        {t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_CONSUMO_PRODUCCION')}
+        {t('ENERGY_BALANCE.TITLE_MONTH_ENERGY_BALANCE')}
       </Typography>
       <Typography
         variant="body"
@@ -117,7 +99,7 @@ export default function MonthEnergyBalance(props) {
           potencia: UTIL.formatoValor('potencia', TCB.produccion.potenciaTotal),
         })}
       </Typography>
-      <Plot data={[trace1, trace2]} layout={layout} />
+      <Plot data={[trace_deficit, trace_autoconsumo, trace_excedente]} layout={layout} />
     </Container>
   )
 }

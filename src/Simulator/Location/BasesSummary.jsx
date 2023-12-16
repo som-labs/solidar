@@ -6,19 +6,19 @@ import Typography from '@mui/material/Typography'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import { Box } from '@mui/material'
 
 // REACT Solidar Components
 import InputContext from '../InputContext'
 import DialogNewBaseSolar from './DialogNewBaseSolar'
 import { useDialog } from '../../components/DialogProvider'
+import { FooterBox, InfoBox } from '../../components/SLDRComponents'
 
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 export default function BasesSummary() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const { bases, setBases } = useContext(InputContext)
   const [openDialog, closeDialog] = useDialog()
 
@@ -134,28 +134,13 @@ export default function BasesSummary() {
   }
 
   function footerSummary() {
-    // REVISAR: Cual debería ser el colorbackground de los boxes con informacion relevante */
+    // PENDIENTE: Cual debería ser el colorbackground de los boxes con informacion relevante */
 
+    //REVISAR: porque no funciona el className
     return (
-      <Box
-        sx={{
-          mt: '0.3rem',
-          display: 'flex',
-          flexWrap: 'wrap',
-          boxShadow: 2,
-          flex: 1,
-          border: 2,
-          textAlign: 'center',
-          borderColor: 'primary.light',
-          backgroundColor: 'grey',
-        }}
-        justifyContent="center"
-      >
+      <FooterBox>
         <Typography
           variant="h6"
-          sx={{
-            textAlign: 'center',
-          }}
           textAlign={'center'}
           dangerouslySetInnerHTML={{
             __html: t('LOCATION.MSG_AREA_TOTAL', {
@@ -170,7 +155,7 @@ export default function BasesSummary() {
             }),
           }}
         />
-      </Box>
+      </FooterBox>
     )
   }
 
@@ -178,21 +163,22 @@ export default function BasesSummary() {
     <>
       <Typography variant="h3">{t('LOCATION.LABEL_BASES_SUMMARY')}</Typography>
       <Typography variant="body">{t('LOCATION.PROMPT_BASES_SUMMARY')}</Typography>
-      <Box>
-        <DataGrid
-          getRowId={getRowId}
-          rows={bases}
-          columns={columns}
-          hideFooter={false}
-          autoHeight
-          sx={{
-            boxShadow: 2,
-            border: 2,
-            borderColor: 'primary.light',
-          }}
-          slots={{ footer: footerSummary }}
-        />
-      </Box>
+      <InfoBox>
+        {bases && (
+          <DataGrid
+            getRowId={getRowId}
+            rows={bases}
+            columns={columns}
+            hideFooter={false}
+            rowHeight={30}
+            autoHeight
+            sx={{
+              mb: '1rem',
+            }}
+            slots={{ footer: footerSummary }}
+          />
+        )}
+      </InfoBox>
     </>
   )
 }

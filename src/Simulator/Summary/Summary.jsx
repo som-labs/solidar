@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 
+import { FooterBox, InfoBox } from '../../components/SLDRComponents'
 import SummaryAutoproduccion from './SummaryAutoproduccion'
 import SummaryConsumption from './SummaryConsumption'
 import SummaryEconomicBalance from './SummaryEconomicBalance'
@@ -26,37 +27,18 @@ const SummaryStep = () => {
           display: 'flex',
         }}
       >
-        <Box
+        <InfoBox
           sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            flex: 1,
-            boxShadow: 2,
-            border: 2,
-            borderColor: 'primary.light',
             mr: '0.3rem',
             mb: '0.3rem',
-            borderRadius: 4,
           }}
         >
           <SummaryAutoproduccion></SummaryAutoproduccion>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            flex: 1,
-            boxShadow: 2,
-            border: 2,
-            borderColor: 'primary.light',
-            mb: '0.3rem',
-            borderRadius: 4,
-          }}
-        >
+        </InfoBox>
+        <InfoBox sx={{ mb: '0.3rem' }}>
           <SummaryConsumption></SummaryConsumption>
-        </Box>
+        </InfoBox>
       </Box>
-
       <Box
         sx={{
           display: 'flex',
@@ -64,37 +46,21 @@ const SummaryStep = () => {
           width: '100%',
         }}
       >
-        <Box
+        <InfoBox
           sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            flex: 2,
-            width: '50%',
-            boxShadow: 2,
-            border: 2,
-            borderColor: 'primary.light',
             mr: '0.3rem',
             mb: '0.3rem',
-            borderRadius: 4,
           }}
         >
           <SummaryEconomicBalance></SummaryEconomicBalance>
-        </Box>
-        <Box
+        </InfoBox>
+        <InfoBox
           sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            flex: 2,
-            width: '50%',
-            boxShadow: 2,
-            border: 2,
-            borderColor: 'primary.light',
             mb: '0.3rem',
-            borderRadius: 4,
           }}
         >
           <SummaryEnergyBalance></SummaryEnergyBalance>
-        </Box>
+        </InfoBox>
       </Box>
 
       <FinalNote></FinalNote>
