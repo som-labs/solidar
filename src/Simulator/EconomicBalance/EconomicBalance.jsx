@@ -15,6 +15,7 @@ import YearSaving from './YearSavings'
 import MonthSaving from './MonthSavings'
 import FinanceSummary from './FinanceSummary'
 import GraphAlternatives from './GraphAlternatives'
+import { FooterBox, InfoBox } from '../../components/SLDRComponents'
 
 export default function EconomicBalanceStep() {
   const { t, i18n } = useTranslation()
@@ -31,46 +32,15 @@ export default function EconomicBalanceStep() {
             width: '100%',
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              flex: 1,
-              border: 2,
-              borderColor: 'primary.light',
-              mr: '0.3rem',
-              borderRadius: 4,
-            }}
-          >
+          <InfoBox sx={{ mr: '0.3rem' }}>
             <ReduccionIBI></ReduccionIBI>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              flex: 1,
-              border: 2,
-              borderColor: 'primary.light',
-              mr: '0.3rem',
-              borderRadius: 4,
-            }}
-          >
+          </InfoBox>
+          <InfoBox sx={{ mr: '0.3rem' }}>
             <SubvencionEU></SubvencionEU>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              flex: 1,
-              width: '50%',
-              border: 2,
-              borderColor: 'primary.light',
-              mr: '0.3rem',
-              borderRadius: 4,
-            }}
-          >
+          </InfoBox>
+          <InfoBox>
             <VirtualBattery></VirtualBattery>
-          </Box>
+          </InfoBox>
         </Box>
         <br />
         <Box
@@ -79,94 +49,47 @@ export default function EconomicBalanceStep() {
             width: '100%',
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              flex: 1,
-              border: 2,
-              borderColor: 'primary.light',
-              mr: '0.3rem',
-              borderRadius: 4,
-            }}
-          >
+          <InfoBox sx={{ mr: '0.3rem' }}>
             <InstallationCost></InstallationCost>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              flex: 1,
-              border: 2,
-              borderColor: 'primary.light',
-              mr: '0.3rem',
-              borderRadius: 4,
-            }}
-          >
+          </InfoBox>
+          <InfoBox>
             <AmortizationTime></AmortizationTime>
-          </Box>
+          </InfoBox>
         </Box>
-        <Box
+        <InfoBox
           sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            flex: 1,
-            border: 2,
             width: '80%',
-            borderColor: 'primary.light',
-            borderRadius: 4,
             mt: '1rem',
             ml: 15,
           }}
         >
           <YearSaving></YearSaving>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            boxShadow: 2,
-            flex: 1,
-            border: 2,
-            borderColor: 'primary.light',
-            borderRadius: 4,
-            mt: '1rem',
-          }}
-        >
+        </InfoBox>
+        <InfoBox sx={{ mt: '1rem' }}>
           <MonthSaving></MonthSaving>
-        </Box>
-        <Box
+        </InfoBox>
+        <InfoBox
           sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            boxShadow: 2,
-            flex: 1,
-            border: 2,
-            borderColor: 'primary.light',
-            borderRadius: 4,
             mt: '1rem',
+            mb: '1rem',
           }}
         >
           <FinanceSummary></FinanceSummary>
-        </Box>
-        <Typography variant="h6" sx={{ mt: '1rem' }}>
+        </InfoBox>
+        <Typography variant="body">
           {t('ECONOMIC_BALANCE.DESCRIPTION_DATA_AS_PANELS')}
         </Typography>
-        <Box
+        <InfoBox
           sx={{
             mt: '1rem',
-            display: 'flex',
-            flexWrap: 'wrap',
-            flex: 1,
-            border: 1,
-            borderColor: 'primary.light',
-            borderRadius: 4,
             justifyContent: 'center',
             alignItems: 'center',
+
+            flexFlow: 'column',
           }}
         >
           <GraphAlternatives></GraphAlternatives>
-        </Box>
+        </InfoBox>
       </Container>
     </>
   )

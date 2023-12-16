@@ -81,7 +81,7 @@ export default function MapaDiaHora({ activo }) {
     plot_bgcolor: 'rgba(0,0,0,0)',
     autosize: true,
     margin: {
-      l: 60,
+      l: 75,
       r: 0,
       b: 65,
       t: 25,

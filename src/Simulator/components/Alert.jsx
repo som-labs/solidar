@@ -11,6 +11,8 @@ const Alert = ({ contents, onClose }) => {
     onClose()
   }
 
+  console.log('AALLERT!')
+
   return (
     <div>
       <DialogTitle id="alert-dialog-title">{contents.title}</DialogTitle>

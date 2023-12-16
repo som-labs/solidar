@@ -11,7 +11,7 @@ import { useTheme } from '@mui/material/styles'
 //import { ColorModeContext } from '../../components/GlobalTheme'
 
 export default function EnvironmentalImpact() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const theme = useTheme()
   //const { current } = React.useContext(ColorModeContext)
 
@@ -19,7 +19,7 @@ export default function EnvironmentalImpact() {
   const radiusRenovable = parseInt(
     (radiusNoRenovable * TCB.CO2AnualRenovable) / TCB.CO2AnualNoRenovable,
   )
-  //REVISAR: que color poner para que con fondo oscuro los circulos se vean bien
+  //PENDIENTE: que color poner para que con fondo oscuro los circulos se vean bien
   return (
     <>
       <Container>
@@ -31,7 +31,7 @@ export default function EnvironmentalImpact() {
             width: '100%',
           }}
         >
-          <Typography variant="h4">
+          <Typography variant="h4" textAlign={'center'}>
             {t('ENERGY_BALANCE.TITLE_ENVIRONMENTAL_IMPACT')}
           </Typography>
           <Typography

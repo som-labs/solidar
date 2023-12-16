@@ -6,7 +6,7 @@ import Plot from 'react-plotly.js'
 import * as UTIL from '../classes/Utiles'
 import Typography from '@mui/material/Typography'
 
-//REVISAR: no aparece los valores de consumo en el eje Y
+//PENDIENTE: corregir los colores de las barras
 const ProfileDayConsumption = (data) => {
   const { t, i18n } = useTranslation()
   const [consumo] = useState(data.consumo)

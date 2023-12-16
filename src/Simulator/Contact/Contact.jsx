@@ -12,7 +12,7 @@ import DialogContact from './DialogContact'
 import TCB from '../classes/TCB'
 
 export default function Contact() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
 
   const defaultData = {
@@ -26,9 +26,8 @@ export default function Contact() {
 
   //PENDIENTE: convertir a push
 
-  function sendEmail(message) {
+  async function sendEmail(message) {
     // Convert the object to a query string
-    console.log(message)
     const queryString = Object.keys(message)
       .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(message[key])}`)
       .join('&')
@@ -74,8 +73,8 @@ export default function Contact() {
     })
   }
 
-  function getContactFromDialog(formData) {
-    sendEmail(formData)
+  async function getContactFromDialog(formData) {
+    await sendEmail(formData)
     sessionStorage.setItem('message', JSON.stringify(formData))
     closeDialog()
   }

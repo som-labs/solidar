@@ -29,10 +29,15 @@ export default function SomEnergiaTheme(isDarkMode) {
           main: '#e6cc00', // From representa-ov highlight
           contrastText: 'white',
         },
+
+        //PENDIENTE: decidir colores de infobox
+        infoBox: {
+          main: isDarkMode ? '#F8F8FF' : '#FFF0F5',
+          contrastText: 'black',
+        },
+
         circulo: {
-          //main: '#E0E723', //'hsl(62, 80%, 52%)', // from style guide
-          //main: '#a1a1a1', // from webforms-ui
-          main: isDarkMode ? '#e6cc00' : '#000', // From representa-ov highlight
+          main: isDarkMode ? '#e6cc00' : '#000',
           contrastText: 'white',
         },
       },

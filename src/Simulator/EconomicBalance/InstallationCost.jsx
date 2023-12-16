@@ -18,37 +18,25 @@ const InstallationCost = () => {
 
   const { precioInstalacionCorregido, setPrecioInstalacionCorregido, setEcoData } =
     useContext(EconomicContext)
+
   const [error, setError] = useState(false)
 
-  //REVISAR: esta funcion deberia tener en cuenta el idioma para verificar si un string es numero o no. Pero no funciona.
-  function isNumber(str) {
-    // REVISAR: Try to parse the string using the user's locale
-    try {
-      const numberFormat = new Intl.NumberFormat(TCB.i18next.language, {
-        style: 'decimal',
-      })
-      console.log(isNaN(numberFormat.formatToParts(str)))
-      if (numberFormat.formatToParts(str).value === 'NaN') return false
-      return true
-    } catch (error) {
-      return false
-    }
-  }
+  useEffect(() => {
+    setPrecioInstalacionCorregido(TCB.produccion.precioInstalacionCorregido)
+  }, [])
 
-  const changePrecioInstalacion = () => {
+  const setPrecioInstalacion = () => {
     if (precioInstalacionCorregido === '') {
       // If new cost field is empty will use app calculated cost
       setPrecioInstalacionCorregido(TCB.produccion.precioInstalacion)
       TCB.produccion.precioInstalacionCorregido = TCB.produccion.precioInstalacion
       setError(false)
-    } else if (isNaN(parseInt(precioInstalacionCorregido))) {
-      //if (!isNumber(precioInstalacionCorregido)) { //REVISAR: ver la funcion mas arriba
+    } else if (!UTIL.ValidateDecimal(i18n.language, precioInstalacionCorregido)) {
       setError(true)
     } else {
       const intPrecio = parseInt(precioInstalacionCorregido)
       if (intPrecio > 0) {
         TCB.produccion.precioInstalacionCorregido = intPrecio
-
         TCB.economico.calculoFinanciero(100, 100)
         setPrecioInstalacionCorregido(intPrecio)
         setEcoData(TCB.economico)
@@ -59,9 +47,10 @@ const InstallationCost = () => {
     }
   }
 
-  useEffect(() => {
-    setPrecioInstalacionCorregido(TCB.produccion.precioInstalacionCorregido)
-  }, [])
+  function changePrecioInstalacion(event) {
+    setError(!UTIL.ValidateDecimal(i18n.language, event.target.value))
+    setPrecioInstalacionCorregido(event.target.value)
+  }
 
   return (
     <>
@@ -92,28 +81,30 @@ const InstallationCost = () => {
               {t('ECONOMIC_BALANCE.PROMPT_INSTALLATION_COST')}
             </Typography>
             <br />
-            <TextField
-              type="text"
-              onBlur={changePrecioInstalacion}
-              onChange={(event) => {
-                setPrecioInstalacionCorregido(event.target.value)
-              }}
-              label={t('ECONOMIC_BALANCE.LABEL_INSTALLATION_COST')}
-              name="precioInstalacionCorregido"
-              InputProps={{
-                endAdornment: <InputAdornment position="start"> €</InputAdornment>,
-                inputProps: {
-                  style: { textAlign: 'right' },
-                },
-              }}
-              error={error} //REVISAR: como mantener el focus en el campo miesntras que persista el error
-              helperText={error ? 'Pon un número válido mayor que cero' : ''}
-              value={
-                precioInstalacionCorregido !== TCB.produccion.precioInstalacion
-                  ? precioInstalacionCorregido
-                  : ''
-              }
-            />
+
+            {precioInstalacionCorregido && (
+              <TextField
+                type="text"
+                onBlur={setPrecioInstalacion}
+                onChange={changePrecioInstalacion}
+                label={t('ECONOMIC_BALANCE.LABEL_INSTALLATION_COST')}
+                name="precioInstalacionCorregido"
+                InputProps={{
+                  endAdornment: <InputAdornment position="start"> €</InputAdornment>,
+                  inputProps: {
+                    style: { textAlign: 'right' },
+                  },
+                }}
+                error={error}
+                //REVISAR: como mantener el focus en el campo mientras que persista el error
+                helperText={error ? 'Pon un número válido mayor que cero' : ''}
+                value={
+                  precioInstalacionCorregido !== TCB.produccion.precioInstalacion
+                    ? precioInstalacionCorregido
+                    : ''
+                }
+              />
+            )}
           </FormControl>
         </Box>
       </Container>
