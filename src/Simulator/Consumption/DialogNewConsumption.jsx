@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -7,22 +7,16 @@ import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import { MuiFileInput } from 'mui-file-input'
-import Alert from '../components/Alert'
 
 // REACT Solidar Components
 import { useDialog } from '../../components/DialogProvider'
-import InputContext from '../InputContext'
 
 // Solidar objects
-import TCB from '../classes/TCB'
-import * as UTIL from '../classes/Utiles'
-import TipoConsumo from '../classes/TipoConsumo'
 import BasicAlert from '../components/BasicAlert'
 
 export default function DialogNewConsumption({ data, onClose }) {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [formData, setFormData] = useState(data)
-  const { tipoConsumo, setTipoConsumo } = useContext(InputContext)
   const REE = useRef()
   const [openDialog, closeDialog] = useDialog()
 

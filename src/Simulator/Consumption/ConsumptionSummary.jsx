@@ -25,12 +25,12 @@ import { FooterBox, InfoBox } from '../../components/SLDRComponents'
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 import { formatoValor } from '../classes/Utiles'
-import { Container } from '@mui/material'
 import TipoConsumo from '../classes/TipoConsumo'
 
 //PENDIENTE: Decidir si mostramos los datos en formato tabla o creamos boxes segun diseño de Clara
 export default function ConsumptionSummary() {
   const { t } = useTranslation()
+  const [openDialog, closeDialog] = useDialog()
 
   const columns = [
     {
@@ -92,7 +92,6 @@ export default function ConsumptionSummary() {
 
   const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
   const { tipoConsumo, setTipoConsumo } = useContext(InputContext)
-  const [openDialog, closeDialog] = useDialog()
 
   function getRowId(row) {
     return row.idTipoConsumo
@@ -271,7 +270,12 @@ export default function ConsumptionSummary() {
           title={t('CONSUMPTION.TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO')}
           placement="top"
         >
-          <Button startIcon={<AddIcon />} onClick={openNewConsumptionDialog}>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={openNewConsumptionDialog}
+            size="medium"
+          >
             {t('CONSUMPTION.LABEL_BUTTON_NUEVO_TIPOCONSUMO')}
           </Button>
         </Tooltip>

@@ -17,7 +17,7 @@ import { nuevoTotalPaneles } from '../classes/optimizador'
 import calculaResultados from '../classes/calculaResultados'
 
 export default function GraphAlternatives() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const { ecoData } = useContext(EconomicContext)
 
   var paneles = []
@@ -227,7 +227,6 @@ export default function GraphAlternatives() {
       },
     ],
   }
-
   if (numeroMaximoPaneles === paneles[4]) {
     layout.annotations.push({
       x: numeroMaximoPaneles,
@@ -291,7 +290,6 @@ export default function GraphAlternatives() {
     console.log(evt)
   }
   //     Plotly.react(donde, data, layout);
-
   //     var gd = document.getElementById(donde);
   //     var xInDataCoord;
   //     //var yInDataCoord;
