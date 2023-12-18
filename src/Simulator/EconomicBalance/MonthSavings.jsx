@@ -108,7 +108,7 @@ export default function MonthSaving() {
     var trace_huchaSaldo = {
       x: mesMapa,
       y: ecoData.huchaSaldo,
-      name: t('graficos_LBL_huchaSaldo'),
+      name: t('GRAFICOS.LABEL_SALDO_VIRTUAL_BATTERY'),
       type: 'scatter',
       line: { shape: 'line', width: 3, color: 'orange' },
     }
@@ -118,7 +118,7 @@ export default function MonthSaving() {
       y: ecoData.extraccionHucha,
       width: 0.1,
       marker: { color: 'rgb(0,255,0)' },
-      name: t('graficos_LBL_extraccionHucha'),
+      name: t('GRAFICOS.LABEL_EXTRACCION_VIRTUAL_BATTERY'),
       type: 'bar',
     }
     data = [

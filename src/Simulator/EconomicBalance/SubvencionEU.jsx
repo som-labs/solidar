@@ -34,7 +34,9 @@ export default function SubvencionEU() {
     setSubvencionEU('Sin')
     return (
       <Container>
-        <Typography variant="h3">{t('No hay subvencion posible')}</Typography>
+        <Typography variant="h4" color="red" textAlign={'center'}>
+          {t('No hay subvencion posible')}
+        </Typography>
         <Typography
           variant="body"
           textAlign={'center'}

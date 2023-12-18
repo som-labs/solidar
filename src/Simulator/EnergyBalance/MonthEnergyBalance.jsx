@@ -15,15 +15,17 @@ import TCB from '../classes/TCB'
 
 export default function MonthEnergyBalance(props) {
   const { t } = useTranslation()
-  //const { consumo, produccion } = props.monthlyConsumoProduccion
 
   const graphElement = useRef()
   const graphWidth = useRef()
   const maxMonth = useRef()
   const minMonth = useRef()
 
+  // const { consumo, produccion } = props.monthlyConsumoProduccion
+  //console.log(consumo)
   const consumo = TCB.consumo.resumenMensual('suma')
   const produccion = TCB.produccion.resumenMensual('suma')
+
   maxMonth.current = Math.max(Math.max(...consumo), Math.max(...produccion))
   minMonth.current = Math.min(Math.min(...consumo), Math.min(...produccion))
   const delta = (maxMonth.current - minMonth.current) / 7
@@ -46,7 +48,6 @@ export default function MonthEnergyBalance(props) {
     // return () => {
     //   window.removeEventListener('resize', getWidth)
     // }
-    console.log('C', consumo, Math.max(...consumo))
 
     maxMonth.current = Math.max(Math.max(...consumo), Math.max(...produccion))
     minMonth.current = Math.min(Math.min(...consumo), Math.min(...produccion))
@@ -63,10 +64,9 @@ export default function MonthEnergyBalance(props) {
     x: mesMapa,
     y: consumo,
     type: 'scatter',
-    name: TCB.i18next.t('ENERGY_BALANCE.LABEL_consumoMensual'),
+    name: t('ENERGY_BALANCE.LABEL_consumoMensual'),
   }
 
-  console.log(maxMonth.current)
   var trace2 = {
     x: mesMapa,
     y: produccion,

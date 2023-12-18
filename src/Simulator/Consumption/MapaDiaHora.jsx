@@ -1,55 +1,54 @@
 import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import TCB from '../classes/TCB'
+
+// Plotly objects
 import Plot from 'react-plotly.js'
 
+// MUI objects
+import { Typography, Container, Box } from '@mui/material'
+
+// REACT Solidar Components
+import { useDialog } from '../../components/DialogProvider'
+import ProfileDayConsumption from './ProfileDayConsumption'
+
+// Solidar objects
 import * as UTIL from '../classes/Utiles'
 
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
-
-import ProfileDayConsumption from './ProfileDayConsumption'
-import { Container } from '@mui/material'
-
 export default function MapaDiaHora({ activo }) {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
+  const [openDialog, closeDialog] = useDialog()
+
   const [diaActivo, setdiaActivo] = useState()
   const divGraph = useRef()
 
   if (activo === undefined) return
-  // console.log(activo)
-  // const consumo = TCB.TipoConsumo.find((t) => {
-  //   return t.idTipoConsumo === activo.idTipoConsumo
-  // })
   const consumo = activo
 
   const i18nextMes = () => {
     let _mes = []
-    for (let i = 0; i < 12; _mes.push(TCB.i18next.t(UTIL.nombreMes[i++])));
+    for (let i = 0; i < 12; _mes.push(t(UTIL.nombreMes[i++])));
     return _mes
   }
   const mesMapa = Array.from(i18nextMes())
+
+  const colorProfile = [
+    [0.0, '#98FB98'],
+    [0.2, '#ADFF2F'],
+    [0.4, 'yellow'],
+    [1.0, 'red'],
+  ]
 
   const g_consumo = {
     z: consumo.diaHora,
     y: consumo.idxTable.map((e) => {
       if (e.fecha !== '')
-        return (
-          e.fecha.getDate() + ' - ' + TCB.i18next.t(UTIL.nombreMes[e.fecha.getMonth()])
-        )
+        return e.fecha.getDate() + ' - ' + t(UTIL.nombreMes[e.fecha.getMonth()])
     }),
     type: 'heatmap',
-    colorscale: [
-      ['0.0', 'rgb(255,255,224)'],
-      ['0.10', 'rgb(255,255,224)'],
-      ['0.10', 'rgb(144,238,144)'],
-      ['0.25', 'rgb(144,238,144)'],
-      ['0.25', 'rgb(0,255,255)'],
-      ['0.5', 'rgb(0,255,255)'],
-      ['0.5', 'rgb(255,127,80)'],
-      ['0.75', 'rgb(255,127,80)'],
-      ['1.0', 'rgb(254,0,0)'],
-    ],
+    color: consumo.diaHora,
+    colorscale: colorProfile,
+    cmin: 0,
+    cmax: 3,
     line: {
       width: 0.1,
       smoothing: 0,
@@ -66,7 +65,7 @@ export default function MapaDiaHora({ activo }) {
       ': %{z:.2f} kWh',
   }
 
-  const layout_resumen = {
+  const layout = {
     xaxis: { title: t('GRAPHICS.LABEL_HORA'), dtick: 2 },
     yaxis: {
       tickvals: UTIL.indiceDia.map((e) => {
@@ -111,6 +110,10 @@ export default function MapaDiaHora({ activo }) {
     ],
   }
 
+  const config = {
+    displayModeBar: false,
+  }
+
   const handleClick = (evt) => {
     var posicion = divGraph.current.children[0].getBoundingClientRect()
     var yaxis = divGraph.current.children[0]._fullLayout.yaxis
@@ -118,6 +121,10 @@ export default function MapaDiaHora({ activo }) {
     let yInDataCoord = yaxis.p2c(evt.event.y - t - posicion.top)
     let dia = Math.round(yInDataCoord)
     setdiaActivo(dia)
+
+    openDialog({
+      children: <ProfileDayConsumption consumo={consumo} diaActivo={dia} />,
+    })
   }
 
   return (
@@ -142,7 +149,6 @@ export default function MapaDiaHora({ activo }) {
       </Box>
 
       <Box
-        id="divGraph"
         sx={{
           ml: '0.3rem',
           display: 'flex',
@@ -157,33 +163,12 @@ export default function MapaDiaHora({ activo }) {
         <div ref={divGraph}>
           <Plot
             data={[g_consumo]}
-            layout={layout_resumen}
-            style={{ width: '100%' }}
-            onClick={(event) => handleClick(event)}
+            layout={layout}
+            onClick={handleClick}
+            config={config}
           />
         </div>
       </Box>
-
-      {diaActivo ? (
-        <Box
-          sx={{
-            ml: '0.3rem',
-            display: 'flex',
-            flexWrap: 'wrap',
-            width: '100%',
-            boxShadow: 2,
-            border: 2,
-            borderColor: 'primary.light',
-          }}
-          justifyContent="center"
-        >
-          <div id="profile">
-            <ProfileDayConsumption consumo={consumo} diaActivo={diaActivo} />
-          </div>
-        </Box>
-      ) : (
-        <></>
-      )}
     </Container>
   )
 }

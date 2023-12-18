@@ -1,25 +1,38 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import TCB from '../classes/TCB'
+
+// Plotly objects
 import Plot from 'react-plotly.js'
 
+// MUI objects
+import { Box, Typography, Container } from '@mui/material'
+
+// Solidar objects
+import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import Typography from '@mui/material/Typography'
 
 //PENDIENTE: corregir los colores de las barras
-const ProfileDayConsumption = (data) => {
-  const { t, i18n } = useTranslation()
+export default function ProfileDayConsumption(data) {
+  const { t } = useTranslation()
+  console.log(data)
   const [consumo] = useState(data.consumo)
 
   if (data.diaActivo === undefined) return <></>
 
   const fecha = UTIL.fechaDesdeIndice(data.diaActivo)
   const dia = fecha[0]
-  const mes = TCB.i18next.t(UTIL.nombreMes[fecha[1]])
+  const mes = t(UTIL.nombreMes[fecha[1]])
   let horas = []
   for (let i = 0; i < 24; i++) horas.push(i)
 
-  var trace1 = {
+  const colorProfile = [
+    [0.0, '#98FB98'],
+    [0.2, '#ADFF2F'],
+    [0.4, 'yellow'],
+    [1.0, 'red'],
+  ]
+
+  const trace1 = {
     x: horas,
     y: consumo.diaHora[data.diaActivo],
     type: 'scatter',
@@ -28,7 +41,7 @@ const ProfileDayConsumption = (data) => {
     line: { shape: 'spline', width: 3, color: 'rgb(0,0,255' },
   }
 
-  var trace2 = {
+  const trace2 = {
     x: horas,
     y: consumo.diaHora[data.diaActivo],
     type: 'bar',
@@ -37,16 +50,10 @@ const ProfileDayConsumption = (data) => {
     width: 0.1,
     hoverinfo: 'none',
     marker: {
-      color: consumo.diaHora[dia],
+      color: consumo.diaHora[data.diaActivo],
       cmax: consumo.cMaximoAnual,
       cmin: 0,
-      colorscale: [
-        ['0.0', 'rgb(250,250,250)'],
-        ['0.10', 'rgb(240,240,240)'],
-        ['0.20', 'rgb(230,200,200)'],
-        ['0.5', 'rgb(220,120,150)'],
-        ['1.0', 'rgb(254,79,67)'],
-      ],
+      colorscale: colorProfile,
     },
   }
 
@@ -55,10 +62,10 @@ const ProfileDayConsumption = (data) => {
     plot_bgcolor: 'rgba(0,0,0,0)',
     autosize: true,
     margin: {
-      l: 40,
-      r: 0,
+      l: 50,
+      r: 170,
       b: 65,
-      t: 0,
+      t: 20,
     },
     xaxis: {
       title: t('GRAPHICS.LABEL_HORA'),
@@ -80,17 +87,28 @@ const ProfileDayConsumption = (data) => {
     },
   }
 
+  const config = {
+    displayModeBar: false,
+  }
   return (
-    <>
-      <Typography variant="h5" align="center">
-        {t('CONSUMPTION.LABEL_TITLE_PROFILE_DAY', {
-          dia: dia,
-          mes: mes,
-        })}
-      </Typography>
-      <Plot data={[trace1, trace2]} layout={layout} />
-    </>
+    <Container>
+      <Box
+        sx={{
+          width: '100%',
+          mt: '2rem',
+          alignContent: 'center',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography variant="h5" align="center">
+          {t('CONSUMPTION.LABEL_TITLE_PROFILE_DAY', {
+            dia: dia,
+            mes: mes,
+          })}
+        </Typography>
+        <Plot data={[trace1, trace2]} layout={layout} config={config} />
+      </Box>
+    </Container>
   )
 }
-
-export default ProfileDayConsumption

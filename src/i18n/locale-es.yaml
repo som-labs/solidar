@@ -287,6 +287,7 @@ ECONOMIC_BALANCE:
   DESCRIPTION_FEE_VIRTUAL_BATTERY: 'Cuota gestión hucha: es la cuota mensual sin IVA que carga la empresa comercializadora por la gestíon de la hucha.'
   LABEL_FEE_VIRTUAL_BATTERY: Cuota gestión hucha sin IVA
   TOOLTIP_FEE_VIRTUAL_BATTERY: Cuota fija mensual en Euros sin IVA que la empresa comercializadora cobra por la gestión de la hucha
+
   TITLE_YEAR_SAVINGS: Ahorro anual en la factura
   DESCRIPTION_YEAR_SAVINGS: |
     Con placas solares te ahorrarás el {{porcientoAhorro}} del importe de gastos de consumo anual.<br />
@@ -617,6 +618,8 @@ GRAFICOS:
   LABEL_graficasDeficit: Déficit
   LABEL_graficasAutoconsumo: Autoconsumo
   LABEL_graficasCompensacion: Compensado
+  LABEL_SALDO_VIRTUAL_BATTERY: Saldo en hucha
+  LABEL_EXTRACCION_VIRTUAL_BATTERY: Extracción hucha
 
   graficos_LBL_balanceConsumo: Balance mensual de consumo con {{potencia}} instalados
   graficos_LBL_balanceProduccion: Balance mensual de producción con {{potencia}} instalados
