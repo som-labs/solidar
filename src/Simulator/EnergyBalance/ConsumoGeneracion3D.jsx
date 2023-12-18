@@ -154,8 +154,6 @@ export default function ConsumoGeneracion3D() {
     },
   }
   const config = {
-    // Disable selection to prevent click events from being sent
-    // This prevents the selection of data points on click
     displayModeBar: false,
   }
 
@@ -177,7 +175,7 @@ export default function ConsumoGeneracion3D() {
   return (
     <Container ref={graphElement}>
       <Typography variant="h4" textAlign={'center'}>
-        {t('ENERGY_BALANCE.3D_TITLE')}
+        {t('ENERGY_BALANCE.TITLE_GRAFICO_CONSUMOGENERACION3D')}
       </Typography>
       <Plot
         data={[g_produccion, g_consumo]}

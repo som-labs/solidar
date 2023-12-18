@@ -407,7 +407,6 @@ export default function MapComponent() {
             key: count++,
           })
         })
-        console.log([...nitem])
         setCandidatos([...nitem])
       } else {
         alert(

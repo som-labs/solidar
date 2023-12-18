@@ -237,6 +237,14 @@ export default function EnergyBalanceStep() {
         ? parseFloat(event.target.value)
         : params.row.potenciaUnitaria
 
+    //Update this BaseSolar panels and potenciaUnitaria in context
+    let newBases = bases.map((b) => {
+      if (b.idBaseSolar === params.id) {
+        b.paneles = tmpPaneles
+      }
+      return b
+    })
+    setBases(newBases)
     //Update this BaseSolar panels and potenciaUnitaria in TCB
     let baseActiva = TCB.BaseSolar.find((base) => {
       return base.idBaseSolar === params.id
@@ -261,6 +269,9 @@ export default function EnergyBalanceStep() {
         return row
       }
     })
+
+    console.log('PANELSTOTAL', TCB.totalPaneles)
+
     setBases(updateBases)
   }
 
@@ -323,7 +334,9 @@ export default function EnergyBalanceStep() {
           description={t('ENERGY_BALANCE.MSG_disclaimerProduccion')}
         ></CollapsibleCard>
         <InfoBox>
-          <MonthEnergyBalance monthlyData={monthlyConsumoProduccion}></MonthEnergyBalance>
+          <MonthEnergyBalance
+            monthlyConsumoProduccion={monthlyConsumoProduccion}
+          ></MonthEnergyBalance>
         </InfoBox>
         <InfoBox>
           <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>
