@@ -1,12 +1,17 @@
 import { useTranslation } from 'react-i18next'
-import TCB from '../classes/TCB'
-import Plot from 'react-plotly.js'
-import * as UTIL from '../classes/Utiles'
 
+// Plotly objects
+import Plot from 'react-plotly.js'
+
+// MUI objects
 import { Box, Typography, Container } from '@mui/material'
 
+// Solidar objects
+import TCB from '../classes/TCB'
+import * as UTIL from '../classes/Utiles'
+
 export default function ProfileDay(diaActivo) {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   if (diaActivo.children[1].length === 0) {
     return <></>
@@ -16,8 +21,7 @@ export default function ProfileDay(diaActivo) {
   let indexDay = UTIL.indiceDesdeDiaMes(clickedDate[0], clickedDate[1] - 1)
 
   const dia = clickedDate[0]
-  const mes = TCB.i18next.t(UTIL.nombreMes[clickedDate[1] - 1])
-  console.log(dia, mes)
+  const mes = t(UTIL.nombreMes[clickedDate[1] - 1])
 
   const trace1 = {
     y: TCB.consumo.diaHora[indexDay],
@@ -81,6 +85,10 @@ export default function ProfileDay(diaActivo) {
     },
   }
 
+  const config = {
+    displayModeBar: false,
+  }
+
   return (
     <Container>
       <Box
@@ -95,7 +103,7 @@ export default function ProfileDay(diaActivo) {
         <Typography variant="body" textAlign="center">
           {t('Perfil diario de consumo y produccion ') + dia + '/' + mes}
         </Typography>
-        <Plot data={[trace1, trace2]} layout={layout} style={{ width: '100%' }} />
+        <Plot data={[trace1, trace2]} layout={layout} config={config} />
       </Box>
     </Container>
   )
