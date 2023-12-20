@@ -13,7 +13,7 @@ import { useDialog } from '../../components/DialogProvider'
 
 // Solidar objects
 import BasicAlert from '../components/BasicAlert'
-
+//PENDIENTE: convertir a formix
 export default function DialogNewConsumption({ data, onClose }) {
   const { t } = useTranslation()
   const [formData, setFormData] = useState(data)

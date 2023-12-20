@@ -79,7 +79,7 @@ BaseSolar:
   TOOLTIP_inclinacion: Inclinación en grados (entre 0º y 90º)  medida con respecto a la horizontal del terreno sobre el que se montarán los paneles
   DESCRIPTION_inclinacionTejado: Indicanos la inclinación del tejado donde se montarán los paneles medida con respecto a la horizontal del terreno.
   DESCRIPTION_inclinacionPaneles: Indicanos la inclinación de los paneles medida con respecto a la horizontal del terreno. Puedes seleccionar la opción Optima si quieres que el sistema lo calcule por ti.
-  LABEL_inclinacionOptima: Inclinación óptima
+  LABEL_inclinacionOptima: O marca este campo si quieres que el sistema te proponga una inclinación óptima
   TOOLTIP_inclinacionOptima: Marque este campo si desea que el sistema calcule el valor óptimo de la inclinación de los paneles
   LABEL_inAcimut: Orientación al sur (Acimut)
   TOOLTIP_inAcimut: El ángulo entre el sur con la proyección horizontal del sol. Si los paneles estuvieran orientados al sur el acimut será 0º hacia el este -90º y hacia el oeste 90º. Este campo se rellena indicando en el mapa la orientación que tendrán los paneles. Si no se completa se asume que es 0
