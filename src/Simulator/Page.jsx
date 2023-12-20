@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import Container from '@mui/material/Container'
 
 import Alert from '@mui/material/Alert'
+
+// REACT Solidar Components
 import BasicAlert from './components/BasicAlert'
 import AppFrame from '../components/AppFrame'
 import Wizard from '../components/Wizard'
@@ -15,28 +17,25 @@ import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
 import SummaryStep from './Summary/Summary'
 
 import InputContext from './InputContext'
-import { MapContext, MapContextProvider } from './MapContext'
+import { BasesContext, BasesContextProvider } from './BasesContext'
 import EconomicContext from './EconomicBalance/EconomicContext'
 
+import { useDialog } from '../components/DialogProvider'
+// Solidar objects
 import PreparaEnergyBalance from './EnergyBalance/PreparaEnergyBalance'
-
 import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
-
 import InicializaAplicacion from './classes/InicializaAplicacion'
 import Consumo from './classes/Consumo'
-import { useDialog } from '../components/DialogProvider'
 
 InicializaAplicacion()
 
 export default function Page() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
-  const [bases, setBases] = useState([])
+  const { validaBases } = useContext(BasesContext)
 
   useEffect(() => {}, [])
-
-  const [map, setMap] = useState()
 
   const [tipoConsumo, setTipoConsumo] = useState(
     TCB.TipoConsumo.map((tipoConsumo) => {
@@ -66,31 +65,31 @@ export default function Page() {
   const [coefHucha, setCoefHucha] = useState(0)
   const [ecoData, setEcoData] = useState({})
 
-  const validaLocation = () => {
-    if (TCB.BaseSolar.length > 0) {
-      //Carga rendimientos de cada base que lo requiera asincronicamente
-      //La propiedad requierePVGIS es gestionada en GestionLocalizacion y se pone a true cuando cambia algun angulo
-      try {
-        let oldBases = [...bases]
-        TCB.BaseSolar.forEach((base) => {
-          if (base.requierePVGIS) {
-            UTIL.debugLog('Base requiere PVGIS:', base)
-            base.cargaRendimiento()
-            TCB.requiereOptimizador = true
-          }
-        })
-        setBases(oldBases)
-        return true
-      } catch (err) {
-        //     //alert ("Error en validacion de Localizacion: " + err);
-        //     return ("Error en validacion de Localizacion: " + err);
-      }
-      return false
-    } else {
-      showAlert('VALIDACION', t('LOCATION.ERROR_DEFINE_BASE'), 'error')
-      return false
-    }
-  }
+  // const validaLocation = () => {
+  //   if (TCB.BaseSolar.length > 0) {
+  //     //Carga rendimientos de cada base que lo requiera asincronicamente
+  //     //La propiedad requierePVGIS es gestionada en GestionLocalizacion y se pone a true cuando cambia algun angulo
+  //     try {
+  //       let oldBases = [...bases]
+  //       TCB.BaseSolar.forEach((base) => {
+  //         if (base.requierePVGIS) {
+  //           UTIL.debugLog('Base requiere PVGIS:', base)
+  //           base.cargaRendimiento()
+  //           TCB.requiereOptimizador = true
+  //         }
+  //       })
+  //       setBases(oldBases)
+  //       return true
+  //     } catch (err) {
+  //       //     //alert ("Error en validacion de Localizacion: " + err);
+  //       //     return ("Error en validacion de Localizacion: " + err);
+  //     }
+  //     return false
+  //   } else {
+  //     showAlert('VALIDACION', t('LOCATION.ERROR_DEFINE_BASE'), 'error')
+  //     return false
+  //   }
+  // }
 
   //REVISAR: como meter el codigo del alert en un componente reutilizable porque no funciona el BasicAlert
   const showAlert = (title, message, type) => {
@@ -104,6 +103,12 @@ export default function Page() {
         ></BasicAlert>
       ),
     })
+  }
+
+  function validaLocation() {
+    const status = validaBases()
+    if (!status) showAlert('VALIDACION', t('LOCATION.ERROR_DEFINE_BASE'), 'error')
+    return status
   }
 
   async function validaTipoConsumo() {
@@ -154,8 +159,6 @@ export default function Page() {
       <AppFrame>
         <InputContext.Provider
           value={{
-            bases,
-            setBases,
             tipoConsumo,
             setTipoConsumo,
           }}
@@ -179,31 +182,27 @@ export default function Page() {
                 setEcoData,
               }}
             >
-              {/* <MapContext.Provider value={{ map, setMap }}> */}
-              <MapContextProvider>
-                <Wizard variant="tabs">
-                  <LocationStep
-                    label="location"
-                    title={t('LOCATION.TITLE')}
-                    next={validaLocation}
-                  />
-                  <ConsumptionStep
-                    label="consumption"
-                    title={t('CONSUMPTION.TITLE')}
-                    next={validaTipoConsumo}
-                  />
-                  <EnergyBalanceStep
-                    label="energybalance"
-                    title={t('ENERGY_BALANCE.TITLE')}
-                  />
-                  <EconomicBalanceStep
-                    label="economicbalance"
-                    title={t('ECONOMIC_BALANCE.TITLE')}
-                  />
-                  <SummaryStep label="summary" title={t('SUMMARY.TITLE')} />
-                </Wizard>
-              </MapContextProvider>
-              {/* </MapContext.Provider> */}
+              <Wizard variant="tabs">
+                <LocationStep
+                  label="location"
+                  title={t('LOCATION.TITLE')}
+                  next={validaLocation}
+                />
+                <ConsumptionStep
+                  label="consumption"
+                  title={t('CONSUMPTION.TITLE')}
+                  next={validaTipoConsumo}
+                />
+                <EnergyBalanceStep
+                  label="energybalance"
+                  title={t('ENERGY_BALANCE.TITLE')}
+                />
+                <EconomicBalanceStep
+                  label="economicbalance"
+                  title={t('ECONOMIC_BALANCE.TITLE')}
+                />
+                <SummaryStep label="summary" title={t('SUMMARY.TITLE')} />
+              </Wizard>
             </EconomicContext.Provider>
           </Container>
         </InputContext.Provider>
