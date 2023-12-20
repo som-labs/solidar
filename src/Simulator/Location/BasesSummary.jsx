@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 
 // REACT Solidar Components
+import { MapContext, MapContextProvider } from '../MapContext'
 import InputContext from '../InputContext'
 import DialogNewBaseSolar from './DialogNewBaseSolar'
 import { useDialog } from '../../components/DialogProvider'
@@ -21,6 +22,7 @@ export default function BasesSummary() {
   const { t } = useTranslation()
   const { bases, setBases } = useContext(InputContext)
   const [openDialog, closeDialog] = useDialog()
+  const { map, setMap, endDialog } = useContext(MapContext)
 
   const getRowId = (row) => {
     return row.idBaseSolar
@@ -129,8 +131,20 @@ export default function BasesSummary() {
       return bs.idBaseSolar === rowId
     })
     openDialog({
-      children: <DialogNewBaseSolar data={_base} editing={true} onClose={closeDialog} />,
+      children: (
+        <DialogNewBaseSolar
+          data={_base}
+          editing={true}
+          onClose={(reason, formData) => finDialog(reason, formData)}
+        />
+      ),
     })
+  }
+
+  function finDialog(reason, formData) {
+    console.log('EDIT', reason, formData)
+    if (reason === 'save') endDialog('edit', formData)
+    closeDialog()
   }
 
   function footerSummary() {

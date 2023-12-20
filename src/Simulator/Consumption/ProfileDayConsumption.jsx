@@ -8,10 +8,8 @@ import Plot from 'react-plotly.js'
 import { Box, Typography, Container } from '@mui/material'
 
 // Solidar objects
-import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
-//PENDIENTE: corregir los colores de las barras
 export default function ProfileDayConsumption(data) {
   const { t } = useTranslation()
   console.log(data)

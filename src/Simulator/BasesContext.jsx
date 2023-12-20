@@ -1,15 +1,17 @@
 import React from 'react'
+
 // Solidar objects
 import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
 import BaseSolar from './classes/BaseSolar'
-import InputContext from './InputContext'
+//import InputContext from './InputContext'
 
-const MapContext = React.createContext()
+const BasesContext = React.createContext()
 
-const MapContextProvider = ({ children }) => {
+const BasesContextProvider = ({ children }) => {
   const [map, setMap] = React.useState()
-  const { bases, setBases } = React.useContext(InputContext)
+  const { bases, setBases } = React.useState([])
+  //Context(InputContext)
 
   function endDialog(reason, formData) {
     console.log('MAP CONTEXT', reason, formData)
@@ -55,8 +57,8 @@ const MapContextProvider = ({ children }) => {
     }
   }
 
-  const contextValue = { map, setMap, endDialog }
-  return <MapContext.Provider value={contextValue}>{children}</MapContext.Provider>
+  const contextValue = { map, setMap, bases, setBases, endDialog }
+  return <BasesContext.Provider value={contextValue}>{children}</BasesContext.Provider>
 }
 
-export { MapContext, MapContextProvider }
+export { BasesContext, BasesContextProvider }
