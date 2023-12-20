@@ -78,8 +78,6 @@ class Rendimiento extends DiaHora {
     if (TCB.modoActivo === 'DESARROLLO')
       TCB.basePath = 'http://localhost/SOM/REACT/solidar/src/Simulator/'
 
-    console.log(typeof TCB.basePath)
-    console.log(TCB.basePath)
     let url =
       TCB.basePath +
       'proxy PVGIS.php?' +

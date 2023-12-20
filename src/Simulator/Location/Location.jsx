@@ -1,4 +1,3 @@
-import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -8,11 +7,9 @@ import Container from '@mui/material/Container'
 // REACT Solidar Components
 import MapComponent from './MapComponent'
 import BasesSummary from './BasesSummary'
-import InputContext from '../InputContext'
 
 const LocationStep = () => {
   const { t } = useTranslation()
-  const { bases, setBases } = useContext(InputContext)
   return (
     <>
       <Container
