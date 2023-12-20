@@ -10,54 +10,79 @@ const BasesContext = React.createContext()
 
 const BasesContextProvider = ({ children }) => {
   const [map, setMap] = React.useState()
-  const { bases, setBases } = React.useState([])
-  //Context(InputContext)
+  const [bases, setBases] = React.useState([])
 
-  function endDialog(reason, formData) {
-    console.log('MAP CONTEXT', reason, formData)
-    if (reason === undefined) return
-    if (reason === 'save' || reason === 'edit') {
-      let componentId
-      // Update label in source with nombreBaseSolar
-      componentId = 'BaseSolar.label.' + TCB.featIdUnico.toString()
-      const labelFeature = TCB.origenDatosSolidar.getFeatureById(componentId)
-      UTIL.setLabel(
-        labelFeature,
-        formData.nombreBaseSolar,
-        TCB.baseLabelColor,
-        TCB.baseLabelBGColor,
-      )
-      let baseIndex
-      if (reason === 'save') {
-        // We are creating a new base
-        baseIndex = TCB.BaseSolar.push(new BaseSolar(formData)) - 1
-      } else {
-        baseIndex = TCB.BaseSolar.findIndex((base) => {
-          return base.idBaseSolar === formData.idBaseSolar
-        })
-        TCB.BaseSolar[baseIndex].updateBase(formData)
-      }
+  //Function to be executed at closeDialog del DialogNewBaseSolar
+  function processFormData(reason, formData) {
+    //Update openlayers label with nombreBaseSolar
+    const labelFeatId = 'BaseSolar.label.' + formData.idBaseSolar
+    const labelFeature = TCB.origenDatosSolidar.getFeatureById(labelFeatId)
+    UTIL.setLabel(
+      labelFeature,
+      formData.nombreBaseSolar,
+      TCB.baseLabelColor,
+      TCB.baseLabelBGColor,
+    )
+    //Update TCB.BaseSolar with new data
+    let baseIndex
+    if (reason === 'save') {
+      // We are creating a new base
+      baseIndex = TCB.BaseSolar.push(new BaseSolar(formData)) - 1
+    } else {
+      //We are updating existing base
+      baseIndex = TCB.BaseSolar.findIndex((base) => {
+        return base.idBaseSolar === formData.idBaseSolar
+      })
+      TCB.BaseSolar[baseIndex].updateBase(formData)
+    }
 
-      formData.potenciaMaxima = TCB.BaseSolar[baseIndex].potenciaMaxima
-      formData.areaReal = TCB.BaseSolar[baseIndex].areaReal
-      formData.panelesMaximo = TCB.BaseSolar[baseIndex].panelesMaximo
+    //BaseSolar object has several methods that can update other properties maintained in state. All derived from possible inclinacion field
+    formData.potenciaMaxima = TCB.BaseSolar[baseIndex].potenciaMaxima
+    formData.areaReal = TCB.BaseSolar[baseIndex].areaReal
+    formData.panelesMaximo = TCB.BaseSolar[baseIndex].panelesMaximo
 
-      if (reason === 'save') {
-        setBases((prevBases) => [...prevBases, formData])
-      } else {
-        const updatedBases = bases.map((base) => {
-          if (base.idBaseSolar === formData.idBaseSolar) {
-            return { ...formData } // Replace name of the item
-          }
-          return base // Keep other items unchanged
-        })
-        console.log('BASES ACTUALIZADAS', updatedBases)
-        setBases(updatedBases)
-      }
+    if (reason === 'save') {
+      // We are creating a new base
+      setBases((prevBases) => [...prevBases, formData])
+    } else {
+      //We are updating existing base
+      const updatedBases = bases.map((base) => {
+        if (base.idBaseSolar === formData.idBaseSolar) {
+          return { ...formData } // Replace name of the item
+        }
+        return base // Keep other items unchanged
+      })
+      setBases(updatedBases)
     }
   }
 
-  const contextValue = { map, setMap, bases, setBases, endDialog }
+  function validaBases() {
+    if (TCB.BaseSolar.length > 0) {
+      //Carga rendimientos de cada base que lo requiera asincronicamente
+      //La propiedad requierePVGIS es gestionada en GestionLocalizacion y se pone a true cuando cambia algun angulo
+      try {
+        let oldBases = [...bases]
+        for (let i = 0; i < TCB.BaseSolar.length; i++) {
+          if (TCB.BaseSolar[i].requierePVGIS) {
+            UTIL.debugLog('Base requiere PVGIS:', oldBases[i])
+            TCB.BaseSolar[i].cargaRendimiento()
+            oldBases[i].requierePVGIS = false
+            TCB.requiereOptimizador = true
+          }
+        }
+        setBases(oldBases)
+        return true
+      } catch (err) {
+        //     //alert ("Error en validacion de Localizacion: " + err);
+        //     return ("Error en validacion de Localizacion: " + err);
+      }
+      return false
+    } else {
+      return false
+    }
+  }
+
+  const contextValue = { map, setMap, bases, setBases, processFormData, validaBases }
   return <BasesContext.Provider value={contextValue}>{children}</BasesContext.Provider>
 }
 

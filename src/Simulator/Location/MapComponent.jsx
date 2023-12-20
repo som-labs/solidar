@@ -18,25 +18,22 @@ import { Draw } from 'ol/interaction'
 import { Button, Tooltip, TextField, Typography, Autocomplete } from '@mui/material'
 
 // REACT Solidar Components
-import { MapContext, MapContextProvider } from '../MapContext'
+import { BasesContext } from '../BasesContext'
 import DialogNewBaseSolar from './DialogNewBaseSolar'
 import { useDialog } from '../../components/DialogProvider'
-import InputContext from '../InputContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import BaseSolar from '../classes/BaseSolar'
 
 export default function MapComponent() {
-  const { t, i18n } = useTranslation()
-  const { bases, setBases } = useContext(InputContext)
+  const { t } = useTranslation()
 
   // Map state
   const [mapType, setMapType] = useState('LOCATION.LABEL_SATELITE')
   const [selectedCoord] = useState([-3.7, 40.45])
 
-  const { map, setMap, endDialog } = useContext(MapContext)
+  const { map, setMap, processFormData } = useContext(BasesContext)
   const mapElement = useRef()
   const basesLayer = useRef()
   const mapRef = useRef(map)
@@ -155,13 +152,13 @@ export default function MapComponent() {
     }
   }, [])
 
-  function finDialog(reason, formData) {
-    console.log('FINDIALOG', reason)
+  function endDialog(reason, formData) {
     if (reason === undefined) return
     if (reason !== 'save') {
-      UTIL.deleteBaseGeometries(TCB.featIdUnico.toString())
+      UTIL.deleteBaseGeometries(formData.idBaseSolar)
+    } else {
+      processFormData(reason, formData)
     }
-    endDialog(reason, formData)
     closeDialog()
   }
 
@@ -265,7 +262,7 @@ export default function MapComponent() {
         <DialogNewBaseSolar
           data={nuevaBaseSolar}
           editing={false}
-          onClose={(cause, formData) => finDialog(cause, formData)}
+          onClose={(cause, formData) => endDialog(cause, formData)}
         />
       ),
     })
