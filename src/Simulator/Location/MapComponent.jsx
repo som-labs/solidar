@@ -18,7 +18,7 @@ import { Draw } from 'ol/interaction'
 import { Button, Tooltip, TextField, Typography, Autocomplete } from '@mui/material'
 
 // REACT Solidar Components
-import MapContext from '../MapContext'
+import { MapContext, MapContextProvider } from '../MapContext'
 import DialogNewBaseSolar from './DialogNewBaseSolar'
 import { useDialog } from '../../components/DialogProvider'
 import InputContext from '../InputContext'
@@ -36,8 +36,7 @@ export default function MapComponent() {
   const [mapType, setMapType] = useState('LOCATION.LABEL_SATELITE')
   const [selectedCoord] = useState([-3.7, 40.45])
 
-  const { map, setMap } = useContext(MapContext)
-
+  const { map, setMap, endDialog } = useContext(MapContext)
   const mapElement = useRef()
   const basesLayer = useRef()
   const mapRef = useRef(map)
@@ -156,29 +155,14 @@ export default function MapComponent() {
     }
   }, [])
 
-  function endDialog(reason, formData) {
+  function finDialog(reason, formData) {
+    console.log('FINDIALOG', reason)
     if (reason === undefined) return
-    if (reason === 'save') {
-      // Update label in source with nombreBaseSolar
-      const componentId = 'BaseSolar.label.' + TCB.featIdUnico.toString()
-      const labelFeature = TCB.origenDatosSolidar.getFeatureById(componentId)
-      UTIL.setLabel(
-        labelFeature,
-        formData.nombreBaseSolar,
-        TCB.baseLabelColor,
-        TCB.baseLabelBGColor,
-      )
-      // We are creating a new base
-      const baseIndex = TCB.BaseSolar.push(new BaseSolar(formData)) - 1
-      formData.potenciaMaxima = TCB.BaseSolar[baseIndex].potenciaMaxima
-      formData.areaReal = TCB.BaseSolar[baseIndex].areaReal
-      formData.panelesMaximo = TCB.BaseSolar[baseIndex].panelesMaximo
-      setBases((prevBases) => [...prevBases, formData])
-      closeDialog()
-    } else {
+    if (reason !== 'save') {
       UTIL.deleteBaseGeometries(TCB.featIdUnico.toString())
-      closeDialog()
     }
+    endDialog(reason, formData)
+    closeDialog()
   }
 
   //Event when a base geometry has been created
@@ -209,7 +193,7 @@ export default function MapComponent() {
     }
 
     //NUEVO: Calculo propuesta de acimut
-    const azimutLength = 50
+    const azimutLength = 100
     let midPoint = [0, 0]
     let coef
 
@@ -240,19 +224,18 @@ export default function MapComponent() {
     const acimutCoordinates = geomAcimut.getCoordinates()
     let point1 = acimutCoordinates[0]
     let point2 = acimutCoordinates[1]
-    geomAcimut.scale(0.01, 0.01, puntoAplicacion)
 
     // Take into account angles are measured with 0 at south (axis -Y) and positive west (axis +X)
     let acimut =
       (Math.atan2(-1 * (point1[0] - point2[0]), point1[1] - point2[1]) * 180) / Math.PI
-
-    acimut = Math.trunc(acimut * 100) / 100
-
-    var acimutLine = new Feature({
+    acimut = parseInt(acimut)
+    const acimutLine = new Feature({
       geometry: geomAcimut,
     })
     acimutLine.setId('BaseSolar.acimut.' + TCB.featIdUnico)
+    acimutLine.setStyle(new Style({}))
     TCB.origenDatosSolidar.addFeature(acimutLine)
+    acimutLine.setStyle(new Style({}))
 
     //Preparamos los datos default para constuir un objeto BaseSolar
     geoBaseSolar.feature.setId('BaseSolar.area.' + TCB.featIdUnico)
@@ -266,7 +249,7 @@ export default function MapComponent() {
     nuevaBaseSolar.inclinacion = 0
     nuevaBaseSolar.inclinacionOptima = true
     nuevaBaseSolar.roofType = 'Optimos'
-    nuevaBaseSolar.inAcimut = acimut.toFixed(2)
+    nuevaBaseSolar.inAcimut = acimut
     nuevaBaseSolar.angulosOptimos = true
     nuevaBaseSolar.requierePVGIS = true
     nuevaBaseSolar.lonlatBaseSolar =
@@ -282,7 +265,7 @@ export default function MapComponent() {
         <DialogNewBaseSolar
           data={nuevaBaseSolar}
           editing={false}
-          onClose={(cause, formData) => endDialog(cause, formData)}
+          onClose={(cause, formData) => finDialog(cause, formData)}
         />
       ),
     })

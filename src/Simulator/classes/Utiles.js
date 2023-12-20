@@ -290,7 +290,12 @@ const ValidateDecimal = (language, inputValue) => {
   const number = 1.1
   const decimalSeparator = number.toLocaleString(language).substring(1, 2)
 
-  const decimalRegex = new RegExp(`^\\d*${decimalSeparator}?\\d*$`)
+  const decimalRegex = new RegExp(`^-?\\d*${decimalSeparator}?\\d*$`)
+  return decimalRegex.test(inputValue)
+}
+
+const ValidateEntero = (inputValue) => {
+  const decimalRegex = new RegExp(`^-?\\d*$`)
   return decimalRegex.test(inputValue)
 }
 
@@ -1028,6 +1033,7 @@ export {
   swapTabla,
   swapObjeto,
   ValidateDecimal,
+  ValidateEntero,
   campos,
 }
 window.dumpData = dumpData

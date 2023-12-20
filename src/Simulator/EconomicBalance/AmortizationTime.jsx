@@ -1,15 +1,17 @@
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
+
 // MUI objects
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import FormControl from '@mui/material/FormControl'
+
 // REACT Solidar Components
 import EconomicContext from './EconomicContext'
 
 export default function AmortizationTime() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const { ecoData } = useContext(EconomicContext)
 

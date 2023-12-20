@@ -15,7 +15,7 @@ import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
 import SummaryStep from './Summary/Summary'
 
 import InputContext from './InputContext'
-import MapContext from './MapContext'
+import { MapContext, MapContextProvider } from './MapContext'
 import EconomicContext from './EconomicBalance/EconomicContext'
 
 import PreparaEnergyBalance from './EnergyBalance/PreparaEnergyBalance'
@@ -179,7 +179,8 @@ export default function Page() {
                 setEcoData,
               }}
             >
-              <MapContext.Provider value={{ map, setMap }}>
+              {/* <MapContext.Provider value={{ map, setMap }}> */}
+              <MapContextProvider>
                 <Wizard variant="tabs">
                   <LocationStep
                     label="location"
@@ -201,7 +202,8 @@ export default function Page() {
                   />
                   <SummaryStep label="summary" title={t('SUMMARY.TITLE')} />
                 </Wizard>
-              </MapContext.Provider>
+              </MapContextProvider>
+              {/* </MapContext.Provider> */}
             </EconomicContext.Provider>
           </Container>
         </InputContext.Provider>
