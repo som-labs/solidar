@@ -87,7 +87,7 @@ export default function DialogNewBaseSolar({ data, onClose }) {
     }
   }
 
-  const changeTilt = (event, setValues, values) => {
+  const changeTilt = (event, setValues) => {
     setValues((prevValues) => ({
       ...prevValues,
       inclinacion: event.target.value,
@@ -97,7 +97,7 @@ export default function DialogNewBaseSolar({ data, onClose }) {
     }))
   }
 
-  const setOptimalTilt = (event, setValues, values) => {
+  const setOptimalTilt = (event, setValues) => {
     setValues((prevValues) => ({
       ...prevValues,
       inclinacion: event.target.checked ? '' : 0,
@@ -138,12 +138,11 @@ export default function DialogNewBaseSolar({ data, onClose }) {
     }))
   }
 
-  const handleCancel = () => {
-    onClose('cancel')
+  const handleCancel = (values) => {
+    onClose('cancel', values)
   }
 
   async function handleClose(values) {
-    console.log('CLOSING', values)
     // En caso de roofType coplanar pedimos confirmacion si la inclinacion es cero
     if (values.roofType === 'Coplanar' && values.inclinacion === 0) {
       if (!window.confirm(t('LOCATION.ERROR_COPLANAR_NOANGLE'))) {
@@ -344,36 +343,6 @@ export default function DialogNewBaseSolar({ data, onClose }) {
                 </>
               )}
 
-              {/* 
-                    <Tooltip
-                      title={t('BaseSolar.TOOLTIP_inclinacionOptima')}
-                      placement="bottom"
-                  >*/}
-              {/* <InputLabel htmlFor="inclinacionOptima">
-                      {t('BaseSolar.LABEL_inclinacionOptima')}
-                    </InputLabel>
-                    <Field
-                      as={Switch} //"checkbox"
-                      name="inclinacionOptima"
-                      checked={values.inclinacionOptima}
-                      onChange={(event) => setOptimalTilt(event, setValues)}
-                      color="primary"
-                    />
-                  </Box>
-                  <Box> */}
-              {/*</Tooltip> */}
-              {/* <ErrorMessage name="inclinacion">
-                      {(msg) => <div style={{ color: 'red' }}>{msg}</div>}
-                    </ErrorMessage>
-
-                    <Typography variant="body">
-                      {t('BaseSolar.DESCRIPTION_inAcimut') + values.inAcimut}
-                    </Typography>
-                    <InputLabel htmlFor="inAcimut">
-                      {t('BaseSolar.LABEL_inAcimut')}
-                    </InputLabel> */}
-              {/* <Tooltip title={t('BaseSolar.TOOLTIP_inAcimut')} placement="top"> */}
-
               {values.roofType === 'Optimos' && (
                 <>
                   <Box>
@@ -386,7 +355,7 @@ export default function DialogNewBaseSolar({ data, onClose }) {
             </Box>
           </DialogContent>
           <DialogActions sx={{ mt: '1rem' }}>
-            <Button onClick={handleCancel} id="cancel">
+            <Button onClick={() => handleCancel(values)}>
               {t('BASIC.LABEL_CANCEL')}
             </Button>
             <Button type="submit">{t('BASIC.LABEL_OK')}</Button>
