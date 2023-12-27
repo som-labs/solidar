@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 
-import { FooterBox, InfoBox } from '../../components/SLDRComponents'
+import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
 import SummaryAutoproduccion from './SummaryAutoproduccion'
 import SummaryConsumption from './SummaryConsumption'
 import SummaryEconomicBalance from './SummaryEconomicBalance'
@@ -27,17 +27,17 @@ const SummaryStep = () => {
           display: 'flex',
         }}
       >
-        <InfoBox
+        <SLDRInfoBox
           sx={{
             mr: '0.3rem',
             mb: '0.3rem',
           }}
         >
           <SummaryAutoproduccion></SummaryAutoproduccion>
-        </InfoBox>
-        <InfoBox sx={{ mb: '0.3rem' }}>
+        </SLDRInfoBox>
+        <SLDRInfoBox sx={{ mb: '0.3rem' }}>
           <SummaryConsumption></SummaryConsumption>
-        </InfoBox>
+        </SLDRInfoBox>
       </Box>
       <Box
         sx={{
@@ -46,21 +46,21 @@ const SummaryStep = () => {
           width: '100%',
         }}
       >
-        <InfoBox
+        <SLDRInfoBox
           sx={{
             mr: '0.3rem',
             mb: '0.3rem',
           }}
         >
           <SummaryEconomicBalance></SummaryEconomicBalance>
-        </InfoBox>
-        <InfoBox
+        </SLDRInfoBox>
+        <SLDRInfoBox
           sx={{
             mb: '0.3rem',
           }}
         >
           <SummaryEnergyBalance></SummaryEnergyBalance>
-        </InfoBox>
+        </SLDRInfoBox>
       </Box>
 
       <FinalNote></FinalNote>

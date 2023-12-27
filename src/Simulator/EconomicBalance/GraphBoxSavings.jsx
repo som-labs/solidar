@@ -19,11 +19,11 @@ export default function GraphBoxSavings() {
   return (
     <Box
       sx={{
-        mr: '0.3rem',
         display: 'flex',
         flexWrap: 'wrap',
         boxShadow: 2,
         flex: 1,
+        width: '100%',
         border: 2,
         borderColor: 'primary.light',
         justifyContent: 'center',

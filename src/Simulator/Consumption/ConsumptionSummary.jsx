@@ -14,12 +14,12 @@ import Box from '@mui/material/Box'
 import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid'
 
 // REACT Solidar Components
-import InputContext from '../InputContext'
+import { ConsumptionContext } from '../ConsumptionContext'
 import MapaMesHora from './MapaMesHora'
 import MapaDiaHora from './MapaDiaHora'
 import { useDialog } from '../../components/DialogProvider'
 import DialogNewConsumption from './DialogNewConsumption'
-import { FooterBox, InfoBox } from '../../components/SLDRComponents'
+import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -91,7 +91,7 @@ export default function ConsumptionSummary() {
   ]
 
   const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
-  const { tipoConsumo, setTipoConsumo } = useContext(InputContext)
+  const { tipoConsumo, setTipoConsumo, preciosValidos } = useContext(ConsumptionContext)
 
   function getRowId(row) {
     return row.idTipoConsumo
@@ -285,7 +285,7 @@ export default function ConsumptionSummary() {
 
   function footerSummary() {
     return (
-      <FooterBox>
+      <SLDRFooterBox>
         <Typography
           variant="h6"
           sx={{
@@ -309,7 +309,7 @@ export default function ConsumptionSummary() {
             <AnalyticsIcon />
           </IconButton>
         </Tooltip>
-      </FooterBox>
+      </SLDRFooterBox>
     )
   }
 
@@ -325,33 +325,35 @@ export default function ConsumptionSummary() {
   }
 
   return (
-    <>
-      <InfoBox>
-        <DataGrid
-          autoHeight
-          getRowId={getRowId}
-          rows={tipoConsumo}
-          columns={columns}
-          hideFooter={false}
-          sx={{
-            mb: '1rem',
-          }}
-          onCellEditStop={(params, event) => {
-            changeTC(params, event)
-          }}
-          slots={{ toolbar: newConsumption, footer: footerSummary }}
-        />
-      </InfoBox>
-      {activo && (
+    <div>
+      {preciosValidos && (
+        <SLDRInfoBox>
+          <DataGrid
+            autoHeight
+            getRowId={getRowId}
+            rows={tipoConsumo}
+            columns={columns}
+            hideFooter={false}
+            sx={{
+              mb: '1rem',
+            }}
+            onCellEditStop={(params, event) => {
+              changeTC(params, event)
+            }}
+            slots={{ toolbar: newConsumption, footer: footerSummary }}
+          />
+        </SLDRInfoBox>
+      )}
+      {activo && preciosValidos && (
         <>
-          <InfoBox>
+          <SLDRInfoBox>
             <MapaMesHora activo={activo}></MapaMesHora>
-          </InfoBox>
-          <InfoBox>
+          </SLDRInfoBox>
+          <SLDRInfoBox>
             <MapaDiaHora activo={activo}></MapaDiaHora>
-          </InfoBox>
+          </SLDRInfoBox>
         </>
       )}
-    </>
+    </div>
   )
 }

@@ -145,7 +145,7 @@ export default function MapComponent() {
         construirBaseSolar(event)
       })
 
-      //Store the map in MapContext
+      //Store the map in BasesContext
       setMap(mapRef.current)
     } else {
       mapRef.current.setTarget(mapElement.current)
@@ -153,11 +153,18 @@ export default function MapComponent() {
   }, [])
 
   function endDialog(reason, formData) {
-    if (reason === undefined) return
-    if (reason !== 'save') {
-      UTIL.deleteBaseGeometries(formData.idBaseSolar)
-    } else {
-      processFormData(reason, formData)
+    switch (reason) {
+      case undefined:
+        return
+      case 'save':
+        processFormData(reason, formData)
+        break
+      case 'cancel':
+        UTIL.deleteBaseGeometries(formData.idBaseSolar)
+        break
+      default: //Backdrop click does not return formData
+        UTIL.deleteBaseGeometries(TCB.featIdUnico)
+        break
     }
     closeDialog()
   }
@@ -349,7 +356,7 @@ export default function MapComponent() {
         }
       } else {
         alert(
-          TCB.i18next.t('LOCATION.ERROR_NOMINATIM_FETCH', {
+          t('LOCATION.ERROR_NOMINATIM_FETCH', {
             err: respTerritorio,
             url: url,
           }),
@@ -358,7 +365,7 @@ export default function MapComponent() {
         status = false
       }
     } catch (err) {
-      alert(TCB.i18next.t('LOCATION.ERROR_NOMINATIM_FETCH', { err: err, url: url }))
+      alert(t('LOCATION.ERROR_NOMINATIM_FETCH', { err: err, url: url }))
       await UTIL.copyClipboard(url)
       status = false
     }
@@ -431,7 +438,7 @@ export default function MapComponent() {
         onChange={(ev, value) => {
           mapRef.current.getView().setCenter(fromLonLat(value.value))
         }}
-        onInputChange={(ev, newValue) => {
+        onInputChange={(ev) => {
           if (ev.target.value.length > 3) {
             setAddress(ev.target.value)
             debouncedCallback()

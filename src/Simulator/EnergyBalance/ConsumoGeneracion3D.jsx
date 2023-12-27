@@ -5,11 +5,13 @@ import { useTranslation } from 'react-i18next'
 import Plot from 'react-plotly.js'
 
 // MUI objects
-import { Typography, Container } from '@mui/material'
+import { Box, Typography, Container, Tooltip } from '@mui/material'
+import InfoIcon from '@mui/icons-material/InfoRounded'
 
 // REACT Solidar Components
 import { useDialog } from '../../components/DialogProvider'
 import ProfileDay from './ProfileDay'
+import { SLDRTooltip } from '../../components/SLDRComponents'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -174,15 +176,40 @@ export default function ConsumoGeneracion3D() {
 
   return (
     <Container ref={graphElement}>
-      <Typography variant="h4" textAlign={'center'}>
-        {t('ENERGY_BALANCE.TITLE_GRAFICO_CONSUMOGENERACION3D')}
-      </Typography>
-      <Plot
-        data={[g_produccion, g_consumo]}
-        layout={layout}
-        onClick={handleClick}
-        config={config}
-      />
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          flex: 1,
+          textAlign: 'center',
+        }}
+        justifyContent="center"
+      >
+        <Typography variant="h4" textAlign={'center'}>
+          {t('ENERGY_BALANCE.TITLE_GRAFICO_CONSUMOGENERACION3D')}
+        </Typography>
+        <SLDRTooltip
+          title={t('ENERGY_BALANCE.TOOLTIP_GRAFICO_CONSUMOGENERACION3D')}
+          placement="top"
+        >
+          <InfoIcon />
+        </SLDRTooltip>
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          width: '100%',
+        }}
+        justifyContent="center"
+      >
+        <Plot
+          data={[g_produccion, g_consumo]}
+          layout={layout}
+          onClick={handleClick}
+          config={config}
+        />
+      </Box>
     </Container>
   )
 }

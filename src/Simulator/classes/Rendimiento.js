@@ -167,7 +167,13 @@ class Rendimiento extends DiaHora {
         return true
       }
     } catch (err) {
-      alert(TCB.i18next.t('ERROR_PVGIS_FETCH', { err: err.message, url: url }))
+      //PENDIENTE: cambiar forma de reportar el error
+      alert(
+        TCB.i18next.t('RENDIMIENTO.MSG_ERROR_PVGIS_FETCH', {
+          err: err.message,
+          url: url,
+        }),
+      )
       base.rendimientoCreado = 'error'
       return false
     }

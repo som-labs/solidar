@@ -1,145 +1,162 @@
-import { useState, useRef } from 'react'
+import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import { Box, Button, MenuItem, FormControl, TextField } from '@mui/material'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogTitle from '@mui/material/DialogTitle'
+import {
+  Box,
+  Button,
+  MenuItem,
+  FormControl,
+  Typography,
+  FormControlLabel,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from '@mui/material'
 import { MuiFileInput } from 'mui-file-input'
 
 // REACT Solidar Components
-import { useDialog } from '../../components/DialogProvider'
+import { SLDRInputField } from '../../components/SLDRComponents'
 
 // Solidar objects
-import BasicAlert from '../components/BasicAlert'
+import * as UTIL from '../classes/Utiles'
+
 //PENDIENTE: convertir a formix
 export default function DialogNewConsumption({ data, onClose }) {
   const { t } = useTranslation()
-  const [formData, setFormData] = useState(data)
-  const REE = useRef()
-  const [openDialog, closeDialog] = useDialog()
 
-  const showAlert = (title, message, type) => {
-    openDialog({
-      children: (
-        <BasicAlert
-          title={title}
-          contents={message}
-          type={type}
-          onClose={() => closeDialog()}
-        ></BasicAlert>
-      ),
-    })
+  const handleFile = (event, setValues) => {
+    setValues((prevValues) => ({ ...prevValues, ['ficheroCSV']: event }))
   }
 
-  const handleChange = (event) => {
-    const { name, value } = event.target
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }))
+  const handleCancel = () => {
+    onClose('cancel')
   }
 
-  const handleFile = (event) => {
-    setFormData((prevFormData) => ({ ...prevFormData, ['ficheroCSV']: event }))
+  async function handleClose(values) {
+    onClose('save', values)
   }
 
-  const handleCancel = (event) => {
-    onClose(event.target.id)
-  }
+  const validate = (values) => {
+    const errors = {}
 
-  async function handleClose(event) {
-    if (
-      formData.fuente === 'REE' &&
-      (isNaN(Number(formData.consumoAnualREE)) || formData.consumoAnualREE === '')
-    ) {
-      showAlert(
-        'Error definiendo fuente',
-        t('CONSUMPTION.ERROR_DEFINIR_CONSUMO_REE'),
-        'error',
-      )
-      return
+    if (values.fuente === 'REE') {
+      if (values.consumoAnualREE === '' || values.consumoAnualREE === 0) {
+        errors.consumoAnualREE = 'Requerido'
+      } else {
+        if (!UTIL.ValidateEntero(values.consumoAnualREE) || values.consumoAnualREE < 0) {
+          errors.consumoAnualREE = t('CONSUMPTION.ERROR_DEFINIR_CONSUMO_REE')
+        }
+      }
     }
-
-    if (formData.fuente !== 'REE' && formData.ficheroCSV === null) {
-      showAlert(
-        'Error definiendo fuente',
-        t('CONSUMPTION.ERROR_FALTA_FICHERO_CONSUMO'),
-        'error',
-      )
-      return
+    if (values.fuente !== 'REE' && values.ficheroCSV === null) {
+      errors.ficheroCSV = t('CONSUMPTION.ERROR_FALTA_FICHERO_CONSUMO')
     }
-    onClose(event.target.id, formData)
+    return errors
   }
 
   return (
-    <div>
-      <DialogTitle>{t('CONSUMPTION.TITLE_DIALOG_NEW_CONSUMPTION')}</DialogTitle>{' '}
-      {/* PENDIENTE: definir mensaje */}
-      <DialogContent>
-        <Box
-          component="form"
-          sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}
-        >
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <TextField
-              required
-              type="text"
-              onChange={handleChange}
-              label={t('TipoConsumo.LABEL_nombreTipoConsumo')}
-              name="nombreTipoConsumo"
-              value={formData.nombreTipoConsumo}
-            />
-          </FormControl>
-
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <TextField
-              sx={{ width: 200, height: 50 }}
-              select
-              id="tipo-simple-select"
-              onChange={handleChange}
-              label={t('TipoConsumo.LABEL_fuente')}
-              name="fuente"
-              defaultValue="CSV"
+    <Formik
+      initialValues={data}
+      validate={validate}
+      onSubmit={(values, event) => {
+        handleClose(values, event)
+      }}
+    >
+      {({ values, setValues }) => (
+        <Form>
+          <DialogTitle>{t('CONSUMPTION.TITLE_DIALOG_NEW_CONSUMPTION')}</DialogTitle>{' '}
+          <DialogContent>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
-              <MenuItem value={'CSV'}>CSV</MenuItem>
-              <MenuItem value={'DATADIS'}>DATADIS</MenuItem>
-              <MenuItem value={'REE'}>REE</MenuItem>
-            </TextField>
-          </FormControl>
-
-          {formData.fuente !== 'REE' ? (
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <MuiFileInput
-                id="ficheroCSV"
-                inputProps={{ accept: '.csv' }}
-                onChange={handleFile}
-                label={t('TipoConsumo.LABEL_nombreFicheroCSV')}
-                name="ficheroCSV"
-                value={formData.ficheroCSV}
-              />
-            </FormControl>
-          ) : (
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <TextField
-                id="consumoAnualREE"
-                ref={REE}
+              <SLDRInputField
+                name="nombreTipoConsumo"
                 type="text"
-                onChange={handleChange}
-                label={t('TipoConsumo.LABEL_consumoAnualREE')}
-                name="consumoAnualREE"
-                value={formData.consumoAnualREE}
+                object="TipoConsumo"
+                sx={{ flex: 1, mb: '1rem', textAlign: 'center' }}
               />
-            </FormControl>
-          )}
-        </Box>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleCancel} id="cancel">
-          {t('BASIC.LABEL_CANCEL')}
-        </Button>
-        <Button onClick={handleClose} id="save">
-          {t('BASIC.LABEL_OK')}
-        </Button>
-      </DialogActions>
-    </div>
+
+              <Typography
+                sx={{ mt: '1rem' }}
+                variant="body"
+                dangerouslySetInnerHTML={{
+                  __html: t('TipoConsumo.DESCRIPTION_fuente'),
+                }}
+              />
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <SLDRInputField
+                  sx={{ width: 200, height: 50 }}
+                  select
+                  //onChange={handleChange}
+                  value={values.fuente}
+                  name="fuente"
+                  defaultValue="CSV"
+                >
+                  <MenuItem value={'CSV'}>CSV</MenuItem>
+                  <MenuItem value={'DATADIS'}>DATADIS</MenuItem>
+                  <MenuItem value={'REE'}>REE</MenuItem>
+                </SLDRInputField>
+              </FormControl>
+
+              <Box
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                }}
+              >
+                {values.fuente !== 'REE' ? (
+                  <>
+                    <Field name="ficheroCSV">
+                      {({ field }) => (
+                        <FormControlLabel
+                          labelPlacement="start"
+                          control={
+                            <MuiFileInput
+                              {...field}
+                              size="small"
+                              sx={{ flex: 1, ml: '2rem' }}
+                              inputProps={{ accept: '.csv' }}
+                              onChange={(event) => handleFile(event, setValues)}
+                              value={values.ficheroCSV}
+                            />
+                          }
+                          label={t('TipoConsumo.LABEL_nombreFicheroCSV')}
+                        />
+                      )}
+                    </Field>
+                    <ErrorMessage name="ficheroCSV">
+                      {(msg) => <div style={{ color: 'red' }}>{msg}</div>}
+                    </ErrorMessage>
+                  </>
+                ) : (
+                  <SLDRInputField
+                    type="text"
+                    object="TipoConsumo"
+                    unit="kWh"
+                    label={t('TipoConsumo.LABEL_consumoAnualREE')}
+                    name="consumoAnualREE"
+                  />
+                )}
+              </Box>
+            </Box>
+          </DialogContent>
+          <DialogActions sx={{ mt: '1rem' }}>
+            <Button onClick={() => handleCancel(values)}>
+              {t('BASIC.LABEL_CANCEL')}
+            </Button>
+            <Button type="submit">{t('BASIC.LABEL_OK')}</Button>
+          </DialogActions>
+        </Form>
+      )}
+    </Formik>
   )
 }

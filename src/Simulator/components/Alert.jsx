@@ -1,32 +1,53 @@
-import * as React from 'react'
+import { createContext, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
+import { useDialog } from '../../components/DialogProvider'
 
-const Alert = ({ contents, onClose }) => {
-  const handleClose = () => {
-    onClose()
-  }
+const AlertContext = createContext()
 
-  console.log('AALLERT!')
-
+function BasicAlert(props) {
+  const { title, contents, type, onClose } = props
   return (
-    <div>
-      <DialogTitle id="alert-dialog-title">{contents.title}</DialogTitle>
+    <>
+      <DialogTitle>{type + '--' + title}</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {contents.description}
-        </DialogContentText>
+        <DialogContentText id="alert-dialog-description">{contents}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} autoFocus>
+        <Button onClick={onClose} variant="contained" color="primary">
           Agree
         </Button>
       </DialogActions>
-    </div>
+    </>
   )
 }
-export default Alert
+
+const AlertProvider = ({ children }) => {
+  const { t } = useTranslation()
+  const [openDialog, closeDialog] = useDialog()
+
+  function SLDRAlert(title, message, type) {
+    openDialog({
+      children: (
+        <BasicAlert
+          title={title}
+          contents={message}
+          type={type}
+          onClose={() => closeDialog()}
+        ></BasicAlert>
+      ),
+    })
+  }
+
+  const contextValue = {
+    SLDRAlert,
+  }
+  return <AlertContext.Provider value={contextValue}>{children}</AlertContext.Provider>
+}
+
+export { AlertContext, AlertProvider }
