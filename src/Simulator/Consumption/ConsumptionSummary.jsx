@@ -180,11 +180,13 @@ export default function ConsumptionSummary() {
         nuevoTipoConsumo.nombreFicheroCSV = formData.ficheroCSV.name
       }
       let idxTC = TCB.TipoConsumo.push(new TipoConsumo(nuevoTipoConsumo))
+      let cursorOriginal = document.body.style.cursor
 
       //Si se ha pasado un inputFile como argumento se carga
       if (formData.ficheroCSV !== '') {
         try {
           let cargaResPromise = new Promise((resolve) => {
+            document.body.style.cursor = 'progress'
             let res = cargaCSV(
               TCB.TipoConsumo[idxTC - 1],
               TCB.TipoConsumo[idxTC - 1].ficheroCSV,
@@ -202,13 +204,16 @@ export default function ConsumptionSummary() {
                 console.log('cargaCSV devolvio error ', respuesta)
                 TCB.TipoConsumo.splice(idxTC - 1, 1)
               }
+              document.body.style.cursor = cursorOriginal
             })
             .catch((error) => {
               console.log('cargaCSV catch ', error)
               TCB.TipoConsumo.splice(idxTC - 1, 1)
+              document.body.style.cursor = cursorOriginal
             })
         } catch (error) {
           alert(error)
+          document.body.style.cursor = cursorOriginal
           closeDialog()
         }
       }
