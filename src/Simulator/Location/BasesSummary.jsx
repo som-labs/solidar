@@ -98,7 +98,7 @@ export default function BasesSummary() {
         <GridActionsCellItem
           key={1}
           icon={
-            <Tooltip title={t('LOCATION.TOOLTIP_EDITA_BASE')}>
+            <Tooltip title={t('LOCATION.TOOLTIP_BORRA_BASE')}>
               <DeleteIcon />
             </Tooltip>
           }
@@ -108,7 +108,7 @@ export default function BasesSummary() {
         <GridActionsCellItem
           key={2}
           icon={
-            <Tooltip title={t('LOCATION.TOOLTIP_BORRA_BASE')}>
+            <Tooltip title={t('LOCATION.TOOLTIP_EDITA_BASE')}>
               <EditIcon />
             </Tooltip>
           }
