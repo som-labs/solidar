@@ -12,7 +12,7 @@ import EconomicContext from './EconomicContext'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
-import { FooterBox } from '../../components/SLDRComponents'
+import { SLDRFooterBox } from '../../components/SLDRComponents'
 
 export default function FinanceSummary() {
   const { t, i18n } = useTranslation()
@@ -27,7 +27,7 @@ export default function FinanceSummary() {
 
   function footerSummary() {
     return (
-      <FooterBox
+      <SLDRFooterBox
       // component="form"
       // sx={{
       //   display: 'flex',
@@ -54,7 +54,7 @@ export default function FinanceSummary() {
             TIR: UTIL.formatoValor('porciento', ecoData.TIRProyecto),
           })}
         </Typography>
-      </FooterBox>
+      </SLDRFooterBox>
     )
   }
   const columns = [

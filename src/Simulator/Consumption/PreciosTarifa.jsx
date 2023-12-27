@@ -1,20 +1,23 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect, Fragment, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Formik, Field, Form } from 'formik'
 
-import InputAdornment from '@mui/material/InputAdornment'
 import Grid from '@mui/material/Grid'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import TextField from '@mui/material/TextField'
 
+// REACT Solidar Components
+import { SLDRInputField } from '../../components/SLDRComponents'
+import { ConsumptionContext } from '../ConsumptionContext'
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 export default function PreciosTarifa() {
   const { t, i18n } = useTranslation()
-  const [precios, setPrecios] = useState([])
-  //const [nombreTarifaActiva, setNombreTarifaActiva] = useState(TCB.nombreTarifaActiva)
+  const { setPreciosValidos } = useContext(ConsumptionContext)
+
   const [nPrecios, setNPrecios] = useState()
   const [tipoTarifa, setTipoTarifa] = useState(TCB.tipoTarifa)
 
@@ -27,14 +30,9 @@ export default function PreciosTarifa() {
       setNPrecios(4)
     }
     TCB.tarifaActiva = TCB.tarifas[TCB.nombreTarifaActiva]
-    setPrecios(Object.entries(TCB.tarifaActiva.precios))
   }, [])
 
-  // useEffect(() => {
-  //   console.log(tipoTarifa, precios)
-  // }, [tipoTarifa])
-
-  const cambiaTipoTarifa = (event) => {
+  function cambiaTipoTarifa(event, setValues) {
     setTipoTarifa(event.target.value)
     TCB.tipoTarifa = event.target.value
 
@@ -46,68 +44,93 @@ export default function PreciosTarifa() {
       TCB.nombreTarifaActiva = TCB.tipoTarifa
       setNPrecios(4)
     }
-    console.log(TCB.nombreTarifaActiva)
 
     TCB.tarifaActiva = TCB.tarifas[TCB.nombreTarifaActiva]
-    console.log(TCB.tarifaActiva, TCB.tipoTarifa, TCB.nombreTarifaActiva)
-    setPrecios(Object.entries(TCB.tarifaActiva.precios))
+    setValues(TCB.tarifaActiva.precios)
   }
 
-  const cambiaPrecio = (posicion, nuevoValor) => {
-    if (UTIL.ValidateDecimal(i18n.language, nuevoValor)) {
-      let prevPrecios = [...precios]
-      prevPrecios[posicion][1] = nuevoValor //parseFloat(nuevoValor)
-      setPrecios(prevPrecios)
-      TCB.tarifaActiva.precios[posicion] = parseFloat(nuevoValor)
+  function cambiaPrecio(posicion, nuevoValor, values, setValues) {
+    let prevPrecios = [...values]
+    prevPrecios[posicion] = nuevoValor
+    setValues(prevPrecios)
+    TCB.tarifaActiva.precios[posicion] = parseFloat(nuevoValor.replace(',', '.'))
+  }
+
+  function validateFields(values) {
+    let errors = {}
+    setPreciosValidos(true)
+    for (let i = 0; i < nPrecios; i++) {
+      if (values[i] === '') {
+        errors[i] = 'Requerido'
+      } else {
+        if (typeof values[i] === 'string') {
+          if (!UTIL.ValidateDecimal(i18n.language, values[i])) {
+            errors[i] = 'Debe ser un número mayor o igual que cero'
+          }
+        }
+      }
     }
+    //PreciosValidos in ConsumptionContext is a flag to know if we can proceed to EnergyBalance
+    if (Object.keys(errors).length !== 0) setPreciosValidos(false)
+    return errors
   }
-  if (precios.length !== 0) {
-    return (
-      <>
-        <FormControl sx={{ m: 1, minWidth: 120 }}>
-          <TextField
-            sx={{ width: 200, height: 50, textAlign: 'center', mb: '1rem' }}
-            id="tarifa-simple-select"
-            select
-            label={t('TARIFA.LABEL_NOMBRE_TARIFA')}
-            onChange={cambiaTipoTarifa}
-            name="nombreTarifa"
-            value={tipoTarifa}
-          >
-            <MenuItem key={'A1'} value={'2.0TD'}>
-              2.0TD
-            </MenuItem>
-            <MenuItem key={'A2'} value={'3.0TD'}>
-              3.0TD
-            </MenuItem>
-          </TextField>
-        </FormControl>
 
-        <Grid container spacing={1} alignItems="center" justifyContent="space-evenly">
-          {precios.map((precioP) => (
-            <Fragment key={precioP[0]}>
-              {precioP[0] < nPrecios && (
-                <Grid item xs>
-                  <TextField
-                    sx={{ width: '100%', display: 'flex', flex: 1 }}
-                    type="text"
-                    value={precioP[1]}
-                    onChange={(ev) => cambiaPrecio(precioP[0], ev.target.value)}
-                    label={t('TARIFA.LABEL_P' + precioP[0])}
-                    name={precioP[0]}
-                    InputProps={{
-                      endAdornment: <InputAdornment position="start"> €</InputAdornment>,
-                      inputProps: {
-                        style: { textAlign: 'right' },
-                      },
-                    }}
-                  ></TextField>
-                </Grid>
-              )}
-            </Fragment>
-          ))}
-        </Grid>
-      </>
+  if (TCB.tarifaActiva.precios.length !== 0) {
+    return (
+      <Formik
+        initialValues={TCB.tarifaActiva.precios} //{precios}
+        validate={validateFields}
+      >
+        {({ values, setValues, setPreciosValidos }) => (
+          <Form>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <SLDRInputField
+                sx={{ width: 200, height: 50, textAlign: 'center', mb: '1rem' }}
+                select
+                label={t('TARIFA.LABEL_NOMBRE_TARIFA')}
+                onChange={(e) => cambiaTipoTarifa(e, setValues)}
+                name="nombreTarifa"
+                value={tipoTarifa}
+                object="TARIFA"
+              >
+                <MenuItem key={'A1'} value={'2.0TD'}>
+                  2.0TD
+                </MenuItem>
+                <MenuItem key={'A2'} value={'3.0TD'}>
+                  3.0TD
+                </MenuItem>
+              </SLDRInputField>
+            </FormControl>
+
+            <Grid container spacing={1} alignItems="center" justifyContent="space-evenly">
+              {values.map((precio, index) => (
+                <Fragment key={index}>
+                  {index < nPrecios && (
+                    <Grid item xs>
+                      <SLDRInputField
+                        unit=" €"
+                        object="TARIFA"
+                        value={precio.toLocaleString(i18n.language)} //{values[precioP[0]][1].toLocaleString(i18n.language)}
+                        onChange={(ev) =>
+                          cambiaPrecio(
+                            index,
+                            ev.target.value,
+                            values,
+                            setValues,
+                            setPreciosValidos,
+                          )
+                        }
+                        label={t('TARIFA.LABEL_P' + index)}
+                        name={String(index)}
+                      ></SLDRInputField>
+                    </Grid>
+                  )}
+                </Fragment>
+              ))}
+            </Grid>
+          </Form>
+        )}
+      </Formik>
     )
   }
 }

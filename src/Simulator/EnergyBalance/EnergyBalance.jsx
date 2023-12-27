@@ -16,12 +16,13 @@ import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 // REACT Solidar Components
-import InputContext from '../InputContext'
+
+import { BasesContext } from '../BasesContext'
 import EconomicContext from '../EconomicBalance/EconomicContext'
 import calculaResultados from '../classes/calculaResultados'
 import ConsumoGeneracion3D from './ConsumoGeneracion3D'
 import EnergyFlow from './EnergyFlow'
-import { FooterBox, InfoBox } from '../../components/SLDRComponents'
+import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
 import MonthThreeParts from './MonthThreeParts'
 import MonthEnergyBalance from './MonthEnergyBalance'
 import EnvironmentalImpact from './EnvironmentalImpact'
@@ -36,7 +37,7 @@ export default function EnergyBalanceStep() {
   const [monthlyConsumoProduccion, setMonthlyConsumoProduccion] = useState({})
   const [openDialog, closeDialog] = useDialog()
 
-  const { bases, setBases } = useContext(InputContext)
+  const { bases, setBases } = useContext(BasesContext)
   const { setEcoData } = useContext(EconomicContext)
 
   // const [gridRows, setGridRows] = useState(rows)
@@ -141,7 +142,7 @@ export default function EnergyBalanceStep() {
 
   function footerSummary() {
     return (
-      <FooterBox>
+      <SLDRFooterBox>
         <Typography variant="h5">
           {t('ENERGY_BALANCE.TOTAL_PANELS', {
             paneles: Math.round(
@@ -149,7 +150,7 @@ export default function EnergyBalanceStep() {
             ),
           })}
         </Typography>
-      </FooterBox>
+      </SLDRFooterBox>
     )
   }
 
@@ -211,6 +212,7 @@ export default function EnergyBalanceStep() {
       consumo: TCB.consumo.resumenMensual('suma'),
       produccion: TCB.produccion.resumenMensual('suma'),
     })
+
     setEcoData(TCB.economico)
   }, [bases])
 
@@ -257,7 +259,7 @@ export default function EnergyBalanceStep() {
       return a + b.paneles
     }, 0)
 
-    //Update bases in InputContext
+    //Update bases in BasesContext
     const updateBases = bases.map((row) => {
       if (row.idBaseSolar === params.id) {
         return {
@@ -303,7 +305,7 @@ export default function EnergyBalanceStep() {
           <br />
           <Typography variant="body">{t('Tabla bases asignadas')}</Typography>
 
-          <InfoBox>
+          <SLDRInfoBox>
             <DataGrid
               getRowId={getRowId}
               autoHeight
@@ -315,16 +317,16 @@ export default function EnergyBalanceStep() {
               hideFooter={false}
               slots={{ footer: footerSummary }}
             />
-          </InfoBox>
+          </SLDRInfoBox>
         </Box>
 
-        <InfoBox>
+        <SLDRInfoBox>
           <ConsumoGeneracion3D></ConsumoGeneracion3D>
-        </InfoBox>
+        </SLDRInfoBox>
         {/* </Box> */}
-        <InfoBox>
+        <SLDRInfoBox>
           <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
-        </InfoBox>
+        </SLDRInfoBox>
         <CollapsibleCard
           title={t('BASIC.LABEL_AVISO')}
           titleVariant="body"
@@ -333,17 +335,17 @@ export default function EnergyBalanceStep() {
           descriptionSX={{ fontSize: '15px' }}
           description={t('ENERGY_BALANCE.MSG_disclaimerProduccion')}
         ></CollapsibleCard>
-        <InfoBox>
+        <SLDRInfoBox>
           <MonthEnergyBalance
             monthlyConsumoProduccion={monthlyConsumoProduccion}
           ></MonthEnergyBalance>
-        </InfoBox>
-        <InfoBox>
+        </SLDRInfoBox>
+        <SLDRInfoBox>
           <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>
-        </InfoBox>
-        <InfoBox>
+        </SLDRInfoBox>
+        <SLDRInfoBox>
           <EnvironmentalImpact></EnvironmentalImpact>
-        </InfoBox>
+        </SLDRInfoBox>
       </Container>
     </>
   )

@@ -27,7 +27,7 @@ export default function ProfileDay(diaActivo) {
     y: TCB.consumo.diaHora[indexDay],
     type: 'scatter',
     showlegend: true,
-    name: TCB.i18next.t('GRAPHICS.LABEL_CONSUMPTION'),
+    name: t('GRAPHICS.LABEL_CONSUMPTION'),
     line: { shape: 'spline', width: 3, color: 'rgb(0,0,255' },
     fill: 'tozeroy',
   }
@@ -36,7 +36,7 @@ export default function ProfileDay(diaActivo) {
     y: TCB.produccion.diaHora[indexDay],
     type: 'scatter',
     showlegend: true,
-    name: TCB.i18next.t('GRAPHICS.LABEL_PRODUCTION'),
+    name: t('GRAPHICS.LABEL_PRODUCTION'),
     line: { shape: 'spline', width: 3, color: 'rgb(0,255,0' },
     fill: 'tozeroy',
   }

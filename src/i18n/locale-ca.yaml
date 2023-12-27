@@ -44,7 +44,8 @@ LOCATION:
   ERROR_NOMINATIM_FETCH: Error en executar fecth a Nominatim. \n {{err}} \n {{url}}
   ERROR_TERRITORIO: L’aplicació només és vàlida per a Espanya
 
-  botonBorraBase_TT: Suprimeix la base seleccionada
+  TOOLTIP_BORRA_BASE: Suprimeix la base seleccionada
+
   posicionLonLat_LBL: Long-Lat
   posicionLonLat_TT: No cal omplir aquest camp només es fa servir per centrar el mapa en aquestes coordenades
 
@@ -122,7 +123,7 @@ CONSUMPTION:
 TARIFA:
   territorio_LBL: Territori
   LABEL_NOMBRE_TARIFA: Nom tarifa
-  TOOLTIP__NOMBRE_TARIFA: El tipus de tarifa contractada amb l'empresa comercialitzadora
+  TOOLTIP_nombreTarifa: El tipus de tarifa contractada amb l'empresa comercialitzadora
   LABEL_P0: Preu compensació excedents
   LABEL_P1: Tarifa P1
   LABEL_P2: Tarifa P2
@@ -130,16 +131,18 @@ TARIFA:
   LABEL_P4: Tarifa P4
   LABEL_P5: Tarifa P5
   LABEL_P6: Tarifa P6
-  consumo_TT_descripcionTarifaP1: Tarifa P1 o punta (la més cara en 2.0TD)
-  consumo_TT_descripcionTarifaP2: Tarifa P2 o vall (la intermèdia en 2.0TD)
-  consumo_TT_descripcionTarifaP3: Tarifa P3 o llano (la més barata en 2.0TD)
-  consumo_TT_descripcionTarifaP4: Tarifa p4
-  consumo_TT_descripcionTarifaP5: Tarifa P5
-  consumo_TT_descripcionTarifaP6: Tarifa P6
+  TOOLTIP_0: Indica el preu en euros sense IVA amb què la comercialitzadora paga l'electricitat no consumida
+  TOOLTIP_1: Tarifa P1 o punta (la més cara en 2.0TD)
+  TOOLTIP_2: Tarifa P2 o vall (la intermèdia en 2.0TD)
+  TOOLTIP_3: Tarifa P3 o llano (la més barata en 2.0TD)
+  TOOLTIP_4: Tarifa p4
+  TOOLTIP_5: Tarifa P5
+  TOOLTIP_6: Tarifa P6
+
   consumo_TT_valorTarifa: Indica el preu en euros sense IVA d'aquesta tarifa
   consumo_LBL_compensa: Compensa
   consumo_TT_compensa: Tarifa de compensació
-  consumo_TT_valorCompensa: Indica el preu en euros sense IVA amb què la comercialitzadora paga l'electricitat no consumida
+  consumo_TT_valorCompensa:
 
 ENERGY_BALANCE:
   TITLE: Balanç energètic
@@ -194,6 +197,10 @@ SUMMARY:
   TITLE: Resum
   DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
 
+BASIC:
+  main_TAB_cerrar: Tanca
+  main_TAB_noMostrarMas: No torneu a mostrar aquest missatge
+
 GRAPHICS:
   LABEL_CONSUMPTION: Consum
   LABEL_PRODUCTION: Producción
@@ -238,17 +245,6 @@ OBJECT:
   Tarifa: Tarifa
   ficheroCSV: Fitxer font
   Economico: Resum econòmic
-
-CABECERA: CABECERA
-main_LBL_titulo: Simulador de producció fotovoltaica
-main_LBL_titulo_INDIVIDUAL: Simulador de producció fotovoltaica individual
-main_LBL_titulo_COLECTIVO: Simulador de producció fotovoltaica col·lectiu
-main_LBL_titulo_COMUNIDAD: Simulador de producció fotovoltaica comunitari
-main_TAB_bienvenida: Benvinguda
-
-Modales: Formularios modales
-main_TAB_cerrar: Tanca
-main_TAB_noMostrarMas: No torneu a mostrar aquest missatge
 
 PARAMETROS:
   DIALOG_TITLE: Paràmetres de l'aplicació

@@ -1,78 +1,64 @@
 import { useTranslation } from 'react-i18next'
-import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { Formik, Field, Form } from 'formik'
 
 // MUI objects
 import {
   Box,
   Typography,
   Button,
-  FormControl,
   FormControlLabel,
-  Input,
   InputLabel,
   FormLabel,
   RadioGroup,
   Radio,
 } from '@mui/material'
-import { TextareaAutosize as BaseTextareaAutosize } from '@mui/base/TextareaAutosize'
-import { styled } from '@mui/material/styles'
+import { SLDRInputField } from '../../components/SLDRComponents'
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
 
 export default function DialogContact({ initialData, recoverFormData, onClose }) {
-  const theme = useTheme()
-
-  const TextareaAutosize = styled(BaseTextareaAutosize)(() => ({
-    width: '100%',
-    fontFamily: theme.typography.fontFamily,
-    fontSize: theme.typography.fontSize,
-    lineHeight: '1.5',
-    padding: '8px 12px',
-    borderRadius: '8px',
-    color: 'grey',
-    border: '1px solid grey',
-    boxShadow: '0px 2px 2px grey',
-  }))
-
   const { t } = useTranslation()
 
-  const validate = (values) => {
+  const validateFields = (values) => {
     const errors = {}
-    if (values.nombre == '') {
+
+    if (!values.nombre) {
       errors.nombre = 'Requerido'
+      return errors
     }
 
     if (!values.email) {
       errors.email = 'Requerido'
+      return errors
     } else {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (!emailPattern.test(values.email)) errors.email = 'Invalid email address'
+      if (!emailPattern.test(values.email)) {
+        errors.email = 'Formato de email incorrecto'
+        return errors
+      }
     }
 
+    //Pattern for Spanish phone numbers (landline or mobile)
     if (values.telefono) {
-      //Pattern for Spanish phone numbers (landline or mobile)
       const patternSpain = /^(?:(?:\+|00)34)?[6-9]\d{8}$/
-      //Check if the phone number matches the pattern
-      if (!patternSpain.test(values.telefono))
+      if (!patternSpain.test(values.telefono)) {
         errors.telefono = 'No es un número de teléfono correcto, verificalo por favor'
+        return errors
+      }
     }
 
     if (values.mensaje == '') {
       errors.mensaje = 'Requerido'
+      return errors
     }
-
     return errors
   }
 
   return (
     <Formik
       initialValues={initialData}
-      validate={validate}
-      onSubmit={(values, actions) => {
-        //actions.setSubmitting(true)
-        console.log(JSON.stringify(values, null, 2))
+      validate={validateFields}
+      onSubmit={(values) => {
         recoverFormData(values)
-        //actions.setSubmitting(false)
       }}
     >
       <Form>
@@ -84,6 +70,7 @@ export default function DialogContact({ initialData, recoverFormData, onClose })
               flexWrap: 'wrap',
               flexDirection: 'column',
               flex: 1,
+              padding: '5px',
             }}
           >
             <Typography variant="body" align="center">
@@ -91,29 +78,31 @@ export default function DialogContact({ initialData, recoverFormData, onClose })
             </Typography>
 
             <InputLabel htmlFor="nombre">{t('CONTACTO.LABEL_nombre')}</InputLabel>
-
-            <Field name="nombre" as={Input} className="inputField"></Field>
-            <ErrorMessage name="nombre">
-              {(msg) => <div style={{ color: 'red' }}>{msg}</div>}
-            </ErrorMessage>
+            <SLDRInputField
+              id="nombre"
+              name="nombre"
+              object="CONTACTO"
+              sx={{ textAlign: 'left', width: '100%' }}
+            ></SLDRInputField>
 
             <InputLabel htmlFor="email">{t('CONTACTO.LABEL_email')}</InputLabel>
-            <Field name="email" as={Input}></Field>
-            <ErrorMessage name="email">
-              {(msg) => <div style={{ color: 'red' }}>{msg}</div>}
-            </ErrorMessage>
+            <SLDRInputField
+              name="email"
+              object="CONTACTO"
+              sx={{ textAlign: 'left', width: '100%' }}
+            ></SLDRInputField>
 
             <InputLabel htmlFor="telefono">{t('CONTACTO.LABEL_telefono')}</InputLabel>
-            <Field name="telefono" as={Input}></Field>
-            <ErrorMessage name="telefono">
-              {(msg) => <div style={{ color: 'red' }}>{msg}</div>}
-            </ErrorMessage>
+            <SLDRInputField
+              name="telefono"
+              object="CONTACTO"
+              sx={{ textAlign: 'left' }}
+            ></SLDRInputField>
 
-            <FormControl></FormControl>
             <FormLabel id="demo-radio-buttons-group-label">
               {t('CONTACTO.LABEL_tipoPropuesta')}
             </FormLabel>
-            <Field name="gridRadios">
+            <Field name="gridRadios" object="CONTACTO">
               {({ field }) => (
                 <RadioGroup
                   {...field}
@@ -152,34 +141,28 @@ export default function DialogContact({ initialData, recoverFormData, onClose })
               }}
             />
             <FormLabel>
-              <Field type="checkbox" name="mantenerContacto" />
+              <SLDRInputField
+                MUIType="Checkbox"
+                name="mantenerContacto"
+                object="CONTACTO"
+              />
               {t('CONTACTO.LABEL_respuesta')}
             </FormLabel>
 
-            {/* //REVISAR: como hacer para que respete el font */}
-            <ErrorMessage name="mensaje">
-              {(msg) => <div style={{ color: 'red' }}>{msg}</div>}
-            </ErrorMessage>
-            <Field name="mensaje">
-              {({ field }) => (
-                <TextareaAutosize
-                  {...field}
-                  aria-label="mensaje"
-                  placeholder={t('CONTACTO.LABEL_mensaje')}
-                  minRows={3}
-                  /*   style={{
-                      width: '100%', // Adjust the width as needed
-                      padding: '8px', // Adjust padding
-                      // fontSize: '16px', // Adjust font size
-                      resize: 'vertical', // Allow vertical resizing only
-                      '&:focus': {
-                        outline: 'none', // Remove outline on focus
-                        border: '1px solid red', // Adjust border on focus
-                      },
-                    }} */
-                />
-              )}
-            </Field>
+            <SLDRInputField
+              name="mensaje"
+              style={{
+                textAlign: 'left',
+                width: '100%',
+                fontFamily: 'inherit',
+                fontSize: 'inherit',
+              }}
+              MUIType="TextareaAutosize"
+              aria-label="mensaje"
+              placeholder={t('CONTACTO.LABEL_mensaje')}
+              minRows={3}
+              object="CONTACTO"
+            ></SLDRInputField>
           </Box>
         </DialogContent>
         <DialogActions>

@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import Typography from '@mui/material/Typography'
+import { Typography, Tooltip } from '@mui/material'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
@@ -11,7 +11,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import { BasesContext } from '../BasesContext'
 import DialogNewBaseSolar from './DialogNewBaseSolar'
 import { useDialog } from '../../components/DialogProvider'
-import { FooterBox, InfoBox } from '../../components/SLDRComponents'
+import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -93,17 +93,26 @@ export default function BasesSummary() {
     {
       field: 'actions',
       type: 'actions',
+      sortable: false,
       getActions: (params) => [
         <GridActionsCellItem
           key={1}
-          icon={<DeleteIcon />}
+          icon={
+            <Tooltip title={t('LOCATION.TOOLTIP_EDITA_BASE')}>
+              <DeleteIcon />
+            </Tooltip>
+          }
           label="Delete"
           onClick={() => deleteBaseSolar(params.id)}
         />,
         <GridActionsCellItem
           key={2}
-          icon={<EditIcon />}
-          label="Delete"
+          icon={
+            <Tooltip title={t('LOCATION.TOOLTIP_BORRA_BASE')}>
+              <EditIcon />
+            </Tooltip>
+          }
+          label="Edit"
           onClick={() => editBaseSolar(params.id)}
         />,
       ],
@@ -146,10 +155,9 @@ export default function BasesSummary() {
 
   function footerSummary() {
     // PENDIENTE: Cual debería ser el colorbackground de los boxes con informacion relevante */
-
     //REVISAR: porque no funciona el className
     return (
-      <FooterBox>
+      <SLDRFooterBox>
         <Typography
           variant="h6"
           textAlign={'center'}
@@ -166,7 +174,7 @@ export default function BasesSummary() {
             }),
           }}
         />
-      </FooterBox>
+      </SLDRFooterBox>
     )
   }
 
@@ -174,7 +182,7 @@ export default function BasesSummary() {
     <>
       <Typography variant="h3">{t('LOCATION.LABEL_BASES_SUMMARY')}</Typography>
       <Typography variant="body">{t('LOCATION.PROMPT_BASES_SUMMARY')}</Typography>
-      <InfoBox>
+      <SLDRInfoBox>
         {bases && (
           <DataGrid
             getRowId={getRowId}
@@ -189,7 +197,7 @@ export default function BasesSummary() {
             slots={{ footer: footerSummary }}
           />
         )}
-      </InfoBox>
+      </SLDRInfoBox>
     </>
   )
 }

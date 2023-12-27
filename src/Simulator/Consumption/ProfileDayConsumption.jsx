@@ -12,7 +12,6 @@ import * as UTIL from '../classes/Utiles'
 
 export default function ProfileDayConsumption(data) {
   const { t } = useTranslation()
-  console.log(data)
   const [consumo] = useState(data.consumo)
 
   if (data.diaActivo === undefined) return <></>

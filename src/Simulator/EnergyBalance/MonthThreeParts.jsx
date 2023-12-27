@@ -33,7 +33,7 @@ export default function MonthThreeParts(props) {
 
   const i18nextMes = () => {
     let _mes = []
-    for (let i = 0; i < 12; _mes.push(TCB.i18next.t(UTIL.nombreMes[i++])));
+    for (let i = 0; i < 12; _mes.push(t(UTIL.nombreMes[i++])));
     return _mes
   }
   const mesMapa = Array.from(i18nextMes())
@@ -41,21 +41,21 @@ export default function MonthThreeParts(props) {
   const trace_excedente = {
     x: mesMapa,
     y: excedente,
-    name: TCB.i18next.t('GRAFICOS.LABEL_graficasExcedente'),
+    name: t('GRAFICOS.LABEL_graficasExcedente'),
     type: 'bar',
   }
 
   const trace_deficit = {
     x: mesMapa,
     y: deficit,
-    name: TCB.i18next.t('GRAFICOS.LABEL_graficasDeficit'),
+    name: t('GRAFICOS.LABEL_graficasDeficit'),
     type: 'bar',
   }
 
   const trace_autoconsumo = {
     x: mesMapa,
     y: autoconsumo,
-    name: TCB.i18next.t('GRAFICOS.LABEL_graficasAutoconsumo'),
+    name: t('GRAFICOS.LABEL_graficasAutoconsumo'),
     type: 'bar',
   }
 

@@ -11,7 +11,7 @@ import DialogContact from './DialogContact'
 //Solidar objects
 import TCB from '../classes/TCB'
 
-export default function Contact() {
+export default function ContactMenu() {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
 
@@ -28,21 +28,29 @@ export default function Contact() {
 
   async function sendEmail(message) {
     // Convert the object to a query string
-    const queryString = Object.keys(message)
-      .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(message[key])}`)
-      .join('&')
+    // const queryString = Object.keys(message)
+    //   .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(message[key])}`)
+    //   .join('&')
 
     if (TCB.modoActivo === 'DESARROLLO')
       TCB.basePath = 'http://localhost/SOM/REACT/solidar/src/Simulator/'
 
     // URL of the PHP file including the query string
-    const phpFileURL = TCB.basePath + `contacto.php?${queryString}`
-    console.log(phpFileURL)
-
+    // const phpFileURL = TCB.basePath + `contacto.php?${queryString}`
+    // console.log(phpFileURL)
     // Fetch request to the PHP file
-    fetch(phpFileURL)
+    //fetch(phpFileURL)
+
+    await fetch(TCB.basePath + 'contacto.php?', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', // Set the content type to JSON
+      },
+      body: JSON.stringify(message),
+    })
       .then((response) => {
         if (!response.ok) {
+          console.log(response)
           throw new Error('Network response was not ok.')
         }
         return response.text() // or response.json() if expecting JSON data

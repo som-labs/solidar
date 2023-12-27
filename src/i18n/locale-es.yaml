@@ -39,19 +39,23 @@ LOCATION:
     En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.<br />
     A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.<br />
     Su rendimiento se calcula a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).<br />
+
   DESCRIPTION_ADDRESS: En estos campos puedes introducir un localizador (region, ciudad, dirección) que te permitirá posicionar el mapa en la zona de trabajo deseada.
   PROMPT_ADDRESS: Busca la dirección del edificio
   PROMPT_CANDIDATE: Seleccione la dirección que corresponda de la lista
   TOOLTIP_ADDRESS: A medida que escribas tendrás candidatos para seleccionar
+
   PROMPT_DRAW: |
     Dibuja en el mapa las áreas disponibles del edificio. En caso de alternativas, puedes dibujar tantas áreas como quieras. El sistema distribuirá los paneles de la forma mas eficiente.<br />
     En caso de instalación coplanar en tejado inclinado, los dos primeros puntos serán considerados la cumbrera (la parte alta del tejado)
   LABEL_SATELITE: Vista satélite
   LABEL_VECTOR: Vista mapa
   TOOLTIP_MAP_TYPE: Permite intercambiar entre vista satélite o mapa
+
   TITLE_DIALOG_NEW_BASE: Nueva base solar
   HORIZONTAL_ROOF: En el caso de tejado horizontal te propondremos el ángulo óptimo de  los paneles al finalizar el cálculo.
   ERROR_COPLANAR_NOANGLE: 'Instalación coplanar con tejado a 0º de inclinación?'
+
   LABEL_BASES_SUMMARY: Resumen
   PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
   ERROR_DEFINE_BASE: Debe definir las bases solares antes de continuar
@@ -61,7 +65,9 @@ LOCATION:
   ERROR_NOMINATIM_FETCH: Error ejecutando fecth en Nominatim.\n {{err}} \n {{url}}
   ERROR_TERRITORIO: La aplicación solo es valida para España
 
-  botonBorraBase_TT: Borra la base seleccionada
+  TOOLTIP_BORRA_BASE: Borra la base seleccionada
+  TOOLTIP_EDITA_BASE: Modifica la base seleccionada
+
   posicionLonLat_LBL: Long-Lat
   posicionLonLat_TT: No hace falta rellenar este campo solo se utiliza para centrar el mapa en estas coordenadas
 
@@ -69,7 +75,8 @@ BaseSolar:
   DESCRIPTION_roofType: Indicanos cúal es la configuracion de tu tejado<br />
   LABEL_roofType: Tipo de montaje
   LABEL_nombreBaseSolar: Nombre de la base solar
-  TOOLTIP_nombreBaseSolar: Identica el nombre de esta base para futuras referencias
+  DESCRIPTION_nombreBaseSolar: En caso de que exista mas de un área donde instalar los paneles solares es bueno identificar cada una de ellas con un nombre
+  TOOLTIP_nombreBaseSolar: Identifica el nombre de esta base para futuras referencias
   LABEL_angulosOptimos: Angulos óptimos
   TOOLTIP_angulosOptimos: Marque este campo si desea que el sistema calcule el valor óptimo de inclinación y acimut
   DESCRIPTION_angulosOptimos: En este caso la aplicación te propondrá la mejor orientación geográfica (acimut) e inclinación de los paneles de modo que se obtenga el máximo rendimiento de la instalación.
@@ -104,6 +111,7 @@ TipoConsumo:
   TOOLTIP_nombreTipoConsumo: Identique el nombre de este consumo para futuras referencias
   LABEL_fuente: Fuente
   TOOLTIP_fuente: Seleccione el tipo de fuente desde donde se cargará el perfil de consumo
+  DESCRIPTION_fuente: "Existen tres formas de proveer la información del perfil de consumo <li>CSV-> un fichero con valores separados por punto y coma obtenido desde la web de tu empresa distribuidora.<a href='./datos/Enlaces para descarga CSV individual.htm 'target='_blank'> Ver instrucciones aquí </a></li><li>REE-> utilizando el perfil estandar de REE según <a href='https//www.ree.es/es/clientes/generador/gestion-medidas-electricas/consulta-perfiles-de-consumo' target='_blank'> perfiles finales de consumo a partir de los perfiles iniciales en función de la demanda real del sistema</a> y el consumo anual estimado de la instalación</li><li>DATADIS-> un fichero obtenido de la plataforma de las empresas distribuidoras llamada <a href: 'https: //datadis.es/home' target='_blank'>DATADIS</a></li><p>Debes elegir una u otra según la información que dispongas.</p>"
   LABEL_nombreFicheroCSV: Nombre fichero fuente
   TOOLTIP_nombreFicheroCSV: Nombre fichero fuente seleccionado
   LABEL_consumoAnualREE: Consumo anual REE
@@ -131,6 +139,7 @@ CONSUMPTION:
   LABEL_MAPA_CONSUMO_MES_HORA: 'Máximo valor: {{maxConsumoMes}} kWh'
 
   TITLE_MAP_MONTH_DAY: Valores diarios de consumo
+  TOOLTIP_MAP_MONTH_DAY: Gráfico interactivo. Clica en un punto y verás el perfil horario de consumo de ese dia.
   DESC_MAP_MONTH_DAY: |
     El consumo por horas varia depenediendo si se trata de un dia festivo o laboral. Los dias loborables hay un consumo mínimo durante las horas de trabajo, a no ser que teletrabajes.<br />
     También varia según las estaciones del año y la zona geográfica. En el norte de España en invierno, el pico de consumo estña en las horas del amanecer y del anochecer con la calefacción, mientras que en el sur de España en verano el pico de consumo se encuentra e medio dia, por el aire acondicionado.<br />
@@ -163,7 +172,7 @@ CONSUMPTION:
   botonSeleccionFichero_TT: Seleccione el fichero de consumo
   consumo_MSG_ayudaTipoConsumoHdr: Ayuda definición tipo de consumo
   consumo_MSG_hayFincasAsociadas: No se puede borrar un tipo de consumo que tiene fincas asociadas
-  consumo_MSG_descripcionFuentes: "Existen tres formas de proveer la información del perfil de consumo <li>CSV-> un fichero con valores separados por punto y coma obtenido desde la web de tu empresa distribuidora.<a href='./datos/Enlaces para descarga CSV individual.htm 'target='_blank'> Ver instrucciones aquí </a></li><li>REE-> utilizando el perfil estandar de REE según <a href='https//www.ree.es/es/clientes/generador/gestion-medidas-electricas/consulta-perfiles-de-consumo' target='_blank'> perfiles finales de consumo a partir de los perfiles iniciales en función de la demanda real del sistema</a> y el consumo anual estimado de la instalación</li><li>DATADIS-> un fichero obtenido de la plataforma de las empresas distribuidoras llamada <a href: 'https: //datadis.es/home' target='_blank'>DATADIS</a></li><p>Debes elegir una u otra según la información que dispongas.</p>"
+
   consumo_MSG_errorLecturaFicheroConsumo: Error de lectura fichero CSV de consumos
   consumo_MSG_errorCabeceras: Error formato CSV falta cabecera {{cabeceras}}
   consumo_MSG_resumen: '{{registros}} registros de consumo cargados desde {{desde}} hasta {{hasta}}'
@@ -175,7 +184,7 @@ TARIFA:
     Para evaluar los posibles beneficios económicos que pudieras obtener de la instalación de los paneles necesitamos conocer tu tarifa y los precios por tramos horarios de tu comercializadora.Necesitamos conocer tambien el precio de compensación por excedentes de tu comercializadora para calcular parte del ahorro en la factura. Recuerda que tu factura no será en ningún momento de un importe positivo.
   territorio_LBL: Territorio
   LABEL_NOMBRE_TARIFA: Nombre de la tarifa
-  TOOLTIP__NOMBRE_TARIFA: El tipo de tarifa contratada con la compañía comercializadora
+  TOOLTIP_nombreTarifa: El tipo de tarifa contratada con la compañía comercializadora
   LABEL_P0: Compensación Excedentes
   LABEL_P1: Tarifa P1
   LABEL_P2: Tarifa P2
@@ -184,18 +193,13 @@ TARIFA:
   LABEL_P5: Tarifa P5
   LABEL_P6: Tarifa P6
   DIALOG_PRECIOS: Tarifa {{tarifa}} - Precios
-  LABEL_BUTTON_SHOW_PRICES: Precios
-  TOOLTIP_BUTTON_SHOW_PRICES: Muestra precios de tarifa
-  consumo_TT_descripcionTarifaP1: Tarifa P1 o punta (la más cara en 2.0TD)
-  consumo_TT_descripcionTarifaP2: Tarifa P2 o valle (la intermedia en 2.0TD)
-  consumo_TT_descripcionTarifaP3: Tarifa P3 o llano (la más barata en 2.0TD)
-  consumo_TT_descripcionTarifaP4: Tarifa P4
-  consumo_TT_descripcionTarifaP5: Tarifa P5
-  consumo_TT_descripcionTarifaP6: Tarifa P6
-  consumo_TT_valorTarifa: Indíquese el precio en euros sin IVA de esta tarifa
-  consumo_LBL_compensa: Compensa
-  consumo_TT_compensa: Tarifa de compensación
-  consumo_TT_valorCompensa: Indíquese el precio en euros sin IVA con los que la comercializadora paga la electricidad no consumida
+  TOOLTIP_0: Indíquese el precio en euros sin IVA con los que la comercializadora paga la electricidad no consumida
+  TOOLTIP_1: Tarifa P1 o punta (la más cara en 2.0TD)
+  TOOLTIP_2: Tarifa P2 o valle (la intermedia en 2.0TD)
+  TOOLTIP_3: Tarifa P3 o llano (la más barata en 2.0TD)
+  TOOLTIP_4: Tarifa P4
+  TOOLTIP_5: Tarifa P5
+  TOOLTIP_6: Tarifa P6
 
 ENERGY_BALANCE:
   TITLE: Balance de Energía
@@ -204,8 +208,8 @@ ENERGY_BALANCE:
     (i) Los paneles se asignan primero a las áreas más eficientes desde el punto de vista de rendimiento energético.<br />
     En la siguiente tabla puedes cambiar el número de paneles en cada área individualmente.
 
-  TITLE_GRAFICO_CONSUMOGENERACION3D: Gráfico resumen de consumos versus producción
-
+  TITLE_GRAFICO_CONSUMOGENERACION3D: Gráfico resumen de consumos y producción
+  TOOLTIP_GRAFICO_CONSUMOGENERACION3D: Gráfico interactivo. Clica en un punto y verás el perfil horario de producción y consumo de ese dia.
   TOTAL_PANELS: 'Número total de paneles: {{paneles}}'
   FLOW_TITLE: ¿A dónde va la electricidad producida por los paneles?
   FLOW_DESCRIPTION: |
@@ -347,6 +351,8 @@ BASIC:
   LABEL_CANCEL: Cancelar
   LABEL_SEND: Enviar
   LABEL_AVISO: Aviso
+  main_TAB_cerrar: Cerrar
+  main_TAB_noMostrarMas: No volver a mostrar este mensaje
 
 GRAPHICS:
   LABEL_CONSUMPTION: Consumo
@@ -380,15 +386,6 @@ OBJECT:
   Tarifa: Tarifa
   ficheroCSV: Fichero fuente
   Economico: Resumen Económico
-CABECERA:
-  main_LBL_titulo: Simulador de producción fotovoltaica
-  main_LBL_titulo_INDIVIDUAL: Simulador de producción fotovoltaica individual
-  main_LBL_titulo_COLECTIVO: Simulador de producción fotovoltaica colectivo
-  main_LBL_titulo_COMUNIDAD: Simulador de producción fotovoltaica comunitario
-  main_TAB_bienvenida: Bienvenida
--Modales:
-  main_TAB_cerrar: Cerrar
-  main_TAB_noMostrarMas: No volver a mostrar este mensaje
 
 PARAMETROS:
   DIALOG_TITLE: Parametros de la aplicación
@@ -510,7 +507,8 @@ RENDIMIENTO:
   acimut_LBL: Acimut de la base
   unitarioTotal_LBL: Energia anual / kWp instalado
   unitarioTotal_TT: Energia anual producida por cada kWp instalado
-  ERROR_PVGIS_FETCH: Error ejecutando fecth en PVGIS.\n{{err}} \n {{url}}
+  MSG_ERROR_PVGIS_FETCH: Error ejecutando fecth en PVGIS.({{err}}) -- ({{url}})
+  MSG_BASE_SIN_RENDIMIENTO: Ha habido un problema obteniendo datos de PVGIS para la base {{nombre }}. No se puede continuar.
 
 Balance:
   LABEL_excedenteAnual: Excedente
@@ -580,15 +578,16 @@ Economico:
   economico_MSG_disclaimerPrecioInstalacion: En la estimación del coste de la instalación está repercutida la mano de obra y materiales. No están incluidos ni las tasas e impuestos municipales (ICIO) ni la obra civil y maquinaria de elevación (si fueran necesarias) ni las modificaciones que la distribuidora o la Administración exigiera tras comprobar la instalación realizada
   economico_MSG_disclaimerPrecioInstalacionHdr: Aviso sobre el coste de instalación
 
-  LABEL_gastoSinPlacasAnual: Gasto anual sin placas
+  LABEL_GASTO_AHORRO: Datos gasto y ahorro anuales
+  LABEL_gastoSinPlacasAnual: Sin placas
   TOOLTIP_gastoSinPlacasAnual: El gasto anual en electricidad sin paneles solares. Solo se tiene en cuenta la parte variable de la factura
-  LABEL_gastoConPlacasAnual: Gasto anual con placas
+  LABEL_gastoConPlacasAnual: Con placas
   TOOLTIP_gastoConPlacasAnual: El gasto anual estimado en electricidad con paneles solares. Sólo se tiene en cuenta la parte variable de la factura
   LABEL_ahorroAnualPorciento: Ahorro anual / gasto original
   TOOLTIP_ahorroAnualPorciento: Ahorro anual en relación al gasto original
   LABEL_ahorroAnual: Ahorro anual
   TOOLTIP_ahorroAnual_TT: Diferencia gasto anual en electricidad con y sin paneles solares
-  LABEL_noCompensadoAnual: Coste energía no compensada
+  LABEL_noCompensadoAnual: No compensada
   TOOLTIP_noCompensadoAnual: El importe de la energía excedentaria que la comercializadora no compensará.\nLa ley (RD 244/2019) no permite que al consumidor se le abone ningún importe cuando el balance entre el coste de la energía sobrante y el de lo consumido de cualquier día resultara favorable al consumidor.\nSuele suceder cuando se instalan más paneles de los aconsejables cuando se consume muy por debajo de lo habitual (en vacaciones) o cuando el precio de compensación de la comercializadora fuera alto (muy improbable).
   LABEL_valorSubvencionEU: Valor de la subvención EU
   LABEL_tipoSubvencionEU: Tipo subvención EU

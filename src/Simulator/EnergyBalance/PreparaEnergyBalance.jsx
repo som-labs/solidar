@@ -18,6 +18,16 @@ export default async function PreparaEnergyBalance() {
     // Comprobamos que estan cargados todos los rendimientos. Es el flag rendimientoCreado de cada BaseSolar
     let waitLoop = 0
     for (let base of TCB.BaseSolar) {
+      //PENDIENTE: cambiar forma de reportar el error
+      if (base.rendimientoCreado === 'error') {
+        alert(
+          TCB.i18next.t('RENDIMIENTO.MSG_BASE_SIN_RENDIMIENTO', {
+            nombre: base.nombreBaseSolar,
+          }),
+        )
+        document.body.style.cursor = cursorOriginal
+        return false
+      }
       var sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
       if (!base.rendimientoCreado) {
         alert('Esperando datos PVGIS para base: ' + base.nombreBaseSolar)
@@ -40,12 +50,12 @@ export default async function PreparaEnergyBalance() {
           alert('Error obteniendo datos de PVGIS')
           base.rendimientoCreado = false
           // PENDIENTE: Reemplazar alert con error
-          return
+          return false
         }
         if (waitLoop >= TCB.tiempoEsperaPVGIS) {
           alert('Tiempo de respuesta excesivo en la llamada a PVGIS')
           // PENDIENTE: reemplazar alert con confimr de espera
-          return
+          return false
         }
         // PENDIENTE: limpiar alert
       } else {

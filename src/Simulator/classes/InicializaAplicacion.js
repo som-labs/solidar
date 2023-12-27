@@ -1,8 +1,6 @@
 import TCB from './TCB'
 import * as UTIL from './Utiles'
 
-/*global bootstrap, Tabulator, COLECTIVO, DESARROLLO */
-
 async function InicializaAplicacion() {
   //Si recibimos argumento debug en la url ejecutamos con debug
   TCB.debug = UTIL.getParametrosEntrada('debug')
@@ -18,11 +16,6 @@ async function InicializaAplicacion() {
     if (TCB.modos.includes(_modo)) TCB.modoActivo = _modo
   }
   UTIL.debugLog('_initEvents modo de trabajo: ' + TCB.modoActivo)
-
-  //Definimos el titulo segun sea el modo
-  // const _menu = document.getElementById('menu_screen');
-  // _menu.setAttribute('data-i18n','main_LBL_titulo_'+TCB.modoActivo);
-  // _menu.classList.add('h2');
 
   // Define la url base de la aplicación
   if (TCB.modoActivo === 'DESARROLLO') {
@@ -65,19 +58,6 @@ async function InicializaAplicacion() {
     )
   }
   TCB.tarifaActiva = TCB.tarifas[TCB.nombreTarifaActiva]
-
-  //}
-
-  // // Se incializan los tooltips
-  // TCB.tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-  // for (let tt of TCB.tooltipTriggerList) new bootstrap.Tooltip(tt);
-
-  // Added line to avoid changing many lines of code in components coming from
-  //TCB.i18next = i18n
-  //UTIL.debugLog('Ejecucion instancia en idioma ' + TCB.i18next.language)
-
-  //Inicializacion graficos Plotly
-  //TCB.graficos = new Graficos()
 
   // // Evento del boton de instrucciones
   // document.getElementById('botonInstrucciones').addEventListener("click", async function handleChange() {
@@ -123,30 +103,7 @@ async function InicializaAplicacion() {
   //   bienvenida();
   // }
 
-  // // Inicializa formulario de parametros
-  // UTIL.debugLog("_initEvents call gestionParametros");
-  // gestionParametros();
-
-  // //Funcion para limpiar el campo descripcion del formulario de contacto cada vez que se muestra el mismo. El resto de campos se mantienen.
-  // document.getElementById('formularioContacto').addEventListener('show.bs.modal', function () {
-  //   document.getElementById('mensaje').value="";
-  // })
-
-  // // Define el formatter _formatoValor para usar en todos los campos de las tablas Tabulator
-  // Tabulator.extendModule("format", "formatters", {
-  //   _formatoValor: function(cell, formatterParams) {
-  //       let campo;
-  //       if (formatterParams.campo === undefined)
-  //         campo = cell.getField();
-  //       else
-  //         campo = formatterParams.campo;
-  //       return UTIL.formatoValor(campo, cell.getValue());
-  //   }
-  // });
-
   return true
 }
 
 export default InicializaAplicacion
-// // Asignación de la función _Dispatch al objeto global window.
-// window.inicializaEventos = inicializaEventos;

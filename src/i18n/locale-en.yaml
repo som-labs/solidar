@@ -46,7 +46,7 @@ LOCATION:
   ERROR_NOMINATIM_FETCH: Error executing FECTH in nominatim. \n {{err}} \n {{url}}
   ERROR_TERRITORIO: The application is only valid for Spain
 
-  botonBorraBase_TT: Delete the selected base
+  TOOLTIP_BORRA_BASE: Delete the selected base
   posicionLonLat_LBL: Long-Lat
   posicionLonLat_TT: It is not necessary to fill this field it is only used to focus the map on these coordinates
 
@@ -209,6 +209,10 @@ SUMMARY:
   TITLE: Summary
   DESCRIPTION: (T)Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
 
+BASIC:
+  main_TAB_cerrar: Close
+  main_TAB_noMostrarMas: Do not show this message again
+
 ene: January
 feb: February
 mar: March
@@ -235,17 +239,6 @@ OBJECT:
   Tarifa: Fee
   ficheroCSV: Source File
   Economico: Economic Summary
-
-CABECERA:
-  main_LBL_titulo: Individual photovoltaic production simulator
-  main_LBL_titulo_INDIVIDUAL: Individual photovoltaic production simulator
-  main_LBL_titulo_COLECTIVO: Collective photovoltaic production simulator
-  main_LBL_titulo_COMUNIDAD: Individual photovoltaic production simulator
-  main_TAB_bienvenida: Welcome
-
-MODALES:
-  main_TAB_cerrar: Close
-  main_TAB_noMostrarMas: Do not show this message again
 
 PARAMETROS:
   DIALOG_TITLE: Application parameters

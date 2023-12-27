@@ -1,11 +1,4 @@
-/* Función para mostrar el formulario modal de propiedades de un objeto generico
-@param: objeto -> es el objeto del que se mostrará todas las propiedades que devuelve getOwnPropertyDescriptors en la función
-                obtenerPropiedades. La llamada es recursiva, si una propiedad es un objeto se mostrarán la propiedades de ese
-                objeto tambien.
-@param: descripcion -> titulo del <body> del formulario modal
- */
-
-import React, { useState, useContext } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -14,14 +7,12 @@ import { Table, TableRow, TableCell } from '@mui/material'
 import { Typography } from '@mui/material'
 
 // REACT Solidar Components
-import InputContext from '../InputContext'
 
 // Solidar objects
-import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 export default function DialogProperties({ data, onClose }) {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const [objeto, setObjeto] = useState(data)
 
   console.log('EN DIALOGO DE PROPIEDADES')
@@ -59,7 +50,7 @@ export default function DialogProperties({ data, onClose }) {
                       <TableRow sx={{ height: 'auto' }}>
                         <TableCell>
                           {/* //  class='text-start'>" */}
-                          {TCB.i18next.t(objName + '.LABEL_' + prop.nombre)}
+                          {t(objName + '.LABEL_' + prop.nombre)}
                         </TableCell>
                         <TableCell>
                           {/* // "</td><td class='text-end'>" + */}

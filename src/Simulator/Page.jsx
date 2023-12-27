@@ -1,12 +1,9 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import Container from '@mui/material/Container'
 
-import Alert from '@mui/material/Alert'
-
 // REACT Solidar Components
-import BasicAlert from './components/BasicAlert'
 import AppFrame from '../components/AppFrame'
 import Wizard from '../components/Wizard'
 
@@ -16,15 +13,15 @@ import EnergyBalanceStep from './EnergyBalance/EnergyBalance'
 import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
 import SummaryStep from './Summary/Summary'
 
-import InputContext from './InputContext'
-import { BasesContext, BasesContextProvider } from './BasesContext'
+import { ConsumptionContext } from './ConsumptionContext'
+import { BasesContext } from './BasesContext'
+import { AlertContext } from './components/Alert'
 import EconomicContext from './EconomicBalance/EconomicContext'
 
-import { useDialog } from '../components/DialogProvider'
 // Solidar objects
 import PreparaEnergyBalance from './EnergyBalance/PreparaEnergyBalance'
 import TCB from './classes/TCB'
-import * as UTIL from './classes/Utiles'
+
 import InicializaAplicacion from './classes/InicializaAplicacion'
 import Consumo from './classes/Consumo'
 
@@ -32,32 +29,15 @@ InicializaAplicacion()
 
 export default function Page() {
   const { t } = useTranslation()
-  const [openDialog, closeDialog] = useDialog()
+  const { SLDRAlert } = useContext(AlertContext)
   const { validaBases } = useContext(BasesContext)
-
-  useEffect(() => {}, [])
-
-  const [tipoConsumo, setTipoConsumo] = useState(
-    TCB.TipoConsumo.map((tipoConsumo) => {
-      return {
-        idTipoConsumo: tipoConsumo.idTipoConsumo,
-        nombreTipoConsumo: tipoConsumo.nombreTipoConsumo,
-        fuente: tipoConsumo.fuente,
-        consumoAnualREE: tipoConsumo.consumoAnualREE,
-        ficheroCSV: tipoConsumo.ficheroCSV,
-        nombreFicheroCSV: tipoConsumo.nombreFicheroCSV,
-        nombreTarifa: tipoConsumo.nombreTarifa,
-        territorio: tipoConsumo.territorio,
-      }
-    }),
-  )
+  const { validaTipoConsumo } = useContext(ConsumptionContext)
 
   const [IBI, setIBI] = useState({
     valorSubvencionIBI: 0,
     porcientoSubvencionIBI: 0,
     tiempoSubvencionIBI: 0,
   })
-
   const [precioInstalacionCorregido, setPrecioInstalacionCorregido] = useState()
   const [subvencionEU, setSubvencionEU] = useState('Sin')
   const [valorSubvencionEU, setValorSubvencionEU] = useState(0)
@@ -65,147 +45,74 @@ export default function Page() {
   const [coefHucha, setCoefHucha] = useState(0)
   const [ecoData, setEcoData] = useState({})
 
-  // const validaLocation = () => {
-  //   if (TCB.BaseSolar.length > 0) {
-  //     //Carga rendimientos de cada base que lo requiera asincronicamente
-  //     //La propiedad requierePVGIS es gestionada en GestionLocalizacion y se pone a true cuando cambia algun angulo
-  //     try {
-  //       let oldBases = [...bases]
-  //       TCB.BaseSolar.forEach((base) => {
-  //         if (base.requierePVGIS) {
-  //           UTIL.debugLog('Base requiere PVGIS:', base)
-  //           base.cargaRendimiento()
-  //           TCB.requiereOptimizador = true
-  //         }
-  //       })
-  //       setBases(oldBases)
-  //       return true
-  //     } catch (err) {
-  //       //     //alert ("Error en validacion de Localizacion: " + err);
-  //       //     return ("Error en validacion de Localizacion: " + err);
-  //     }
-  //     return false
-  //   } else {
-  //     showAlert('VALIDACION', t('LOCATION.ERROR_DEFINE_BASE'), 'error')
-  //     return false
-  //   }
-  // }
-
-  //REVISAR: como meter el codigo del alert en un componente reutilizable porque no funciona el BasicAlert
-  const showAlert = (title, message, type) => {
-    openDialog({
-      children: (
-        <BasicAlert
-          title={title}
-          contents={message}
-          type={type}
-          onClose={() => closeDialog()}
-        ></BasicAlert>
-      ),
-    })
-  }
-
-  function validaLocation() {
-    const status = validaBases()
-    if (!status) showAlert('VALIDACION', t('LOCATION.ERROR_DEFINE_BASE'), 'error')
+  function validaLocationStep() {
+    let { status, error } = validaBases()
+    if (!status) SLDRAlert('VALIDACION', error, 'error')
     return status
   }
 
-  async function validaTipoConsumo() {
-    if (TCB.TipoConsumo.length === 0) {
-      showAlert('VALIDACION', t('CONSUMPTION.ERROR_AL_MENOS_UN_TIPOCONSUMO'), 'error')
+  function validaConsumptionStep() {
+    let { status, error } = validaTipoConsumo()
+    if (!status) {
+      SLDRAlert('VALIDACION', error, 'error')
       return false
     }
 
-    let status = true
-    for (const tipoConsumo of TCB.TipoConsumo) {
-      if (tipoConsumo.fuente === 'REE') {
-        if (!(tipoConsumo.consumoAnualREE > 0)) {
-          showAlert(
-            tipoConsumo.nombreTipoConsumo +
-              '\n' +
-              t('consumo_MSG_definirPotenciaBaseREE', 'error'),
-          )
-          status = false
-          break
-        }
-      } else if (tipoConsumo.fuente === 'CSV' || tipoConsumo.fuente === 'DATADIS') {
-        if (tipoConsumo.ficheroCSV === null) {
-          showAlert(
-            tipoConsumo.nombreTipoConsumo +
-              '\n' +
-              TCB.i18next.t('CONSUMPTION.ERROR_FALTA_FICHERO_CONSUMO'),
-            'error',
-          )
-          status = false
-          break
-        }
-      }
-    }
     //Crearemos el consumo global como suma de todos los tipos de consumo definidos
-    if (status) {
-      TCB.consumo = new Consumo()
-      TCB.cambioTipoConsumo = true
-    }
+    TCB.consumo = new Consumo()
+    TCB.cambioTipoConsumo = true
 
-    console.log(TCB.consumo)
     //Se crearan los objetos produccion, balance y economico
-    status = await PreparaEnergyBalance()
-    setEcoData(TCB.economico)
+    status = PreparaEnergyBalance()
+    if (!status) setEcoData(TCB.economico)
+    return status
   }
 
   return (
     <>
       <AppFrame>
-        <InputContext.Provider
-          value={{
-            tipoConsumo,
-            setTipoConsumo,
-          }}
-        >
-          <Container>
-            <EconomicContext.Provider
-              value={{
-                IBI,
-                setIBI,
-                subvencionEU,
-                setSubvencionEU,
-                valorSubvencionEU,
-                setValorSubvencionEU,
-                precioInstalacionCorregido,
-                setPrecioInstalacionCorregido,
-                cuotaHucha,
-                setCuotaHucha,
-                coefHucha,
-                setCoefHucha,
-                ecoData,
-                setEcoData,
-              }}
-            >
-              <Wizard variant="tabs">
-                <LocationStep
-                  label="location"
-                  title={t('LOCATION.TITLE')}
-                  next={validaLocation}
-                />
-                <ConsumptionStep
-                  label="consumption"
-                  title={t('CONSUMPTION.TITLE')}
-                  next={validaTipoConsumo}
-                />
-                <EnergyBalanceStep
-                  label="energybalance"
-                  title={t('ENERGY_BALANCE.TITLE')}
-                />
-                <EconomicBalanceStep
-                  label="economicbalance"
-                  title={t('ECONOMIC_BALANCE.TITLE')}
-                />
-                <SummaryStep label="summary" title={t('SUMMARY.TITLE')} />
-              </Wizard>
-            </EconomicContext.Provider>
-          </Container>
-        </InputContext.Provider>
+        <Container>
+          <EconomicContext.Provider
+            value={{
+              IBI,
+              setIBI,
+              subvencionEU,
+              setSubvencionEU,
+              valorSubvencionEU,
+              setValorSubvencionEU,
+              precioInstalacionCorregido,
+              setPrecioInstalacionCorregido,
+              cuotaHucha,
+              setCuotaHucha,
+              coefHucha,
+              setCoefHucha,
+              ecoData,
+              setEcoData,
+            }}
+          >
+            <Wizard variant="tabs">
+              <LocationStep
+                label="location"
+                title={t('LOCATION.TITLE')}
+                next={validaLocationStep}
+              />
+              <ConsumptionStep
+                label="consumption"
+                title={t('CONSUMPTION.TITLE')}
+                next={validaConsumptionStep}
+              />
+              <EnergyBalanceStep
+                label="energybalance"
+                title={t('ENERGY_BALANCE.TITLE')}
+              />
+              <EconomicBalanceStep
+                label="economicbalance"
+                title={t('ECONOMIC_BALANCE.TITLE')}
+              />
+              <SummaryStep label="summary" title={t('SUMMARY.TITLE')} />
+            </Wizard>
+          </EconomicContext.Provider>
+        </Container>
       </AppFrame>
     </>
   )

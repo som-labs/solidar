@@ -45,7 +45,7 @@ LOCATION:
   ERROR_NOMINATIM_FETCH: Erro ao executar fecth en nominatim.\n{{er}} \n {{url}}}
   ERROR_TERRITORIO: A aplicación só é válida para España
 
-  botonBorraBase_TT: Elimina a base seleccionada
+  TOOLTIP_BORRA_BASE: Elimina a base seleccionada
   posicionLonLat_LBL: Lonxitude-Latitude
   posicionLonLat_TT: Non é necesario cubrir este campo só se usa para centrar o mapa nestas coordenadas
 
@@ -207,6 +207,10 @@ SUMMARY:
   TITLE: Resumo
   DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
 
+BASIC:
+  main_TAB_cerrar: Pechar
+  main_TAB_noMostrarMas: Non mostre esta mensaxe de novo
+
 GRAFICOS:
   LABEL_CONSUMPTION: Consumo
   LABEL_PRODUCTION: Producción
@@ -252,17 +256,6 @@ OBJECT:
   Tarifa: Tarifa
   ficheroCSV: Fichero fuente
   Economico: Resumen Económico
-
-CABECERA:
-  main_LBL_titulo: Simulador de producción fotovoltaica
-  main_LBL_titulo_INDIVIDUAL: Simulador de producción fotovoltaica individual
-  main_LBL_titulo_COLECTIVO: Simulador de producción fotovoltaica colectivo
-  main_LBL_titulo_COMUNIDAD: Simulador de producción fotovoltaica comunitario
-  main_TAB_bienvenida: Benvido
-
-Modales:
-  main_TAB_cerrar: Pechar
-  main_TAB_noMostrarMas: Non mostre esta mensaxe de novo
 
 PARAMETROS:
   DIALOG_TITLE: Parámetros de aplicación
