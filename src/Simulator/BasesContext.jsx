@@ -1,16 +1,17 @@
-import React from 'react'
+import { createContext, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 // Solidar objects
 import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
 import BaseSolar from './classes/BaseSolar'
-//import InputContext from './InputContext'
 
-const BasesContext = React.createContext()
+const BasesContext = createContext()
 
 const BasesContextProvider = ({ children }) => {
-  const [map, setMap] = React.useState()
-  const [bases, setBases] = React.useState([])
+  const { t } = useTranslation()
+  const [map, setMap] = useState()
+  const [bases, setBases] = useState([])
 
   //Function to be executed at closeDialog del DialogNewBaseSolar
   function processFormData(reason, formData) {
@@ -71,18 +72,23 @@ const BasesContextProvider = ({ children }) => {
           }
         }
         setBases(oldBases)
-        return true
+        return { status: true }
       } catch (err) {
-        //     //alert ("Error en validacion de Localizacion: " + err);
-        //     return ("Error en validacion de Localizacion: " + err);
+        return { status: false, error: err }
       }
-      return false
     } else {
-      return false
+      return { status: false, error: t('LOCATION.ERROR_DEFINE_BASE') }
     }
   }
 
-  const contextValue = { map, setMap, bases, setBases, processFormData, validaBases }
+  const contextValue = {
+    map,
+    setMap,
+    bases,
+    setBases,
+    processFormData,
+    validaBases,
+  }
   return <BasesContext.Provider value={contextValue}>{children}</BasesContext.Provider>
 }
 

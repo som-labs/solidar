@@ -5,16 +5,25 @@ import { useTranslation } from 'react-i18next'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Download from '@mui/icons-material/Download'
+import Print from '@mui/icons-material/Print'
 import { Button } from '@mui/material'
 
 export default function FinalNote() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
+  function printSummary() {
+    window.print()
+  }
   return (
     <>
       <Container>
-        <Button variant="contained" startIcon={<Download />} size="large">
-          Descarga Resumen
+        <Button
+          variant="contained"
+          startIcon={<Print />}
+          size="large"
+          onClick={printSummary}
+        >
+          Imprime Resumen
         </Button>
         <Button variant="contained" startIcon={<Download />} size="large">
           Descarga Informe Completo

@@ -14,7 +14,7 @@ const LocationStep = () => {
     <>
       <Container
         maxWidth="lg"
-        //PENDIENTE: se pretende definir el formato de los headers de las tablas pero solo funciona el BackgroundColor
+        //REVISAR: se pretende definir el formato de los headers de las tablas pero solo funciona el BackgroundColor
         // sx={{
         //   width: '100%',
         //   '.dataGrid-headers': {

@@ -15,10 +15,10 @@ import YearSaving from './YearSavings'
 import MonthSaving from './MonthSavings'
 import FinanceSummary from './FinanceSummary'
 import GraphAlternatives from './GraphAlternatives'
-import { FooterBox, InfoBox } from '../../components/SLDRComponents'
+import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
 
 export default function EconomicBalanceStep() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   return (
     <>
@@ -32,15 +32,15 @@ export default function EconomicBalanceStep() {
             width: '100%',
           }}
         >
-          <InfoBox sx={{ mr: '0.3rem' }}>
+          <SLDRInfoBox sx={{ mr: '0.3rem' }}>
             <ReduccionIBI></ReduccionIBI>
-          </InfoBox>
-          <InfoBox sx={{ mr: '0.3rem' }}>
+          </SLDRInfoBox>
+          <SLDRInfoBox sx={{ mr: '0.3rem' }}>
             <SubvencionEU></SubvencionEU>
-          </InfoBox>
-          <InfoBox>
+          </SLDRInfoBox>
+          <SLDRInfoBox>
             <VirtualBattery></VirtualBattery>
-          </InfoBox>
+          </SLDRInfoBox>
         </Box>
         <br />
         <Box
@@ -49,14 +49,14 @@ export default function EconomicBalanceStep() {
             width: '100%',
           }}
         >
-          <InfoBox sx={{ mr: '0.3rem' }}>
+          <SLDRInfoBox sx={{ mr: '0.3rem' }}>
             <InstallationCost></InstallationCost>
-          </InfoBox>
-          <InfoBox>
+          </SLDRInfoBox>
+          <SLDRInfoBox>
             <AmortizationTime></AmortizationTime>
-          </InfoBox>
+          </SLDRInfoBox>
         </Box>
-        <InfoBox
+        <SLDRInfoBox
           sx={{
             width: '80%',
             mt: '1rem',
@@ -64,22 +64,22 @@ export default function EconomicBalanceStep() {
           }}
         >
           <YearSaving></YearSaving>
-        </InfoBox>
-        <InfoBox sx={{ mt: '1rem' }}>
+        </SLDRInfoBox>
+        <SLDRInfoBox sx={{ mt: '1rem' }}>
           <MonthSaving></MonthSaving>
-        </InfoBox>
-        <InfoBox
+        </SLDRInfoBox>
+        <SLDRInfoBox
           sx={{
             mt: '1rem',
             mb: '1rem',
           }}
         >
           <FinanceSummary></FinanceSummary>
-        </InfoBox>
+        </SLDRInfoBox>
         <Typography variant="body">
           {t('ECONOMIC_BALANCE.DESCRIPTION_DATA_AS_PANELS')}
         </Typography>
-        <InfoBox
+        <SLDRInfoBox
           sx={{
             mt: '1rem',
             justifyContent: 'center',
@@ -89,7 +89,7 @@ export default function EconomicBalanceStep() {
           }}
         >
           <GraphAlternatives></GraphAlternatives>
-        </InfoBox>
+        </SLDRInfoBox>
       </Container>
     </>
   )

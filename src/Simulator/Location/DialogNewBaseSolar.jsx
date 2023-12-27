@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Formik, Field, Form, ErrorMessage } from 'formik'
+import { Formik, Field, Form } from 'formik'
 
 // OpenLayers objects
 import { LineString } from 'ol/geom'
-import Feature from 'ol/Feature'
 import { Style } from 'ol/style'
 
 // MUI objects
@@ -15,26 +14,17 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
-import {
-  OutlinedInput,
-  FormControl,
-  InputAdornment,
-  FormHelperText,
-  Checkbox,
-  FormControlLabel,
-} from '@mui/material'
+import { Checkbox, Switch, FormControlLabel } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
 import ApartmentIcon from '@mui/icons-material/Apartment'
-import Switch from '@mui/material/Switch'
-import { TextField, Input, InputLabel } from '@mui/material'
 
 // REACT Solidar Components
-import TCB from '../classes/TCB'
 import coplanarSvgFile from '../datos/coplanar.svg'
 import horizontalSvgFile from '../datos/horizontal.svg'
-import { InputField } from '../../components/SLDRComponents'
+import { SLDRInputField } from '../../components/SLDRComponents'
 
 // Solidar objects
+import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 //PENDIENTE: convertir a formix
@@ -139,6 +129,7 @@ export default function DialogNewBaseSolar({ data, onClose }) {
   }
 
   const handleCancel = (values) => {
+    console.log('CANCEL', values)
     onClose('cancel', values)
   }
 
@@ -149,6 +140,7 @@ export default function DialogNewBaseSolar({ data, onClose }) {
         return
       }
     }
+    console.log('SAVE', values)
     onClose('save', values)
   }
 
@@ -195,7 +187,7 @@ export default function DialogNewBaseSolar({ data, onClose }) {
         errors.inAcimut = 'El valor del acimut debe estar entre -180º y 180º'
       }
     }
-
+    console.log('ERRORS', errors)
     return errors
   }
 
@@ -214,13 +206,16 @@ export default function DialogNewBaseSolar({ data, onClose }) {
             <Box
               sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', flex: 1 }}
             >
-              <InputLabel htmlFor="nombreBaseSolar">
-                {t('BaseSolar.LABEL_nombreBaseSolar')}
-              </InputLabel>
-              <Field name="nombreBaseSolar" as={Input} className="inputField" />
-              <ErrorMessage name="nombreBaseSolar">
-                {(msg) => <div style={{ color: 'red' }}>{msg}</div>}
-              </ErrorMessage>
+              <Typography variant="body" sx={{ mb: '1rem' }}>
+                {t('BaseSolar.DESCRIPTION_nombreBaseSolar')}
+              </Typography>
+              <SLDRInputField
+                name="nombreBaseSolar"
+                type="text"
+                object="BaseSolar"
+                unit=""
+                sx={{ flex: 1, mb: '1rem', textAlign: 'center' }}
+              />
 
               <Typography
                 sx={{ mt: '1rem' }}
@@ -294,12 +289,14 @@ export default function DialogNewBaseSolar({ data, onClose }) {
                         flexDirection: 'column',
                       }}
                     >
-                      <InputField
+                      <SLDRInputField
                         name="inclinacion"
+                        type="text"
                         unit=" º"
+                        object="BaseSolar"
                         value={values.inclinacion}
                         onBlur={(event) => changeTilt(event, setValues)}
-                        sx={{ flex: 0.4, mb: '1rem' }}
+                        sx={{ flex: 1, mb: '1rem' }}
                       />
                     </Box>
                     {values.roofType === 'Horizontal' && (
@@ -308,7 +305,7 @@ export default function DialogNewBaseSolar({ data, onClose }) {
                           <FormControlLabel
                             labelPlacement="end"
                             control={
-                              <Checkbox
+                              <Switch
                                 {...field}
                                 checked={values.inclinacionOptima}
                                 onChange={(event) => setOptimalTilt(event, setValues)}
@@ -331,12 +328,14 @@ export default function DialogNewBaseSolar({ data, onClose }) {
                         flexDirection: 'column',
                       }}
                     >
-                      <InputField
+                      <SLDRInputField
                         name="inAcimut"
+                        type="text"
                         unit=" º"
+                        object="BaseSolar"
                         value={values.inAcimut}
                         onBlur={(event) => changeAzimut(event, setValues, values)}
-                        sx={{ flex: 0.4 }}
+                        sx={{ flex: 1 }}
                       />
                     </Box>
                   </Box>
@@ -345,7 +344,7 @@ export default function DialogNewBaseSolar({ data, onClose }) {
 
               {values.roofType === 'Optimos' && (
                 <>
-                  <Box>
+                  <Box sx={{ mt: '1rem' }}>
                     <Typography variant="body">
                       {t('BaseSolar.DESCRIPTION_angulosOptimos')}
                     </Typography>
