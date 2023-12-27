@@ -27,7 +27,6 @@ class Economico {
     this.diaHoraPrecioConPaneles = Array.from(Array(365), () => new Array(24).fill(0))
     this.diaHoraTarifaOriginal = Array.from(Array(365), () => new Array(24).fill(0))
     this.diaHoraTarifaConPaneles = Array.from(Array(365), () => new Array(24).fill(0))
-
     this.impuestoTotal = TCB.parametros.IVAenergia + TCB.parametros.impuestoElectrico
     const coefImpuesto = (100 + this.impuestoTotal) / 100
     this.gastoSinPlacasAnual = 0
@@ -48,39 +47,8 @@ class Economico {
     this.VANProyecto = 0
     this.interesVAN = TCB.parametros.interesVAN
 
-    // if (finca === undefined) {
-    //   /*  Vamos a calcular un economico global a partir de lo economicos de cada tipo de consumo teniendo en cuenta el numero de instancias en la tabla participes */
-    //   for (let finca of TCB.Participes) {
-    //     if (finca.nombreTipoConsumo !== 'Participe sin consumo') {
-    //       this.gastoSinPlacasAnual += finca.economico.gastoSinPlacasAnual
-    //       this.gastoConPlacasAnual += finca.economico.gastoConPlacasAnual
-    //       for (let i = 0; i < 12; i++) {
-    //         this.consumoOriginalMensual[i] += finca.economico.consumoOriginalMensual[i]
-    //         this.consumoConPlacasMensual[i] += finca.economico.consumoConPlacasMensual[i]
-    //         this.compensadoMensual[i] += finca.economico.compensadoMensual[i]
-    //         this.ahorradoAutoconsumoMes[i] += finca.economico.ahorradoAutoconsumoMes[i]
-    //         this.perdidaMes[i] += finca.economico.perdidaMes[i]
-    //         this.compensadoMensualCorregido[i] +=
-    //           finca.economico.compensadoMensualCorregido[i]
-    //         this.consumoConPlacasMensualCorregido[i] +=
-    //           finca.economico.consumoConPlacasMensualCorregido[i]
-    //         this.extraccionHucha[i] += finca.economico.extraccionHucha[i]
-    //         this.huchaSaldo[i] += finca.economico.huchaSaldo[i]
-    //       }
-    //     }
-    //   }
-    //   this.calculoFinanciero(100, 100)
-    // } else {
-    //Vamos a calcular el economico especifico de la finca
-    // const _tc = UTIL.selectTCB(
-    //   'TipoConsumo',
-    //   'nombreTipoConsumo',
-    //   finca.nombreTipoConsumo,
-    // )
-    //Aqui empiezan los cambios
+    //A efectos de fechas por ahora usamos el TipoConsumo[0]
     let _tc = TCB.TipoConsumo[0]
-    // this.tarifa = TCB.tarifaActiva
-    // console.log(this.tarifa)
 
     //Vamos a calcular el precio de la energia cada dia
     for (let dia = 0; dia < 365; dia++) {
@@ -89,6 +57,7 @@ class Economico {
       this.idxTable[dia].ahorradoAutoconsumo = 0
       this.idxTable[dia].compensado = 0
 
+      //PENDIENTE: cambiar a calcular la fecha desde dia y no idxTable, solo debemos decidir que año se usa para saber sabados y domingos
       let diaSemana = _tc.idxTable[dia].fecha.getDay()
 
       //Vamos a calcular el precio de la energia cada hora
@@ -113,7 +82,6 @@ class Economico {
         }
 
         // La tarifa original es -> this.diaHoraTarifaOriginal[dia][hora]
-        // El consumo original es -> _tc[0].diaHora[dia][hora]
         this.diaHoraPrecioOriginal[dia][hora] =
           TCB.consumo.diaHora[dia][hora] *
           this.diaHoraTarifaOriginal[dia][hora] *
@@ -241,8 +209,8 @@ class Economico {
       UTIL.suma(this.consumoOriginalMensual) -
       UTIL.suma(this.consumoConPlacasMensualCorregido)
     //Algunas cuotas de la hucha pueden producir ahorros negativos que no tienen sentido
-    if (this.ahorroAnual < 0) {
-      UTIL.debugLog(TCB.i18next.t('Cuotas hucha generan ahorro negativo'))
+    if (this.ahorroAnual <= 0) {
+      UTIL.debugLog('Cuotas hucha generan ahorro negativo')
       return
     }
 
@@ -303,7 +271,7 @@ class Economico {
     while (unFlow.ano < 10 || unFlow.pendiente < 0) {
       //Puede ser que la cuota de la hucha haga que el ahorro sea negativo. En ese caso mostramos los resultados de 10 años
       if (unFlow.ano > 10 && unFlow.ahorro < 0) break
-
+      if (unFlow.ano > 20) break
       let lastPendiente = unFlow.pendiente
       unFlow = {}
       unFlow.ano = ++i

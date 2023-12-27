@@ -55,7 +55,7 @@ export default function MonthEnergyBalance(props) {
 
   const i18nextMes = () => {
     let _mes = []
-    for (let i = 0; i < 12; _mes.push(TCB.i18next.t(UTIL.nombreMes[i++])));
+    for (let i = 0; i < 12; _mes.push(t(UTIL.nombreMes[i++])));
     return _mes
   }
   const mesMapa = Array.from(i18nextMes())

@@ -6,7 +6,6 @@ import Plot from 'react-plotly.js'
 
 // MUI objects
 import Typography from '@mui/material/Typography'
-import { Box } from '@mui/material'
 
 // REACT Solidar Components
 import EconomicContext from './EconomicContext'
@@ -327,8 +326,8 @@ export default function GraphAlternatives() {
   //             // Se limita el número de paneles que se puede seleccionar del gráfico desde 1 al máximo mostrado
   //             if (Math.round(xInDataCoord) > 0 && Math.round(xInDataCoord) <= tPaneles[tPaneles.length - 1]) {
   //                 Plotly.relayout(gd, 'title',
-  //                     [TCB.i18next.t('graficos_LBL_alternativasPotencia', {potencia: UTIL.formatoValor('potencia', potencia_kWp)}),
-  //                     TCB.i18next.t('graficos_LBL_cambiaPaneles', {paneles: Math.round(xInDataCoord)})].join("<br>"));
+  //                     [t('graficos_LBL_alternativasPotencia', {potencia: UTIL.formatoValor('potencia', potencia_kWp)}),
+  //                     t('graficos_LBL_cambiaPaneles', {paneles: Math.round(xInDataCoord)})].join("<br>"));
   //             }
   //         });
   //     }

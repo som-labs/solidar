@@ -11,6 +11,8 @@ import AboutPage from './About/Page'
 import NotFoundPage from './NotFound/Page'
 import DialogProvider from './components/DialogProvider'
 import { BasesContextProvider } from './Simulator/BasesContext'
+import { ConsumptionContextProvider } from './Simulator/ConsumptionContext'
+import { AlertProvider } from './Simulator/components/Alert'
 
 const routes = [
   {
@@ -44,9 +46,13 @@ function App() {
   return (
     <GlobalTheme>
       <DialogProvider>
-        <BasesContextProvider>
-          <RouterProvider router={router} />
-        </BasesContextProvider>
+        <AlertProvider>
+          <BasesContextProvider>
+            <ConsumptionContextProvider>
+              <RouterProvider router={router} />
+            </ConsumptionContextProvider>
+          </BasesContextProvider>
+        </AlertProvider>
       </DialogProvider>
     </GlobalTheme>
   )

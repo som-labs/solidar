@@ -289,8 +289,14 @@ export const indiceDia = [
 const ValidateDecimal = (language, inputValue) => {
   const number = 1.1
   const decimalSeparator = number.toLocaleString(language).substring(1, 2)
-
-  const decimalRegex = new RegExp(`^-?\\d*${decimalSeparator}?\\d*$`)
+  const decimalRegex = new RegExp(`^\\d*\\${decimalSeparator}?\\d*$`)
+  // console.log(
+  //   language,
+  //   decimalSeparator,
+  //   inputValue,
+  //   decimalRegex,
+  //   decimalRegex.test(inputValue),
+  // )
   return decimalRegex.test(inputValue)
 }
 

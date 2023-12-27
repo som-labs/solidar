@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Plotly objects
@@ -9,12 +8,11 @@ import Typography from '@mui/material/Typography'
 import { Box, Container } from '@mui/material'
 
 // Solidar objects
-import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 import { isEmpty } from 'ol/extent'
 
 export default function MapaMesHora({ activo }) {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   // console.log(activo)
   if (activo === isEmpty) return
@@ -193,12 +191,13 @@ export default function MapaMesHora({ activo }) {
         }}
         justifyContent="center"
       >
-        <Typography variant="h4">
+        <Typography variant="h4" gutterBottom>
           {t('CONSUMPTION.TITLE_MAP_MONTH_HOUR', {
             nombreTipoConsumo: activo.nombreTipoConsumo,
           })}
         </Typography>
         <Typography variant="body">{t('CONSUMPTION.DESC_MAP_MONTH_HOUR')}</Typography>
+
         <Box>
           <Plot data={[data]} layout={layout} config={config} />
         </Box>

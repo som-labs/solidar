@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next'
 import Plot from 'react-plotly.js'
 
 // MUI objects
-import { Typography, Container, Box } from '@mui/material'
+import { Typography, Container, Box, Tooltip } from '@mui/material'
+import InfoIcon from '@mui/icons-material/InfoRounded'
 
 // REACT Solidar Components
 import { useDialog } from '../../components/DialogProvider'
@@ -139,6 +140,10 @@ export default function MapaDiaHora({ activo }) {
         justifyContent="center"
       >
         <Typography variant="h4">{t('CONSUMPTION.TITLE_MAP_MONTH_DAY')}</Typography>
+        <Tooltip title={t('CONSUMPTION.TOOLTIP_MAP_MONTH_DAY')} placement="top">
+          <InfoIcon />
+        </Tooltip>
+
         <Typography
           variant="body"
           textAlign={'left'}

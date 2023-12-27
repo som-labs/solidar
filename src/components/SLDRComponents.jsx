@@ -1,9 +1,19 @@
-import { Box, TextField, InputAdornment } from '@mui/material'
+import {
+  Box,
+  TextField,
+  InputAdornment,
+  TextareaAutosize,
+  Checkbox,
+  Typography,
+  Tooltip,
+} from '@mui/material'
+
 import { styled } from '@mui/material/styles'
 import { useTheme } from '@mui/material/styles'
 import { useField } from 'formik'
+import { useTranslation } from 'react-i18next'
 
-function FooterBox({ children }) {
+function SLDRFooterBox({ children }) {
   const StyledBox = styled(Box)(() => ({
     display: 'flex',
     flexWrap: 'wrap',
@@ -14,18 +24,8 @@ function FooterBox({ children }) {
   return <StyledBox>{children}</StyledBox>
 }
 
-// function InputNumber({ children }) {
-//   const StyledField = styled(Input)(() => ({
-//     textAlign: 'right',
-//     backgroundColor: 'aquamarine',
-//     variant: 'outlined',
-//   }))
-//   return <StyledField>{children}</StyledField>
-// }
-
-function InfoBox(props) {
+function SLDRInfoBox(props) {
   const theme = useTheme()
-
   let sxFix = {
     display: 'flex',
     flexWrap: 'wrap',
@@ -45,33 +45,82 @@ function InfoBox(props) {
   )
 }
 
-function InputField({ unit, ...props }) {
-  const theme = useTheme()
-  const [field, meta] = useField(props)
-  let sxFix = {
-    variant: 'outlined',
-    size: 'small',
+//REVISAR: estos style no estan funcionando
+const SLDRTooltip = ({ title, children, placement }) => {
+  const ToolTipStyle = {
+    textAlign: 'left',
+    padding: '8px',
+    borderColor: 'green',
+    borderRadius: '4px',
+    fontFamily: 'inherit', // Ensure that it inherits the font
+    fontSize: 'inherit',
+  }
+  return (
+    <Tooltip title={title} placement={placement} arrow sx={ToolTipStyle}>
+      {children}
+    </Tooltip>
+  )
+}
 
-    //style: { width: '100px' },
-    InputProps: {
-      endAdornment: <InputAdornment position="end">{unit}</InputAdornment>,
-      inputProps: {
-        style: {
-          textAlign: 'right',
-          border: '1px solid',
-          borderColor: 'green',
-          // Set border style and color
-          borderRadius: '4px', // Optional: Adjust border radius for rounded corners
-          padding: '8px', // Optional: Adjust padding for content spacing
-        },
-      },
-    },
+function SLDRInputField({ unit, object, MUIType, ...props }) {
+  const [field, meta] = useField(props)
+  const { t } = useTranslation()
+
+  const defaultStyle = {
+    textAlign: 'right',
+    padding: '8px',
+    borderColor: 'green',
+    borderRadius: '4px',
+    fontFamily: 'inherit', // Ensure that it inherits the font
+    fontSize: 'inherit',
   }
 
+  const finalStyle = { ...defaultStyle, ...props.sx }
+
+  const sxFix = {
+    variant: 'outlined',
+    size: 'small',
+    border: '1px solid',
+    flex: 1,
+  }
+
+  if (MUIType !== 'Checkbox' && MUIType !== 'TextareaAutosize')
+    sxFix.InputProps = {
+      endAdornment: <InputAdornment position="start">{unit}</InputAdornment>,
+      inputProps: {
+        style: finalStyle,
+      },
+    }
+
   let sxFull = { ...sxFix, ...props }
+
   return (
     <>
-      <TextField {...field} {...sxFull} />
+      {MUIType === undefined && (
+        <SLDRTooltip
+          title={<Typography>{t(object + '.TOOLTIP_' + props.name)}</Typography>}
+          placement="top"
+        >
+          <TextField {...field} {...sxFull} />
+        </SLDRTooltip>
+      )}
+      {MUIType === 'TextareaAutosize' && (
+        <SLDRTooltip
+          title={<Typography>{t(object + '.TOOLTIP_' + props.name)}</Typography>}
+          placement="top"
+        >
+          <TextareaAutosize {...field} {...sxFull} />
+        </SLDRTooltip>
+      )}
+
+      {MUIType === 'Checkbox' && (
+        <SLDRTooltip
+          title={<Typography>{t(object + '.TOOLTIP_' + props.name)}</Typography>}
+          placement="top"
+        >
+          <Checkbox {...field} {...sxFull} />
+        </SLDRTooltip>
+      )}
       {meta.error ? (
         <div style={{ color: 'red', display: 'inline' }}>{meta.error}</div>
       ) : null}
@@ -79,5 +128,4 @@ function InputField({ unit, ...props }) {
   )
 }
 
-export { FooterBox, InfoBox, InputField }
-3
+export { SLDRFooterBox, SLDRInfoBox, SLDRInputField, SLDRTooltip }

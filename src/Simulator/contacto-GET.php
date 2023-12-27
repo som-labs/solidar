@@ -16,34 +16,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
     exit(0);
 }
+
 // $email_to = "soporte@solidarenergia.es";
 $email_to = "joseluis@garciagruben.org";
 $email_subject = "Contacto desde SOM Simulador";
-
-$email_from = $_POST['email'];
+$email_from = $_GET['email'];
 
 $email_message = "Detalles del formulario de contacto:" . "<br>";
-$email_message .= "Nombre: " . $_POST['nombre'] . "<br>";
-$email_message .= "Email: " . $_POST['email'] . "<br>";
-$email_message .= "Teléfono: " . $_POST['telefono'] . "<br>";
-$email_message .= "Mensaje: " . $_POST['mensaje'] ."<br>";
+$email_message .= "Nombre: " . $_GET['nombre'] . "<br>";
+$email_message .= "Email: " . $_GET['email'] . "<br>";
+$email_message .= "Teléfono: " . $_GET['telefono'] . "<br>";
+$email_message .= "Mensaje: " . $_GET['mensaje'] ."<br>";
 
-if(isset($_POST['mantenerContacto'])) $email_message .= "Requiere respuesta" . "<br>";
-if(isset($_POST['gridRadios'])) $email_message .= "Informa: " . $_POST['gridRadios'] . "<br>";
+if(isset($_GET['mantenerContacto'])) $email_message .= "Requiere respuesta" . "<br>";
+if(isset($_GET['gridRadios'])) $email_message .= "Informa: " . $_GET['gridRadios'] . "<br>";
 
 $headers = 'From: '.$email_from."\r\n".
 'Reply-To: '.$email_from."\r\n" .
 'Content-Type: text/html; charset=UTF-8;' .
 'X-Mailer: PHP/' . phpversion();
 
+//REVISAR: error al enviar el email en modo desarrollo
 if (mail($email_to, $email_subject, $email_message, $headers)) {
-    echo '<script language="javascript">
-        alert("¡El formulario se ha enviado con éxito!");
-        </script>'; 
+    echo "¡El formulario se ha enviado con éxito!";
 } else {
-    echo '<script language="javascript">
-        alert("Error envio de correo. Verifica tu email");
-        window.location.href="index.html";
-        </script>';
+    $errorMessage = error_get_last()['message'] ?? 'Error desconocido';
+    echo "Error envio de correo: " . $errorMessage;
 }
 ?>
