@@ -12,15 +12,20 @@ import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 export default function SummaryPreciosTarifa() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
-  const [precios, setPrecios] = useState([])
   const [nPrecios, setNPrecios] = useState()
+  const [tipoTarifa, setTipoTarifa] = useState(TCB.tipoTarifa)
 
   useEffect(() => {
-    if (TCB.tipoTarifa === '2.0TD') setNPrecios(4)
-    else setNPrecios(7)
-    setPrecios(Object.entries(TCB.tarifaActiva.precios).slice(1, nPrecios))
+    setTipoTarifa(TCB.tipoTarifa)
+    setNPrecios(4)
+    if (TCB.tipoTarifa === '3.0TD') {
+      setNPrecios(7)
+    } else {
+      setNPrecios(4)
+    }
+    TCB.tarifaActiva = TCB.tarifas[TCB.nombreTarifaActiva]
   }, [])
 
   return (
@@ -53,25 +58,31 @@ export default function SummaryPreciosTarifa() {
         justifyContent="space-evenly"
         sx={{ mb: '1rem' }}
       >
-        {precios.map((precioP) => (
-          <Fragment key={precioP[0]}>
-            <Grid item xs={1} sx={{ border: 0, textAlign: 'right', padding: 1 }}>
-              {'P' + precioP[0]}
-            </Grid>
-            <Grid
-              item
-              xs={3}
-              sx={{
-                border: 1,
-                textAlign: 'right',
-                padding: 0.5,
-                borderColor: 'primary.light',
-              }}
-            >
-              {precioP[1] + ' €/kWh'}
-            </Grid>
-          </Fragment>
-        ))}
+        {TCB.tarifaActiva.precios.map((precio, index) => {
+          if (index !== 0 && index < nPrecios) {
+            return (
+              <Fragment key={index}>
+                <Grid item xs={1} sx={{ border: 0, textAlign: 'right', padding: 1 }}>
+                  {'P' + index}
+                </Grid>
+                <Grid
+                  item
+                  xs={3}
+                  sx={{
+                    border: 1,
+                    textAlign: 'right',
+                    padding: 0.5,
+                    borderColor: 'primary.light',
+                  }}
+                >
+                  {precio + ' €/kWh'}
+                </Grid>
+              </Fragment>
+            )
+          } else {
+            return null
+          }
+        })}
       </Grid>
     </>
   )
