@@ -15,8 +15,8 @@ import * as UTIL from '../classes/Utiles'
 import { Container } from '@mui/material'
 
 export default function SummaryAutoproduccion() {
-  const { t, i18n } = useTranslation()
-  const { bases, setBases } = useContext(BasesContext)
+  const { t } = useTranslation()
+  const { bases } = useContext(BasesContext)
 
   let areasEscogidas = 0
   let areasDisponibles = 0
@@ -32,40 +32,45 @@ export default function SummaryAutoproduccion() {
   produccionAnual = TCB.produccion.pTotalAnual
 
   const columns = [
-    // { field: 'idBaseSolar', headerName: 'ID', width: 50 },
     {
       field: 'nombreBaseSolar',
-      headerName: 'Nombre',
+      headerName: t('BaseSolar.PROP.nombreBaseSolar'),
       headerAlign: 'center',
       width: 100,
+      sortable: false,
+      description: t('BaseSolar.TOOLTIP.nombreBaseSolar'),
     },
     {
       field: 'areaReal',
-      headerName: t('BaseSolar.LABEL_areaReal'),
+      headerName: t('BaseSolar.PROP.areaReal'),
       headerAlign: 'center',
       flex: 1,
       align: 'right',
-      description: t('BaseSolar.TOOLTIP_areaReal'),
+      sortable: false,
+      description: t('BaseSolar.TOOLTIP.areaReal'),
       renderCell: (params) => {
         return UTIL.formatoValor('areaReal', params.value)
       },
     },
     {
       field: 'paneles',
-      headerName: 'Paneles',
+      headerName: t('Instalacion.PROP.paneles'),
       headerAlign: 'center',
       flex: 0.5,
       align: 'center',
+      sortable: false,
+      description: t('Instalacion.TOOLTIP.paneles'),
       renderCell: (params) => {
         return UTIL.formatoValor('paneles', params.value)
       },
     },
     {
       field: 'potenciaTotal',
-      headerName: 'Potencia Total de la base',
+      headerName: t('Instalacion.PROP.potenciaTotal'),
       headerAlign: 'center',
       flex: 1,
       align: 'right',
+      sortable: false,
       renderCell: (params) => {
         return UTIL.formatoValor('potenciaTotal', params.value)
       },
@@ -180,8 +185,9 @@ export default function SummaryAutoproduccion() {
           rows={bases}
           columns={columns}
           hideFooter={true}
-          autoHeight
           rowHeight={30}
+          autoHeight
+          disableColumnMenu
           sx={{
             boxShadow: 2,
             border: 2,

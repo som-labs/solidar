@@ -63,7 +63,7 @@ export default function MonthThreeParts(props) {
     legend: {
       x: 0.3,
       xref: 'paper',
-      y: -0.1,
+      y: -0.15,
       yref: 'paper',
       orientation: 'h',
     },
@@ -96,7 +96,7 @@ export default function MonthThreeParts(props) {
       />
       <Typography variant="h5" textAlign={'center'} sx={{ mt: '1rem' }}>
         {t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_ENERGY_BALANCE', {
-          potencia: UTIL.formatoValor('potencia', TCB.produccion.potenciaTotal),
+          potencia: UTIL.formatoValor('potencia', TCB.produccion.potenciaTotalInstalada),
         })}
       </Typography>
       <Plot data={[trace_deficit, trace_autoconsumo, trace_excedente]} layout={layout} />

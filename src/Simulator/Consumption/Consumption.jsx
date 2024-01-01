@@ -19,7 +19,7 @@ const ConsumptionStep = () => {
         <Typography
           variant="body"
           dangerouslySetInnerHTML={{
-            __html: t('TARIFA.DESCRIPTION'),
+            __html: t('CONSUMPTION.TARIFA_DESCRIPTION'),
           }}
         />
         <br />
@@ -28,7 +28,7 @@ const ConsumptionStep = () => {
           <Typography
             variant="body"
             dangerouslySetInnerHTML={{
-              __html: t('CONSUMPTION.DESCRIPTION'),
+              __html: t('CONSUMPTION.TIPO_CONSUMO_DESCRIPTION'),
             }}
           />
           <ConsumptionSummary></ConsumptionSummary>

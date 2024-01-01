@@ -63,7 +63,7 @@ export default function EnergyFlow(props) {
       leftMargin,
       linea,
       wConsumo,
-      t('Consumo.LABEL_cTotalAnual'),
+      t('Consumo.PROP.cTotalAnual'),
       stFlujo,
       stTitulo,
     )

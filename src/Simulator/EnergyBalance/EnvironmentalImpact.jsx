@@ -17,7 +17,8 @@ export default function EnvironmentalImpact() {
 
   const radiusNoRenovable = 200
   const radiusRenovable = parseInt(
-    (radiusNoRenovable * TCB.CO2AnualRenovable) / TCB.CO2AnualNoRenovable,
+    (radiusNoRenovable * TCB.produccion.CO2AnualRenovable) /
+      TCB.produccion.CO2AnualNoRenovable,
   )
   //PENDIENTE: que color poner para que con fondo oscuro los circulos se vean bien
   return (
@@ -77,14 +78,14 @@ export default function EnvironmentalImpact() {
                 }}
               >
                 <Typography variant="h6" textAlign={'center'} color={'white'}>
-                  {UTIL.formatoValor('peso', TCB.CO2AnualRenovable)}
+                  {UTIL.formatoValor('peso', TCB.produccion.CO2AnualRenovable)}
                 </Typography>
               </Box>
               <Typography
                 variant="h6"
                 textAlign={'center'}
                 dangerouslySetInnerHTML={{
-                  __html: t('ENERGY_BALANCE.LABEL_kgCO2AnualRenovable'),
+                  __html: t('ENERGY_BALANCE.LABEL_CO2AnualRenovable'),
                 }}
               />
             </Box>
@@ -111,7 +112,7 @@ export default function EnvironmentalImpact() {
                 }}
               >
                 <Typography variant="h6" textAlign={'center'} color={'white'}>
-                  {UTIL.formatoValor('peso', TCB.CO2AnualNoRenovable)}
+                  {UTIL.formatoValor('peso', TCB.produccion.CO2AnualNoRenovable)}
                 </Typography>
               </Box>
 
@@ -119,7 +120,7 @@ export default function EnvironmentalImpact() {
                 variant="h6"
                 textAlign={'center'}
                 dangerouslySetInnerHTML={{
-                  __html: t('ENERGY_BALANCE.LABEL_kgCO2AnualNoRenovable'),
+                  __html: t('ENERGY_BALANCE.LABEL_CO2AnualNoRenovable'),
                 }}
               />
             </Box>

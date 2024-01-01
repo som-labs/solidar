@@ -45,16 +45,18 @@ export default function Page() {
   const [coefHucha, setCoefHucha] = useState(0)
   const [ecoData, setEcoData] = useState({})
 
+  let results
+
   function validaLocationStep() {
-    let { status, error } = validaBases()
-    if (!status) SLDRAlert('VALIDACION', error, 'error')
-    return status
+    results = validaBases()
+    if (!results.status) SLDRAlert('VALIDACION', results.error, 'error')
+    return results.status
   }
 
-  function validaConsumptionStep() {
-    let { status, error } = validaTipoConsumo()
-    if (!status) {
-      SLDRAlert('VALIDACION', error, 'error')
+  async function validaConsumptionStep() {
+    results = validaTipoConsumo()
+    if (!results.status) {
+      SLDRAlert('VALIDACION', results.error, 'error')
       return false
     }
 
@@ -63,9 +65,15 @@ export default function Page() {
     TCB.cambioTipoConsumo = true
 
     //Se crearan los objetos produccion, balance y economico
-    status = PreparaEnergyBalance()
-    if (!status) setEcoData(TCB.economico)
-    return status
+    //PENDIENTE: podria haber un warning de falta de espacio enviado desde Prepara...
+    results = await PreparaEnergyBalance()
+    if (results.status) {
+      setEcoData(TCB.economico)
+    } else {
+      console.log(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error)
+      SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
+    }
+    return results.status
   }
 
   return (
@@ -80,8 +88,8 @@ export default function Page() {
               setSubvencionEU,
               valorSubvencionEU,
               setValorSubvencionEU,
-              precioInstalacionCorregido,
-              setPrecioInstalacionCorregido,
+              // precioInstalacionCorregido,
+              // setPrecioInstalacionCorregido,
               cuotaHucha,
               setCuotaHucha,
               coefHucha,

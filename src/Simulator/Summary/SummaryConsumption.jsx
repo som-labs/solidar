@@ -15,22 +15,22 @@ import * as UTIL from '../classes/Utiles'
 
 export default function SummaryConsumption() {
   const { t } = useTranslation()
-  const { tipoConsumo, setTipoConsumo } = useContext(ConsumptionContext)
+  const { tipoConsumo } = useContext(ConsumptionContext)
 
   const columns = [
     {
       field: 'nombreTipoConsumo',
-      headerName: t('TipoConsumo.LABEL_nombreTipoConsumo'),
+      headerName: t('TipoConsumo.PROP.nombreTipoConsumo'),
       editable: true,
       flex: 1,
-      description: t('TipoConsumo.TOOLTIP_nombreTipoConsumo'),
+      description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
     },
     {
       field: 'cTotalAnual',
-      headerName: t('TipoConsumo.LABEL_cTotalAnual'),
+      headerName: t('TipoConsumo.PROP.cTotalAnual'),
       type: 'number',
       width: 150,
-      description: t('TipoConsumo.TOOLTIP_cTotalAnual'),
+      description: t('TipoConsumo.TOOLTIP.cTotalAnual'),
       valueFormatter: (params) => UTIL.formatoValor('cTotalAnual', params.value),
     },
   ]

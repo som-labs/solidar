@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import Plot from 'react-plotly.js'
 
 // MUI objects
-
 import Typography from '@mui/material/Typography'
 import { Container } from '@mui/material'
 
@@ -13,7 +12,7 @@ import { Container } from '@mui/material'
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
 
-export default function MonthEnergyBalance(props) {
+export default function MonthEnergyBalance() {
   const { t } = useTranslation()
 
   const graphElement = useRef()
@@ -21,8 +20,6 @@ export default function MonthEnergyBalance(props) {
   const maxMonth = useRef()
   const minMonth = useRef()
 
-  // const { consumo, produccion } = props.monthlyConsumoProduccion
-  //console.log(consumo)
   const consumo = TCB.consumo.resumenMensual('suma')
   const produccion = TCB.produccion.resumenMensual('suma')
 
@@ -64,21 +61,21 @@ export default function MonthEnergyBalance(props) {
     x: mesMapa,
     y: consumo,
     type: 'scatter',
-    name: t('ENERGY_BALANCE.LABEL_consumoMensual'),
+    name: t('Consumo.PROP.consumoMensual'),
   }
 
   var trace2 = {
     x: mesMapa,
     y: produccion,
     type: 'scatter',
-    name: t('ENERGY_BALANCE.LABEL_produccionMensual'),
+    name: t('Produccion.PROP.produccionMensual'),
   }
 
   var layout = {
     legend: {
       x: 0.3,
       xref: 'paper',
-      y: -0.1,
+      y: -0.15,
       yref: 'paper',
       orientation: 'h',
     },
@@ -98,7 +95,7 @@ export default function MonthEnergyBalance(props) {
       range: [0, maxMonth.current + delta],
     },
 
-    margin: { b: 30, t: 50, r: 10, l: 100 },
+    margin: { b: 50, t: 50, r: 10, l: 100 },
   }
 
   return (
@@ -112,11 +109,19 @@ export default function MonthEnergyBalance(props) {
           __html: t('ENERGY_BALANCE.DESCRIPTION_MONTH_ENERGY_BALANCE'),
         }}
       />
-      <Typography variant="h5" textAlign={'center'} sx={{ mt: '1rem' }}>
-        {t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_ENERGY_BALANCE', {
-          potencia: UTIL.formatoValor('potencia', TCB.produccion.potenciaTotal),
-        })}
-      </Typography>
+      <Typography
+        variant="h5"
+        textAlign={'center'}
+        sx={{ mt: '1rem' }}
+        dangerouslySetInnerHTML={{
+          __html: t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_ENERGY_BALANCE', {
+            potencia: UTIL.formatoValor(
+              'potencia',
+              TCB.produccion.potenciaTotalInstalada,
+            ),
+          }),
+        }}
+      ></Typography>
       <Plot data={[trace1, trace2]} layout={layout} />
     </Container>
   )

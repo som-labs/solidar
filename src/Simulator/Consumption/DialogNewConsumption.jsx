@@ -16,7 +16,7 @@ import {
 import { MuiFileInput } from 'mui-file-input'
 
 // REACT Solidar Components
-import { SLDRInputField } from '../../components/SLDRComponents'
+import { SLDRInputField, SLDRTooltip } from '../../components/SLDRComponents'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
@@ -90,20 +90,20 @@ export default function DialogNewConsumption({ data, onClose }) {
                   __html: t('TipoConsumo.DESCRIPTION_fuente'),
                 }}
               />
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <SLDRInputField
-                  sx={{ width: 200, height: 50 }}
-                  select
-                  //onChange={handleChange}
-                  value={values.fuente}
-                  name="fuente"
-                  defaultValue="CSV"
-                >
-                  <MenuItem value={'CSV'}>CSV</MenuItem>
-                  <MenuItem value={'DATADIS'}>DATADIS</MenuItem>
-                  <MenuItem value={'REE'}>REE</MenuItem>
-                </SLDRInputField>
-              </FormControl>
+              {/* <FormControl sx={{ m: 1, minWidth: 120 }}> */}
+              <SLDRInputField
+                sx={{ width: 200, height: 50 }}
+                select
+                value={values.fuente}
+                name="fuente"
+                defaultValue="CSV"
+                object="TipoConsumo"
+              >
+                <MenuItem value={'CSV'}>CSV</MenuItem>
+                <MenuItem value={'DATADIS'}>DATADIS</MenuItem>
+                <MenuItem value={'REE'}>REE</MenuItem>
+              </SLDRInputField>
+              {/* </FormControl> */}
 
               <Box
                 style={{
@@ -120,16 +120,20 @@ export default function DialogNewConsumption({ data, onClose }) {
                         <FormControlLabel
                           labelPlacement="start"
                           control={
-                            <MuiFileInput
-                              {...field}
-                              size="small"
-                              sx={{ flex: 1, ml: '2rem' }}
-                              inputProps={{ accept: '.csv' }}
-                              onChange={(event) => handleFile(event, setValues)}
-                              value={values.ficheroCSV}
-                            />
+                            <SLDRTooltip
+                              title={t('TipoConsumo.TOOLTIP.nombreFicheroCSV')}
+                            >
+                              <MuiFileInput
+                                {...field}
+                                size="small"
+                                sx={{ flex: 1, ml: '2rem' }}
+                                inputProps={{ accept: '.csv' }}
+                                onChange={(event) => handleFile(event, setValues)}
+                                value={values.ficheroCSV}
+                              />
+                            </SLDRTooltip>
                           }
-                          label={t('TipoConsumo.LABEL_nombreFicheroCSV')}
+                          label={t('TipoConsumo.PROP.nombreFicheroCSV')}
                         />
                       )}
                     </Field>

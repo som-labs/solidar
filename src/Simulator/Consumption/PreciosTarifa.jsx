@@ -1,11 +1,10 @@
 import { useState, useEffect, Fragment, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Formik, Field, Form } from 'formik'
+import { Formik, Form } from 'formik'
 
 import Grid from '@mui/material/Grid'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
-import TextField from '@mui/material/TextField'
 
 // REACT Solidar Components
 import { SLDRInputField } from '../../components/SLDRComponents'
@@ -77,21 +76,18 @@ export default function PreciosTarifa() {
 
   if (TCB.tarifaActiva.precios.length !== 0) {
     return (
-      <Formik
-        initialValues={TCB.tarifaActiva.precios} //{precios}
-        validate={validateFields}
-      >
+      <Formik initialValues={TCB.tarifaActiva.precios} validate={validateFields}>
         {({ values, setValues, setPreciosValidos }) => (
           <Form>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
               <SLDRInputField
                 sx={{ width: 200, height: 50, textAlign: 'center', mb: '1rem' }}
                 select
-                label={t('TARIFA.LABEL_NOMBRE_TARIFA')}
+                label={t('Tarifa.PROP.tipoTarifa')}
                 onChange={(e) => cambiaTipoTarifa(e, setValues)}
-                name="nombreTarifa"
+                name="tipoTarifa"
                 value={tipoTarifa}
-                object="TARIFA"
+                object="Tarifa"
               >
                 <MenuItem key={'A1'} value={'2.0TD'}>
                   2.0TD
@@ -109,8 +105,8 @@ export default function PreciosTarifa() {
                     <Grid item xs>
                       <SLDRInputField
                         unit=" €"
-                        object="TARIFA"
-                        value={precio.toLocaleString(i18n.language)} //{values[precioP[0]][1].toLocaleString(i18n.language)}
+                        object="Tarifa"
+                        value={precio.toLocaleString(i18n.language)}
                         onChange={(ev) =>
                           cambiaPrecio(
                             index,
@@ -120,7 +116,7 @@ export default function PreciosTarifa() {
                             setPreciosValidos,
                           )
                         }
-                        label={t('TARIFA.LABEL_P' + index)}
+                        label={t('Tarifa.PROP.P' + index)}
                         name={String(index)}
                       ></SLDRInputField>
                     </Grid>

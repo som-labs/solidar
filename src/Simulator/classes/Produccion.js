@@ -15,7 +15,7 @@ class Produccion extends DiaHora {
   }
   get pTotalAnual() {
     return this.totalAnual
-  } //Consumo total anual
+  } //Produccion total anual
   set pTotalAnual(valor) {
     this.totalAnual = valor
   }
@@ -34,36 +34,39 @@ class Produccion extends DiaHora {
   constructor(base) {
     super()
 
-    this.potenciaTotal = 0
+    //this.potenciaTotal = 0
 
     // Generamos la produccion de esa base multiplicando la matriz de rendimiento unitario por la potencia instalada
     if (base !== undefined) {
       UTIL.debugLog('Creando producción para base:' + base.nombreBaseSolar)
-
       this.escala(base.rendimiento, base.instalacion.potenciaTotal / 1000)
-      this.potenciaTotal = base.instalacion.potenciaTotal
+      //this.potenciaTotal = base.instalacion.potenciaTotal
       base.produccionCreada = true
+      //Ahorro de CO2 de esta base
+      this.CO2AnualRenovable =
+        TCB.conversionCO2[TCB.territorio].renovable * this.totalAnual
+      this.CO2AnualNoRenovable =
+        TCB.conversionCO2[TCB.territorio].norenovable * this.totalAnual
     } else {
       // Es la construccion de la produccion que sintetiza la produccion de todas las bases
       UTIL.debugLog('Creando producción global para ' + TCB.BaseSolar.length + ' bases')
+      this.potenciaTotal = 0
       this.precioInstalacion = 0
+      this.CO2AnualRenovable = 0
+      this.CO2AnualNoRenovable = 0
       for (let _base of TCB.BaseSolar) {
         this.suma(_base.produccion)
-        this.potenciaTotal += _base.instalacion.potenciaTotal
-        this.precioInstalacion += _base.instalacion.precioInstalacion
+        this.CO2AnualRenovable += _base.produccion.CO2AnualRenovable
+        this.CO2AnualNoRenovable += _base.produccion.CO2AnualNoRenovable
       }
-      //El precio de la instalacion total se resume en la instancia produccion global
-      let i = TCB.precioInstalacion.precios.findIndex(
-        (rango) => rango.desde <= this.potenciaTotal && rango.hasta >= this.potenciaTotal,
-      )
-      this.precioInstalacion = parseInt(
-        this.potenciaTotal *
-          TCB.precioInstalacion.precios[i].precio *
-          (1 + TCB.parametros.IVAinstalacion / 100),
-      )
-      this.precioInstalacionCorregido = this.precioInstalacion
-      TCB.produccionCreada = true
+
+      //This property is only used on the global production instance.
+      this.potenciaTotalInstalada = TCB.BaseSolar.reduce((a, b) => {
+        return a + b.instalacion.potenciaTotal
+      }, 0)
     }
+    this.produccionCreada = true
   }
 }
+
 export default Produccion

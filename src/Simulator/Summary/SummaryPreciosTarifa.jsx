@@ -38,13 +38,13 @@ export default function SummaryPreciosTarifa() {
         justifyContent="space-evenly"
       >
         <Grid item xs={6} sx={{ borderRadius: '5px' }}>
-          {t('TARIFA.LABEL_NOMBRE_TARIFA')}
+          {t('Tarifa.PROP.tipoTarifa')}
         </Grid>
         <Grid item xs={6}>
           {TCB.nombreTarifaActiva}
         </Grid>
         <Grid item xs={6}>
-          {t('TARIFA.LABEL_P0')}
+          {t('Tarifa.PROP.P0')}
         </Grid>
         <Grid item xs={6}>
           {TCB.tarifas[TCB.nombreTarifaActiva].precios[0] + ' €/kWh'}

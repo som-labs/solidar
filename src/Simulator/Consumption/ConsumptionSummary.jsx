@@ -11,7 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import Box from '@mui/material/Box'
 
-import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid'
+import { DataGrid, GridToolbarContainer, GridActionsCellItem } from '@mui/x-data-grid'
 
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
@@ -35,58 +35,62 @@ export default function ConsumptionSummary() {
   const columns = [
     {
       field: 'nombreTipoConsumo',
-      headerName: t('TipoConsumo.LABEL_nombreTipoConsumo'),
+      headerName: t('TipoConsumo.PROP.nombreTipoConsumo'),
       editable: true,
       flex: 1,
-      description: t('TipoConsumo.TOOLTIP_nombreTipoConsumo'),
+      description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
+      sortable: false,
     },
     {
       field: 'fuente',
-      headerName: t('TipoConsumo.LABEL_fuente'),
+      headerName: t('TipoConsumo.PROP.fuente'),
       type: 'select',
-      description: t('TipoConsumo.TOOLTIP_fuente'),
+      description: t('TipoConsumo.TOOLTIP.fuente'),
+      sortable: false,
     },
     {
       field: 'nombreFicheroCSV',
-      headerName: t('TipoConsumo.LABEL_nombreFicheroCSV'),
+      headerName: t('TipoConsumo.PROP.nombreFicheroCSV'),
       type: 'text',
       flex: 1,
-      description: t('TipoConsumo.TOOLTIP_nombreFicheroCSV'),
+      description: t('TipoConsumo.TOOLTIP.nombreFicheroCSV'),
+      sortable: false,
     },
     {
       field: 'cTotalAnual',
-      headerName: t('TipoConsumo.LABEL_cTotalAnual'),
+      headerName: t('TipoConsumo.PROP.cTotalAnual'),
       type: 'number',
       width: 150,
-      description: t('TipoConsumo.TOOLTIP_cTotalAnual'),
+      description: t('TipoConsumo.TOOLTIP.cTotalAnual'),
       valueFormatter: (params) => formatoValor('cTotalAnual', params.value),
+      sortable: false,
     },
     {
-      field: 'Actions',
-      headerName: '',
-      renderCell: (params) => {
-        return (
-          <Box>
-            <IconButton
-              variant="contained"
-              size="small"
-              tabIndex={params.hasFocus ? 0 : -1}
-              onClick={() => showGraphsTC(params.row)}
-            >
+      field: 'actions',
+      type: 'actions',
+      sortable: false,
+      getActions: (params) => [
+        <GridActionsCellItem
+          key={1}
+          icon={
+            <Tooltip title={t('CONSUMPTION.TOOLTIP_botonMuestraMapaTipoConsumo')}>
               <AnalyticsIcon />
-            </IconButton>
-
-            <IconButton
-              variant="contained"
-              size="small"
-              tabIndex={params.hasFocus ? 0 : -1}
-              onClick={(e) => deleteTC(e, params.row)}
-            >
+            </Tooltip>
+          }
+          label="ShowGraphs"
+          onClick={() => showGraphsTC(params.row)}
+        />,
+        <GridActionsCellItem
+          key={1}
+          icon={
+            <Tooltip title={t('CONSUMPTION.TOOLTIP_botonBorraTipoConsumo')}>
               <DeleteIcon />
-            </IconButton>
-          </Box>
-        )
-      },
+            </Tooltip>
+          }
+          label="ShowGraphs"
+          onClick={(e) => deleteTC(e, params.row)}
+        />,
+      ],
     },
   ]
 
@@ -167,7 +171,7 @@ export default function ConsumptionSummary() {
         idTipoConsumo: TCB.featIdUnico,
         nombreTipoConsumo: formData.nombreTipoConsumo,
         fuente: formData.fuente,
-        nombreTarifa: TCB.nombreTarifaActiva,
+        //nombreTarifa: TCB.nombreTarifaActiva,
       }
 
       if (nuevoTipoConsumo.fuente === 'REE') {
@@ -334,11 +338,13 @@ export default function ConsumptionSummary() {
       {preciosValidos && (
         <SLDRInfoBox>
           <DataGrid
-            autoHeight
             getRowId={getRowId}
             rows={tipoConsumo}
             columns={columns}
             hideFooter={false}
+            rowHeight={30}
+            autoHeight
+            disableColumnMenu
             sx={{
               mb: '1rem',
             }}
