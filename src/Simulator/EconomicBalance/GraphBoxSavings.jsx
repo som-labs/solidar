@@ -58,7 +58,7 @@ export default function GraphBoxSavings() {
           }}
         >
           <Typography variant="body" textAlign={'center'}>
-            {t('Economico.LABEL_gastoSinPlacasAnual')}
+            {t('Economico.PROP.gastoSinPlacasAnual')}
           </Typography>
         </Box>
         <Box
@@ -130,7 +130,7 @@ export default function GraphBoxSavings() {
           }}
         >
           <Typography variant="body" textAlign={'center'}>
-            {t('Economico.LABEL_gastoConPlacasAnual')}
+            {t('Economico.PROP.gastoConPlacasAnual')}
           </Typography>
         </Box>
         <Box
@@ -190,7 +190,7 @@ export default function GraphBoxSavings() {
           }}
         >
           <Typography variant="body" textAlign={'center'}>
-            {t('Economico.LABEL_noCompensadoAnual')}
+            {t('Economico.PROP.noCompensadoAnual')}
           </Typography>
         </Box>
         <Box

@@ -17,7 +17,9 @@ function SLDRFooterBox({ children }) {
   const StyledBox = styled(Box)(() => ({
     display: 'flex',
     flexWrap: 'wrap',
+    flexDirection: 'column',
     flex: 1,
+    textAlign: 'center',
     justifyContent: 'center',
     backgroundColor: '#E5FFCC',
   }))
@@ -98,7 +100,7 @@ function SLDRInputField({ unit, object, MUIType, ...props }) {
     <>
       {MUIType === undefined && (
         <SLDRTooltip
-          title={<Typography>{t(object + '.TOOLTIP_' + props.name)}</Typography>}
+          title={<Typography>{t(object + '.TOOLTIP.' + props.name)}</Typography>}
           placement="top"
         >
           <TextField {...field} {...sxFull} />

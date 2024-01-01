@@ -4,7 +4,7 @@ import DiaHora from './DiaHora'
 /** 
  * @class Rendimiento
  * @classdesc clase responsable de obtener la información de PVGIS.
- La matriz diaHora contiene la potencia generada por un placa de 1kWp con las caracteristicas definidas por
+ La matriz diaHora contiene la potencia generada por una placa de 1kWp con las caracteristicas definidas por 
  su latitud, longitud, acimut respecto al sur e inclinacion de las placas con la horizontal
  Adicionalmente completa los datos de la instalación que se han utilizado desde PVGIS.
 */
@@ -19,8 +19,6 @@ class Rendimiento extends DiaHora {
 
   constructor(base) {
     super()
-    //Lamentablemente no se puede llamar una funcion asincrona desde el constructor de clase por lo que se debe llamar desde la instancia ya creada.
-    //En este caso despues de crear un nuevo rendimiento se debe llamar await loadPVGISdata().
 
     this.PVGISfechaInicio = new Date(1, 1, 1900)
     this.PVGISfechaFin = new Date(1, 1, 1900)
@@ -38,8 +36,11 @@ class Rendimiento extends DiaHora {
     this.acimutOptimal
     this.unitarioTotal
 
+    //PVGISresults reflects the result of the PVGIS call
+    this.PVGISresults = { status: undefined, error: 'unknown' }
+
     if (base.requierePVGIS) {
-      this.rendimientoCreado = this.loadPVGISdata(base)
+      this.loadPVGISdata(base)
     } else {
       //estamos importando
       //Asignacion propiedades contenidas en el objeto de entrada
@@ -89,17 +90,24 @@ class Rendimiento extends DiaHora {
       lon +
       addurl
 
+    let respuesta
+
     UTIL.debugLog('PVGIS url:' + url)
-    console.log(url)
     try {
-      const respuesta = await fetch(url)
+      respuesta = await fetch(url)
       if (respuesta.status === 200) {
         var PVGISdata = await respuesta.json()
         if (PVGISdata.status !== undefined) {
-          alert(TCB.i18next.t('rendimiento_MSG_errorFetch') + PVGISdata.message)
-          return false
+          //REVISAR: como usar i18n desde aqui
+          this.PVGISresults = {
+            status: false,
+            error: TCB.i18next.t('Rendimiento.MSG_ERROR_PVGIS_FETCH', {
+              err: PVGISdata.status + '(' + PVGISdata.message + ')',
+              url: url,
+            }),
+          }
+          return
         }
-        /*         var unDia = { dia: 0, mes: 0, valores: Array(24).fill(0) }; */
         var unDia = { fecha: '', valores: Array(24).fill(0) }
         let i = 0
         var hora
@@ -126,7 +134,6 @@ class Rendimiento extends DiaHora {
           let currFecha = new Date(_ano, _mes, _dia, 0, 0)
           if (i == 0) {
             this.PVGISfechaInicio = currFecha
-            //            this.horaInicio = hora;
           }
 
           if (_mes == 1 && _dia == 29) return //Ignoramos el 29/2 de los años bisiestos
@@ -136,8 +143,6 @@ class Rendimiento extends DiaHora {
             if (i == 0) {
               unDia = {
                 fecha: currFecha,
-                /*                 dia: currFecha.getDate(),
-                mes: currFecha.getMonth(), */
                 valores: Array(24).fill(0),
               }
               unDia.valores[hora] = parseFloat(element['P'])
@@ -145,8 +150,6 @@ class Rendimiento extends DiaHora {
               this.mete(unDia, 'PROMEDIO')
               unDia = {
                 fecha: currFecha,
-                /*                 dia: currFecha.getDate(),
-                mes: currFecha.getMonth(), */
                 valores: Array(24).fill(0),
               }
               unDia.valores[hora] = parseFloat(element['P'])
@@ -161,21 +164,23 @@ class Rendimiento extends DiaHora {
 
         this.PVGISfechaFin = lastFecha
         this.numeroRegistros = i
-        base.rendimientoCreado = true
+        this.sintesis()
         base.requierePVGIS = false
-
-        return true
+        this.PVGISresults = {
+          status: true,
+          error: '',
+        }
+        return
       }
     } catch (err) {
-      //PENDIENTE: cambiar forma de reportar el error
-      alert(
-        TCB.i18next.t('RENDIMIENTO.MSG_ERROR_PVGIS_FETCH', {
+      this.PVGISresults = {
+        status: false,
+        error: TCB.i18next.t('Rendimiento.MSG_ERROR_PVGIS_FETCH', {
           err: err.message,
           url: url,
         }),
-      )
-      base.rendimientoCreado = 'error'
-      return false
+      }
+      return
     }
   }
 }

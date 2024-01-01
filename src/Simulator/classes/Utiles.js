@@ -11,7 +11,6 @@
 
 import TCB from './TCB'
 import { Style, Fill, Text } from 'ol/style'
-import { useTranslation } from 'react-i18next'
 
 /*global bootstrap, ol*/
 const campos = {
@@ -23,7 +22,7 @@ const campos = {
   peso: { unidad: ' Kg', decimales: 2, salvar: true, mostrar: true },
   dinero: { unidad: ' €', decimales: 0, salvar: true, mostrar: true },
   superficie: { unidad: 'm²', decimales: 2, salvar: true, mostrar: true },
-  precioEnergia: { unidad: ' €/kWh', decimales: 2, salvar: true, mostrar: true },
+  precioEnergia: { unidad: ' €/kWh', decimales: 3, salvar: true, mostrar: true },
   fecha: { unidad: 'fecha', salvar: false, mostrar: true },
   pdfpieDePagina: { unidad: 'fecha', decimales: 'larga', mostrar: true },
 
@@ -34,7 +33,7 @@ const campos = {
     mostrar: false,
     antes: 'maximoAnual',
   },
-  totalAnual: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: false },
+  totalAnual: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true },
   // Especificos
   /* Proyecto */
   nombreProyecto: { unidad: '', salvar: true, mostrar: true },
@@ -47,6 +46,7 @@ const campos = {
   lonlatBaseSolar: { unidad: '', salvar: true, mostrar: true, order: 3 },
   roofType: { unidad: '', salvar: true, mostrar: true, order: 4 },
   cumbrera: { unidad: 'm', decimales: 1, salvar: true, mostrar: true, order: 5 },
+  ancho: { unidad: 'm', decimales: 1, salvar: true, mostrar: true, order: 5 },
   columnas: { unidad: '', decimales: 0, salvar: true, mostrar: true, order: 6 },
   anchoReal: { unidad: 'm', decimales: 1, salvar: true, mostrar: true, order: 7 },
   filas: { unidad: '', decimales: 0, salvar: true, mostrar: true, order: 8 },
@@ -97,7 +97,8 @@ const campos = {
     antes: 'maximoAnual',
     order: 2,
   },
-
+  CO2AnualRenovable: { unidad: 'kg', decimales: 0, salvar: true, mostrar: true },
+  CO2AnualNoRenovable: { unidad: 'kg', decimales: 0, salvar: true, mostrar: true },
   /* rendimiento */
   unitarioTotal: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true, order: 1 },
   produccionTotal: {
@@ -115,7 +116,6 @@ const campos = {
   meteo_db: { unidad: '', salvar: false, mostrar: true, order: 8 },
   year_min: { unidad: '', decimales: 0, salvar: false, mostrar: false },
   year_max: { unidad: '', decimales: 0, salvar: false, mostrar: false },
-  rendimientoCreado: { unidad: '', salvar: false, mostrar: false },
   PVGISfechaInicio: {
     unidad: 'fecha',
     decimales: 'corta',
@@ -193,7 +193,7 @@ const campos = {
   VAN: { unidad: ' €', decimales: 2, salvar: false, mostrar: true },
   TIR: { unidad: '%', decimales: 2, salvar: false, mostrar: true },
   precioInstalacion: { unidad: ' €', decimales: 0, salvar: true, mostrar: true },
-  nuevoPrecioInstalacion: { unidad: ' €', decimales: 0, salvar: true, mostrar: true },
+  precioInstalacionCorregido: { unidad: ' €', decimales: 0, salvar: true, mostrar: true },
 
   /* Globales */
   areaTotal: { unidad: ' m²', decimales: 2, salvar: true, mostrar: true },
@@ -616,7 +616,7 @@ function formatoValor(campo, valor) {
   console.log(campo + "->" + valor);  */
   if (dato === undefined || valor === '') return valor
 
-  if (typeof valor === 'boolean') return TCB.i18next.t('valor_' + valor)
+  if (typeof valor === 'boolean') return TCB.i18next.t('BASIC.valor_' + valor)
   if (dato.unidad === 'º') {
     //Se debe tener en cuanta que algunos campos de angulos para PVGIS pueden tener el valor Optimo por lo que no se añade º
     if (valor === 'Optimo') return TCB.i18next.t('valorOptimo_LBL')
@@ -834,7 +834,16 @@ function obtenerPropiedades(objeto, nivel) {
   if (nivel == 0) prop_val = {}
   const propiedades = Object.getOwnPropertyDescriptors(objeto)
 
+  //REVISAR: totalAnual de diaHora es una propiedad que cada objeto mapea con un nombre mendiate getter. No se obtiene en getOwnPropertyDescriptors por lo que no se puede filtar en campos si lo queires mostrar o no.
+
+  // console.log('PROPIEDADES' + objeto.constructor.name, propiedades)
+  // const proto = Object.getPrototypeOf(objeto)
+  // console.log('PROTO', proto)
+  // const descriptors = Object.getOwnPropertyDescriptors(proto)
+  // console.log('DESCRIPTOS', descriptors)
+
   let actobj = objeto.constructor.name
+  if (actobj === 'Object') return //No esta previsto mostrar campos de tipo objeto javascript como puede ser el status del rendimiento
   prop_val[actobj] = prop_val[actobj] ?? []
 
   for (let prop in propiedades) {
@@ -853,7 +862,9 @@ function obtenerPropiedades(objeto, nivel) {
         }
       } else {
         if (campos[prop] !== undefined && campos[prop].mostrar)
-          prop_val[actobj].push({ nombre: prop, valor: objeto[prop] })
+          if (prop !== 'totalAnual' || actobj === 'Produccion')
+            //WARNING: este es un caso particular feo pero ver el PENDIENTE de arriba para entender
+            prop_val[actobj].push({ nombre: prop, valor: objeto[prop] })
       }
     } else {
       // hay que ver como hacemos con el precio de Tarifa que es un array

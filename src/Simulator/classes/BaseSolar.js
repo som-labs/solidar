@@ -100,10 +100,10 @@ class BaseSolar extends DiaHora {
    * @see Rendimiento
    */
   async cargaRendimiento() {
-    if (this.rendimientoCreado) {
-      this.rendimiento = {}
-      this.rendimientoCreado = false
-    }
+    // if (this.rendimientoCreado) {
+    //   this.rendimiento = {}
+    //   this.rendimientoCreado = false
+    // }
     this.rendimiento = new Rendimiento(this)
   }
 
@@ -146,7 +146,7 @@ class BaseSolar extends DiaHora {
       //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
       hFilas = hFilas === 0 ? 1 : hFilas
 
-      console.log(hGap, hColumnas, hFilas)
+      //console.log(hGap, hColumnas, hFilas)
       // Opcion largo panel perpendicular a cumpbrera
       vGap =
         TCB.parametros.largoPanel * Math.cos((this.#inclinacion * Math.PI) / 180) +
@@ -159,7 +159,7 @@ class BaseSolar extends DiaHora {
       //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
       vFilas = vFilas === 0 ? 1 : vFilas
     }
-    console.log(vGap, vColumnas, vFilas)
+    //console.log(vGap, vColumnas, vFilas)
     // Elegimos la configuracion que nos permite mas paneles
     if (hColumnas * hFilas > vColumnas * vFilas) {
       this.columnas = hColumnas
@@ -170,7 +170,6 @@ class BaseSolar extends DiaHora {
       this.filas = vFilas
       this.modoInstalacion = 'Vertical'
     }
-    console.log(this.modoInstalacion)
   }
 
   updateBase(newData) {
