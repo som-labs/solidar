@@ -70,7 +70,7 @@ export default function SummaryEnergyBalance() {
             </Grid>
 
             <Grid item xs={7}>
-              <Typography variant="h5">{t('Consumo.LABEL_cTotalAnual')}</Typography>
+              <Typography variant="h5">{t('Consumo.PROP.cTotalAnual')}</Typography>
             </Grid>
             <Grid item xs={5}>
               <Typography variant="h5" textAlign={'right'}>
@@ -79,7 +79,7 @@ export default function SummaryEnergyBalance() {
             </Grid>
 
             <Grid item xs={7}>
-              <Typography variant="h5">{t('Produccion.LABEL_pTotalAnual')}</Typography>
+              <Typography variant="h5">{t('Produccion.PROP.pTotalAnual')}</Typography>
             </Grid>
             <Grid item xs={5}>
               <Typography variant="h5" textAlign={'right'}>
@@ -88,7 +88,7 @@ export default function SummaryEnergyBalance() {
             </Grid>
 
             <Grid item xs={7}>
-              <Typography variant="h5">{t('Balance.LABEL_excedenteAnual')}</Typography>
+              <Typography variant="h5">{t('Balance.PROP.excedenteAnual')}</Typography>
             </Grid>
             <Grid item xs={5}>
               <Typography variant="h5" textAlign={'right'}>

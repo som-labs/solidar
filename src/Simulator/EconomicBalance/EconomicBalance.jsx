@@ -15,7 +15,7 @@ import YearSaving from './YearSavings'
 import MonthSaving from './MonthSavings'
 import FinanceSummary from './FinanceSummary'
 import GraphAlternatives from './GraphAlternatives'
-import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
+import { SLDRInfoBox } from '../../components/SLDRComponents'
 
 export default function EconomicBalanceStep() {
   const { t } = useTranslation()

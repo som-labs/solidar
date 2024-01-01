@@ -32,192 +32,6 @@ HOME:
   SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION: (En desarrollo)
   FURTHER_INFORMATION_TITLE: Información de interés
 
-LOCATION:
-  LABEL: Localización
-  TITLE: Localización
-  PROMPT_ADDRESS: Busca la dirección del edificio
-  LABEL_SATELITE: Vista por satélite
-  LABEL_VECTOR: Vista do mapa
-  TOOLTIP_MAP_TYPE: Permítelle intercambiar entre sátelita ou mapa
-  LABEL_BASES_SUMMARY: Resumen
-  PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
-  ERROR_DEFINE_BASE: Debe definir las bases solares antes de continuar
-  ERROR_NOMINATIM_FETCH: Erro ao executar fecth en nominatim.\n{{er}} \n {{url}}}
-  ERROR_TERRITORIO: A aplicación só é válida para España
-
-  TOOLTIP_BORRA_BASE: Elimina a base seleccionada
-  posicionLonLat_LBL: Lonxitude-Latitude
-  posicionLonLat_TT: Non é necesario cubrir este campo só se usa para centrar o mapa nestas coordenadas
-
-BaseSolar:
-  LABEL_nombreBaseSolar: Nome a base
-  TOOLTIP_nombreBaseSolar: Identifica o nome desta base para futuras referencias
-  LABEL_angulosOptimos: Ángulos óptimos
-  TOOLTIP_angulosOptimos: Marca este campo se queres que o sistema calcule o valor óptimo da inclinación e Azimut
-  LABEL_inclinacion: Inclinación
-  LABEL_inclinacionTejado: Inclinación del tejado
-  LABEL_inclinacionPaneles: Inclinación do panel
-  TOOLTIP_inclinacion: Inclinación en grados (entre 0º y 90º)medida con respecto á horizontal do terreo sobre o que se montan os paneis
-  LABEL_inclinacionOptima: Inclinación óptima
-  TOOLTIP_inclinacionOptima: Marca este campo se queres que o sistema calcule o valor óptimo da inclinación do panel
-  LABEL_inAcimut: Orientación (Azimut)
-  TOOLTIP_inAcimut: O ángulo entre o sur coa proxección horizontal do sol. Se os paneis estivesen orientados ao sur o azimut será 0º feito ao leste -90º e oeste 90º. Este campo está cuberto indicando no mapa a orientación que terán os paneis. Se non se complete suponse que é 0
-  LABEL_areaReal: Área corrixida
-  TOOLTIP_areaReal: Área real dispoñible corrixida pola inclinación do tellado
-  LABEL_potenciaMaxima: Máx. kWp
-  TOOLTIP_potenciaMaxima: A potencia máxima de máximo que se instalará nesta área (ver parámetro de conversión
-  LABEL_idBaseSolar: id
-  LABEL_lonlatBaseSolar: Long-Lat
-  TOOLTIP_lonlatBaseSolar: Coordenadas geográficas de la base
-
-TipoConsumo:
-  idTipoConsumo: Id
-  LABEL_nombreTipoConsumo: Identificación do tipo de consumo
-  TOOLTIP_nombreTipoConsumo: Identiza o nome deste consumo para futuras referencias
-  LABEL_fuente: Tipo Fonte
-  TOOLTIP_fuente: Seleccione o tipo de fonte desde o que se cargará o perfil de consumo
-  LABEL_nombreFicheroCSV: Ficheiro de consumo de horas (solo CSV)
-  TOOLTIP_nombreFicheroCSV: Identifique o ficheiro de consumo descargado do seu distribuidor
-  LABEL_consumoAnualREE: Consumo anual en kWh
-  TOOLTIP_consumoAnualREE: En caso de optar polo perfil do tipo REE o consumo anual estimado debe indicar
-  LABEL_cTotalAnual: Consumo anual
-  TOOLTIP_cTotalAnual: Consumo anual de electricidade
-
-Consumo:
-  LABEL_cTotalAnual: Consumo anual
-  TOOLTIP_cTotalAnual: Consumo anual de electricidade
-
-CONSUMPTION:
-  LABEL: Consumo
-  TITLE: Consumo
-
-  LABEL_MAPA_CONSUMO_MES_HORA: 'Máximo valor: {{maxConsumoMes}} kWh'
-  TITLE_MAPA_CONSUMO_MES_HORA: Consumo horario medio por mes en relación ao máximo
-  LABEL_TITLE_MAP_MONTH_DAY: Mapa de consumo horario en kWh
-
-  DIALOG_TITLE_NUEVO_TIPO_CONSUMO:
-  ERROR_DEFINIR_CONSUMO_REE: Debe definir un consumo base anual superior a 0 para o perfil REE
-
-  ERROR_AL_MENOS_UN_TIPOCONSUMO: Debes definir polo menos un tipo de consumo
-  ERROR_FALTA_FICHERO_CONSUMO: Debes definir o ficheiro de consumo antes de continuar
-  LABEL_BUTTON_NUEVO_TIPOCONSUMO: Nuevo tipo consumo
-  TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Boton para crear un nuevo tipo de consumo
-
-  TITLE_DIALOG_NEW_CONSUMPTION: (T)Formulario para crear un nuevo tipo do consumo
-
-nombreTipoConsumoDuplicado_MSG: El nombre del tipo de consumo no puede estar duplicado
-tipoConsumoDefault_MSG: Defina tipo de fichero a utilizar y tarifa aplicable
-fuenteTipoConsumoErronea_MSG: Posible error definiendo DATADIS cuando debería ser CSV o viceversa
-
-tcMaximoAnual_LBL: Máximo consumo horario anual
-numeroDias_LBL: Días procesados
-botonBorraTipoConsumo_LBL:
-botonMuestraMapaTipoConsumo_LBL:
-botonMuestraTarifa_LBL:
-botonSeleccionFichero_LBL:
-botonBorraTipoConsumo_TT: Elimina o perfil de consumo seleccionado
-botonMuestraMapaTipoConsumo_TT: Mostra o gráfico do mapa de consumo deste perfil
-botonMuestraTarifa_TT: Mostrar os prezos das tarifas
-botonSeleccionFichero_TT: Seleccione o ficheiro de consumo
-consumo_MSG_ayudaTipoConsumoHdr: Ayuda definición tipo de consumo
-consumo_MSG_hayFincasAsociadas: No se puede borrar un tipo de consumo que tiene fincas asociadas
-consumo_MSG_descripcionFuentes: "Hai tres formas de proporcionar a información do perfil de consumo <li>CSV:  un ficheiro con valores separados por punto e coma obtido da páxina web da túa empresa de distribución.<a href='./data/Links for individual CSV download . htm 'target='_blank'> Consulta aquí as instrucións </a></li><li>REE:  empregando o perfil estándar REE segundo <a href='https: //www.ree.es/es/clientes / generator/gestion-medidas-electricas/consulta-perfiles-de-consumo' target='_blank'> perfís de consumo final en función dos perfís iniciais en función da demanda real do sistema</a> e do consumo anual estimado do instalación</li><li>DATADIS:  ficheiro obtido da plataforma das empresas distribuidoras denominada <a href: 'https: //datadis.es/home' 'target='_blank'>DATADIS</a></ / li><p>Debes escoller un ou outro segundo a información que teñas.</p>"
-consumo_MSG_errorLecturaFicheroConsumo: Erro de lectura CSV Ficheiro de consumo
-consumo_MSG_errorCabeceras: Cabeceira de erro de formato CSV {{cabeceras}}
-consumo_MSG_resumen: '{{registros}} Rexistros de consumo cargados desde {{desde}} ata {{hasta}}'
-consumo_MSG_numeroLimitadoRegistros: 'Aviso:  só existen {{registros}} rexistros que non completan un ano de estatísticas'
-
-TARIFA:
-  territorio_LBL: Territorio
-  LABEL_NOMBRE_TARIFA: Nom taxa
-  TOOLTIP__NOMBRE_TARIFA: O tipo de taxa contratada coa empresa de comercialización
-  LABEL_P0: Taxa de compensación excedentes
-  LABEL_P1: Tarifa P1
-  LABEL_P2: Tarifa P2
-  LABEL_P3: Tarifa P3
-  LABEL_P4: Tarifa P4
-  LABEL_P5: Tarifa P5
-  LABEL_P6: Tarifa P6
-
-  consumo_TT_descripcionTarifaP1: Tarifa P1 o punta (a máis cara en 2.0TD)
-  consumo_TT_descripcionTarifaP2: Tarifa ou val P2 (o intermedio en 2.0TD)
-  consumo_TT_descripcionTarifaP3: Tarifa P3 ou llano (o máis barato en 2.0TD)
-  consumo_TT_descripcionTarifaP4: Tarifa P4
-  consumo_TT_descripcionTarifaP5: Tarifa P5
-  consumo_TT_descripcionTarifaP6: Tarifa P6
-  consumo_TT_valorTarifa: Indique o prezo en euros sen IVE desta taxa
-  consumo_LBL_compensa: Compensa
-  consumo_TT_compensa: Taxa de compensación
-  consumo_TT_valorCompensa: Indique o prezo en euros sen IVE co que o comerciante paga a electricidade non consumida
-
-ENERGY_BALANCE:
-  TITLE: Balance de Energía
-  DESCRIPTION: |
-    A partir de tu documento de consumo hemos hecho el cálculo del número de paneles que necesitarías para cubrirlo. 
-    (i) Los paneles se asignan primero a las áreas más eficientes desde el punto de vista de rendimiento energético.
-    En la siguiente tabla puedes cambiar el número de paneles en cada área individualmente.
-  LABEL_EXCEDENTE_ANUAL: Electricidade excedente
-  TOOLTIP_EXCEDENTE_ANUAL: O exceso de electricidade transferida á rede
-  LABEL_AUTOCONSUMO: Autoconsumo
-  LABEL_ENERGIA_RED: Enerxía obtida da rede
-  LABEL_ENERGIA_PANELES: Enerxía obtida dos paneis
-  TITLE_GRAPH_MONTH_ENERGY_BALANCE: Produción media mensual con {{potencia}} instalado / consumo mensual medio
-
-  MSG_disclaimerProduccion: |
-    Aviso-> Datos para estimar a produción de paneis solares obtéñense de PVGIS. <a href:"https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en">Ver documentación aqui</a>
-    <br /><br />
-    Tócanse en conta: <ul> <li> A temperatura do aire a 2 metros e a velocidade do vento a 10 metros </li> <li> O efecto da temperatura no rendemento </li> <li> A variación Do espectro electromagnético ao longo do día </li> <li> A aerosoles medios no ambiente (non cambios repentinos) </li> </ul> 
-    Non se teñen en conta os seguintes: <ul><li>o efecto das nevadas</li><li>a acumulación de po e sucidade nos paneis</li><li>perda por sombras próximas</li></ul><br>
-
-  LABEL_fuenteInfoCO2: Datos de conversion para {{territorio}}
-  LABEL_kgCO2AnualRenovable: se enerxia é <br />de fonte renovable
-  TOOLTIP_kgCO2AnualRenovable: O CO2 (kg) non se expulsou á atmosfera se a orixe da enerxía era peninsular e renovable. Pódese modificar na xanela do parámetro.
-  LABEL_kgCO2AnualNoRenovable: se enerxia é <br />de fonte no renovable
-  TOOLTIP_kgCO2AnualNoRenovable: O CO2 (kg) non se expulsou á atmosfera se a orixe da enerxía era peninsular e non -non. Pódese modificar na xanela do parámetro.
-  LABEL_consumoMensual: Consumo mensual
-  TOOLTIP_consumoMensual: Consumo medio mensual de electricidade
-  LABEL_produccionMensual: Produción mensual
-  TOOLTIP_produccionMensual: Produción fotovoltaica media estimada mensual
-
-ECONOMIC_BALANCE:
-  TITLE: Balance Económico
-  DESCRIPTION: |
-    En esta pantalla conocerás cuánto tendrás que invertir en la instalación (teniendo en cuenta las subvenciones) cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión.
-
-  LABEL_ANO: Año
-  TOOLTIP_ANO: Periodo de amortización
-  LABEL_PREVIO: Previo
-  TOOLTIP_PREVIO: El importe pendiente de amortizar al inicio del periodo
-  LABEL_INVERSION: Investimento
-  TOOLTIP_INVERSION: A cantidade investida durante o período
-  LABEL_AHORRO: Aforrando
-  TOOLTIP_AHORRO: Aforro obtido no período
-  LABEL_IBI: Desconto do IBI
-  TOOLTIP_IBI: Desconto obtido no ibi
-  LABEL_SUBVENCION: Subvención UE
-  TOOLTIP_SUBVENCION: Subvención obtenida de la UE
-  LABEL_PENDIENTE: Pendente
-  TOOLTIP_PENDIENTE: Pendente de amortizar ao final do período
-  LABEL_VAN_PROYECTO: 'Valor de corrente neto (VAN): {{VAN}}'
-  TOOLTIP_VAN_PROYECTO: Valor de corrente neto (Van)
-  LABEL_TIR_PROYECTO: 'Taxa interna de retorno (TIR): {{TIR}}'
-  TOOLTIP_TIR_PROYECTO: Taxa interna de retorno (TIR)
-
-SUMMARY:
-  TITLE: Resumo
-  DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
-
-BASIC:
-  main_TAB_cerrar: Pechar
-  main_TAB_noMostrarMas: Non mostre esta mensaxe de novo
-
-GRAFICOS:
-  LABEL_CONSUMPTION: Consumo
-  LABEL_PRODUCTION: Producción
-  LABEL_DIA: Día
-  LABEL_HORA: Hora
-  LABEL_MES: Mes
-
 ene: xan
 feb: feb
 mar: mar
@@ -242,20 +56,314 @@ septiembre: setembro
 octubre: outubro
 noviembre: novembro
 diciembre: decembro
-valor_true: Verdadeiro
-valor_false: Falso
 
-OBJECT:
-  LABEL_TITLE_PROPERTIES: Propiedades
-  BaseSolar: Base solar
-  Rendimiento: Rendemento segundo pvgis
-  Instalacion: Instalación
-  Produccion: Producción
-  PuntoConsumo: Punto de consumo
-  TipoConsumo: Tipo de consumo
-  Tarifa: Tarifa
-  ficheroCSV: Fichero fuente
-  Economico: Resumen Económico
+BaseSolar:
+  NAME: Base solar
+  PROP:
+    nombreBaseSolar: Nome a base
+    angulosOptimos: Ángulos óptimos
+    inclinacion: Inclinación
+    inclinacionTejado: Inclinación del tejado
+    inclinacionPaneles: Inclinación do panel
+    inclinacionOptima: Inclinación óptima
+    inAcimut: Orientación (Azimut)
+    areaReal: Área corrixida
+    potenciaMaxima: Máx. kWp
+    idBaseSolar: id
+    lonlatBaseSolar: Long-Lat
+  TOOLTIP:
+    nombreBaseSolar: Identifica o nome desta base para futuras referencias
+    angulosOptimos: Marca este campo se queres que o sistema calcule o valor óptimo da inclinación e Azimut
+    inclinacion: Inclinación en grados (entre 0º y 90º)medida con respecto á horizontal do terreo sobre o que se montan os paneis
+    inclinacionOptima: Marca este campo se queres que o sistema calcule o valor óptimo da inclinación do panel
+    inAcimut: O ángulo entre o sur coa proxección horizontal do sol. Se os paneis estivesen orientados ao sur o azimut será 0º feito ao leste -90º e oeste 90º. Este campo está cuberto indicando no mapa a orientación que terán os paneis. Se non se complete suponse que é 0
+    areaReal: Área real dispoñible corrixida pola inclinación do tellado
+    potenciaMaxima: A potencia máxima de máximo que se instalará nesta área (ver parámetro de conversión
+    lonlatBaseSolar: Coordenadas geográficas de la base
+
+TipoConsumo:
+  NAME: Tipo de consumo
+  PROP:
+    idTipoConsumo: Id
+    nombreTipoConsumo: Identificación do tipo de consumo
+    fuente: Tipo Fonte
+    nombreFicheroCSV: Ficheiro de consumo de horas (solo CSV)
+    consumoAnualREE: Consumo anual en kWh
+    cTotalAnual: Consumo anual
+  TOOLTIP:
+    nombreTipoConsumo: Identiza o nome deste consumo para futuras referencias
+    fuente: Seleccione o tipo de fonte desde o que se cargará o perfil de consumo
+    nombreFicheroCSV: Identifique o ficheiro de consumo descargado do seu distribuidor
+    consumoAnualREE: En caso de optar polo perfil do tipo REE o consumo anual estimado debe indicar
+    cTotalAnual: Consumo anual de electricidade
+
+Consumo:
+  NAME: Consumo
+  PROP:
+    cMaximoAnual: Consumo máximo por hora
+    consumoDiario: Consumo diario
+    cTotalAnual: Consumo anual
+    consumoMensual: Consumo mensual
+  TOOLTIP:
+    cMaximoAnual: Consumo máximo de electricidade nunha hora
+    consumoDiario: Consumo medio diario de electricidade
+    cTotalAnual: Consumo anual de electricidade
+    consumoMensual: Consumo medio mensual de electricidade
+
+Instalacion:
+  NAME: Instalación
+  PROP:
+    precioInstalacion: Custo de instalación
+    potenciaUnitaria: Potencia por panel en kWp
+    paneles: Paneis
+    potenciaTotal: Potencia disponible
+  TOOLTIP:
+    precioInstalacion: Custo estimado de instalación
+    potenciaUnitaria: Potencia unitaria dos paneis instalados
+    paneles: Número recomendado de paneis que se instalarán nesta base. Pódese modificar
+    potenciaTotal: Potencia pico total instalada na base
+  DESCRIPTION:
+    precioInstalacion: |
+      A pesar de intentar manter os prezos actualizados esta cantidade debe considerarse como unha orientación provisional no proxecto que un instalador pode formular (especialmente se ten máis información sobre o sitio final). Se é necesario) substitución de illamento ou tellas antigas na cuberta Levantar significa se é necesario modificacións que o distribuidor ou administración poida requirir a instalación e algúns impostos e taxas que o Concello podería cobrar (ICIO ou licenza de licenza de obras)
+
+Tarifa:
+  NAME: Taxa
+  PROP:
+    territorio: Territorio
+    tipoTarifa: Nom taxa
+    nombreTarifa: O tipo de taxa contratada coa empresa de comercialización
+    P0: Taxa de compensación excedentes
+    P1: Tarifa P1
+    P2: Tarifa P2
+    P3: Tarifa P3
+    P4: Tarifa P4
+    P5: Tarifa P5
+    P6: Tarifa P6
+  TOOLTIP:
+    tipoTarifa: O tipo de taxa contratada coa empresa de comercialización
+    0: Indique o prezo en euros sen IVE co que o comerciante paga a electricidade non consumida
+    1: Tarifa P1 o punta (a máis cara en 2.0TD)
+    2: Tarifa ou val P2 (o intermedio en 2.0TD)
+    3: Tarifa P3 ou llano (o máis barato en 2.0TD)
+    4: Tarifa P4
+    5: Tarifa P5
+    6: Tarifa P6
+
+Rendimiento:
+  NAME: Rendemento segundo pvgis
+  PROP:
+    fechaInicio: Datos de data
+    fechaFin: Datos finais de data
+    horaInicio: Hora inicial data
+    horaFin: Hora final data
+    rendimientoCreado: Rendemento creado
+    system_loss: Técnicas do sistema de perda
+    technology: Tecnoloxía
+    inclinacionOptimal: Inclinación óptima
+    acimutOptimal: Azimuto óptimo
+    radiation_db: Base de datos de radiación
+    meteo_db: Base de datos Meteo
+    year_min: Estatísticas do ano inicial
+    year_max: Estatísticas do ano inicial
+    numeroRegistros: Rexistros leidos
+    valorOptimo: Óptimo
+    PVGISfechaInicio: Inicio datos PVGIS
+    PVGISfechaFin: Fin datos PVGIS
+    inclinacion: Inclinación paneles
+    acimut: Acimut de la base
+    unitarioTotal: Enerxía anual / kWp instalada
+  TOOLTIP:
+    unitarioTotal: Enerxía anual producida por kWp instalada
+  ERROR_PVGIS_FETCH: Erro ao executar fecth en PVGIS.\n{{err}} \n {{url}}
+
+Balance:
+  NAME: Balance
+  PROP:
+    Produccion%Consumo: Porcentaxe de produción en canto ao consumo
+    Consumo%Produccion: Porcentaxe de consumo con respecto á produción
+    autoconsumoMedioAnual: Autoconsumo medio anual
+    autosuficienciaMediaAnual: Autosuficiencia media anual
+    autosuficienciaMaxima: Autosuficiencia máxima
+
+    deficitAnual: Electricidade comprada
+    energiaFaltante%Consumo: Porcentaxe de enerxía eléctrica comprada
+    energiaSobrante%Produccion: Porcentaxe de electricidade excedente
+
+  TOOLTIP:
+    Produccion%Consumo: Porcentaxe de enerxía fotovoltaica producida con respecto ao consumo
+    Consumo%Produccion: Porcentaxe de consumo con respecto á produción. Para optar pola subvención dos fondos da próxima xeración esta porcentaxe debe superar sempre o 80%
+    autoconsumoMedioAnual: Porcentaxe media de enerxía fotovoltaica consumida ao ano (non sempre consumida todo).
+    autosuficienciaMediaAnual: Porcentaxe media de enerxía consumida por paneis solares. É unha medida de independencia respecto da rede de electricidade
+    autosuficienciaMaxima: A máxima auto -suficiencia que se podería conseguir se se poida consumir todo o excedente fotovoltaico (xa sexa con baterías e/ou cambiando hábitos de consumo).
+
+    deficitAnual: Electricidade que aínda é necesaria para mercar ao comerciante despois da instalación fotovoltaica
+    energiaFaltante%Consumo: A porcentaxe da electricidade comprada con respecto ao consumo total
+    energiaSobrante%Produccion: A porcentaxe de electricidade excedente con respecto á producida
+
+Produccion:
+  NAME: Produción
+  PROP:
+    produccionDiaria: Produción diaria
+    produccionMensual: Produción mensual
+    pTotalAnual: Produción anual
+    totalAnual: Produción anual
+    pMaximoAnual: Produción máxima anual
+  TOOLTIP:
+    produccionDiaria: Produción fotovoltaica diaria media estimada
+    produccionMensual: Produción fotovoltaica media estimada mensual
+    pTotalAnual: Enerxía anual producida
+
+Economico:
+  NAME: Económico
+  PROP:
+    gastoSinPlacasAnual: Gasto anual sen paneis
+    gastoConPlacasAnual: Gasto anual con paneis
+    ahorroAnualPorciento: Aforro anual / gasto orixinal
+    ahorroAnual: Aforro anual
+    noCompensadoAnual: Custo enerxía non compensada
+    valorSubvencionEU: Valor de la subvención EU
+    tipoSubvencionEU: Subvención da UE
+    sinSubvencion: Sen subvención
+    subvencionIndividual: Instalación individual
+    subvencionComunitaria: Instalación colectiva
+    valorSubvencionIBI: IBI (€)
+    porcientoSubvencionIBI: '% de subvención'
+    tiempoSubvencionIBI: Duración (anos)
+    VANProyecto: 'Valor de corrente neto (VAN): {{VAN}}'
+    TIRProyecto: 'Taxa interna de retorno (TIR): {{TIR}}'
+  TOOLTIP:
+    gastoSinPlacasAnual: Gasto de electricidade anual sen paneis solares. Só se ten en conta a parte variable da factura
+    gastoConPlacasAnual: O gasto anual estimado en electricidade con paneis solares. Só se ten en conta a parte variable da factura
+    ahorroAnualPorciento: Aforro anual en relación co gasto orixinal
+    ahorroAnual: Diferenza anual de gasto en electricidade con e sen paneis solares
+    noCompensadoAnual: A cantidade de enerxía excedente que o comerciante non compensará. Será favorable para o consumidor.\nN normalmente ocorre cando se instalan máis paneis que os recomendables cando se consumen moi por debaixo do habitual (de vacacións) ou cando o prezo de compensación de O comerciante era alto (moi improbable).
+    tipoSubvencionEU: No caso de solicitar a subvención de financiamento Next Generation indicar se a instalación foi colectiva (unha comunidade de propietarios por exemplo) ou individual. Non se concederá a subvención se a enerxía xerada ao ano supera o 80% da enerxía consumida anualmente.
+    valorSubvencionIBI: Cubrir se o concello onde se realiza a instalación subvenciona o imposto de bens inmobles.\nFundación Renovables facilita unha relación dos concellos con bonificacións e reducións do IBI no ICIO.
+    porcientoSubvencionIBI: A porcentaxe co concello bonos o importe do IBI
+    tiempoSubvencionIBI: O número de anos durante os cales pódese aplicar o bono no IBI
+    VANProyecto: Valor de corrente neto (Van)
+    TIRProyecto: Taxa interna de retorno (TIR)
+
+LOCATION:
+  LABEL: Localización
+  TITLE: Localización
+  PROMPT_ADDRESS: Busca la dirección del edificio
+  LABEL_SATELITE: Vista por satélite
+  LABEL_VECTOR: Vista do mapa
+  TOOLTIP_MAP_TYPE: Permítelle intercambiar entre sátelita ou mapa
+  LABEL_BASES_SUMMARY: Resumen
+  PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
+  ERROR_DEFINE_BASE: Debe definir las bases solares antes de continuar
+  ERROR_NOMINATIM_FETCH: Erro ao executar fecth en nominatim.\n{{er}} \n {{url}}}
+  ERROR_TERRITORIO: A aplicación só é válida para España
+
+  TOOLTIP_BORRA_BASE: Elimina a base seleccionada
+  posicionLonLat_LBL: Lonxitude-Latitude
+  posicionLonLat_TT: Non é necesario cubrir este campo só se usa para centrar o mapa nestas coordenadas
+
+CONSUMPTION:
+  LABEL: Consumo
+  TITLE: Consumo
+
+  LABEL_MAPA_CONSUMO_MES_HORA: 'Máximo valor: {{maxConsumoMes}} kWh'
+  TITLE_MAPA_CONSUMO_MES_HORA: Consumo horario medio por mes en relación ao máximo
+  LABEL_TITLE_MAP_MONTH_DAY: Mapa de consumo horario en kWh
+
+  DIALOG_TITLE_NUEVO_TIPO_CONSUMO:
+  ERROR_DEFINIR_CONSUMO_REE: Debe definir un consumo base anual superior a 0 para o perfil REE
+
+  ERROR_AL_MENOS_UN_TIPOCONSUMO: Debes definir polo menos un tipo de consumo
+  ERROR_FALTA_FICHERO_CONSUMO: Debes definir o ficheiro de consumo antes de continuar
+  LABEL_BUTTON_NUEVO_TIPOCONSUMO: Nuevo tipo consumo
+  TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Boton para crear un nuevo tipo de consumo
+
+  TITLE_DIALOG_NEW_CONSUMPTION: (T)Formulario para crear un nuevo tipo do consumo
+
+  nombreTipoConsumoDuplicado_MSG: El nombre del tipo de consumo no puede estar duplicado
+  tipoConsumoDefault_MSG: Defina tipo de fichero a utilizar y tarifa aplicable
+  fuenteTipoConsumoErronea_MSG: Posible error definiendo DATADIS cuando debería ser CSV o viceversa
+
+  tcMaximoAnual_LBL: Máximo consumo horario anual
+  numeroDias_LBL: Días procesados
+  botonBorraTipoConsumo_LBL:
+  botonMuestraMapaTipoConsumo_LBL:
+  botonMuestraTarifa_LBL:
+  botonSeleccionFichero_LBL:
+  botonBorraTipoConsumo_TT: Elimina o perfil de consumo seleccionado
+  botonMuestraMapaTipoConsumo_TT: Mostra o gráfico do mapa de consumo deste perfil
+  botonMuestraTarifa_TT: Mostrar os prezos das tarifas
+  botonSeleccionFichero_TT: Seleccione o ficheiro de consumo
+  consumo_MSG_ayudaTipoConsumoHdr: Ayuda definición tipo de consumo
+  consumo_MSG_hayFincasAsociadas: No se puede borrar un tipo de consumo que tiene fincas asociadas
+  consumo_MSG_descripcionFuentes: "Hai tres formas de proporcionar a información do perfil de consumo <li>CSV:  un ficheiro con valores separados por punto e coma obtido da páxina web da túa empresa de distribución.<a href='./data/Links for individual CSV download . htm 'target='_blank'> Consulta aquí as instrucións </a></li><li>REE:  empregando o perfil estándar REE segundo <a href='https: //www.ree.es/es/clientes / generator/gestion-medidas-electricas/consulta-perfiles-de-consumo' target='_blank'> perfís de consumo final en función dos perfís iniciais en función da demanda real do sistema</a> e do consumo anual estimado do instalación</li><li>DATADIS:  ficheiro obtido da plataforma das empresas distribuidoras denominada <a href: 'https: //datadis.es/home' 'target='_blank'>DATADIS</a></ / li><p>Debes escoller un ou outro segundo a información que teñas.</p>"
+  consumo_MSG_errorLecturaFicheroConsumo: Erro de lectura CSV Ficheiro de consumo
+  consumo_MSG_errorCabeceras: Cabeceira de erro de formato CSV {{cabeceras}}
+  consumo_MSG_resumen: '{{registros}} Rexistros de consumo cargados desde {{desde}} ata {{hasta}}'
+  consumo_MSG_numeroLimitadoRegistros: 'Aviso:  só existen {{registros}} rexistros que non completan un ano de estatísticas'
+
+ENERGY_BALANCE:
+  TITLE: Balance de Energía
+  DESCRIPTION: |
+    A partir de tu documento de consumo hemos hecho el cálculo del número de paneles que necesitarías para cubrirlo. 
+    (i) Los paneles se asignan primero a las áreas más eficientes desde el punto de vista de rendimiento energético.
+    En la siguiente tabla puedes cambiar el número de paneles en cada área individualmente.
+  LABEL_EXCEDENTE_ANUAL: Electricidade excedente
+  TOOLTIP_EXCEDENTE_ANUAL: O exceso de electricidade transferida á rede
+  LABEL_AUTOCONSUMO: Autoconsumo
+  LABEL_ENERGIA_RED: Enerxía obtida da rede
+  LABEL_ENERGIA_PANELES: Enerxía obtida dos paneis
+  TITLE_GRAPH_MONTH_ENERGY_BALANCE: Produción media mensual con {{potencia}} instalado / consumo mensual medio
+
+  MSG_disclaimerProduccion: |
+    Aviso-> Datos para estimar a produción de paneis solares obtéñense de PVGIS. <a href:"https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en">Ver documentación aqui</a>
+    <br /><br />
+    Tócanse en conta: <ul> <li> A temperatura do aire a 2 metros e a velocidade do vento a 10 metros </li> <li> O efecto da temperatura no rendemento </li> <li> A variación Do espectro electromagnético ao longo do día </li> <li> A aerosoles medios no ambiente (non cambios repentinos) </li> </ul> 
+    Non se teñen en conta os seguintes: <ul><li>o efecto das nevadas</li><li>a acumulación de po e sucidade nos paneis</li><li>perda por sombras próximas</li></ul><br>
+
+  LABEL_fuenteInfoCO2: Datos de conversion para {{territorio}}
+  LABEL_CO2AnualRenovable: se enerxia é <br />de fonte renovable
+  TOOLTIP_CO2AnualRenovable: O CO2 (kg) non se expulsou á atmosfera se a orixe da enerxía era peninsular e renovable. Pódese modificar na xanela do parámetro.
+  LABEL_CO2AnualNoRenovable: se enerxia é <br />de fonte no renovable
+  TOOLTIP_CO2AnualNoRenovable: O CO2 (kg) non se expulsou á atmosfera se a orixe da enerxía era peninsular e non -non. Pódese modificar na xanela do parámetro.
+
+ECONOMIC_BALANCE:
+  TITLE: Balance Económico
+  DESCRIPTION: |
+    En esta pantalla conocerás cuánto tendrás que invertir en la instalación (teniendo en cuenta las subvenciones) cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión.
+
+  LABEL_ANO: Año
+  TOOLTIP_ANO: Periodo de amortización
+  LABEL_PREVIO: Previo
+  TOOLTIP_PREVIO: El importe pendiente de amortizar al inicio del periodo
+  LABEL_INVERSION: Investimento
+  TOOLTIP_INVERSION: A cantidade investida durante o período
+  LABEL_AHORRO: Aforrando
+  TOOLTIP_AHORRO: Aforro obtido no período
+  LABEL_IBI: Desconto do IBI
+  TOOLTIP_IBI: Desconto obtido no ibi
+  LABEL_SUBVENCION: Subvención UE
+  TOOLTIP_SUBVENCION: Subvención obtenida de la UE
+  LABEL_PENDIENTE: Pendente
+  TOOLTIP_PENDIENTE: Pendente de amortizar ao final do período
+
+SUMMARY:
+  TITLE: Resumo
+  DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
+
+BASIC:
+  main_TAB_cerrar: Pechar
+  main_TAB_noMostrarMas: Non mostre esta mensaxe de novo
+  valor_true: Verdadeiro
+  valor_false: Falso
+GRAPHICS:
+  LABEL_CONSUMPTION: Consumo
+  LABEL_PRODUCTION: Producción
+  LABEL_DIA: Día
+  LABEL_HORA: Hora
+  LABEL_MES: Mes
+
+DIALOG_PROPERTIES:
+  TITLE: Propiedades
 
 PARAMETROS:
   DIALOG_TITLE: Parámetros de aplicación
@@ -350,73 +458,8 @@ MSG_MAPA:
   mapa_MSG_nada: Seleccione o obxecto para debuxar
   mapa_MSG_posicionConsumo: Fai clic para colocar un novo consumo
 
-RENDIMIENTO:
-  fechaInicio_LBL: Datos de data
-  fechaFin_LBL: Datos finais de data
-  horaInicio_LBL: Hora inicial data
-  horaFin_LBL: Hora final data
-  rendimientoCreado_LBL: Rendemento creado
-  system_loss_LBL: Técnicas do sistema de perda
-  technology_LBL: Tecnoloxía
-  inclinacionOptimal_LBL: Inclinación óptima
-  acimutOptimal_LBL: Azimuto óptimo
-  radiation_db_LBL: Base de datos de radiación
-  meteo_db_LBL: Base de datos Meteo
-  year_min_LBL: Estatísticas do ano inicial
-  year_max_LBL: Estatísticas do ano inicial
-  numeroRegistros_LBL: Rexistros leidos
-  valorOptimo_LBL: Óptimo
-  PVGISfechaInicio_LBL: Inicio datos PVGIS
-  PVGISfechaFin_LBL: Fin datos PVGIS
-  inclinacion_LBL: Inclinación paneles
-  acimut_LBL: Acimut de la base
-  unitarioTotal_LBL: Enerxía anual / kWp instalada
-  unitarioTotal_TT: Enerxía anual producida por kWp instalada
-  ERROR_PVGIS_FETCH: Erro ao executar fecth en PVGIS.\n{{err}} \n {{url}}
-
-Produccion:
-  precioInstalacion_LBL: Custo estimado de instalación
-  precioInstalacion_TT: A pesar de intentar manter os prezos actualizados esta cantidade debe considerarse como unha orientación provisional no proxecto que un instalador pode formular (especialmente se ten máis información sobre o sitio final). Se é necesario) substitución de illamento ou tellas antigas na cuberta Levantar significa se é necesario modificacións que o distribuidor ou administración poida requirir a instalación e algúns impostos e taxas que o Concello podería cobrar (ICIO ou licenza de licenza de obras)
-  correccionPrecioInstalacion_LBL: Corrección de prezos en %
-  correccionPrecioInstalacion_TT: Mentres intentamos usar prezos actualizados o usuario pode alterar a estimación dada co valor que defines aquí.\nIndique os poucos que desexa aumentar (valor positivo) ou diminuír (valor negativo) o prezo da instalación segundo as súas condicións particulares
-  precioInstalacionCorregido_LBL: Prezo da instalación corrixida xx
-  precioInstalacionCorregido_TT: Prezo de instalación corrixido polo factor de corrección indicado
-  pMaximoAnual_LBL: Produción máxima anual
-  LABEL_pTotalAnual: Produción anual
-  TOOLTIP_pTotalAnual: Enerxía anual producida
-RESULTADOS:
-  botonInfoBase_LBL:
-  botonInfoBase_TT: Información detallada de la base seleccionada
-  potenciaUnitaria_LBL: Potencia por panel en kWp
-  potenciaUnitaria_TT: Potencia unitaria dos paneis instalados
-  paneles_LBL: Paneis
-  paneles_TT: Número recomendado de paneis que se instalarán nesta base. Pódese modificar
-  cMaximoAnual_LBL: Consumo máximo por hora
-  cMaximoAnual_TT: Consumo máximo de electricidade nunha hora
-  potenciaTotal_LBL: Potencia de base total
-  potenciaTotal_TT: Potencia pico total instalada na base
-  consumoDiario_LBL: Consumo diario
-  consumoDiario_TT: Consumo medio diario de electricidade
-  produccionDiaria_LBL: Produción diaria
-  produccionDiaria_TT: Produción fotovoltaica diaria media estimada
-
-  deficitAnual_LBL: Electricidade comprada
-  deficitAnual_TT: Electricidade que aínda é necesaria para mercar ao comerciante despois da instalación fotovoltaica
-
-  energiaFaltante%Consumo_LBL: Porcentaxe de enerxía eléctrica comprada
-  energiaFaltante%Consumo_TT: A porcentaxe da electricidade comprada con respecto ao consumo total
-  renergiaSobrante%Produccion_LBL: Porcentaxe de electricidade excedente
-  energiaSobrante%Produccion_TT: A porcentaxe de electricidade excedente con respecto á producida
-  Consumo%Produccion_LBL: Porcentaxe de consumo con respecto á produción
-  Consumo%Produccion_TT: Porcentaxe de consumo con respecto á produción. Para optar pola subvención dos fondos da próxima xeración esta porcentaxe debe superar sempre o 80%
-  Produccion%Consumo_LBL: Porcentaxe de produción en canto ao consumo
-  Produccion%Consumo_TT: Porcentaxe de enerxía fotovoltaica producida con respecto ao consumo
-  autoconsumoMedioAnual_LBL: Autoconsumo medio anual
-  autoconsumoMedioAnual_TT: Porcentaxe media de enerxía fotovoltaica consumida ao ano (non sempre consumida todo).
-  autosuficienciaMediaAnual_LBL: Autosuficiencia media anual
-  autosuficienciaMediaAnual_TT: Porcentaxe media de enerxía consumida por paneis solares. É unha medida de independencia respecto da rede de electricidade
-  autosuficienciaMaxima_LBL: Autosuficiencia máxima
-  autosuficienciaMaxima_TT: A máxima auto -suficiencia que se podería conseguir se se poida consumir todo o excedente fotovoltaico (xa sexa con baterías e/ou cambiando hábitos de consumo).
+RESULTS:
+  TOOLTIP_botonInfoBase: Información detallada de la base seleccionada
 
   limiteSubvencionEU_LBL: Límite de subvencións da UE
   resultados_LBL_graficoResumen: Gráfica de resumo do consumo fronte á produción
@@ -425,30 +468,6 @@ RESULTADOS:
 
   resultados_MSG_excesoPotencia: Hai un exceso de potencia nesta base baseándose na área de Apoble
   resultados_LBL_basePropiedades: 'Base:  {{id}}'
-
-Economico:
-  LABEL_gastoSinPlacasAnual: Gasto anual sen paneis
-  TOOLTIP_gastoSinPlacasAnual: Gasto de electricidade anual sen paneis solares. Só se ten en conta a parte variable da factura
-  LABEL_gastoConPlacasAnual: Gasto anual con paneis
-  TOOLTIP_gastoConPlacasAnual: O gasto anual estimado en electricidade con paneis solares. Só se ten en conta a parte variable da factura
-  LABEL_ahorroAnualPorciento: Aforro anual / gasto orixinal
-  TOOLTIP_ahorroAnualPorciento: Aforro anual en relación co gasto orixinal
-  LABEL_ahorroAnual: Aforro anual
-  TOOLTIP_ahorroAnual: Diferenza anual de gasto en electricidade con e sen paneis solares
-  LABEL_noCompensadoAnual: Custo enerxía non compensada
-  TOOLTIP_noCompensadoAnual: A cantidade de enerxía excedente que o comerciante non compensará. Será favorable para o consumidor.\nN normalmente ocorre cando se instalan máis paneis que os recomendables cando se consumen moi por debaixo do habitual (de vacacións) ou cando o prezo de compensación de O comerciante era alto (moi improbable).
-  LABEL_valorSubvencionEU: Valor de la subvención EU
-  LABEL_tipoSubvencionEU: Subvención da UE
-  TOOLTIP_tipoSubvencionEU: No caso de solicitar a subvención de financiamento Next Generation indicar se a instalación foi colectiva (unha comunidade de propietarios por exemplo) ou individual. Non se concederá a subvención se a enerxía xerada ao ano supera o 80% da enerxía consumida anualmente.
-  LABEL_sinSubvencion: Sen subvención
-  LABEL_subvencionIndividual: Instalación individual
-  LABEL_subvencionComunitaria: Instalación colectiva
-  LABEL_valorSubvencionIBI: IBI (€)
-  TOOLTIP_valorSubvencionIBI: Cubrir se o concello onde se realiza a instalación subvenciona o imposto de bens inmobles.\nFundación Renovables facilita unha relación dos concellos con bonificacións e reducións do IBI no ICIO.
-  LABEL_porcientoSubvencionIBI: '% de subvención'
-  TOOLTIP_porcientoSubvencionIBI: A porcentaxe co concello bonos o importe do IBI
-  LABEL_tiempoSubvencionIBI: Duración (anos)
-  TOOLTIP_tiempoSubvencionIBI: O número de anos durante os cales pódese aplicar o bono no IBI
 
 graficos:
   graficos_LBL_descripcion: Área de gráficos dispoñibles
@@ -475,26 +494,27 @@ graficos:
   graficos_LBL_cambiaPaneles: Fai clic en cambiar a {{paneles}} paneis
   graficos_LBL_paneles: Paneis
   graficos_LBL_panelesActuales: Paneis actuais {{paneles}}
-INFORME:
-  informe_LBL_produccionMediaEsperada: Produción media esperada
-  informe_LBL_datosInstalacionAnalizada: Datos de instalación analizados
-  informe_LBL_datosPVGISObtenidos: Datos PVGIS obtidos
-  informe_LBL_datosLocalizacionAportados: Datos de localización proporcionados
-  informe_LBL_datosDeConsumo: Datos de consumo
-  informe_LBL_fichero: 'Ficheiro: '
-  informe_LBL_paraPotenciaAnual: para a potencia anual de
-  informe_LBL_registros: 'Rexistros:  {{registros}}'
-  informe_LBL_numeroRegistros: Rexistros
-  informe_LBL_desde: Desde
-  informe_LBL_hasta: Ata
-  informe_LBL_disclaimer1: <p> Todas as estimacións dadas fixéronse o máis precisas posible coa mellor intención e sen ningún compromiso. Instalación estimada. Hai unha alta volatilidade neste factor e non podemos garantir que reflicta a realidade do mercado en cada momento e territorio polo que incluímos un campo que che permite corrixir ese prezo segundo as recomendacións do seu instalador. </p>
-  informe_LBL_disclaimer1pdf: Todas as estimacións dadas fixéronse o máis precisas posible coa mellor intención e sen ningún compromiso. Mención especial que debemos facer sobre o prezo estimado da instalación. Hai unha alta volatilidade neste factor e non podemos garantir que reflicta a realidade do mercado en cada momento e territorio polo que incluímos un campo que che permite corrixir ese prezo segundo as recomendacións do seu instalador. Somom Energia ten Non hai interese económico nin directo nin indirecto neste estudo agás contribuír a unha transición de enerxía xusta con usuarios eficientes descentralizados e limpos.
-  informe_LBL_disclaimer2: SOM Energia non ten interese económico ou directo neste estudo agás contribuír a unha transición de enerxía xusta con usuarios eficientes descentralizadas e limpas.
-  informe_LBL_formatoPDF: Xera en formato pdf
-  informe_LBL_balanceEnergia: Equilibrio enerxético
-  informe_LBL_localizacion: Localización
-  informe_LBL_balanceEconomico: Equilibrio económico
-  informe_LBL_balanceFinanciero: Balance financeiro (euros)
+REPORT:
+  titulo: Solidar Energía
+  produccionMediaEsperada: Produción media esperada
+  datosInstalacionAnalizada: Datos de instalación analizados
+  datosPVGISObtenidos: Datos PVGIS obtidos
+  datosLocalizacionAportados: Datos de localización proporcionados
+  datosDeConsumo: Datos de consumo
+  fichero: 'Ficheiro: '
+  paraPotenciaAnual: para a potencia anual de
+  registros: 'Rexistros:  {{registros}}'
+  numeroRegistros: Rexistros
+  desde: Desde
+  hasta: Ata
+  disclaimer1: <p> Todas as estimacións dadas fixéronse o máis precisas posible coa mellor intención e sen ningún compromiso. Instalación estimada. Hai unha alta volatilidade neste factor e non podemos garantir que reflicta a realidade do mercado en cada momento e territorio polo que incluímos un campo que che permite corrixir ese prezo segundo as recomendacións do seu instalador. </p>
+  disclaimer1pdf: Todas as estimacións dadas fixéronse o máis precisas posible coa mellor intención e sen ningún compromiso. Mención especial que debemos facer sobre o prezo estimado da instalación. Hai unha alta volatilidade neste factor e non podemos garantir que reflicta a realidade do mercado en cada momento e territorio polo que incluímos un campo que che permite corrixir ese prezo segundo as recomendacións do seu instalador. Somom Energia ten Non hai interese económico nin directo nin indirecto neste estudo agás contribuír a unha transición de enerxía xusta con usuarios eficientes descentralizados e limpos.
+  disclaimer2: SOM Energia non ten interese económico ou directo neste estudo agás contribuír a unha transición de enerxía xusta con usuarios eficientes descentralizadas e limpas.
+  formatoPDF: Xera en formato pdf
+  balanceEnergia: Equilibrio enerxético
+  localizacion: Localización
+  balanceEconomico: Equilibrio económico
+  balanceFinanciero: Balance financeiro (euros)
   informe_MSG_procesarPrimero: Debe obter o equilibrio enerxético antes de poder xerar o informe
 
   resultados_LBL_participacion: Participación

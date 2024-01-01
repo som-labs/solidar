@@ -129,7 +129,6 @@ export default function DialogNewBaseSolar({ data, onClose }) {
   }
 
   const handleCancel = (values) => {
-    console.log('CANCEL', values)
     onClose('cancel', values)
   }
 
@@ -140,7 +139,6 @@ export default function DialogNewBaseSolar({ data, onClose }) {
         return
       }
     }
-    console.log('SAVE', values)
     onClose('save', values)
   }
 
@@ -187,7 +185,6 @@ export default function DialogNewBaseSolar({ data, onClose }) {
         errors.inAcimut = 'El valor del acimut debe estar entre -180º y 180º'
       }
     }
-    console.log('ERRORS', errors)
     return errors
   }
 
@@ -207,7 +204,7 @@ export default function DialogNewBaseSolar({ data, onClose }) {
               sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', flex: 1 }}
             >
               <Typography variant="body" sx={{ mb: '1rem' }}>
-                {t('BaseSolar.DESCRIPTION_nombreBaseSolar')}
+                {t('BaseSolar.DESCRIPTION.nombreBaseSolar')}
               </Typography>
               <SLDRInputField
                 name="nombreBaseSolar"
@@ -221,7 +218,7 @@ export default function DialogNewBaseSolar({ data, onClose }) {
                 sx={{ mt: '1rem' }}
                 variant="body"
                 dangerouslySetInnerHTML={{
-                  __html: t('BaseSolar.DESCRIPTION_roofType'),
+                  __html: t('BaseSolar.DESCRIPTION.roofType'),
                 }}
               />
               {/* PENDIENTE: hay que mejorar los iconos de los botones coplanar u horizontal */}
@@ -263,7 +260,7 @@ export default function DialogNewBaseSolar({ data, onClose }) {
                   className={'roofTypeButton'}
                   onClick={(event) => changeRoofType(event, setValues)}
                 >
-                  {t('BaseSolar.LABEL_angulosOptimos')}
+                  {t('BaseSolar.PROP.angulosOptimos')}
                 </Button>
               </Box>
 
@@ -278,7 +275,7 @@ export default function DialogNewBaseSolar({ data, onClose }) {
                     }}
                   >
                     <Typography variant="body" sx={{ mt: '1rem', mb: '1rem' }}>
-                      {t('BaseSolar.DESCRIPTION_inclinacionTejado')}
+                      {t('BaseSolar.DESCRIPTION.inclinacionTejado')}
                     </Typography>
 
                     <Box
@@ -312,13 +309,13 @@ export default function DialogNewBaseSolar({ data, onClose }) {
                                 color="primary"
                               />
                             }
-                            label={t('BaseSolar.LABEL_inclinacionOptima')}
+                            label={t('BaseSolar.DESCRIPTION.inclinacionOptima')}
                           />
                         )}
                       </Field>
                     )}
                     <Typography variant="body" sx={{ mb: '1rem', mt: '1rem' }}>
-                      {t('BaseSolar.DESCRIPTION_inAcimut')}
+                      {t('BaseSolar.DESCRIPTION.inAcimut')}
                     </Typography>
                     <Box
                       style={{
@@ -346,7 +343,7 @@ export default function DialogNewBaseSolar({ data, onClose }) {
                 <>
                   <Box sx={{ mt: '1rem' }}>
                     <Typography variant="body">
-                      {t('BaseSolar.DESCRIPTION_angulosOptimos')}
+                      {t('BaseSolar.DESCRIPTION.angulosOptimos')}
                     </Typography>
                   </Box>
                 </>

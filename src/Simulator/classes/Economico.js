@@ -1,6 +1,5 @@
 import TCB from './TCB'
 import * as UTIL from './Utiles'
-import TipoConsumo from './TipoConsumo'
 /**
  * @class Economico
  * @classdesc Clase representa las condiciones economico financieras de la configuración global o de cada Finca individualmente
@@ -119,6 +118,20 @@ class Economico {
     this.compensadoMensual = this.resumenMensual('compensado')
     this.ahorradoAutoconsumoMes = this.resumenMensual('ahorradoAutoconsumo')
 
+    //calculate installation cost
+    let ndx = TCB.precioInstalacion.precios.findIndex(
+      (rango) =>
+        rango.desde <= TCB.produccion.potenciaTotalInstalada &&
+        rango.hasta >= TCB.produccion.potenciaTotalInstalada,
+    )
+
+    this.precioInstalacion = parseInt(
+      TCB.produccion.potenciaTotalInstalada *
+        TCB.precioInstalacion.precios[ndx].precio *
+        (1 + TCB.parametros.IVAinstalacion / 100),
+    )
+    this.precioInstalacionCorregido = this.precioInstalacion
+
     //Se debe corregir que si la comercializadora limita economicamente la compensacion al consumo o compensar mediante bateria virtual
     this.correccionExcedentes(TCB.coefHucha, TCB.cuotaHucha)
     this.calculoFinanciero(100, 100)
@@ -229,16 +242,16 @@ class Economico {
     ) {
       valorSubvencionEU = 0
     } else {
-      if (TCB.produccion.potenciaTotal <= 10) {
+      if (TCB.produccion.potenciaTotalInstalada <= 10) {
         valorSubvencionEU =
           (TCB.subvencionEU[tipoSubvencionEU]['<=10kWp'] *
-            TCB.produccion.potenciaTotal *
+            TCB.produccion.potenciaTotalInstalada *
             coefInversion) /
           100
       } else {
         valorSubvencionEU =
           (TCB.subvencionEU[tipoSubvencionEU]['>10kWp'] *
-            TCB.produccion.potenciaTotal *
+            TCB.produccion.potenciaTotalInstalada *
             coefInversion) /
           100
       }
@@ -256,12 +269,11 @@ class Economico {
       ano: i,
       ahorro: this.ahorroAnual,
       previo: 0,
-      inversion: (-TCB.produccion.precioInstalacionCorregido * coefInversion) / 100,
+      inversion: (-this.precioInstalacionCorregido * coefInversion) / 100,
       subvencion: 0,
       IBI: 0,
       pendiente:
-        (-TCB.produccion.precioInstalacionCorregido * coefInversion) / 100 +
-        this.ahorroAnual,
+        (-this.precioInstalacionCorregido * coefInversion) / 100 + this.ahorroAnual,
     }
     cuota = unFlow.inversion + unFlow.ahorro
     cuotaPeriodo.push(cuota)

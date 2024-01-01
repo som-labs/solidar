@@ -20,28 +20,7 @@ import * as UTIL from '../classes/Utiles'
 export default function ConsumoGeneracion3D() {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
-  const graphElement = useRef()
   const graphWidth = useRef()
-
-  useEffect(() => {
-    // Function to get the width of the element
-    const getWidth = () => {
-      if (graphElement.current) {
-        graphWidth.current = graphElement.current.offsetWidth
-      }
-    }
-
-    // Call the function to get the width after initial render
-    getWidth()
-
-    // // Add event listener for resizing (optional)
-    // window.addEventListener('resize', getWidth)
-
-    // // Cleanup by removing the event listener on component unmount (optional)
-    // return () => {
-    //   window.removeEventListener('resize', getWidth)
-    // }
-  }, [])
 
   const meses = Array.from(i18nextMes())
   var g_produccion = {
@@ -175,7 +154,7 @@ export default function ConsumoGeneracion3D() {
   }
 
   return (
-    <Container ref={graphElement}>
+    <>
       <Box
         sx={{
           display: 'flex',
@@ -210,6 +189,6 @@ export default function ConsumoGeneracion3D() {
           config={config}
         />
       </Box>
-    </Container>
+    </>
   )
 }

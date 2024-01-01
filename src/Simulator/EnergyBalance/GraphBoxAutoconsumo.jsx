@@ -192,7 +192,7 @@ export default function GraphBoxAutoconsumo() {
           }}
         >
           <Typography variant="body" textAlign={'center'}>
-            {t('Consumo.LABEL_cTotalAnual')}
+            {t('Consumo.PROP.cTotalAnual')}
           </Typography>
         </Box>
         <Box
@@ -205,7 +205,7 @@ export default function GraphBoxAutoconsumo() {
           }}
         >
           <Typography variant="body" textAlign={'center'}>
-            {t('Produccion.LABEL_pTotalAnual')}
+            {t('Produccion.PROP.pTotalAnual')}
           </Typography>
         </Box>
       </Box>

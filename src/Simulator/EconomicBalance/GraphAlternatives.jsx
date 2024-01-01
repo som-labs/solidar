@@ -64,7 +64,7 @@ export default function GraphAlternatives() {
       autosuficiencia.push((TCB.balance.autoconsumo / TCB.consumo.cTotalAnual) * 100)
       consvsprod.push((TCB.consumo.cTotalAnual / TCB.produccion.pTotalAnual) * 100)
       TIR.push(TCB.economico.TIRProyecto)
-      precioInstalacion.push(TCB.produccion.precioInstalacionCorregido)
+      precioInstalacion.push(TCB.economico.precioInstalacionCorregido)
       ahorroAnual.push(TCB.economico.ahorroAnual)
     }
   })

@@ -5,6 +5,9 @@ import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
+
+import { SLDRInputField } from '../../components/SLDRComponents'
+
 import FormControl from '@mui/material/FormControl'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -16,7 +19,7 @@ import EconomicContext from './EconomicContext'
 import TCB from '../classes/TCB'
 
 const ReduccionIBI = () => {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const { IBI, setIBI, ecoData, setEcoData } = useContext(EconomicContext)
   const [_IBI, _setIBI] = useState(IBI)
@@ -60,7 +63,7 @@ const ReduccionIBI = () => {
               type="text"
               onChange={onChangeIBI}
               onBlur={setNewIBI}
-              label={t('Economico.LABEL_valorSubvencionIBI')}
+              label={t('Economico.PROP.valorSubvencionIBI')}
               name="valorSubvencionIBI"
               value={_IBI.valorSubvencionIBI}
               InputProps={{
@@ -78,7 +81,7 @@ const ReduccionIBI = () => {
               type="text"
               onChange={onChangeIBI}
               onBlur={setNewIBI}
-              label={t('Economico.LABEL_porcientoSubvencionIBI')}
+              label={t('Economico.PROP.porcientoSubvencionIBI')}
               name="porcientoSubvencionIBI"
               value={_IBI.porcientoSubvencionIBI}
               InputProps={{
@@ -96,7 +99,7 @@ const ReduccionIBI = () => {
               type="text"
               onChange={onChangeIBI}
               onBlur={setNewIBI}
-              label={t('Economico.LABEL_tiempoSubvencionIBI')}
+              label={t('Economico.PROP.tiempoSubvencionIBI')}
               name="tiempoSubvencionIBI"
               value={_IBI.tiempoSubvencionIBI}
               InputProps={{

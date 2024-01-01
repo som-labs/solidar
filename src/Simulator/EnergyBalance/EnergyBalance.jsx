@@ -28,6 +28,7 @@ import MonthEnergyBalance from './MonthEnergyBalance'
 import EnvironmentalImpact from './EnvironmentalImpact'
 import { useDialog } from '../../components/DialogProvider'
 import DialogProperties from '../components/DialogProperties'
+import { Tooltip } from '@mui/material'
 
 export default function EnergyBalanceStep() {
   const { t } = useTranslation()
@@ -40,8 +41,6 @@ export default function EnergyBalanceStep() {
   const { bases, setBases } = useContext(BasesContext)
   const { setEcoData } = useContext(EconomicContext)
 
-  // const [gridRows, setGridRows] = useState(rows)
-
   const getRowId = (row) => {
     return row.idBaseSolar
   }
@@ -49,19 +48,22 @@ export default function EnergyBalanceStep() {
   const columns = [
     {
       field: 'nombreBaseSolar',
-      headerName: t('BaseSolar.LABEL_nombreBaseSolar'),
+      headerName: t('BaseSolar.PROP.nombreBaseSolar'),
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       width: 250,
+      description: t('BaseSolar.TOOLTIP.nombreBaseSolar'),
+      sortable: false,
     },
     {
       field: 'paneles',
       editable: true,
-      headerName: 'Paneles',
+      headerName: t('Instalacion.PROP.paneles'),
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       flex: 0.5,
       align: 'center',
+      description: t('Instalacion.TOOLTIP.paneles'),
       renderCell: (params) => {
         return UTIL.formatoValor('paneles', params.value)
       },
@@ -74,20 +76,23 @@ export default function EnergyBalanceStep() {
     },
     {
       field: 'panelesMaximo',
-      headerName: t('BaseSolar.LABEL_panelesMaximo'),
+      headerName: t('BaseSolar.PROP.panelesMaximo'),
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       flex: 1,
       align: 'center',
-      description: t('BaseSolar.TOOLTIP_panelesMaximo'),
+      description: t('BaseSolar.TOOLTIP.panelesMaximo'),
+      sortable: false,
     },
     {
       field: 'potenciaMaxima',
-      headerName: 'Pot. Maxima',
+      headerName: t('BaseSolar.PROP.potenciaMaxima'),
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       flex: 1,
       align: 'right',
+      description: t('BaseSolar.TOOLTIP.potenciaMaxima'),
+      sortable: false,
       renderCell: (params) => {
         return UTIL.formatoValor('potenciaMaxima', params.value)
       },
@@ -95,22 +100,26 @@ export default function EnergyBalanceStep() {
     {
       field: 'potenciaUnitaria',
       editable: true,
-      headerName: 'Potencia Unitaria',
+      headerName: t('Instalacion.PROP.potenciaUnitaria'),
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       flex: 1,
       align: 'right',
+      description: t('Instalacion.TOOLTIP.potenciaUnitaria'),
+      sortable: false,
       renderCell: (params) => {
         return UTIL.formatoValor('potenciaUnitaria', params.value)
       },
     },
     {
       field: 'potenciaTotal',
-      headerName: 'Potencia Total de la base',
+      headerName: t('Instalacion.PROP.potenciaTotal'),
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       flex: 1,
       align: 'right',
+      description: t('Instalacion.TOOLTIP.potenciaTotal'),
+      sortable: false,
       renderCell: (params) => {
         return UTIL.formatoValor('potenciaTotal', params.value)
       },
@@ -118,11 +127,16 @@ export default function EnergyBalanceStep() {
     {
       field: 'actions',
       type: 'actions',
+      sortable: false,
       getActions: (params) => [
         <GridActionsCellItem
           key={1}
-          icon={<InfoIcon />}
-          label="Delete"
+          icon={
+            <Tooltip title={t('RESULTS.TOOLTIP_botonInfoBase')}>
+              <InfoIcon />
+            </Tooltip>
+          }
+          label="Info"
           onClick={() => showProperties(params.id)}
         />,
       ],
@@ -272,81 +286,76 @@ export default function EnergyBalanceStep() {
       }
     })
 
-    console.log('PANELSTOTAL', TCB.totalPaneles)
-
     setBases(updateBases)
   }
 
   return (
-    <>
-      <Container>
-        <Box
-          sx={{
-            '& .super-app.negative': {
-              backgroundColor: '#ff0000',
-              color: '#1a3e72',
-              fontWeight: '400',
-            },
-            '& .super-app.positive': {
-              backgroundColor: 'rgba(157, 255, 118, 0.49)',
-              color: '#1a3e72',
-              fontWeight: '400',
-            },
+    <Container>
+      <Box
+        sx={{
+          '& .super-app.negative': {
+            backgroundColor: '#ff0000',
+            color: '#1a3e72',
+            fontWeight: '400',
+          },
+          '& .super-app.positive': {
+            backgroundColor: 'rgba(157, 255, 118, 0.49)',
+            color: '#1a3e72',
+            fontWeight: '400',
+          },
+        }}
+      >
+        <Typography variant="h3">{t('ENERGY_BALANCE.TITLE')}</Typography>
+
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('ENERGY_BALANCE.DESCRIPTION'),
           }}
-        >
-          <Typography variant="h3">{t('ENERGY_BALANCE.TITLE')}</Typography>
+        />
+        <br />
+        <Typography variant="body">{t('Tabla bases asignadas')}</Typography>
 
-          <Typography
-            variant="body"
-            dangerouslySetInnerHTML={{
-              __html: t('ENERGY_BALANCE.DESCRIPTION'),
+        <SLDRInfoBox>
+          <DataGrid
+            getRowId={getRowId}
+            rows={bases}
+            columns={columns}
+            hideFooter={false}
+            autoHeight
+            disableColumnMenu
+            onCellEditStop={(params, event) => {
+              nuevaInstalacion(params, event)
             }}
+            slots={{ footer: footerSummary }}
           />
-          <br />
-          <Typography variant="body">{t('Tabla bases asignadas')}</Typography>
-
-          <SLDRInfoBox>
-            <DataGrid
-              getRowId={getRowId}
-              autoHeight
-              onCellEditStop={(params, event) => {
-                nuevaInstalacion(params, event)
-              }}
-              rows={bases}
-              columns={columns}
-              hideFooter={false}
-              slots={{ footer: footerSummary }}
-            />
-          </SLDRInfoBox>
-        </Box>
-
-        <SLDRInfoBox>
-          <ConsumoGeneracion3D></ConsumoGeneracion3D>
         </SLDRInfoBox>
-        {/* </Box> */}
-        <SLDRInfoBox>
-          <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
-        </SLDRInfoBox>
-        <CollapsibleCard
-          title={t('BASIC.LABEL_AVISO')}
-          titleVariant="body"
-          titleSX={{ color: 'blue', mb: '-1rem' }}
-          descriptionVariant="body"
-          descriptionSX={{ fontSize: '15px' }}
-          description={t('ENERGY_BALANCE.MSG_disclaimerProduccion')}
-        ></CollapsibleCard>
-        <SLDRInfoBox>
-          <MonthEnergyBalance
-            monthlyConsumoProduccion={monthlyConsumoProduccion}
-          ></MonthEnergyBalance>
-        </SLDRInfoBox>
-        <SLDRInfoBox>
-          <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>
-        </SLDRInfoBox>
-        <SLDRInfoBox>
-          <EnvironmentalImpact></EnvironmentalImpact>
-        </SLDRInfoBox>
-      </Container>
-    </>
+      </Box>
+      <SLDRInfoBox>
+        <ConsumoGeneracion3D></ConsumoGeneracion3D>
+      </SLDRInfoBox>
+      <SLDRInfoBox>
+        <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
+      </SLDRInfoBox>
+      <CollapsibleCard
+        title={t('BASIC.LABEL_AVISO')}
+        titleVariant="body"
+        titleSX={{ color: 'blue', mb: '-1rem' }}
+        descriptionVariant="body"
+        descriptionSX={{ fontSize: '15px' }}
+        description={t('ENERGY_BALANCE.MSG_disclaimerProduccion')}
+      ></CollapsibleCard>
+      <SLDRInfoBox>
+        <MonthEnergyBalance
+          monthlyConsumoProduccion={monthlyConsumoProduccion}
+        ></MonthEnergyBalance>
+      </SLDRInfoBox>
+      <SLDRInfoBox>
+        <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>
+      </SLDRInfoBox>
+      <SLDRInfoBox>
+        <EnvironmentalImpact></EnvironmentalImpact>
+      </SLDRInfoBox>{' '}
+    </Container>
   )
 }

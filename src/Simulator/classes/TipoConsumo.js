@@ -67,7 +67,6 @@ class TipoConsumo extends DiaHora {
     row.consumoAnualREE = this.consumoAnualREE
     row.nombreFicheroCSV = this.nombreFicheroCSV
     row.cTotalAnual = this.cTotalAnual
-    // row.nombreTarifa = this.tarifa.nombreTarifa
     return row
   }
   /**
@@ -84,15 +83,6 @@ class TipoConsumo extends DiaHora {
 
   sintetizaTiposConsumo(tipo2, factor) {
     if (factor === undefined) factor = 1
-    // if (this.nombreTarifa === undefined) {
-    //   this.nombreTarifa = tipo2.nombreTarifa
-    //   this.territorio = tipo2.territorio
-    //   Object.assign(this.tarifa, tipo2.tarifa)
-    // }
-    // if (this.tarifa.nombreTarifa !== tipo2.tarifa.nombreTarifa) {
-    //   alert('No se pueden sintetizar tipos de consumo con tarifas diferentes')
-    //   return null
-    // }
     super.sintetizaDiaHora(tipo2, factor)
   }
 }

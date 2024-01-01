@@ -15,53 +15,35 @@ export default async function PreparaEnergyBalance() {
 
   //Si ha habido algún cambio que requiera la ejecución del optimizador lo ejecutamos
   if (TCB.requiereOptimizador) {
-    // Comprobamos que estan cargados todos los rendimientos. Es el flag rendimientoCreado de cada BaseSolar
+    // Comprobamos que estan cargados todos los rendimientos. Es el flag base.rendimiento.PVGISresults.status. True si todo OK, undefined si pendiente, False si error en PVGIS
     let waitLoop = 0
     for (let base of TCB.BaseSolar) {
-      //PENDIENTE: cambiar forma de reportar el error
-      if (base.rendimientoCreado === 'error') {
-        alert(
-          TCB.i18next.t('RENDIMIENTO.MSG_BASE_SIN_RENDIMIENTO', {
-            nombre: base.nombreBaseSolar,
-          }),
-        )
-        document.body.style.cursor = cursorOriginal
-        return false
-      }
       var sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
-      if (!base.rendimientoCreado) {
+      if (base.rendimiento.PVGISresults.status === undefined) {
+        //Has to wait
         alert('Esperando datos PVGIS para base: ' + base.nombreBaseSolar)
-        //   if (TCB.importando) {
-        //     //document.getElementById('importar').innerHTML = TCB.i18next.t("importarProyecto_MSG_importando");
-        //   } else {
-        //     document.getElementById('resultadosResumen').innerHTML =
-        //       'Esperando PVGIS para base ' + base.idBaseSolar
-        //   }
-
         while (
-          !base.rendimientoCreado &&
-          waitLoop++ < TCB.tiempoEsperaPVGIS &&
-          base.rendimientoCreado !== 'error'
+          base.rendimiento.PVGISresults.status === undefined &&
+          waitLoop++ < TCB.tiempoEsperaPVGIS
         ) {
           console.log(waitLoop + ' seg. (max: ' + TCB.tiempoEsperaPVGIS + ')')
           await sleep(1000)
         }
-        if (base.rendimientoCreado === 'error') {
-          alert('Error obteniendo datos de PVGIS')
-          base.rendimientoCreado = false
-          // PENDIENTE: Reemplazar alert con error
-          return false
-        }
-        if (waitLoop >= TCB.tiempoEsperaPVGIS) {
-          alert('Tiempo de respuesta excesivo en la llamada a PVGIS')
-          // PENDIENTE: reemplazar alert con confimr de espera
-          return false
-        }
-        // PENDIENTE: limpiar alert
-      } else {
-        base.inAcimut = base.rendimiento.acimut
-        base.inclinacion = base.rendimiento.inclinacion
       }
+
+      if (!base.rendimiento.PVGISresults.status) return base.rendimiento.PVGISresults
+
+      if (waitLoop >= TCB.tiempoEsperaPVGIS) {
+        alert('Tiempo de respuesta excesivo en la llamada a PVGIS')
+        // PENDIENTE: reemplazar alert con confimr de espera
+        return {
+          status: false,
+          error: 'Tiempo de respuesta excesivo en la llamada a PVGIS',
+        }
+      }
+      // PENDIENTE: limpiar alert de espera
+      base.inAcimut = base.rendimiento.acimut
+      base.inclinacion = base.rendimiento.inclinacion
     }
 
     // Se ejecuta el optimizador para determinar la configuración inicial propuesta
@@ -71,6 +53,7 @@ export default async function PreparaEnergyBalance() {
       TCB.parametros.potenciaPanelInicio,
     )
     if (pendiente > 0) {
+      //PENDIENTE: ver como procesamos este aviso
       alert(
         'No es posible instalar los paneles necesarios.\nPendiente: ' +
           UTIL.formatoValor('energia', pendiente) +
@@ -80,5 +63,5 @@ export default async function PreparaEnergyBalance() {
     document.body.style.cursor = cursorOriginal
   }
   await calculaResultados()
-  return true
+  return { status: true }
 }

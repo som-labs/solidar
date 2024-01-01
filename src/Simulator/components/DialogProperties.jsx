@@ -15,7 +15,6 @@ export default function DialogProperties({ data, onClose }) {
   const { t } = useTranslation()
   const [objeto, setObjeto] = useState(data)
 
-  console.log('EN DIALOGO DE PROPIEDADES')
   const vectorPropiedades = UTIL.obtenerPropiedades(objeto, 0)
   for (let val in vectorPropiedades) {
     //console.log(val, vectorPropiedades[val])
@@ -24,22 +23,25 @@ export default function DialogProperties({ data, onClose }) {
       else return UTIL.campos[a.nombre].order - UTIL.campos[b.nombre].order
     })
   }
-  console.log(vectorPropiedades)
   return (
     <>
       <Box>
-        <Typography variant="h3">{t('OBJECT.LABEL_TITLE_PROPERTIES')}</Typography>
+        <Typography variant="h3">{t('DIALOG_PROPERTIES.  TITLE')}</Typography>
       </Box>
       <Box>
         <Table id="tablaPropiedades">
           {/* //class="table table-sm table-striped table-bordered text-end center"> */}
           {Object.entries(vectorPropiedades).map(([objName, objProps]) => (
             <>
-              <TableRow sx={{ backgroundColor: 'rgba(220, 249, 233, 1)' }}>
+              {/* REVISAR: No respeta el style ni columnSpan */}
+              <TableRow
+                style={{ backgroundColor: 'rgba(220, 249, 233, 1)', height: '50px' }}
+                // sx={{ backgroundColor: 'rgba(220, 249, 233, 1)', height: 30 }}
+              >
                 {/* class='table-info text-center'> */}
-                <TableCell sx={{ columnSpan: 'all' }}>
+                <TableCell style={{ columnSpan: 'all' }}>
                   {' '}
-                  {t('OBJECT.' + objName)}
+                  {t(objName + '.NAME')}
                 </TableCell>
               </TableRow>
               {objProps.map((prop) => (
@@ -47,10 +49,10 @@ export default function DialogProperties({ data, onClose }) {
                   {/* {console.log(prop.nombre, UTIL.campos[prop.nombre], prop.valor)} */}
                   {UTIL.campos[prop.nombre] !== undefined &&
                     UTIL.campos[prop.nombre].mostrar && (
-                      <TableRow sx={{ height: 'auto' }}>
+                      <TableRow style={{ height: '20px' }}>
                         <TableCell>
                           {/* //  class='text-start'>" */}
-                          {t(objName + '.LABEL_' + prop.nombre)}
+                          {t(objName + '.PROP.' + prop.nombre)}
                         </TableCell>
                         <TableCell>
                           {/* // "</td><td class='text-end'>" + */}

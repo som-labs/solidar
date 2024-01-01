@@ -14,7 +14,7 @@ import EconomicContext from './EconomicContext'
 import * as UTIL from '../classes/Utiles'
 
 export default function YearSaving() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const { ecoData } = useContext(EconomicContext)
 
   return (

@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
+
 // MUI objects
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
@@ -15,8 +16,7 @@ import * as UTIL from '../classes/Utiles'
 import { SLDRFooterBox } from '../../components/SLDRComponents'
 
 export default function FinanceSummary() {
-  const { t, i18n } = useTranslation()
-
+  const { t } = useTranslation()
   const { ecoData } = useContext(EconomicContext)
 
   if (ecoData.cashFlow === undefined) return
@@ -27,30 +27,14 @@ export default function FinanceSummary() {
 
   function footerSummary() {
     return (
-      <SLDRFooterBox
-      // component="form"
-      // sx={{
-      //   display: 'flex',
-      //   flexDirection: 'column',
-      //   flexWrap: 'wrap',
-      //   width: '100%',
-      //   mt: '0.3rem',
-      //   mb: '0.3rem',
-      //   flex: 1,
-      //   border: 2,
-      //   textAlign: 'center',
-      //   borderColor: 'primary.light',
-      //   backgroundColor: 'rgba(220, 249, 233, 1)',
-      // }}
-      // justifyContent="center"
-      >
+      <SLDRFooterBox>
         <Typography variant="h5">
-          {t('ECONOMIC_BALANCE.LABEL_VAN_PROYECTO', {
+          {t('Economico.PROP.VANProyecto', {
             VAN: UTIL.formatoValor('dinero', ecoData.VANProyecto),
           })}
         </Typography>
         <Typography variant="h5">
-          {t('ECONOMIC_BALANCE.LABEL_TIR_PROYECTO', {
+          {t('Economico.PROP.TIRProyecto', {
             TIR: UTIL.formatoValor('porciento', ecoData.TIRProyecto),
           })}
         </Typography>
@@ -64,6 +48,7 @@ export default function FinanceSummary() {
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       align: 'center',
+      sortable: false,
       flex: 1,
       description: t('ECONOMIC_BALANCE.TOOLTIP_ANO'),
     },
@@ -73,6 +58,7 @@ export default function FinanceSummary() {
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       align: 'right',
+      sortable: false,
       flex: 1,
       description: t('ECONOMIC_BALANCE.TOOLTIP_PREVIO'),
       renderCell: (params) => {
@@ -85,9 +71,9 @@ export default function FinanceSummary() {
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       align: 'right',
+      sortable: false,
       flex: 1,
       description: t('ECONOMIC_BALANCE.TOOLTIP_INVERSION'),
-
       renderCell: (params) => {
         return UTIL.formatoValor('dinero', params.value)
       },
@@ -98,6 +84,7 @@ export default function FinanceSummary() {
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       align: 'right',
+      sortable: false,
       flex: 1,
       description: t('ECONOMIC_BALANCE.TOOLTIP_AHORRO'),
       renderCell: (params) => {
@@ -110,6 +97,7 @@ export default function FinanceSummary() {
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       align: 'right',
+      sortable: false,
       flex: 1,
       description: t('ECONOMIC_BALANCE.TOOLTIP_SUBVENCION'),
       renderCell: (params) => {
@@ -122,6 +110,7 @@ export default function FinanceSummary() {
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       align: 'right',
+      sortable: false,
       flex: 1,
       description: t('ECONOMIC_BALANCE.TOOLTIP_IBI'),
       renderCell: (params) => {
@@ -134,6 +123,7 @@ export default function FinanceSummary() {
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       align: 'right',
+      sortable: false,
       flex: 1,
       description: t('ECONOMIC_BALANCE.TOOLTIP_PENDIENTE'),
       renderCell: (params) => {
@@ -168,12 +158,13 @@ export default function FinanceSummary() {
           </Typography>
           <br />
           <DataGrid
-            rowHeight={30}
-            autoHeight
             getRowId={getRowId}
             rows={ecoData.cashFlow}
             columns={columns}
             hideFooter={false}
+            rowHeight={30}
+            autoHeight
+            disableColumnMenu
             getRowClassName={(params) =>
               clsx('super-app', {
                 negative: params.row.pendiente < 0,

@@ -16,7 +16,7 @@ import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 export default function SubvencionEU() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const { subvencionEU, setSubvencionEU, setValorSubvencionEU, ecoData, setEcoData } =
     useContext(EconomicContext)
@@ -80,14 +80,12 @@ export default function SubvencionEU() {
               onChange={onChangeEU}
               orientation="vertical"
             >
-              <ToggleButton value="Sin">
-                {t('Economico.LABEL_sinSubvencion')}
-              </ToggleButton>
+              <ToggleButton value="Sin">{t('Economico.PROP.sinSubvencion')}</ToggleButton>
               <ToggleButton value="Individual">
-                {t('Economico.LABEL_subvencionIndividual')}
+                {t('Economico.PROP.subvencionIndividual')}
               </ToggleButton>
               <ToggleButton value="Comunitaria">
-                {t('Economico.LABEL_subvencionComunitaria')}
+                {t('Economico.PROP.subvencionComunitaria')}
               </ToggleButton>
             </ToggleButtonGroup>
           </Box>

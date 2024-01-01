@@ -17,14 +17,7 @@ import TCB from '../classes/TCB'
 
 export default function SummaryEconomicBalance() {
   const { t } = useTranslation()
-
-  const {
-    IBI,
-    valorSubvencionEU,
-    precioInstalacionCorregido,
-    periodoAmortizacion,
-    ecoData,
-  } = useContext(EconomicContext)
+  const { IBI, valorSubvencionEU, ecoData } = useContext(EconomicContext)
 
   return (
     <>
@@ -66,7 +59,7 @@ export default function SummaryEconomicBalance() {
               }}
             >
               <Typography variant="h4" color={'green'}>
-                {UTIL.formatoValor('dinero', precioInstalacionCorregido)}
+                {UTIL.formatoValor('dinero', ecoData.precioInstalacionCorregido)}
               </Typography>
               <Typography
                 variant="body"
@@ -153,7 +146,7 @@ export default function SummaryEconomicBalance() {
             <Grid container spacing={3} alignItems="center">
               <Grid item xs={8}>
                 <Typography variant="h5">
-                  {t('Economico.LABEL_gastoConPlacasAnual')}
+                  {t('Economico.PROP.gastoConPlacasAnual')}
                 </Typography>
               </Grid>
               <Grid item xs={4}>
@@ -162,7 +155,7 @@ export default function SummaryEconomicBalance() {
                 </Typography>
               </Grid>
               <Grid item xs={8}>
-                <Typography variant="h5">{t('Economico.LABEL_ahorroAnual')}</Typography>
+                <Typography variant="h5">{t('Economico.PROP.ahorroAnual')}</Typography>
               </Grid>
               <Grid item xs={4}>
                 <Typography variant="h5" textAlign={'right'}>
@@ -171,7 +164,7 @@ export default function SummaryEconomicBalance() {
               </Grid>
               <Grid item xs={8}>
                 <Typography variant="h5">
-                  {t('Economico.LABEL_noCompensadoAnual')}
+                  {t('Economico.PROP.noCompensadoAnual')}
                 </Typography>
               </Grid>
               <Grid item xs={4}>
@@ -181,7 +174,7 @@ export default function SummaryEconomicBalance() {
               </Grid>
               <Grid item xs={8}>
                 <Typography variant="h5">
-                  {t('Economico.LABEL_valorSubvencionEU')}
+                  {t('Economico.PROP.valorSubvencionEU')}
                 </Typography>
               </Grid>
               <Grid item xs={4}>
@@ -191,7 +184,7 @@ export default function SummaryEconomicBalance() {
               </Grid>
               <Grid item xs={8}>
                 <Typography variant="h5">
-                  {t('Economico.LABEL_valorSubvencionIBI')}
+                  {t('Economico.PROP.valorSubvencionIBI')}
                 </Typography>
               </Grid>
               <Grid item xs={4}>
