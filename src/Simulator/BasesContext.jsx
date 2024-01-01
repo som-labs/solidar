@@ -13,6 +13,9 @@ const BasesContextProvider = ({ children }) => {
   const [map, setMap] = useState()
   const [bases, setBases] = useState([])
 
+  //PENDIENTE: Necesarios para Plotly del informePDF. Moverlos a otro contexto?
+  const [refs, setRefs] = useState({ g1: undefined, g2: undefined })
+
   //Function to be executed at closeDialog del DialogNewBaseSolar
   function processFormData(reason, formData) {
     //Update openlayers label with nombreBaseSolar
@@ -88,6 +91,8 @@ const BasesContextProvider = ({ children }) => {
     setBases,
     processFormData,
     validaBases,
+    refs,
+    setRefs,
   }
   return <BasesContext.Provider value={contextValue}>{children}</BasesContext.Provider>
 }

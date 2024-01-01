@@ -16,7 +16,7 @@ import EconomicContext from './EconomicContext'
 import TCB from '../classes/TCB'
 
 export default function VirtualBattery() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const { cuotaHucha, setCuotaHucha, coefHucha, setCoefHucha, setEcoData } =
     useContext(EconomicContext)

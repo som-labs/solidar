@@ -31,6 +31,8 @@ const TCB = {
   modos: [INDIVIDUAL, COLECTIVO, COMUNIDAD, DESARROLLO],
   modoActivo: INDIVIDUAL,
 
+  globalChartContainer: { graph_1: null },
+
   nombreProyecto: '',
   territorio: '',
 
@@ -109,7 +111,7 @@ const TCB = {
   puntoConsumoLabelColor: [0, 0, 0, 1],
   puntoConsumoLabelBGColor: [168, 50, 153, 0.1],
 
-  rendimientoCreado: false,
+  //rendimientoCreado: false,
   instalacionCreada: false,
   produccionCreada: false,
   balanceCreado: false,
@@ -280,8 +282,8 @@ const TCB = {
       norenovable: 0.735,
     },
   },
-  CO2AnualRenovable: 0,
-  CO2AnualNoRenovable: 0,
+  // CO2AnualRenovable: 0,
+  // CO2AnualNoRenovable: 0,
 
   Especificaciones: {
     BaseSolar: {
