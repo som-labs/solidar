@@ -31,35 +31,27 @@ const TCB = {
   modos: [INDIVIDUAL, COLECTIVO, COMUNIDAD, DESARROLLO],
   modoActivo: INDIVIDUAL,
 
-  globalChartContainer: { graph_1: null },
+  nombreProyecto: 'Mi proyecto',
+  emailContacto: '',
+  telefonoContacto: '',
+  fechaCreacion: new Date(),
+  descripcion: '',
 
-  nombreProyecto: '',
   territorio: '',
 
   importando: false, //Es verdadero durante el proceso de importacion
   //Donde se guardan los datos a exportar
-  datosProyecto: { version: '3.3' },
+  datosProyecto: { version: '4' },
 
-  /**
-   * @type {Array<PuntoConsumo>}
-   */
-  PuntoConsumo: [],
   /**
    * @type {Array<TipoConsumo>}
    */
   TipoConsumo: [],
-  /**
-   * @type {Array<Finca>}
-   */
-  Finca: [],
+
   /**
    * @type {Array<BaseSolar>}
    */
   BaseSolar: [],
-  /**
-   * @type {Array<Finca>}
-   */
-  Participes: [],
 
   // Variables de totalización
   consumo: {}, // Este campo contiene la suma de todos las consumos[]
@@ -108,8 +100,6 @@ const TCB = {
   origenDatosSolidar: new VectorSource({ wrapX: false }),
   baseLabelColor: [0, 0, 0, 1],
   baseLabelBGColor: [168, 50, 153, 0.1],
-  puntoConsumoLabelColor: [0, 0, 0, 1],
-  puntoConsumoLabelBGColor: [168, 50, 153, 0.1],
 
   //rendimientoCreado: false,
   instalacionCreada: false,

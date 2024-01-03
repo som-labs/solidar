@@ -29,6 +29,7 @@ export default function SummaryAutoproduccion() {
       paneles += base.paneles
     }
   }
+
   produccionAnual = TCB.produccion.pTotalAnual
 
   const columns = [

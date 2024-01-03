@@ -10,6 +10,29 @@ const ConsumptionContextProvider = ({ children }) => {
   const [tipoConsumo, setTipoConsumo] = useState([])
   const [preciosValidos, setPreciosValidos] = useState(true)
 
+  //TCB fields to be reflected in state
+  const hdrTipo = {
+    idTipoConsumo: undefined,
+    nombreTipoConsumo: undefined,
+    fuente: undefined,
+    consumoAnualREE: undefined,
+    ficheroCSV: undefined,
+    nombreFicheroCSV: undefined,
+    cTotalAnual: undefined,
+  }
+
+  // Move data object to the hdr template
+  const hdrFill = (data) => {
+    let newData = {}
+    for (let field in hdrTipo) newData[field] = data[field]
+    return newData
+  }
+
+  // Add base object to the bases state
+  function addTCBTipoToState(tipo) {
+    setTipoConsumo((prevTipos) => [...prevTipos, hdrFill(tipo)])
+  }
+
   function validaTipoConsumo() {
     if (TCB.TipoConsumo.length === 0) {
       return { status: false, error: t('CONSUMPTION.ERROR_AL_MENOS_UN_TIPOCONSUMO') }
@@ -30,6 +53,7 @@ const ConsumptionContextProvider = ({ children }) => {
     validaTipoConsumo,
     preciosValidos,
     setPreciosValidos,
+    addTCBTipoToState,
   }
 
   return (

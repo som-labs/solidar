@@ -36,6 +36,7 @@ class BaseSolar extends DiaHora {
       },
       anchoReal: {
         enumerable: true,
+        set(valor) {}, //Esta aqui para evitar error al intentar set desde update
         get() {
           //El ancho corregido por la inclinacion del tejado
           return this.ancho / Math.cos((this.#inclinacion * Math.PI) / 180)

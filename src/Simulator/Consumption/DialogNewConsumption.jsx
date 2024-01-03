@@ -6,7 +6,6 @@ import {
   Box,
   Button,
   MenuItem,
-  FormControl,
   Typography,
   FormControlLabel,
   DialogActions,
@@ -21,7 +20,6 @@ import { SLDRInputField, SLDRTooltip } from '../../components/SLDRComponents'
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
 
-//PENDIENTE: convertir a formix
 export default function DialogNewConsumption({ data, onClose }) {
   const { t } = useTranslation()
 

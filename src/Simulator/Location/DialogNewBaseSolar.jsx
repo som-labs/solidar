@@ -7,16 +7,10 @@ import { LineString } from 'ol/geom'
 import { Style } from 'ol/style'
 
 // MUI objects
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
+import { Box, Button, Switch, FormControlLabel, Typography } from '@mui/material'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
-import Typography from '@mui/material/Typography'
-import Tooltip from '@mui/material/Tooltip'
-import { Checkbox, Switch, FormControlLabel } from '@mui/material'
-import HomeIcon from '@mui/icons-material/Home'
-import ApartmentIcon from '@mui/icons-material/Apartment'
 
 // REACT Solidar Components
 import coplanarSvgFile from '../datos/coplanar.svg'
@@ -27,7 +21,6 @@ import { SLDRInputField } from '../../components/SLDRComponents'
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
-//PENDIENTE: convertir a formix
 export default function DialogNewBaseSolar({ data, onClose }) {
   const { t } = useTranslation()
 

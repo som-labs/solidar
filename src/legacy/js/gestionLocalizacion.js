@@ -381,6 +381,11 @@ async function exporta() {
   TCB.datosProyecto.mapa = salvarDatosMapa()
   TCB.datosProyecto.BaseSolar = TCB.BaseSolar
   TCB.datosProyecto.PuntoConsumo = TCB.PuntoConsumo
+
+  TCB.datosProyecto.TipoConsumo = TCB.TipoConsumo
+  for (let tc of TCB.datosProyecto.TipoConsumo) {
+    delete tc.ficheroCSV //El objeto File correspondiente no puede ser exportado via JSON.
+  }
 }
 
 function prepara() {

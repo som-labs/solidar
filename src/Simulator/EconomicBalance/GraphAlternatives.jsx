@@ -8,7 +8,7 @@ import Plot from 'react-plotly.js'
 import Typography from '@mui/material/Typography'
 
 // REACT Solidar Components
-import EconomicContext from './EconomicContext'
+import { EconomicContext } from '../EconomicContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'

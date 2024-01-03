@@ -34,10 +34,9 @@ export default function MapaMesHora({ activo }) {
   let radio = 20
   const mesMapa = Array.from(i18nextMes())
 
-  // console.log(consumo)
+  // console.log('CONSUMO TABLE:', consumo)
   // console.log(typeof consumo.idxTable[0].fecha)
   // console.log('FECHA: ', consumo.idxTable[0])
-  // console.log('CONSUMO TABLE:', consumo)
 
   for (let hora = 0; hora < 24; hora++) {
     let _valorHora = consumo.getHora(hora)

@@ -13,10 +13,9 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { ScrollRestoration } from 'react-router-dom'
 
-import DialogProvider from './DialogProvider'
-
 import ParametersMenu from '../Simulator/Parameters/ParametersMenu'
 import ContactMenu from '../Simulator/Contact/ContactMenu'
+import GestionProyecto from '../Simulator/Project/GestionProyecto'
 
 export default function AppFrame({ children }) {
   const { t } = useTranslation()
@@ -86,6 +85,7 @@ export default function AppFrame({ children }) {
           <LanguageMenu />
           <ParametersMenu />
           <ContactMenu />
+          <GestionProyecto />
         </Toolbar>
       </AppBar>
       <Box sx={{ minHeight: 'calc( 100vh - 7rem )' }}>{children}</Box>

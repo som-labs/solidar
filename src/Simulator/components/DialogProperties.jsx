@@ -35,6 +35,7 @@ export default function DialogProperties({ data, onClose }) {
             <>
               {/* REVISAR: No respeta el style ni columnSpan */}
               <TableRow
+                key={objName}
                 style={{ backgroundColor: 'rgba(220, 249, 233, 1)', height: '50px' }}
                 // sx={{ backgroundColor: 'rgba(220, 249, 233, 1)', height: 30 }}
               >
@@ -49,7 +50,7 @@ export default function DialogProperties({ data, onClose }) {
                   {/* {console.log(prop.nombre, UTIL.campos[prop.nombre], prop.valor)} */}
                   {UTIL.campos[prop.nombre] !== undefined &&
                     UTIL.campos[prop.nombre].mostrar && (
-                      <TableRow style={{ height: '20px' }}>
+                      <TableRow key={objName + prop.nombre} style={{ height: '20px' }}>
                         <TableCell>
                           {/* //  class='text-start'>" */}
                           {t(objName + '.PROP.' + prop.nombre)}
