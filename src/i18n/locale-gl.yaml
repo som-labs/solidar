@@ -391,18 +391,18 @@ PARAMETROS:
 
 CONTACTO:
   DIALOG_TITLE: Contacto
-  LABEL_descripcion: Envíanos os teus comentarios. Intentaremos axudarche o antes posible
-  LABEL_enviar: Enviar
-  LABEL_mensaje: Mensaxe
-  LABEL_advertencia: Os datos que contribúan a este formulario utilizaranse exclusivamente e exclusivamente para responder á súa aplicación e non se almacenarán en ningún ficheiro nin se empregarán para ningún outro propósito
-  LABEL_respuesta: Marca aquí se acepta recibir respostas
-  LABEL_comentario: Fas un comentario
-  LABEL_mejora: Propoñes unha mellora
-  LABEL_error: Informas dun erro
-  LABEL_tipoPropuesta: Que nos dis?
-  LABEL_telefono: Teléfono
-  LABEL_email: correo electrónico
-  LABEL_nombre: Nome
+  DIALOG_DESCRIPTION: Envíanos os teus comentarios. Intentaremos axudarche o antes posible
+  PROP:
+    nombre: Nome
+    email: correo electrónico
+    telefono: Teléfono
+    tipoPropuesta: Que nos dis?
+    comentario: Fas un comentario
+    mejora: Propoñes unha mellora
+    error: Informas dun erro
+    advertencia: Os datos que contribúan a este formulario utilizaranse exclusivamente e exclusivamente para responder á súa aplicación e non se almacenarán en ningún ficheiro nin se empregarán para ningún outro propósito
+    respuesta: Marca aquí se acepta recibir respostas
+    mensaje: Mensaxe
 
 BOTONES:
   botonExportar_TT: Gardar proxecto
@@ -412,12 +412,6 @@ BOTONES:
   botonInstrucciones_TT: Instrucións
   botonAyuda_TT: Axuda
 
-  botonExportar_LBL:
-  botonContacto_LBL:
-  botonInformePDF_LBL:
-  botonParametros_LBL:
-  botonInstrucciones_LBL:
-  botonAyuda_LBL:
 AYUDAS:
   ayuda_TIT_localizacion: Nesta pestana identifícanse datos de localización xeográfica
   ayuda_TIT_consumos: Nesta pestana identifícanse datos de datos e consumo antes da instalación
@@ -446,17 +440,6 @@ MAPA:
 
   botonShadow_LBL: Google Shadow
   botonShadow_TT: Abre a xanela de Google Shadow centrada neste mapa
-
-MSG_MAPA:
-  mapa_MSG_definePuntoConsumo: Debe definir al menos un punto de consumo en el mapa antes de seguir
-
-  mapa_MSG_cuantosPuntoConsumo: En modo {{modoActivo}} no pueden existir mas de un punto de consumo\nDebe borrar el existente antes de continuar
-  mapa_MSG_errorCatastroXY: 'Error consulta catastro:  {{descripcion}}'
-  mapa_MSG_Polygon: Defina a área na que se instalarán os paneis. Só son necesarios tres puntos. Despois podes definir o acimut de cada un deles usando a icona <i class='fa fa-compass'></i>
-  mapa_MSG_LineString: Dun punto para indicar a orientación xeográfica dos paneis
-  mapa_MSG_Point: Define a localización do consumo
-  mapa_MSG_nada: Seleccione o obxecto para debuxar
-  mapa_MSG_posicionConsumo: Fai clic para colocar un novo consumo
 
 RESULTS:
   TOOLTIP_botonInfoBase: Información detallada de la base seleccionada

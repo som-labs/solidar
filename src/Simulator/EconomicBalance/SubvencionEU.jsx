@@ -9,7 +9,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import Container from '@mui/material/Container'
 
 // REACT Solidar Components
-import EconomicContext from './EconomicContext'
+import { EconomicContext } from '../EconomicContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'

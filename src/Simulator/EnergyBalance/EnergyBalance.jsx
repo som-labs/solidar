@@ -18,7 +18,7 @@ import * as UTIL from '../classes/Utiles'
 // REACT Solidar Components
 
 import { BasesContext } from '../BasesContext'
-import EconomicContext from '../EconomicBalance/EconomicContext'
+import { EconomicContext } from '../EconomicContext'
 import calculaResultados from '../classes/calculaResultados'
 import ConsumoGeneracion3D from './ConsumoGeneracion3D'
 import EnergyFlow from './EnergyFlow'
@@ -207,6 +207,8 @@ export default function EnergyBalanceStep() {
   }, [])
 
   useEffect(() => {
+    //REVISAR: porque se ejecuta 3 veces
+    console.log('USEEFFECT de ENERGYBALANCE')
     // Cuando cambian las base se realiza el cálculo de todas las variables del sistema
     calculaResultados()
     setMonthlyData({
@@ -228,7 +230,7 @@ export default function EnergyBalanceStep() {
     })
 
     setEcoData(TCB.economico)
-  }, [bases])
+  }, [bases, setEcoData])
 
   /**
    * Funcion para gestionar el evento generado por cambio de paneles o potenciaUnitaria en la tabla de bases

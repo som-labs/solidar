@@ -28,7 +28,6 @@ class Consumo extends DiaHora {
    * @param {Object} consumo A JS object to be used as template for a Solidar Consumo object
    */
   constructor(consumo) {
-    UTIL.debugLog('Generando consumo global')
     super()
 
     if (consumo === undefined) {

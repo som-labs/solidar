@@ -7,12 +7,12 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 // REACT Solidar Components
-import EconomicContext from './EconomicContext'
+import { EconomicContext } from '../EconomicContext'
 
 import * as UTIL from '../classes/Utiles'
 
 export default function MonthSaving() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const { ecoData, coefHucha } = useContext(EconomicContext)
   const i18nextMes = () => {
