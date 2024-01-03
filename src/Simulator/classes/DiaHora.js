@@ -390,14 +390,6 @@ class DiaHora {
       if (this.idxTable[i].previos > 0) this.numeroDias++
       this.totalAnual += this.idxTable[i].suma
     }
-
-    UTIL.debugLog('Sintesis DiaHora:', {
-      desde: this.fechaInicio,
-      hasta: this.fechaFin,
-      maximo: this.maximoAnual.toFixed(2),
-      numeroDias: this.numeroDias,
-      total: this.totalAnual.toFixed(2),
-    })
   }
 
   /**

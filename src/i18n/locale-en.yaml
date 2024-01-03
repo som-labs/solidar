@@ -379,18 +379,19 @@ PARAMETROS:
   parametros_MSG_errorLecturaFicheroTarifas: Error reading local rate file
 CONTACTO:
   DIALOG_TITLE: Contact
-  LABEL_descripcion: Send us your comments. We will try to attend you as soon as possible
-  LABEL_enviar: Send
-  LABEL_mensaje: Message
-  LABEL_advertencia: The data that contributes to this form will be used solely and exclusively to answer your application and will not be stored in any file or used for any other purpose
-  LABEL_respuesta: Mark here if you agree to receive answers
-  LABEL_comentario: Make a comment
-  LABEL_mejora: Propose an improvement
-  LABEL_error: Report an error
-  LABEL_tipoPropuesta: What do you tell us?
-  LABEL_telefono: Phone
-  LABEL_email: e-mail
-  LABEL_nombre: Name
+  DIALOG_DESCRIPTION: Send us your comments. We will try to attend you as soon as possible
+  PROP:
+    nombre: Name
+    email: e-mail
+    telefono: Phone
+    tipoPropuesta: What do you tell us?
+    comentario: Make a comment
+    mejora: Propose an improvement
+    error: Report an error
+    advertencia: The data that contributes to this form will be used solely and exclusively to answer your application and will not be stored in any file or used for any other purpose
+    respuesta: Mark here if you agree to receive answers
+    mensaje: Message
+
 BOTONES:
   botonExportar_TT: Save project
   botonContacto_TT: Contact / suggestions
@@ -434,16 +435,6 @@ MAPA:
 
   botonShadow_LBL: Google Shadow
   botonShadow_TT: Abre ventana de Google Shadow centrada en este mapa
-
-MSGMAPA:
-  mapa_MSG_definePuntoConsumo: You must define at least one consumption point on the map before continuing
-  mapa_MSG_cuantosPuntoConsumo: In {{modoActivo}} mode there can be no more than one consumption point \n nmust delete the existing one before coninuin
-  mapa_MSG_errorCatastroXY: Assessment Error Catastro-> {{descripcion}}
-  mapa_MSG_Polygon: Define the area in which the panels will be installed. Only three points are necessary. You can define the azimuth for each of them using the icon <i class='fa fa-compass'></i>
-  mapa_MSG_LineString: Point on map to indicate the geographical orientation of the panels
-  mapa_MSG_Point: Define consumption location
-  mapa_MSG_nada: Select the object to draw
-  mapa_MSG_posicionConsumo: One click to position a new consumption
 
 RESULTS:
   TOOLTIP_botonInfoBase: Detailed information of the selected base

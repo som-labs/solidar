@@ -17,7 +17,7 @@ import TCB from '../classes/TCB'
 
 export default function FinalNote() {
   const { t } = useTranslation()
-  const graph_1 = useRef()
+  // const graph_1 = useRef()
 
   // const [reporting, setReporting] = useState(false)
 
@@ -31,10 +31,10 @@ export default function FinalNote() {
     GeneraInformePDF()
   }
 
-  useEffect(() => {
-    console.log('USEEFFECT FINALNOTE', graph_1.current)
-    TCB.globalChartContainer.graph_1 = graph_1.current
-  }, [])
+  // useEffect(() => {
+  //   console.log('USEEFFECT FINALNOTE', graph_1.current)
+  //   TCB.globalChartContainer.graph_1 = graph_1.current
+  // }, [])
 
   return (
     <>
@@ -45,7 +45,7 @@ export default function FinalNote() {
           size="large"
           onClick={printSummary}
         >
-          Imprime Resumen
+          {t('SUMMARY.LABEL_PRINT')}
         </Button>
         <Button
           variant="contained"
@@ -56,7 +56,7 @@ export default function FinalNote() {
             // setReporting(true)
           }
         >
-          Descarga Informe Completo
+          {t('SUMMARY.LABEL_PDF_REPORT')}
         </Button>
 
         {/* REVISAR: Esto esta aqui para poder copiar el grafico al pdf usando plotly.toimage

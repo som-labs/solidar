@@ -16,14 +16,13 @@ import SummaryStep from './Summary/Summary'
 import { ConsumptionContext } from './ConsumptionContext'
 import { BasesContext } from './BasesContext'
 import { AlertContext } from './components/Alert'
-import EconomicContext from './EconomicBalance/EconomicContext'
+import { EconomicContext } from './EconomicContext'
 
 // Solidar objects
 import PreparaEnergyBalance from './EnergyBalance/PreparaEnergyBalance'
 import TCB from './classes/TCB'
 
 import InicializaAplicacion from './classes/InicializaAplicacion'
-import Consumo from './classes/Consumo'
 
 InicializaAplicacion()
 
@@ -32,18 +31,7 @@ export default function Page() {
   const { SLDRAlert } = useContext(AlertContext)
   const { validaBases } = useContext(BasesContext)
   const { validaTipoConsumo } = useContext(ConsumptionContext)
-
-  const [IBI, setIBI] = useState({
-    valorSubvencionIBI: 0,
-    porcientoSubvencionIBI: 0,
-    tiempoSubvencionIBI: 0,
-  })
-  const [precioInstalacionCorregido, setPrecioInstalacionCorregido] = useState()
-  const [subvencionEU, setSubvencionEU] = useState('Sin')
-  const [valorSubvencionEU, setValorSubvencionEU] = useState(0)
-  const [cuotaHucha, setCuotaHucha] = useState(0)
-  const [coefHucha, setCoefHucha] = useState(0)
-  const [ecoData, setEcoData] = useState({})
+  const { setEcoData } = useContext(EconomicContext)
 
   let results
 
@@ -60,12 +48,8 @@ export default function Page() {
       return false
     }
 
-    //Crearemos el consumo global como suma de todos los tipos de consumo definidos
-    TCB.consumo = new Consumo()
-    TCB.cambioTipoConsumo = true
-
-    //Se crearan los objetos produccion, balance y economico
-    //PENDIENTE: podria haber un warning de falta de espacio enviado desde Prepara...
+    // Se crearan los objetos produccion, balance y economico
+    // PENDIENTE: podria haber un warning de falta de espacio enviado desde Prepara...
     results = await PreparaEnergyBalance()
     if (results.status) {
       setEcoData(TCB.economico)
@@ -80,46 +64,24 @@ export default function Page() {
     <>
       <AppFrame>
         <Container>
-          <EconomicContext.Provider
-            value={{
-              IBI,
-              setIBI,
-              subvencionEU,
-              setSubvencionEU,
-              valorSubvencionEU,
-              setValorSubvencionEU,
-              // precioInstalacionCorregido,
-              // setPrecioInstalacionCorregido,
-              cuotaHucha,
-              setCuotaHucha,
-              coefHucha,
-              setCoefHucha,
-              ecoData,
-              setEcoData,
-            }}
-          >
-            <Wizard variant="tabs">
-              <LocationStep
-                label="location"
-                title={t('LOCATION.TITLE')}
-                next={validaLocationStep}
-              />
-              <ConsumptionStep
-                label="consumption"
-                title={t('CONSUMPTION.TITLE')}
-                next={validaConsumptionStep}
-              />
-              <EnergyBalanceStep
-                label="energybalance"
-                title={t('ENERGY_BALANCE.TITLE')}
-              />
-              <EconomicBalanceStep
-                label="economicbalance"
-                title={t('ECONOMIC_BALANCE.TITLE')}
-              />
-              <SummaryStep label="summary" title={t('SUMMARY.TITLE')} />
-            </Wizard>
-          </EconomicContext.Provider>
+          <Wizard variant="tabs">
+            <LocationStep
+              label="location"
+              title={t('LOCATION.TITLE')}
+              next={validaLocationStep}
+            />
+            <ConsumptionStep
+              label="consumption"
+              title={t('CONSUMPTION.TITLE')}
+              next={validaConsumptionStep}
+            />
+            <EnergyBalanceStep label="energybalance" title={t('ENERGY_BALANCE.TITLE')} />
+            <EconomicBalanceStep
+              label="economicbalance"
+              title={t('ECONOMIC_BALANCE.TITLE')}
+            />
+            <SummaryStep label="summary" title={t('SUMMARY.TITLE')} />
+          </Wizard>
         </Container>
       </AppFrame>
     </>

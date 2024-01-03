@@ -8,7 +8,7 @@ import Container from '@mui/material/Container'
 import FormControl from '@mui/material/FormControl'
 import InputAdornment from '@mui/material/InputAdornment'
 
-import EconomicContext from './EconomicContext'
+import { EconomicContext } from '../EconomicContext'
 
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'

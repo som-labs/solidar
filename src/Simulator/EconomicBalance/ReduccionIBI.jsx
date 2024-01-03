@@ -13,7 +13,7 @@ import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
 
 // REACT Solidar Components
-import EconomicContext from './EconomicContext'
+import { EconomicContext } from '../EconomicContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'

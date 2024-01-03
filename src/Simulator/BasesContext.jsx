@@ -13,10 +13,38 @@ const BasesContextProvider = ({ children }) => {
   const [map, setMap] = useState()
   const [bases, setBases] = useState([])
 
-  //PENDIENTE: Necesarios para Plotly del informePDF. Moverlos a otro contexto?
-  const [refs, setRefs] = useState({ g1: undefined, g2: undefined })
+  //TCB fields to be reflected in state
+  const hdrBase = {
+    idBaseSolar: undefined,
+    nombreBaseSolar: undefined,
+    cumbrera: undefined,
+    ancho: undefined,
+    inclinacion: undefined,
+    inclinacionOptima: undefined,
+    roofType: undefined,
+    inAcimut: undefined,
+    angulosOptimos: undefined,
+    requierePVGIS: undefined,
+    lonlatBaseSolar: undefined,
+    potenciaMaxima: undefined,
+    anchoReal: undefined,
+    areaReal: undefined,
+    panelesMaximo: undefined,
+  }
 
-  //Function to be executed at closeDialog del DialogNewBaseSolar
+  // Move data object to the hdr template
+  const hdrFill = (data) => {
+    let newData = {}
+    for (let field in hdrBase) newData[field] = data[field]
+    return newData
+  }
+
+  // Add base object to the bases state
+  function addTCBBaseToState(base) {
+    setBases((prevBases) => [...prevBases, hdrFill(base)])
+  }
+
+  //Function to be executed at closeDialog del DialogNewBaseSolar. Is here because can be used as exit of DailogNewBaseSolar from BasesSuammry as edit and from MapComponent as new.
   function processFormData(reason, formData) {
     //Update openlayers label with nombreBaseSolar
     const labelFeatId = 'BaseSolar.label.' + formData.idBaseSolar
@@ -32,27 +60,17 @@ const BasesContextProvider = ({ children }) => {
     if (reason === 'save') {
       // We are creating a new base
       baseIndex = TCB.BaseSolar.push(new BaseSolar(formData)) - 1
+      addTCBBaseToState(TCB.BaseSolar[baseIndex])
     } else {
       //We are updating existing base
       baseIndex = TCB.BaseSolar.findIndex((base) => {
         return base.idBaseSolar === formData.idBaseSolar
       })
       TCB.BaseSolar[baseIndex].updateBase(formData)
-    }
-
-    //BaseSolar object has several methods that can update other properties maintained in state. All derived from possible inclinacion field
-    formData.potenciaMaxima = TCB.BaseSolar[baseIndex].potenciaMaxima
-    formData.areaReal = TCB.BaseSolar[baseIndex].areaReal
-    formData.panelesMaximo = TCB.BaseSolar[baseIndex].panelesMaximo
-
-    if (reason === 'save') {
-      // We are creating a new base
-      setBases((prevBases) => [...prevBases, formData])
-    } else {
       //We are updating existing base
       const updatedBases = bases.map((base) => {
         if (base.idBaseSolar === formData.idBaseSolar) {
-          return { ...formData } // Replace name of the item
+          return { ...formData } // Replace the item with same idBaseSolar
         }
         return base // Keep other items unchanged
       })
@@ -64,17 +82,20 @@ const BasesContextProvider = ({ children }) => {
     if (TCB.BaseSolar.length > 0) {
       //Carga rendimientos de cada base que lo requiera asincronicamente
       //La propiedad requierePVGIS es gestionada en GestionLocalizacion y se pone a true cuando cambia algun angulo
+
       try {
-        let oldBases = [...bases]
+        //let oldBases = [...bases]
         for (let i = 0; i < TCB.BaseSolar.length; i++) {
           if (TCB.BaseSolar[i].requierePVGIS) {
-            UTIL.debugLog('Base requiere PVGIS:', oldBases[i])
+            UTIL.debugLog('Base requiere PVGIS:', TCB.BaseSolar[i])
             TCB.BaseSolar[i].cargaRendimiento()
-            oldBases[i].requierePVGIS = false
+            // oldBases[i].requierePVGIS = false
+            //PENDIENTE: verificar condicion de error
+            TCB.BaseSolar[i].requierePVGIS = false
             TCB.requiereOptimizador = true
           }
         }
-        setBases(oldBases)
+        //setBases(oldBases)
         return { status: true }
       } catch (err) {
         return { status: false, error: err }
@@ -91,8 +112,7 @@ const BasesContextProvider = ({ children }) => {
     setBases,
     processFormData,
     validaBases,
-    refs,
-    setRefs,
+    addTCBBaseToState,
   }
   return <BasesContext.Provider value={contextValue}>{children}</BasesContext.Provider>
 }

@@ -8,6 +8,7 @@ APP_FRAME:
   GO_HOME: Ir a la pagina principal
   GO_SIMULATOR: Ir al simulador
   PAGE_NOT_FOUND: No se ha encontrado la pàgina
+  IMPORT_EXPORT: Importa / Exporta
 HOME:
   IS_IT_WORTH_TITLE1: Quiero ponerme placas solares
   IS_IT_WORTH_TITLE2: ¿cómo sé si me compensa?
@@ -451,7 +452,6 @@ ECONOMIC_BALANCE:
   DESCRIPTION_FEE_VIRTUAL_BATTERY: 'Cuota gestión hucha: es la cuota mensual sin IVA que carga la empresa comercializadora por la gestíon de la hucha.'
   LABEL_FEE_VIRTUAL_BATTERY: Cuota gestión hucha sin IVA
   TOOLTIP_FEE_VIRTUAL_BATTERY: Cuota fija mensual en Euros sin IVA que la empresa comercializadora cobra por la gestión de la hucha
-
   TITLE_YEAR_SAVINGS: Ahorro anual en la factura
   DESCRIPTION_YEAR_SAVINGS: |
     Con placas solares te ahorrarás el {{porcientoAhorro}} del importe de gastos de consumo anual.<br />
@@ -476,9 +476,10 @@ ECONOMIC_BALANCE:
   TOOLTIP_SUBVENCION: Subvención obtenida de la UE
   LABEL_PENDIENTE: Pendiente
   TOOLTIP_PENDIENTE: Pendiente de amortizar al final del periodo
-
   DESCRIPTION_DATA_AS_PANELS: 'En el siguiente gráfico puedes obeservar la relación existente entre las variables: Inversion necesaria, Ahorro obtenido, porcentajes de autoconsumo y autosuficiencia, asi como la tasa interna de retorno en función del número de paneles instalados.'
   TITLE_DATA_AS_PANELS: Gráfico alternativas según número de paneles
+  LABEL_FOOTER_VAN: 'Valor actual neto (VAN): {{VANProyecto}}'
+  LABEL_FOOTER_TIR: 'Valor actual neto (TIR): {{TIRProyecto}}'
 
 SUMMARY:
   TITLE: RESUMEN
@@ -502,6 +503,8 @@ SUMMARY:
 
   LABEL_disclaimer1: "<p>Todas las estimaciones dadas se han realizado con la mayor precisión posible con la mejor intención y sin ningún compromiso.</p><p class='text-danger fw-bold'>Especial mención debemos hacer en cuanto al precio estimado de la instalación. Existe una alta volatilidad en este factor y no podemos garantizar que refleje la realidad del mercado en cada momento y territorio por lo que hemos incluido un campo que te permite corregir ese precio según las recomendaciones de tu instalador.</p>"
   LABEL_disclaimer2: SOM Energia no tiene ningún interés económico ni directo ni indirecto en este estudio salvo contribuir a una transición energética justa con los usuarios eficiente descentralizada y limpia.
+  LABEL_PRINT: Imprime resumen
+  LABEL_PDF_REPORT: Genera PDF
 
 BASIC:
   LABEL_OK: Guardar
@@ -556,18 +559,24 @@ PARAMETROS:
 
 CONTACTO:
   DIALOG_TITLE: Formulario de contacto
-  LABEL_descripcion: Envianos tus comentarios. Intentaremos atenderte lo antes posible
-  LABEL_enviar: Enviar
-  LABEL_mensaje: Mensaje
-  LABEL_advertencia: Los datos que nos aportes en este formulario serán utilizados única y exclusivamente para contestar a tu solicitud y no serán almacenados en ningún fichero ni utlizados para ningún otro fin
-  LABEL_respuesta: Marca aquí si estás de acuerdo en recibir respuestas
-  LABEL_comentario: Haces un comentario
-  LABEL_mejora: Propones una mejora
-  LABEL_error: Reportas un error
-  LABEL_tipoPropuesta: ¿Qué nos dices?
-  LABEL_telefono: Teléfono
-  LABEL_email: email
-  LABEL_nombre: Nombre
+  DIALOG_DESCRIPTION: Envianos tus comentarios. Intentaremos atenderte lo antes posible
+  PROP:
+    nombre: Nombre
+    email: email
+    telefono: Teléfono
+    tipoPropuesta: ¿Qué nos dices?
+    comentario: Haces un comentario
+    mejora: Propones una mejora
+    error: Reportas un error
+    advertencia: Los datos que nos aportes en este formulario serán utilizados única y exclusivamente para contestar a tu solicitud y no serán almacenados en ningún fichero ni utlizados para ningún otro fin
+    respuesta: Marca aquí si estás de acuerdo en recibir respuestas
+    mensaje: Mensaje
+
+  TOOLTIP:
+    nombre: Tu nombre
+    telefono: Teléfono (opcional)
+    email: Indicanos un email para poder contestar a tu comentario
+    mensaje: Mensaje lo mas descriptivo posible de la incidencia
 
 BOTONES:
   botonExportar_TT: Salvar proyecto
@@ -576,12 +585,6 @@ BOTONES:
   botonParametros_TT: Parámetros
   botonInstrucciones_TT: Instrucciones
   botonAyuda_TT: Ayuda
-  botonExportar_LBL:
-  botonContacto_LBL:
-  botonInformePDF_LBL:
-  botonParametros_LBL:
-  botonInstrucciones_LBL:
-  botonAyuda_LBL:
 
 AYUDAS:
   ayuda_TIT_localizacion: En esta pestaña se identifican datos de localización geográfica
@@ -595,16 +598,29 @@ AYUDAS:
   ayuda_TIT_reporte: Resumen de datos
 
 Proyecto:
+  DIALOG_TITLE: Datos del proyecto
+  DIALOG_DESCRIPTION: a definir
   PROP:
-    nombreProyecto: 'Nombre del proyecto: {{nombre}}'
+    nombreProyecto: Nombre del proyecto
+    fechaCreacion: Fecha de creación
+    telefonoContacto: Teléfono de contacto
+    emailContacto: Dirección de correo
+    descripcion: Descripción
   TOOLTIP:
     nombreProyecto: Nombre que el usuario dé a esta simulación (p. ej. piso01 luzescalera01 garaje00…)
-
-  importarProyecto_LBL: Importar proyecto
-  importarProyecto_TT: Seleccione fichero .solimp previamente exportado por Solidar
-  importarProyecto_MSG_confirmaReemplazo: El proyecto existente será reemplazado por el importado
-  importarProyecto_MSG_importando: Importando
-  importarProyecto_MSG_success: Fichero importado satisfactoriamente
+    emailContacto: Dirección de correo
+    telefonoContacto: Teléfono de contacto
+    fechaCreacion: Fecha de creación
+    descripcion: Descripción
+    importarProyecto: Seleccione fichero .solimp previamente exportado por Solidar
+    exportarProyecto: Permite exportar los datos del proyecto activo para futuras importaciones
+  LABEL:
+    importarProyecto: Importar proyecto
+    exportarProyecto: Exportar proyecto
+  MSG_confirmaReemplazo: El proyecto existente será reemplazado por el importado
+  MSG_importando: Importando
+  MSG_success: Fichero importado satisfactoriamente
+  MSG_problemaVersion: Lamentablemente no se puede importar un fichero Solimp de versiones anteriores a 4',
 
 MAPA:
   botonPuntoConsumo_LBL: Punto Consumo
@@ -615,14 +631,6 @@ MAPA:
   botonDeshacer_TT: Permite anular el último vertice creado
   botonShadow_LBL: Google Shadow
   botonShadow_TT: Abre ventana de Google Shadow centrada en este mapa
-
-MSGMAPA:
-  mapa_MSG_Polygon: Defina el area en la que se instalarán los paneles. Solo son necesarios tres puntos. A continuación puede definir el acimut para cada una de ellas mediante el icono <i class='fa fa-compass'></i>
-  mapa_MSG_LineString: De un punto para indicar la orientación geográfica de los paneles
-  mapa_MSG_Point: Defina la ubicación del consumo
-  mapa_MSG_nada: Seleccione el objeto a dibujar
-  mapa_MSG_posicionConsumo: De un click para posicionar un nuevo consumo
-  mapa_MSG_insular: Cuidado esta usted en territorio no peninsular. Las tarifas 3.0TD no son las correctas.
 
 RESULTS:
   TOOLTIP_botonInfoBase: Información detallada de la base seleccionada
@@ -642,13 +650,11 @@ GRAFICOS:
   LABEL_panelesActuales: Paneles actuales {{paneles}}
   LABEL_limiteSubvencionEU: Limite subvención EU
   LABEL_numeroMaximoPaneles: Límite paneles por area disponible
-
   LABEL_graficasNoCompensado: No compensado
   LABEL_graficasGastoConPaneles: Gasto con paneles
   LABEL_graficasGastoSinPaneles: Gasto sin paneles
   LABEL_graficasReduccionCompensacion: Reducción por compensación
   LABEL_graficasReduccionAutoconsumo: Reducción por autoconsumo
-
   LABEL_graficasExcedente: Excedente
   LABEL_graficasDeficit: Déficit
   LABEL_graficasAutoconsumo: Autoconsumo
@@ -664,12 +670,10 @@ GRAFICOS:
 
   graficos_LBL_graficasInversion: Inversión
   graficos_LBL_graficasAhorro: Ahorro
-
   graficos_LBL_graficasAutosuficiencia: Autosuficiencia
   graficos_LBL_graficasprodvscons: Prod. vs Cons.
   graficos_LBL_cambiaPaneles: Click cambia a {{paneles}} paneles
   graficos_LBL_paneles: Paneles
-
   graficos_LBL_segunFuente: Distribución de energia segun fuente
   graficos_LBL_deRed: Red electrica
   graficos_LBL_dePaneles: '{{paneles}} Paneles'
@@ -694,9 +698,7 @@ REPORT:
   numeroRegistros: Registros
   desde: Desde
   hasta: Hasta
-
   disclaimer1pdf: 'Todas las estimaciones dadas se han realizado con la mayor precisión posible con la mejor intención y sin ningún compromiso. Especial mención debemos hacer en cuanto al precio estimado de la instalación. Existe una alta volatilidad en este factor y no podemos garantizar que refleje la realidad del mercado en cada momento y territorio por lo que hemos incluido un campo que te permite corregir ese precio según las recomendaciones de tu instalador.Som Energia no tiene ningún interés económico ni directo ni indirecto en este estudio salvo contribuir a una transición energética justa con los usuarios eficiente descentralizada y limpia.'
-
   formatoPDF: Genera en formato PDF
   balanceEnergia: Balance energía
   localizacion: Localización

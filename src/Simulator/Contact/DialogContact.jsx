@@ -74,10 +74,10 @@ export default function DialogContact({ initialData, recoverFormData, onClose })
             }}
           >
             <Typography variant="body" align="center">
-              {t('CONTACTO.LABEL_descripcion')}
+              {t('CONTACTO.DIALOG_DESCRIPTION')}
             </Typography>
 
-            <InputLabel htmlFor="nombre">{t('CONTACTO.LABEL_nombre')}</InputLabel>
+            <InputLabel htmlFor="nombre">{t('CONTACTO.PROP.nombre')}</InputLabel>
             <SLDRInputField
               id="nombre"
               name="nombre"
@@ -85,14 +85,14 @@ export default function DialogContact({ initialData, recoverFormData, onClose })
               sx={{ textAlign: 'left', width: '100%' }}
             ></SLDRInputField>
 
-            <InputLabel htmlFor="email">{t('CONTACTO.LABEL_email')}</InputLabel>
+            <InputLabel htmlFor="email">{t('CONTACTO.PROP.email')}</InputLabel>
             <SLDRInputField
               name="email"
               object="CONTACTO"
               sx={{ textAlign: 'left', width: '100%' }}
             ></SLDRInputField>
 
-            <InputLabel htmlFor="telefono">{t('CONTACTO.LABEL_telefono')}</InputLabel>
+            <InputLabel htmlFor="telefono">{t('CONTACTO.PROP.telefono')}</InputLabel>
             <SLDRInputField
               name="telefono"
               object="CONTACTO"
@@ -100,7 +100,7 @@ export default function DialogContact({ initialData, recoverFormData, onClose })
             ></SLDRInputField>
 
             <FormLabel id="demo-radio-buttons-group-label">
-              {t('CONTACTO.LABEL_tipoPropuesta')}
+              {t('CONTACTO.PROP.tipoPropuesta')}
             </FormLabel>
             <Field name="gridRadios" object="CONTACTO">
               {({ field }) => (
@@ -115,19 +115,19 @@ export default function DialogContact({ initialData, recoverFormData, onClose })
                     sx={{ ml: '3rem' }}
                     control={<Radio />}
                     value="error"
-                    label={t('CONTACTO.LABEL_error')}
+                    label={t('CONTACTO.PROP.error')}
                   />
                   <FormControlLabel
                     sx={{ ml: '3rem', mt: '-0.5rem' }}
                     control={<Radio />}
                     value="mejora"
-                    label={t('CONTACTO.LABEL_mejora')}
+                    label={t('CONTACTO.PROP.mejora')}
                   />
                   <FormControlLabel
                     sx={{ ml: '3rem', mt: '-0.5rem' }}
                     control={<Radio />}
                     value="comentario"
-                    label={t('CONTACTO.LABEL_comentario')}
+                    label={t('CONTACTO.PROP.comentario')}
                   />
                 </RadioGroup>
               )}
@@ -137,7 +137,7 @@ export default function DialogContact({ initialData, recoverFormData, onClose })
               variant="body"
               align="left"
               dangerouslySetInnerHTML={{
-                __html: t('CONTACTO.LABEL_advertencia'),
+                __html: t('CONTACTO.PROP.advertencia'),
               }}
             />
             <FormLabel>
@@ -146,7 +146,7 @@ export default function DialogContact({ initialData, recoverFormData, onClose })
                 name="mantenerContacto"
                 object="CONTACTO"
               />
-              {t('CONTACTO.LABEL_respuesta')}
+              {t('CONTACTO.PROP.respuesta')}
             </FormLabel>
 
             <SLDRInputField
@@ -159,7 +159,7 @@ export default function DialogContact({ initialData, recoverFormData, onClose })
               }}
               MUIType="TextareaAutosize"
               aria-label="mensaje"
-              placeholder={t('CONTACTO.LABEL_mensaje')}
+              placeholder={t('CONTACTO.PROP.mensaje')}
               minRows={3}
               object="CONTACTO"
             ></SLDRInputField>

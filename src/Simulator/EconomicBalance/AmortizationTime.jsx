@@ -8,7 +8,7 @@ import Container from '@mui/material/Container'
 import FormControl from '@mui/material/FormControl'
 
 // REACT Solidar Components
-import EconomicContext from './EconomicContext'
+import { EconomicContext } from '../EconomicContext'
 
 export default function AmortizationTime() {
   const { t } = useTranslation()

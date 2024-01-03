@@ -8,7 +8,7 @@ import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 
 // REACT Solidar Components
-import EconomicContext from '../EconomicBalance/EconomicContext'
+import { EconomicContext } from '../EconomicContext'
 import GraphBoxSavings from '../EconomicBalance/GraphBoxSavings'
 
 // Solidar objects

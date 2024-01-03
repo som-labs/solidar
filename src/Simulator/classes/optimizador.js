@@ -61,9 +61,9 @@ function nuevoTotalPaneles(panelesNuevo) {
   // Sort bases from higher to lower solar preformance.
   // Assign the most production to the better performance up to the limit based on available area
   if (TCB.BaseSolar.length > 1)
-    TCB.BaseSolar.sort(
-      (a, b) => b.rendimiento.unitarioTotal - a.rendimiento.unitarioTotal,
-    )
+    TCB.BaseSolar.sort((a, b) => {
+      return b.rendimiento.unitarioTotal - a.rendimiento.unitarioTotal
+    })
 
   for (let i = 0; i < TCB.BaseSolar.length; i++) {
     maxPanelesBase = Math.trunc(
