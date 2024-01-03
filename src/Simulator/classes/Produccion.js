@@ -38,7 +38,6 @@ class Produccion extends DiaHora {
 
     // Generamos la produccion de esa base multiplicando la matriz de rendimiento unitario por la potencia instalada
     if (base !== undefined) {
-      UTIL.debugLog('Creando producción para base:' + base.nombreBaseSolar)
       this.escala(base.rendimiento, base.instalacion.potenciaTotal / 1000)
       //this.potenciaTotal = base.instalacion.potenciaTotal
       base.produccionCreada = true
@@ -49,11 +48,11 @@ class Produccion extends DiaHora {
         TCB.conversionCO2[TCB.territorio].norenovable * this.totalAnual
     } else {
       // Es la construccion de la produccion que sintetiza la produccion de todas las bases
-      UTIL.debugLog('Creando producción global para ' + TCB.BaseSolar.length + ' bases')
       this.potenciaTotal = 0
       this.precioInstalacion = 0
       this.CO2AnualRenovable = 0
       this.CO2AnualNoRenovable = 0
+
       for (let _base of TCB.BaseSolar) {
         this.suma(_base.produccion)
         this.CO2AnualRenovable += _base.produccion.CO2AnualRenovable

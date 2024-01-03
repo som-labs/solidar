@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 
 // REACT Solidar Components
-import EconomicContext from '../EconomicBalance/EconomicContext'
+import { EconomicContext } from '../EconomicContext'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'

@@ -28,26 +28,25 @@ export default function ContactMenu() {
 
   async function sendEmail(message) {
     // Convert the object to a query string
-    // const queryString = Object.keys(message)
-    //   .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(message[key])}`)
-    //   .join('&')
+    const queryString = Object.keys(message)
+      .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(message[key])}`)
+      .join('&')
 
     if (TCB.modoActivo === 'DESARROLLO')
       TCB.basePath = 'http://localhost/SOM/REACT/solidar/src/Simulator/'
 
-    // URL of the PHP file including the query string
-    // const phpFileURL = TCB.basePath + `contacto.php?${queryString}`
-    // console.log(phpFileURL)
-    // Fetch request to the PHP file
-    //fetch(phpFileURL)
-
-    await fetch(TCB.basePath + 'contacto.php?', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json', // Set the content type to JSON
-      },
-      body: JSON.stringify(message),
-    })
+    //URL of the PHP file including the query string
+    const phpFileURL = TCB.basePath + `contacto.php?${queryString}`
+    console.log(phpFileURL)
+    //Fetch request to the PHP file
+    fetch(phpFileURL)
+      // await fetch(TCB.basePath + 'contacto.php?', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json', // Set the content type to JSON
+      //   },
+      //   body: JSON.stringify(message),
+      // })
       .then((response) => {
         if (!response.ok) {
           console.log(response)

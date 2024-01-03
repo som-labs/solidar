@@ -100,7 +100,7 @@ function SLDRInputField({ unit, object, MUIType, ...props }) {
     <>
       {MUIType === undefined && (
         <SLDRTooltip
-          title={<Typography>{t(object + '.TOOLTIP.' + props.name)}</Typography>}
+          title={<Typography>{t(`${object}.TOOLTIP.${props.name}`)}</Typography>}
           placement="top"
         >
           <TextField {...field} {...sxFull} />
@@ -108,7 +108,7 @@ function SLDRInputField({ unit, object, MUIType, ...props }) {
       )}
       {MUIType === 'TextareaAutosize' && (
         <SLDRTooltip
-          title={<Typography>{t(object + '.TOOLTIP_' + props.name)}</Typography>}
+          title={<Typography>{t(`${object}.TOOLTIP.${props.name}`)}</Typography>}
           placement="top"
         >
           <TextareaAutosize {...field} {...sxFull} />
@@ -117,7 +117,7 @@ function SLDRInputField({ unit, object, MUIType, ...props }) {
 
       {MUIType === 'Checkbox' && (
         <SLDRTooltip
-          title={<Typography>{t(object + '.TOOLTIP_' + props.name)}</Typography>}
+          title={<Typography>{t(`${object}.TOOLTIP.${props.name}`)}</Typography>}
           placement="top"
         >
           <Checkbox {...field} {...sxFull} />

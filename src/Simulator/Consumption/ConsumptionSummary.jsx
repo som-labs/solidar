@@ -32,6 +32,10 @@ export default function ConsumptionSummary() {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
 
+  const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
+  const { tipoConsumo, setTipoConsumo, preciosValidos, addTCBTipoToState } =
+    useContext(ConsumptionContext)
+
   const columns = [
     {
       field: 'nombreTipoConsumo',
@@ -93,9 +97,6 @@ export default function ConsumptionSummary() {
       ],
     },
   ]
-
-  const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
-  const { tipoConsumo, setTipoConsumo, preciosValidos } = useContext(ConsumptionContext)
 
   function getRowId(row) {
     return row.idTipoConsumo
@@ -171,7 +172,6 @@ export default function ConsumptionSummary() {
         idTipoConsumo: TCB.featIdUnico,
         nombreTipoConsumo: formData.nombreTipoConsumo,
         fuente: formData.fuente,
-        //nombreTarifa: TCB.nombreTarifaActiva,
       }
 
       if (nuevoTipoConsumo.fuente === 'REE') {
@@ -183,7 +183,7 @@ export default function ConsumptionSummary() {
         nuevoTipoConsumo.ficheroCSV = formData.ficheroCSV
         nuevoTipoConsumo.nombreFicheroCSV = formData.ficheroCSV.name
       }
-      let idxTC = TCB.TipoConsumo.push(new TipoConsumo(nuevoTipoConsumo))
+      let idxTC = TCB.TipoConsumo.push(new TipoConsumo(nuevoTipoConsumo)) - 1
       let cursorOriginal = document.body.style.cursor
 
       //Si se ha pasado un inputFile como argumento se carga
@@ -192,27 +192,28 @@ export default function ConsumptionSummary() {
           let cargaResPromise = new Promise((resolve) => {
             document.body.style.cursor = 'progress'
             let res = cargaCSV(
-              TCB.TipoConsumo[idxTC - 1],
-              TCB.TipoConsumo[idxTC - 1].ficheroCSV,
-              TCB.TipoConsumo[idxTC - 1].fuente,
+              TCB.TipoConsumo[idxTC],
+              TCB.TipoConsumo[idxTC].ficheroCSV,
+              TCB.TipoConsumo[idxTC].fuente,
             )
             resolve(res)
           })
           cargaResPromise
             .then((respuesta) => {
               if (respuesta) {
-                nuevoTipoConsumo.cTotalAnual = TCB.TipoConsumo[idxTC - 1].cTotalAnual
-                setTipoConsumo((prevTipos) => [...prevTipos, nuevoTipoConsumo])
+                // nuevoTipoConsumo.cTotalAnual = TCB.TipoConsumo[idxTC].cTotalAnual
+                addTCBTipoToState(TCB.TipoConsumo[idxTC])
+                // setTipoConsumo((prevTipos) => [...prevTipos, nuevoTipoConsumo])
                 showGraphsTC(nuevoTipoConsumo)
               } else {
                 console.log('cargaCSV devolvio error ', respuesta)
-                TCB.TipoConsumo.splice(idxTC - 1, 1)
+                TCB.TipoConsumo.splice(idxTC, 1)
               }
               document.body.style.cursor = cursorOriginal
             })
             .catch((error) => {
               console.log('cargaCSV catch ', error)
-              TCB.TipoConsumo.splice(idxTC - 1, 1)
+              TCB.TipoConsumo.splice(idxTC, 1)
               document.body.style.cursor = cursorOriginal
             })
         } catch (error) {

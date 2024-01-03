@@ -365,18 +365,18 @@ PARAMETROS:
 
 CONTACTO:
   DIALOG_TITLE: Contacte
-  LABEL_descripcion: Envia'ns els teus comentaris. Intentarem atendre't el més aviat possible
-  LABEL_enviar: Enviar
-  LABEL_mensaje: Missatge
-  LABEL_advertencia: Les dades que ens aportis en aquest formulari seran utilitzades únicament i exclusivament per contestar la teva sol·licitud i no seran emmagatzemades en cap fitxer ni utilitzades per a cap altre fi
-  LABEL_respuesta: Marca aquí si estàs d'acord en rebre respostes
-  LABEL_comentario: Fes un comentari
-  LABEL_mejora: Proposa una millora
-  LABEL_error: Informa d’un error
-  LABEL_tipoPropuesta: Què ens dius?
-  LABEL_telefono: Telèfon
-  LABEL_email: correu electrònic
-  LABEL_nombre: Nom
+  DIALOG_DESCRIPTION: Envia'ns els teus comentaris. Intentarem atendre't el més aviat possible
+  PROP:
+    nombre: Nom
+    email: correu electrònic
+    telefono: Telèfon
+    tipoPropuesta: Què ens dius?
+    comentario: Fes un comentari
+    mejora: Proposa una millora
+    error: Informa d’un error
+    advertencia: Les dades que ens aportis en aquest formulari seran utilitzades únicament i exclusivament per contestar la teva sol·licitud i no seran emmagatzemades en cap fitxer ni utilitzades per a cap altre fi
+    respuesta: Marca aquí si estàs d'acord en rebre respostes
+    mensaje: Missatge
 
 BOTONES:
   botonExportar_TT: Guardar el projecte
@@ -421,24 +421,6 @@ MAPA:
 
   botonShadow_LBL: Google Shadow
   botonShadow_TT: Abre ventana de Google Shadow centrada en este mapa
-
-  mensajes mapa: Mensajes del mapa
-
-  mapa_MSG_Polygon: Defineix l’àrea on s’instal·laran els panells. Només són necessaris tres punts. A continuació podeu definir l'acimut per a cadascuna mitjançant la icona <i class='fa fa-compass'></i>
-  mapa_MSG_LineString: D’un punt per indicar l’orientació geogràfica dels panells
-  mapa_MSG_Point: Defineix la ubicació del consum
-  mapa_MSG_nada: Selecciona l'objecte a dibuixar
-  mapa_MSG_posicionConsumo: D'un clic per posicionar un nou consum
-
-  tabla PuntoConsumo_LBL: tabla PuntoConsumo
-  nombrePuntoConsumo_LBL: Nom
-  nombrePuntoConsumo_TT: Identifiqueu el nom d'aquest punt de consum per a referències futures
-  lonlatPuntoConsumo_LBL: Long-Lat
-  lonlatPuntoConsumo_TT: Coordenades geogràfiques de la base
-  refcat_LBL: Referencia catastral
-  refcat_TT: Identificació única de DGC
-  direccion_LBL: Dirección
-  direccion_TT: Adreça postal oficial de DGC
 
 RESULTS:
   TOOLTIP_botonInfoBase: Informació detallada de la base seleccionada

@@ -8,7 +8,7 @@ import Container from '@mui/material/Container'
 import GraphBoxSavings from './GraphBoxSavings'
 
 // REACT Solidar Components
-import EconomicContext from './EconomicContext'
+import { EconomicContext } from '../EconomicContext'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'

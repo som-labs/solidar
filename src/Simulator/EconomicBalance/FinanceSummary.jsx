@@ -9,7 +9,7 @@ import Container from '@mui/material/Container'
 import clsx from 'clsx'
 
 // REACT Solidar Components
-import EconomicContext from './EconomicContext'
+import { EconomicContext } from '../EconomicContext'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
@@ -29,13 +29,13 @@ export default function FinanceSummary() {
     return (
       <SLDRFooterBox>
         <Typography variant="h5">
-          {t('Economico.PROP.VANProyecto', {
-            VAN: UTIL.formatoValor('dinero', ecoData.VANProyecto),
+          {t('ECONOMIC_BALANCE.LABEL_FOOTER_VAN', {
+            VANProyecto: UTIL.formatoValor('dinero', ecoData.VANProyecto),
           })}
         </Typography>
         <Typography variant="h5">
-          {t('Economico.PROP.TIRProyecto', {
-            TIR: UTIL.formatoValor('porciento', ecoData.TIRProyecto),
+          {t('ECONOMIC_BALANCE.LABEL_FOOTER_TIR', {
+            TIRProyecto: UTIL.formatoValor('porciento', ecoData.TIRProyecto),
           })}
         </Typography>
       </SLDRFooterBox>
