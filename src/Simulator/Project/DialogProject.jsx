@@ -19,7 +19,7 @@ export default function DialogProject({ recoverFormData, onClose }) {
     nombreProyecto: undefined,
     emailContacto: undefined,
     telefonoContacto: undefined,
-    fechaCreacion: new Date(),
+    fechaCreacion: TCB.fechaCreacion,
     descripcion: undefined,
   }
   let initialData = {}
@@ -60,21 +60,22 @@ export default function DialogProject({ recoverFormData, onClose }) {
 
     if (values.email) {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      console.log(emailPattern.test(values.email))
       if (!emailPattern.test(values.email)) {
-        errors.email = 'Formato de email incorrecto'
+        errors.emailContacto = 'Formato de email incorrecto'
         return errors
       }
     }
 
     //Pattern for Spanish phone numbers (landline or mobile)
-    if (values.telefono) {
+    if (values.telefonoContacto) {
       const patternSpain = /^(?:(?:\+|00)34)?[6-9]\d{8}$/
       if (!patternSpain.test(values.telefono)) {
-        errors.telefono = 'No es un número de teléfono correcto, verificalo por favor'
+        errors.telefonoContacto =
+          'No es un número de teléfono correcto, verificalo por favor'
         return errors
       }
     }
-
     return errors
   }
 
@@ -83,6 +84,7 @@ export default function DialogProject({ recoverFormData, onClose }) {
       initialValues={initialData}
       validate={validate}
       onSubmit={(values) => {
+        console.log('SUBMIT')
         saveProject(values)
       }}
     >
@@ -102,6 +104,7 @@ export default function DialogProject({ recoverFormData, onClose }) {
               <Typography variant="body" align="center">
                 {t('Proyecto.DIALOG_DESCRIPTION')}
               </Typography>
+
               <InputLabel htmlFor="nombreProyecto">
                 {t('Proyecto.PROP.nombreProyecto')}
               </InputLabel>
@@ -112,6 +115,7 @@ export default function DialogProject({ recoverFormData, onClose }) {
                 unit=""
                 sx={{ textAlign: 'left', width: '100%' }}
               />
+
               <InputLabel htmlFor="emailContacto">
                 {t('Proyecto.PROP.emailContacto')}
               </InputLabel>
@@ -120,6 +124,7 @@ export default function DialogProject({ recoverFormData, onClose }) {
                 object="Proyecto"
                 sx={{ textAlign: 'left', width: '100%' }}
               ></SLDRInputField>
+
               <InputLabel htmlFor="telefonoContacto">
                 {t('Proyecto.PROP.telefonoContacto')}
               </InputLabel>
@@ -128,10 +133,12 @@ export default function DialogProject({ recoverFormData, onClose }) {
                 object="Proyecto"
                 sx={{ textAlign: 'left' }}
               ></SLDRInputField>
+
               <InputLabel htmlFor="fechaCreacion">
                 {t('Proyecto.PROP.fechaCreacion')}
               </InputLabel>
               <SLDRInputField
+                disabled
                 name="fechaCreacion"
                 object="Proyecto"
                 sx={{ textAlign: 'left', mb: '1rem' }}

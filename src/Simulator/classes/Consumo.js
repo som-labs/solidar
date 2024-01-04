@@ -31,9 +31,9 @@ class Consumo extends DiaHora {
     super()
 
     if (consumo === undefined) {
-      TCB.TipoConsumo.forEach((_tc) => {
+      for (let _tc of TCB.TipoConsumo) {
         this.suma(_tc)
-      })
+      }
     } else {
       //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto
       for (const objProp in consumo) {

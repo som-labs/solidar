@@ -75,15 +75,15 @@ export default function GestionProyecto() {
         // State cleaning done here becasue importProject is not React
         setBases([])
         //Add imported bases to bases context
-        TCB.BaseSolar.forEach((base) => {
+        for (let base of TCB.BaseSolar) {
           addTCBBaseToState(base)
-        })
+        }
         // State cleaning done here becasue importProject is not React
         setTipoConsumo([])
         //Add imported tipoconsumo to consumption context
-        TCB.TipoConsumo.forEach((tipo) => {
+        for (let tipo of TCB.TipoConsumo) {
           addTCBTipoToState(tipo)
-        })
+        }
 
         //Compute economico if there are bases and consumos
         if (TCB.BaseSolar.length > 0 && TCB.TipoConsumo.length > 0) {

@@ -22,12 +22,12 @@ function optimizador(bases, consumo, potenciaPanelInicio) {
   if (bases.length > 1)
     bases.sort((a, b) => b.rendimiento.unitarioTotal - a.rendimiento.unitarioTotal)
 
-  for (let i = 0; i < bases.length; i++) {
-    energiaAsignada = bases[i].rendimiento.unitarioTotal * bases[i].potenciaMaxima
+  for (let base of bases) {
+    energiaAsignada = base.rendimiento.unitarioTotal * base.potenciaMaxima
     energiaAsignada =
       energiaAsignada > energiaPendiente ? energiaPendiente : energiaAsignada
     tmpPaneles = Math.round(
-      energiaAsignada / bases[i].rendimiento.unitarioTotal / potenciaPanelInicio,
+      energiaAsignada / base.rendimiento.unitarioTotal / potenciaPanelInicio,
     )
     UTIL.debugLog(
       '_initInstalacion con' +
@@ -35,10 +35,10 @@ function optimizador(bases, consumo, potenciaPanelInicio) {
         ' paneles de ' +
         potenciaPanelInicio +
         'kWp en la base ',
-      bases[i].id,
+      base.id,
     )
     //Create a new instalation on this base of tmpPaneles
-    bases[i].instalacion = new Instalacion({
+    base.instalacion = new Instalacion({
       paneles: tmpPaneles,
       potenciaUnitaria: potenciaPanelInicio,
     })
@@ -65,13 +65,11 @@ function nuevoTotalPaneles(panelesNuevo) {
       return b.rendimiento.unitarioTotal - a.rendimiento.unitarioTotal
     })
 
-  for (let i = 0; i < TCB.BaseSolar.length; i++) {
-    maxPanelesBase = Math.trunc(
-      TCB.BaseSolar[i].potenciaMaxima / TCB.BaseSolar[i].instalacion.potenciaUnitaria,
-    )
+  for (let base of TCB.BaseSolar) {
+    maxPanelesBase = Math.trunc(base.potenciaMaxima / base.instalacion.potenciaUnitaria)
     tmpPaneles = maxPanelesBase > panelesPendientes ? panelesPendientes : maxPanelesBase
-    UTIL.debugLog('asignados ' + tmpPaneles + ' a base ' + TCB.BaseSolar[i].idBaseSolar)
-    TCB.BaseSolar[i].instalacion.paneles = tmpPaneles
+    UTIL.debugLog('asignados ' + tmpPaneles + ' a base ' + base.idBaseSolar)
+    base.instalacion.paneles = tmpPaneles
     panelesPendientes -= tmpPaneles
   }
 

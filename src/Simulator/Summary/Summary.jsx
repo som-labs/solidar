@@ -1,9 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
-import Box from '@mui/material/Box'
+import { Typography, Container, Box, Paper } from '@mui/material'
 
 import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
 import SummaryAutoproduccion from './SummaryAutoproduccion'
@@ -17,53 +15,55 @@ const SummaryStep = () => {
 
   return (
     <>
-      <Container>
-        <Typography variant="h3">{t('SUMMARY.TITLE')}</Typography>
-        <Typography variant="body">{t('SUMMARY.DESCRIPTION')}</Typography>
-      </Container>
+      <Paper elevation={10} style={{ padding: 16 }}>
+        <Container>
+          <Typography variant="h3">{t('SUMMARY.TITLE')}</Typography>
+          <Typography variant="body">{t('SUMMARY.DESCRIPTION')}</Typography>
+        </Container>
 
-      <Box
-        sx={{
-          display: 'flex',
-        }}
-      >
-        <SLDRInfoBox
+        <Box
           sx={{
-            mr: '0.3rem',
-            mb: '0.3rem',
+            display: 'flex',
           }}
         >
-          <SummaryAutoproduccion></SummaryAutoproduccion>
-        </SLDRInfoBox>
-        <SLDRInfoBox sx={{ mb: '0.3rem' }}>
-          <SummaryConsumption></SummaryConsumption>
-        </SLDRInfoBox>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          width: '100%',
-        }}
-      >
-        <SLDRInfoBox
+          <SLDRInfoBox
+            sx={{
+              mr: '0.3rem',
+              mb: '0.3rem',
+            }}
+          >
+            <SummaryAutoproduccion></SummaryAutoproduccion>
+          </SLDRInfoBox>
+          <SLDRInfoBox sx={{ mb: '0.3rem' }}>
+            <SummaryConsumption></SummaryConsumption>
+          </SLDRInfoBox>
+        </Box>
+        <Box
           sx={{
-            mr: '0.3rem',
-            mb: '0.3rem',
+            display: 'flex',
+            flexWrap: 'wrap',
+            width: '100%',
           }}
         >
-          <SummaryEconomicBalance></SummaryEconomicBalance>
-        </SLDRInfoBox>
-        <SLDRInfoBox
-          sx={{
-            mb: '0.3rem',
-          }}
-        >
-          <SummaryEnergyBalance></SummaryEnergyBalance>
-        </SLDRInfoBox>
-      </Box>
+          <SLDRInfoBox
+            sx={{
+              mr: '0.3rem',
+              mb: '0.3rem',
+            }}
+          >
+            <SummaryEconomicBalance></SummaryEconomicBalance>
+          </SLDRInfoBox>
+          <SLDRInfoBox
+            sx={{
+              mb: '0.3rem',
+            }}
+          >
+            <SummaryEnergyBalance></SummaryEnergyBalance>
+          </SLDRInfoBox>
+        </Box>
 
-      <FinalNote></FinalNote>
+        <FinalNote></FinalNote>
+      </Paper>
     </>
   )
 }
