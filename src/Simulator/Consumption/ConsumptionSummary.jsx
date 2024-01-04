@@ -2,15 +2,11 @@ import { useState, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import Button from '@mui/material/Button'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
+import { Button, IconButton, Typography, Tooltip, Grid } from '@mui/material'
+
 import AddIcon from '@mui/icons-material/Add'
-import Tooltip from '@mui/material/Tooltip'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
-import Box from '@mui/material/Box'
-
 import { DataGrid, GridToolbarContainer, GridActionsCellItem } from '@mui/x-data-grid'
 
 // REACT Solidar Components
@@ -296,7 +292,32 @@ export default function ConsumptionSummary() {
   function footerSummary() {
     return (
       <SLDRFooterBox>
-        <Typography
+        <Grid container alignItems="center" justifyContent="center" spacing={1}>
+          <Grid item>
+            <Typography
+              variant="h6"
+              sx={{
+                textAlign: 'center',
+              }}
+              textAlign={'center'}
+              dangerouslySetInnerHTML={{
+                __html: t('CONSUMPTION.TOTAL_DEMMAND', {
+                  consumoTotal: formatoValor(
+                    'energia',
+                    Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
+                  ),
+                }),
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <IconButton onClick={showGraphTotales}>
+              <AnalyticsIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
+
+        {/* <Typography
           variant="h6"
           sx={{
             textAlign: 'center',
@@ -311,14 +332,16 @@ export default function ConsumptionSummary() {
             }),
           }}
         />
-        <Tooltip
-          title={t('CONSUMPTION.TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO')}
-          placement="top"
-        >
-          <IconButton variant="contained" size="small" onClick={showGraphTotales}>
+        <Tooltip title={t('CONSUMPTION.TOOLTIP_BUTTON_TOTAL_DEMMAND')} placement="top">
+          <IconButton
+            variant="contained"
+            size="small"
+            onClick={showGraphTotales}
+            sx={{ display: 'inline' }}
+          >
             <AnalyticsIcon />
           </IconButton>
-        </Tooltip>
+        </Tooltip> */}
       </SLDRFooterBox>
     )
   }
@@ -326,9 +349,9 @@ export default function ConsumptionSummary() {
   function showGraphTotales() {
     if (tipoConsumo.length > 0) {
       const dummyType = new TipoConsumo({ nombreTipoConsumo: 'Totales' })
-      TCB.TipoConsumo.forEach((tc) => {
+      for (let tc of TCB.TipoConsumo) {
         dummyType.suma(tc)
-      })
+      }
       dummyType.fechaInicio = new Date(2023, 1, 1)
       setActivo(dummyType)
     }

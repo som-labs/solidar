@@ -95,9 +95,7 @@ export default function MonthThreeParts(props) {
         }}
       />
       <Typography variant="h5" textAlign={'center'} sx={{ mt: '1rem' }}>
-        {t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_ENERGY_BALANCE', {
-          potencia: UTIL.formatoValor('potencia', TCB.produccion.potenciaTotalInstalada),
-        })}
+        {t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_THREE_PARTS')}
       </Typography>
       <Plot data={[trace_deficit, trace_autoconsumo, trace_excedente]} layout={layout} />
     </Container>
