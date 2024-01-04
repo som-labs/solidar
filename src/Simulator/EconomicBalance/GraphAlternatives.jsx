@@ -50,7 +50,7 @@ export default function GraphAlternatives() {
   intentos.sort((a, b) => a - b)
 
   // Bucle del calculo de resultados para cada alternativa propuesta
-  intentos.forEach((intento) => {
+  for (let intento of intentos) {
     if (intento >= 1) {
       // Establecemos la configuracion de bases para este numero de paneles
       nuevoTotalPaneles(intento)
@@ -67,7 +67,7 @@ export default function GraphAlternatives() {
       precioInstalacion.push(TCB.economico.precioInstalacionCorregido)
       ahorroAnual.push(TCB.economico.ahorroAnual)
     }
-  })
+  }
 
   //Dejamos las cosas como estaban al principio antes del loop
   for (let i = 0; i < configuracionOriginal.length; i++) {

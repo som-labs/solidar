@@ -23,6 +23,7 @@ import calculaResultados from '../classes/calculaResultados'
 import ConsumoGeneracion3D from './ConsumoGeneracion3D'
 import EnergyFlow from './EnergyFlow'
 import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
+import { AlertContext } from '../components/Alert'
 import MonthThreeParts from './MonthThreeParts'
 import MonthEnergyBalance from './MonthEnergyBalance'
 import EnvironmentalImpact from './EnvironmentalImpact'
@@ -32,6 +33,7 @@ import { Tooltip } from '@mui/material'
 
 export default function EnergyBalanceStep() {
   const { t } = useTranslation()
+  const { SLDRAlert } = useContext(AlertContext)
 
   const [monthlyData, setMonthlyData] = useState({})
   const [yearlyData, setYearlyData] = useState({})
@@ -174,7 +176,7 @@ export default function EnergyBalanceStep() {
   // Si se usaron angulos optimos tambien ha cambiado el acimut.
   useEffect(() => {
     let oldBases = [...bases]
-    TCB.BaseSolar.forEach((base) => {
+    for (let base of TCB.BaseSolar) {
       const nIndex = oldBases.findIndex((t) => {
         return t.idBaseSolar === base.idBaseSolar
       })
@@ -186,7 +188,7 @@ export default function EnergyBalanceStep() {
       oldBases[nIndex].inclinacion = base.inclinacion
       oldBases[nIndex].inAcimut = base.inAcimut
       oldBases[nIndex].panelesMaximo = base.panelesMaximo
-    })
+    }
     setBases(oldBases)
     setMonthlyData({
       deficit: TCB.balance.resumenMensual('deficit'),
@@ -243,10 +245,12 @@ export default function EnergyBalanceStep() {
     if (params.field === 'paneles') {
       tmpPaneles = parseInt(event.target.value)
       if (tmpPaneles > params.row.panelesMaximo) {
-        alert(
+        SLDRAlert(
+          'VALIDACION',
           'Esta asignando mas paneles que los ' +
             params.row.panelesMaximo +
             ' que estimamos se pueden instalar en el area definida',
+          'error',
         )
       }
     }
