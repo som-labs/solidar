@@ -9,8 +9,8 @@ import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 export default function GraphBoxAutoconsumo() {
-  const { t, i18n } = useTranslation()
-
+  const { t } = useTranslation()
+  //PENDIENTE: analizar mover a Summary ya que no se utiliza en energybalance
   let gapConsumo
   let gapProduccion
   let heightGap

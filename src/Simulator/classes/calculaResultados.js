@@ -14,13 +14,13 @@ async function calculaResultados() {
   // Se genera un objeto produccion para cada una de las bases
   // PENDIENTE: cuando importamos la base ya trae la produccion calculada. Ver como evitar
 
-  TCB.BaseSolar.forEach((base) => {
+  for (let base of TCB.BaseSolar) {
     base.produccion = new Produccion(base)
     UTIL.debugLog(
       'calculaResultados - produccion de base ' + base.nombreBaseSolar,
       base.produccion,
     )
-  })
+  }
 
   // Se genera un unico objeto produccion que totaliza la produccion de todas las bases
   TCB.produccion = new Produccion()

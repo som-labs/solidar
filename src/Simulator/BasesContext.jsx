@@ -84,14 +84,11 @@ const BasesContextProvider = ({ children }) => {
       //La propiedad requierePVGIS es gestionada en GestionLocalizacion y se pone a true cuando cambia algun angulo
 
       try {
-        //let oldBases = [...bases]
-        for (let i = 0; i < TCB.BaseSolar.length; i++) {
-          if (TCB.BaseSolar[i].requierePVGIS) {
-            UTIL.debugLog('Base requiere PVGIS:', TCB.BaseSolar[i])
-            TCB.BaseSolar[i].cargaRendimiento()
-            // oldBases[i].requierePVGIS = false
-            //PENDIENTE: verificar condicion de error
-            TCB.BaseSolar[i].requierePVGIS = false
+        for (let base of TCB.BaseSolar) {
+          if (base.requierePVGIS) {
+            UTIL.debugLog('Base requiere PVGIS:', base)
+            base.cargaRendimiento()
+            base.requierePVGIS = false
             TCB.requiereOptimizador = true
           }
         }

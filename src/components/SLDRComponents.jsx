@@ -123,6 +123,7 @@ function SLDRInputField({ unit, object, MUIType, ...props }) {
           <Checkbox {...field} {...sxFull} />
         </SLDRTooltip>
       )}
+
       {meta.error ? (
         <div style={{ color: 'red', display: 'inline' }}>{meta.error}</div>
       ) : null}

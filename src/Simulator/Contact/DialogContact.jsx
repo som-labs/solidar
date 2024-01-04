@@ -86,6 +86,7 @@ export default function DialogContact({ initialData, recoverFormData, onClose })
             ></SLDRInputField>
 
             <InputLabel htmlFor="email">{t('CONTACTO.PROP.email')}</InputLabel>
+
             <SLDRInputField
               name="email"
               object="CONTACTO"

@@ -21,6 +21,7 @@ import { Button, Tooltip, TextField, Typography, Autocomplete } from '@mui/mater
 import { BasesContext } from '../BasesContext'
 import DialogNewBaseSolar from './DialogNewBaseSolar'
 import { useDialog } from '../../components/DialogProvider'
+import { AlertContext } from '../components/Alert'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -29,6 +30,7 @@ import * as UTIL from '../classes/Utiles'
 export default function MapComponent() {
   const { t } = useTranslation()
 
+  //PENDIENTE: separar address search en otro componente?
   // Map state
   const [mapType, setMapType] = useState('LOCATION.LABEL_SATELITE')
   const [selectedCoord] = useState([-3.7, 40.45])
@@ -37,6 +39,7 @@ export default function MapComponent() {
   const mapElement = useRef()
   const basesLayer = useRef()
   const mapRef = useRef(map)
+  const { SLDRAlert } = useContext(AlertContext)
 
   // Address search states
   const [address, setAddress] = useState('')
@@ -80,9 +83,9 @@ export default function MapComponent() {
       }
 
       if (!geometry) {
-        geometry = new Polygon([newCoordinates]) //[newCoordinates])
+        geometry = new Polygon([newCoordinates])
       } else {
-        geometry.setCoordinates([newCoordinates]) //[newCoordinates])
+        geometry.setCoordinates([newCoordinates])
       }
       return geometry
     },
@@ -288,7 +291,8 @@ export default function MapComponent() {
 
     if (nominatimInfo === null) {
       // Las coordenadas no estan en España
-      alert(t('LOCATION.ERROR_TERRITORIO')) //Quiere decir que no estamos en España
+      SLDRAlert('VALIDACION', t('LOCATION.ERROR_TERRITORIO'), 'error')
+      //alert(t('LOCATION.ERROR_TERRITORIO')) //Quiere decir que no estamos en España
       TCB.territorio = ''
       return false
     } else if (!nominatimInfo) {
@@ -297,7 +301,7 @@ export default function MapComponent() {
     } else {
       //Verificamos que la base creada esta en el mismo territorio si es que ya habia otras creadas.
       if (TCB.territorio !== '' && TCB.territorio !== nominatimInfo.zona) {
-        alert(t('LOCATION.ERROR_MISMO_TERRITORIO'))
+        SLDRAlert('VALIDACION', t('LOCATION.ERROR_MISMO_TERRITORIO'), 'error')
         return false
       } else {
         TCB.territorio = nominatimInfo.zona
@@ -355,17 +359,23 @@ export default function MapComponent() {
           status = null
         }
       } else {
-        alert(
+        SLDRAlert(
+          'VALIDACION',
           t('LOCATION.ERROR_NOMINATIM_FETCH', {
             err: respTerritorio,
             url: url,
           }),
+          'error',
         )
         await UTIL.copyClipboard(url)
         status = false
       }
     } catch (err) {
-      alert(t('LOCATION.ERROR_NOMINATIM_FETCH', { err: err, url: url }))
+      SLDRAlert(
+        'VALIDACION',
+        t('LOCATION.ERROR_NOMINATIM_FETCH', { err: err, url: url }),
+        'error',
+      )
       await UTIL.copyClipboard(url)
       status = false
     }
@@ -396,16 +406,22 @@ export default function MapComponent() {
         })
         setCandidatos([...nitem])
       } else {
-        alert(
+        SLDRAlert(
+          'VALIDACION',
           t('ERROR_NOMINATIM_FETCH', {
             err: 'Status: ' + respCandidatos.status,
             url: url,
           }),
+          'error',
         )
         return false
       }
     } catch (err) {
-      alert(t('ERROR_NOMINATIM_FETCH', { err: err.message, url: url }))
+      SLDRAlert(
+        'VALIDACION',
+        t('ERROR_NOMINATIM_FETCH', { err: err.message, url: url }),
+        'error',
+      )
       return false
     }
   }, [address, t])
