@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Formik, Field, Form } from 'formik'
 
@@ -21,7 +20,7 @@ import { SLDRInputField } from '../../components/SLDRComponents'
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
-export default function DialogNewBaseSolar({ data, onClose }) {
+export default function DialogBaseSolar({ data, onClose }) {
   const { t } = useTranslation()
 
   const changeRoofType = (event, setValues, values) => {

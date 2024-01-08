@@ -14,7 +14,7 @@ import { ConsumptionContext } from '../ConsumptionContext'
 import MapaMesHora from './MapaMesHora'
 import MapaDiaHora from './MapaDiaHora'
 import { useDialog } from '../../components/DialogProvider'
-import DialogNewConsumption from './DialogNewConsumption'
+import DialogConsumption from './DialogConsumption'
 import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
 
 // Solidar objects
@@ -107,10 +107,10 @@ export default function ConsumptionSummary() {
     }
     openDialog({
       children: (
-        <DialogNewConsumption
+        <DialogConsumption
           data={initialValues}
           onClose={(cause, formData) => endDialog(cause, formData)}
-        ></DialogNewConsumption>
+        ></DialogConsumption>
       ),
     })
   }

@@ -18,7 +18,7 @@ import { AlertContext } from '../Simulator/components/Alert'
 import ParametersMenu from '../Simulator/Parameters/ParametersMenu'
 import ContactMenu from '../Simulator/Contact/ContactMenu'
 import InLineHelp from '../Simulator/InLineHelp/InLineHelp'
-import GestionProyecto from '../Simulator/Project/GestionProyecto'
+import ProjectMenu from '../Simulator/Project/ProjectMenu'
 import { getParametrosEntrada } from '../Simulator/classes/Utiles'
 
 export default function AppFrame({ children }) {
@@ -100,7 +100,7 @@ export default function AppFrame({ children }) {
           <LanguageMenu />
           <ParametersMenu />
           <ContactMenu />
-          <GestionProyecto />
+          <ProjectMenu />
           <InLineHelp />
         </Toolbar>
       </AppBar>
