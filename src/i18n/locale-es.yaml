@@ -274,7 +274,7 @@ LOCATION:
   DESCRIPTION: |
     En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.<br />
     A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.<br />
-    Su rendimiento se calcula a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).<br />
+    Su rendimiento se calculará a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).<br />
 
   DESCRIPTION_ADDRESS: En estos campos puedes introducir un localizador (region, ciudad, dirección) que te permitirá posicionar el mapa en la zona de trabajo deseada.
   PROMPT_ADDRESS: Busca la dirección del edificio
@@ -287,6 +287,28 @@ LOCATION:
   LABEL_SATELITE: Vista satélite
   LABEL_VECTOR: Vista mapa
   TOOLTIP_MAP_TYPE: Permite intercambiar entre vista satélite o mapa
+  IN_LINE_HELP:
+    PRE_ADDRESS: |
+      Dado que la producción esperada de una instalación fotovoltaica depende de la irradiación solar recibida por los paneles, necesitamos que nos des algunos datos necesarios para el cálculo.
+      <p>Puedes navegar en el mapa para encontrar la zona donde se realizará la instalación o utilizar el campo <b><span style='background:rgb(0, 255, 204)'>Localizador</span></b> donde puedes escribir el nombre de la zona o calle y número. Es importante que incluyas la ciudad para evitar una larga lista de candidatos que se desplegará debajo del campo a medida que vayas escribiendo.</p>
+    PRE_MAPA: |
+      Una vez que estes ubicado en el area de trabajo puedes ayudarte con la visualización satelite para identificar el tejado o azotea donde tienes planeada la instalación. Ahora debes dibujar al menos un area que represente la zona donde puedes instalar paneles.
+      Los dos primeros puntos definen la cumbrera o la parte alta de los paneles, el tercer punto define la dimension perpendicular a la cumbrera. Con estos tres punto la aplicación generará una rectangulo y asumirá que la orientacion de los paneles será desde la cumbrera hacia el último punto dado. Mas tarde podrás cambiar este valor (acimut) desde el formulario de edicion de la base que se activa desde la tabla.<p>
+      <p>En el caso que tengas tejado con multiples orientaciones puedes dibujar un area para cada una de ellas.</p>
+    PRE_TABLA: |
+      Una vez finalizada la definición de las áreas donde se instalarán los paneles verás a continuación una tabla <strong>Resumen</strong> donde ves el detalle de su configuración.
+
+      <p>Son importantes dos datos que definen los ángulos de incidencia de la radiación solar sobre el panel:</p>
+
+      <b><span>Inclinación: </b>Es el ángulo del panel con respecto a la horizontal del terreno. Dependiendo de la configuración seleccionada este angulo puede ser:</span>
+
+      <ul><b>Coplanar: </b>es la inclinaciónel del tejado.</ul>
+      <ul><b>Horizontal: </b>es el ángulo que tienen los paneles con respecto al tejado o azotea.</ul> 
+      <ul><b>Inclinación óptima</span></b> Dejaremos que el sistema lo calcule.</ul>
+
+      <p><b><span>Orientación (Acimut)</span></b>: es el ángulo con el que los paneles se orientan con respecto al sur (0º). Este ángulo es -90º en una orientación pura al este y 90º en orientación oeste. Para ayudarte a calcularlo puedes posicionarte en el campo <i class='fa fa-compass'></i> y ayudarte con el rumbo en el mapa indicando la orientación de los paneles. Si no lo sabes utiliza la opción <b>Angulos óptimos</b>. 
+      <p>En el caso de multiples bases candidatas para instalar paneles es importante definir el acimut de cada una de ellas por separado ya que el sistema utilizará las bases con mayor rendimiento para asignar los paneles</p>
+    POST_TABLA: <p>Con estos datos el sistema se conectará con el servidor PVGIS para obtener los datos concretos de cada base y pasaremos a la ventana que nos permitirá definir los consumos
 
   TITLE_DIALOG_NEW_BASE: Nueva base solar
   HORIZONTAL_ROOF: En el caso de tejado horizontal te propondremos el ángulo óptimo de  los paneles al finalizar el cálculo.

@@ -28,7 +28,8 @@ function BasicAlert(props) {
 }
 
 const AlertProvider = ({ children }) => {
-  const { t } = useTranslation()
+  //DEMO: Detalle
+  const [inLineHelp, setInLineHelp] = useState(null)
   const [openDialog, closeDialog] = useDialog()
 
   function SLDRAlert(title, message, type) {
@@ -44,8 +45,11 @@ const AlertProvider = ({ children }) => {
     })
   }
 
+  //DEMO: Detalle
   const contextValue = {
     SLDRAlert,
+    inLineHelp,
+    setInLineHelp,
   }
   return <AlertContext.Provider value={contextValue}>{children}</AlertContext.Provider>
 }

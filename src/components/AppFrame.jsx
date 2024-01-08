@@ -9,16 +9,31 @@ import PagesMenu from './PagesMenu'
 import PagesButtons from './PagesButtons'
 import Footer from './Footer'
 
+import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { ScrollRestoration } from 'react-router-dom'
 
+import { AlertContext } from '../Simulator/components/Alert'
 import ParametersMenu from '../Simulator/Parameters/ParametersMenu'
 import ContactMenu from '../Simulator/Contact/ContactMenu'
+import InLineHelp from '../Simulator/InLineHelp/InLineHelp'
 import GestionProyecto from '../Simulator/Project/GestionProyecto'
+import { getParametrosEntrada } from '../Simulator/classes/Utiles'
 
 export default function AppFrame({ children }) {
   const { t } = useTranslation()
+
+  const { setInLineHelp } = useContext(AlertContext)
+
+  useEffect(() => {
+    //DEMO: Detalle
+    const a = getParametrosEntrada('inLineHelp')
+
+    if (a.length >= 0) setInLineHelp(true)
+    else setInLineHelp(false)
+  }, [])
+
   const navigate = useNavigate()
 
   const title = 'Solidar'
@@ -86,6 +101,7 @@ export default function AppFrame({ children }) {
           <ParametersMenu />
           <ContactMenu />
           <GestionProyecto />
+          <InLineHelp />
         </Toolbar>
       </AppBar>
       <Box sx={{ minHeight: 'calc( 100vh - 7rem )' }}>{children}</Box>
