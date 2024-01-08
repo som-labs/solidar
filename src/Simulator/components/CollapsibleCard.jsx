@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 const CollapsibleCard = (props) => {
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(true)
 
   // const [title, setTitle] = useState(content.title)
   // const [description, setDescription] = useState(content.description)
@@ -30,6 +30,7 @@ const CollapsibleCard = (props) => {
           </IconButton>
         }
       />
+
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent variant="outlined">
           <Typography
