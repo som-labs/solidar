@@ -9,7 +9,7 @@ import EditIcon from '@mui/icons-material/Edit'
 
 // REACT Solidar Components
 import { BasesContext } from '../BasesContext'
-import DialogNewBaseSolar from './DialogNewBaseSolar'
+import DialogBaseSolar from './DialogBaseSolar'
 import { useDialog } from '../../components/DialogProvider'
 import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
 
@@ -145,7 +145,7 @@ export default function BasesSummary() {
     })
     openDialog({
       children: (
-        <DialogNewBaseSolar
+        <DialogBaseSolar
           data={_base}
           editing={true}
           onClose={(reason, formData) => endDialog(reason, formData)}

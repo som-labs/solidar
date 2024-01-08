@@ -20,7 +20,7 @@ import { SLDRInputField, SLDRTooltip } from '../../components/SLDRComponents'
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
 
-export default function DialogNewConsumption({ data, onClose }) {
+export default function DialogConsumption({ data, onClose }) {
   const { t } = useTranslation()
 
   const handleFile = (event, setValues) => {
