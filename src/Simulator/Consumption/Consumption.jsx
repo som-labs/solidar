@@ -8,6 +8,7 @@ import Box from '@mui/material/Box'
 // REACT Solidar Components
 import PreciosTarifa from './PreciosTarifa'
 import ConsumptionSummary from './ConsumptionSummary'
+import { SLDRInfoBox } from '../../components/SLDRComponents'
 
 const ConsumptionStep = () => {
   const { t } = useTranslation()
@@ -23,7 +24,9 @@ const ConsumptionStep = () => {
           }}
         />
         <br />
-        <PreciosTarifa></PreciosTarifa>
+        <SLDRInfoBox>
+          <PreciosTarifa></PreciosTarifa>
+        </SLDRInfoBox>
         <Box sx={{ mt: '1rem' }}>
           <Typography
             variant="body"

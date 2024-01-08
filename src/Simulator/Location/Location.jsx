@@ -2,12 +2,12 @@ import { useContext } from 'react' //DEMO: Detalle
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
+import { Typography, Container, Box } from '@mui/material'
 
 // REACT Solidar Components
-import { SLDRDetalle } from '../../components/SLDRComponents'
+import { SLDRDetalle, SLDRInfoBox } from '../../components/SLDRComponents'
 import { AlertContext } from '../components/Alert'
+import AddressSearch from './AddressSearch'
 import MapComponent from './MapComponent'
 import BasesSummary from './BasesSummary'
 
@@ -43,19 +43,41 @@ const LocationStep = () => {
             text={t('LOCATION.IN_LINE_HELP.PRE_ADDRESS')}
           ></SLDRDetalle>
         )}
+        <br />
+        <Typography variant="body">{t('LOCATION.DESCRIPTION_ADDRESS')}</Typography>
+        <br />
+
+        {/* Campo  para introducir una direccion */}
+        <SLDRInfoBox
+          sx={{
+            mr: '0.3rem',
+            mb: '0.3rem',
+          }}
+        >
+          <AddressSearch></AddressSearch>
+        </SLDRInfoBox>
+
         {inLineHelp && (
           <SLDRDetalle
             title="TITULO 2"
             text={t('LOCATION.IN_LINE_HELP.PRE_MAPA')}
           ></SLDRDetalle>
         )}
-        <MapComponent></MapComponent>
+        <SLDRInfoBox
+          sx={{
+            mr: '0.3rem',
+            mb: '0.3rem',
+          }}
+        >
+          <MapComponent></MapComponent>
+        </SLDRInfoBox>
         {inLineHelp && (
           <SLDRDetalle
             title="TITULO 3"
             text={t('LOCATION.IN_LINE_HELP.PRE_TABLA')}
           ></SLDRDetalle>
         )}
+
         <BasesSummary></BasesSummary>
         {inLineHelp && (
           <SLDRDetalle

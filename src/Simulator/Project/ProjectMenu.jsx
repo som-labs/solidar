@@ -1,8 +1,8 @@
 /**
- * @module  gestionProyecto
+ * @module  projectMenu
  * @fileoverview Módulo para la gestion de la información general de proyecto.
- *                No es parte del wizard
- * @version      Solidar.3
+
+ * @version      
  * @author       José Luis García (SOM Madrid)
  * @copyright
  */
@@ -29,7 +29,7 @@ import { EconomicContext } from '../EconomicContext'
 
 import PreparaEnergyBalance from '../EnergyBalance/PreparaEnergyBalance.jsx'
 
-export default function GestionProyecto() {
+export default function ProjectMenu() {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
   const { SLDRAlert } = useContext(AlertContext)

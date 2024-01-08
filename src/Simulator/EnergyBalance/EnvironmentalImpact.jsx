@@ -1,9 +1,6 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
+import { Box, Typography, Container } from '@mui/material'
 
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
@@ -20,7 +17,7 @@ export default function EnvironmentalImpact() {
     (radiusNoRenovable * TCB.produccion.CO2AnualRenovable) /
       TCB.produccion.CO2AnualNoRenovable,
   )
-  //PENDIENTE: que color poner para que con fondo oscuro los circulos se vean bien
+  //PENDIENTE: que color poner para que con fondo oscuro los circulos se vean bien. Revisar la cuestion del theme
   return (
     <>
       <Container>

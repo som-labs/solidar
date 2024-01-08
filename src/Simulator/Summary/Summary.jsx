@@ -11,7 +11,7 @@ import SummaryEnergyBalance from './SummaryEnergyBalance'
 import FinalNote from './FinalNote'
 
 const SummaryStep = () => {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   return (
     <>
@@ -61,8 +61,14 @@ const SummaryStep = () => {
             <SummaryEnergyBalance></SummaryEnergyBalance>
           </SLDRInfoBox>
         </Box>
-
-        <FinalNote></FinalNote>
+        <SLDRInfoBox
+          sx={{
+            mr: '0.3rem',
+            mb: '0.3rem',
+          }}
+        >
+          <FinalNote></FinalNote>
+        </SLDRInfoBox>
       </Paper>
     </>
   )

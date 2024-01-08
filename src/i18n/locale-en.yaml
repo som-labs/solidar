@@ -239,7 +239,7 @@ Economico:
 LOCATION:
   LABEL: Location
   TITLE: Location
-  PROMPT_ADDRESS: Busca la dirección del edificio
+  PROMPT_ADDRESS: Search location or address
   LABEL_SATELITE: Satellite view
   LABEL_VECTOR: Map view
   TOOLTIP_MAP_TYPE: Allows to exchange between Sátelite or Map

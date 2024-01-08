@@ -94,7 +94,7 @@ class BaseSolar extends DiaHora {
 
     // Si hay una base como argumento de entrada se copian todas las propiedades a la nueva base
     this.updateBase(area)
-    UTIL.debugLog('Nueva base solar ' + area.nombreBaseSolar + ' creada')
+    UTIL.debugLog('Nueva base solar creada', this)
   }
   /**
    * Crea el objeto Rendimiento de una BaseSolar

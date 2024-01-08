@@ -1,6 +1,4 @@
-import { useState, useMemo, useRef, useEffect, useContext, useCallback } from 'react'
-import { debounce } from '@mui/material/utils'
-
+import { useState, useRef, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // OpenLayers objects
@@ -15,11 +13,12 @@ import { transform, fromLonLat } from 'ol/proj'
 import { Draw } from 'ol/interaction'
 
 // MUI objects
-import { Button, Tooltip, TextField, Typography, Autocomplete } from '@mui/material'
+import { Button, Tooltip, Typography } from '@mui/material'
 
 // REACT Solidar Components
 import { BasesContext } from '../BasesContext'
-import DialogNewBaseSolar from './DialogNewBaseSolar'
+import DialogBaseSolar from './DialogBaseSolar'
+
 import { useDialog } from '../../components/DialogProvider'
 import { AlertContext } from '../components/Alert'
 
@@ -30,7 +29,6 @@ import * as UTIL from '../classes/Utiles'
 export default function MapComponent() {
   const { t } = useTranslation()
 
-  //PENDIENTE: separar address search en otro componente?
   // Map state
   const [mapType, setMapType] = useState('LOCATION.LABEL_SATELITE')
   const [selectedCoord] = useState([-3.7, 40.45])
@@ -40,10 +38,6 @@ export default function MapComponent() {
   const basesLayer = useRef()
   const mapRef = useRef(map)
   const { SLDRAlert } = useContext(AlertContext)
-
-  // Address search states
-  const [address, setAddress] = useState('')
-  const [candidatos, setCandidatos] = useState([])
 
   const [openDialog, closeDialog] = useDialog()
 
@@ -269,7 +263,7 @@ export default function MapComponent() {
     //Activamos el dialogo de edicion de atributos de BaseSolar
     openDialog({
       children: (
-        <DialogNewBaseSolar
+        <DialogBaseSolar
           data={nuevaBaseSolar}
           editing={false}
           onClose={(cause, formData) => endDialog(cause, formData)}
@@ -383,94 +377,8 @@ export default function MapComponent() {
     return status
   }
 
-  const findAddress = useCallback(async () => {
-    setCandidatos([])
-    let url =
-      'https://nominatim.openstreetmap.org/search?format=json&polygon_geojson=1&addressdetails=1&countrycodes=es&'
-    url += 'q=' + address
-    UTIL.debugLog('Call Nominatim:' + url)
-
-    try {
-      const respCandidatos = await fetch(url)
-      if (respCandidatos.status === 200) {
-        var dataCartoCiudad = await respCandidatos.text()
-        var jsonAdd = JSON.parse(dataCartoCiudad)
-        let count = 0
-        var nitem = []
-        jsonAdd.forEach(function (item) {
-          nitem.push({
-            value: [item.lon, item.lat],
-            text: item.display_name.toString(),
-            key: count++,
-          })
-        })
-        setCandidatos([...nitem])
-      } else {
-        SLDRAlert(
-          'VALIDACION',
-          t('ERROR_NOMINATIM_FETCH', {
-            err: 'Status: ' + respCandidatos.status,
-            url: url,
-          }),
-          'error',
-        )
-        return false
-      }
-    } catch (err) {
-      SLDRAlert(
-        'VALIDACION',
-        t('ERROR_NOMINATIM_FETCH', { err: err.message, url: url }),
-        'error',
-      )
-      return false
-    }
-  }, [address, t])
-
-  const ref = useRef()
-
-  useEffect(() => {
-    ref.current = findAddress
-  }, [findAddress])
-
-  const debouncedCallback = useMemo(() => {
-    const func = () => {
-      ref.current?.()
-    }
-
-    return debounce(func, 500)
-  }, [])
-
   return (
     <>
-      {/* Campo  para introducir una direccion */}
-      <br />
-      <Typography variant="body">{t('LOCATION.DESCRIPTION_ADDRESS')}</Typography>
-
-      <br />
-      <Autocomplete
-        options={candidatos}
-        filterOptions={(x) => x}
-        autoComplete
-        onChange={(ev, value) => {
-          mapRef.current.getView().setCenter(fromLonLat(value.value))
-        }}
-        onInputChange={(ev) => {
-          if (ev.target.value.length > 3) {
-            setAddress(ev.target.value)
-            debouncedCallback()
-          }
-        }}
-        getOptionLabel={(option) => option.text}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Buscar lugar o dirección "
-            fullWidth
-            style={{ width: '100%' }}
-          />
-        )}
-      />
-      <br></br>
       {/* El mapa */}
       <Typography
         variant="body"
