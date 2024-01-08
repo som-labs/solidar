@@ -7,6 +7,8 @@ import {
   Typography,
   Tooltip,
 } from '@mui/material'
+//DEMO
+import CollapsibleCard from '../Simulator/components/CollapsibleCard'
 
 import { styled } from '@mui/material/styles'
 import { useTheme } from '@mui/material/styles'
@@ -61,6 +63,24 @@ const SLDRTooltip = ({ title, children, placement }) => {
     <Tooltip title={title} placement={placement} arrow sx={ToolTipStyle}>
       {children}
     </Tooltip>
+  )
+}
+
+//DEMO
+function SLDRDetalle(props) {
+  const { t } = useTranslation()
+  const { title, text } = props
+  return (
+    <Box>
+      <CollapsibleCard
+        title={title}
+        titleVariant="body"
+        titleSX={{ color: 'blue', mb: '-2rem' }}
+        descriptionVariant="body"
+        descriptionSX={{ fontSize: '15px', color: 'green', fontStyle: 'italic' }}
+        description={text}
+      ></CollapsibleCard>
+    </Box>
   )
 }
 
@@ -131,4 +151,4 @@ function SLDRInputField({ unit, object, MUIType, ...props }) {
   )
 }
 
-export { SLDRFooterBox, SLDRInfoBox, SLDRInputField, SLDRTooltip }
+export { SLDRFooterBox, SLDRInfoBox, SLDRInputField, SLDRTooltip, SLDRDetalle }
