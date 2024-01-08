@@ -276,8 +276,8 @@ LOCATION:
     A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.<br />
     Su rendimiento se calculará a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).<br />
 
-  DESCRIPTION_ADDRESS: En estos campos puedes introducir un localizador (region, ciudad, dirección) que te permitirá posicionar el mapa en la zona de trabajo deseada.
-  PROMPT_ADDRESS: Busca la dirección del edificio
+  DESCRIPTION_ADDRESS: En este campo puedes introducir un localizador (region, ciudad, dirección) que te permitirá posicionar el mapa en la zona de trabajo deseada.
+  PROMPT_ADDRESS: Buscar lugar o dirección
   PROMPT_CANDIDATE: Seleccione la dirección que corresponda de la lista
   TOOLTIP_ADDRESS: A medida que escribas tendrás candidatos para seleccionar
 
