@@ -94,7 +94,6 @@ const InstallationCost = () => {
                 },
               }}
               error={error}
-              //REVISAR: como mantener el focus en el campo mientras que persista el error
               helperText={error ? 'Pon un número válido mayor que cero' : ''}
               value={
                 precioInstalacionCorregido !== TCB.produccion.precioInstalacion

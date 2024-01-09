@@ -54,13 +54,13 @@ const SLDRTooltip = ({ title, children, placement }) => {
   const ToolTipStyle = {
     textAlign: 'left',
     padding: '8px',
-    borderColor: 'green',
+    borderColor: 'red',
     borderRadius: '4px',
     fontFamily: 'inherit', // Ensure that it inherits the font
     fontSize: 'inherit',
   }
   return (
-    <Tooltip title={title} placement={placement} arrow sx={ToolTipStyle}>
+    <Tooltip title={title} placement={placement} arrow style={ToolTipStyle}>
       {children}
     </Tooltip>
   )
@@ -68,14 +68,13 @@ const SLDRTooltip = ({ title, children, placement }) => {
 
 //DEMO
 function SLDRDetalle(props) {
-  const { t } = useTranslation()
   const { title, text } = props
   return (
     <Box>
       <CollapsibleCard
         title={title}
         titleVariant="body"
-        titleSX={{ color: 'blue', mb: '-2rem' }}
+        titleSX={{ color: 'blue', mb: '-1rem' }}
         descriptionVariant="body"
         descriptionSX={{ fontSize: '15px', color: 'green', fontStyle: 'italic' }}
         description={text}

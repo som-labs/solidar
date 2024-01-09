@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 // OpenLayers objects
 import { Map, View } from 'ol'
 import TileLayer from 'ol/layer/Tile'
+import Overlay from 'ol/Overlay.js'
+import { getArea, getLength } from 'ol/sphere.js'
 import { OSM, Vector as VectorSource, XYZ } from 'ol/source'
 import { Style, Fill, Stroke } from 'ol/style'
 import VectorLayer from 'ol/layer/Vector'
@@ -85,6 +87,183 @@ export default function MapComponent() {
     },
   })
 
+  //Manage esc key during base drawing
+  var drawing = false
+  const keydown = (evt) => {
+    var charCode = evt.which ? evt.which : evt.keyCode
+    if (charCode === 27 && drawing === true) {
+      baseInteraction.set('escKey', Math.random())
+    }
+  }
+
+  document.addEventListener('keydown', keydown, false)
+  //set a custom listener name escKey
+  baseInteraction.set('escKey', '')
+
+  //MEDIDAS
+  /**
+   * Currently drawn feature.
+   * @type {import("../src/ol/Feature.js").default}
+   */
+  let sketch
+
+  /**
+   * The help tooltip element.
+   * @type {HTMLElement}
+   */
+  let helpTooltipElement
+
+  /**
+   * Overlay to show the help messages.
+   * @type {Overlay}
+   */
+  let helpTooltip
+
+  /**
+   * The measure tooltip element.
+   * @type {HTMLElement}
+   */
+  let measureTooltipElement
+
+  /**
+   * Overlay to show the measurement.
+   * @type {Overlay}
+   */
+  let measureTooltip
+  /**
+
+  /**
+   * Format tooltip output.
+   * @param {Polygon} polygon The polygon.
+   * @return {string} Formatted area.
+   */
+  const formatData = function (polygon) {
+    let output
+    let cumbrera
+    let ancho
+
+    const vertices = polygon.getCoordinates()[0]
+    if (vertices.length < 2) return ''
+
+    cumbrera = UTIL.distancia(vertices[0], vertices[1])
+    if (vertices.length === 2) {
+      output = t('LOCATION.TOOLTIP_CUMBRERA', {
+        cumbrera: UTIL.formatoValor('longitud', Math.round(cumbrera)),
+      })
+    } else {
+      ancho = UTIL.distancia(vertices[1], vertices[2])
+      output = t('LOCATION.TOOLTIP_MEASURES', {
+        cumbrera: UTIL.formatoValor('longitud', cumbrera),
+        ancho: UTIL.formatoValor('longitud', ancho),
+        area: UTIL.formatoValor('superficie', ancho * cumbrera),
+      })
+    }
+    return output
+  }
+
+  // const style = new Style({
+  //   fill: new Fill({
+  //     color: 'rgba(255, 255, 255, 0.2)',
+  //   }),
+  //   stroke: new Stroke({
+  //     color: 'rgba(0, 0, 0, 0.5)',
+  //     lineDash: [10, 10],
+  //     width: 2,
+  //   }),
+  //   image: new CircleStyle({
+  //     radius: 5,
+  //     stroke: new Stroke({
+  //       color: 'rgba(0, 0, 0, 0.7)',
+  //     }),
+  //     fill: new Fill({
+  //       color: 'rgba(255, 255, 255, 0.2)',
+  //     }),
+  //   }),
+  // })
+
+  function createHelpTooltip() {
+    if (helpTooltipElement) {
+      helpTooltipElement.parentNode.removeChild(helpTooltipElement)
+    }
+    helpTooltipElement = document.createElement('div')
+    helpTooltipElement.className = 'ol-tooltip hidden'
+    helpTooltip = new Overlay({
+      element: helpTooltipElement,
+      offset: [15, 0],
+      positioning: 'top-left',
+    })
+  }
+
+  /**
+   * Creates a new measure tooltip
+   */
+  function createMeasureTooltip() {
+    if (measureTooltipElement) {
+      measureTooltipElement.parentNode.removeChild(measureTooltipElement)
+    }
+    measureTooltipElement = document.createElement('div')
+    measureTooltipElement.className = 'ol-tooltip ol-tooltip-measure'
+    measureTooltip = new Overlay({
+      element: measureTooltipElement,
+      offset: [15, -15],
+      positioning: 'botom-left',
+      stopEvent: false,
+      insertFirst: false,
+    })
+  }
+
+  createMeasureTooltip()
+  createHelpTooltip()
+
+  baseInteraction.on('drawstart', (evt) => {
+    drawing = true
+
+    sketch = evt.feature
+    const listener = sketch.getGeometry().on('change', function (evt) {
+      const geom = evt.target
+      const output = formatData(geom)
+      const vertices = geom.getCoordinates()[0]
+      measureTooltip.setPosition(vertices[0])
+      //tooltipCoord = geom.getInteriorPoint().getCoordinates()
+      measureTooltipElement.innerHTML = output
+      //measureTooltip.setPosition(tooltipCoord)
+    })
+  })
+
+  baseInteraction.on('drawend', () => {
+    helpTooltipElement.classList.add('hidden')
+    measureTooltipElement.classList.add('hidden')
+    measureTooltipElement.innerHTML = ' '
+    sketch = null
+    drawing = false
+  })
+
+  baseInteraction.on('change:escKey', () => {
+    baseInteraction.removeLastPoint()
+  })
+
+  const pointerMoveHandler = function (evt) {
+    if (evt.dragging) {
+      return
+    }
+    /** @type {string} */
+    let helpMsg = t('LOCATION.PROMPT_INICIO_CUMBRERA')
+    if (sketch) {
+      const geom = sketch.getGeometry().getCoordinates()[0]
+      if (geom.length < 2) {
+        helpMsg = t('LOCATION.PROMPT_INICIO_CUMBRERA')
+      } else if (geom.length < 3) {
+        helpMsg = t('LOCATION.PROMPT_CUMBRERA')
+      } else {
+        helpMsg = t('LOCATION.PROMPT_ANCHO')
+      }
+    }
+
+    helpTooltipElement.innerHTML = helpMsg
+    helpTooltip.setPosition(evt.coordinate)
+    helpTooltipElement.classList.remove('hidden')
+  }
+
   useEffect(() => {
     // If there is not previous Map in MapContext create one
     if (!mapRef.current) {
@@ -143,10 +322,13 @@ export default function MapComponent() {
       })
 
       //Store the map in BasesContext
+      mapRef.current.on('pointermove', pointerMoveHandler)
       setMap(mapRef.current)
     } else {
       mapRef.current.setTarget(mapElement.current)
     }
+    mapRef.current.addOverlay(helpTooltip)
+    mapRef.current.addOverlay(measureTooltip)
   }, [])
 
   function endDialog(reason, formData) {

@@ -22,6 +22,7 @@ const campos = {
   peso: { unidad: ' Kg', decimales: 2, salvar: true, mostrar: true },
   dinero: { unidad: ' €', decimales: 0, salvar: true, mostrar: true },
   superficie: { unidad: 'm²', decimales: 2, salvar: true, mostrar: true },
+  longitud: { unidad: 'm', decimales: 2, salvar: true, mostrar: true },
   precioEnergia: { unidad: ' €/kWh', decimales: 3, salvar: true, mostrar: true },
   fecha: { unidad: 'fecha', salvar: false, mostrar: true },
   pdfpieDePagina: { unidad: 'fecha', decimales: 'larga', mostrar: true },

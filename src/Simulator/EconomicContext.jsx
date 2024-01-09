@@ -11,7 +11,7 @@ const EconomicContextProvider = ({ children }) => {
   const [subvencionEU, setSubvencionEU] = useState('Sin')
   const [valorSubvencionEU, setValorSubvencionEU] = useState(0)
   const [cuotaHucha, setCuotaHucha] = useState(0)
-  const [coefHucha, setCoefHucha] = useState(0)
+  const [coefHucha, setCoefHucha] = useState(80)
   const [ecoData, setEcoData] = useState({})
 
   const contextValue = {

@@ -284,6 +284,11 @@ LOCATION:
   PROMPT_DRAW: |
     Dibuja en el mapa las áreas disponibles del edificio. En caso de alternativas, puedes dibujar tantas áreas como quieras. El sistema distribuirá los paneles de la forma mas eficiente.<br />
     En caso de instalación coplanar en tejado inclinado, los dos primeros puntos serán considerados la cumbrera (la parte alta del tejado)
+  PROMPT_INICIO_CUMBRERA: Dibujaremos cumbrera
+  PROMPT_CUMBRERA: Dibujando cumbrera
+  PROMPT_ANCHO: Dibujando ancho
+  TOOLTIP_CUMBRERA: 'Cumbrera: {{cumbrera}}'
+  TOOLTIP_MEASURES: 'Cumbrera: {{cumbrera}}<br />Ancho: {{ancho}}<br />Area: {{area}}'
   LABEL_SATELITE: Vista satélite
   LABEL_VECTOR: Vista mapa
   TOOLTIP_MAP_TYPE: Permite intercambiar entre vista satélite o mapa
