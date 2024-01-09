@@ -15,7 +15,7 @@ import MapaMesHora from './MapaMesHora'
 import MapaDiaHora from './MapaDiaHora'
 import { useDialog } from '../../components/DialogProvider'
 import DialogConsumption from './DialogConsumption'
-import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
+import { SLDRFooterBox, SLDRInfoBox, SLDRTooltip } from '../../components/SLDRComponents'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -109,6 +109,7 @@ export default function ConsumptionSummary() {
       children: (
         <DialogConsumption
           data={initialValues}
+          previous={tipoConsumo}
           onClose={(cause, formData) => endDialog(cause, formData)}
         ></DialogConsumption>
       ),
@@ -272,7 +273,7 @@ export default function ConsumptionSummary() {
   function newConsumption() {
     return (
       <GridToolbarContainer>
-        <Tooltip
+        <SLDRTooltip
           title={t('CONSUMPTION.TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO')}
           placement="top"
         >
@@ -284,7 +285,7 @@ export default function ConsumptionSummary() {
           >
             {t('CONSUMPTION.LABEL_BUTTON_NUEVO_TIPOCONSUMO')}
           </Button>
-        </Tooltip>
+        </SLDRTooltip>
       </GridToolbarContainer>
     )
   }

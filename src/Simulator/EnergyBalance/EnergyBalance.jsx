@@ -158,16 +158,59 @@ export default function EnergyBalanceStep() {
 
   function footerSummary() {
     return (
-      <SLDRFooterBox>
-        <Typography variant="h5">
-          {t('ENERGY_BALANCE.TOTAL_PANELS', {
-            paneles: Math.round(
-              bases.reduce((sum, tBase) => sum + parseInt(tBase.paneles), 0),
-            ),
-          })}
-        </Typography>
-      </SLDRFooterBox>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          padding: '8px',
+          borderTop: '1px solid rgba(224, 224, 224, 1)',
+          backgroundColor: '#f5f5f5',
+        }}
+      >
+        <div style={{ flex: '0 0 250px' }} /> {/* Placeholder for ID column */}
+        <div style={{ flex: '0.5', textAlign: 'center' }}>
+          <strong>
+            {bases.reduce((sum, tBase) => sum + parseInt(tBase.paneles), 0)}
+          </strong>
+        </div>
+        <div style={{ flex: '1', textAlign: 'center' }}>
+          <strong>
+            {bases.reduce((sum, tBase) => sum + parseInt(tBase.panelesMaximo), 0)}
+          </strong>
+        </div>
+        <div style={{ flex: '1', textAlign: 'right' }}>
+          <strong>
+            {UTIL.formatoValor(
+              'potenciaMaxima',
+              bases.reduce((sum, tBase) => sum + parseInt(tBase.potenciaMaxima), 0),
+            )}
+          </strong>
+        </div>
+        <div style={{ flex: '1' }} /> {/* Placeholder for ID column */}
+        <div style={{ flex: '1', textAlign: 'right' }}>
+          <strong>
+            {UTIL.formatoValor(
+              'potenciaTotal',
+              bases.reduce((sum, tBase) => sum + parseInt(tBase.potenciaTotal), 0),
+            )}
+          </strong>
+        </div>
+        <div style={{ flex: '0.6', textAlign: 'center' }}></div>
+      </div>
     )
+
+    //return (
+    // <SLDRFooterBox>
+    //   <Typography variant="h5">
+    //     {t('ENERGY_BALANCE.TOTAL_PANELS', {
+    //       paneles: Math.round(
+    //         bases.reduce((sum, tBase) => sum + parseInt(tBase.paneles), 0),
+    //       ),
+    //     })}
+    //   </Typography>
+    // </SLDRFooterBox>
+    //)
   }
 
   // El proceso de PreparaEnergyBalance ejecutado como exit del wizard ha hecho cambios sobre las bases que se crearon en location por lo que se deben actualizar
