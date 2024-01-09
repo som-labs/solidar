@@ -20,7 +20,7 @@ import { SLDRInputField, SLDRTooltip } from '../../components/SLDRComponents'
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
 
-export default function DialogConsumption({ data, onClose }) {
+export default function DialogConsumption({ data, previous, onClose }) {
   const { t } = useTranslation()
 
   const handleFile = (event, setValues) => {
@@ -37,6 +37,17 @@ export default function DialogConsumption({ data, onClose }) {
 
   const validate = (values) => {
     const errors = {}
+    if (!values.nombreTipoConsumo) {
+      errors.nombreTipoConsumo = 'Requerido'
+      return errors
+    } else {
+      previous.forEach((tc) => {
+        if (tc.nombreTipoConsumo === values.nombreTipoConsumo) {
+          errors.nombreTipoConsumo = 'El nombre debe ser único'
+          return errors
+        }
+      })
+    }
 
     if (values.fuente === 'REE') {
       if (values.consumoAnualREE === '' || values.consumoAnualREE === 0) {

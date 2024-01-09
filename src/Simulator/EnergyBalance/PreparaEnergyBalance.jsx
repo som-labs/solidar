@@ -49,7 +49,7 @@ export default async function PreparaEnergyBalance() {
 
       if (waitLoop >= TCB.tiempoEsperaPVGIS) {
         alert('Tiempo de respuesta excesivo en la llamada a PVGIS')
-        // PENDIENTE: reemplazar alert con confimr de espera
+        // PENDIENTE: reemplazar alert con confimr de espera. Como usar SLDRAlert desde aqui
         return {
           status: false,
           error: 'Tiempo de respuesta excesivo en la llamada a PVGIS',
