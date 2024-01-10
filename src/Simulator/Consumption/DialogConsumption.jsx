@@ -99,7 +99,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
                   __html: t('TipoConsumo.DESCRIPTION_fuente'),
                 }}
               />
-              {/* <FormControl sx={{ m: 1, minWidth: 120 }}> */}
+              {/* PENDIENTE:posicionar label */}
               <SLDRInputField
                 sx={{ width: 200, height: 50 }}
                 select
@@ -107,6 +107,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
                 name="fuente"
                 defaultValue="CSV"
                 object="TipoConsumo"
+                label="Tipo fichero fuente"
               >
                 <MenuItem value={'CSV'}>CSV</MenuItem>
                 <MenuItem value={'DATADIS'}>DATADIS</MenuItem>

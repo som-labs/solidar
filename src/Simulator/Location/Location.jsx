@@ -2,7 +2,7 @@ import { useContext } from 'react' //DEMO: Detalle
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import { Typography, Container, Box, Grid } from '@mui/material'
+import { Typography, Grid } from '@mui/material'
 
 // REACT Solidar Components
 import { SLDRDetalle, SLDRInfoBox } from '../../components/SLDRComponents'
