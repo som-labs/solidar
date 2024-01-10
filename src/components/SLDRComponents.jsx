@@ -15,8 +15,8 @@ import { useTheme } from '@mui/material/styles'
 import { useField } from 'formik'
 import { useTranslation } from 'react-i18next'
 
-function SLDRFooterBox({ children }) {
-  const StyledBox = styled(Box)(() => ({
+function SLDRFooterBox(props) {
+  const defaultStyle = {
     display: 'flex',
     flexWrap: 'wrap',
     flexDirection: 'column',
@@ -24,8 +24,14 @@ function SLDRFooterBox({ children }) {
     textAlign: 'center',
     justifyContent: 'center',
     backgroundColor: '#E5FFCC',
+  }
+
+  const StyledBox = styled(Box)(() => ({
+    ...defaultStyle,
+    ...props.sx,
   }))
-  return <StyledBox>{children}</StyledBox>
+
+  return <StyledBox> {props.children}</StyledBox>
 }
 
 function SLDRInfoBox(props) {
