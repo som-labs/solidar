@@ -346,10 +346,16 @@ SUMMARY:
   DESCRIPTION: (T)Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
 
 BASIC:
+  LABEL_OK: Save
+  LABEL_CANCEL: Cancel
+  LABEL_SEND: Send
+  LABEL_AVISO: Warning
   main_TAB_cerrar: Close
   main_TAB_noMostrarMas: Do not show this message again
-  valor_true: True
-  valor_false: False
+  valor_true: 'True'
+  valor_false: 'False'
+  LABEL_NEXT: Next
+  LABEL_PREVIOUS: Previous
 
 DIALOG_PROPERTIES:
   TITLE: Properties

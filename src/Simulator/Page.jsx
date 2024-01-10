@@ -64,7 +64,11 @@ export default function Page() {
     <>
       <AppFrame>
         <Container>
-          <Wizard variant="tabs">
+          <Wizard
+            variant="tabs"
+            nextLabel={t('BASIC.LABEL_NEXT')}
+            prevLabel={t('BASIC.LABEL_PREVIOUS')}
+          >
             <LocationStep
               label="location"
               title={t('LOCATION.TITLE')}

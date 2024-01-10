@@ -24,25 +24,13 @@ function DefaultWizardPage(params) {
     prev,
     prevDisabled = false,
     nextDisabled = false,
-    nextLabel = 'Next',
-    prevLabel = 'Previous',
+    nextLabel, // = 'Next',
+    prevLabel, // = 'Previous',
     validationErrors,
   } = params
 
   return (
-    <Box
-      key={ichild}
-      sx={
-        showAll && isCurrent
-          ? {
-              borderLeft: '6pt solid',
-              borderColor: 'palette.primary',
-              paddingLeft: '2pt',
-            }
-          : {}
-      }
-    >
-      {children}
+    <>
       <Box
         sx={{
           width: '100%',
@@ -73,7 +61,51 @@ function DefaultWizardPage(params) {
           {nextLabel}
         </Button>
       </Box>
-    </Box>
+      <Box
+        key={ichild}
+        sx={
+          showAll && isCurrent
+            ? {
+                borderLeft: '6pt solid',
+                borderColor: 'palette.primary',
+                paddingLeft: '2pt',
+              }
+            : {}
+        }
+      >
+        {children}
+      </Box>
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexFlow: 'row',
+          justifyContent: 'space-between',
+          my: 2,
+        }}
+      >
+        <Button
+          disabled={prevDisabled || !isCurrent}
+          startIcon={<ArrowBackIosIcon />}
+          onClick={prev}
+        >
+          {prevLabel}
+        </Button>
+        {validationErrors ? (
+          <Typography variant="body1" color="error">
+            {validationErrors}
+          </Typography>
+        ) : null}
+        <Button
+          variant="contained"
+          endIcon={<ArrowForwardIosIcon />}
+          disabled={nextDisabled || !isCurrent}
+          onClick={next}
+        >
+          {nextLabel}
+        </Button>
+      </Box>
+    </>
   )
 }
 
@@ -86,10 +118,19 @@ function isPromise(thing) {
 }
 
 export default function Wizard(params) {
-  const { children, showAll = false, variant = 'progress', onPageChange } = params
+  const {
+    children,
+    showAll = false,
+    variant = 'progress',
+    onPageChange,
+    nextLabel,
+    prevLabel,
+  } = params
   const [currentStep, setCurrentStep] = React.useState(0)
   const [isInTransition, beInTransition] = React.useState(false)
   const totalSteps = children.length
+
+  console.log(params)
 
   React.useEffect(() => {
     onPageChange && onPageChange(currentStep)
@@ -174,6 +215,7 @@ export default function Wizard(params) {
         const nextDisabled =
           ichild === totalSteps - 1 || !!validationErrors || isInTransition
         if (!showAll && !isCurrent) return null
+
         return (
           <fieldset key={ichild} style={{ border: 'none' }} disabled={!isCurrent}>
             <DefaultWizardPage
@@ -184,6 +226,8 @@ export default function Wizard(params) {
                 isCurrent,
                 next,
                 prev,
+                nextLabel,
+                prevLabel,
                 nextDisabled,
                 prevDisabled,
               }}
