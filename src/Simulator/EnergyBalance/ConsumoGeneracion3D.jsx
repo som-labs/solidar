@@ -1,11 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Plotly objects
 import Plot from 'react-plotly.js'
 
 // MUI objects
-import { Box, Typography, Container, Tooltip } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import InfoIcon from '@mui/icons-material/InfoRounded'
 
 // REACT Solidar Components
@@ -143,7 +143,7 @@ export default function ConsumoGeneracion3D() {
       return parseInt(a)
     })
     openDialog({
-      children: <ProfileDay> {fecha} </ProfileDay>,
+      children: <ProfileDay diaActivo={fecha} onClose={closeDialog} />,
     })
   }
 

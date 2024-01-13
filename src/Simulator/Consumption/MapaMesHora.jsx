@@ -170,6 +170,22 @@ export default function MapaMesHora({ activo }) {
         ax: 12,
         ay: 12,
       },
+      //PENDIENTE: Resolver leyenda del grafico
+      // {
+      //   x: 25, // X-coordinate for the legend annotations
+      //   y: [1, 5, 10], // Y-coordinates for each legend entry
+      //   text: ['A', 'B', 'C'], // Text for each legend entry
+      //   mode: 'markers',
+      //   marker: {
+      //     size: [maxConsumoMes * 0.1, maxConsumoMes * 0.5, maxConsumoMes], // Sizes for the circles in the legend (change as per your data)
+      //     // sizemode: 'area', // Define marker size mode ('area' for the marker size in area)
+      //     // sizeref: 0.1, // Reference scale for marker sizes
+      //     symbol: 'circle', // Shape of the legend markers
+      //     opacity: 1, // Opacity of the legend markers
+      //     color: colores, // Color of the legend markers
+      //   },
+      //   //showlegend: false, // Hide default legend for the trace
+      // },
     ],
   }
 

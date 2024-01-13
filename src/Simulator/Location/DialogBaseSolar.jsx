@@ -47,9 +47,9 @@ export default function DialogBaseSolar({ data, onClose }) {
         setValues((prev) => ({
           ...prev,
           roofType: 'Horizontal',
-          inclinacionOptima: true,
+          inclinacionOptima: false,
           angulosOptimos: false,
-          inclinacion: '', //El angulo optimo definitivo lo dará PVGIS pero para la peninsula esta entre 31º y 32º
+          inclinacion: 20, //El angulo optimo definitivo lo dará PVGIS pero para la peninsula esta entre 31º y 32º. 20 es el recomendado por los instaladores
           requierePVGIS: true,
         }))
         featAcimut.setStyle(null)
@@ -214,6 +214,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                 }}
               />
               {/* PENDIENTE: hay que mejorar los iconos de los botones coplanar u horizontal */}
+              {/* PENDIENTE: agregar gráfico indicativo de la inclinacion */}
               <Box
                 sx={{
                   display: 'flex',

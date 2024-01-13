@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 // MUI objects
 import Box from '@mui/material/Box'
-import { Table, TableRow, TableCell } from '@mui/material'
+import { Table, TableRow, TableCell, Grid } from '@mui/material'
 import { Typography } from '@mui/material'
 
 // REACT Solidar Components
@@ -25,48 +25,56 @@ export default function DialogProperties({ data, onClose }) {
   }
   return (
     <>
-      <Box>
-        <Typography variant="h3">{t('DIALOG_PROPERTIES.  TITLE')}</Typography>
-      </Box>
-      <Box>
-        <Table id="tablaPropiedades">
-          {/* //class="table table-sm table-striped table-bordered text-end center"> */}
+      <Grid container>
+        <Grid container justifyContent="center" alignItems="center">
+          <Typography variant="h3" textAlign={'center'}>
+            {t('DIALOG_PROPERTIES.TITLE')}
+          </Typography>
+        </Grid>
+        <div style={{ overflowY: 'auto', width: '100%', maxHeight: '70vh' }}>
           {Object.entries(vectorPropiedades).map(([objName, objProps]) => (
             <>
-              {/* REVISAR: No respeta el style ni columnSpan */}
-              <TableRow
+              {/* Object row */}
+              <Grid
+                container
+                xs={12}
                 key={objName}
-                style={{ backgroundColor: 'rgba(220, 249, 233, 1)', height: '50px' }}
-                // sx={{ backgroundColor: 'rgba(220, 249, 233, 1)', height: 30 }}
+                alignItems="center"
+                justifyContent="center"
+                style={{
+                  backgroundColor: 'rgba(220, 249, 233, 1)',
+                  height: '50px',
+                  fontWeight: 'bold',
+                }}
               >
-                {/* class='table-info text-center'> */}
-                <TableCell style={{ columnSpan: 'all' }}>
-                  {' '}
-                  {t(objName + '.NAME')}
-                </TableCell>
-              </TableRow>
-              {objProps.map((prop) => (
-                <>
-                  {/* {console.log(prop.nombre, UTIL.campos[prop.nombre], prop.valor)} */}
-                  {UTIL.campos[prop.nombre] !== undefined &&
-                    UTIL.campos[prop.nombre].mostrar && (
-                      <TableRow key={objName + prop.nombre} style={{ height: '20px' }}>
-                        <TableCell>
-                          {/* //  class='text-start'>" */}
-                          {t(objName + '.PROP.' + prop.nombre)}
-                        </TableCell>
-                        <TableCell>
-                          {/* // "</td><td class='text-end'>" + */}
-                          {UTIL.formatoValor(prop.nombre, prop.valor)}
-                        </TableCell>
-                      </TableRow>
-                    )}
-                </>
-              ))}
+                {t(objName + '.NAME')}
+              </Grid>
+              {/* Property row */}
+              <Grid>
+                {objProps.map((prop) => (
+                  <>
+                    {UTIL.campos[prop.nombre] !== undefined &&
+                      UTIL.campos[prop.nombre].mostrar && (
+                        <Grid container direction="row">
+                          <Grid
+                            xs={6}
+                            key={objName + prop.nombre}
+                            style={{ height: '20px', padding: 8 }}
+                          >
+                            {t(objName + '.PROP.' + prop.nombre)}
+                          </Grid>
+                          <Grid item xs={6} style={{ padding: 8 }}>
+                            {UTIL.formatoValor(prop.nombre, prop.valor)}
+                          </Grid>
+                        </Grid>
+                      )}
+                  </>
+                ))}
+              </Grid>
             </>
           ))}
-        </Table>
-      </Box>
+        </div>
+      </Grid>
     </>
   )
 }

@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { Map, View } from 'ol'
 import TileLayer from 'ol/layer/Tile'
 import Overlay from 'ol/Overlay.js'
-import { getArea, getLength } from 'ol/sphere.js'
 import { OSM, Vector as VectorSource, XYZ } from 'ol/source'
 import { Style, Fill, Stroke } from 'ol/style'
 import VectorLayer from 'ol/layer/Vector'
@@ -15,12 +14,11 @@ import { transform, fromLonLat } from 'ol/proj'
 import { Draw } from 'ol/interaction'
 
 // MUI objects
-import { Button, Tooltip, Typography } from '@mui/material'
+import { Button, Tooltip, Typography, Box } from '@mui/material'
 
-// REACT Solidar Components
+//React global components
 import { BasesContext } from '../BasesContext'
 import DialogBaseSolar from './DialogBaseSolar'
-
 import { useDialog } from '../../components/DialogProvider'
 import { AlertContext } from '../components/Alert'
 
@@ -61,12 +59,14 @@ export default function MapComponent() {
         const dpy = floatPoint[1] - firstPoint[1]
 
         const rotationBase = Math.atan2(dy, dx)
-        const rotationFloat = Math.atan2(dpy, dpx)
         let rotation
-        if (rotationFloat > rotationBase) rotation = rotationBase + Math.PI / 2
+
+        let vecprod = dx * dpy - dy * dpx
+        if (vecprod > 0) rotation = rotationBase + Math.PI / 2
         else rotation = rotationBase - Math.PI / 2
 
         const radius = UTIL.distancia(floatPoint, fixPoint)
+
         floatPoint[0] = fixPoint[0] + radius * Math.cos(rotation)
         floatPoint[1] = fixPoint[1] + radius * Math.sin(rotation)
         newCoordinates[2] = floatPoint
@@ -108,18 +108,6 @@ export default function MapComponent() {
   let sketch
 
   /**
-   * The help tooltip element.
-   * @type {HTMLElement}
-   */
-  let helpTooltipElement
-
-  /**
-   * Overlay to show the help messages.
-   * @type {Overlay}
-   */
-  let helpTooltip
-
-  /**
    * The measure tooltip element.
    * @type {HTMLElement}
    */
@@ -133,7 +121,7 @@ export default function MapComponent() {
   /**
 
   /**
-   * Format tooltip output.
+   * Format tooltip text.
    * @param {Polygon} polygon The polygon.
    * @return {string} Formatted area.
    */
@@ -161,48 +149,22 @@ export default function MapComponent() {
     return output
   }
 
-  // const style = new Style({
-  //   fill: new Fill({
-  //     color: 'rgba(255, 255, 255, 0.2)',
-  //   }),
-  //   stroke: new Stroke({
-  //     color: 'rgba(0, 0, 0, 0.5)',
-  //     lineDash: [10, 10],
-  //     width: 2,
-  //   }),
-  //   image: new CircleStyle({
-  //     radius: 5,
-  //     stroke: new Stroke({
-  //       color: 'rgba(0, 0, 0, 0.7)',
-  //     }),
-  //     fill: new Fill({
-  //       color: 'rgba(255, 255, 255, 0.2)',
-  //     }),
-  //   }),
-  // })
-
-  function createHelpTooltip() {
-    if (helpTooltipElement) {
-      helpTooltipElement.parentNode.removeChild(helpTooltipElement)
-    }
-    helpTooltipElement = document.createElement('div')
-    helpTooltipElement.className = 'ol-tooltip hidden'
-    helpTooltip = new Overlay({
-      element: helpTooltipElement,
-      offset: [15, 0],
-      positioning: 'top-left',
-    })
-  }
-
   /**
    * Creates a new measure tooltip
    */
+
   function createMeasureTooltip() {
     if (measureTooltipElement) {
       measureTooltipElement.parentNode.removeChild(measureTooltipElement)
     }
+
+    const customStyle = {
+      lineHeight: '1',
+      color: 'blue',
+    }
+
     measureTooltipElement = document.createElement('div')
-    measureTooltipElement.className = 'ol-tooltip ol-tooltip-measure'
+    Object.assign(measureTooltipElement.style, customStyle)
     measureTooltip = new Overlay({
       element: measureTooltipElement,
       offset: [15, -15],
@@ -213,25 +175,18 @@ export default function MapComponent() {
   }
 
   createMeasureTooltip()
-  createHelpTooltip()
 
   baseInteraction.on('drawstart', (evt) => {
     drawing = true
-
     sketch = evt.feature
     const listener = sketch.getGeometry().on('change', function (evt) {
       const geom = evt.target
       const output = formatData(geom)
-      const vertices = geom.getCoordinates()[0]
-      measureTooltip.setPosition(vertices[0])
-      //tooltipCoord = geom.getInteriorPoint().getCoordinates()
       measureTooltipElement.innerHTML = output
-      //measureTooltip.setPosition(tooltipCoord)
     })
   })
 
   baseInteraction.on('drawend', () => {
-    helpTooltipElement.classList.add('hidden')
     measureTooltipElement.classList.add('hidden')
     measureTooltipElement.innerHTML = ' '
     sketch = null
@@ -246,22 +201,15 @@ export default function MapComponent() {
     if (evt.dragging) {
       return
     }
-    /** @type {string} */
-    let helpMsg = t('LOCATION.PROMPT_INICIO_CUMBRERA')
     if (sketch) {
       const geom = sketch.getGeometry().getCoordinates()[0]
-      if (geom.length < 2) {
-        helpMsg = t('LOCATION.PROMPT_INICIO_CUMBRERA')
-      } else if (geom.length < 3) {
-        helpMsg = t('LOCATION.PROMPT_CUMBRERA')
-      } else {
-        helpMsg = t('LOCATION.PROMPT_ANCHO')
+      if (geom.length > 1) {
+        if (geom[1][0] < geom[0][0]) measureTooltip.positioning = 'center-right'
+        else measureTooltip.positioning = 'center-left'
+        //console.log(measureTooltip.positioning)
       }
     }
-
-    helpTooltipElement.innerHTML = helpMsg
-    helpTooltip.setPosition(evt.coordinate)
-    helpTooltipElement.classList.remove('hidden')
+    measureTooltip.setPosition(evt.coordinate)
   }
 
   useEffect(() => {
@@ -327,7 +275,6 @@ export default function MapComponent() {
     } else {
       mapRef.current.setTarget(mapElement.current)
     }
-    mapRef.current.addOverlay(helpTooltip)
     mapRef.current.addOverlay(measureTooltip)
   }, [])
 
@@ -561,13 +508,15 @@ export default function MapComponent() {
 
   return (
     <>
+      <Box sx={{ mt: '1rem', ml: '1rem' }}>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('LOCATION.PROMPT_DRAW'),
+          }}
+        />
+      </Box>
       {/* El mapa */}
-      <Typography
-        variant="body"
-        dangerouslySetInnerHTML={{
-          __html: t('LOCATION.PROMPT_DRAW'),
-        }}
-      />
       <div
         ref={mapElement}
         className="map"

@@ -350,7 +350,7 @@ BASIC:
   LABEL_CANCEL: Cancel
   LABEL_SEND: Send
   LABEL_AVISO: Warning
-  main_TAB_cerrar: Close
+  LABEL_CLOSE: Close
   main_TAB_noMostrarMas: Do not show this message again
   valor_true: 'True'
   valor_false: 'False'

@@ -5,18 +5,20 @@ import { useTranslation } from 'react-i18next'
 import Plot from 'react-plotly.js'
 
 // MUI objects
-import { Box, Typography, Container } from '@mui/material'
+import { Box, Button } from '@mui/material'
+import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
 
-export default function ProfileDayConsumption(data) {
+export default function ProfileDayConsumption(props) {
   const { t } = useTranslation()
-  const [consumo] = useState(data.consumo)
+  const { diaActivo, onClose } = props
+  const [consumo] = useState(props.consumo)
 
-  if (data.diaActivo === undefined) return <></>
+  if (diaActivo === undefined) return <></>
 
-  const fecha = UTIL.fechaDesdeIndice(data.diaActivo)
+  const fecha = UTIL.fechaDesdeIndice(diaActivo)
   const dia = fecha[0]
   const mes = t(UTIL.nombreMes[fecha[1]])
   let horas = []
@@ -31,7 +33,7 @@ export default function ProfileDayConsumption(data) {
 
   const trace1 = {
     x: horas,
-    y: consumo.diaHora[data.diaActivo],
+    y: consumo.diaHora[diaActivo],
     type: 'scatter',
     showlegend: false,
     name: t('CONSUMPTION.HOOVER_MAPA_CONSUMO_MONTH_DAY'),
@@ -40,14 +42,14 @@ export default function ProfileDayConsumption(data) {
 
   const trace2 = {
     x: horas,
-    y: consumo.diaHora[data.diaActivo],
+    y: consumo.diaHora[diaActivo],
     type: 'bar',
     name: t('CONSUMPTION.HOOVER_MAPA_CONSUMO_MES_HORA'),
     showlegend: false,
     width: 0.1,
     hoverinfo: 'none',
     marker: {
-      color: consumo.diaHora[data.diaActivo],
+      color: consumo.diaHora[diaActivo],
       cmax: consumo.cMaximoAnual,
       cmin: 0,
       colorscale: colorProfile,
@@ -88,24 +90,35 @@ export default function ProfileDayConsumption(data) {
     displayModeBar: false,
   }
   return (
-    <Container>
-      <Box
-        sx={{
-          width: '100%',
-          mt: '2rem',
-          alignContent: 'center',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Typography variant="h5" align="center">
-          {t('CONSUMPTION.LABEL_TITLE_PROFILE_DAY', {
-            dia: dia,
-            mes: mes,
-          })}
-        </Typography>
+    <Box>
+      <DialogTitle>
+        {t('CONSUMPTION.LABEL_TITLE_PROFILE_DAY', {
+          dia: dia,
+          mes: mes,
+        })}
+      </DialogTitle>
+      <DialogContent>
+        {/* <Box
+          sx={{
+            width: '100%',
+            mt: '2rem',
+            alignContent: 'center',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        > */}
+        {/* <Typography variant="h5" align="center">
+            {t('CONSUMPTION.LABEL_TITLE_PROFILE_DAY', {
+              dia: dia,
+              mes: mes,
+            })}
+          </Typography> */}
         <Plot data={[trace1, trace2]} layout={layout} config={config} />
-      </Box>
-    </Container>
+        {/* </Box> */}
+      </DialogContent>
+      <DialogActions sx={{ mt: '1rem' }}>
+        <Button onClick={onClose}>{t('BASIC.LABEL_CLOSE')}</Button>
+      </DialogActions>
+    </Box>
   )
 }

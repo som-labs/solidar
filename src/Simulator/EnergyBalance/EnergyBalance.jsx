@@ -99,7 +99,6 @@ export default function EnergyBalanceStep() {
 
   return (
     <Container>
-      <Typography variant="h3">{t('ENERGY_BALANCE.TITLE')}</Typography>
       <Typography
         variant="body"
         dangerouslySetInnerHTML={{
