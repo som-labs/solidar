@@ -5,6 +5,9 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { Box } from '@mui/material'
 
+//React global components
+import { SLDRInfoBox } from '../../components/SLDRComponents'
+
 // REACT Solidar Components
 import ReduccionIBI from './ReduccionIBI'
 import SubvencionEU from './SubvencionEU'
@@ -15,7 +18,6 @@ import YearSaving from './YearSavings'
 import MonthSaving from './MonthSavings'
 import FinanceSummary from './FinanceSummary'
 import GraphAlternatives from './GraphAlternatives'
-import { SLDRInfoBox } from '../../components/SLDRComponents'
 
 export default function EconomicBalanceStep() {
   const { t } = useTranslation()
@@ -23,7 +25,6 @@ export default function EconomicBalanceStep() {
   return (
     <>
       <Container>
-        <Typography variant="h3">{t('ECONOMIC_BALANCE.TITLE')}</Typography>
         <Typography variant="body">{t('ECONOMIC_BALANCE.DESCRIPTION')}</Typography>
         <Box
           sx={{

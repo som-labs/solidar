@@ -124,7 +124,9 @@ export default function MapaDiaHora({ activo }) {
     setdiaActivo(dia)
 
     openDialog({
-      children: <ProfileDayConsumption consumo={consumo} diaActivo={dia} />,
+      children: (
+        <ProfileDayConsumption consumo={consumo} diaActivo={dia} onClose={closeDialog} />
+      ),
     })
   }
 
