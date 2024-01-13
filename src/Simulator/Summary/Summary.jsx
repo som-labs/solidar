@@ -1,9 +1,9 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 
+// MUI objects
 import { Typography, Container, Box, Paper } from '@mui/material'
 
-import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
+import { SLDRInfoBox } from '../../components/SLDRComponents'
 import SummaryAutoproduccion from './SummaryAutoproduccion'
 import SummaryConsumption from './SummaryConsumption'
 import SummaryEconomicBalance from './SummaryEconomicBalance'
@@ -17,7 +17,6 @@ const SummaryStep = () => {
     <>
       <Paper elevation={10} style={{ padding: 16 }}>
         <Container>
-          <Typography variant="h3">{t('SUMMARY.TITLE')}</Typography>
           <Typography variant="body">{t('SUMMARY.DESCRIPTION')}</Typography>
         </Container>
 

@@ -325,7 +325,7 @@ SUMMARY:
   DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
 
 BASIC:
-  main_TAB_cerrar: Tanca
+  LABEL_CLOSE: Tanca
   main_TAB_noMostrarMas: No torneu a mostrar aquest missatge
   valor_true: Verdadero
   valor_false: Falso

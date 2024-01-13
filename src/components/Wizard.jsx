@@ -20,6 +20,7 @@ function DefaultWizardPage(params) {
     showAll,
     ichild,
     isCurrent,
+    title,
     next,
     prev,
     prevDisabled = false,
@@ -47,11 +48,7 @@ function DefaultWizardPage(params) {
         >
           {prevLabel}
         </Button>
-        {validationErrors ? (
-          <Typography variant="body1" color="error">
-            {validationErrors}
-          </Typography>
-        ) : null}
+        {title ? <Typography variant="h3">{title}</Typography> : null}
         <Button
           variant="contained"
           endIcon={<ArrowForwardIosIcon />}
@@ -129,8 +126,6 @@ export default function Wizard(params) {
   const [currentStep, setCurrentStep] = React.useState(0)
   const [isInTransition, beInTransition] = React.useState(false)
   const totalSteps = children.length
-
-  console.log(params)
 
   React.useEffect(() => {
     onPageChange && onPageChange(currentStep)
@@ -212,6 +207,7 @@ export default function Wizard(params) {
         const isCurrent = ichild === currentStep
         const prevDisabled = ichild === 0 || isInTransition
         const validationErrors = callOrValue(child.props?.validate)
+        const title = child.props.title
         const nextDisabled =
           ichild === totalSteps - 1 || !!validationErrors || isInTransition
         if (!showAll && !isCurrent) return null
@@ -224,6 +220,7 @@ export default function Wizard(params) {
                 ichild,
                 showAll,
                 isCurrent,
+                title,
                 next,
                 prev,
                 nextLabel,

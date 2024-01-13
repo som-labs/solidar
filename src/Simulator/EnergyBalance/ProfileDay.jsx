@@ -4,20 +4,22 @@ import { useTranslation } from 'react-i18next'
 import Plot from 'react-plotly.js'
 
 // MUI objects
-import { Box, Typography, Container } from '@mui/material'
+import { Box, Button } from '@mui/material'
+import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
 
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
-export default function ProfileDay(diaActivo) {
+export default function ProfileDay(props) {
   const { t } = useTranslation()
+  const { diaActivo, onClose } = props
 
-  if (diaActivo.children[1].length === 0) {
+  if (!diaActivo) {
     return <></>
   }
 
-  let clickedDate = diaActivo.children[1]
+  let clickedDate = diaActivo
   let indexDay = UTIL.indiceDesdeDiaMes(clickedDate[0], clickedDate[1] - 1)
 
   const dia = clickedDate[0]
@@ -49,11 +51,11 @@ export default function ProfileDay(diaActivo) {
   const layout = {
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
-    autosize: true,
+    autosize: false,
     width: '100%',
     margin: {
       l: 50,
-      r: 170,
+      r: 70,
       b: 20,
       t: 20,
     },
@@ -90,21 +92,24 @@ export default function ProfileDay(diaActivo) {
   }
 
   return (
-    <Container>
-      <Box
-        sx={{
-          width: '100%',
-          mt: '2rem',
-          alignContent: 'center',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Typography variant="body" textAlign="center">
-          {t('Perfil diario de consumo y produccion ') + dia + '/' + mes}
-        </Typography>
+    <Box
+      sx={{
+        width: '100%',
+        mt: '2rem',
+        alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <DialogTitle>
+        {t('ENERGY_BALANCE.TITLE_GRAFICO_PROFILE', { dia: dia, mes: mes })}
+      </DialogTitle>
+      <DialogContent>
         <Plot data={[trace1, trace2]} layout={layout} config={config} />
-      </Box>
-    </Container>
+      </DialogContent>
+      <DialogActions sx={{ mt: '1rem', mb: '2rem' }}>
+        <Button onClick={onClose}>{t('BASIC.LABEL_CLOSE')}</Button>
+      </DialogActions>
+    </Box>
   )
 }
