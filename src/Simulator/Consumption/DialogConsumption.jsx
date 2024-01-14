@@ -1,3 +1,6 @@
+//import { useContext } from 'react'
+
+//Formik
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
 
@@ -15,6 +18,7 @@ import {
 import { MuiFileInput } from 'mui-file-input'
 
 // REACT Solidar Components
+//import { ConsumptionContext } from '../ConsumptionContext'
 import { SLDRInputField, SLDRTooltip } from '../../components/SLDRComponents'
 
 // Solidar objects
@@ -22,6 +26,7 @@ import * as UTIL from '../classes/Utiles'
 
 export default function DialogConsumption({ data, previous, onClose }) {
   const { t } = useTranslation()
+  //const { tipoConsumo, setTipoConsumo } = useContext(ConsumptionContext)
 
   const handleFile = (event, setValues) => {
     setValues((prevValues) => ({ ...prevValues, ['ficheroCSV']: event }))
@@ -42,7 +47,10 @@ export default function DialogConsumption({ data, previous, onClose }) {
       return errors
     } else {
       previous.forEach((tc) => {
-        if (tc.nombreTipoConsumo === values.nombreTipoConsumo) {
+        if (
+          tc.nombreTipoConsumo === values.nombreTipoConsumo &&
+          tc.idTipoConsumo != values.idTipoConsumo
+        ) {
           errors.nombreTipoConsumo = 'El nombre debe ser único'
           return errors
         }
@@ -74,7 +82,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
     >
       {({ values, setValues }) => (
         <Form>
-          <DialogTitle>{t('CONSUMPTION.TITLE_DIALOG_NEW_CONSUMPTION')}</DialogTitle>{' '}
+          <DialogTitle>{t('CONSUMPTION.TITLE_DIALOG_NEW_CONSUMPTION')}</DialogTitle>
           <DialogContent>
             <Box
               sx={{

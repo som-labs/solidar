@@ -31,6 +31,7 @@ class Consumo extends DiaHora {
     super()
 
     if (consumo === undefined) {
+      //Creacion del consumo global
       for (let _tc of TCB.TipoConsumo) {
         this.suma(_tc)
       }

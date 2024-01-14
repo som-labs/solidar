@@ -28,9 +28,21 @@ const ConsumptionContextProvider = ({ children }) => {
     return newData
   }
 
-  // Add base object to the bases state
+  /**
+   * Add or replace JS object tipo into the TipoConsumo array of ConsumptionContext
+   * @param {Object} tipo
+   */
   function addTCBTipoToState(tipo) {
-    setTipoConsumo((prevTipos) => [...prevTipos, hdrFill(tipo)])
+    const prevTipos = [...tipoConsumo]
+    const idxTC = prevTipos.findIndex((tc) => {
+      return tc.idTipoConsumo === tipo.idTipoConsumo
+    })
+    if (idxTC === -1) {
+      setTipoConsumo((prevTipos) => [...prevTipos, hdrFill(tipo)])
+    } else {
+      prevTipos.splice(idxTC, 1, hdrFill(tipo))
+      setTipoConsumo(prevTipos)
+    }
   }
 
   function validaTipoConsumo() {
