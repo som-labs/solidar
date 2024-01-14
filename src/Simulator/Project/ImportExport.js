@@ -180,10 +180,12 @@ async function importTipoConsumo(datosImportar) {
     let tTipo = new TipoConsumo(tipo)
     tTipo.transformaFechas()
     tTipo.fechaInicio = new Date(tTipo.fechaInicio)
+    tTipo.ficheroCSV = tTipo.nombreFicheroCSV
     UTIL.debugLog('importTipoConsumo - nuevo tipoConsumo creado', tTipo)
 
     // Insert into TCB
     TCB.TipoConsumo.push(tTipo)
+    TCB.TipoConsumo.ficheroCSV = TCB.TipoConsumo.nombreFicheroCSV
   })
   TCB.cambioTipoConsumo = true
 }

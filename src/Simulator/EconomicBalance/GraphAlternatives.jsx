@@ -284,7 +284,7 @@ export default function GraphAlternatives() {
       },
     )
   }
-  //PENDIENTE: decidir si el click permite cambiar los paneles
+  //LONGTERM: decidir si el click permite cambiar los paneles
   function handleClick(evt) {
     console.log(evt)
   }

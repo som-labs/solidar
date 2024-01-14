@@ -864,7 +864,7 @@ function obtenerPropiedades(objeto, nivel) {
       } else {
         if (campos[prop] !== undefined && campos[prop].mostrar)
           if (prop !== 'totalAnual' || actobj === 'Produccion')
-            //WARNING: este es un caso particular feo pero ver el PENDIENTE de arriba para entender
+            //WARNING: este es un caso particular feo pero obtenerPropiedades no devuelve pTotalAnual
             prop_val[actobj].push({ nombre: prop, valor: objeto[prop] })
       }
     } else {

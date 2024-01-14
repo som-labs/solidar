@@ -161,7 +161,6 @@ export default function BasesSummary() {
 
   function footerSummary() {
     // PENDIENTE: Cual debería ser el colorbackground de los boxes con informacion relevante */
-    //REVISAR: porque no funciona el className
     return (
       <SLDRFooterBox>
         <Typography

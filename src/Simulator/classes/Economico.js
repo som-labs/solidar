@@ -56,7 +56,7 @@ class Economico {
       this.idxTable[dia].ahorradoAutoconsumo = 0
       this.idxTable[dia].compensado = 0
 
-      //PENDIENTE: cambiar a calcular la fecha desde dia y no idxTable, solo debemos decidir que año se usa para saber sabados y domingos
+      //LONGTERM: cambiar a calcular la fecha desde dia y no idxTable, solo debemos decidir que año se usa para saber sabados y domingos
       let diaSemana = _tc.idxTable[dia].fecha.getDay()
 
       //Vamos a calcular el precio de la energia cada hora
@@ -289,7 +289,7 @@ class Economico {
       unFlow.ano = ++i
       unFlow.ahorro = this.ahorroAnual
       unFlow.previo = lastPendiente
-      unFlow.inversion = 0 //PENDIENTE: Cuidado probablemente en caso de prestamo cambie
+      unFlow.inversion = 0 //LONGTERM: Cuidado probablemente en caso de prestamo cambie
       if (i == 2) {
         //La subvención se cobra con suerte despues de un año
         unFlow.subvencion = (valorSubvencionEU * coefInversion) / 100

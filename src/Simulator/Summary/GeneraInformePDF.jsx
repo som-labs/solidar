@@ -8,7 +8,7 @@
  * History
  * v 01/04/2023 - Version inicial documentada para Solidar.3
  */
-//PENDIENTE: Nuevo diseño de informe
+//LONGTERM: Nuevo diseño de informe
 import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { BasesContext } from '../BasesContext'
