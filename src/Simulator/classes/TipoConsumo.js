@@ -26,14 +26,12 @@ class TipoConsumo extends DiaHora {
     super()
     this.idTipoConsumo //Probablemente no se use
     this.nombreTipoConsumo //Es la clave unica
-    this.fuente // CSV o REE
+    this.fuente // CSV, REE o DATADIS
     this.consumoAnualREE
+    this.tipoTarifaREE
     this.ficheroCSV
     this.nombreFicheroCSV
-
-    this.nombreTarifa //Por decidir si es necesairo duplicar o no
-    this.territorio //Por decidir si es necesairo duplicar o no
-    // this.tarifa = {} //Es un objeto Tarifa
+    this.options = {}
 
     //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto
     for (const objProp in tipo) {
@@ -41,49 +39,54 @@ class TipoConsumo extends DiaHora {
         this[objProp] = tipo[objProp]
       }
     }
+
+    this.options = this.selectCSVOptions(this.fuente)
   } // End constructor
 
   /**
-   *
-   * @param {*} nuevaFuente
+   * Function to define options ofor the diaHora.loadFromCsv method
+   * @param {string} fuente [CVS, REE, DATADIS]
+   * @returns
    */
-  resetFuente(nuevaFuente) {
-    this.inicializa()
-    this.fuente = nuevaFuente // CSV, REE o DATADIS
-    this.consumoAnualREE = ''
-    this.ficheroCSV = ''
-    this.nombreFicheroCSV = ''
+  selectCSVOptions(fuente) {
+    if (fuente === 'REE') {
+      return {
+        delimiter: ';',
+        decimal: '.',
+        fechaHdr: 'FECHA',
+        horaHdr: 'HORA',
+        valorArr: this.tipoTarifaREE,
+        factor: this.consumoAnualREE,
+      }
+    } else {
+      return {
+        delimiter: ';',
+        decimal: ',',
+        fechaHdr: 'FECHA',
+        horaHdr: 'HORA',
+        valorArr: ['CONSUMO', 'CONSUMO_KWH', 'AE_KWH'],
+        factor: 1,
+        metodo: 'PROMEDIO',
+        //Si la fuente es CSV de DATADIS loadcsv debera cambiar el formato de fecha de AAAA/MM/DD a DD/MM/AAAA
+        fechaSwp: fuente === 'DATADIS',
+      }
+    }
   }
 
-  /** Devuelve una fila para la tabla _tablaTipoConsumo
-   *
-   * @returns {row} para _tablaTipoConsumo
-   */
-  select_tablaTipoConsumo() {
-    let row = {}
-    row.idTipoConsumo = this.idTipoConsumo
-    row.nombreTipoConsumo = this.nombreTipoConsumo
-    row.fuente = this.fuente
-    row.consumoAnualREE = this.consumoAnualREE
-    row.nombreFicheroCSV = this.nombreFicheroCSV
-    row.cTotalAnual = this.cTotalAnual
-    return row
-  }
-  /**
-   * Devuelve un array con: select UNIQUE nombreTipoConsumo from TipoConsumo
-   * @returns {Array<string>} Nombres de los tipos de consumo definidos
-   */
-  // static selectNombreTipoConsumo () {
-  //       let _tipos = TCB.TipoConsumo.map( (tipoConsumo) => {return tipoConsumo.nombreTipoConsumo});
-  //       _tipos.push('Participe sin consumo');
-  //       _tipos.push(undefined);
-  //       _tipos.push('Borrar');
-  //       return _tipos;
-  // }
-
-  sintetizaTiposConsumo(tipo2, factor) {
-    if (factor === undefined) factor = 1
-    super.sintetizaDiaHora(tipo2, factor)
+  async loadTipoConsumoFromCSV(fuente, fichero) {
+    if (fuente !== this.fuente || fichero.name !== this.nombreFicheroCSV) {
+      this.inicializa()
+    }
+    let aStatus
+    await this.loadFromCSV(this.ficheroCSV, this.options)
+      .then((r) => {
+        aStatus = true
+      })
+      .catch((e) => {
+        alert(e)
+        aStatus = false
+      })
+    return aStatus
   }
 }
 export default TipoConsumo
