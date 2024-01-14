@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -7,6 +7,7 @@ import { Button, IconButton, Typography, Tooltip, Grid } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
+import EditIcon from '@mui/icons-material/Edit'
 import { DataGrid, GridToolbarContainer, GridActionsCellItem } from '@mui/x-data-grid'
 
 // REACT Solidar Components
@@ -27,11 +28,10 @@ import TipoConsumo from '../classes/TipoConsumo'
 export default function ConsumptionSummary() {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
-
   const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
   const { tipoConsumo, setTipoConsumo, preciosValidos, addTCBTipoToState } =
     useContext(ConsumptionContext)
-
+  const editing = useRef()
   const columns = [
     {
       field: 'nombreTipoConsumo',
@@ -90,6 +90,16 @@ export default function ConsumptionSummary() {
           label="ShowGraphs"
           onClick={(e) => deleteTC(e, params.row)}
         />,
+        <GridActionsCellItem
+          key={2}
+          icon={
+            <Tooltip title={t('LOCATION.TOOLTIP_EDITA_BASE')}>
+              <EditIcon />
+            </Tooltip>
+          }
+          label="Edit"
+          onClick={() => editTipoConsumo(params.row)}
+        />,
       ],
     },
   ]
@@ -98,9 +108,25 @@ export default function ConsumptionSummary() {
     return row.idTipoConsumo
   }
 
+  function editTipoConsumo(row) {
+    editing.current = true
+    //console.log('EDITING EDIT', editing)
+    openDialog({
+      children: (
+        <DialogConsumption
+          data={row}
+          previous={tipoConsumo}
+          onClose={(cause, formData) => endDialog(cause, formData)}
+        ></DialogConsumption>
+      ),
+    })
+  }
+
   function openNewConsumptionDialog() {
+    editing.current = false
+    // console.log('EDITING NEW', editing)
     const initialValues = {
-      nombreTipoConsumo: 'Consumo tipo ' + TCB.featIdUnico++,
+      nombreTipoConsumo: 'Consumo tipo ' + TCB.featIdUnico,
       fuente: 'CSV',
       ficheroCSV: null,
       consumoAnualREE: '',
@@ -109,142 +135,72 @@ export default function ConsumptionSummary() {
       children: (
         <DialogConsumption
           data={initialValues}
-          previous={tipoConsumo}
+          previous={tipoConsumo} //Needed to check duplicate name
           onClose={(cause, formData) => endDialog(cause, formData)}
         ></DialogConsumption>
       ),
     })
   }
 
-  async function cargaCSV(objTipoConsumo, ficheroCSV, fuente) {
-    TCB.cambioTipoConsumo = true
-    objTipoConsumo.inicializa()
-
-    objTipoConsumo.ficheroCSV = ficheroCSV
-    let opciones
-
-    if (fuente === 'REE') {
-      opciones = {
-        delimiter: ';',
-        decimal: '.',
-        fechaHdr: 'FECHA',
-        horaHdr: 'HORA',
-        valorArr: [TCB.tipoTarifa],
-        factor: objTipoConsumo.consumoAnualREE,
-      }
-    } else {
-      opciones = {
-        delimiter: ';',
-        decimal: ',',
-        fechaHdr: 'FECHA',
-        horaHdr: 'HORA',
-        valorArr: ['CONSUMO', 'CONSUMO_KWH', 'AE_KWH'],
-        factor: 1,
-        metodo: 'PROMEDIO',
-      }
-    }
-
-    //Si la fuente es DATADIS loadcsv debera cambiar el formato de fecha de AAAA/MM/DD a DD/MM/AAAA
-    opciones.fechaSwp = fuente === 'DATADIS'
-    let aStatus
-    await objTipoConsumo
-      .loadFromCSV(ficheroCSV, opciones)
-      .then((r) => {
-        aStatus = true
-      })
-      .catch((e) => {
-        alert(e)
-        aStatus = false
-      })
-    return aStatus
-  }
-
   async function endDialog(reason, formData) {
+    let nuevoTipoConsumo
+    let cursorOriginal
+
     if (reason === undefined) return
     if (reason === 'save') {
+      //Can reach this by saving new tipo consumo or editing existing one
       TCB.requiereOptimizador = true
       TCB.cambioTipoConsumo = true
 
-      let nuevoTipoConsumo = {
-        idTipoConsumo: TCB.featIdUnico,
-        nombreTipoConsumo: formData.nombreTipoConsumo,
-        fuente: formData.fuente,
-      }
+      if (editing.current) nuevoTipoConsumo = { idTipoConsumo: formData.idTipoConsumo }
+      else nuevoTipoConsumo = { idTipoConsumo: TCB.featIdUnico++ }
+
+      nuevoTipoConsumo.nombreTipoConsumo = formData.nombreTipoConsumo
+      nuevoTipoConsumo.fuente = formData.fuente
 
       if (nuevoTipoConsumo.fuente === 'REE') {
         nuevoTipoConsumo.consumoAnualREE = formData.consumoAnualREE
         nuevoTipoConsumo.ficheroCSV = await UTIL.getFileFromUrl('./datos/REE.csv')
         nuevoTipoConsumo.nombreFicheroCSV = ''
+        //Consumption profile of REE depends on TipoTarifa
+        nuevoTipoConsumo.tipoTarifaREE = TCB.tipoTarifa
       } else {
         nuevoTipoConsumo.consumoAnualREE = ''
         nuevoTipoConsumo.ficheroCSV = formData.ficheroCSV
         nuevoTipoConsumo.nombreFicheroCSV = formData.ficheroCSV.name
       }
-      let idxTC = TCB.TipoConsumo.push(new TipoConsumo(nuevoTipoConsumo)) - 1
-      let cursorOriginal = document.body.style.cursor
 
-      //Si se ha pasado un inputFile como argumento se carga
-      if (formData.ficheroCSV !== '') {
-        try {
-          let cargaResPromise = new Promise((resolve) => {
-            document.body.style.cursor = 'progress'
-            let res = cargaCSV(
-              TCB.TipoConsumo[idxTC],
-              TCB.TipoConsumo[idxTC].ficheroCSV,
-              TCB.TipoConsumo[idxTC].fuente,
-            )
-            resolve(res)
+      let astatus
+      let idxTC
+      cursorOriginal = document.body.style.cursor
+      document.body.style.cursor = 'progress'
+
+      //Will create a new TipoConsumo always, if editing will replace previous one by new one.
+      idxTC = TCB.TipoConsumo.push(new TipoConsumo(nuevoTipoConsumo)) - 1
+      astatus = await TCB.TipoConsumo[idxTC].loadTipoConsumoFromCSV(
+        formData.fuente,
+        formData.ficheroCSV,
+      )
+
+      if (astatus) {
+        if (editing.current) {
+          //Editando uno existente moveremos el recien creado a su posicion original
+          idxTC = TCB.TipoConsumo.findIndex((tc) => {
+            return tc.idTipoConsumo === formData.idTipoConsumo
           })
-          cargaResPromise
-            .then((respuesta) => {
-              if (respuesta) {
-                // nuevoTipoConsumo.cTotalAnual = TCB.TipoConsumo[idxTC].cTotalAnual
-                addTCBTipoToState(TCB.TipoConsumo[idxTC])
-                // setTipoConsumo((prevTipos) => [...prevTipos, nuevoTipoConsumo])
-                showGraphsTC(nuevoTipoConsumo)
-              } else {
-                console.log('cargaCSV devolvio error ', respuesta)
-                TCB.TipoConsumo.splice(idxTC, 1)
-              }
-              document.body.style.cursor = cursorOriginal
-            })
-            .catch((error) => {
-              console.log('cargaCSV catch ', error)
-              TCB.TipoConsumo.splice(idxTC, 1)
-              document.body.style.cursor = cursorOriginal
-            })
-        } catch (error) {
-          alert(error)
-          document.body.style.cursor = cursorOriginal
-          closeDialog()
+
+          TCB.TipoConsumo.splice(idxTC, 1, TCB.TipoConsumo.pop())
         }
+        addTCBTipoToState(TCB.TipoConsumo[idxTC])
+        showGraphsTC(nuevoTipoConsumo)
+      } else {
+        console.log('cargaCSV catch ')
+        TCB.TipoConsumo.pop()
       }
     }
+
+    document.body.style.cursor = cursorOriginal
     closeDialog()
-  }
-
-  //PENDIENTE: esta funcion es por si se puede editar el TC desde la tabla. Por ahora solo el nombre
-  function changeTC(params, event) {
-    switch (params.field) {
-      case 'nombreTipoConsumo':
-        cambiaNombreTipoConsumo(params.row, event.target.value)
-        break
-    }
-  }
-
-  /**
-   * Gestiona el cambio de nombre del TipoConsumo */
-  function cambiaNombreTipoConsumo(row, nuevoTipo) {
-    //PENDIENTE: Verificar duplicidad de nombre
-    let oldTipoConsumo = [...tipoConsumo]
-    const nIndex = oldTipoConsumo.findIndex((t) => {
-      return t.idTipoConsumo === row.idTipoConsumo
-    })
-
-    TCB.TipoConsumo[nIndex].nombreTipoConsumo = nuevoTipo
-    oldTipoConsumo[nIndex].nombreTipoConsumo = nuevoTipo
-    setTipoConsumo(oldTipoConsumo)
-    setActivo(TCB.TipoConsumo[nIndex])
   }
 
   // showGraphsTC recibe una fila del datagrid y activa el objeto TipoConsumo de TCB que correponde
@@ -372,9 +328,6 @@ export default function ConsumptionSummary() {
             disableColumnMenu
             sx={{
               mb: '1rem',
-            }}
-            onCellEditStop={(params, event) => {
-              changeTC(params, event)
             }}
             slots={{ toolbar: newConsumption, footer: footerSummary }}
           />
