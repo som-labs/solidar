@@ -11,9 +11,12 @@ import {
   MenuItem,
   Typography,
   FormControlLabel,
+  FormControl,
+  FormLabel,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Grid,
 } from '@mui/material'
 import { MuiFileInput } from 'mui-file-input'
 
@@ -26,10 +29,18 @@ import * as UTIL from '../classes/Utiles'
 
 export default function DialogConsumption({ data, previous, onClose }) {
   const { t } = useTranslation()
-  //const { tipoConsumo, setTipoConsumo } = useContext(ConsumptionContext)
+  console.log(data)
 
   const handleFile = (event, setValues) => {
     setValues((prevValues) => ({ ...prevValues, ['ficheroCSV']: event }))
+  }
+
+  const handleFuente = (event, values, setValues) => {
+    setValues((prev) => ({
+      ...prev,
+      ficheroCSV: '',
+      fuente: event.target.value,
+    }))
   }
 
   const handleCancel = () => {
@@ -99,7 +110,6 @@ export default function DialogConsumption({ data, previous, onClose }) {
                 object="TipoConsumo"
                 sx={{ flex: 1, mb: '1rem', textAlign: 'center' }}
               />
-
               <Typography
                 sx={{ mt: '1rem' }}
                 variant="body"
@@ -107,21 +117,27 @@ export default function DialogConsumption({ data, previous, onClose }) {
                   __html: t('TipoConsumo.DESCRIPTION_fuente'),
                 }}
               />
-              {/* PENDIENTE:posicionar label */}
-              <SLDRInputField
-                sx={{ width: 200, height: 50 }}
-                select
-                value={values.fuente}
-                name="fuente"
-                defaultValue="CSV"
-                object="TipoConsumo"
-                label="Tipo fichero fuente"
-              >
-                <MenuItem value={'CSV'}>CSV</MenuItem>
-                <MenuItem value={'DATADIS'}>DATADIS</MenuItem>
-                <MenuItem value={'REE'}>REE</MenuItem>
-              </SLDRInputField>
-              {/* </FormControl> */}
+
+              <FormControlLabel
+                labelPlacement="start"
+                control={
+                  <SLDRInputField
+                    sx={{ width: 200, height: 50 }}
+                    select
+                    value={values.fuente}
+                    name="fuente"
+                    defaultValue="CSV"
+                    object="TipoConsumo"
+                    label="Tipo fichero fuente"
+                    onChange={(event) => handleFuente(event, values, setValues)}
+                  >
+                    <MenuItem value={'CSV'}>CSV</MenuItem>
+                    <MenuItem value={'DATADIS'}>DATADIS</MenuItem>
+                    <MenuItem value={'REE'}>REE</MenuItem>
+                  </SLDRInputField>
+                }
+                label={t('TipoConsumo.PROP.fuente')}
+              />
 
               <Box
                 style={{
@@ -160,13 +176,26 @@ export default function DialogConsumption({ data, previous, onClose }) {
                     </ErrorMessage>
                   </>
                 ) : (
-                  <SLDRInputField
-                    type="text"
-                    object="TipoConsumo"
-                    unit="kWh"
-                    label={t('TipoConsumo.LABEL_consumoAnualREE')}
-                    name="consumoAnualREE"
-                  />
+                  <FormControl>
+                    <Grid
+                      container
+                      spacing={1}
+                      alignItems={'center'}
+                      justifyContent={'center'}
+                    >
+                      <Grid item>
+                        <FormLabel>{t('TipoConsumo.PROP.consumoAnualREE')}</FormLabel>
+                      </Grid>
+                      <Grid item>
+                        <SLDRInputField
+                          type="text"
+                          object="TipoConsumo"
+                          unit="kWh"
+                          name="consumoAnualREE"
+                        />
+                      </Grid>
+                    </Grid>
+                  </FormControl>
                 )}
               </Box>
             </Box>

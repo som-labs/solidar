@@ -24,7 +24,6 @@ import * as UTIL from '../classes/Utiles'
 import { formatoValor } from '../classes/Utiles'
 import TipoConsumo from '../classes/TipoConsumo'
 
-//PENDIENTE: Decidir si mostramos los datos en formato tabla o creamos boxes segun diseño de Clara
 export default function ConsumptionSummary() {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
@@ -32,6 +31,7 @@ export default function ConsumptionSummary() {
   const { tipoConsumo, setTipoConsumo, preciosValidos, addTCBTipoToState } =
     useContext(ConsumptionContext)
   const editing = useRef()
+
   const columns = [
     {
       field: 'nombreTipoConsumo',
@@ -88,7 +88,7 @@ export default function ConsumptionSummary() {
             </Tooltip>
           }
           label="ShowGraphs"
-          onClick={(e) => deleteTC(e, params.row)}
+          onClick={(e) => deleteTipoConsumo(e, params.row)}
         />,
         <GridActionsCellItem
           key={2}
@@ -110,6 +110,7 @@ export default function ConsumptionSummary() {
 
   function editTipoConsumo(row) {
     editing.current = true
+    console.log(row.nombreFicheroCSV)
     //console.log('EDITING EDIT', editing)
     openDialog({
       children: (
@@ -122,7 +123,7 @@ export default function ConsumptionSummary() {
     })
   }
 
-  function openNewConsumptionDialog() {
+  function createTipoConsumo() {
     editing.current = false
     // console.log('EDITING NEW', editing)
     const initialValues = {
@@ -212,7 +213,7 @@ export default function ConsumptionSummary() {
     )
   }
 
-  function deleteTC(ev, tc) {
+  function deleteTipoConsumo(ev, tc) {
     ev.stopPropagation()
     let prevTipoConsumo = [...tipoConsumo]
     const nIndex = prevTipoConsumo.findIndex((t) => {
@@ -236,7 +237,7 @@ export default function ConsumptionSummary() {
           <Button
             variant="contained"
             startIcon={<AddIcon />}
-            onClick={openNewConsumptionDialog}
+            onClick={createTipoConsumo}
             size="medium"
           >
             {t('CONSUMPTION.LABEL_BUTTON_NUEVO_TIPOCONSUMO')}
@@ -273,32 +274,6 @@ export default function ConsumptionSummary() {
             </IconButton>
           </Grid>
         </Grid>
-
-        {/* <Typography
-          variant="h6"
-          sx={{
-            textAlign: 'center',
-          }}
-          textAlign={'center'}
-          dangerouslySetInnerHTML={{
-            __html: t('CONSUMPTION.TOTAL_DEMMAND', {
-              consumoTotal: formatoValor(
-                'energia',
-                Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
-              ),
-            }),
-          }}
-        />
-        <Tooltip title={t('CONSUMPTION.TOOLTIP_BUTTON_TOTAL_DEMMAND')} placement="top">
-          <IconButton
-            variant="contained"
-            size="small"
-            onClick={showGraphTotales}
-            sx={{ display: 'inline' }}
-          >
-            <AnalyticsIcon />
-          </IconButton>
-        </Tooltip> */}
       </SLDRFooterBox>
     )
   }
