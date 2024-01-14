@@ -74,9 +74,9 @@ class TipoConsumo extends DiaHora {
   }
 
   async loadTipoConsumoFromCSV(fuente, fichero) {
-    if (fuente !== this.fuente || fichero.name !== this.nombreFicheroCSV) {
-      this.inicializa()
-    }
+    //if (fuente !== this.fuente || fichero.name !== this.nombreFicheroCSV) {
+    this.inicializa()
+    //}
     let aStatus
     await this.loadFromCSV(this.ficheroCSV, this.options)
       .then((r) => {

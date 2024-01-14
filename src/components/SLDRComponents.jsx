@@ -7,6 +7,9 @@ import {
   Typography,
   Tooltip,
 } from '@mui/material'
+//Formik
+import { ErrorMessage } from 'formik'
+
 //DEMO
 import CollapsibleCard from '../Simulator/components/CollapsibleCard'
 
@@ -148,10 +151,13 @@ function SLDRInputField({ unit, object, MUIType, ...props }) {
           <Checkbox {...field} {...sxFull} />
         </SLDRTooltip>
       )}
-
       {meta.error ? (
-        <div style={{ color: 'red', display: 'inline' }}>{meta.error}</div>
+        <ErrorMessage name={props.name}>
+          {(msg) => <div style={{ color: 'red' }}>{msg}</div>}
+        </ErrorMessage>
       ) : null}
+
+      {/* {meta.error ? <div style={{ color: 'red' }}>{meta.error}</div> : null} */}
     </>
   )
 }
