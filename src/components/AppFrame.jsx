@@ -1,19 +1,39 @@
-import React from 'react'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
+
 import ColorModeButton from './ColorModeButton'
 import LanguageMenu from './LanguageMenu'
 import PagesMenu from './PagesMenu'
 import PagesButtons from './PagesButtons'
 import Footer from './Footer'
+
+import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { ScrollRestoration } from 'react-router-dom'
 
+import { AlertContext } from '../Simulator/components/Alert'
+import ParametersMenu from '../Simulator/Parameters/ParametersMenu'
+import ContactMenu from '../Simulator/Contact/ContactMenu'
+import InLineHelp from '../Simulator/InLineHelp/InLineHelp'
+import ProjectMenu from '../Simulator/Project/ProjectMenu'
+import { getParametrosEntrada } from '../Simulator/classes/Utiles'
+
 export default function AppFrame({ children }) {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
+
+  const { setInLineHelp } = useContext(AlertContext)
+
+  useEffect(() => {
+    //DEMO: Detalle
+    const a = getParametrosEntrada('inLineHelp')
+
+    if (a.length >= 0) setInLineHelp(true)
+    else setInLineHelp(false)
+  }, [])
+
   const navigate = useNavigate()
 
   const title = 'Solidar'
@@ -75,10 +95,13 @@ export default function AppFrame({ children }) {
               },
             }}
           />
-
           {/* Tool buttons */}
           <ColorModeButton />
           <LanguageMenu />
+          <ParametersMenu />
+          <ContactMenu />
+          <ProjectMenu />
+          <InLineHelp />
         </Toolbar>
       </AppBar>
       <Box sx={{ minHeight: 'calc( 100vh - 7rem )' }}>{children}</Box>
