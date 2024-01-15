@@ -24,7 +24,7 @@ function gestionGraficos( accion) {
   }
 
 function inicializaEventos() {
-
+    return true;
 }
 
 function valida() {

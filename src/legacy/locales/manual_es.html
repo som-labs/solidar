@@ -8,524 +8,459 @@
 
     <title>Manual de usuario de Solidar 3.2</title>
 
-    <!-- Bootstrap CSS CDN -->
-
-        <!-- Bootstrap -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <script src = "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> 
-
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href="./manual.css">
-    <!-- Scrollbar Custom CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-
 </head>
 
 <body>
-
-    <div class="wrapper">
-        <!-- Sidebar  -->
-        <nav id="sidebar">
-            <div class="sidebar-header">
+    <div class="row">
+        <div class="col-md-2">
+            <div id="indice">
                 <h3>Manual usuario<br>Solidar</h3>
+                <nav id="indice" class="h-100 flex-column align-items-stretch border-end">
+                <nav class="nav nav-pills flex-column">
+                    <a class="nav-link" href="#Descripcion">Descripción</a>
+                    <a class="nav-link" href="#DescripcionLocalizacion">Localizacion</a>
+                    <nav class="nav nav-pills flex-column">
+                        <a class="nav-link ms-3" href="#Proyecto">El proyecto</a>
+                        <a class="nav-link ms-3" href="#Mapa">El mapa</a>
+                        <nav class="nav nav-pills flex-column">
+                            <a class="nav-link ms-5" href="#PuntoConsumo">Punto Consumo</a>
+                            <a class="nav-link ms-5" href="#BaseSolar">Base Solar</a>
+                            <a class="nav-link ms-5" href="#Deshacer">Deshacer</a>
+                            <a class="nav-link ms-5" href="#Vista">Vista</a>
+                        </nav>
+                        <a class="nav-link ms-3 my-1" href="#Tablas">Las tablas</a>
+                        <nav class="nav nav-pills flex-column">
+                            <a class="nav-link ms-5" href="#TablaPuntoConsumo">Punto Consumo</a>
+                            <a class="nav-link ms-5" href="#TablaBaseSolar">Base Solar</a>
+                        </nav>
+                    </nav>
+                    <a class="nav-link" href="#DescripcionTipoConsumo">Tipos de consumo</a>
+                    <a class="nav-link" href="#DescripcionFincas">Participes</a>
+                    <a class="nav-link" href="#DescripcionResultados">Balance energía</a>
+                    <a class="nav-link" href="#DescripcionReparto">Reparto</a>
+                    <a class="nav-link" href="#DescripcionEconomico">Balance económico</a>
+                    <a class="nav-link" href="#DescripcionGraficos">Gráficos</a>
+                    <a class="nav-link" href="#DescripcionResumen">Resumen</a>
+                    <a class="nav-link" href="#DescripcionParametros">Parámetros</a>
+                    <a class="nav-link" href="#DescricpionHucha">La hucha</a>
+                    <a class="nav-link" href="https://youtu.be/3jApoNuasYk" target="_blank">Demostración de uso</a>
+                    <a class="nav-link" href="#DescripcionContacto">Contacto</a>
+                </nav>
             </div>
-            <ul class="list-unstyled components">
-                <li><a href="#Descripcion">Descripción</a></li>
-                <li>
-                    <a href="#Localizacion" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"
-                    data-bs-target=".multi-collapse" aria-controls="Localizacion DescripcionLocalizacion">Localizacion</a>
+        </div>
 
-                    <ul class="collapse list-unstyled multi-collapse" id="Localizacion">
-                        <li><a href="#DescripcionLocalizacion">Descripción</a></li>
-                        <li><a href="#Proyecto">El proyecto</a></li>
-                        <li><a href="#Mapa" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">El mapa</a>
-                            <ul class="collapse list-unstyled" id="Mapa">
-                                <li><a href="#PuntoConsumo">-- Punto Consumo</a></li>
-                                <li><a href="#BaseSolar">-- Base Solar</a></li>
-                                <li><a href="#Deshacer">-- Deshacer</a></li>
-                                <li><a href="Vista.html" target="content">-- Vista</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#Tablas" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Las tablas</a>
-                            <ul class="collapse list-unstyled" id="Tablas">
-                                <li><a href="#TablaPuntoConsumo">-- Punto Consumo</a></li>
-                                <li><a href="#TablaBaseSolar">-- Base Solar</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li><a href="#DescripcionTipoConsumo">Tipos de consumo</a></li>
-                <li><a href="#DescripcionFincas">Participes</a></li>
-                <li><a href="#DescripcionResultados">Balance energía</a></li>
-                <li><a href="#DescripcionReparto">Reparto</a></li>
-                <li><a href="#DescripcionEconomico">Balance económico</a></li>
-                <li><a href="#DescripcionGraficos">Gráficos</a></li>
-                <li><a href="#DescripcionResumen">Resumen</a></li>
-                <li><a href="#DescripcionParametros">Parámetros</a></li>
-                <li><a href="#DescricpionHucha">La hucha</a></li>
-                <li><a href="https://youtu.be/3jApoNuasYk" target="_blank">Demostración de uso</a></li>
-                <li><a href="#DescripcionContacto">Contacto</a></li>
-            </ul>
-        </nav>
+        <div class="col-9">
+            <div id="content" data-bs-spy="scroll" data-bs-target="#indice" data-bs-smooth-scroll="true" 
+            tabindex="0">
+                <img src="../datos/logo.png" class="float-end" style="width:220px;height:90px;" alt="SOM Energia Madrid">
 
-        <!-- Page Content  -->
-        <div id="content">
-
-<!--        <nav class="navbar navbar-expand-lg navbar-light bg-light"> -->
-                <div class="container-fluid">
-
-                    <button type="button" id="sidebarCollapse" class="btn" style="background-color: rgb(67, 225, 172);">
-                        <i class="fas fa-align-left"></i>
-                        <span>Ver / Ocultar índice</span>
-                    </button>
-                    <img src="../datos/logo.png" class="float-end" style="width:220px;height:90px;" alt="SOM Energia Madrid">
-
-<!--                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="nav navbar-nav ml-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                        </ul>
-                    </div> -->
+                <div id="Descripcion">
+                    <h2></br>Manual de usuario de Solidar</h2>
+                    <p>El objetivo de este simulador es dar información a un usuario que desea realizar una instalación fotovoltaica de uso individual o colectivo (bloques de pisos), según sea el modo de activación, para que pueda decidir lo más objetivamente posible sobre las ventajas energéticas y económicas que puede obtener de la misma.</p>
+                    <p>Desde el punto de vista energético existen dos variables de entrada que determinan el comportamiento del sistema:</p>
+                    <ol>
+                    <li>Localización donde se realizará la instalación: a partir de las coordenadas geográficas de la instalación y, si fuera posible, las orientaciones vertical y horizontal de los paneles, se puede disponer de una estimación fiable del rendimiento energético a obtener en función de la época del año y las horas del día. Esta estimación se obtiene del servicio <a href="https://joint-research-centre.ec.europa.eu/pvgis-online-tool/getting-started-pvgis_en">PHOTOVOLTAIC GEOGRAPHICAL INFORMATION SYSTEM (PVGIS)</a> de la Unión Europea.
+                    </li>
+                    <li>Características de los consumos que serán alimentados por la instalación: en este caso se pretende obtener la información individualizada del consumo horario anual a soportar. Esta información se puede obtener de la empresa distribuidora que suministra energía al promotor o si no fuera el caso se podrá asignar un perfil de consumo estándar definido por <a href="https://www.ree.es/es/clientes/generador/gestion-medidas-electricas/consulta-perfiles-de-consumo">Red Eléctrica de España (REE) según los perfiles finales de consumo derivados de los perfiles iniciales en función de la demanda real del sistema</a> y el consumo anual estimado de esta instalación concreta ponderado por el consumo anual registrado en la última factura.
+                    </li>
+                    </ol>
+                    <p>Con estos dos elementos de entrada, que se definirán en las dos primeras pestañas de la aplicación, <strong>Solidar</strong> realiza una propuesta inicial de paneles a instalar y dará toda la información en cuanto al balance energético.</p>
+                    <p>Desde el punto de vista económico las variables que definen el modelo son:</p>
+                    <ol>
+                        <li>El coste de la instalación: el sistema propone un precio de la instalación basada en una estadística propia pero que, dada la volatilidad del mercado, podría no estar ajustada a la realidad del momento o de la zona por lo que se puede corregir en el propio módulo de <strong>&lt;Balance Económico&gt;</strong>.</li>
+                        <li>La tarifa: en el módulo <strong>&lt;Tipo de consumo&gt;</strong> se debe definir el tipo de tarifa (2.0TD o 3.0TD) contratada, los precios del kWh en cada rango horario y el precio con el que la comercializadora compensa la energía vertida a la red.</li>
+                        <li>Subvenciones y bonificaciones: en el módulo <strong>&lt;Balance Económico&gt;</strong> se pueden definir las posibles subvenciones y bonificaciones, normalmente en el impuesto de bienes inmuebles (IBI), de las que se podría beneficiar el proyecto.</li>
+                        <li>Batería virtual o hucha: aunque la ley limita la cantidad de energía remunerable vertida a la red por la comercializadora, algunas empresas ofrecen la posibilidad de utilizar un modelo llamado bateria virtual o hucha por el que excedentes no compensados en una factura se pueden compensar en facturas futuras. Esta modalidad se activa al indicar en los <strong>&lt;Parametros&gt;</strong> el valor <strong>&lt;Coeficiente de transferencia hucha&gt;</strong> a un porcentaje que representa el valor del excedente que cada mes pasa a formar parte de la hucha. En el modo colectivo esta porcentaje se define a nivel de cada participe en el módulo <strong>&lt;Participes&gt;</strong></li>
+                    </ol>
+                    <p>Con estas variables el sistema hace el cálculo de la tabla de amortización del proyecto e informa de los valores de tasa interna de retorno y valor actual neto.</p>
+                    <p>Independientemente de la propuesta original el usuario podrá cambiar la configuración de la instalación y ver cómo cambian los resultados en tiempo real.</p>
+                    <p>La interfaz de usuario de <strong>Solidar</strong> incluye un menú situado en la parte superior derecha desde donde se pueden seleccionar las siguientes opciones:</p>
+                    <div><i class="fa fa-floppy-o fa-fw"></i>&nbsp; 
+                    Salvar un proyecto en formato Solimp para futuras importaciones.</div>
+                    <div><i class="fa fa-envelope-o fa-fw"></i>&nbsp; 
+                    Formulario de contacto desde donde nos puedes enviar tus comentarios, así como informar de posibles errores o mejoras que consideres oportunas.</div>
+                    <div><i class="fa fa-file-pdf-o fa-fw"></i>&nbsp; 
+                    Genera un informe en PDF de la simulación activa.</div>
+                    <div><i class="fa fa-cog fa-fw"></i>&nbsp; 
+                    Herramientas para cambiar alguno de los <a href="#parametros">parámetros</a> utilizados por la aplicación.</div>
+                    <div><i class="fa fa-info fa-fw"></i>&nbsp; 
+                    Abre este documento.</div>
+                    <div><i class="fa fa-question-circle-o fa-fw"></i>&nbsp; 
+                    Habilita un panel a la derecha de la pantalla con una guía explicativa de la pestaña en la que te encuentres en ese momento.</div>
+                    <br>
+                    <p>El simulador puede funcionar en varios idiomas. Por ahora español-castellano (es), ingles (en), catalán (ca), gallego (ga) y euskera (eu). La interfaz de usuario que aparece al iniciar la sesión es la última que se hubiera utilizado en el mismo equipo, en caso de no existir una sesión previa será la del navegador o la que se indique con el argumento lng=[es, ca, en, ga, eu] en la url de activación.</p>
+                    <p>Se pueden hacer varios ciclos de pruebas cambiando la configuración de la instalación <strong>&lt;Paneles&gt;</strong> o <strong>&lt;Potencia por panel&gt;</strong>. Este cambio se puede hacer desde la pestaña <strong>&lt;Balance energía&gt;</strong> o desde el gráfico de alternativas en la pestaña <strong>&lt; Balance económico&gt;</strong> en el modo INDIVIDUAL. La aplicación realizará los cálculos correspondientes de forma automática.</p>
+                    <p><strong>Solidar</strong> está estructurado en unos módulos (pestañas) que se describen a continuación en este manual y que deben ser ejecutados en orden.</p>
                 </div>
-<!--             </nav> -->
 
-            <div id="Descripcion">
-                <h2></br>Manual de usuario de Solidar</h2>
-                <p>El objetivo de este simulador es dar información a un usuario que desea realizar una instalación fotovoltaica de uso individual o colectivo (bloques de pisos), según sea el modo de activación, para que pueda decidir lo más objetivamente posible sobre las ventajas energéticas y económicas que puede obtener de la misma.</p>
-                <p>Desde el punto de vista energético existen dos variables de entrada que determinan el comportamiento del sistema:</p>
-                <ol>
-                  <li>Localización donde se realizará la instalación: a partir de las coordenadas geográficas de la instalación y, si fuera posible, las orientaciones vertical y horizontal de los paneles, se puede disponer de una estimación fiable del rendimiento energético a obtener en función de la época del año y las horas del día. Esta estimación se obtiene del servicio <a href="https://joint-research-centre.ec.europa.eu/pvgis-online-tool/getting-started-pvgis_en">PHOTOVOLTAIC GEOGRAPHICAL INFORMATION SYSTEM (PVGIS)</a> de la Unión Europea.
-                  </li>
-                  <li>Características de los consumos que serán alimentados por la instalación: en este caso se pretende obtener la información individualizada del consumo horario anual a soportar. Esta información se puede obtener de la empresa distribuidora que suministra energía al promotor o si no fuera el caso se podrá asignar un perfil de consumo estándar definido por <a href="https://www.ree.es/es/clientes/generador/gestion-medidas-electricas/consulta-perfiles-de-consumo">Red Eléctrica de España (REE) según los perfiles finales de consumo derivados de los perfiles iniciales en función de la demanda real del sistema</a> y el consumo anual estimado de esta instalación concreta ponderado por el consumo anual registrado en la última factura.
-                  </li>
-                </ol>
-                <p>Con estos dos elementos de entrada, que se definirán en las dos primeras pestañas de la aplicación, <strong>Solidar</strong> realiza una propuesta inicial de paneles a instalar y dará toda la información en cuanto al balance energético.</p>
-                <p>Desde el punto de vista económico las variables que definen el modelo son:</p>
-                <ol>
-                    <li>El coste de la instalación: el sistema propone un precio de la instalación basada en una estadística propia pero que, dada la volatilidad del mercado, podría no estar ajustada a la realidad del momento o de la zona por lo que se puede corregir en el propio módulo de <strong>&lt;Balance Económico&gt;</strong>.</li>
-                    <li>La tarifa: en el módulo <strong>&lt;Tipo de consumo&gt;</strong> se debe definir el tipo de tarifa (2.0TD o 3.0TD) contratada, los precios del kWh en cada rango horario y el precio con el que la comercializadora compensa la energía vertida a la red.</li>
-                    <li>Subvenciones y bonificaciones: en el módulo <strong>&lt;Balance Económico&gt;</strong> se pueden definir las posibles subvenciones y bonificaciones, normalmente en el impuesto de bienes inmuebles (IBI), de las que se podría beneficiar el proyecto.</li>
-                    <li>Batería virtual o hucha: aunque la ley limita la cantidad de energía remunerable vertida a la red por la comercializadora, algunas empresas ofrecen la posibilidad de utilizar un modelo llamado bateria virtual o hucha por el que excedentes no compensados en una factura se pueden compensar en facturas futuras. Esta modalidad se activa al indicar en los <strong>&lt;Parametros&gt;</strong> el valor <strong>&lt;Coeficiente de transferencia hucha&gt;</strong> a un porcentaje que representa el valor del excedente que cada mes pasa a formar parte de la hucha. En el modo colectivo esta porcentaje se define a nivel de cada participe en el módulo <strong>&lt;Participes&gt;</strong></li>
-                </ol>
-                <p>Con estas variables el sistema hace el cálculo de la tabla de amortización del proyecto e informa de los valores de tasa interna de retorno y valor actual neto.</p>
-                <p>Independientemente de la propuesta original el usuario podrá cambiar la configuración de la instalación y ver cómo cambian los resultados en tiempo real.</p>
-                <p>La interfaz de usuario de <strong>Solidar</strong> incluye un menú situado en la parte superior derecha desde donde se pueden seleccionar las siguientes opciones:</p>
-                <div><i class="fa fa-floppy-o fa-fw"></i>&nbsp; 
-                Salvar un proyecto en formato Solimp para futuras importaciones.</div>
-                <div><i class="fa fa-envelope-o fa-fw"></i>&nbsp; 
-                Formulario de contacto desde donde nos puedes enviar tus comentarios, así como informar de posibles errores o mejoras que consideres oportunas.</div>
-                <div><i class="fa fa-file-pdf-o fa-fw"></i>&nbsp; 
-                Genera un informe en PDF de la simulación activa.</div>
-                <div><i class="fa fa-cog fa-fw"></i>&nbsp; 
-                Herramientas para cambiar alguno de los <a href="#parametros">parámetros</a> utilizados por la aplicación.</div>
-                <div><i class="fa fa-info fa-fw"></i>&nbsp; 
-                Abre este documento.</div>
-                <div><i class="fa fa-question-circle-o fa-fw"></i>&nbsp; 
-                Habilita un panel a la derecha de la pantalla con una guía explicativa de la pestaña en la que te encuentres en ese momento.</div>
-                <br>
-                <p>El simulador puede funcionar en varios idiomas. Por ahora español-castellano (es), ingles (en), catalán (ca), gallego (ga) y euskera (eu). La interfaz de usuario que aparece al iniciar la sesión es la última que se hubiera utilizado en el mismo equipo, en caso de no existir una sesión previa será la del navegador o la que se indique con el argumento lng=[es, ca, en, ga, eu] en la url de activación.</p>
-                <p>Se pueden hacer varios ciclos de pruebas cambiando la configuración de la instalación <strong>&lt;Paneles&gt;</strong> o <strong>&lt;Potencia por panel&gt;</strong>. Este cambio se puede hacer desde la pestaña <strong>&lt;Balance energía&gt;</strong> o desde el gráfico de alternativas en la pestaña <strong>&lt; Balance económico&gt;</strong> en el modo INDIVIDUAL. La aplicación realizará los cálculos correspondientes de forma automática.</p>
-                <p><strong>Solidar</strong> está estructurado en unos módulos (pestañas) que se describen a continuación en este manual y que deben ser ejecutados en orden.</p>
-            </div>
+                <div id="DescripcionLocalizacion">
+                <h2><span style="text-decoration: underline;">Módulo Localización</span></h2>
+                <p>En este primer paso se identificarán las áreas en las que se podrían instalar paneles fotovoltaicos. Se pueden definir tantas como se considere oportuno, en el módulo de optimización el sistema realizará una asignación ordenada de paneles teniendo en cuenta la eficiencia de cada base.</p>
+                <p>Esta pestaña tiene tres áreas:</p>
+                </div>
 
-            <div id="DescripcionLocalizacion">
-            <h2><span style="text-decoration: underline;">Módulo Localización</span></h2>
-            <p>En este primer paso se identificarán las áreas en las que se podrían instalar paneles fotovoltaicos. Se pueden definir tantas como se considere oportuno, en el módulo de optimización el sistema realizará una asignación ordenada de paneles teniendo en cuenta la eficiencia de cada base.</p>
-            <p>Esta pestaña tiene tres áreas:</p>
-            </div>
+                <div id="Proyecto">
+                <h4>El proyecto</h4>
+                <p>Se podrá dar nombre al proyecto para hacer uso en futuras referencias y para que se incluya ese nombre en los informes. Desde este campo también se puede realizar la importación de un proyecto previamente salvado. Se debe tener en cuenta que el modo de ejecución, individual o colectivo deben coincidir con el fichero exportado.</p>
+                </div>
 
-            <div id="Proyecto">
-            <h4>El proyecto</h4>
-            <p>Se podrá dar nombre al proyecto para hacer uso en futuras referencias y para que se incluya ese nombre en los informes. Desde este campo también se puede realizar la importación de un proyecto previamente salvado. Se debe tener en cuenta que el modo de ejecución, individual o colectivo deben coincidir con el fichero exportado.</p>
-            </div>
+                <div id="Mapa">
+                <h4>El mapa</h4>
 
-            <div id="Mapa">
-            <h4>El mapa</h4>
+                <p>Mediante el desplazamiento en el mapa se podrá localizar la zona de interés con la ayuda del campo <strong>Localizar</strong> donde puedes escribir el nombre de la zona o calle y número. Es importante que incluyas la ciudad para evitar una larga lista de candidatos. También introduciendo directamente las coordenadas latitud, longitud en el campo <strong>Long-Lat</strong> correspondiente.</p>
 
-            <p>Mediante el desplazamiento en el mapa se podrá localizar la zona de interés con la ayuda del campo <strong>Localizar</strong> donde puedes escribir el nombre de la zona o calle y número. Es importante que incluyas la ciudad para evitar una larga lista de candidatos. También introduciendo directamente las coordenadas latitud, longitud en el campo <strong>Long-Lat</strong> correspondiente.</p>
-
-            <p>Una vez visualizada la zona de trabajo con la ayuda de la visualización satelite se puede identificar el tejado o azotea donde está planeada la instalación. En el caso que existan tejados con multiples orientaciones se puede dibujar un area para cada una de ellas. Se deben dibujar las bases solares, como mínimo una, en las que se pueden instalar los paneles y en el caso del modo colectivo un punto de consumo.</p>
-            <p>El mapa dispone de los siguientes comandos:</p>
-            </div>
+                <p>Una vez visualizada la zona de trabajo con la ayuda de la visualización satelite se puede identificar el tejado o azotea donde está planeada la instalación. En el caso que existan tejados con multiples orientaciones se puede dibujar un area para cada una de ellas. Se deben dibujar las bases solares, como mínimo una, en las que se pueden instalar los paneles y en el caso del modo colectivo un punto de consumo.</p>
+                <p>El mapa dispone de los siguientes comandos:</p>
+                </div>
             
-            <div id="PuntoConsumo">
-            <h5>Punto Consumo (Solo modo colectivo)</h5>
-            <p>Un punto de consumo es un lugar donde se consume energía eléctrica según un perfil horario anual.</p>
-            <p>El punto de consumo identifica la parcela en la que se realiza el consumo de la energía. Basta con identificar un punto en el mapa para que aparezca la fila correspondiente en la tabla debajo del mapa. Se puede verificar en la tabla de datos correspondiente que sea la dirección deseada si la zona está registrada por la DGC.</p>
-            </div>
+                <div id="PuntoConsumo">
+                <h5>Punto Consumo (Solo modo colectivo)</h5>
+                <p>Un punto de consumo es un lugar donde se consume energía eléctrica según un perfil horario anual.</p>
+                <p>El punto de consumo identifica la parcela en la que se realiza el consumo de la energía. Basta con identificar un punto en el mapa para que aparezca la fila correspondiente en la tabla debajo del mapa. Se puede verificar en la tabla de datos correspondiente que sea la dirección deseada si la zona está registrada por la DGC.</p>
+                </div>
 
-            <div id="BaseSolar">
-            <h5>Base solar</h5>
-            <p>En general una base de <strong>Solidar</strong> es un elemento en el que se produce energía eléctrica. Por ahora solo se dispone de bases solares, es decir se produce energía mediante el uso de paneles fotovoltaicos, pero en el futuro es posible que se incluyan bases de otro tipo como eólica, hidráulica o almacenamiento.</p>
-            <p>Una base solar se caracteriza por tener un área en la que se pueden instalar paneles.</p>
-            <p>Para crear una base solar es necesario indicar sobre el mapa tres puntos que definen un paralelogramo que delimita la zona de instalación y limita los metros cuadrados disponibles y por consiguiente el número de paneles a instalar. Una vez definida el área aparece una fila en la tabla que hay debajo del mapa, en la que tienes los datos de la base solar definida.</p>
-            </div>
+                <div id="BaseSolar">
+                <h5>Base solar</h5>
+                <p>En general una base de <strong>Solidar</strong> es un elemento en el que se produce energía eléctrica. Por ahora solo se dispone de bases solares, es decir se produce energía mediante el uso de paneles fotovoltaicos, pero en el futuro es posible que se incluyan bases de otro tipo como eólica, hidráulica o almacenamiento.</p>
+                <p>Una base solar se caracteriza por tener un área en la que se pueden instalar paneles.</p>
+                <p>Para crear una base solar es necesario indicar sobre el mapa tres puntos que definen un paralelogramo que delimita la zona de instalación y limita los metros cuadrados disponibles y por consiguiente el número de paneles a instalar. Una vez definida el área aparece una fila en la tabla que hay debajo del mapa, en la que tienes los datos de la base solar definida.</p>
+                </div>
 
-            <div id="Deshacer">
-            <h5>Deshacer</h5>
-            <p>Mientras se dibuja una base solar se puede eliminar el último punto dado. No es posible deshacer el punto una vez cerrado el paralelogramo de la base.</p>
-            </div>
+                <div id="Deshacer">
+                <h5>Deshacer</h5>
+                <p>Mientras se dibuja una base solar se puede eliminar el último punto dado. No es posible deshacer el punto una vez cerrado el paralelogramo de la base.</p>
+                </div>
 
-            <div id="Vista">
-            <h5>Vista</h5>
-            <p>Este comando permite intercambiar la vista entre modo satélite o cartográfico.</p>
-            </div>
+                <div id="Vista">
+                <h5>Vista</h5>
+                <p>Este comando permite intercambiar la vista entre modo satélite o cartográfico.</p>
+                </div>
 
-            <div id="Tablas">
-            <h4>Las Tablas</h4>
-            <p>Debajo del mapa existe una zona en la que se muestran los datos de los objetos definidos en el mapa. Seleccionando el comando Punto Consumo se ven los puntos de consumo y seleccionando base solar se ven las filas de las correspondientes bases.</p>
-            <p>Desde estas tablas se puede terminar de configurar los objetos.</p>
-            </div>
+                <div id="Tablas">
+                <h4>Las Tablas</h4>
+                <p>Debajo del mapa existe una zona en la que se muestran los datos de los objetos definidos en el mapa. Seleccionando el comando Punto Consumo se ven los puntos de consumo y seleccionando base solar se ven las filas de las correspondientes bases.</p>
+                <p>Desde estas tablas se puede terminar de configurar los objetos.</p>
+                </div>
 
-            <div id="TablaPuntoConsumo">
-            <h5>Punto Consumo (solo modo Colectivo)</h5>
-            <ul>
-            <li><strong>Nombre:</strong>Dado al punto de consumo. Es una simple identificación.</li>
-            <li><strong>Long-Lat:</strong> Coordenadas geográficas del punto definido</li>
-            <li><strong>Referencia Catastral:</strong> Obtenida del servicio de la DGC. Si la zona no está servida por la DGC aparecerá el texto Sin catastro</li>
-            <li><strong>Dirección:</strong> La dirección oficial de la parcela en caso de estar cubierta por el servicio de DGC.
-            <li><strong>Territorio:</strong> Uno de los siguientes valores dependiendo de la zona: Peninsula, Canarias, Ceuta, Melilla o Baleares</li>
-            </ul>
-            </div>
+                <div id="TablaPuntoConsumo">
+                <h5>Punto Consumo (solo modo Colectivo)</h5>
+                <ul>
+                <li><strong>Nombre:</strong>Dado al punto de consumo. Es una simple identificación.</li>
+                <li><strong>Long-Lat:</strong> Coordenadas geográficas del punto definido</li>
+                <li><strong>Referencia Catastral:</strong> Obtenida del servicio de la DGC. Si la zona no está servida por la DGC aparecerá el texto Sin catastro</li>
+                <li><strong>Dirección:</strong> La dirección oficial de la parcela en caso de estar cubierta por el servicio de DGC.
+                <li><strong>Territorio:</strong> Uno de los siguientes valores dependiendo de la zona: Peninsula, Canarias, Ceuta, Melilla o Baleares</li>
+                </ul>
+                </div>
 
-            <div id="TablaBaseSolar">
-            <h5>Base solar</h5>
-            <ul>
-            <li><strong>Nombre:</strong> En el caso de existir mas de una base es conveniente asignarles un nombre ya que la aplicación asignará paneles a cada una de ellas y mostrará esa asignación basada en el nombre.</li>
-            <li><strong>Long-Lat: </strong>Coordenadas geográficas del centro del área definida</li>
-            <li><strong>Superficie en mapa:</strong> Superficie en m<sup>2</sup> medidos en el mapa sin tener en cuenta la inclinación del tejado.</li>
-            <li><strong>Inclinación del tejado:</strong> Si los paneles se instalan sobre un tejado inclinado aquí se debe indicar el ángulo del mismo con respecto a la horizontal del lugar. El sistema corregirá la superficie del área previamente calculada desde la proyección horizontal del mapa y en consecuencia el campo Potencia máxima admitida que se basa en el área real disponible.</li>
-            <li><strong>Area disponible:</strong> El área medida en el mapa corregida por la inclinación del tejado.</li>
-            <li><strong>Max. kWp: </strong>Es una estimación de la potencia pico máxima que se podría instalar en función del área disponible. Se utiliza un parámetro que se puede cambiar en <i class="fa fa-cog fa-fw"></i></li>
-            <li><strong>Inclinación del panel:</strong> Este es el ángulo con el que se instalarán los paneles medido a partir del tejado. Por ejemplo en un tejado inclinado con instalación coplanar se debe poner 0</li>
-            <li><strong>Inclinación óptima:</strong> En caso de que se desee que la aplicación calcule las inclinaciones óptimas marca esta casilla y no introducir ningún valor en los campos anteriores.</li>
-            <li><strong>Orientación (Acimut):</strong> En este campo indicaremos la orientación que los paneles tendrán respecto al sur geográfico. Puedes escribir el ángulo directamente en el campo o definirlo sobre el mapa con el botón <i class='fa fa-compass'></i> Seleccionando esta opción aparece una línea en el mapa que permite indicar cuál es la orientación posible de los paneles, teniendo en cuenta las condiciones del tejado. Este campo es de especial importancia a la hora de determinar la eficiencia de cada base.</li>
-            <li><strong>Angulos óptimos:</strong> Si se quiere que la aplicación calcule todos los ángulos óptimos se debe marca esta casilla y todos los anteriores serán ignorados.</li>
-            <li><a>Se puede utilizar el icono <i class='fa fa-trash-o'></i> para borrar la base correspondiente.</a></li>
-            </ul>
-            <p>Una vez definida la localización y configuración de las bases donde se instalarán los paneles se puede dar a la flecha "Siguiente" para pasar el próximo paso.</p>
-            </div>
+                <div id="TablaBaseSolar">
+                <h5>Base solar</h5>
+                <ul>
+                <li><strong>Nombre:</strong> En el caso de existir mas de una base es conveniente asignarles un nombre ya que la aplicación asignará paneles a cada una de ellas y mostrará esa asignación basada en el nombre.</li>
+                <li><strong>Long-Lat: </strong>Coordenadas geográficas del centro del área definida</li>
+                <li><strong>Superficie en mapa:</strong> Superficie en m<sup>2</sup> medidos en el mapa sin tener en cuenta la inclinación del tejado.</li>
+                <li><strong>Inclinación del tejado:</strong> Si los paneles se instalan sobre un tejado inclinado aquí se debe indicar el ángulo del mismo con respecto a la horizontal del lugar. El sistema corregirá la superficie del área previamente calculada desde la proyección horizontal del mapa y en consecuencia el campo Potencia máxima admitida que se basa en el área real disponible.</li>
+                <li><strong>Area disponible:</strong> El área medida en el mapa corregida por la inclinación del tejado.</li>
+                <li><strong>Max. kWp: </strong>Es una estimación de la potencia pico máxima que se podría instalar en función del área disponible. Se utiliza un parámetro que se puede cambiar en <i class="fa fa-cog fa-fw"></i></li>
+                <li><strong>Inclinación del panel:</strong> Este es el ángulo con el que se instalarán los paneles medido a partir del tejado. Por ejemplo en un tejado inclinado con instalación coplanar se debe poner 0</li>
+                <li><strong>Inclinación óptima:</strong> En caso de que se desee que la aplicación calcule las inclinaciones óptimas marca esta casilla y no introducir ningún valor en los campos anteriores.</li>
+                <li><strong>Orientación (Acimut):</strong> En este campo indicaremos la orientación que los paneles tendrán respecto al sur geográfico. Puedes escribir el ángulo directamente en el campo o definirlo sobre el mapa con el botón <i class='fa fa-compass'></i> Seleccionando esta opción aparece una línea en el mapa que permite indicar cuál es la orientación posible de los paneles, teniendo en cuenta las condiciones del tejado. Este campo es de especial importancia a la hora de determinar la eficiencia de cada base.</li>
+                <li><strong>Angulos óptimos:</strong> Si se quiere que la aplicación calcule todos los ángulos óptimos se debe marca esta casilla y todos los anteriores serán ignorados.</li>
+                <li><a>Se puede utilizar el icono <i class='fa fa-trash-o'></i> para borrar la base correspondiente.</a></li>
+                </ul>
+                <p>Una vez definida la localización y configuración de las bases donde se instalarán los paneles se puede dar a la flecha "Siguiente" para pasar el próximo paso.</p>
+                </div>
 
-            <div id="DescripcionTipoConsumo">
-            <h2><span style="text-decoration: underline;">Módulo Tipo Consumo</span></h2>
-            <p>En este módulo se definirán los perfiles de consumo asi como la tarifa actual del contrato con la empresa comercializadora.</p>
-            <p>La tabla de tipos de consumo incluye los siguientes campos:</p>       
+                <div id="DescripcionTipoConsumo">
+                <h2><span style="text-decoration: underline;">Módulo Tipo Consumo</span></h2>
+                <p>En este módulo se definirán los perfiles de consumo asi como la tarifa actual del contrato con la empresa comercializadora.</p>
+                <p>La tabla de tipos de consumo incluye los siguientes campos:</p>       
 
-            <ul>
-            <li><strong>Identificación del consumo:</strong> Aquí podrás dar un nombre al tipo de consumo que estás definiendo.</li>
-            <li><strong>Fuente:</strong> Existen dos formas de definir el perfil de consumo:
-                <ol>
-                <li>Mediante un fichero de tipo <strong>CSV (Valores separados por coma)</strong>: Se trata de un fichero que contiene el consumo de energía horario leído por el contador de la finca donde se realiza la instalación. Estos ficheros se pueden descargar de la <a href='../datos/Enlaces para descarga CSV individual.htm' target='_blank'> página web de la empresa distribuidora que provea la energía </a>(no tiene porque ser la comercializadora) y tienen un registro por cada hora del dia
-                que contiene entre otros los siguientes datos:
-                <br><br>
-                    <table style='border-collapse:collapse;border:none'>
-                    <tr>
-                    <td width=113 valign=top style='border:solid windowtext 1.0pt;
-                    padding:0cm 5.4pt 0cm 5.4pt'>
-                    <p style='margin-bottom:0cm;text-align:center;line-height:normal'>CUPS</p>
-                    </td>
-                     <td width=113 valign=top style='border:solid windowtext 1.0pt;
-                     padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center;line-height:normal'>Fecha</p>
-                     </td>
-                     <td width=151 valign=top style='border:solid windowtext 1.0pt;
-                     border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center;line-height:normal'>Hora</p>
-                     </td>
-                     <td width=369 valign=top style='border:solid windowtext 1.0pt;
-                     border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center;line-height:normal'>Consumo<sup>1</sup></p>
-                     </td>
-                    </tr>
-                    <tr>
-                    <td width=200 valign=center style='border:solid windowtext 1.0pt; border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
-                    <p style='margin-bottom:0cm;text-align:center; line-height:normal'>Identificador unico del punto de suministro</p>
-                    </td>
-                    <td width=113 valign=center style='border:solid windowtext 1.0pt;
-                     border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center;line-height:normal'>dd/mm/aaaa</p>
-                     </td>
-                     <td width=151 valign=center style='border-top:none;border-left:
-                     none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
-                     padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center; line-height:normal'>Numero entre 1 y 24</p>
-                     </td>
-                     <td width=369 valign=center style='border-top:none;border-left:
-                     none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
-                     padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center; line-height:normal'>Un número que indica el consumo en kWh</p>
-                     </td>
-                    </tr>
-                    </table>
-                    <p style='margin-left:10pt;text-indent:-10.0pt'>(1)La columna consumo puede tener distinto nombre según la distribuidora que genera el informe (los siguientes ya están gestionados por la aplicación: Consumo en Naturgy y Consumo_kWh en Iberdrola y AE_kWh en ENDESA). Si ves un nombre distinto en la cabecera te proponemos que lo cambies a alguno de estos y nos envíes un mensaje    mediante el formulario de contacto indicándonos cual es la distribuidora y que nombre de columna utiliza.</p>
-                    <p>Las empresas distribuidoras en España generan estos ficheros normalmente entre dos fechas que se pueden indicar. Para mayor fiabilidad de los resultados es importante que el periodo contenido en el fichero sea como mínimo de un año, puede ser más en cuyo caso la aplicación realizará el promedio de los registros que coincidan en dia y hora.</p>
-                    <p>Una vez que se disponga de un fichero de este tipo se debe cargar utilizando el campo <i class='fa fa-file-o'></i></p>
-                </li>
-                <li>Otra fuente de información similar a la anterior es <strong>DATADIS</strong>: <a href="https://datadis.es/home">DATADIS es una plataforma</a> creada por las empresas distribuidoras que unifica el proceso de obtener los ficheros CSV antes mencionados en un único formato. En este caso es:
+                <ul>
+                <li><strong>Identificación del consumo:</strong> Aquí podrás dar un nombre al tipo de consumo que estás definiendo.</li>
+                <li><strong>Fuente:</strong> Existen dos formas de definir el perfil de consumo:
+                    <ol>
+                    <li>Mediante un fichero de tipo <strong>CSV (Valores separados por coma)</strong>: Se trata de un fichero que contiene el consumo de energía horario leído por el contador de la finca donde se realiza la instalación. Estos ficheros se pueden descargar de la <a href='../datos/Enlaces para descarga CSV individual.htm' target='_blank'> página web de la empresa distribuidora que provea la energía </a>(no tiene porque ser la comercializadora) y tienen un registro por cada hora del dia
+                    que contiene entre otros los siguientes datos:
                     <br><br>
-                    <table>
-                    <tr>
-                    <td width=113 valign=top style='padding:0cm 5.4pt 0cm 5.4pt'>
-                    <p style='margin-bottom:0cm;text-align:center;line-height:normal'>cups</p>
-                    </td>
-                     <td width=113 valign=top style='padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center;line-height:normal'>fecha</p>
-                     </td>
-                     <td width=151 valign=top style='padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center;line-height:normal'>hora</p>
-                     </td>
-                     <td width=369 valign=top style='padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center;line-height:normal'>consumo_kW</p>
-                     </td>
-                     <td width=369 valign=top style='padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center;line-height:normal'>metodoObtencion</p>
-                     </td>
-                     <td width=369 valign=top style='padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center;line-height:normal'>energiaVertida_kWh</p>
-                     </td>
-                    </tr>
-                    <tr>
-                    <td width=200 valign=center style='padding:0cm 5.4pt 0cm 5.4pt'>
-                    <p style='margin-bottom:0cm;text-align:center; line-height:normal'>Identificador unico del punto de suministro</p>
-                    </td>
-                    <td width=115 valign=center style='padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center;line-height:normal'>dd/mm/aaaa</p>
-                     </td>
-                     <td width=120 valign=center style='padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center; line-height:normal'>hh:mm desde 1:00 hasta 24:00</p>
-                     </td>
-                     <td width=370 valign=center style='padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center; line-height:normal'>Un número que indica el consumo en kWh decimal con coma</p>
-                     </td>
-                     <td width=280 valign=center style='padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center; line-height:normal'>Metodo de medición</p>
-                     </td>
-                     <td width=370 valign=center style='padding:0cm 5.4pt 0cm 5.4pt'>
-                     <p style='margin-bottom:0cm;text-align:center; line-height:normal'>Un número que indica la energía vertida a la red en kWh decimal con coma</p>
-                     </td>
-                    </tr>
-                    </table>
+                        <table style='border-collapse:collapse;border:none'>
+                        <tr>
+                        <td width=113 valign=top style='border:solid windowtext 1.0pt;
+                        padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center;line-height:normal'>CUPS</p>
+                        </td>
+                        <td width=113 valign=top style='border:solid windowtext 1.0pt;
+                        padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center;line-height:normal'>Fecha</p>
+                        </td>
+                        <td width=151 valign=top style='border:solid windowtext 1.0pt;
+                        border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center;line-height:normal'>Hora</p>
+                        </td>
+                        <td width=369 valign=top style='border:solid windowtext 1.0pt;
+                        border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center;line-height:normal'>Consumo<sup>1</sup></p>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td width=200 valign=center style='border:solid windowtext 1.0pt; border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center; line-height:normal'>Identificador unico del punto de suministro</p>
+                        </td>
+                        <td width=113 valign=center style='border:solid windowtext 1.0pt;
+                        border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center;line-height:normal'>dd/mm/aaaa</p>
+                        </td>
+                        <td width=151 valign=center style='border-top:none;border-left:
+                        none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+                        padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center; line-height:normal'>Numero entre 1 y 24</p>
+                        </td>
+                        <td width=369 valign=center style='border-top:none;border-left:
+                        none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+                        padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center; line-height:normal'>Un número que indica el consumo en kWh</p>
+                        </td>
+                        </tr>
+                        </table>
+                        <p style='margin-left:10pt;text-indent:-10.0pt'>(1)La columna consumo puede tener distinto nombre según la distribuidora que genera el informe (los siguientes ya están gestionados por la aplicación: Consumo en Naturgy y Consumo_kWh en Iberdrola y AE_kWh en ENDESA). Si ves un nombre distinto en la cabecera te proponemos que lo cambies a alguno de estos y nos envíes un mensaje    mediante el formulario de contacto indicándonos cual es la distribuidora y que nombre de columna utiliza.</p>
+                        <p>Las empresas distribuidoras en España generan estos ficheros normalmente entre dos fechas que se pueden indicar. Para mayor fiabilidad de los resultados es importante que el periodo contenido en el fichero sea como mínimo de un año, puede ser más en cuyo caso la aplicación realizará el promedio de los registros que coincidan en dia y hora.</p>
+                        <p>Una vez que se disponga de un fichero de este tipo se debe cargar utilizando el campo <i class='fa fa-file-o'></i></p>
+                    </li>
+                    <li>Otra fuente de información similar a la anterior es <strong>DATADIS</strong>: <a href="https://datadis.es/home">DATADIS es una plataforma</a> creada por las empresas distribuidoras que unifica el proceso de obtener los ficheros CSV antes mencionados en un único formato. En este caso es:
+                        <br><br>
+                        <table>
+                        <tr>
+                        <td width=113 valign=top style='padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center;line-height:normal'>cups</p>
+                        </td>
+                        <td width=113 valign=top style='padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center;line-height:normal'>fecha</p>
+                        </td>
+                        <td width=151 valign=top style='padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center;line-height:normal'>hora</p>
+                        </td>
+                        <td width=369 valign=top style='padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center;line-height:normal'>consumo_kW</p>
+                        </td>
+                        <td width=369 valign=top style='padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center;line-height:normal'>metodoObtencion</p>
+                        </td>
+                        <td width=369 valign=top style='padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center;line-height:normal'>energiaVertida_kWh</p>
+                        </td>
+                        </tr>
+                        <tr>
+                        <td width=200 valign=center style='padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center; line-height:normal'>Identificador unico del punto de suministro</p>
+                        </td>
+                        <td width=115 valign=center style='padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center;line-height:normal'>dd/mm/aaaa</p>
+                        </td>
+                        <td width=120 valign=center style='padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center; line-height:normal'>hh:mm desde 1:00 hasta 24:00</p>
+                        </td>
+                        <td width=370 valign=center style='padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center; line-height:normal'>Un número que indica el consumo en kWh decimal con coma</p>
+                        </td>
+                        <td width=280 valign=center style='padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center; line-height:normal'>Metodo de medición</p>
+                        </td>
+                        <td width=370 valign=center style='padding:0cm 5.4pt 0cm 5.4pt'>
+                        <p style='margin-bottom:0cm;text-align:center; line-height:normal'>Un número que indica la energía vertida a la red en kWh decimal con coma</p>
+                        </td>
+                        </tr>
+                        </table>
+                    </li>
+                    <br>
+                    <li><strong>REE:</strong> Si no se dispone de ninguno de los ficheros CSV de consumos horarios antes mencionados se puede utilizar esta opción. Este método asume que el perfil de consumo horario es el que define REE para un consumidor medio según la tarifa elegida. Solo se deberá indicar cuál es <strong>&lt;Consumo anual&gt;</Consumo></strong> en kWh ,dato que se debería poder obtener de la última factura disponible.</li>
+                    </ol>
                 </li>
-                <br>
-                <li><strong>REE:</strong> Si no se dispone de ninguno de los ficheros CSV de consumos horarios antes mencionados se puede utilizar esta opción. Este método asume que el perfil de consumo horario es el que define REE para un consumidor medio según la tarifa elegida. Solo se deberá indicar cuál es <strong>&lt;Consumo anual&gt;</Consumo></strong> en kWh ,dato que se debería poder obtener de la última factura disponible.</li>
-                </ol>
-            </li>
-            <li><strong>Consumo anual:</strong> Se completa con el consumo anual de energía del consumo identificado.</li>
-            <li><strong>Tarifa: </strong>Nombre de la tarifa contratada en este tipo de consumo, 2.0TD o 3.0TD. Esto afectará al cálculo de los precios apagados cada hora.</li>
-            </ul>
-            <p>Una vez cargado el tipo de consumo verás un mapa coloreado con tu perfil de consumo horario a lo largo del año. Dando un click sobre el mismo podrás ver el perfil de consumo de un día concreto.</p>
-            <p>Ahora podemos cambiar los precios asociados a las tarifas (2.0TD o 3.0TD) que se utilizarán en la simulación.<br>
-            Una vez seleccionada la tarifa, la aplicación propone unos precios que puedes ver mediante el icono <i class='fa fa-eur'></i>. Se proponen inicialmente los de SOM Energia. Si no son los correctos debes actualizarlos, desde el mismo desplegable, a los valores que sean adecuados antes de realizar el cálculo.</p>
-            <p>Puedes definir más de un tipo de consumo en esta pestaña utilizando el botón Nuevo tipo consumo. Esto nos permite simular que pasaría si añadiéramos un nuevo consumo a esta instalación como podría ser un vehículo eléctrico o algún elemento de carga significativa. El sistema totalizará todos los tipos de consumo de forma horaria para realizar los cálculos. Si es el caso, con el icono <i class='fa fa-line-chart'></i> puedes ver el gráfico de cada uno y con <i class='fa fa-trash-o'></i> podrás borrar el tipo de consumo de esa fila de la tabla.</p>
-            <p>Una vez alcanzado este punto puedes dar al botón <i class='fa fa-arrow-right'></i> "Siguiente".</p>
-            </div>
+                <li><strong>Consumo anual:</strong> Se completa con el consumo anual de energía del consumo identificado.</li>
+                <li><strong>Tarifa: </strong>Nombre de la tarifa contratada en este tipo de consumo, 2.0TD o 3.0TD. Esto afectará al cálculo de los precios apagados cada hora.</li>
+                </ul>
+                <p>Una vez cargado el tipo de consumo verás un mapa coloreado con tu perfil de consumo horario a lo largo del año. Dando un click sobre el mismo podrás ver el perfil de consumo de un día concreto.</p>
+                <p>Ahora podemos cambiar los precios asociados a las tarifas (2.0TD o 3.0TD) que se utilizarán en la simulación.<br>
+                Una vez seleccionada la tarifa, la aplicación propone unos precios que puedes ver mediante el icono <i class='fa fa-eur'></i>. Se proponen inicialmente los de SOM Energia. Si no son los correctos debes actualizarlos, desde el mismo desplegable, a los valores que sean adecuados antes de realizar el cálculo.</p>
+                <p>Puedes definir más de un tipo de consumo en esta pestaña utilizando el botón Nuevo tipo consumo. Esto nos permite simular que pasaría si añadiéramos un nuevo consumo a esta instalación como podría ser un vehículo eléctrico o algún elemento de carga significativa. El sistema totalizará todos los tipos de consumo de forma horaria para realizar los cálculos. Si es el caso, con el icono <i class='fa fa-line-chart'></i> puedes ver el gráfico de cada uno y con <i class='fa fa-trash-o'></i> podrás borrar el tipo de consumo de esa fila de la tabla.</p>
+                <p>Una vez alcanzado este punto puedes dar al botón <i class='fa fa-arrow-right'></i> "Siguiente".</p>
+                </div>
 
-            <div id="DescripcionFincas">
-                <h2><span style="text-decoration: underline;">Módulo Participes (solo modo colectivo)</span></h2>
-                <p>Vamos a identificar ahora al conjunto de fincas que participarán en el proyecto. Una finca es una unidad que tiene identificada un tipo de consumo, que recibirá parte de la energía producida y que invertirá dinero en el proyecto.</p>
-                <p>A partir de las coordenadas dadas al punto de consumo en la pestaña de localización se realiza una llamada al servicio web de la DGC que nos dará como resultado una lista de las unidades propietarias de la parcela con su coeficiente de participación en la misma. Se debe tener en cuenta que este servicio está disponible para todo el territorio español exceptuando el País Vasco y Navarra que disponen de su propio catastro y que hasta donde sabemos no proveen un servicio equivalente. Mas adelante explicamos como evitar este problema.</p>
-                <p>En la tabla de esta pestaña veremos los siguientes campos:</p>
-                <ul>
-                    <li><strong>idFinca:</strong> Es un número único dado a cada finca. En el caso de descargar un fichero CSV y volver a cargarlo es el identificador que se utiliza para actualizar la fila.</li>
-                    <li><strong>Nombre:</strong> Es un texto que da un nombre externo a la finca que luego nos permitirá saber a quien corresponden los datos del reparto que se realicen mas tarde. Si se han obtenido datos de DGC este nombre se construye concatenando los valores de bloque-escalera-planta-puerta.</li>
-                    <li><strong>RefCat:</strong> referencia catastral según la DGC.</li>
-                    <li><strong>Planta:</strong> Planta.</li>
-                    <li><strong>Uso:</strong> Uso dado a la finca. El catastro nos provee de un valor según sus registros pero se puede cambiar a lo que se considere adecuado. Hay un valor un tanto singular que es Residencial y que se podrá utilizar en el reparto com criterio de distribución del balance.</li>
-                    <li><strong>Superficie:</strong> Obtenida de DGC y solo como valor de referencia.</li>
-                    <li><strong>Participación:</strong> Porcentage de participación que tiene esta unidad en el total de la comunidad de propietarios según el catastro.</li>
-                    <li><strong>Tipo de consumo:</strong> Es un desplegable que muestra los distintos tipos de consumo introducidos en el módulo Tipo Consumo. Si se deja en blanco significa que esta finca no participará del Reparto.</li>
-                    <li><strong>Coef Hucha:</strong> En el caso que este participe tenga contrato con una comercializadora que incluya la batería virtual o hucha en este campo se indicará el porcentaje del excedente no remunerado que pasa a la hucha cada mes.</li>
-                    <li><strong>Cuota Hucha:</strong> En el caso que este participe tenga contrato con una comercializadora que incluya la batería virtual o hucha en este campo se indicará, si lo hubiera, la cuota fija mensual en Euros sin IVA que debe pagar por el servicio.</li>
-                </ul>
-                <p>En esta pestaña existen tres botónes con comandos:</p>
-                <ul>
-                    <li><strong>Crear finca:</strong> hay circunstancias en las que existe una unidad no identificada por la DGC que queremos que partícipe del Reparto. Por ejemplo si queremos asignar parte de la energía producida a zonas comunes que tengan un contador separado como pueden ser pasillos, ascensores, etc. En este caso podemos crear una finca nueva a la que luego asignaremos energía de los paneles. También se pueden crear Fincas individualmente si no se dispone de datos de la DGC o los datos obtenidos son erroneos.</li>
-                    <li><strong>Descarga CSV:</strong> Se obtiene un fichero CSV que se puede editar con herramientas externas para luego ser cargado nuevamente.</li>
-                    <li><strong>Sube CSV:</strong> Es para cargar la tabla con datos provenientes de un fichero CSV que debe estar formateado según el <a href="http://localhost/SOM/Solidar.3/datos/fincas%20ejemplo.csv" target="_blank" rel="noopener">ejemplo</a>.</li>
-                </ul>
-                <p>Una vez definido el conjunto de Fincas que participan del proyecto podemos pasar al siguiente paso.</p>
-            </div>
-
-            <div id="DescripcionResultados">
-                <h2><span style="text-decoration: underline;">Módulo Balance de energía</span></h2>
-                <p> En esta pestaña se visualizan los resultados de la primera propuesta que realiza el sistema con el siguiente criterio de asignación de paneles:</p>
-                <ol>
-                <li>Definir un número de paneles suficiente para generar la energía necesaria para cubrir el consumo de un año en función de los tipos de consumo definidos en el módulo &lt;Tipo Consumo&gt;.</li>
-                <li>Verificar que la superficie disponible en las bases definidas en &lt;Localización&gt; son suficientes para generar esa energía. Si no lo son se muestra un aviso.</li>
-                <li>Ir asignando paneles a las bases dando prioridad a las bases mas eficientes desde el punto de vista de rendimiento energético.</li>
-                </ol>
-                Una vez finalizado el proceso de cálculo vemos la siguiente tabla con los datos de las bases asignadas:
-                <ul>
-                  <li><strong>Nombre:</strong> Nombre dado a la base en &lt;Localización&gt;.</li>
-                  <li><strong>Energia anual por kWp instalado:</strong> Es el rendimiento unitario de la base en función de la ubicación geográfica, la orientación relativa al sur (acimut) y la inclinación de los paneles que hemos obtenido de PVGIS.</li>
-                  <li><strong>Potencia máxima admitida:</strong> Teniendo en cuenta el área disponible</li>
-                  <li><strong>Paneles:</strong> Número inicial de paneles propuesto por el sistema en base al algoritmo antes mencionado</li>
-                  <li><strong>Max. Paneles base:</strong> Es el número máximo de paneles que se pueden instalar en esta base teniendo en cuanta los m<sup>2</sup> disponibles.</li>
-                  <li><strong>Potencia de cada panel:</strong> según definido en el parámetro "Potencia unitaria (kWp) panel inicio" en <i class="fa fa-cog fa-fw"></i>. Este valor se puede cambiar dinámicamente desde este campo.</li>
-                  <li><strong>Potencia total de la base:</strong> Es la potencia unitaria del panel multiplicada por el número de paneles de la base.</li>
-                  <li><i class='fa fa-info-circle'></i>  Nos permite ver información detallada de la base.</li>
-                </ul>
-                <p>En el resto de la pestaña se pueden ver un conjunto de datos relativos al balance energético de esta configuración.</p>
-                <p>En este momento puede ser interesante que observes los resultados en las pestañas de Balance Económico y Gráficos para evaluar la situación y antes de decidir cambiar el número de paneles o la potencia individual de los mismos.</p>
-                <p>En todo caso, desde esta pestaña podrás cambiar los paneles asignados a cada base según tu propio criterio cuando lo consideres oportuno. <strong>Solidar</strong> verificará que no puedes poner mas paneles que los que la superficie definida en el módulo de Localización permite en cada base.</p>
-                <p>En este módulo tambien se visualiza el gráfico de consumo y producción superpuesto en modo 3D. Con el ratón se pueden visualizar las superficies correspondientes desde distintos puntos de visualización. Desde la leyenda se puede apagar cualquiera de ellas.</p>
-                <p>Una vez alcanzado este punto se puede dar al botón <i class="fa fa-arrow-right"></i> "Siguiente" para ver los resultados desde el punto de vista económico-financiero en el modo individual, pasar al módulo de reparto en el modo colectivo o volver <i class="fa fa-arrow-left"></i> si quieres cambiar algo de las pestañas anteriores.</p>
-            </div>
-            
-            <div id="DescripcionReparto">
-                <h2><span style="text-decoration: underline;">Módulo de Reparto (solo modo colectivo)</span></h2>
-                <p>Desde el módulo de reparto se produce la asignación de los coeficientes de energía e inversión para el conjunto de los partícipes.</p>
-                <p>Por ahora solo se contempla el método de reparto fijo, es decir un valor que permanece estable durante todas las horas del día. Se establece un único coeficiente de reparto para todas las horas del año y para cada punto de suministro asociado.</p>
-                <p>En la tabla nos encontramos con las mismas fincas que fueron cargadas en &lt;Participes&gt; a las que se le hubiera asignado un tipo de consumo específico.</p>
-                <p>para cada una de ellas tenemos los siguientes datos copiados de &lt;Participes&gt;</p>
-                <ul>
-                    <li><strong>IdFinca</strong></li>
-                    <li><strong>Nombre de la finca</strong></li>
-                    <li><strong>Uso</strong></li>
-                    <li><strong>Participación</strong></li>
-                    <li><strong>Coef Hucha</strong></li>
-                    <li><strong>Cuota Hucha</strong></li>
-                </ul>
-                <p>a continuación los siguientes campos:</p>
-                <ul>
-                    <li><strong>Coeficiente de consumo:</strong> es el porcentaje que representa el consumo de esta finca sobre el total</li>
-                    <li><strong>Consumo:</strong> Es el valor en kWh del consumo anual de esta finca según el tipo de cosnumo asignado</li>
-                    <li><strong>Coeficiente de energía:</strong> es el porcentaje de la energía producida por la instalación que recibirá esta finca</li>
-                    <li><strong>Energía:</strong> Es el valor de le energía producida que recibe anualmente la finca en kWh</li>
-                    <li><strong>Coeficiente de inversión:</strong> Es el porcentaje de la inversión total que le corresponde a la finca</li>
-                    <li><strong>Inversión:</strong> Es la cantidad en Euros que debe abonar según el coeficiente asignado.</li>
-                    <li><strong>Ahorro:</strong> Es el ahorro anual esperado en Euros con la configuración definida.</li>
-                    <li><i class='fa fa-line-chart'></i> Para visualizar el gráfico de gasto mensual con la asignación actual.</li>
-                    <li><i class='fa fa-info-circle'></i> Nos permite ver información detallada del Participe.</li>
-                </ul>
-                <p>Inicialmente la tabla se presenta con asignación cero para todas las fincas.</p>
-                <p>Existen dos comandos que realizan una distribución global entre los partícipes:</p>
-                <ol>
-                    <li><strong>Asignación por participación:</strong> Quizás sea el método más utilizado. Simplemente distribuye la energía producida y la inversión necesaria en la misma proporción que representa la Participación de la finca sobre el total de los partícipes. En este caso, las fincas que se hubieran creado en &lt;Participes&gt; como podrían ser zonas comunes no reciben ninguna asignación.</li>
-                    <li><strong>Asignación por consumo:</strong> En este caso se asigna la energía producida y la inversión necesaria en la misma proporción que representa el Consumo de cada Finca sobre el total.</li>
-                </ol>
-                <p>Una vez ejecutado cualquiera de los comandos anteriores, se puede modificar los coeficientes de energía e inversión según sea necesario para reflejar el acuerdo alcanzado por los partícipes.</p>
-                <p>Al modificar estos valores es posible que suceda que el balance de energía o de inversión ya no es 100% en cuyo caso aparecerá un número en rojo en la cabecera de la columna que se ha modificado.</p>
-                <p>El sistema no dará por bueno el reparto hasta que ambas columnas, energía e inversión estén cercanas al 100%.</p>
-                <p>Para ayudar en el proceso de reequilibrio de los coeficientes hay algunos comandos disponibles en la cabecera de las columnas que contienen los coeficientes (tres puntos verticales) que permiten distribuir la cantidad sobrante o faltante entre un subconjunto de partícipes.</p>
-                <ul>
-                    <li><strong>Distribuir a residencial:</strong> Distribuye entre los partícipes cuyo uso es residencial basándose en su participación.</li>
-                    <li><strong>Distribuir a seleccionados:</strong> Distribuye en las filas seleccionadas también en proporción a su participación.</li>
-                    <li><strong>Distribuir por participación:</strong> Simplemente distribuye entre todos los que tienen alguna participación</li>
-                    <li><strong>Copiar energía -&gt; inversión:</strong> Copia los valores de los coeficientes de energía a los de inversión.</li>
-                    <li><strong>Copiar inversión -&gt; energía:</strong> Copia los valores de los coeficientes de inversión en los de energía.</li>
-                </ul>
-                <p>Una vez alcanzado este punto puedes dar al botón <i class="fa fa-arrow-right"></i> "Siguiente" para ver los resultados desde el punto de vista económico-financiero o volver <i class="fa fa-arrow-left"></i> si quieres cambiar algo de las pestañas anteriores.</p>
-            </div>
-
-            <div id="DescripcionEconomico">
-                <h2><span style="text-decoration: underline;">Módulo Económico</span></h2>
-                <p>En esta pestaña se ve cual es el resultado desde el punto de vista económico-financiero de la instalación de los paneles definidos en el &lt;Balance energía&gt;</p>
-                <p>Es importante destacar algunos campos existentes en esta pestaña:</p>
-                <ul>
-                    <li>El gasto anual, con o sin paneles y por lo tanto el ahorro, está altamente condicionado por las tarifas definidas en el &lt;Tipo Consumo&gt; de cada partícipe.</li>
-                    <li>Dada la volatilidad de los precios, y las variaciones detectadas por regiones, es muy difícil estimar un precio de la instalación. Se propone uno con las estimaciones que estan a nuestra disposición, pero lo correcto es tener el asesoramiento de un instalador. Es posible corregir el precio propuesto indicando un porcentaje positivo para incrementar el precio o negativo para disminuirlo en el campo &lt;Corrección de precio en %&gt;.</li>
-                </ul>
-                <p>Con los datos antes definidos la aplicación mostrará una tabla financiera con el estudio del retorno de la inversión esperado a 10 años como mínimo o hasta que se consiga un resultado positivo.</p>
-                <ul>
-                    <li>En el modo individual: Para esta tabla se puede definir, en los campos mostrados a tal fin, si existe algún tipo de subvención a aplicar de fondos Next Generation o la bonificación del IBI que aplican algunos ayuntamientos.</br>
-                    En cuanto a la subvención de fondos europeos se tendrá en cuenta el criterio del 80% de consumo propio pero la elección de instalación individual o colectiva es libre.</br>
-                    Se muestra un gráfico con el título de "Alternativas con paneles...." donde se muestra el comportamiento de algunas variables significativas en función del número de paneles instalados. Dando un click sobre el gráfico se cambia la configuración de la instalación al número de paneles seleccionado y se realizará el cálculo de todas las magnitudes con el nuevo número de paneles elegido.</br>
-                    </li>
-                </br>
-                    <li>En el modo colectivo:
-                        No está definido el modo en que se gestiona la bonificación de IBI ni las posibles subvenciones en el cálculo financiero de cada partícipe.
-                    </li>
-                </ul>
-            </div>
-
-            <div id="DescripcionGraficos">
-                <h2><span style="text-decoration: underline;">Módulo Gráficos</span></h2>
-                <p> En esta pestaña se observan algunos gráficos que muestran el comportamiento mensual del sistema propuesto.</p>
-            </div>
-                
-            <div id="DescripcionResumen">
-                <h2><span style="text-decoration: underline;">Módulo Resumen</span></h2>
-                <p>Se muestra un resumen de todas las variables introducidas y calculadas para esta simulación y se puede solicitar un informe en formato PDF.</p>
-            </div>
-            
-            <div id="DescripcionParametros">
-                <h2><span style="text-decoration: underline;">Módulo Parámetros</span></h2>
-                <p>En la pestaña &lt;Parámetros&gt;, que se activa desde el icono de herramientas <i class="fa fa-cog fa-fw"></i>, se pueden actualizar varios parámetros utilizados en el cálculo. Los cambios realizados en esta pestaña se reflejarán en el próximo cálculo.</p>
-                <ul>
-                    <li><strong>Metros cuadrados necesarios para instalar un kWp:</strong> Este valor se utilizará para saber cuántos kWp se pueden instalar en un área definida. kWp maximo = área en metros cuadrados / este parametro</li>
-                    <li><strong>Impuesto eléctrico en %:</strong> El impuesto especial sobre la electricidad</li>
-                    <li><strong>IVA aplicable a la energía en %:</strong> El IVA que se repercute por el gasto en electricidad</li>
-                    <li><strong>IVA aplicable a la instalación en %:</strong> El IVA que se repercute sobre el importe al que ascienda la instalación</li>
-                    <li><strong>Pérdidas estimadas de la instalación en %:</strong> Las pérdidas estimas del sistema fotovoltaico debidas al deterioro de algunos componentes, condiciones adversas, inversores deficientes, etc.</li>
-                    <li><strong>Interés base (%) para cálculo de VAN:</strong> Tasa de descuento a aplicar en el cálculo del valor actual neto</li>
-                    <li><strong>Potencia unitaria (kWp) panel inicio:</strong> Potencia kWp del panel inicial utilizado en los cálculos</li>
-                    <li><strong>Tecnología de los paneles:</strong> Se pueden elegir tres tipos de paneles para realizar las estimaciones:
+                <div id="DescripcionFincas">
+                    <h2><span style="text-decoration: underline;">Módulo Participes (solo modo colectivo)</span></h2>
+                    <p>Vamos a identificar ahora al conjunto de fincas que participarán en el proyecto. Una finca es una unidad que tiene identificada un tipo de consumo, que recibirá parte de la energía producida y que invertirá dinero en el proyecto.</p>
+                    <p>A partir de las coordenadas dadas al punto de consumo en la pestaña de localización se realiza una llamada al servicio web de la DGC que nos dará como resultado una lista de las unidades propietarias de la parcela con su coeficiente de participación en la misma. Se debe tener en cuenta que este servicio está disponible para todo el territorio español exceptuando el País Vasco y Navarra que disponen de su propio catastro y que hasta donde sabemos no proveen un servicio equivalente. Mas adelante explicamos como evitar este problema.</p>
+                    <p>En la tabla de esta pestaña veremos los siguientes campos:</p>
                     <ul>
-                        <li>los que tienen células de silicio cristalino</li>
-                        <li>módulos de lámina delgada de seleniuro de cobre e indio (CuInSe) o seleniuro de cobre, indio y galio (CuInGaSe)</li>
-                        <li>módulos de lámina delgada de teluro de cadmio (CdTe)</li>
-                        <li>Desconocido</li>
+                        <li><strong>idFinca:</strong> Es un número único dado a cada finca. En el caso de descargar un fichero CSV y volver a cargarlo es el identificador que se utiliza para actualizar la fila.</li>
+                        <li><strong>Nombre:</strong> Es un texto que da un nombre externo a la finca que luego nos permitirá saber a quien corresponden los datos del reparto que se realicen mas tarde. Si se han obtenido datos de DGC este nombre se construye concatenando los valores de bloque-escalera-planta-puerta.</li>
+                        <li><strong>RefCat:</strong> referencia catastral según la DGC.</li>
+                        <li><strong>Planta:</strong> Planta.</li>
+                        <li><strong>Uso:</strong> Uso dado a la finca. El catastro nos provee de un valor según sus registros pero se puede cambiar a lo que se considere adecuado. Hay un valor un tanto singular que es Residencial y que se podrá utilizar en el reparto com criterio de distribución del balance.</li>
+                        <li><strong>Superficie:</strong> Obtenida de DGC y solo como valor de referencia.</li>
+                        <li><strong>Participación:</strong> Porcentage de participación que tiene esta unidad en el total de la comunidad de propietarios según el catastro.</li>
+                        <li><strong>Tipo de consumo:</strong> Es un desplegable que muestra los distintos tipos de consumo introducidos en el módulo Tipo Consumo. Si se deja en blanco significa que esta finca no participará del Reparto.</li>
+                        <li><strong>Coef Hucha:</strong> En el caso que este participe tenga contrato con una comercializadora que incluya la batería virtual o hucha en este campo se indicará el porcentaje del excedente no remunerado que pasa a la hucha cada mes.</li>
+                        <li><strong>Cuota Hucha:</strong> En el caso que este participe tenga contrato con una comercializadora que incluya la batería virtual o hucha en este campo se indicará, si lo hubiera, la cuota fija mensual en Euros sin IVA que debe pagar por el servicio.</li>
                     </ul>
-                    Si se elige alguna de las tres primeras opciones, en el cálculo de la producción fotovoltaica, se tendrá en cuenta el efecto de la temperatura. Si se elige la otra opción (desconocido), en el cálculo se asumirán unas pérdidas de potencia debido al efecto de la temperatura del 8% (valor genérico que se considera razonable para climas templados). El efecto de la distribución espectral de la irradiancia recibida sobre la producción sólo puede calcularse para las tecnologías de silicio cristalino y de CdTe.</li>
-                    <li><strong>Fichero de tarifas local: </strong>El usuario puede personalizar un fichero con los precios que desee mientras cumpla con el formato dado en el ejemplo</li>
-                </ul>
-            </div>
+                    <p>En esta pestaña existen tres botónes con comandos:</p>
+                    <ul>
+                        <li><strong>Crear finca:</strong> hay circunstancias en las que existe una unidad no identificada por la DGC que queremos que partícipe del Reparto. Por ejemplo si queremos asignar parte de la energía producida a zonas comunes que tengan un contador separado como pueden ser pasillos, ascensores, etc. En este caso podemos crear una finca nueva a la que luego asignaremos energía de los paneles. También se pueden crear Fincas individualmente si no se dispone de datos de la DGC o los datos obtenidos son erroneos.</li>
+                        <li><strong>Descarga CSV:</strong> Se obtiene un fichero CSV que se puede editar con herramientas externas para luego ser cargado nuevamente.</li>
+                        <li><strong>Sube CSV:</strong> Es para cargar la tabla con datos provenientes de un fichero CSV que debe estar formateado según el <a href="http://localhost/SOM/Solidar.3/datos/fincas%20ejemplo.csv" target="_blank" rel="noopener">ejemplo</a>.</li>
+                    </ul>
+                    <p>Una vez definido el conjunto de Fincas que participan del proyecto podemos pasar al siguiente paso.</p>
+                </div>
 
-            <div id="DescricpionHucha">
-                <h2><span style="text-decoration: underline;">La hucha (batería virtual)</span></h2>
-                <p><strong>¿Qué es?</strong> Como quizás ya sepas si cuentas con una instalación de producción fotovoltaica adherida al mecanismo de compensación simplificado previsto en el Real Decreto 244 de 5 de abril 2019, <i "style=font-style:italic">“en ningún caso, el valor económico de la energía horaria excedentaria podrá ser superior al valor económico de la energía horaria consumida de la red en el periodo de facturación, el cual no podrá ser superior a un mes”.</i></p>
-                <p>A efectos de evitar esta limitación, algunas empresas comercializadoras ofrecen un servicio que podríamos entender como diferimiento monetario que permite acumular el saldo económico de los periodos en los que se genera mucha energía, que no podrían ser compensados en el mismo periodo de facturación, para consumirlo en otros periodos donde el consumo es superior a la producción.</p>
-                <p>Este tipo de oferta se llama de distinta manera en cada empresa tal como batería virtual o hucha. Consideramos que el termino batería virtual podría ser confuso ya que no es energía lo que se compensa sino dinero por lo que hucha podría ser más adecuado.</p>
-                <p><strong>¿Cómo funciona?</strong> En los meses que hay excedente económico a favor del cliente, la empresa incorpora ese valor económico, o un porcentaje del mismo, en una cuenta a favor del titular del contrato de suministro. En los meses en los que se consuma más que lo que se puede compensar, siempre en Euros, se toma dinero de la hucha y se descuenta del termino de energía que correspondiera.</p>
-                <p>Hay variantes entre las empresas que lo ofrecen como la posibilidad de descontar el dinero de la hucha en un contrato de suministro distinto del que produce la energía, o incluso descontar el dinero de la hucha del término de potencia de la factura, pero eso por ahora no está modelizado en Solidar.</p>
-                <p><strong>¿Cómo modelizo la hucha en Solidar?</strong> Para que Solidar tenga en cuenta el efecto económico de la hucha en sus cálculos, lo que se debe informar es el porcentaje del excedente monetario que pasa a la hucha en los meses de excedentes superiores al máximo y el valor de la cuota fija mensual en el caso que la empresa comercializadora cobre por el servicio.</p>
-                <p>Estos dos parámetros se introducen en la pestaña de &lt;Balance económico&gt; en el caso de autoconsumo individual y en la pestaña de &lt;Fincas&gt; para cada uno de los participes del proyecto que dispongan de contratos con esta modalidad en el modo colectivo.</p>
-                <p>En caso de definir alguno de estos dos valores en el gráfico de balance económico se visualizará como evoluciona el estado de la hucha a lo largo del año.</p>
-            </div>
-            <div id="DescripcionContacto">
-                <h2><span style="text-decoration: underline;">Datos de contacto</span></h2>
-                <p><strong>Solidar</strong> es un desarrollo realizado por el grupo local de SOM Energia en Madrid. Hemos hecho todo el esfuerzo posible para asegurarnos que los cálculos se realizan con fiabilidad pero no podemos garantizar que no encuentres errores o posibles áreas de mejora en la interfaz de usuario por lo que te pedimos que si quieres hacer algún comentario del tipo que sea utilices el <i class="fa fa-envelope-o fa-fw"></i> formulario de contacto de la aplicación o nos envíes directamente un <a href="mailto:soporte@solidarenergía.es">correo electrónico.</a></p>
-            </div>
+                <div id="DescripcionResultados">
+                    <h2><span style="text-decoration: underline;">Módulo Balance de energía</span></h2>
+                    <p> En esta pestaña se visualizan los resultados de la primera propuesta que realiza el sistema con el siguiente criterio de asignación de paneles:</p>
+                    <ol>
+                    <li>Definir un número de paneles suficiente para generar la energía necesaria para cubrir el consumo de un año en función de los tipos de consumo definidos en el módulo &lt;Tipo Consumo&gt;.</li>
+                    <li>Verificar que la superficie disponible en las bases definidas en &lt;Localización&gt; son suficientes para generar esa energía. Si no lo son se muestra un aviso.</li>
+                    <li>Ir asignando paneles a las bases dando prioridad a las bases mas eficientes desde el punto de vista de rendimiento energético.</li>
+                    </ol>
+                    Una vez finalizado el proceso de cálculo vemos la siguiente tabla con los datos de las bases asignadas:
+                    <ul>
+                    <li><strong>Nombre:</strong> Nombre dado a la base en &lt;Localización&gt;.</li>
+                    <li><strong>Energia anual por kWp instalado:</strong> Es el rendimiento unitario de la base en función de la ubicación geográfica, la orientación relativa al sur (acimut) y la inclinación de los paneles que hemos obtenido de PVGIS.</li>
+                    <li><strong>Potencia máxima admitida:</strong> Teniendo en cuenta el área disponible</li>
+                    <li><strong>Paneles:</strong> Número inicial de paneles propuesto por el sistema en base al algoritmo antes mencionado</li>
+                    <li><strong>Max. Paneles base:</strong> Es el número máximo de paneles que se pueden instalar en esta base teniendo en cuanta los m<sup>2</sup> disponibles.</li>
+                    <li><strong>Potencia de cada panel:</strong> según definido en el parámetro "Potencia unitaria (kWp) panel inicio" en <i class="fa fa-cog fa-fw"></i>. Este valor se puede cambiar dinámicamente desde este campo.</li>
+                    <li><strong>Potencia total de la base:</strong> Es la potencia unitaria del panel multiplicada por el número de paneles de la base.</li>
+                    <li><i class='fa fa-info-circle'></i>  Nos permite ver información detallada de la base.</li>
+                    </ul>
+                    <p>En el resto de la pestaña se pueden ver un conjunto de datos relativos al balance energético de esta configuración.</p>
+                    <p>En este momento puede ser interesante que observes los resultados en las pestañas de Balance Económico y Gráficos para evaluar la situación y antes de decidir cambiar el número de paneles o la potencia individual de los mismos.</p>
+                    <p>En todo caso, desde esta pestaña podrás cambiar los paneles asignados a cada base según tu propio criterio cuando lo consideres oportuno. <strong>Solidar</strong> verificará que no puedes poner mas paneles que los que la superficie definida en el módulo de Localización permite en cada base.</p>
+                    <p>En este módulo tambien se visualiza el gráfico de consumo y producción superpuesto en modo 3D. Con el ratón se pueden visualizar las superficies correspondientes desde distintos puntos de visualización. Desde la leyenda se puede apagar cualquiera de ellas.</p>
+                    <p>Una vez alcanzado este punto se puede dar al botón <i class="fa fa-arrow-right"></i> "Siguiente" para ver los resultados desde el punto de vista económico-financiero en el modo individual, pasar al módulo de reparto en el modo colectivo o volver <i class="fa fa-arrow-left"></i> si quieres cambiar algo de las pestañas anteriores.</p>
+                </div>
+                
+                <div id="DescripcionReparto">
+                    <h2><span style="text-decoration: underline;">Módulo de Reparto (solo modo colectivo)</span></h2>
+                    <p>Desde el módulo de reparto se produce la asignación de los coeficientes de energía e inversión para el conjunto de los partícipes.</p>
+                    <p>Por ahora solo se contempla el método de reparto fijo, es decir un valor que permanece estable durante todas las horas del día. Se establece un único coeficiente de reparto para todas las horas del año y para cada punto de suministro asociado.</p>
+                    <p>En la tabla nos encontramos con las mismas fincas que fueron cargadas en &lt;Participes&gt; a las que se le hubiera asignado un tipo de consumo específico.</p>
+                    <p>para cada una de ellas tenemos los siguientes datos copiados de &lt;Participes&gt;</p>
+                    <ul>
+                        <li><strong>IdFinca</strong></li>
+                        <li><strong>Nombre de la finca</strong></li>
+                        <li><strong>Uso</strong></li>
+                        <li><strong>Participación</strong></li>
+                        <li><strong>Coef Hucha</strong></li>
+                        <li><strong>Cuota Hucha</strong></li>
+                    </ul>
+                    <p>a continuación los siguientes campos:</p>
+                    <ul>
+                        <li><strong>Coeficiente de consumo:</strong> es el porcentaje que representa el consumo de esta finca sobre el total</li>
+                        <li><strong>Consumo:</strong> Es el valor en kWh del consumo anual de esta finca según el tipo de cosnumo asignado</li>
+                        <li><strong>Coeficiente de energía:</strong> es el porcentaje de la energía producida por la instalación que recibirá esta finca</li>
+                        <li><strong>Energía:</strong> Es el valor de le energía producida que recibe anualmente la finca en kWh</li>
+                        <li><strong>Coeficiente de inversión:</strong> Es el porcentaje de la inversión total que le corresponde a la finca</li>
+                        <li><strong>Inversión:</strong> Es la cantidad en Euros que debe abonar según el coeficiente asignado.</li>
+                        <li><strong>Ahorro:</strong> Es el ahorro anual esperado en Euros con la configuración definida.</li>
+                        <li><i class='fa fa-line-chart'></i> Para visualizar el gráfico de gasto mensual con la asignación actual.</li>
+                        <li><i class='fa fa-info-circle'></i> Nos permite ver información detallada del Participe.</li>
+                    </ul>
+                    <p>Inicialmente la tabla se presenta con asignación cero para todas las fincas.</p>
+                    <p>Existen dos comandos que realizan una distribución global entre los partícipes:</p>
+                    <ol>
+                        <li><strong>Asignación por participación:</strong> Quizás sea el método más utilizado. Simplemente distribuye la energía producida y la inversión necesaria en la misma proporción que representa la Participación de la finca sobre el total de los partícipes. En este caso, las fincas que se hubieran creado en &lt;Participes&gt; como podrían ser zonas comunes no reciben ninguna asignación.</li>
+                        <li><strong>Asignación por consumo:</strong> En este caso se asigna la energía producida y la inversión necesaria en la misma proporción que representa el Consumo de cada Finca sobre el total.</li>
+                    </ol>
+                    <p>Una vez ejecutado cualquiera de los comandos anteriores, se puede modificar los coeficientes de energía e inversión según sea necesario para reflejar el acuerdo alcanzado por los partícipes.</p>
+                    <p>Al modificar estos valores es posible que suceda que el balance de energía o de inversión ya no es 100% en cuyo caso aparecerá un número en rojo en la cabecera de la columna que se ha modificado.</p>
+                    <p>El sistema no dará por bueno el reparto hasta que ambas columnas, energía e inversión estén cercanas al 100%.</p>
+                    <p>Para ayudar en el proceso de reequilibrio de los coeficientes hay algunos comandos disponibles en la cabecera de las columnas que contienen los coeficientes (tres puntos verticales) que permiten distribuir la cantidad sobrante o faltante entre un subconjunto de partícipes.</p>
+                    <ul>
+                        <li><strong>Distribuir a residencial:</strong> Distribuye entre los partícipes cuyo uso es residencial basándose en su participación.</li>
+                        <li><strong>Distribuir a seleccionados:</strong> Distribuye en las filas seleccionadas también en proporción a su participación.</li>
+                        <li><strong>Distribuir por participación:</strong> Simplemente distribuye entre todos los que tienen alguna participación</li>
+                        <li><strong>Copiar energía -&gt; inversión:</strong> Copia los valores de los coeficientes de energía a los de inversión.</li>
+                        <li><strong>Copiar inversión -&gt; energía:</strong> Copia los valores de los coeficientes de inversión en los de energía.</li>
+                    </ul>
+                    <p>Una vez alcanzado este punto puedes dar al botón <i class="fa fa-arrow-right"></i> "Siguiente" para ver los resultados desde el punto de vista económico-financiero o volver <i class="fa fa-arrow-left"></i> si quieres cambiar algo de las pestañas anteriores.</p>
+                </div>
 
+                <div id="DescripcionEconomico">
+                    <h2><span style="text-decoration: underline;">Módulo Económico</span></h2>
+                    <p>En esta pestaña se ve cual es el resultado desde el punto de vista económico-financiero de la instalación de los paneles definidos en el &lt;Balance energía&gt;</p>
+                    <p>Es importante destacar algunos campos existentes en esta pestaña:</p>
+                    <ul>
+                        <li>El gasto anual, con o sin paneles y por lo tanto el ahorro, está altamente condicionado por las tarifas definidas en el &lt;Tipo Consumo&gt; de cada partícipe.</li>
+                        <li>Dada la volatilidad de los precios, y las variaciones detectadas por regiones, es muy difícil estimar un precio de la instalación. Se propone uno con las estimaciones que estan a nuestra disposición, pero lo correcto es tener el asesoramiento de un instalador. Es posible corregir el precio propuesto indicando un porcentaje positivo para incrementar el precio o negativo para disminuirlo en el campo &lt;Corrección de precio en %&gt;.</li>
+                    </ul>
+                    <p>Con los datos antes definidos la aplicación mostrará una tabla financiera con el estudio del retorno de la inversión esperado a 10 años como mínimo o hasta que se consiga un resultado positivo.</p>
+                    <ul>
+                        <li>En el modo individual: Para esta tabla se puede definir, en los campos mostrados a tal fin, si existe algún tipo de subvención a aplicar de fondos Next Generation o la bonificación del IBI que aplican algunos ayuntamientos.</br>
+                        En cuanto a la subvención de fondos europeos se tendrá en cuenta el criterio del 80% de consumo propio pero la elección de instalación individual o colectiva es libre.</br>
+                        Se muestra un gráfico con el título de "Alternativas con paneles...." donde se muestra el comportamiento de algunas variables significativas en función del número de paneles instalados. Dando un click sobre el gráfico se cambia la configuración de la instalación al número de paneles seleccionado y se realizará el cálculo de todas las magnitudes con el nuevo número de paneles elegido.</br>
+                        </li>
+                    </br>
+                        <li>En el modo colectivo:
+                            No está definido el modo en que se gestiona la bonificación de IBI ni las posibles subvenciones en el cálculo financiero de cada partícipe.
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="DescripcionGraficos">
+                    <h2><span style="text-decoration: underline;">Módulo Gráficos</span></h2>
+                    <p> En esta pestaña se observan algunos gráficos que muestran el comportamiento mensual del sistema propuesto.</p>
+                </div>
+                    
+                <div id="DescripcionResumen">
+                    <h2><span style="text-decoration: underline;">Módulo Resumen</span></h2>
+                    <p>Se muestra un resumen de todas las variables introducidas y calculadas para esta simulación y se puede solicitar un informe en formato PDF.</p>
+                </div>
+                
+                <div id="DescripcionParametros">
+                    <h2><span style="text-decoration: underline;">Módulo Parámetros</span></h2>
+                    <p>En la pestaña &lt;Parámetros&gt;, que se activa desde el icono de herramientas <i class="fa fa-cog fa-fw"></i>, se pueden actualizar varios parámetros utilizados en el cálculo. Los cambios realizados en esta pestaña se reflejarán en el próximo cálculo.</p>
+                    <ul>
+                        <li><strong>Metros cuadrados necesarios para instalar un kWp:</strong> Este valor se utilizará para saber cuántos kWp se pueden instalar en un área definida. kWp maximo = área en metros cuadrados / este parametro</li>
+                        <li><strong>Impuesto eléctrico en %:</strong> El impuesto especial sobre la electricidad</li>
+                        <li><strong>IVA aplicable a la energía en %:</strong> El IVA que se repercute por el gasto en electricidad</li>
+                        <li><strong>IVA aplicable a la instalación en %:</strong> El IVA que se repercute sobre el importe al que ascienda la instalación</li>
+                        <li><strong>Pérdidas estimadas de la instalación en %:</strong> Las pérdidas estimas del sistema fotovoltaico debidas al deterioro de algunos componentes, condiciones adversas, inversores deficientes, etc.</li>
+                        <li><strong>Interés base (%) para cálculo de VAN:</strong> Tasa de descuento a aplicar en el cálculo del valor actual neto</li>
+                        <li><strong>Potencia unitaria (kWp) panel inicio:</strong> Potencia kWp del panel inicial utilizado en los cálculos</li>
+                        <li><strong>Tecnología de los paneles:</strong> Se pueden elegir tres tipos de paneles para realizar las estimaciones:
+                        <ul>
+                            <li>los que tienen células de silicio cristalino</li>
+                            <li>módulos de lámina delgada de seleniuro de cobre e indio (CuInSe) o seleniuro de cobre, indio y galio (CuInGaSe)</li>
+                            <li>módulos de lámina delgada de teluro de cadmio (CdTe)</li>
+                            <li>Desconocido</li>
+                        </ul>
+                        Si se elige alguna de las tres primeras opciones, en el cálculo de la producción fotovoltaica, se tendrá en cuenta el efecto de la temperatura. Si se elige la otra opción (desconocido), en el cálculo se asumirán unas pérdidas de potencia debido al efecto de la temperatura del 8% (valor genérico que se considera razonable para climas templados). El efecto de la distribución espectral de la irradiancia recibida sobre la producción sólo puede calcularse para las tecnologías de silicio cristalino y de CdTe.</li>
+                        <li><strong>Fichero de tarifas local: </strong>El usuario puede personalizar un fichero con los precios que desee mientras cumpla con el formato dado en el ejemplo</li>
+                    </ul>
+                </div>
+
+                <div id="DescricpionHucha">
+                    <h2><span style="text-decoration: underline;">La hucha (batería virtual)</span></h2>
+                    <p><strong>¿Qué es?</strong> Como quizás ya sepas si cuentas con una instalación de producción fotovoltaica adherida al mecanismo de compensación simplificado previsto en el Real Decreto 244 de 5 de abril 2019, <i "style=font-style:italic">“en ningún caso, el valor económico de la energía horaria excedentaria podrá ser superior al valor económico de la energía horaria consumida de la red en el periodo de facturación, el cual no podrá ser superior a un mes”.</i></p>
+                    <p>A efectos de evitar esta limitación, algunas empresas comercializadoras ofrecen un servicio que podríamos entender como diferimiento monetario que permite acumular el saldo económico de los periodos en los que se genera mucha energía, que no podrían ser compensados en el mismo periodo de facturación, para consumirlo en otros periodos donde el consumo es superior a la producción.</p>
+                    <p>Este tipo de oferta se llama de distinta manera en cada empresa tal como batería virtual o hucha. Consideramos que el termino batería virtual podría ser confuso ya que no es energía lo que se compensa sino dinero por lo que hucha podría ser más adecuado.</p>
+                    <p><strong>¿Cómo funciona?</strong> En los meses que hay excedente económico a favor del cliente, la empresa incorpora ese valor económico, o un porcentaje del mismo, en una cuenta a favor del titular del contrato de suministro. En los meses en los que se consuma más que lo que se puede compensar, siempre en Euros, se toma dinero de la hucha y se descuenta del termino de energía que correspondiera.</p>
+                    <p>Hay variantes entre las empresas que lo ofrecen como la posibilidad de descontar el dinero de la hucha en un contrato de suministro distinto del que produce la energía, o incluso descontar el dinero de la hucha del término de potencia de la factura, pero eso por ahora no está modelizado en Solidar.</p>
+                    <p><strong>¿Cómo modelizo la hucha en Solidar?</strong> Para que Solidar tenga en cuenta el efecto económico de la hucha en sus cálculos, lo que se debe informar es el porcentaje del excedente monetario que pasa a la hucha en los meses de excedentes superiores al máximo y el valor de la cuota fija mensual en el caso que la empresa comercializadora cobre por el servicio.</p>
+                    <p>Estos dos parámetros se introducen en la pestaña de &lt;Balance económico&gt; en el caso de autoconsumo individual y en la pestaña de &lt;Fincas&gt; para cada uno de los participes del proyecto que dispongan de contratos con esta modalidad en el modo colectivo.</p>
+                    <p>En caso de definir alguno de estos dos valores en el gráfico de balance económico se visualizará como evoluciona el estado de la hucha a lo largo del año.</p>
+                </div>
+
+                <div id="DescripcionContacto">
+                    <h2><span style="text-decoration: underline;">Datos de contacto</span></h2>
+                    <p><strong>Solidar</strong> es un desarrollo realizado por el grupo local de SOM Energia en Madrid. Hemos hecho todo el esfuerzo posible para asegurarnos que los cálculos se realizan con fiabilidad pero no podemos garantizar que no encuentres errores o posibles áreas de mejora en la interfaz de usuario por lo que te pedimos que si quieres hacer algún comentario del tipo que sea utilices el <i class="fa fa-envelope-o fa-fw"></i> formulario de contacto de la aplicación o nos envíes directamente un <a href="mailto:soporte@solidarenergía.es">correo electrónico.</a></p>
+                </div>
+            </div>
         </div>
     </div>
-
-    <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <!-- Popper.JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-    <!-- jQuery Custom Scroller CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#sidebar").mCustomScrollbar({
-                theme: "minimal"
-            });
-
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar, #content').toggleClass('active');
-                $('.collapse.in').toggleClass('in');
-                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-            });
-        });
-    </script>
 </body>
-
 </html>

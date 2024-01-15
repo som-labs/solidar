@@ -11,13 +11,14 @@
 import {optimizador} from "./optimizador.js";
 import TCB from "./TCB.js";
 import Consumo from "./Consumo.js";
+
 import Balance from "./Balance.js";
 import { calculaResultados } from "./calculaResultados.js";
 import * as UTIL from "./Utiles.js";
 import * as Idioma from "./Idioma.js";
 import BaseSolar from "./BaseSolar.js";
 
-/*global Tabulator*/
+/*global Tabulator, INDIVIDUAL*/
 
 
 /** Es la función llamada desde el Wizard para la gestion de la ventana de balance de energía
@@ -64,10 +65,10 @@ function inicializaEventos() {
  */
 function importa(datosImportar) {
 
-  UTIL.debugLog("Importa consumo global", datosImportar.consumo);
-  TCB.consumo = new Consumo(datosImportar.consumo);
-
-  UTIL.debugLog("Importa balance",datosImportar.balance);
+  TCB.consumo = new Consumo();
+  TCB.consumoCreado = true;  
+  
+  UTIL.debugLog("Genera balance a partir de los datos importados");
   TCB.balance = new Balance(TCB.produccion, TCB.consumo, 100); //datosImportar.balance;
   TCB.balanceCreado = true;
 
@@ -78,7 +79,6 @@ function importa(datosImportar) {
 function exporta() {
 
   TCB.datosProyecto.produccion = TCB.produccion;
-  //TCB.datosProyecto.balance = TCB.balance;
 
 }
 
@@ -177,7 +177,7 @@ async function prepara() {
  * La funcion que permite pasar al wizard al siguiente paso. En esta caso no hay nada que validar
  * @returns {boolean} Siempre true
  */
-function valida() {
+async function valida() {
 
   return true;
 }
@@ -248,7 +248,13 @@ function muestraBalanceEnergia() {
     }
     UTIL.muestra("Consumo%Produccion", UTIL.formatoValor('porciento',TCB.consumo.cTotalAnual / TCB.produccion.pTotalAnual * 100));
     UTIL.muestra("Produccion%Consumo", UTIL.formatoValor('porciento',TCB.produccion.pTotalAnual / TCB.consumo.cTotalAnual * 100));
+    UTIL.muestra("ConsumoDiurno", UTIL.formatoValor('energia', TCB.balance.consumoDiurno)); 
 
+    if (TCB.modoActivo !== INDIVIDUAL) {
+
+      muestraTablaAsignacionZonasComunes();
+
+    }
 /*     let p_autoconsumo = (TCB.balance.autoconsumo / TCB.produccion.pTotalAnual) * 100;
     let p_autosuficiencia = (TCB.balance.autoconsumo / TCB.consumo.cTotalAnual) * 100;
     let autoConsumo =  UTIL.formatoValor('energia', TCB.balance.autoconsumo) + "->" + UTIL.formatoValor("porciento", p_autoconsumo);
@@ -261,11 +267,49 @@ function muestraBalanceEnergia() {
 
 }
 
+function muestraTablaAsignacionZonasComunes() {
+  const _divZonasComunes = document.getElementById("cardZonasComunes");
+  _divZonasComunes.style="display: block;";
+
+  //Muestra la tarta de distribucion de consumo por grupo de uso
+  TCB.graficos.gestionResultados_TartaGrupos( 'tartaGrupos');
+
+//Muestra la tabla de zonas comunes en base a su uso para poder asignar un coefEnergia antes del reparto
+  const _divAsignacionZonasComunes = document.getElementById("asignacionZonasComunes");
+  _divAsignacionZonasComunes.innerHTML='';
+  var _zTabla = document.createElement("Table");
+  TCB.Participes.forEach( (finca) => {
+    if (finca.grupo === "Zonas Comunes") {
+          let row = _zTabla.insertRow(-1);
+          let _zCell = row.insertCell(0);
+          let _zLabel = document.createTextNode(finca.nombreFinca+"   ");
+          _zCell.appendChild(_zLabel);
+          let _zAsigna = row.insertCell(1);
+          const _zInput = document.createElement("input");
+          _zInput.type = 'number';
+          _zInput.style.width = "100px";
+          _zInput.style.textAlign = "right";
+          _zInput.step = 0.001;
+          _zInput.style.border = '1';
+          _zInput.id = finca.idFinca;
+          _zInput.value = finca.coefEnergia;
+          _zInput.addEventListener('change', (evt) => {asignaEnergiaZonaComun(evt.target)});
+          _zAsigna.appendChild(_zInput); 
+    }
+  })
+  _divAsignacionZonasComunes.appendChild(_zTabla);
+}
+function asignaEnergiaZonaComun( evento) {
+  //let _finca = TCB.Participes.find( (finca) => finca.idFinca === evento.id);
+  const _f = UTIL.selectTCB('Participes', 'idFinca', evento.id)[0];
+  _f.coefEnergia = parseFloat(evento.value);
+}
+
 /**
  * Muestra el grafico consumo - produccion en 3D
  */
 function muestraGraficos() {
-  TCB.graficos.gestionResultados_ConsumoGeneracion3D("graf_resumen");
+  TCB.graficos.gestionResultados_ConsumoGeneracion3D("graf_resumenBalance");
 }
 
 /**
