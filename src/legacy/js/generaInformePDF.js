@@ -185,7 +185,6 @@ async function generaInformePDF() {
     let gastoConPlacasAnual = UTIL.suma(TCB.economico.consumoConPlacasMensualCorregido);
     nuevaLinea('Dato', i++, 'IVAenergia_LBL', UTIL.formatoValor('porciento',TCB.parametros.IVAenergia));
     nuevaLinea('Dato', i++, 'precioInstalacion_LBL', UTIL.formatoValor('dinero',TCB.produccion.precioInstalacion));
-    nuevaLinea('Dato', i++, 'precioInstalacionCorregido_LBL', UTIL.formatoValor('dinero',TCB.produccion.precioInstalacionCorregido));
     nuevaLinea('Dato', i++, 'IVAinstalacion_LBL', UTIL.formatoValor('porciento',TCB.parametros.IVAinstalacion));
     nuevaLinea('Dato', i++, 'noCompensadoAnual_LBL', UTIL.formatoValor('dinero',UTIL.suma(TCB.economico.perdidaMes)));
     nuevaLinea('Dato', i++, 'ahorroAnualPorciento_LBL', UTIL.formatoValor('porciento',(gastoSinPlacasAnual - gastoConPlacasAnual) / gastoSinPlacasAnual * 100));
@@ -210,7 +209,7 @@ async function generaInformePDF() {
         { header: TCB.i18next.t('coefEnergia_LBL'), dataKey: 'coefEnergia'},
         { header: TCB.i18next.t('produccionTotal_LBL'), dataKey: 'produccionTotal'},
         { header: TCB.i18next.t('coefInversion_LBL'), dataKey: 'coefInversion'},
-        { header: TCB.i18next.t('precioInstalacionCorregido_LBL'), dataKey: 'precioInstalacionCorregido'},
+        { header: TCB.i18next.t('precioInstalacion_LBL'), dataKey: 'precioInstalacion'},
         { header: TCB.i18next.t('ahorroFincaAnual_LBL'), dataKey: 'ahorroFincaAnual'},
         { header: TCB.i18next.t('coefHucha_LBL'), dataKey: 'coefHucha'},
         { header: TCB.i18next.t('cuotaHucha_LBL'), dataKey: 'cuotaHucha'}

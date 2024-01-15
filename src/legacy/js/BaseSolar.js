@@ -32,9 +32,12 @@ class BaseSolar {
     this.instalacion = {};
     this.produccion = {};
 
-    //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto    
+    //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto 
     for (const objProp in area) {
-      if (typeof area[objProp] !== Object) this[objProp] = area[objProp];
+      if (typeof area[objProp] !== Object) {
+        if (objProp === 'fecha' && typeof area[objProp] === 'string') area[objProp] = new Date(area[objProp]);
+        this[objProp] = area[objProp];
+      }
     }
     UTIL.debugLog("Nueva base solar "+area.nombreBaseSolar+" creada");
     

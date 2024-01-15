@@ -1,6 +1,8 @@
 import * as UTIL from "./Utiles.js";
 import TCB from "./TCB.js";
 import * as IDIOMA from "./Idioma.js";
+import Finca from "./Finca.js";
+import TipoConsumo from "./TipoConsumo.js";
 import {nuevoTotalPaneles} from "./optimizador.js";
 import {calculaResultados} from "./calculaResultados.js";
 import {gestionEconomico} from "./gestionEconomico.js";
@@ -25,6 +27,7 @@ class Graficos {
         this.opcion; //ConHucha o SinHucha
         this.fecha = [];
         this.valores = [];
+        this.colores = [];
         this.horas = [];
         this.meses = [];
         this.text = [];
@@ -45,7 +48,13 @@ class Graficos {
                 yaxis:{title: TCB.i18next.t('graficos_LBL_graficasDia'),
                     tickvals: UTIL.indiceDia.map((e) => {return (e[1])}),
                     ticktext: this.mesMapa
-                }
+                },
+                title: {
+                    text: TCB.i18next.t('graficos_LBL_graficasConsumo'),
+                    xref: 'paper',
+                    x: 0,
+                    yref: 'paper',
+                    y: 1.1}
             };
             data_update = {
                 name: TCB.i18next.t('graficos_LBL_graficasConsumo'),
@@ -76,11 +85,14 @@ class Graficos {
                     this.meses.push(this.mesMapa[mes]);
                 }
             }
-/*             console.log(this.meses);
-            console.log(this.valores);
-            console.log(this.text); */
             layout_update = {
-                title: {text: TCB.i18next.t('graficos_LBL_graficasConsumo')},
+                title: {
+                    text: TCB.i18next.t('graficos_LBL_mapaConsumoMesHora'),
+                    xref: 'paper', 
+                    yref: 'paper',
+                    x: 0.5,
+                    y: 1.1,
+                    },
                 xaxis: {title:TCB.i18next.t('graficos_LBL_graficasHora'), dtick:4},
                 yaxis: {title: TCB.i18next.t('graficos_LBL_graficasMes'), ticktext: this.meses},
                 annotations: [
@@ -92,7 +104,7 @@ class Graficos {
                     arrowhead: 3,
                     xanchor: 'center',
                     ax: 12,
-                    ay: 14
+                    ay: 13
                 }
                 ]
             }
@@ -157,6 +169,20 @@ class Graficos {
                 ]
             }
             Plotly.update(this.divConsumoGeneracion3D, data_update, layout_update);
+        }
+
+        if (this.divResPerfilDiario !== undefined) {
+            layout_update = {
+                title: TCB.i18next.t("graficos_LBL_graficasDia") + ": " + this.fecha[0] + " - " + TCB.i18next.t(UTIL.nombreMes[parseInt(this.fecha[1])-1]),
+                xaxis: {title: TCB.i18next.t('graficos_LBL_graficasHora'), dtick: 4},
+                yaxis: {title: 'kWh', showline: true, zeroline: true, zerolinecolor :'#969696', gridcolor : '#bdbdbd', gridwidth : 2 }
+            }
+            data_update = {
+                name: [
+                    TCB.i18next.t('graficos_LBL_graficasConsumo'),
+                    TCB.i18next.t('graficos_LBL_graficasProduccion')],
+            }
+            Plotly.update(this.divResPerfilDiario, data_update, layout_update);
         }
 
         if (this.divBalanceProduccion !== undefined) {
@@ -263,6 +289,7 @@ class Graficos {
         if (this.divBalanceResultados !== undefined) {
             this.gestionResultados_BalanceResultados( this.divBalanceResultados)
         }
+
     }
 
     gestionGraficos_ConsumosVersusGeneracion(donde){
@@ -275,7 +302,7 @@ class Graficos {
             type: 'scatter',
             name: TCB.i18next.t('graficos_LBL_graficasConsumo')
         };
-    
+
         var resProduccion = TCB.produccion.resumenMensual('suma');
         var trace2 = {
             x: this.mesMapa,
@@ -350,8 +377,11 @@ class Graficos {
         this.divPerfilDiario = donde2;
         var g_consumo = {
             z: consumo.diaHora,
-            y: consumo.idxTable.map((e) => {return (e.dia + " - " + TCB.i18next.t(UTIL.nombreMes[e.mes]))}),
-            name:TCB.i18next.t('graficos_LBL_graficasConsumo'),
+/*             y: consumo.idxTable.map((e) => {return (e.dia + " - " + TCB.i18next.t(UTIL.nombreMes[e.mes]))}), */
+            y: consumo.idxTable.map((e) => { 
+                if (e.fecha !== '') 
+                    return (e.fecha.getDate() + " - " + TCB.i18next.t(UTIL.nombreMes[e.fecha.getMonth()]))
+            }),
             type: 'heatmap',
             colorscale: 
              [
@@ -371,7 +401,7 @@ class Graficos {
             },
             zsmooth: 'best',
             connectgaps: true,
-            showlegend: true,
+            //showlegend: true,
             showscale: true,
             hovertemplate:
             "%{yaxis.title.text}: %{y}<br>" +
@@ -385,6 +415,12 @@ class Graficos {
                 tickvals: UTIL.indiceDia.map((e) => {return (e[1])}),
                 ticktext: this.mesMapa,
             },
+            title: {
+                text: TCB.i18next.t('graficos_LBL_mapaConsumo'),
+                xref: 'paper',
+                x: 0.5,
+                yref: 'paper',
+                y: 1.1},
             zaxis:{title: 'kWh'},
             paper_bgcolor:'rgba(0,0,0,0)',
             plot_bgcolor:'rgba(0,0,0,0)',
@@ -431,48 +467,6 @@ class Graficos {
             let dia = Math.round(yInDataCoord);
             let fecha = UTIL.fechaDesdeIndice(dia);
             TCB.graficos.gestionTipoConsumo_PerfilDiario(consumo, donde2, dia, fecha);
-
-/*             var trace1 = {
-                y: consumo.diaHora[dia],
-                type: 'scatter',
-                showlegend : false,
-                name: TCB.i18next.t('graficos_LBL_graficasConsumo'),
-                line: {shape: 'spline', width:3, color:'rgb(0,0,255'}
-            };
-
-            var trace2 = {
-                y: consumo.diaHora[dia],
-                type: 'bar',
-                showlegend : false,
-                width: 0.1,
-                hoverinfo: 'none',
-                marker : {'color': consumo.diaHora[dia],
-                    cmax : consumo.cMaximoAnual,
-                    cmin : 0,
-                    colorscale: [
-                    ['0.0', 'rgb(250,250,250)'],
-                    ['0.10', 'rgb(240,240,240)'],
-                    ['0.20', 'rgb(230,200,200)'],
-                    ['0.5', 'rgb(220,120,150)'],
-                    ['1.0', 'rgb(254,79,67)']]}
-            };
-            var layout = {
-                autosize: true,
-                margin: {
-                    l: 50,
-                    r: 20,
-                    b: 65,
-                    t: 25
-                },
-                paper_bgcolor:'rgba(0,0,0,0)',
-                plot_bgcolor:'rgba(0,0,0,0)',
-                title: TCB.i18next.t("graficos_LBL_graficasDia") + ": " + fecha[0] + " - " + TCB.i18next.t(UTIL.nombreMes[parseInt(fecha[1])]),
-                x: 10,
-                y: 15,
-                xaxis: {title: TCB.i18next.t('graficos_LBL_graficasHora'), dtick: 2},
-                yaxis: {title: 'kWh', showline: true, zeroline: true, zerolinecolor :'#969696', gridcolor : '#bdbdbd', gridwidth : 2 }
-            };
-            Plotly.react(donde2, [trace1, trace2], layout); */
         });
 
         let dia = UTIL.indiceDesdeFecha(consumo.fechaInicio);
@@ -482,7 +476,7 @@ class Graficos {
     gestionTipoConsumo_MapaMesHora ( consumo, donde) {
 
         this.divMapaMesHora = donde;
-        let colores = [];
+        this.colores = [];
         this.valores = [];
         this.text = [];
         this.sizes = [];
@@ -495,8 +489,10 @@ class Graficos {
             let _diasMes = new Array(12).fill(0);
 
             for (let dia = 0; dia < 365; dia++) {
-                _consMes[consumo.idxTable[dia].mes] += _valorHora[dia];
-                _diasMes[consumo.idxTable[dia].mes]++;
+/*                 _consMes[consumo.idxTable[dia].mes] += _valorHora[dia];
+                _diasMes[consumo.idxTable[dia].mes]++; */
+                   _consMes[consumo.idxTable[dia].fecha.getMonth()] += _valorHora[dia];
+                _diasMes[consumo.idxTable[dia].fecha.getMonth()]++;   
             }
             for (let mes = 0; mes < 12; mes++) {
                 this.horas.push(hora+1);
@@ -508,21 +504,23 @@ class Graficos {
                     this.maxMes = mes;
                 }
                 this.valores.push(valor);
-                this.text.push(valor.toFixed(2));
+                this.text.push(valor.toFixed(2)+'kWh');
             }
         }
 
-/*         let tono; */
+        let tono;
         for (let valor of this.valores) {
-/*             tono = 255 * valor / this.maxConsumoMes;
-            colores.push(tono); //"rgb("+tono+",0,0)"); */
+            tono = parseInt(255 * valor / this.maxConsumoMes);
+            let _r = tono;
+            let _g = 255 - tono;
+            let _b = 0;
+            this.colores.push('rgb(' + _r + ',' + _g + ',' + _b + ')'); //"rgb("+tono+",0,0)");
             this.sizes.push(radio * valor / this.maxConsumoMes);
         }
 
         var layout = {
             paper_bgcolor:'rgba(0,0,0,0)',
             plot_bgcolor:'rgba(0,0,0,0)',
-            //autosize: true,
             margin: {
                 l: 50,
                 r: 20,
@@ -530,11 +528,11 @@ class Graficos {
                 t: 25
             },
             title: {
-                text: TCB.i18next.t('graficos_LBL_graficasConsumo'),
-                xanchor: 'left', 
-                yanchor: 'top',
-                x: 0,
-                y: 0,
+                text: TCB.i18next.t('graficos_LBL_mapaConsumoMesHora'),
+                xref: 'x', 
+                yref: 'y',
+                x: 12,
+                y: 14,
                 },
             xaxis: {
                 title:TCB.i18next.t('graficos_LBL_graficasHora'),
@@ -548,7 +546,8 @@ class Graficos {
                 tickcolor:'rgb(102, 102, 102)',
                 },
             yaxis:{title: TCB.i18next.t('graficos_LBL_graficasMes'),
-                    ticktext: this.meses
+                    ticktext: this.meses,
+                    showline:true,
                 },
             hovermode: 'closest',
             annotations: [
@@ -560,9 +559,10 @@ class Graficos {
                     arrowhead: 3,
                     xanchor: 'center',
                     ax: 12,
-                    ay: 14
+                    ay: 12
                     }
-                ]
+                ],
+
         }
 
         var trace = {
@@ -570,31 +570,85 @@ class Graficos {
             name: TCB.i18next.t('graficos_LBL_tituloConsumoMedio'),
             x: this.horas,
             y: this.meses,
-            customdata: this.valores,
             text: this.text,
             mode: 'markers',
-            autocolerscale: true,
-            marker: {symbol: 'circle',
-                    size: this.sizes,  
-                    line: {
-                        color: 'rgba(156, 165, 196, 1.0)',
-                        width: 1,
-                    },
-                },
             hovertemplate:
-                "%{yaxis.title.text}: %{y}<br>" +
-                "%{xaxis.title.text}: %{x}<br>" +
-                ": %{customdata:.2f}Kwh"
+            "%{yaxis.title.text}: %{y}<br>" +
+            "%{xaxis.title.text}: %{x}<br>" +
+            "%{text}",
+            marker: {symbol: 'circle',
+                    size: this.sizes,
+                    color: this.colores //'rgba(200, 50, 100, .7)',  
+                },
+
         }
-        Plotly.react(donde, [trace], layout);
+        Plotly.newPlot(donde, [trace], layout);
+    }
+
+    gestionResultados_PerfilDiario ( donde, dia, fecha) {
+
+        this.divResPerfilDiario = donde;
+
+        this.fecha[0]=fecha[0];
+        this.fecha[1]=fecha[1];
+        document.getElementById(donde).style.display = "block";
+        var trace1 = {
+            y: TCB.consumo.diaHora[dia],
+            type: 'scatter',
+            showlegend : true,
+            name: TCB.i18next.t('graficos_LBL_graficasConsumo'),
+            line: {shape: 'line', width:3, color:'rgb(0,0,255'},
+            fill: 'tozeroy',
+            //fill: 'tonexty',
+        };
+
+        var trace2 = {
+            y: TCB.produccion.diaHora[dia],
+            type: 'scatter',
+            showlegend : true,
+            name: TCB.i18next.t('graficos_LBL_graficasProduccion'),
+            line: {shape: 'line', width:3, color:'rgb(0,255,0'},
+            fill: 'tozeroy',
+        };
+
+        var layout = {
+            legend: {
+                x: 0.9,
+                xref: 'paper',
+                y: 1.1,
+                yref: 'paper'
+              },
+            autosize: true,
+            margin: {
+                l: 50,
+                r: 20,
+                b: 65,
+                t: 25
+            },
+            paper_bgcolor:'rgba(0,0,0,0)',
+            plot_bgcolor:'rgba(0,0,0,0)',
+            title: {
+                text: TCB.i18next.t("graficos_LBL_graficasDia") + ": " + this.fecha[0] + " - " + TCB.i18next.t(UTIL.nombreMes[parseInt(this.fecha[1])-1]),
+                xref: 'paper',
+                x: 0,
+                yref: 'paper',
+                y: 1.1},
+            xaxis: {title: TCB.i18next.t('graficos_LBL_graficasHora'), dtick: 4},
+            yaxis: {title: 'kWh', showline: true, zeroline: true, zerolinecolor :'#969696', gridcolor : '#bdbdbd', gridwidth : 2 }
+        };
+        Plotly.react(donde, [trace1, trace2], layout);
     }
     
     gestionResultados_ConsumoGeneracion3D ( donde) {
         this.divConsumoGeneracion3D = donde;
-
         var g_produccion = {
             z: TCB.produccion.diaHora,
-            y: TCB.produccion.idxTable.map((e) => {return (e.dia + " - " + TCB.i18next.t(UTIL.nombreMes[e.mes]))}),
+/*             y: TCB.consumo.idxTable.map((e) => {
+                let mes = parseInt(e.mes) + 1;
+                return (e.dia + "/" + mes)}), */
+            y: TCB.consumo.idxTable.map((e) => {
+                let mes = parseInt(e.fecha.getMonth()) + 1;
+                return (e.fecha.getDate() + "/" + mes)}),
             name: TCB.i18next.t('graficos_LBL_graficasProduccion'),
             type: 'surface',
             colorscale: 'YlOrRd',
@@ -605,14 +659,17 @@ class Graficos {
                     "y": {show: true, usecolormap: true, project:{x: true}}
             },
             hovertemplate:
-                TCB.i18next.t('graficos_LBL_graficasHora') + ": %{y}<br>" +
+                TCB.i18next.t('graficos_LBL_graficasDia') + ": %{y}<br>" +
                 TCB.i18next.t('graficos_LBL_graficasHora') + ": %{x}<br>" +
                 TCB.i18next.t('graficos_LBL_graficasProduccion') + ": %{z:.2f} kWh"
             };
 
         var g_consumo = {
             z: TCB.consumo.diaHora,
-            y: TCB.consumo.idxTable.map((e) => {return (e.dia + " - " + TCB.i18next.t(UTIL.nombreMes[e.mes]))}),
+            //y: TCB.consumo.idxTable.map((e) => {return (e.dia + " - " + TCB.i18next.t(UTIL.nombreMes[e.mes]))}),
+            y: TCB.consumo.idxTable.map((e) => {
+                let mes = parseInt(e.fecha.getMonth()) + 1;
+                return (e.fecha.getDate() + "/" + mes)}),
             name: TCB.i18next.t('graficos_LBL_graficasConsumo'),
             type: 'surface',
             colorscale: 'Picnic',
@@ -620,35 +677,45 @@ class Graficos {
             showlegend:true,
             showscale: false,
             hovertemplate:
-                TCB.i18next.t('graficos_LBL_graficasHora') + ": %{y}<br>" +
+                TCB.i18next.t('graficos_LBL_graficasDia') + ": %{y}<br>" +
                 TCB.i18next.t('graficos_LBL_graficasHora') + ": %{x}<br>" +
                 TCB.i18next.t('graficos_LBL_graficasConsumo') + ": %{z:.2f} kWh"
             };
-    
+
         var layout_resumen = {
+            legend: {
+                x: 0.5,
+                xanchor: 'left',
+                y: 1.1
+              },
             paper_bgcolor:'rgba(0,0,0,0)',
             plot_bgcolor:'rgba(0,0,0,0)',
             title: {
                 text: TCB.i18next.t('graficos_LBL_graficasProduccion') + " vs " + TCB.i18next.t('graficos_LBL_graficasConsumo'),
-                xanchor: 'left', 
-                yanchor: 'bottom',
-                x: 0,
-                y: 0.5
-                },
-
-            scene: {camera: {eye: {x: -1.5, y: -1.5, z: 0.5}},
+                x: 0.1,
+                y: 1.1},
+            scene: {camera: {eye: {x: -2, y: -1.5, z: 1}},
                 xaxis:{title: TCB.i18next.t('graficos_LBL_graficasHora')},
                 yaxis:{title: TCB.i18next.t('graficos_LBL_graficasDia'),
                     tickvals: UTIL.indiceDia.map((e) => {return (e[1])}),
                     ticktext: this.mesMapa},
-                zaxis:{title: 'kWh'}},
+            zaxis:{title: 'kWh'}},
             autosize: false,
-            width: 1200,
-            height: 600,
-            margin: {l: 200, r: 0, b: 65, t: 25},
+            margin: {
+                l: 0,
+                r: 0,
+                b: 65,
+                t: 25
+            },
             }
             
         Plotly.react(donde, [g_consumo, g_produccion], layout_resumen);
+        let gd = document.getElementById('graf_resumenBalance');
+        gd.on('plotly_click', function(data){
+            this.fecha = data.points[0].y.split('/').map( (a) => {return parseInt(a)});
+            let dia = UTIL.indiceDesdeDiaMes(this.fecha[0], this.fecha[1] - 1);
+            TCB.graficos.gestionResultados_PerfilDiario("graf_perfilDiaMixto", dia, this.fecha );
+        });
     }
 
     gestionGraficos_BalanceEnergia (donde1, donde2){
@@ -1000,6 +1067,7 @@ class Graficos {
 
                     nuevoTotalPaneles ( TCB.totalPaneles);
                     calculaResultados();
+
                     gestionResultados('Prepara');  //Pensar esto no deberiamos llamar Prepara fuera del flujo normal
                     gestionEconomico('Prepara');
                     gestionGraficos('Prepara');
@@ -1116,6 +1184,75 @@ class Graficos {
 
     }
 
+    gestionResultados_TartaGrupos( donde) {
+
+        let datos = new Array(Finca.getGrupos.values.length).fill(0);
+        let tipos = Finca.getGrupos.values.map( (a) => {return a});
+        let _pos;
+        for (let finca of TCB.Participes) {
+            if (finca.grupo === "Zonas Comunes") {
+                _pos = tipos.push(finca.nombreFinca);
+                datos[_pos-1] = UTIL.selectTCB('TipoConsumo', 'nombreTipoConsumo', 
+                                                            finca.nombreTipoConsumo)[0].cTotalAnual;
+            } else if (finca.nombreTipoConsumo !== 'Participe sin consumo') {
+                let _pos = Finca.getGrupos.values.findIndex( (grupo) => {return finca.grupo === grupo});
+                datos[_pos] += UTIL.selectTCB('TipoConsumo', 'nombreTipoConsumo', finca.nombreTipoConsumo)[0].cTotalAnual;
+            }
+        }
+
+        let pdatos = [];
+        let pgrupo = [];
+        let pvalor = [];
+        for (let i=0; i<datos.length; i++) {
+            if (datos[i] !== 0) {
+                pdatos.push(datos[i]);
+                pvalor.push(UTIL.formatoValor('energia',datos[i]));
+                pgrupo.push(tipos[i]); //Finca.getGrupos.values[i])
+            }
+        }
+
+        var data = [{
+            values: pdatos,
+            labels: pgrupo,
+            text: pvalor,
+            type: 'pie',
+            textinfo: "percent+text",
+          }];
+          
+          var layout = {
+            paper_bgcolor:'rgba(0,0,0,0)',
+            plot_bgcolor:'rgba(0,0,0,0)',
+            title: {
+                text: TCB.i18next.t("Consumo por grupos"),
+                xanchor: 'left',
+                x: 0.,
+                y: 1.5},
+            legend: {
+                x: 0.7,
+                xanchor: 'left',
+                y: 1.5
+                },
+/*             height: 300,
+            width: 500, */
+            automargin: true,
+            autosize: true,
+            /* margin: {
+                l: 30,
+                r: 0,
+                b: 0,
+                t: 25
+            }, */
+/*             margin: {
+                l: 20,
+                r: 0,
+                b: 0,
+                t: 70 
+            },*/
+          };
+          
+          Plotly.newPlot(donde, data, layout);
+          
+    }
     /**
      * 
      * @param {*} svg 

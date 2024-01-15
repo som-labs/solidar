@@ -59,27 +59,18 @@ export default async function inicializaEventos() {
   }
 
   // lectura del fichero de tarifas del servidor. Si falla se usan las de la TCB
-  const ficheroTarifa = "./datos/tarifas.json";
-  UTIL.debugLog("Tarifas leidas desde servidor:" + ficheroTarifa);
-  try {
-    const respuesta = await fetch(ficheroTarifa);
-    if (respuesta.status === 200) {
-      TCB.tarifas = await respuesta.json();
+  //if (!UTIL.cargaTarifasDesdeSOM() ) { //Dejamos esta llamada hasta que el tiempo de respuesta de SOM sea aceptable
+    const ficheroTarifa = "./datos/tarifas.json";
+    UTIL.debugLog("Tarifas leidas desde servidor:" + ficheroTarifa);
+    try {
+      const respuesta = await fetch(ficheroTarifa);
+      if (respuesta.status === 200) {
+        TCB.tarifas = await respuesta.json();
+      }
+    } catch (err) {
+      UTIL.debugLog("Error leyendo tarifas del servidor " + err.message + "<br>Seguimos con TCB");
     }
-  } catch (err) {
-    UTIL.debugLog("Error leyendo tarifas del servidor " + err.message + "<br>Seguimos con TCB");
-  }
-
-  // Boton muestra/oculta ayuda
-  document.getElementById("botonAyuda").addEventListener("click", function handleChange() { 
-    var resultados = document.getElementById("panelDerecho");
-    if (resultados.classList.contains( 'collapse' )) {
-        resultados.classList.remove("collapse");
-        resultados.classList.add("collapse.show");
-    } else {
-        resultados.classList.add("collapse");
-    }
-  });
+  //}
 
   // Se incializan los tooltips
   TCB.tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
