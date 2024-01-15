@@ -191,7 +191,6 @@ async function importarProyecto(fichero) {
     TCB.conversionCO2 = datosImportar.conversionCO2;
     TCB.CO2AnualRenovable = datosImportar.CO2AnualRenovable;
     TCB.CO2AnualNoRenovable = datosImportar.CO2AnualNoRenovable;
-    TCB.correccionPrecioInstalacion = datosImportar.correccionPrecioInstalacion;
   }
 
   btnLabel.innerText = TCB.i18next.t('importarProyecto_MSG_importando') + ' Bases ';
@@ -222,8 +221,7 @@ function exportarProyecto () {
     TCB.datosProyecto.nombreProyecto = TCB.nombreProyecto;
     TCB.datosProyecto.modoActivo = TCB.modoActivo;
     TCB.datosProyecto.parametros = TCB.parametros;
-    TCB.datosProyecto.correccionPrecioInstalacion = TCB.correccionPrecioInstalacion;
-    TCB.datosProyecto.precioInstalacion = TCB.precioInstalacion;
+    //TCB.datosProyecto.precioInstalacion = TCB.precioInstalacion;
     TCB.datosProyecto.featIdUnico = TCB.featIdUnico;     // Generador de identificadores de objeto unicos
     TCB.datosProyecto.idFinca = TCB.idFinca;    
     TCB.datosProyecto.totalPaneles = TCB.totalPaneles;

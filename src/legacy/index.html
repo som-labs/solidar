@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
     <meta charset="utf-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SOM Madrid - Simulador de producción fotovoltaica individual</title>
 
@@ -11,6 +11,9 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src = "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> 
+
+<!--     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script> -->
 
     <!-- OpenLayers -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v7.1.0/ol.css">
@@ -114,11 +117,9 @@
   visibility: visible;
 } */
 
-#panelDerecho {
-    height: 100vh;
-    max-width: 100vw;
-    background-color: rgba(220, 249, 233, 1);
-    text-align: left;
+.offcanvas-header {
+    background-color: rgb(200, 249, 233);
+    text-align: center;
     color: black;
     margin: 0;
     padding: 0;
@@ -150,15 +151,16 @@
     height: 100vh;
 }
 
-.divTextArea {
+.offcanvas-body {
     padding: 4px;
     padding-left: 10px;
-    width: 100%;
+    background-color:rgb(169, 248, 206);
+/*     width: 100%;
     height: 80vh;
     border: solid 1px black;
     overflow: scroll;
     overflow-y: scroll;
-    overflow-x: hidden;
+    overflow-x: hidden; */
 }
 
 .divBienvenidaArea {
@@ -203,7 +205,8 @@
     <script src="https://cdn.jsdelivr.net/npm/i18next-http-backend@1.3.1/i18nextHttpBackend.min.js"></script>
     
     <!-- Plotly-->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<!--     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/plotly.js@2.24.2/dist/plotly.min.js"></script>
 
     <!-- jspdf -->
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
@@ -231,9 +234,23 @@
         <div class="col-md-6 text-center" id="menu_screen">
             <h2 data-i18n="main_LBL_titulo"></h2>
         </div>
+
+        <!-- Botones del boton de comandos -->
+
         <div class="col-md-3">
-            <button class="btn btn-default pull-right" type="button" id="botonAyuda"
-            data-bs-toggle="tooltip" data-bs-placement="top"><span class="fa fa-question-circle-o"></span>
+            <!-- Selector de idioma -->
+            <div class="col col-md-2 pull-right">
+                <select class="form-select" id="idioma" >
+                    <option value="es">Castellano</option>
+                    <option value="en">English</option>
+                    <option value="ca">Català</option>
+                    <option value="ga">Galego</option>
+                    <option value="eu">Euskara</option>
+                </select>
+            </div>
+            
+            <button class="btn btn-default pull-right" type="button" id="botonAyuda" data-bs-toggle="offcanvas" data-bs-target="#offcanvasAyuda" aria-controls="offcanvasAyuda"
+            data-bs-placement="top"><span class="fa fa-question-circle-o"></span>
             </button>
             <button class="btn btn-default pull-right" type="button" id="botonInstrucciones"  
             data-bs-toggle="tooltip" data-bs-placement="top"><span class="fa fa-info"></span>
@@ -252,17 +269,32 @@
             <button class="btn btn-default pull-right" type="button" id="botonExportar"
             data-bs-toggle="tooltip" data-bs-placement="top"><span class="fa fa-floppy-o"></span>
             </button>
+
+            <!-- Panel para la ayuda online -->
+            <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasAyuda" aria-labelledby="offcanvasAyudaTitulo">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasAyudaTitulo"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body" id="texto">
+                </div>
+            </div>
         </div>
-        <div class="col-md-1 pull-right">
-            <select class="form-select col-md-1" id="idioma" >
-                <option value="es">Castellano</option>
-                <option value="en">English</option>
-                <option value="ca">Català</option>
-                <option value="ga">Galego</option>
-                <option value="eu">Euskara</option>
-            </select>
+
+        <!-- Prueba de traducción utilizando Google -->
+        <!--  
+        <div class="row">          
+                <div class="col col-md-2 pull-right">
+                <div id="google_translate_element" class="google"></div>
+            </div>
         </div>
-    </div>
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({includedLanguages: 'es,ca,eu,gl,en,fr', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true}, 'google_translate_element');
+                    }
+        </script>
+        <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        -->
 
     <div id="mmenu_screen" class="container-fluid main_container d-flex"> <!-- Contenedor general -->
         <div class="col-md-9 flex-fill" id="panelIzquierdo"> <!-- Panel izquierdo-->
@@ -375,7 +407,7 @@
                                 <a class="collapsed d-inline" data-bs-toggle="collapse" href="#ayudaTipoConsumo" aria-expanded="true" aria-controls="ayudaTipoConsumo" id="ayudaTipoConsumoHDR" 
                                 data-i18n="consumo_MSG_ayudaTipoConsumoHdr">
                                 </a>
-                                    <span class="fa fa-chevron-down pull-right d-inline"></span>
+                                <span class="fa fa-chevron-down pull-right d-inline"></span>
                             </h6>
                             <div id="ayudaTipoConsumo" class="collapse" aria-labelledby="ayudaTipoConsumoHDR">
                                 <div class="card-body-left" data-i18n="consumo_MSG_descripcionFuentes">
@@ -442,44 +474,44 @@
                         </div>
                     <br>
                         <div class="form-group row justify-content-center">
-                            <label class="col-md-2" data-i18n="cMaximoAnual_LBL"></label>
+                            <label class="col-md-4 text-end" data-i18n="cMaximoAnual_LBL"></label>
                             <div class="col-md-2 text-end" id="cMaximoAnual" data-bs-toggle="tooltip" data-bs-placement="top">
                             <a data-i18n="resultados_LBL_pendienteCalculo"></a>
                             </div>
-                            <label class="col-md-2 offset-md-1" data-i18n="potenciaTotal_LBL"></label>
+                            <label class="col-md-4 text-end" data-i18n="potenciaTotal_LBL"></label>
                             <div class="col-md-2 text-end" id="potenciaTotal" data-bs-toggle="tooltip" data-bs-placement="top"> 
                             <a data-i18n="resultados_LBL_pendienteCalculo"></a>
                             </div>
                         </div>
                         
                         <div class="form-group row justify-content-center">
-                            <label class="col-md-2" data-i18n="consumoDiario_LBL"></label>
+                            <label class="col-md-4 text-end" data-i18n="consumoDiario_LBL"></label>
                             <div class="col-md-2 text-end" id="consumoDiario" data-bs-toggle="tooltip" data-bs-placement="top">
                             <a data-i18n="resultados_LBL_pendienteCalculo"></a>
                             </div>
-                            <label class="col-md-2 offset-md-1" data-i18n="produccionDiaria_LBL"></label>
+                            <label class="col-md-4 text-end" data-i18n="produccionDiaria_LBL"></label>
                             <div class="col-md-2 text-end" id="produccionDiaria" data-bs-toggle="tooltip" data-bs-placement="top">
                             <a data-i18n="resultados_LBL_pendienteCalculo"></a>
                             </div>
                         </div>
 
                         <div class="form-group row justify-content-center">
-                            <label class="col-md-2" data-i18n="consumoMensual_LBL"></label>
+                            <label class="col-md-4 text-end" data-i18n="consumoMensual_LBL"></label>
                             <div class="col-md-2 text-end" id="consumoMensual"  data-bs-toggle="tooltip" data-bs-placement="top">
                             <a data-i18n="resultados_LBL_pendienteCalculo"></a>
                             </div>
-                            <label class="col-md-2 offset-md-1" data-i18n="produccionMensual_LBL"></label>
+                            <label class="col-md-4 text-end" data-i18n="produccionMensual_LBL"></label>
                             <div class="col-md-2 text-end" id="produccionMensual" data-bs-toggle="tooltip" data-bs-placement="top">
                             <a data-i18n="resultados_LBL_pendienteCalculo"></a>
                             </div>
                         </div>
 
                         <div class="form-group row justify-content-center">
-                            <label class="col-md-2" data-i18n="cTotalAnual_LBL"></label>
+                            <label class="col-md-4 text-end" data-i18n="cTotalAnual_LBL"></label>
                             <div class="col-md-2 text-end" id="cTotalAnual" data-bs-toggle="tooltip" data-bs-placement="top">
                             <a data-i18n="resultados_LBL_pendienteCalculo"></a>
                             </div>
-                            <label class="col-md-2 offset-md-1" data-i18n="pTotalAnual_LBL"></label>
+                            <label class="col-md-4 text-end" data-i18n="pTotalAnual_LBL"></label>
                             <div class="col-md-2 text-end" id="pTotalAnual" data-bs-toggle="tooltip" data-bs-placement="top">
                             <a data-i18n="resultados_LBL_pendienteCalculo"></a>
                             </div>
@@ -494,17 +526,18 @@
                                 <a href='https://joint-research-centre.ec.europa.eu/pvgis-online-tool/getting-started-pvgis/pvgis-user-manual_en' target='_blank'><i class='fa fa-question-circle-o d-inline'></i></a>
                                 <i class="fa fa-chevron-down pull-right d-inline"></i>
                             </h6>
-
-                            <div class="row">
-                                <div class="col">
-                                    <div class="collapse multi-collapse" id="si">
-                                        <div class="card card-body text-start" data-i18n="resultados_MSG_disclaimerProduccionSi">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="collapse multi-collapse" id="si">
+                                            <div class="card-body text-start" data-i18n="resultados_MSG_disclaimerProduccionSi">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col">
-                                    <div class="collapse multi-collapse" id="no">
-                                        <div class="card-body text-start" data-i18n="resultados_MSG_disclaimerProduccionNo">
+                                    <div class="col">
+                                        <div class="collapse multi-collapse" id="no">
+                                            <div class="card-body text-start" data-i18n="resultados_MSG_disclaimerProduccionNo">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -567,16 +600,26 @@
                             </div>    
                         </div>
                         <hr/> -->
-                        <div class="form-group row justify-content-center">
-                            <label class="col-md-2" data-i18n="Consumo%Produccion_LBL"></label>
+<!--                         <div class="form-group row justify-content-center"> -->
+                        <div class="row justify-content-center">
+                            <label class="col-md-6" data-i18n="Consumo%Produccion_LBL"></label>
                             <div class="col-md-2 text-end" id="Consumo%Produccion" data-bs-toggle="tooltip" data-bs-placement="top">
                             <a data-i18n="resultados_LBL_pendienteCalculo"></a>
                             </div>
-                            <label class="col-md-2 offset-md-1" data-i18n="Produccion%Consumo_LBL"></label>
+                        </div>
+                        <div class="row justify-content-center">
+                            <label class="col-md-6" data-i18n="Produccion%Consumo_LBL"></label>
                             <div class="col-md-2 text-end" id="Produccion%Consumo" data-bs-toggle="tooltip" data-bs-placement="top">
                             <a data-i18n="resultados_LBL_pendienteCalculo"></a>
                             </div>
                         </div>
+                        <div class="row justify-content-center">
+                            <label class="col-md-6" data-i18n="ConsumoDiurno_LBL"></label>
+                            <div class="col-md-2 text-end" id="ConsumoDiurno" data-bs-toggle="tooltip" data-bs-placement="top">
+                            <a data-i18n="resultados_LBL_pendienteCalculo"></a>
+                            </div>
+                        </div>
+<!--                         </div> -->
 <!--                         <hr/>
                         <div class="row justify-content-center">
                             <label class="col-md-3 text-center" data-i18n="autoconsumoMedioAnual_LBL"></label>
@@ -590,17 +633,67 @@
                         </div> -->
                         <hr/>
 
+                        <div class="card" id="cardZonasComunes" style="display: none;">
+                            <h6 class="card-header">
+                                <a class="collapsed d-inline" 
+                                data-bs-toggle="collapse" 
+                                href="#repartoPorGrupos" 
+                                aria-expanded="true" 
+                                aria-controls="repartoPorGrupos" 
+                                id="repartoPorGruposHdr" 
+                                data-i18n="resultados_LBL_repartoPorGrupoHdr">
+                                </a><span class="fa fa-chevron-down pull-right d-inline"></span>
+                            </h6>
+
+
+<!--                             <h6 class="card-header">
+                                <a class="collapsed d-inline" data-bs-toggle="collapse" href="#ayudaTipoConsumo" aria-expanded="true" aria-controls="ayudaTipoConsumo" id="ayudaTipoConsumoHDR" 
+                                data-i18n="consumo_MSG_ayudaTipoConsumoHdr">
+                                </a>
+                                <span class="fa fa-chevron-down pull-right d-inline"></span>
+                            </h6>
+                            <div id="ayudaTipoConsumo" class="collapse" aria-labelledby="ayudaTipoConsumoHDR">
+                                <div class="card-body-left" data-i18n="consumo_MSG_descripcionFuentes">
+                                </div>
+                            </div> -->
+                            <div  id="repartoPorGrupos" class="collapse" aria-labelledby="repartoPorGruposHdr">
+                                <div class="card-body" >
+                                    <div class="row justify-content-center">
+                                        <div class="col col-md-7">
+                                            <div id="tartaGrupos">
+                                            </div>
+                                        </div>
+
+                                        <div class="col col-md-5">
+                                            <label class="col-form-label" data-i18n="resultados_asignacionZonasComunes_LBL"
+                                            data-bs-toggle="tooltip" data-bs-placement="top" id="resultados_asignacionZonasComunes"></label>
+                                            <div id="asignacionZonasComunes">
+                                            </div>
+                                        </div>
+<!--                                             <label for="porcientoZonasComunes" class="col-md-3 col-form-label" data-i18n="porcientoZonasComunes_LBL"></label>
+                                            <input type="number" class="form-control col-md-2" id="porcientoZonasComunes"
+                                            data-bs-toggle="tooltip" data-placement="top">
+                                            <button class="btn btn-info btn-sm" type="button" id="asignaZonasComunes" data-i18n="porcientoZonasComunes_LBL" data-bs-toggle="tooltip" data-bs-placement="top"></button> -->
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
                         <div class="col-md-12 text-center justify-content-center">
                             <a id="fuenteInfoCO2"
                                 href="https://energia.gob.es/desarrollo/EficienciaEnergetica/RITE/Reconocidos/Reconocidos/Otros%20documentos/Factores_emision_CO2.pdf"
                                 target="_blank"></a>
                         </div>
-                        <div class="form-group row justify-content-center">
-                            <label class="col-md-2" data-i18n="kgCO2AnualRenovable_LBL"></label>
+
+                        <div class="row justify-content-center">
+                            <label class="col-md-6" data-i18n="kgCO2AnualRenovable_LBL"></label>
                             <div class="col-md-2 text-end" id="kgCO2AnualRenovable" data-bs-toggle="tooltip" data-bs-placement="top">
                             <a data-i18n="resultados_LBL_pendienteCalculo"></a>
                             </div>
-                            <label class="col-md-2 offset-md-1" data-i18n="kgCO2AnualNoRenovable_LBL"></label>
+                        </div>
+                        <div class="row justify-content-center">
+                            <label class="col-md-6" data-i18n="kgCO2AnualNoRenovable_LBL"></label>
                             <div class="col-md-2 text-end" id="kgCO2AnualNoRenovable" data-bs-toggle="tooltip" data-bs-placement="top">
                             <a data-i18n="resultados_LBL_pendienteCalculo"></a>
                             </div>
@@ -608,8 +701,16 @@
                         <hr/>
 
                         <!-- Area reservada para el grafico resumen -->
-                        <div class="tab-pane fade" id="graficosResumen-tab" role="tabpanel"><a data-i18n="resultados_LBL_graficoResumen"></a></div>
-                            <div id="graf_resumen"></div>
+                        <div class="row md-12 align-items-center">
+                            <div class="col col-md-6">
+                                <div id="graf_resumenBalance"></div> <!-- Mapa 3D de consumo y produccion-->
+                            </div>
+                            <div class="col col-md-6">
+                                <div id="graf_perfilDiaMixto"></div> <!-- Perfil consumo y produccion diario -->
+                            </div>
+                        </div>
+
+<!--                             <div id="graf_resumen"></div> -->
                     </div>
 
                     <!-- Contenido del tab desde donde se gestionan los repartos de energia-->
@@ -617,13 +718,24 @@
                         <!-- Campo para mensajes de la carga de repartos -->
                         <div class="col-md-12">
                             <small id="repartoResumen" class="text-muted"></small>
-                        </div>
-                        <div class="row col-md-12" id="headerReparto">
                             <label class="col-md-8" id="accionReparto" data-i18n="reparto_MSG_accionReparto"></label>
-                            <button class="btn btn-info btn-sm col-md-1 pull-right" type="button" id="botonRepartoParticipacion" data-i18n="botonRepartoParticipacion_LBL" data-bs-toggle="tooltip" data-bs-placement="top"></button>
-                            <button class="btn btn-info btn-sm col-md-1 pull-right" type="button" id="botonRepartoConsumo" data-i18n="botonRepartoConsumo_LBL" data-bs-toggle="tooltip" data-bs-placement="top"></button>
-                            <button class="btn btn-info btn-sm col-md-1 pull-right" type="button" id="botonDescargaReparto" data-i18n="botonDescargaReparto_LBL" data-bs-toggle="tooltip" data-bs-placement="top"></button>
-                            <button class="btn btn-info btn-sm col-md-1 pull-right" type="button" id="botonValidaResultados" data-i18n="botonValidaResultados_LBL" data-bs-toggle="tooltip" data-bs-placement="top"></button>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button class="btn btn-warning btn-sm col-md-3 pull-left" type="button" id="checkParticipacion" data-i18n="botonParticipacion_LBL" data-bs-toggle="tooltip" data-bs-placement="top" disabled="true"></button>
+                                <button class="btn btn-warning btn-sm col-md-3 pull-left" type="button" id="checkEnergia" data-i18n="botonCheckEnergia_LBL" data-bs-toggle="tooltip" data-bs-placement="top" disabled="true"></button>
+
+                                <button class="btn btn-warning btn-sm col-md-4 pull-left" type="button" id="checkInversion" data-i18n="botonCheckInversion_LBL" data-bs-toggle="tooltip" data-bs-placement="top" disabled="main_TAB_resultados"></button>
+                                <label class="col-md-2" data-i18n="precioInstalacion_LBL"></label>
+                                <input type="number" class="col-md-2 text-end" id="nuevoPrecioInstalacion" data-bs-toggle="tooltip" data-bs-placement="top">
+
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-info btn-sm pull-right" type="button" id="botonRepartoParticipacion" data-i18n="botonRepartoParticipacion_LBL" data-bs-toggle="tooltip" data-bs-placement="top"></button>
+                                <button class="btn btn-info btn-sm  pull-right" type="button" id="botonRepartoConsumo" data-i18n="botonRepartoConsumo_LBL" data-bs-toggle="tooltip" data-bs-placement="top"></button>
+                                <button class="btn btn-info btn-sm  pull-right" type="button" id="botonRepartoParitario" data-i18n="botonRepartoParitario_LBL" data-bs-toggle="tooltip" data-bs-placement="top"></button>
+                                <button class="btn btn-info btn-sm  pull-right" type="button" id="botonDescargaReparto" data-i18n="botonDescargaReparto_LBL" data-bs-toggle="tooltip" data-bs-placement="top"></button>
+                            </div>
                         </div>
                         <!-- Tabla de reparto -->
                         <div id="reparto" class="tTab"></div>
@@ -651,6 +763,12 @@
                             <a data-i18n="precios_LBL_pendienteCalculo"></a></div>
                         </div>
 
+                        <div class="form-group row justify-content-center">
+                            <label class="col-md-3" data-i18n="noCompensadoAnual_LBL"></label>
+                            <div class="col-md-1 text-end" id="noCompensadoAnual" data-bs-toggle="tooltip" data-bs-placement="top">
+                            <a data-i18n="precios_LBL_pendienteCalculo"></a></div>
+                        </div>
+
                         <div id="bloqueGestionExcedentes">
                             <div class="card" id="gestionHucha">
                                 <h6 class="card-header">
@@ -664,21 +782,14 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-group row justify-content-center">
-                                <label class="col-md-3" data-i18n="coefHuchaGlobal_LBL"></label>
-                                <input type="number" class="col-md-1" id="coefHuchaGlobal" value="0" data-bs-toggle="tooltip" data-bs-placement="top">
-                                <label class="col-md-3 offset-md-1" data-i18n="cuotaHuchaGlobal_LBL"></label>
-                                <input type="number" class="col-md-1" id="cuotaHuchaGlobal" value="0" data-bs-toggle="tooltip" data-bs-placement="top">
+                                <label for="coefHuchaGlobal" class="col-md-2 col-form-label text-end"  data-i18n="coefHuchaGlobal_LBL"></label>
+                                <input type="number" class="col-md-1 text-end" id="coefHuchaGlobal" value="0" 
+                                min="0" max=100 step="any" data-bs-toggle="tooltip" data-bs-placement="top">
+                                <label for="cuotaHuchaGlobal" class="col-md-2 col-form-label text-end"  data-i18n="cuotaHuchaGlobal_LBL"></label>
+                                <input type="number" class="col-md-1 text-end" id="cuotaHuchaGlobal" value="0" min=0 data-bs-toggle="tooltip" data-bs-placement="top">
                             </div>
                         </div>
-                        <hr/>
-                        <div class="form-group row justify-content-center">
-                            <label class="col-md-3" data-i18n="noCompensadoAnual_LBL"></label>
-                            <div class="col-md-1 text-end" id="noCompensadoAnual" data-bs-toggle="tooltip" data-bs-placement="top">
-                            <a data-i18n="precios_LBL_pendienteCalculo"></a></div>
-                        </div>
-                        <hr/>
 
                         <div class="card">
                             <h6 class="card-header">
@@ -692,19 +803,12 @@
                                 </div>
                             </div>
                         </div>
-
-                        <br>
-                        <div class="form-group row justify-content-center">
-                            <label class="col-md-3" data-i18n="precioInstalacion_LBL"></label>
-                            <div class="col-md-1 text-end" id="precioInstalacion" data-bs-toggle="tooltip" data-bs-placement="top">
-                            <a data-i18n="precios_LBL_pendienteCalculo"></a></div>
-                            <label class="col-md-2" data-i18n="correccionPrecioInstalacion_LBL"></label>
-                            <input type="number" class="col-md-1" id="correccionPrecioInstalacion" value="0" data-bs-toggle="tooltip" data-bs-placement="top">
-                            <div class="col-md-1 text-end" id="precioInstalacionCorregido" data-bs-toggle="tooltip" data-bs-placement="top">
-                            <a data-i18n="precios_LBL_pendienteCalculo"></a></div>
+                        <div class="row">
+                            <label for="precioInstalacion" class="col-md-2 offset-sm-4 col-form-label text-end" data-i18n="precioInstalacion_LBL">
+                            </label>
+                            <input type="number" class="col-md-2 text-end" id="precioInstalacion" min="0" step="any" data-bs-toggle="tooltip" data-bs-placement="top">
                         </div>
 
-                        <hr/>
                         <div class="card">
                             <h6 class="card-header">
                                 <a class="collapsed d-inline" data-bs-toggle="collapse" href="#ayudaBloqueSubvenciones" aria-expanded="true" aria-controls="ayudaBloqueSubvenciones" id="ayudaBloqueSubvencionesHDR" 
@@ -721,15 +825,15 @@
                         <div class="form-group row justify-content-center">
                             <label for="valorSubvencionIBI" class="offset-md-1 col-md-1 col-form-label text-end" data-i18n="valorSubvencionIBI_LBL"></label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control " min="0" step="any"  id="valorSubvencionIBI" data-bs-toggle="tooltip" data-bs-placement="top">
+                                <input type="number" class="form-control text-end" min="0" step="any"  id="valorSubvencionIBI" data-bs-toggle="tooltip" data-bs-placement="top" value="0">
                             </div>
                             <label for="porcientoSubvencionIBI" class="col-md-2 col-form-labeln text-end" data-i18n="porcientoSubvencionIBI_LBL"></label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control " min="0" step="any" id="porcientoSubvencionIBI" data-bs-toggle="tooltip" data-bs-placement="top">
+                                <input type="number" class="form-control text-end" min="0" step="any" id="porcientoSubvencionIBI" data-bs-toggle="tooltip" data-bs-placement="top" value="0">
                             </div>
                             <label for="tiempoSubvencionIBI" class="col-md-2 col-form-label text-end" data-i18n="tiempoSubvencionIBI_LBL"></label>
                             <div class="col-md-2">
-                                <input type="number" class="form-control " min="0" step="any" id="tiempoSubvencionIBI" data-bs-toggle="tooltip" data-bs-placement="top">
+                                <input type="number" class="form-control text-end" min="0" step="any" id="tiempoSubvencionIBI" data-bs-toggle="tooltip" data-bs-placement="top" value="0">
                             </div>
                         </div>
 
@@ -892,18 +996,20 @@
                             data-bs-toggle="tooltip" data-placement="top">
                         </div>
 
-<!--                         <div class="row mb-3">
+                        <div class="row mb-3">
                             <label class="col-md-12 col-form-label">Volcado de datos</label>
                         </div>
 
                         <div class="row mb-3 justify-content-center">
+                        <!--
                             <button type="button" class="btn btn-info col-md-2" id="dumpConsumo">Consumo</button>
                             <button type="button" class="btn btn-info col-md-2" id="dumpRendimiento">Rendimiento</button>
                             <button type="button" class="btn btn-info col-md-2" id="dumpProduccion">Producción</button>
                             <button type="button" class="btn btn-info col-md-2" id="dumpBalance">Balance</button>
                             <button type="button" class="btn btn-info col-md-2" id="dumpPrecioOriginal">Precios sin paneles</button>
                             <button type="button" class="btn btn-info col-md-2" id="dumpPrecioConPaneles">Precios con paneles</button>
-                        </div> -->
+                        -->
+                        </div>
                     </div>
                 </div>
             </div>
