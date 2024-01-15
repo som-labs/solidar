@@ -5,3 +5,516 @@ APP_FRAME:
   TOGGLE_COLOR_MODE: Change the color theme
   CHANGE_LANGUAGE: Change the language
   CONTRIBUTE_TRANSLATIONS: Help us translate
+  GO_HOME: Ir a la pagina principal
+  GO_SIMULATOR: Ir al simulador
+  PAGE_NOT_FOUND: No se ha encontrado la pàgina
+HOME:
+  IS_IT_WORTH_TITLE1: Quiero ponerme placas solares
+  IS_IT_WORTH_TITLE2: ¿cómo sé si me compensa?
+  IS_IT_WORTH_PARAGRAPH1: |
+    Solidar es una calculadora que determina
+    la cantidad óptima de paneles a instalar
+    según las condiciones de la cubierta
+    y del consumo eléctrico de las personas participantes.
+
+  IS_IT_WORTH_PARAGRAPH2: |
+    Toma datos como el tamaño de la cubierta
+    su inclinación y orientación
+    el consumo eléctrico y la tarifa
+    y genera un informe con el número de paneles
+    el coste de la instalación y el ahorro potencial.
+
+  IS_IT_WORTH_BUTTON: Ir a las herramientas de simulación
+  SIMULATION_TOOLS_TITLE: Herramientas de simulación
+  SIMULATION_TOOLS_INDIVIDUAL: Simulador para Consumo Individual
+  SIMULATION_TOOLS_INDIVIDUAL_DESCRIPTION: (Nueva versión disponible)
+  SIMULATION_TOOLS_COLLECTIVE: Simulador para Consumo Colectivo
+  SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION: (En desarrollo)
+  FURTHER_INFORMATION_TITLE: Información de interés
+
+ene: January
+feb: February
+mar: March
+abr: April
+may: May
+jun: June
+jul: July
+ago: August
+sep: September
+oct: October
+nov: November
+dic: December
+
+BaseSolar:
+  NAME: Solar Base
+  PROP:
+    nombreBaseSolar: Base name
+    angulosOptimos: Optimal angles
+    inclinacion: Tilt
+    inclinacionTejado: Roof tilt
+    inclinacionPaneles: Panels tilt
+    inclinacionOptima: Optimal inclination
+    inAcimut: South Orientation (Azimuth)
+    areaReal: Corrected area
+    potenciaMaxima: Max. kWp
+    idBaseSolar: id
+    lonlatBaseSolar: Long-Lat
+  TOOLTIP:
+    nombreBaseSolar: Identify the name of this basis for future references
+    angulosOptimos: Mark this field if you want the system to calculate the optimal value of inclination and azimut
+    inclinacion: Inclination in degrees (between 0º and 90º) measured with respect to the horizontal of the land on which the panels will be mounted
+    inclinacionOptima: Mark this field if you want the system to calculate the optimal value of the inclination of the panels
+    inAcimut: The angle between the south with the horizontal projection of the sun. If the panels were oriented to the south the azimuth will be 0º made the east -90º and west 90º. This field is filled by indicating on the map the orientation that the panels will have. If it is not completed it is assumed that it is 0
+    areaReal: Real area available corrected by the roof inclination
+    potenciaMaxima: It is the maximum kWp to be installed in this base depending on the available area (see conversion parameter)
+    lonlatBaseSolar: Base geographic coordinates
+
+TipoConsumo:
+  NAME: Consumption type
+  PROP:
+    idTipoConsumo: id
+    nombreTipoConsumo: Consumption identification
+    fuente: Source type
+    nombreFicheroCSV: Consumption file (only CSV)
+    consumoAnualREE: Annual consumption in kWh
+    cTotalAnual: Annual consumption
+  TOOLTIP:
+    nombreTipoConsumo: Identize the name of this consumption for future references
+    fuente: Select the source type from which the consumption profile will be loaded
+    nombreFicheroCSV: Identify the Consumption file downloaded from your distribution company
+    consumoAnualREE: In case of opting for the REE type profile the estimated annual consumption must be indicated
+    cTotalAnual: Annual energy consumption of this profile
+
+Consumo:
+  NAME: Consumption
+  PROP:
+    cMaximoAnual: Maximum hourly consumption
+    consumoMensual: Monthly consumption
+    cTotalAnual: Annual consumption
+    consumoDiario: Daily consumption
+  TOOLTIP:
+    consumoDiario: Average Daily Electricity Consumption
+    cMaximoAnual: Maximum electricity consumption in an hour
+    consumoMensual: Average monthly consumption of electricity
+    cTotalAnual: Annual energy consumption of this profile
+
+Instalacion:
+  NAME: Facility
+  PROP:
+    precioInstalacion: Installation cost
+    potenciaUnitaria: Power per panel in kWp
+    paneles: Panels
+    potenciaTotal: Available power
+  TOOLTIP:
+    precioInstalacion: Estimated installation cost
+    potenciaUnitaria: Unit power in kWp of the installed panels
+    paneles: Recommended number of panels to be installed in this base. Can be modified
+    potenciaTotal: Maximum power available in this base
+  DESCRIPTION:
+    precioInstalacion: |
+      Despite trying to keep prices updated this amount should be considered as a provisional guideline on the project that an installer can formulate (especially if he has more information about the final location).\nSome expenses are not included here as civil works ( if necessary) replacement of insulation or old tiles on the roof lifting means if necessary modifications that the distributor or the Administration may require of the installation and some taxes and fees that the city council may collect (ICIO or building license )
+
+Tarifa:
+  NAME: Tarifa
+  PROP:
+    territorio: Territory
+    tipoTarifa: Fee name
+    nombreTarifa: The type of rate hired with the marketing company
+    P0: Compensation rate
+    P1: Price P1
+    P2: Price P2
+    P3: Price P3
+    P4: Price P4
+    P5: Price P5
+    P6: Price P6
+  TOOLTIP:
+    tipoTarifa: The type of rate hired with the marketing company
+    0: Indicate the price in euros without VAT with which the electricity company pays the electricity not consumed
+    1: P1 rate or tip (the most expensive in 2.0TD)
+    2: P2 rate or valley (the intermediate in 2.0TD)
+    3: P3 rate or llano (the cheapest in 2.0TD)
+    4: P4 rate
+    5: P5 rate
+    6: P6 rate
+
+Rendimiento:
+  NAME: Performance according to PVGIS
+  PROP:
+    fechaInicio: Start Date Data
+    fechaFin: Final Data Data
+    horaInicio: Start time
+    horaFin: Final hour
+    rendimientoCreado: Created performance
+    system_loss: Technical system loss
+    technology: Technology
+    inclinacionOptimal: Optimal inclination
+    acimutOptimal: Optimal azimuth
+    radiation_db: Radiation database
+    meteo_db: Meteo Database
+    year_min: Initial Year Statistics
+    year_max: Initial Year Statistics
+    numeroRegistros: Records read
+    valorOptimo: Optimum
+    PVGISfechaInicio: Initial PVGIS data
+    PVGISfechaFin: End Pvgis data
+    inclinacion: Panels slope
+    acimut: Base azimut
+    unitarioTotal: Annual Energy by kWp installed
+  TOOLTIP:
+    unitarioTotal: Annual Energy by kWp installed
+  ERROR_PVGIS_FETCH: Error running fetch in PVGIS.\n{{err}} \n {{url}}
+
+Balance:
+  NAME: Balance
+  PROP:
+    Produccion%Consumo: Percentage of production regarding consumption
+    Consumo%Produccion: Percentage of consumption with respect to production
+    autoconsumoMedioAnual: Average annual self-consumption
+    autosuficienciaMediaAnual: Annual average self-sufficiency
+    autosuficienciaMaxima: Maximum self-sufficiency
+
+    deficitAnual: Consumption demanded from the grid
+    energiaFaltante%Consumo: Percentage of electricity purchased
+    energiaSobrante%Produccion_LBL: Percentage of excess electricity
+
+  TOOLTIP:
+    Consumo%Produccion: Percentage of consumption with respect to production. To be able to opt for the subsidy of the Next Generation funds this percentage must always be exceeding 80%
+    Produccion%Consumo: Percentage of photovoltaic energy produced with respect to the consumption
+    autoconsumoMedioAnual: Average percentage of photovoltaic energy consumed per year (not always consumes all).
+    autosuficienciaMediaAnual: Average percentage of energy consumed from solar panels. It is a measure of independence regarding the electricity grid
+    autosuficienciaMaxima: The maximum self-sufficiency that could be achieved if all the photovoltaic surplus could be consumed (either with batteries and/or by changing consumption habits).\nThe theoretical maximum number of panels is reached when this variable reaches 100%.
+    deficitAnual: Electricity that is still necessary to buy from the network after the photovoltaic installation
+    energiaFaltante%Consumo: The percentage of the electricity bought with respect to total consumption
+    energiaSobrante%Produccion: The percentage of excess electricity compared to the produced
+
+Produccion:
+  NAME: Production
+  PROP:
+    produccionDiaria: Daily production
+    produccionMensual: Monthly production
+    totalAnual: Annual production
+    pTotalAnual: Annual production
+  TOOLTIP:
+    produccionDiaria: Estimated average daily photovoltaic production
+    produccionMensual: Estimated monthly average photovoltaic production
+
+Economico:
+  NAME: Economic
+  PROP:
+    gastoSinPlacasAnual: Annual expense without panels
+    gastoConPlacasAnual: Annual expenditure with panels
+    ahorroAnualPorciento: Annual savings / original expense
+    ahorroAnual: Annual savings
+    noCompensadoAnual: Energy cost not compensated
+    valorSubvencionEU: EU subsidy value
+    tipoSubvencionEU: EU funds subsidy type
+    sinSubvencion: No subsidy
+    subvencionIndividual: Individual installation
+    subvencionComunitaria: Collective installation
+    valorSubvencionIBI: IBI (€)
+    porcientoSubvencionIBI: Bonus %
+    tiempoSubvencionIBI: Bonus duration (years)
+    VANProyecto: 'Net present value (NPV): {{VAN}}'
+    TIRProyecto: 'Internal Rate of Return (TIR): {{TIR}}'
+  TOOLTIP:
+    gastoSinPlacasAnual: Annual electricity expenditure without solar panels. Only the variable part of the invoice is taken into account
+    gastoConPlacasAnual: The estimated annual expenditure on electricity with solar panels. Only the variable part of the invoice is taken into account
+    ahorroAnualPorciento: Annual savings in relation to the original expense
+    ahorroAnual: Annual spending difference in electricity with and without solar panels
+    noCompensadoAnual: The amount of surplus energy that the electricity company will not compensate.\n The Law (RD 244/2019) does not allow the consumer to pay any amount when the balance between the cost of the excess energy and that of the consumed of any day will be favorable to the consumer.\n It usually happens when more panels are installed than the advisable ones when consumed well below the usual (on vacation) or when the compensation price of the company is high (very unlikely).
+    tipoSubvencionEU: If the Next Generation funding subsidy were to be applied for indicate if the installation was collective (a community of owners for example) or individual. The subsidy will not be granted if the energy generated per year exceeds 80% of the energy consumed annually.
+    valorSubvencionIBI: Fill if the municipality where the installation is carried out bonuses the real estate tax.\nThe Fundación Renovables facilitates a list of municipalities with bonuses in the IBI and ICO reductions.
+    porcientoSubvencionIBI: The percentage with the City Council bonuses the amount of the IBI
+    tiempoSubvencionIBI: The number of years during which the bonus can be applied in the IBI
+    VAN_PROYECTO: Net present value (NPV)
+    TIR_PROYECTO: Internal Rate of Return (TIR)
+
+  precios_LBL_pendienteCalculo: Pending
+  economico_MSG_ayudaBloqueSubvencionesHdr: Help subsidies and bonuses
+  economico_MSG_ayudaBloqueSubvenciones: This block defines possible aids in the form of subsidy or bonus
+  economico_MSG_disclaimerAhorro: Savings estimates produced by self -consumption and revenue from surplus energy have been calculated assuming that both the price of the energy acquired and that of surpluses remain constant during the years of calculation.
+  economico_MSG_disclaimerAhorroHdr: Amortization warning
+  economico_MSG_disclaimerPrecioInstalacion: In the estimate of the cost of the installation labor and materials are impacted. There are neither the municipal fees and taxes (ico) nor the civil works and elevation machinery (if necessary) nor the modifications that the distributor or the administration demanded after checking the installation carried out
+  economico_MSG_disclaimerPrecioInstalacionHdr: Notice about the installation cost
+LOCATION:
+  LABEL: Location
+  TITLE: Location
+  PROMPT_ADDRESS: Search location or address
+  LABEL_SATELITE: Satellite view
+  LABEL_VECTOR: Map view
+  TOOLTIP_MAP_TYPE: Allows to exchange between Sátelite or Map
+  TITLE_DIALOG_NEW_BASE: New solar base
+  LABEL_BASES_SUMMARY: Summary
+  PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
+  ERROR_DEFINE_BASE: You must define solar bases before continue
+  ERROR_NOMINATIM_FETCH: Error executing FECTH in nominatim. \n {{err}} \n {{url}}
+  ERROR_TERRITORIO: The application is only valid for Spain
+
+  TOOLTIP_BORRA_BASE: Delete the selected base
+  posicionLonLat_LBL: Long-Lat
+  posicionLonLat_TT: It is not necessary to fill this field it is only used to focus the map on these coordinates
+
+CONSUMPTION:
+  TITLE: Consumption
+  HOOVER_MAPA_CONSUMO_MES_HORA: Average consumption <br> schedule per month
+  TITLE_MAPA_CONSUMO_MES_HORA: Average hourly consumption per month relative to the maximum
+  XAXIS_MAPA_CONSUMO_MES_HORA: Hour
+  YAXIS_MAPA_CONSUMO_MES_HORA: Month
+  LABEL_MAPA_CONSUMO_MES_HORA: 'Maximum value:  %%{{maxConsumoMes}} kWh'
+  LABEL_TITLE_MAP_MONTH_DAY: Hourly consumption map in kWh
+  ERROR_DEFINIR_CONSUMO_REE: Must define an annual base consumption greater than 0 for the REE profile
+  ERROR_AL_MENOS_UN_TIPOCONSUMO: Must define at least one consumption type
+  ERROR_FALTA_FICHERO_CONSUMO: You must define the consumption file before continuing
+  LABEL_BUTTON_NUEVO_TIPOCONSUMO: New consumption type
+  TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Button to create new consumption type
+
+  TITLE_DIALOG_NEW_CONSUMPTION: (T)Formulario para crear un nuevo tipo do consumo
+
+  nombreTipoConsumoDuplicado_MSG: The name of the type of consumption cannot be duplicate
+  tipoConsumoDefault_MSG: Define type of file to use and applicable rate
+  fuenteTipoConsumoErronea_MSG: Possible error defining datadis when it should be CSV or vice versa
+  tcMaximoAnual_LBL: Maximum annual hourly consumption
+  numeroDias_LBL: Processed days
+  botonBorraTipoConsumo_LBL:
+  botonMuestraMapaTipoConsumo_LBL:
+  botonMuestraTarifa_LBL:
+  botonSeleccionFichero_LBL:
+  botonBorraTipoConsumo_TT: Delete selected consumption type
+  botonMuestraMapaTipoConsumo_TT: Shows consumption graph of selected consumption type
+  botonMuestraTarifa_TT: Shows fee prices
+  botonSeleccionFichero_TT: Select consumption file
+  consumo_MSG_ayudaTipoConsumoHdr: Consumption type definition help
+  consumo_MSG_hayFincasAsociadas: You cannot delete a type of consumption that has associated units
+  # consumo_MSG_descripcionFuentes: There are three ways to provide the information of the consumption profile <li>CSV:  a file with values separated by semicolons obtained from the website of your distribution company.<a href='./data/Links for individual CSV download. htm' target='_blank'> See instructions here </a></li><li>REE:  using the REE standard profile according to <a href='https: //www.ree.es/es/clientes/ generator/gestion-medidas-electricas/consulta-perfiles-de-consumo' target='_blank'> final consumption profiles based on the initial profiles based on the real demand of the system</a> and the estimated annual consumption of the installation</li><li>DATADIS:  a file obtained from the platform of the distribution companies called <a href: 'https: //datadis.es/home' target='_blank'> DATADIS</a></li><p>You must choose one or the other according to the information you have.</p>
+  consumo_MSG_errorLecturaFicheroConsumo: Reading Error comsumption CSV File
+  consumo_MSG_errorCabeceras: CSV Format Error Header {{cabeceras}}
+  # consumo_MSG_resumen: %%{{registros}} Consumption records loaded from {{desde}} to {{hasta}}
+  consumo_MSG_numeroLimitadoRegistros: Warning-> only {{registros}} records does not match one year
+  consumo_MSG_nombreCSVPorDefinir: To be defined
+
+ENERGY_BALANCE:
+  TITLE: Energy Balance
+  DESCRIPTION: |
+    (T) A partir de tu documento de consumo hemos hecho el cálculo del número de paneles que necesitarías para cubrirlo. 
+    (i) Los paneles se asignan primero a las áreas más eficientes desde el punto de vista de rendimiento energético.
+    En la siguiente tabla puedes cambiar el número de paneles en cada área individualmente.
+  LABEL_EXCEDENTE_ANUAL: Production poured into the grid
+  TOOLTIP_EXCEDENTE_ANUAL: Energy poured into the grid when production is higher than consumption
+  LABEL_AUTOCONSUMO: Self-consumption
+  LABEL_ENERGIA_RED: Energy obtained from the network
+  LABEL_ENERGIA_PANELES: Energy obtained from the panels
+  TITLE_GRAPH_MONTH_ENERGY_BALANCE: Monthly average production with {{potencia}} installed / average monthly consumption
+  resultados_MSG_disclaimerProduccion: |
+    NOTICE-> Data for estimating the production of solar panels are obtained from Pvgis. <a href:"https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en">Ver documentación aqui</a>
+    <br /><br />
+    They are taken into account:  <ul> <li> The air temperature at 2 meters and the wind speed at 10 meters </li> <li> The effect of the temperature on the performance </li> <li> The Variation of the electromagnetic spectrum throughout the day </li> <li> The average aerosols in the environment (not sudden changes) </li> </ul>
+    The following are not taken into account:  <ul><li>the effect of snowfall</li><li>the accumulation of dust and dirt on the panels</li><li>loss due to close shadows</li> </ul><br>
+  LABEL_fuenteInfoCO2: Conversion data for {{territorio}}
+  LABEL_CO2AnualRenovable: If energy is provided <br />from renewable source
+  TOOLTIP_CO2AnualRenovable: CO2 (kg) not expelled to the atmosphere if the origin of energy were peninsular and renewable. It can be modified in the parameter window.
+  LABEL_CO2AnualNoRenovable: If energy is provided <br />from non renewable source
+  TOOLTIP_CO2AnualNoRenovable: CO2 (kg) not expelled to the atmosphere if the origin of energy were peninsular and non -renewable. It can be modified in the parameter window.
+
+ECONOMIC_BALANCE:
+  TITLE: Economic Balance
+  DESCRIPTION: |
+    (T)En esta pantalla conocerás cuánto tendrás que invertir en la instalación (teniendo en cuenta las subvenciones) cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión.
+  TITLE_VIRTUAL_BATTERY: Hucha Help (virtual battery)
+  DESCRIPTION_VIRTUAL_BATTERY: |
+    This block defines the way in which the economic surpluses of each month are compensated including the concept of virtual battery or hucha. <ul> <li>% Hucha transfer:  it is the percentage of the economic surplus of each month that passes be part of the piggy bank.</li><li>Hucha management:  it is the monthly fee without VAT that the company marketed by the piggy bank. </li> </ul>
+  LABEL_RECOGNITION_VIRTUAL_BATTERY: '% Hucha transferència'
+  TOOLTIP_RECOGNITION_VIRTUAL_BATTERY: Percentage of the uncompensated balance that goes to the piggy bank
+  LABEL_FEE_VIRTUAL_BATTERY: piggy bank management fee (without VAT)
+  TOOLTIP_FEE_VIRTUAL_BATTERY: Fixed monthly fee in Euros without VAT that the marketing company charges for managing the piggy bank
+  LABEL_ANO: Year
+  TOOLTIP_ANO: Amortization period
+  LABEL_PREVIO: Previous
+  TOOLTIP_PREVIO: Pending amortization amount  at the beginning of the period
+  LABEL_INVERSION: Investment
+  TOOLTIP_INVERSION: The amount invested during the period
+  LABEL_AHORRO: Saving
+  TOOLTIP_AHORRO: Savings obtained in the period
+  IBI_LBL: IBI discount
+  IBI_TT: Discount obtained in the IBI
+  LABEL_SUBVENCION: Subsidy EU
+  TOOLTIP_SUBVENCION: Subsidy from EU
+  LABEL_PENDIENTE: Pending
+  TOOLTIP_PENDIENTE: Pending amortization at the end of the period
+
+SUMMARY:
+  TITLE: Summary
+  DESCRIPTION: (T)Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
+
+BASIC:
+  LABEL_OK: Save
+  LABEL_CANCEL: Cancel
+  LABEL_SEND: Send
+  LABEL_AVISO: Warning
+  LABEL_CLOSE: Close
+  main_TAB_noMostrarMas: Do not show this message again
+  valor_true: 'True'
+  valor_false: 'False'
+  LABEL_NEXT: Next
+  LABEL_PREVIOUS: Previous
+
+DIALOG_PROPERTIES:
+  TITLE: Properties
+
+PARAMETROS:
+  DIALOG_TITLE: Application parameters
+  DIALOG_DESCRIPTION: Application parameters configuration. Changes in these values ​​do not imply a recalculation of the entire set it is necessary to return to the Location tab and recalculate.
+  LABEL_impuestoElectrico: Electrical tax in %
+  TOOLTIP_impuestoElectrico: The Special Electricity Tax
+  LABEL_IVAenergia: VAT applicable to energy in %
+  TOOLTIP_IVAenergia: The VAT that is impact on electricity spending
+  LABEL_IVAinstalacion: VAT applicable to installation in %
+  TOOLTIP_IVAinstalacion: The VAT that is impact on the amount to which the installation ascends
+  LABEL_perdidasSistema: Estimated installation losses in %
+  TOOLTIP_perdidasSistema: The losses of the photovoltaic system due to the deterioration of some components adverse conditions poor investors etc.
+  LABEL_interesVAN: Base interest (%) for Van Calculation
+  TOOLTIP_interesVAN: Discount rate to apply in the calculation of the net current value
+  LABEL_potenciaPanelInicio: Unitary Power (kWp) Start Panel
+  TOOLTIP_potenciaPanelInicio: KWP power of the initial panel used in calculations
+  LABEL_tecnologia: Panel technology
+  TOOLTIP_tecnologia: "You can choose three types of panels to perform the estimates:  \n- those that have crystalline silicon cells \n- Modules of thin copper and Indian seleniuro lamina (CuInSe) or copper Indian and Gallic seleniuro (CuInGaSe) \n- Thin Cadmium Teluro (CdTe) \n- unknown. \nIf one of the first three options is chosen in the calculation of photovoltaic production the temperature effect will be taken into account. If the other option (unknown) is chosen in the calculation some power losses will be assumed due to the temperature effect of 8% (generic value that is considered reasonable for temperate climates). The effect of the spectral distribution of irradiance received on production can only be calculated for crystalline and CDTE silicon technologies."
+  LABEL_tecnologiaDesconocida: Unknown
+
+  tarifasLocales_LBL: Local Rate file
+  ficheroTarifas_LBL: Local Rate file (see example)
+  ficheroTarifas_TT: The user can customize a file with different prices while complying with the format given in the example
+  parametros_MSG_errorLecturaFicheroTarifas: Error reading local rate file
+CONTACTO:
+  DIALOG_TITLE: Contact
+  DIALOG_DESCRIPTION: Send us your comments. We will try to attend you as soon as possible
+  PROP:
+    nombre: Name
+    email: e-mail
+    telefono: Phone
+    tipoPropuesta: What do you tell us?
+    comentario: Make a comment
+    mejora: Propose an improvement
+    error: Report an error
+    advertencia: The data that contributes to this form will be used solely and exclusively to answer your application and will not be stored in any file or used for any other purpose
+    respuesta: Mark here if you agree to receive answers
+    mensaje: Message
+
+BOTONES:
+  botonExportar_TT: Save project
+  botonContacto_TT: Contact / suggestions
+  botonInformePDF_TT: Save PDF report
+  botonParametros_TT: Parameters
+  botonInstrucciones_TT: User instructions
+  botonAyuda_TT: Help
+  botonExportar_LBL:
+  botonContacto_LBL:
+  botonInformePDF_LBL:
+  botonParametros_LBL:
+  botonInstrucciones_LBL:
+
+AYUDAS:
+  ayuda_TIT_localizacion: Geographical location data are identified in this tab
+  ayuda_TIT_tipoConsumo: In this tab data and consumption data are identified before installation
+  ayuda_TIT_fincas: This tab identifies the participants of the project
+  ayuda_TIT_resultados: This tab shows the energetic balance resulting from the installation of the panels
+  ayuda_TIT_reparto: This tab shows the distribution of energy and investment of the project
+  ayuda_TIT_economico: This tab shows the economic-financial balance
+  ayuda_TIT_graficos: In this tab some reference graphics are shown
+  ayuda_TIT_panel: Help panel
+  ayuda_TIT_reporte: Data Summary
+
+PROYECTO:
+  nombreProyecto_LBL: Project name
+  nombreProyecto_TT: Name that the user gives to this simulation (eg. apartment01 luzescalera01 garage00…)
+  importarProyecto_LBL: Import project
+  importarProyecto_TT: Select file *.solimp previously exported by Solidar
+  importarProyecto_MSG_confirmaReemplazo: The existing project will be replaced by the imported
+  importarProyecto_MSG_importando: Importing
+  importarProyecto_MSG_success: File imported succefully
+
+MAPA:
+  botonPuntoConsumo_LBL: Consumption point
+  botonPuntoConsumo_TT: Button to create a new consumption point
+  botonBaseSolar_LBL: Solar base
+  botonBaseSolar_TT: Button to create a new base to install panels
+  botonDeshacer_LBL: Undo
+  botonDeshacer_TT: Allows to cancel the last vertex created
+
+  botonShadow_LBL: Google Shadow
+  botonShadow_TT: Abre ventana de Google Shadow centrada en este mapa
+
+RESULTS:
+  TOOLTIP_botonInfoBase: Detailed information of the selected base
+  LABEL_ConsumoDiurno: Consumption made in solar hours
+  TOOLTIP_ConsumoDiurno: Consumption made in hours when the panels have some production
+
+  maxPaneles_LBL: Max. Base panels
+  maxPaneles_TT: Maximum number of panels that can be installed at the base
+
+  limiteSubvencionEU_LBL: EU grant limit
+  resultados_LBL_graficoResumen: Graphic consumption summary versus production
+  resultados_LBL_pendienteCalculo: Pending
+  graficos_LBL_numeroMaximoPaneles: Limit panels by available surface
+
+  resultados_MSG_excesoPotencia: There is an excess of power in this base based on the available area
+  resultados_LBL_basePropiedades: Base {{id}}
+
+GRAFICOS:
+  LABEL_panelesActuales: Current panels {{paneles}}
+  LABEL_graficasNoCompensado: Not compensated
+  LABEL_graficasGastoConPaneles: Expense with panels
+  LABEL_graficasGastoSinPaneles: Expense without panels
+  LABEL_graficasCompensacion: Compensation reduction
+  LABEL_graficasExcedente: Excess
+  LABEL_graficasDeficit: Deficit
+
+  graficos_LBL_descripcion: Available graphics area
+  graficos_LBL_balanceConsumo: Monthly consumption balance with {{potencia}} installed
+  graficos_LBL_balanceProduccion: Monthly production balance with {{potencia}} installed
+  graficos_LBL_tituloBalanceEconomico: Monthly economic balance with {{potencia}} installed
+  graficos_LBL_alternativasPotencia: Alternatives with panels of {{potencia}} installed
+
+  graficos_LBL_graficasProduccion: Production
+  graficos_LBL_graficasConsumo: Consumption
+  graficos_LBL_graficasInversion: Investment
+  graficos_LBL_graficasAhorro: Saving
+  graficos_LBL_graficasAutosuficiencia: Self-sufficiency
+  graficos_LBL_graficasprodvscons: Prod. Vs. Cons.
+  graficos_LBL_graficasDia: Day
+  graficos_LBL_graficasHora: Hour
+  graficos_LBL_cambiaPaneles: Click changes to {{paneles}} panels
+  graficos_LBL_paneles: Panels
+
+  graficos_LBL_segunFuente: Energy distribution according to Source
+  graficos_LBL_deRed: Electric Network
+  # graficos_LBL_dePaneles: %%{{paneles}} panels
+
+  graficos_LBL_extraccionHucha: Hucha extraction
+  graficos_LBL_huchaSaldo: Balance in the piggy bank
+  graficos_LBL_tituloBalanceEconomicoFinca: Monthly economic balance with {{potencia}} assigned. <br> equivalent {{paneles}} panels.
+  graficos_LBL_tituloBalanceEconomicoGlobal: Monthly economic balance with {{potencia}} assigned.
+
+REPORT:
+  titulo: Solidar Energía
+  datosDeConsumoGlobal: Global consumption
+  produccionTotal: Total production
+  produccionMediaEsperada: Expected average production
+  datosInstalacionAnalizada: Analyzed installation data
+  datosPVGISObtenidos: PVGIS data obtained
+  datosLocalizacionAportados: Location data provided
+  datosDeConsumo: Consumer data
+  fichero: File ->
+  paraPotenciaAnual: for annual power of
+  registros: Records-> {{registros}}
+  numeroRegistros: Records
+  desde: From
+  hasta: Until
+  disclaimer1: The amount of excess energy that the trader will not compensate.\nThe law (RD 244/2019) does not allow the consumer to be paid any amount when the balance between the cost of excess energy and that of what is consumed at any given time. day would be favorable to the consumer.\nUsually happens when more panels than recommended are installed when consumption is much lower than usual (on holidays) or when the merchant compensation price is high (very unlikely).
+  disclaimer1pdf: All the estimates given have been made with the greatest possible precision with the best intention and without any commitment. We must make special mention regarding the estimated price of the installation. There is a high volatility in this factor and we cannot guarantee that it reflects the reality of the market at each moment and territory so we have included a field that allows you to correct that price according to the recommendations of your installer. Som Energia has no direct or indirect economic interest in this study except to contribute to a fair energy transition with users efficient decentralized and clean.
+  disclaimer2: Som Energia has no economic or direct interest in this study except contributing to a fair energy transition based on  consuers efficieny decentralication  and clean enery.
+  formatoPDF: Generates in PDF format
+  balanceEnergia: Energy Balance
+  localizacion: Location
+  reparto: Delivery coefficients
+  balanceEconomico: Economic balance
+  balanceFinanciero: Financial balance (euros)
+  informe_MSG_procesarPrimero: You must obtain the energy balance before you can generate the report

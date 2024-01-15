@@ -8,6 +8,7 @@ APP_FRAME:
   GO_HOME: Ir a la pagina principal
   GO_SIMULATOR: Ir al simulador
   PAGE_NOT_FOUND: No se ha encontrado la pàgina
+  IMPORT_EXPORT: Importa / Exporta
 HOME:
   IS_IT_WORTH_TITLE1: Quiero ponerme placas solares
   IS_IT_WORTH_TITLE2: ¿cómo sé si me compensa?
@@ -18,10 +19,10 @@ HOME:
     y del consumo eléctrico de las personas participantes.
 
   IS_IT_WORTH_PARAGRAPH2: |
-    Toma datos como el tamaño de la cubierta,
-    su inclinación y orientación,
-    el consumo eléctrico y la tarifa,
-    y genera un informe con el número de paneles,
+    Toma datos como el tamaño de la cubierta
+    su inclinación y orientación
+    el consumo eléctrico y la tarifa
+    y genera un informe con el número de paneles
     el coste de la instalación y el ahorro potencial.
 
   IS_IT_WORTH_BUTTON: Ir a las herramientas de simulación
@@ -31,3 +32,709 @@ HOME:
   SIMULATION_TOOLS_COLLECTIVE: Simulador para Consumo Colectivo
   SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION: (En desarrollo)
   FURTHER_INFORMATION_TITLE: Información de interés
+
+ene: enero
+feb: febrero
+mar: marzo
+abr: abril
+may: mayo
+jun: junio
+jul: julio
+ago: agosto
+sep: septiembre
+oct: octubre
+nov: noviembre
+dic: diciembre
+
+BaseSolar:
+  NAME: Base solar
+  PROP:
+    roofType: Tipo de montaje
+    nombreBaseSolar: Nombre de la base solar
+    angulosOptimos: Angulos óptimos
+    inclinacion: Inclinación
+    inclinacionTejado: Inclinación del tejado
+    inclinacionPaneles: Inclinación de los paneles
+    inclinacionOptima: Inclinación óptima
+    inAcimut: Orientación al sur (Acimut)
+    areaReal: Area disponible
+    panelesMaximo: Max. Paneles
+    potenciaMaxima: Max. kWp
+    anchoReal: Longitud transversal
+    cumbrera: Longitud cumbrera
+    columnas: Max. paneles columna
+    filas: Max. paneles fila
+    idBaseSolar: id
+    lonlatBaseSolar: Long-Lat
+  TOOLTIP:
+    nombreBaseSolar: Identifica el nombre de esta base para futuras referencias
+    angulosOptimos: Marque este campo si desea que el sistema calcule el valor óptimo de inclinación y acimut
+    inclinacion: Inclinación en grados (entre 0º y 90º)  medida con respecto a la horizontal del terreno sobre el que se montarán los paneles
+    inclinacionOptima: Marque este campo si desea que el sistema calcule el valor óptimo de la inclinación de los paneles
+    inAcimut: El ángulo entre el sur con la proyección horizontal del sol. Si los paneles estuvieran orientados al sur el acimut será 0º hacia el este -90º y hacia el oeste 90º. Este campo se rellena indicando en el mapa la orientación que tendrán los paneles. Si no se completa se asume que es 0
+    areaReal: Area real disponible corregida por la inclinación del tejado
+    panelesMaximo: Número máximo de paneles que se pueden instalar en este area
+    potenciaMaxima: Máxima potencia pico a instalar en esta base en funcion de la superficie disponible (Ver parametro de conversión)
+    lonlatBaseSolar: Coordenadas geográficas de la base
+  DESCRIPTION:
+    roofType: Indicanos cúal es la configuracion de tu tejado<br />
+    nombreBaseSolar: En caso de que exista mas de un área donde instalar los paneles solares es bueno identificar cada una de ellas con un nombre
+    angulosOptimos: En este caso la aplicación te propondrá la mejor orientación geográfica (acimut) e inclinación de los paneles de modo que se obtenga el máximo rendimiento de la instalación.
+    inclinacionTejado: Indicanos la inclinación del tejado donde se montarán los paneles medida con respecto a la horizontal del terreno.
+    inclinacionPaneles: Indicanos la inclinación de los paneles medida con respecto a la horizontal del terreno. Puedes seleccionar la opción Optima si quieres que el sistema lo calcule por ti.
+    inAcimut: Debes indicar la orientación que tendrán los paneles con respecto al sur geográfico. La primera propuesta la hace la aplicación en base al area que has dibujado pero la puedes cambiar en este campo.
+    inclinacionOptima: Marque este campo si desea que el sistema calcule el valor óptimo de la inclinación de los paneles
+
+TipoConsumo:
+  NAME: Tipo de consumo
+  PROP:
+    idTipoConsumo: id
+    nombreTipoConsumo: Nombre
+    fuente: Fuente
+    nombreFicheroCSV: Nombre fichero fuente
+    consumoAnualREE: Consumo anual REE
+    cTotalAnual: Consumo anual
+  TOOLTIP:
+    nombreTipoConsumo: Identique el nombre de este consumo para futuras referencias
+    fuente: Seleccione el tipo de fuente desde donde se cargará el perfil de consumo
+    nombreFicheroCSV: Nombre fichero fuente seleccionado
+    consumoAnualREE: En caso de optar por el perfil tipo REE debe indicar el consumo anual estimado en kWh
+    cTotalAnual: Consumo eléctrico anual
+
+  DESCRIPTION_fuente: "Existen tres formas de proveer la información del perfil de consumo <li>CSV-> un fichero con valores separados por punto y coma obtenido desde la web de tu empresa distribuidora.<a href='./datos/Enlaces para descarga CSV individual.htm 'target='_blank'> Ver instrucciones aquí </a></li><li>REE-> utilizando el perfil estandar de REE según <a href='https//www.ree.es/es/clientes/generador/gestion-medidas-electricas/consulta-perfiles-de-consumo' target='_blank'> perfiles finales de consumo a partir de los perfiles iniciales en función de la demanda real del sistema</a> y el consumo anual estimado de la instalación</li><li>DATADIS-> un fichero obtenido de la plataforma de las empresas distribuidoras llamada <a href: 'https: //datadis.es/home' target='_blank'>DATADIS</a></li><p>Debes elegir una u otra según la información que dispongas.</p>"
+
+Consumo:
+  NAME: Consumo
+  PROP:
+    cMaximoAnual: Consumo horario máximo
+    consumoDiario: Consumo diario
+    consumoMensual: Consumo mensual
+    cTotalAnual: Consumo anual
+  TOOLTIP:
+    cMaximoAnual: Máximo consumo de electricidad en una hora
+    consumoDiario: Consumo medio diario de electricidad
+    consumoMensual: Consumo medio mensual de electricidad
+    cTotalAnual: Consumo eléctrico anual
+
+Instalacion:
+  NAME: Instalación
+  PROP:
+    precioInstalacion: Precio de la instalación
+    precioInstalacionCorregido: Precio de la instalación corregido
+    potenciaUnitaria: Potencia unitaria
+    paneles: Paneles
+    potenciaTotal: Potencia disponible
+  TOOLTIP:
+    precioInstalacion: Precio de la instalación
+    potenciaUnitaria: Potencia unitaria de los paneles instalados en la base
+    paneles: Número de paneles recomendados en esta base. Se puede modificar
+    potenciaTotal: Potencia pico total instalada en la base
+  DESCRIPTION:
+    precioInstalacion: |
+      A pesar de procurar mantener los precios actualizados, debe considerarse este importe como una orientación provisional sobre el proyecto que un instalador pueda formular (sobre todo si cuenta con más información sobre el emplazamiento final).\nAquí no está repercutidos algunos gastos como obra civil (si fuera necesaria), sustitución de aislante o tejas viejas en la cubierta, medios de elevación si fueran necesarios, modificaciones que la distribuidora o la Administración pudieran exigir a la instalación y algunos impuestos y tasas que el ayuntamiento pudiera cobrar (ICIO o licencia de obras)
+
+Tarifa:
+  NAME: Tarifa
+  PROP:
+    territorio: Territorio
+    tipoTarifa: Tipo de tarifa
+    nombreTarifa: El tipo de tarifa contratada con la compañía comercializadora
+    P0: Compensación Excedentes
+    P1: Tarifa P1
+    P2: Tarifa P2
+    P3: Tarifa P3
+    P4: Tarifa P4
+    P5: Tarifa P5
+    P6: Tarifa P6
+  TOOLTIP:
+    tipoTarifa: El tipo de tarifa contratada con la compañía comercializadora
+    0: Indíquese el precio en euros sin IVA con los que la comercializadora paga la electricidad no consumida
+    1: Tarifa P1 o punta (la más cara en 2.0TD)
+    2: Tarifa P2 o valle (la intermedia en 2.0TD)
+    3: Tarifa P3 o llano (la más barata en 2.0TD)
+    4: Tarifa P4
+    5: Tarifa P5
+    6: Tarifa P6
+
+Rendimiento:
+  NAME: Rendimiento según PVGIS
+  PROP:
+    fechaInicio: Fecha inicio datos
+    fechaFin: Fecha final datos
+    horaInicio: Hora inicial datos
+    horaFin: Hora final datos
+    rendimientoCreado: Rendimiento creado
+    system_loss: Perdidas técnicas del sistema
+    technology: Tecnología
+    inclinacionOptimal: Inclinación óptima
+    acimutOptimal: Acimut óptimo
+    radiation_db: Base de datos radicación
+    meteo_db: Base de datos meteo
+    year_min: Año inicial estadísticas
+    year_max: Año inicial estadísticas
+    numeroRegistros: Registros leidos
+    valorOptimo: Óptimo
+    PVGISfechaInicio: Inicio datos PVGIS
+    PVGISfechaFin: Fin datos PVGIS
+    inclinacion: Inclinación paneles
+    acimut: Acimut de la base
+    unitarioTotal: Energia anual / kWp instalado
+
+  TOOLTIP:
+    unitarioTotal: Energia anual producida por cada kWp instalado
+
+  MSG_ERROR_PVGIS_FETCH: Error ejecutando fecth en PVGIS.({{err}}) -- ({{url}})
+  MSG_BASE_SIN_RENDIMIENTO: Ha habido un problema obteniendo datos de PVGIS. No se puede continuar.
+
+Balance:
+  NAME: Balance
+  PROP:
+    Produccion%Consumo: Porcentaje de la producción respecto del consumo
+    Consumo%Produccion: Porcentaje del consumo respecto a la producción
+    autoconsumoMedioAnual: Autoconsumo medio anual
+    autosuficienciaMediaAnual: Autosuficiencia media anual
+    autosuficienciaMaxima: Autosuficiencia máxima
+    excedenteAnual: Excedente
+    deficitAnual: Electricidad comprada
+    energiaFaltante%Consumo: Porcentaje de electricidad comprada
+    energiaSobrante%Produccion: Porcentaje de electricidad sobrante
+
+  TOOLTIP:
+    Produccion%Consumo: Porcentaje de la energía fotovoltaica producida respecto a la consumida
+    Consumo%Produccion: Porcentaje del consumo respecto a la producción. Para poder optar a la subvención de los Fondos Next Generation este porcentaje ha de ser siempre superior al 80%
+    autoconsumoMedioAnual: Porcentaje medio de la energía fotovoltaica que se consume al año (no siempre se consume toda).
+    autosuficienciaMediaAnual: Porcentaje medio de la energía consumida proveniente de los paneles solares. Es una medida de independencia respecto a la red eléctrica
+    autosuficienciaMaxima: La autosuficiencia máxima que se podría alcanzar si todo el excedente fotovoltaico se pudiera consumir (bien con baterías y/o cambiando los hábitos de consumo).\nSe alcanza el número máximo teórico de paneles al llegar en esta variable al 100%.
+
+    deficitAnual: Electricidad que aún se precisa comprar a la comercializadora tras la instalación fotovoltaica
+    energiaFaltante%Consumo: El porcentaje de la electricidad comprada respecto al consumo total
+    energiaSobrante%Produccion: El porcentaje de la electricidad sobrante respecto a la producida
+
+Produccion:
+  NAME: Producción
+  PROP:
+    produccionDiaria: Producción diaria
+    produccionMensual: Producción mensual
+    totalAnual: Producción anual
+    pTotalAnual: Producción anual
+    potenciaTotal: Potencia total instalada
+    pMaximoAnual: Producción diaria máxima
+    CO2AnualRenovable: Ahorro CO2 si fuente renovable
+    CO2AnualNoRenovable: Ahorro CO2 si fuente no renovable
+  TOOLTIP:
+    produccionDiaria: Producción fotovoltaica diaria estimada
+    produccionMensual: Producción fotovoltaica media mensual estimada
+    pTotalAnual: Producción fotovoltaica media anual estimada
+
+Economico:
+  NAME: Económico
+  PROP:
+    precioInstalacionCorregido: Precio de la instalación corregido
+    gastoSinPlacasAnual: Sin placas
+    gastoConPlacasAnual: Con placas
+    ahorroAnualPorciento: Ahorro anual / gasto original
+    ahorroAnual: Ahorro anual
+    noCompensadoAnual: No compensada
+    valorSubvencionEU: Valor de la subvención EU
+    tipoSubvencionEU: Tipo subvención EU
+    sinSubvencion: Sin subvención
+    subvencionIndividual: Instalación individual
+    subvencionComunitaria: Instalación colectiva
+    valorSubvencionIBI: IBI (€)
+    porcientoSubvencionIBI: Bonificación %
+    tiempoSubvencionIBI: Duración bonificación (años)
+    VANProyecto: Valor actual neto (VAN)
+    TIRProyecto: Tasa interna de retorno (TIR)
+    precioInstalacion: Precio de la instalación
+
+  TOOLTIP:
+    gastoSinPlacasAnual: El gasto anual en electricidad sin paneles solares. Solo se tiene en cuenta la parte variable de la factura
+    gastoConPlacasAnual: El gasto anual estimado en electricidad con paneles solares. Sólo se tiene en cuenta la parte variable de la factura
+    ahorroAnualPorciento: Ahorro anual en relación al gasto original
+    ahorroAnual_TT: Diferencia gasto anual en electricidad con y sin paneles solares
+    noCompensadoAnual: El importe de la energía excedentaria que la comercializadora no compensará.\nLa ley (RD 244/2019) no permite que al consumidor se le abone ningún importe cuando el balance entre el coste de la energía sobrante y el de lo consumido de cualquier día resultara favorable al consumidor.\nSuele suceder cuando se instalan más paneles de los aconsejables cuando se consume muy por debajo de lo habitual (en vacaciones) o cuando el precio de compensación de la comercializadora fuera alto (muy improbable).
+    tipoSubvencionEU: Si se fueran a solicitar la subvención de los fondos Next Generation indíquese si la instalación fuera colectiva (una comunidad de propietarios por ejemplo) o individual. La subvención no se concederá si la energía generada al año fuera superior al 80% de la energía consumida anualmente
+    valorSubvencionIBI: Rellénese si el municipio donde se realice la instalación bonifica el impuesto de bienes inmuebles.\nLa Fundación Renovables facilita una lista de municipios con bonificaciones en el IBI y reducciones en ICIO.
+    porcientoSubvencionIBI: El porcentaje con el ayuntamiento bonifica el importe del IBI
+    tiempoSubvencionIBI: El número de años durante los que se puede aplicar la bonificación en el IBI
+    VANProyecto: El rendimiento de la inversión en la instalación fotovoltaica transcurridos los años que se muestran en la tabla
+    TIRProyecto: Indicador de la rentabilidad del proyecto fotovoltaico transcurridos los años que se muestran en la tabla
+
+  LABEL_GASTO_AHORRO: Datos gasto y ahorro anuales
+  economico_MSG_ayudaBloqueSubvencionesHdr: Ayuda subvenciones y bonificaciones
+  economico_MSG_ayudaBloqueSubvenciones: En este bloque se definen las posibles ayudas en forma de subvención o bonificación
+  MSG_disclaimerAhorro: Las estimaciones de ahorros producidos por autoconsumo e ingresos por energia excedente se han calculado asumiendo que tanto el precio de la energia adquirida como el de los excedentes se mantienen constantes durante los años de cálculo.
+  economico_MSG_disclaimerAhorroHdr: Aviso Tabla de amotización
+  economico_MSG_disclaimerPrecioInstalacion: En la estimación del coste de la instalación está repercutida la mano de obra y materiales. No están incluidos ni las tasas e impuestos municipales (ICIO) ni la obra civil y maquinaria de elevación (si fueran necesarias) ni las modificaciones que la distribuidora o la Administración exigiera tras comprobar la instalación realizada
+  economico_MSG_disclaimerPrecioInstalacionHdr: Aviso sobre el coste de instalación
+
+LOCATION:
+  LABEL: Localización
+  TITLE: Localización
+  DESCRIPTION: |
+    En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.<br />
+    A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.<br />
+    Su rendimiento se calculará a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).<br />
+
+  DESCRIPTION_ADDRESS: En este campo puedes introducir un localizador (region, ciudad, dirección) que te permitirá posicionar el mapa en la zona de trabajo deseada.
+  PROMPT_ADDRESS: Buscar lugar o dirección
+  PROMPT_CANDIDATE: Seleccione la dirección que corresponda de la lista
+  TOOLTIP_ADDRESS: A medida que escribas tendrás candidatos para seleccionar
+
+  PROMPT_DRAW: |
+    Dibuja en el mapa las áreas disponibles del edificio. En caso de alternativas, puedes dibujar tantas áreas como quieras. El sistema distribuirá los paneles de la forma mas eficiente.<br />
+    En caso de instalación coplanar en tejado inclinado, los dos primeros puntos serán considerados la cumbrera (la parte alta del tejado)
+  PROMPT_INICIO_CUMBRERA: Dibujaremos cumbrera
+  PROMPT_CUMBRERA: Dibujando cumbrera
+  PROMPT_ANCHO: Dibujando ancho
+  TOOLTIP_CUMBRERA: 'Cumbrera: {{cumbrera}}'
+  TOOLTIP_MEASURES: 'Cumbrera: {{cumbrera}}<br />Ancho: {{ancho}}<br />Area: {{area}}'
+  LABEL_SATELITE: Vista satélite
+  LABEL_VECTOR: Vista mapa
+  TOOLTIP_MAP_TYPE: Permite intercambiar entre vista satélite o mapa
+  IN_LINE_HELP:
+    PRE_ADDRESS: |
+      Dado que la producción esperada de una instalación fotovoltaica depende de la irradiación solar recibida por los paneles, necesitamos que nos des algunos datos necesarios para el cálculo.
+      <p>Puedes navegar en el mapa para encontrar la zona donde se realizará la instalación o utilizar el campo <b><span style='background:rgb(0, 255, 204)'>Localizador</span></b> donde puedes escribir el nombre de la zona o calle y número. Es importante que incluyas la ciudad para evitar una larga lista de candidatos que se desplegará debajo del campo a medida que vayas escribiendo.</p>
+    PRE_MAPA: |
+      Una vez que estes ubicado en el area de trabajo puedes ayudarte con la visualización satelite para identificar el tejado o azotea donde tienes planeada la instalación. Ahora debes dibujar al menos un area que represente la zona donde puedes instalar paneles.
+      Los dos primeros puntos definen la cumbrera o la parte alta de los paneles, el tercer punto define la dimension perpendicular a la cumbrera. Con estos tres punto la aplicación generará una rectangulo y asumirá que la orientacion de los paneles será desde la cumbrera hacia el último punto dado. Mas tarde podrás cambiar este valor (acimut) desde el formulario de edicion de la base que se activa desde la tabla.<p>
+      <p>En el caso que tengas tejado con multiples orientaciones puedes dibujar un area para cada una de ellas.</p>
+    PRE_TABLA: |
+      Una vez finalizada la definición de las áreas donde se instalarán los paneles verás a continuación una tabla <strong>Resumen</strong> donde ves el detalle de su configuración.
+
+      <p>Son importantes dos datos que definen los ángulos de incidencia de la radiación solar sobre el panel:</p>
+
+      <b><span>Inclinación: </b>Es el ángulo del panel con respecto a la horizontal del terreno. Dependiendo de la configuración seleccionada este angulo puede ser:</span>
+
+      <ul><b>Coplanar: </b>es la inclinaciónel del tejado.</ul>
+      <ul><b>Horizontal: </b>es el ángulo que tienen los paneles con respecto al tejado o azotea.</ul> 
+      <ul><b>Inclinación óptima</span></b> Dejaremos que el sistema lo calcule.</ul>
+
+      <p><b><span>Orientación (Acimut)</span></b>: es el ángulo con el que los paneles se orientan con respecto al sur (0º). Este ángulo es -90º en una orientación pura al este y 90º en orientación oeste. Para ayudarte a calcularlo puedes posicionarte en el campo <i class='fa fa-compass'></i> y ayudarte con el rumbo en el mapa indicando la orientación de los paneles. Si no lo sabes utiliza la opción <b>Angulos óptimos</b>. 
+      <p>En el caso de multiples bases candidatas para instalar paneles es importante definir el acimut de cada una de ellas por separado ya que el sistema utilizará las bases con mayor rendimiento para asignar los paneles</p>
+    POST_TABLA: <p>Con estos datos el sistema se conectará con el servidor PVGIS para obtener los datos concretos de cada base y pasaremos a la ventana que nos permitirá definir los consumos
+
+  TITLE_DIALOG_NEW_BASE: Nueva base solar
+  HORIZONTAL_ROOF: En el caso de tejado horizontal te propondremos el ángulo óptimo de  los paneles al finalizar el cálculo.
+  ERROR_COPLANAR_NOANGLE: 'Instalación coplanar con tejado a 0º de inclinación?'
+
+  LABEL_BASES_SUMMARY: Resumen
+  PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
+  ERROR_DEFINE_BASE: Debe definir las bases solares antes de continuar
+  MSG_AREA_TOTAL: |
+    Area total disponible en esta configuración: {{areaTotal}} <br />
+    Potencia máxima a instalar: {{potenciaMaxima}}
+  ERROR_NOMINATIM_FETCH: Error ejecutando fecth en Nominatim.\n {{err}} \n {{url}}
+  ERROR_TERRITORIO: La aplicación solo es valida para España
+  ERROR_MISMO_TERRITORIO: Todas las bases deben estar en el mismo territorio
+  TOOLTIP_BORRA_BASE: Borra la base seleccionada
+  TOOLTIP_EDITA_BASE: Modifica la base seleccionada
+
+  posicionLonLat_LBL: Long-Lat
+  posicionLonLat_TT: No hace falta rellenar este campo solo se utiliza para centrar el mapa en estas coordenadas
+
+CONSUMPTION:
+  TITLE: Consumo
+  TIPO_CONSUMO_DESCRIPTION: |
+    A continuación necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.<br />
+    El documento de consumo CSV nos permitirá conocer tus hábitos de consumo saber en qué tramos horarios y en qué meses del año sueles consumir más energía.<br />
+  TARIFA_DESCRIPTION: |
+    Para evaluar los posibles beneficios económicos que pudieras obtener de la instalación de los paneles necesitamos conocer tu tarifa y los precios por tramos horarios de tu comercializadora.Necesitamos conocer tambien el precio de compensación por excedentes de tu comercializadora para calcular parte del ahorro en la factura. Recuerda que tu factura no será en ningún momento de un importe positivo.
+  TITLE_MAP_MONTH_HOUR: Gráfico de consumo anual para {{nombreTipoConsumo}}
+  DESC_MAP_MONTH_HOUR: El siguiente gráfico muestra la distribución de tu consumo eléctrico en el año por meses y horas. Puedes visualizar en que momentos y horas del año tu consumo es mayor o menor.
+  TOTAL_DEMMAND: Demanda total de energia anual {{consumoTotal}}
+
+  HOOVER_MAPA_CONSUMO_MES_HORA: Consumo medio <br>horario por mes
+  TITLE_MAPA_CONSUMO_MES_HORA: Consumo medio horario por mes relativos al máximo
+  XAXIS_MAPA_CONSUMO_MES_HORA: Hora
+  YAXIS_MAPA_CONSUMO_MES_HORA: Mes
+  LABEL_MAPA_CONSUMO_MES_HORA: 'Máximo valor: {{maxConsumoMes}} kWh'
+
+  TITLE_MAP_MONTH_DAY: Valores diarios de consumo
+  TOOLTIP_MAP_MONTH_DAY: Gráfico interactivo. Clica en un punto y verás el perfil horario de consumo de ese dia.
+  DESC_MAP_MONTH_DAY: |
+    El consumo por horas varia depenediendo si se trata de un dia festivo o laboral. Los dias loborables hay un consumo mínimo durante las horas de trabajo, a no ser que teletrabajes.<br />
+    También varia según las estaciones del año y la zona geográfica. En el norte de España en invierno, el pico de consumo estña en las horas del amanecer y del anochecer con la calefacción, mientras que en el sur de España en verano el pico de consumo se encuentra e medio dia, por el aire acondicionado.<br />
+    Consejo: para aprovechar al máximo tu autoproducción, puedes intentar llevar a cabo tus tareas domésticas en horas de máxima producción.<br />
+  LABEL_TITLE_MAP_MONTH_DAY: Mapa de consumo horario en kWh
+  HOOVER_MAPA_CONSUMO_MONTH_DAY: Consumo horario
+  XAXIS_MAPA_CONSUMO_MONTH_DAY_HOUR: Hora
+  YAXIS_MAPA_CONSUMO_MONTH_DAY_DAY: Dia
+  LABEL_TITLE_PROFILE_DAY: 'Perfil diario del {{dia}} de {{mes}}'
+  ERROR_DEFINIR_CONSUMO_REE: Debe definir un consumo anual base mayor que 0 para el perfil de REE
+  ERROR_AL_MENOS_UN_TIPOCONSUMO: Debe definir al menos un tipo de consumo
+  ERROR_FALTA_FICHERO_CONSUMO: Debe definir el fichero de consumos antes de continuar
+  LABEL_BUTTON_NUEVO_TIPOCONSUMO: Nuevo tipo consumo
+  TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Boton para crear un nuevo tipo de consumo
+  TOOLTIP_BUTTON_TOTAL_DEMMAND: Boton para visualizar los gráficos correspondientes a la suma de todos los tipos de cosnumo definidos en la tabla.
+  TITLE_DIALOG_NEW_CONSUMPTION: Formulario para crear un nuevo tipo de consumo
+  TOOLTIP_botonBorraTipoConsumo: Borra el perfil de consumo seleccionado
+  TOOLTIP_botonMuestraMapaTipoConsumo: Muestra gráfico mapa de consumo de este perfil
+
+  nombreTipoConsumoDuplicado_MSG: El nombre del tipo de consumo no puede estar duplicado
+  tipoConsumoDefault_MSG: Defina tipo de fichero a utilizar y tarifa aplicable
+  fuenteTipoConsumoErronea_MSG: Posible error definiendo DATADIS cuando debería ser CSV o viceversa
+
+  tcMaximoAnual_LBL: Máximo consumo horario anual
+  numeroDias_LBL: Días procesados
+  botonBorraTipoConsumo_LBL:
+  botonMuestraMapaTipoConsumo_LBL:
+  botonMuestraTarifa_LBL:
+  botonSeleccionFichero_LBL:
+
+  botonSeleccionFichero_TT: Seleccione el fichero de consumo
+  consumo_MSG_ayudaTipoConsumoHdr: Ayuda definición tipo de consumo
+  consumo_MSG_hayFincasAsociadas: No se puede borrar un tipo de consumo que tiene fincas asociadas
+
+  consumo_MSG_errorLecturaFicheroConsumo: Error de lectura fichero CSV de consumos
+  consumo_MSG_errorCabeceras: Error formato CSV falta cabecera {{cabeceras}}
+  consumo_MSG_resumen: '{{registros}} registros de consumo cargados desde {{desde}} hasta {{hasta}}'
+  consumo_MSG_numeroLimitadoRegistros: Aviso-> solo existen {{registros}} registros que no completan un año de estadísticas
+  consumo_MSG_nombreCSVPorDefinir: Por definir
+
+ENERGY_BALANCE:
+  TITLE: Balance de Energía
+  DESCRIPTION: |
+    A partir de tu documento de consumo hemos hecho el cálculo del número de paneles que necesitarías para cubrirlo.<br />
+    (i) Los paneles se asignan primero a las áreas más eficientes desde el punto de vista de rendimiento energético.<br />
+    En la siguiente tabla puedes cambiar el número de paneles en cada área individualmente.
+
+  TITLE_GRAFICO_CONSUMOGENERACION3D: Gráfico resumen de consumos y producción
+  TOOLTIP_GRAFICO_CONSUMOGENERACION3D: Gráfico interactivo. Clica en un punto y verás el perfil horario de producción y consumo de ese dia.
+  TITLE_GRAFICO_PROFILE: 'Perfil diario de consumo y produccion  {{dia}} / {{mes}}'
+  TOTAL_PANELS: 'Número total de paneles: {{paneles}}'
+  FLOW_TITLE: ¿A dónde va la electricidad producida por los paneles?
+  FLOW_DESCRIPTION: |
+    Parte de la electricidad producida en tu instalación fotovoltáica se autoconsumo. <br />
+    El resto de la electricidad producida no se consume,(por ejemplo porque no hay nadie en la vivienda en las horas centrales del dia, que es donde mas electicidad se produce) se vierte a la red (excedentes) <br />
+    Lo mas probable es que sin baterías no puedas cubrir tu cosumo total. El resto de la energía que te falte tendrás que obtenerla de la red.<br />
+  LABEL_EXCEDENTE_ANUAL: Electricidad sobrante
+  TOOLTIP_EXCEDENTE_ANUAL: Electricidad sobrante volcada a la red
+  LABEL_AUTOCONSUMO: Autoconsumo
+  LABEL_ENERGIA_RED: Energía obtenida de la red
+  LABEL_ENERGIA_PANELES: Energía obtenida de los paneles
+  TITLE_YEAR_ENERGY_BALANCE: Balance energético anual
+  DESCRIPTION_YEAR_ENERGY_BALANCE: |
+    Con este número de paneles podrás cubrir el {{porcientoAutoconsumo}} de tu demanda total de energía ({{consumoTotal}}). El resto de electricidad ({{porcientoDemanda}}), tendrás que comprarla de la red.<br />
+    De la energía autoproducida ({{produccionTotal}}), consumirás el {{porcientoAutoproduccion}}, y el {{porcientoVertido}} se vertirá a la red, ya que se producirá en horas en las que no será utilizada.
+  TITLE_MONTH_ENERGY_BALANCE: Balance energético mensual
+  DESCRIPTION_MONTH_ENERGY_BALANCE: |
+    La <strong>autoproducción</strong> es mayor en verano (mas horas de luz) que en invierno.<br />
+    El <strong>consumo</strong> varia según los meses y la zona geográfica: en el norte de España elconsumo más alto se produce en los meses de invierno y mientras que en sur los picos de cosnumo se producen en verano. En general los meses de primavera y otoño son las mas estables en toda España.<br />
+    En el siguiente gráfico se ve la comparación entre tu consumo y tu autoproducción mes a mes.
+  TITLE_GRAPH_MONTH_CONSUMO_PRODUCCION: Autoproducción y consumo
+  TITLE_GRAPH_MONTH_ENERGY_BALANCE: |
+    Producción versus consumo mensual <br />
+    para {{potencia}} instalada
+  TITLE_GRAPH_MONTH_THREE_PARTS: Autoconsumo, consumo de la red y excedentes
+  MSG_disclaimerProduccion: |
+    Los datos para la estimación de la producción de los paneles solares se obtienen de PVGIS. <a href:"https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en">Ver documentación aqui</a>
+    <br />
+    Son tenidos en cuenta: <ul><li>la temperatura del aire a 2 metros y la velocidad del viento a 10 metros</li><li>el efecto de la temperatura en el rendimiento</li><li>la variación del espectro electromagnético a lo largo del día</li><li>el promedio de aerosoles en el ambiente (no los cambios bruscos)</li></ul>
+    No son tenidos en cuenta: <ul><li>el efecto de las nevadas</li><li>la acumulación de polvo y suciedad en los paneles</li><li>las pérdidas por sombras próximas</li></ul><br>
+
+  TITLE_ENVIRONMENTAL_IMPACT: Impacto medioambiental
+  DESCRIPTION_ENVIRONMENTAL_IMPACT: |
+    Las placas solares, al generar energia limpia, reducen la utilización de energías fosiles y de esta forma también reducen las emisiones de dióxido de carbono (CO2) causantes del efecto invernadero y calentamiento global. Contribuyen de esta forma al cuidado del ambiente.
+  LABEL_fuenteInfoCO2: Datos de conversion para {{territorio}}
+  TITLE_graficoCO2: Ahorro de kg de CO2 al año
+  LABEL_CO2AnualRenovable: Si la electricidad contratada proviene de <br /><strong>fuentes renovables</strong>
+  TOOLTIP_CO2AnualRenovable: CO2 (kg) no expulsados a la atmósfera si el origen de la energía fuera peninsular y renovable. Se puede modificar en la ventana de Parámetros.
+  LABEL_CO2AnualNoRenovable: Si la electricidad contratada proviene de <br /><strong>fuentes no renovables</strong>
+  TOOLTIP_CO2AnualNoRenovable: CO2 (kg) no expulsados a la atmósfera si el origen de la energía fuera peninsular y no renovable. Se puede modificar en la ventana de Parámetros.
+
+ECONOMIC_BALANCE:
+  TITLE: Balance Económico
+  DESCRIPTION: |
+    En esta pantalla conocerás cuánto tendrás que invertir en la instalación, cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión, teniendo en cuenta las posibles subvenciones provenientes de fondos UE, bonificaciones de IBI y uso de bateria virtual en el caso que tu comercializadora te lo ofrezca.
+  TITLE_IBI: Reducción del IBI
+  DESCRIPTION_IBI: |
+    Si instalas placas solares pordrás optar a una reducción de IBI. El porcentaje de la reducción del IBI y la duración de la bonificación dependen del municipio en el que vivas.
+
+    *¿Dónde encuentro la bonificación que me corresponde por municipio?*
+
+    Rellena la tabla con el precio del IBI de la edificación y la bonificación que le corresponde por municipio.
+
+  EU_TITLE: Subvenciones EU Next Generation
+  EU_DESCRIPTION: |
+    Las subvenciones EU Next Generation reducen el importe total de la inversión entre un 40% y un 50%.
+    Escoge la opción que represente tu instalación.
+    <p style="color: red;">CUIDADO: Las subvenciones EU Next Generation tienen plazo de solicitud hasta el 31 de diciembre de 2023.
+
+  DESCRIPTION_Consumo%Produccion: Para poder optar a la subvención de los Fondos Next Generation el porcentaje del consumo respecto a la producción ha de ser siempre superior al 80%. En esta configuración este valor es de {{Consumo_Produccion}}
+  TITLE_INSTALLATION_COST: Precio de la instalación
+  DESCRIPTION_INSTALLATION_COST: |
+    A pesar de procurar mantener los precios actualizados debe considerarse este importe como una orientación provisional sobre el proyecto que un instalador pueda formular (sobre todo si cuenta con más información sobre el emplazamiento final).<br />
+    Aquí no está repercutidos algunos gastos como obra civil (si fuera necesaria) sustitución de aislante o tejas viejas en la cubierta medios de elevación si fueran necesarios modificaciones que la distribuidora o la Administración pudieran exigir a la instalación y algunos impuestos y tasas que el ayuntamiento pudiera cobrar (ICIO o licencia de obras).<br />
+  PROMPT_INSTALLATION_COST: Si tienes una oferta diferente, puedes cambiar el valor del importe en el sigiente campo.
+  TITLE_AMORTIZATION_TIME: Tiempo de amortización
+  DESCRIPTION_AMORTIZATION_TIME: |
+    Este es el número de años que tardarás en recuperar la inversión realizada
+  PROMPT_AMORTIZATION_TIME: Los paneles tienen una vida útil de 15 a 30 años (si se mantienen correctamente
+  LABEL_INSTALLATION_COST: Coste previsto de la instalación (€ sin IVA)
+  TITLE_VIRTUAL_BATTERY: Gestión hucha (Bateria virtual)
+  DESCRIPTION_VIRTUAL_BATTERY: |
+    En este bloque se define la forma en la que se compensan los excedentes económicos de cada mes incluyendo el concepto de batería virtual o hucha.
+  DESCRIPTION_RECOGNITION_VIRTUAL_BATTERY: '% Transferencia hucha:  es el porcentaje del excedente económico de cada mes que pasa a formar parte de la hucha.'
+  LABEL_RECOGNITION_VIRTUAL_BATTERY: '% transferencia hucha'
+  TOOLTIP_RECOGNITION_VIRTUAL_BATTERY: Porcentaje del saldo no compensado que pasa a la hucha
+  DESCRIPTION_FEE_VIRTUAL_BATTERY: 'Cuota gestión hucha: es la cuota mensual sin IVA que carga la empresa comercializadora por la gestíon de la hucha.'
+  LABEL_FEE_VIRTUAL_BATTERY: Cuota gestión hucha sin IVA
+  TOOLTIP_FEE_VIRTUAL_BATTERY: Cuota fija mensual en Euros sin IVA que la empresa comercializadora cobra por la gestión de la hucha
+  TITLE_YEAR_SAVINGS: Ahorro anual en la factura
+  DESCRIPTION_YEAR_SAVINGS: |
+    Con placas solares te ahorrarás el {{porcientoAhorro}} del importe de gastos de consumo anual.<br />
+    En el siguiente gráfico se compara el gastos anual en electricidad con placas y sin placas.
+  GRAPH_TITLE_YEAR_SAVINGS: Consumo y autoproducción
+  TITLE_MONTH_SAVINGS: Ahorro mensual en la factura
+  DESCRIPTION_MONTH_SAVINGS: |
+    En el siguiente gráfico se compara el balance económico mensual con y sin placas.
+  GRAPH_TITLE_MONTH_SAVINGS: Gasto de electricidad comparado con placas y sin placas por meses
+  TITLE_FINANCE_SUMMARY: Balance económico completo
+  LABEL_ANO: Año
+  TOOLTIP_ANO: Periodo de amortización
+  LABEL_PREVIO: Previo
+  TOOLTIP_PREVIO: El importe pendiente de amortizar al inicio del periodo
+  LABEL_INVERSION: Inversión
+  TOOLTIP_INVERSION: El importe invertido durante el periodo
+  LABEL_AHORRO: Ahorro
+  TOOLTIP_AHORRO: Ahorro obtenido en el periodo
+  LABEL_IBI: Bonificación IBI
+  TOOLTIP_IBI: Descuento obtenido en el IBI
+  LABEL_SUBVENCION: Subvención UE
+  TOOLTIP_SUBVENCION: Subvención obtenida de la UE
+  LABEL_PENDIENTE: Pendiente
+  TOOLTIP_PENDIENTE: Pendiente de amortizar al final del periodo
+  DESCRIPTION_DATA_AS_PANELS: 'En el siguiente gráfico puedes obeservar la relación existente entre las variables: Inversion necesaria, Ahorro obtenido, porcentajes de autoconsumo y autosuficiencia, asi como la tasa interna de retorno en función del número de paneles instalados.'
+  TITLE_DATA_AS_PANELS: Gráfico alternativas según número de paneles
+  LABEL_FOOTER_VAN: 'Valor actual neto (VAN): {{VANProyecto}}'
+  LABEL_FOOTER_TIR: 'Valor actual neto (TIR): {{TIRProyecto}}'
+
+SUMMARY:
+  TITLE: RESUMEN
+  DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
+  TITLE_AUTOPRODUCCION: Autoproducción
+  DESCRIPTION_AUTOPRODUCCION: ''
+  LABEL_AREAS_ESCOGIDAS: <strong>áreas escogidas</strong> de {{areasDisponibles}} áreas disponibles
+  LABEL_PANELES_SUGERIDOS: paneles solares sugeridos
+  LABEL_PRODUCCION_ANUAL: kwh <br />produccion anual
+
+  TITLE_CONSUMO: Consumo
+  DESCRIPTION_CONSUMO: ''
+  TITLE_ECONOMIC_BALANCE: Balance económico
+  DESCRIPTION_ECONOMIC_BALANCE: ''
+  LABEL_COSTE_INSTALACION: coste de la instalación
+  LABEL_AMORTIZACION: Años de amortización
+  LABEL_SUBVENCIONES: de ayudas y subvenciones
+  TITLE_ENERGY_BALANCE: Balance energético
+  DESCRIPTION_ENERGY_BALANCE: ''
+  LABEL_AUTOCONSUMO: del consumo será autoproducido
+
+  LABEL_disclaimer1: "<p>Todas las estimaciones dadas se han realizado con la mayor precisión posible con la mejor intención y sin ningún compromiso.</p><p class='text-danger fw-bold'>Especial mención debemos hacer en cuanto al precio estimado de la instalación. Existe una alta volatilidad en este factor y no podemos garantizar que refleje la realidad del mercado en cada momento y territorio por lo que hemos incluido un campo que te permite corregir ese precio según las recomendaciones de tu instalador.</p>"
+  LABEL_disclaimer2: SOM Energia no tiene ningún interés económico ni directo ni indirecto en este estudio salvo contribuir a una transición energética justa con los usuarios eficiente descentralizada y limpia.
+  LABEL_PRINT: Imprime resumen
+  LABEL_PDF_REPORT: Genera PDF
+
+BASIC:
+  LABEL_OK: Guardar
+  LABEL_CANCEL: Cancelar
+  LABEL_SEND: Enviar
+  LABEL_AVISO: Aviso
+  LABEL_NEXT: Siguiente
+  LABEL_PREVIOUS: Anterior
+  LABEL_CLOSE: Cerrar
+  main_TAB_noMostrarMas: No volver a mostrar este mensaje
+  valor_true: Verdadero
+  valor_false: Falso
+
+GRAPHICS:
+  LABEL_CONSUMPTION: Consumo
+  LABEL_PRODUCTION: Producción
+  LABEL_DIA: Día
+  LABEL_HORA: Hora
+  LABEL_MES: Mes
+
+DIALOG_PROPERTIES:
+  TITLE: Menu de Propiedades
+
+PARAMETROS:
+  DIALOG_TITLE: Parametros de la aplicación
+  DIALOG_DESCRIPTION: |
+    Los cambios en estos valores <strong>no implican un recálculo de todo el conjunto</strong>, es necesario volver a la pestaña Localización y calcular.
+  LABEL_impuestoElectrico: Impuesto eléctrico en %
+  TOOLTIP_impuestoElectrico: El impuesto especial sobre la electricidad
+  LABEL_IVAenergia: IVA aplicable a la energia en %
+  TOOLTIP_IVAenergia: El IVA que se repercute por el gasto en electricidad
+  LABEL_IVAinstalacion: IVA aplicable a la instalación en %
+  TOOLTIP_IVAinstalacion: El IVA que se repercute sobre el importe al que ascienda la instalación
+  LABEL_perdidasSistema: Pérdidas estimadas de la instalación en %
+  TOOLTIP_perdidasSistema: Las pérdidas estimas del sistema fotovoltaico debidas al deterioro de algunos componentes condiciones adversas inversores deficientes etc.
+  LABEL_interesVAN: Interés base (%) para calculo de VAN
+  TOOLTIP_interesVAN: Tasa de descuento a aplicar en el cálculo del valor actual neto
+  LABEL_potenciaPanelInicio: Potencia unitaria (kWp) panel inicio
+  TOOLTIP_potenciaPanelInicio: Potencia kWp del panel inicial utilizado en los cálculos
+  LABEL_tecnologia: Tecnología de los paneles
+  TOOLTIP_tecnologia: "Se pueden elegir tres tipos de paneles para realizar las estimaciones \n- los que tienen células de silicio cristalino\n- módulos de lámina delgada de seleniuro de cobre e indio (CuInSe) o seleniuro de cobre indio y galio (CuInGaSe)\n- módulos de lámina delgada de teluro de cadmio (CdTe)\n- Desconocido\nSi se elige alguna de las tres primeras opciones en el cálculo de la producción fotovoltaica se tendrá en cuenta el efecto de la temperatura. Si se elige la otra opción (desconocido) en el cálculo se asumirán unas pérdidas de potencia debido al efecto de la temperatura del 8% (valor genérico que se considera razonable para climas templados). El efecto de la distribución espectral de la irradiancia recibida sobre la producción sólo puede calcularse para las tecnologías de silicio cristalino y de CdTe."
+  LABEL_tecnologiaDesconocida: Desconocida
+  LABEL_largoPanel: Largo del panel propuesto en metros
+  TOOLTIP_largoPanel: A efectos del cálculo del número de paneles
+  LABEL_anchoPanel: Ancho del panel propuesto en metros
+  TOOLTIP_anchoPanel: A efectos del cálculo del número de paneles
+  LABEL_margen: Margen de instalación en metros
+  TOOLTIP_margen: Distancia dejada alrededor de la instalación a efectos de mantenimiento
+
+  tarifasLocales_LBL: Fichero de tarifas local
+  ficheroTarifas_LBL: Fichero de tarifas local (ver ejemplo)
+  ficheroTarifas_TT: El usuario puede personalizar un fichero con los precios que desee mientras cumpla con el formato dado en el ejemplo
+  parametros_MSG_errorLecturaFicheroTarifas: Error leyendo fichero local de tarifas
+
+CONTACTO:
+  DIALOG_TITLE: Formulario de contacto
+  DIALOG_DESCRIPTION: Envianos tus comentarios. Intentaremos atenderte lo antes posible
+  PROP:
+    nombre: Nombre
+    email: email
+    telefono: Teléfono
+    tipoPropuesta: ¿Qué nos dices?
+    comentario: Haces un comentario
+    mejora: Propones una mejora
+    error: Reportas un error
+    advertencia: Los datos que nos aportes en este formulario serán utilizados única y exclusivamente para contestar a tu solicitud y no serán almacenados en ningún fichero ni utlizados para ningún otro fin
+    respuesta: Marca aquí si estás de acuerdo en recibir respuestas
+    mensaje: Mensaje
+
+  TOOLTIP:
+    nombre: Tu nombre
+    telefono: Teléfono (opcional)
+    email: Indicanos un email para poder contestar a tu comentario
+    mensaje: Mensaje lo mas descriptivo posible de la incidencia
+
+BOTONES:
+  botonExportar_TT: Salvar proyecto
+  botonContacto_TT: Formulario de contacto
+  botonInformePDF_TT: Salvar informe en PDF
+  botonParametros_TT: Parámetros
+  botonInstrucciones_TT: Instrucciones
+  botonAyuda_TT: Ayuda
+
+AYUDAS:
+  ayuda_TIT_localizacion: En esta pestaña se identifican datos de localización geográfica
+  ayuda_TIT_tipoConsumo: En esta pestaña se identifican datos de tarifas y consumos antes de la instalación
+  ayuda_TIT_fincas: En esta pestaña se identifican los partícipes del proyecto
+  ayuda_TIT_resultados: En esta pestaña se muestra el balance energético resultante de la instalación de los paneles
+  ayuda_TIT_reparto: En esta pestaña se muestra el reparto de energía e inversión del proyecto
+  ayuda_TIT_economico: En esta pestaña se muestra el balance economico-financiero
+  ayuda_TIT_graficos: En esta pestaña se muestran algunos gráficos de referencia
+  ayuda_TIT_panel: Panel de ayuda
+  ayuda_TIT_reporte: Resumen de datos
+
+Proyecto:
+  DIALOG_TITLE: Datos del proyecto
+  DIALOG_DESCRIPTION: En este formulario pudes definir ciertos valores para documentar el proyecto para cuando lo exportes. El botón Importar te premitirá recuperar un proyecto mas tarde con las mismas condiciones con las que lo hubieras exportado.
+  PROP:
+    nombreProyecto: Nombre del proyecto
+    fechaCreacion: Fecha de creación
+    telefonoContacto: Teléfono de contacto
+    emailContacto: Dirección de correo
+    descripcion: Descripción
+  TOOLTIP:
+    nombreProyecto: Nombre que el usuario dé a esta simulación (p. ej. piso01 luzescalera01 garaje00…)
+    emailContacto: Dirección de correo
+    telefonoContacto: Teléfono de contacto
+    fechaCreacion: Fecha de creación
+    descripcion: Descripción
+    importarProyecto: Seleccione fichero .solimp previamente exportado por Solidar
+    exportarProyecto: Permite exportar los datos del proyecto activo para futuras importaciones
+  LABEL:
+    importarProyecto: Importar proyecto
+    exportarProyecto: Exportar proyecto
+  MSG_confirmaReemplazo: El proyecto existente será reemplazado por el importado
+  MSG_importando: Importando
+  MSG_success: Fichero importado satisfactoriamente
+  MSG_problemaVersion: Lamentablemente no se puede importar un fichero Solimp de versiones anteriores a 4',
+
+MAPA:
+  botonPuntoConsumo_LBL: Punto Consumo
+  botonPuntoConsumo_TT: Boton para crear un nuevo punto de consumo
+  botonBaseSolar_LBL: Base solar
+  botonBaseSolar_TT: Boton para crear una nueva base para instalar paneles
+  botonDeshacer_LBL: Deshacer
+  botonDeshacer_TT: Permite anular el último vertice creado
+  botonShadow_LBL: Google Shadow
+  botonShadow_TT: Abre ventana de Google Shadow centrada en este mapa
+
+RESULTS:
+  TOOLTIP_botonInfoBase: Información detallada de la base seleccionada
+  LABEL_ConsumoDiurno: Consumo realizado en horas solares
+  TOOLTIP_ConsumoDiurno: Consumo realizado en horas en que los paneles tienen alguna producción
+
+  LABEL_maxPaneles: Max. Paneles en base
+  TOOLTIP_maxPaneles: Número máximo de paneles que se pueden instalar en la base
+
+  LBL_graficoResumen: Gráfico resumen de consumos versus producción
+  LBL_pendienteCalculo: Pendiente
+
+  MSG_excesoPotencia: Hay un exceso de potencia en esta base en función del area dispoble
+  LBL_basePropiedades: Base {{id}}
+
+GRAFICOS:
+  LABEL_panelesActuales: Paneles actuales {{paneles}}
+  LABEL_limiteSubvencionEU: Limite subvención EU
+  LABEL_numeroMaximoPaneles: Límite paneles por area disponible
+  LABEL_graficasNoCompensado: No compensado
+  LABEL_graficasGastoConPaneles: Gasto con paneles
+  LABEL_graficasGastoSinPaneles: Gasto sin paneles
+  LABEL_graficasReduccionCompensacion: Reducción por compensación
+  LABEL_graficasReduccionAutoconsumo: Reducción por autoconsumo
+  LABEL_graficasExcedente: Excedente
+  LABEL_graficasDeficit: Déficit
+  LABEL_graficasAutoconsumo: Autoconsumo
+  LABEL_graficasCompensacion: Compensado
+  LABEL_SALDO_VIRTUAL_BATTERY: Saldo en hucha
+  LABEL_EXTRACCION_VIRTUAL_BATTERY: Extracción hucha
+
+  graficos_LBL_balanceConsumo: Balance mensual de consumo con {{potencia}} instalados
+  graficos_LBL_balanceProduccion: Balance mensual de producción con {{potencia}} instalados
+  graficos_LBL_tituloBalanceEconomico: Balance económico mensual con {{potencia}} instalados
+  graficos_LBL_alternativasPotencia: Alternativas con paneles de {{potencia}} instalados
+  graficos_LBL_produccionMediaMensual: Producción media mensual con {{potencia}} instalados / consumo medio mensual
+
+  graficos_LBL_graficasInversion: Inversión
+  graficos_LBL_graficasAhorro: Ahorro
+  graficos_LBL_graficasAutosuficiencia: Autosuficiencia
+  graficos_LBL_graficasprodvscons: Prod. vs Cons.
+  graficos_LBL_cambiaPaneles: Click cambia a {{paneles}} paneles
+  graficos_LBL_paneles: Paneles
+  graficos_LBL_segunFuente: Distribución de energia segun fuente
+  graficos_LBL_deRed: Red electrica
+  graficos_LBL_dePaneles: '{{paneles}} Paneles'
+  graficos_LBL_extraccionHucha: Extracción de la hucha
+  graficos_LBL_huchaSaldo: Saldo en la hucha
+  graficos_LBL_tituloBalanceEconomicoFinca: Balance económico mensual con {{potencia}} asignados.<br>Equivalente {{paneles}} paneles.
+  graficos_LBL_tituloBalanceEconomicoGlobal: Balance económico mensual con {{potencia}} asignados.
+
+REPORT:
+  titulo: Solidar Energía
+  datosDeConsumoGlobal: Consumo Global
+  produccionTotal: Producción total
+  produccionMediaEsperada: Producción media esperada
+  datosInstalacionAnalizada: Datos de instalación analizada
+  datosPVGISObtenidos: Datos PVGIS obtenidos
+  datosLocalizacionAportados: Datos de localización aportados
+  datosDeConsumo: Datos de consumo
+  tarifas: Tarifas utilizadas
+  fichero: Fichero ->
+  paraPotenciaAnual: para potencia anual de
+  registros: Registros-> {{registros}}
+  numeroRegistros: Registros
+  desde: Desde
+  hasta: Hasta
+  disclaimer1pdf: 'Todas las estimaciones dadas se han realizado con la mayor precisión posible con la mejor intención y sin ningún compromiso. Especial mención debemos hacer en cuanto al precio estimado de la instalación. Existe una alta volatilidad en este factor y no podemos garantizar que refleje la realidad del mercado en cada momento y territorio por lo que hemos incluido un campo que te permite corregir ese precio según las recomendaciones de tu instalador.Som Energia no tiene ningún interés económico ni directo ni indirecto en este estudio salvo contribuir a una transición energética justa con los usuarios eficiente descentralizada y limpia.'
+  formatoPDF: Genera en formato PDF
+  balanceEnergia: Balance energía
+  localizacion: Localización
+  reparto: Coeficientes de reparto
+  balanceEconomico: Balance económico
+  balanceFinanciero: Balance financiero (Euros)
+  informe_MSG_procesarPrimero: Debe obtener el balance de energía antes de poder generar el informe

@@ -1,9 +1,9 @@
-import React from 'react'
 import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Button from '@mui/material/Button'
-import Typography from '@mui/material/Typography'
+import HouseIcon from '@mui/icons-material/House'
+import ApartmentIcon from '@mui/icons-material/Apartment'
 import AppFrame from '../components/AppFrame'
 import ToolSelector from './ToolSelector'
 import ArticleThumb from './ArticleThumb'
@@ -11,7 +11,7 @@ import articles from '../data/articles.yaml'
 import { Header, BrochureP as P } from '../components/StyledHtml'
 
 export default function Page() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   return (
     <AppFrame>
       <Container>
@@ -82,11 +82,13 @@ export default function Page() {
             }}
           >
             <ToolSelector
+              icon={HouseIcon}
               route="/simulator"
               title={t('HOME.SIMULATION_TOOLS_INDIVIDUAL')}
               subtitle={t('HOME.SIMULATION_TOOLS_INDIVIDUAL_DESCRIPTION')}
             />
             <ToolSelector
+              icon={ApartmentIcon}
               title={t('HOME.SIMULATION_TOOLS_COLLECTIVE')}
               subtitle={t('HOME.SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION')}
             />

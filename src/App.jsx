@@ -9,6 +9,11 @@ import HomePage from './Home/Page'
 import SimulatorPage from './Simulator/Page'
 import AboutPage from './About/Page'
 import NotFoundPage from './NotFound/Page'
+import DialogProvider from './components/DialogProvider'
+import { BasesContextProvider } from './Simulator/BasesContext'
+import { ConsumptionContextProvider } from './Simulator/ConsumptionContext'
+import { EconomicContextProvider } from './Simulator/EconomicContext'
+import { AlertProvider } from './Simulator/components/Alert'
 
 const routes = [
   {
@@ -41,7 +46,17 @@ function App() {
 
   return (
     <GlobalTheme>
-      <RouterProvider router={router} />
+      <DialogProvider>
+        <AlertProvider>
+          <BasesContextProvider>
+            <ConsumptionContextProvider>
+              <EconomicContextProvider>
+                <RouterProvider router={router} />
+              </EconomicContextProvider>
+            </ConsumptionContextProvider>
+          </BasesContextProvider>
+        </AlertProvider>
+      </DialogProvider>
     </GlobalTheme>
   )
 }

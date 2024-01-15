@@ -20,30 +20,58 @@ function DefaultWizardPage(params) {
     showAll,
     ichild,
     isCurrent,
+    title,
     next,
     prev,
     prevDisabled = false,
     nextDisabled = false,
-    nextLabel = 'Next',
-    prevLabel = 'Previous',
+    nextLabel, // = 'Next',
+    prevLabel, // = 'Previous',
     validationErrors,
   } = params
-  console.log(children)
 
   return (
-    <Box
-      key={ichild}
-      sx={
-        showAll && isCurrent
-          ? {
-              borderLeft: '6pt solid',
-              borderColor: 'palette.primary',
-              paddingLeft: '2pt',
-            }
-          : {}
-      }
-    >
-      {children}
+    <>
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexFlow: 'row',
+          justifyContent: 'space-between',
+          my: 2,
+        }}
+      >
+        <Button
+          disabled={prevDisabled || !isCurrent}
+          startIcon={<ArrowBackIosIcon />}
+          onClick={prev}
+        >
+          {prevLabel}
+        </Button>
+        {title ? <Typography variant="h3">{title}</Typography> : null}
+        <Button
+          variant="contained"
+          endIcon={<ArrowForwardIosIcon />}
+          disabled={nextDisabled || !isCurrent}
+          onClick={next}
+        >
+          {nextLabel}
+        </Button>
+      </Box>
+      <Box
+        key={ichild}
+        sx={
+          showAll && isCurrent
+            ? {
+                borderLeft: '6pt solid',
+                borderColor: 'palette.primary',
+                paddingLeft: '2pt',
+              }
+            : {}
+        }
+      >
+        {children}
+      </Box>
       <Box
         sx={{
           width: '100%',
@@ -74,7 +102,7 @@ function DefaultWizardPage(params) {
           {nextLabel}
         </Button>
       </Box>
-    </Box>
+    </>
   )
 }
 
@@ -82,31 +110,55 @@ function callOrValue(f, ...params) {
   if (typeof f === 'function') return f(...params)
   return f
 }
+function isPromise(thing) {
+  return typeof thing?.then === 'function'
+}
 
 export default function Wizard(params) {
-  const { children, showAll = false, variant = 'progress', onPageChange } = params
+  const {
+    children,
+    showAll = false,
+    variant = 'progress',
+    onPageChange,
+    nextLabel,
+    prevLabel,
+  } = params
   const [currentStep, setCurrentStep] = React.useState(0)
+  const [isInTransition, beInTransition] = React.useState(false)
   const totalSteps = children.length
 
   React.useEffect(() => {
     onPageChange && onPageChange(currentStep)
   }, [currentStep])
 
-  function next() {
-    setCurrentStep((current) => {
-      var inext = current + 1
-      while (callOrValue(children[inext].props.skip)) inext++
-      if (inext >= totalSteps) return current
-      return inext
-    })
+  function skipNext(inext) {
+    while (callOrValue(children[inext].props.skip)) inext++
+    if (inext >= totalSteps) return undefined
+    return inext
+  }
+
+  function skipPrev(iprev) {
+    while (callOrValue(children[iprev]?.props?.skip)) iprev--
+    if (iprev < 0) return undefined
+    return iprev
+  }
+
+  async function next() {
+    var nextAttribute = callOrValue(children[currentStep].props.next)
+    if (isPromise(nextAttribute)) {
+      beInTransition(true)
+      nextAttribute = await nextAttribute
+      beInTransition(false)
+    }
+    var inext = nextAttribute === false ? currentStep : currentStep + 1
+    const skippedNext = skipNext(inext) ?? currentStep
+    setCurrentStep(skippedNext)
   }
 
   function prev() {
     setCurrentStep((current) => {
       var inext = current - 1
-      while (callOrValue(children[inext]?.props?.skip)) inext--
-      if (inext < 0) return current
-      return inext
+      return skipPrev(inext) ?? current
     })
   }
 
@@ -153,10 +205,13 @@ export default function Wizard(params) {
       ) : null}
       {children.map((child, ichild) => {
         const isCurrent = ichild === currentStep
-        const prevDisabled = ichild === 0
+        const prevDisabled = ichild === 0 || isInTransition
         const validationErrors = callOrValue(child.props?.validate)
-        const nextDisabled = ichild === totalSteps - 1 || validationErrors
+        const title = child.props.title
+        const nextDisabled =
+          ichild === totalSteps - 1 || !!validationErrors || isInTransition
         if (!showAll && !isCurrent) return null
+
         return (
           <fieldset key={ichild} style={{ border: 'none' }} disabled={!isCurrent}>
             <DefaultWizardPage
@@ -165,8 +220,11 @@ export default function Wizard(params) {
                 ichild,
                 showAll,
                 isCurrent,
+                title,
                 next,
                 prev,
+                nextLabel,
+                prevLabel,
                 nextDisabled,
                 prevDisabled,
               }}
@@ -187,7 +245,6 @@ const WizardExampleContext = React.createContext({ value: '', setValue: () => {}
 function MyPage({ label }) {
   const { value, setValue } = React.useContext(WizardExampleContext)
   const field = label.toLowerCase()
-  console.log('Value in Mypage', value)
   return (
     <Container>
       <TextField
@@ -195,10 +252,8 @@ function MyPage({ label }) {
         value={value[field] ? value[field] : ''}
         onChange={(e) => {
           setValue((old) => {
-            console.log('Prechange', e, old)
             const newValue = { ...old }
             newValue[field] = e.target.value
-            console.log('changed:', newValue)
             return newValue
           })
         }}
