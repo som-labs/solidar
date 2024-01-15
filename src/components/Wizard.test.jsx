@@ -1,5 +1,5 @@
-import { beforeEach, afterEach, describe, expect, test, it } from 'vitest'
-import { cleanup, render, screen, fireEvent } from '@testing-library/react'
+import { beforeEach, afterEach, describe, expect, test, it, fn } from 'vitest'
+import { cleanup, render, screen, fireEvent, act, waitFor } from '@testing-library/react'
 import Wizard from './Wizard'
 import React from 'react'
 
@@ -158,10 +158,10 @@ describe('Page validation', () => {
 })
 
 describe('Next attribute', () => {
-  function wizardWithNext(validate) {
+  function wizardWithNext(next) {
     render(
       <Wizard>
-        <p key={1} id="page1" t={validate}>
+        <p key={1} id="page1" next={next}>
           page 1
         </p>
         <p key={2}>page 2</p>
@@ -169,32 +169,70 @@ describe('Next attribute', () => {
       </Wizard>,
     )
   }
-  it('callback returns true, disables next', () => {
-    wizardWithNext(() => true)
-    expect(nextButton().disabled).toBe(true)
+  it('value false, keeps page', () => {
+    wizardWithNext(false)
+    fireEvent.click(nextButton())
+    expect(pagesStatus()).toEqual([true, false, false])
   })
-  it('callback returns false, does not disable next', () => {
+  it('value true, advances page', () => {
+    wizardWithNext(true)
+    fireEvent.click(nextButton())
+    expect(pagesStatus()).toEqual([false, true, false])
+  })
+  it('value undefined (next attribute not present), advances page', () => {
+    wizardWithNext(undefined)
+    fireEvent.click(nextButton())
+    expect(pagesStatus()).toEqual([false, true, false])
+  })
+  it('callback returns false, keeps page', () => {
     wizardWithNext(() => false)
-    expect(nextButton().disabled).toBe(false)
+    fireEvent.click(nextButton())
+    expect(pagesStatus()).toEqual([true, false, false])
   })
+  it('callback returns true, keeps page', () => {
+    wizardWithNext(() => true)
+    fireEvent.click(nextButton())
+    expect(pagesStatus()).toEqual([false, true, false])
+  })
+  it('promise resolving false, keeps page', async () => {
+    var resolveFunction = undefined
+    const promise = new Promise((resolve, reject) => {
+      resolveFunction = resolve
+    })
+    wizardWithNext(() => promise)
+    fireEvent.click(nextButton())
+    await waitFor(() => expect(nextButton().disabled).toBe(true))
+    resolveFunction(false)
+    await waitFor(() => expect(nextButton().disabled).toBe(false))
+    await waitFor(() => expect(pagesStatus()).toEqual([true, false, false]))
+  })
+  it('promise resolving true, advances page', async () => {
+    var resolveFunction = undefined
+    const promise = new Promise((resolve, reject) => {
+      resolveFunction = resolve
+    })
+    wizardWithNext(() => promise)
+    fireEvent.click(nextButton())
+    expect(nextButton().disabled).toBe(true)
+    resolveFunction(true)
+
+    await waitFor(() => expect(nextButton().disabled).toBe(false))
+    await waitFor(() => expect(pagesStatus()).toEqual([false, true, false]))
+  })
+  /*
   it('callback returns string, disable next and shows error', () => {
     wizardWithNext(() => 'An error has occurred')
     expect(nextButton().disabled).toBe(true)
     expect(screen.queryByText('An error has occurred')).toBeTruthy()
   })
+  */
 })
-// - onstart, first page is 0
-// - next=true, goes to next in order
-// - next=undefined, goes to next in order
-// - next=false stays
 // - next=true and next skipif evaluates to true, skips
 // - next=true and next skipif evaluates to false, do not skip
+// - next=true, but none left, stays
 // - next=explicitPage
 // - next=notExistingPage
-// - next=function evaluates the function
-// - next=promise evaluates the promise async
 // - on start, skipif is considered to jump 0 or later
-// - next=true, but none left, stays
 
 //describe('Custom buttons', () => {})
 //describe('Hide buttons', () => {})
