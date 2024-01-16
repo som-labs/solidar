@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Formik, Field, Form } from 'formik'
 
@@ -6,7 +7,7 @@ import { LineString } from 'ol/geom'
 import { Style } from 'ol/style'
 
 // MUI objects
-import { Box, Button, Switch, FormControlLabel, Typography } from '@mui/material'
+import { Box, Button, Switch, FormControlLabel, Typography, Grid } from '@mui/material'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
@@ -22,6 +23,67 @@ import * as UTIL from '../classes/Utiles'
 
 export default function DialogBaseSolar({ data, onClose }) {
   const { t } = useTranslation()
+  const [roofType, setRoofType] = useState(data.roofType)
+  const canvasRef = useRef()
+  const inclinacionDefault = 20
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (roofType !== 'Optimo') {
+      drawHouse(canvas, inclinacionDefault, roofType)
+    }
+  }, [roofType])
+
+  const drawHouse = (canvas, inclinacion, roofType) => {
+    if (!canvas) return
+
+    const ctx = canvas.getContext('2d')
+    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+    const alfaRad = (inclinacion / 180) * Math.PI
+    const w = canvasRef.current.width
+    const h = canvasRef.current.height
+    let a = 0.7 * h
+    let b = h - a
+    let c, d
+
+    ctx.beginPath()
+    ctx.fillStyle = 'blue'
+    if (roofType === 'Coplanar') {
+      if (b + (w / 2) * Math.tan(alfaRad) < h) {
+        d = w / 2
+        c = d * Math.tan(alfaRad)
+      } else {
+        d = a * Math.tan(Math.PI / 2 - alfaRad)
+        c = a
+      }
+      ctx.fillRect(w / 2 - d, a, 2 * d, b)
+      ctx.stroke()
+      ctx.beginPath()
+
+      ctx.fillStyle = 'red'
+      ctx.moveTo(w / 2 - d, a)
+      ctx.lineTo(w / 2, a - c)
+      ctx.lineTo(w / 2 + d, a)
+
+      ctx.closePath()
+      ctx.fill()
+      ctx.stroke()
+    } else {
+      ctx.beginPath()
+      ctx.fillStyle = 'blue'
+      ctx.fillRect(0, a, w, b)
+      ctx.stroke()
+      for (let i = 1; i <= 3; i++) {
+        const xb = i * 0.3 * w
+        const xt = xb - w * 0.3 * Math.cos(alfaRad)
+        const yt = a - w * 0.3 * Math.sin(alfaRad)
+        ctx.beginPath()
+        ctx.moveTo(xb, a)
+        ctx.lineTo(xt, yt)
+        ctx.stroke()
+      }
+    }
+  }
 
   const changeRoofType = (event, setValues, values) => {
     // //Al crear la geometria de la base hemos construido un acimut.
@@ -38,10 +100,12 @@ export default function DialogBaseSolar({ data, onClose }) {
           inclinacionOptima: false,
           inAcimut: values.inAcimut,
           angulosOptimos: false,
-          inclinacion: 0,
+          inclinacion: inclinacionDefault,
           requierePVGIS: true,
         }))
         featAcimut.setStyle(null)
+        setRoofType('Coplanar', values)
+        drawHouse(canvasRef.current, inclinacionDefault, 'Coplanar')
         break
       case 'Horizontal':
         setValues((prev) => ({
@@ -49,10 +113,12 @@ export default function DialogBaseSolar({ data, onClose }) {
           roofType: 'Horizontal',
           inclinacionOptima: false,
           angulosOptimos: false,
-          inclinacion: 20, //El angulo optimo definitivo lo dará PVGIS pero para la peninsula esta entre 31º y 32º. 20 es el recomendado por los instaladores
+          inclinacion: inclinacionDefault, //El angulo optimo definitivo lo dará PVGIS pero para la peninsula esta entre 31º y 32º. 20 es el recomendado por los instaladores
           requierePVGIS: true,
         }))
         featAcimut.setStyle(null)
+        setRoofType('Horizontal')
+        drawHouse(canvasRef.current, inclinacionDefault, 'Horizontal')
         break
 
       case 'Optimos': {
@@ -63,31 +129,34 @@ export default function DialogBaseSolar({ data, onClose }) {
           inclinacionOptima: true,
           requierePVGIS: true,
         }))
+        setRoofType('Optimo')
         featAcimut.setStyle(new Style({}))
         break
       }
     }
   }
 
-  const changeTilt = (event, setValues) => {
+  const changeTilt = (event, setValues, values) => {
     setValues((prevValues) => ({
       ...prevValues,
-      inclinacion: event.target.value,
+      inclinacion: parseInt(event.target.value),
       inclinacionOptima: false,
       angulosOptimos: false,
       requierePVGIS: true,
     }))
+    drawHouse(canvasRef.current, parseInt(event.target.value), values.roofType)
   }
 
-  const setOptimalTilt = (event, setValues) => {
-    setValues((prevValues) => ({
-      ...prevValues,
-      inclinacion: event.target.checked ? '' : 0,
-      inclinacionOptima: event.target.checked,
-      angulosOptimos: false,
-      requierePVGIS: true,
-    }))
-  }
+  // Removed based on request done by SOM-Autoproduccion meeting 9/3/2024
+  // const setOptimalTilt = (event, setValues) => {
+  //   setValues((prevValues) => ({
+  //     ...prevValues,
+  //     inclinacion: event.target.checked ? '' : 0,
+  //     inclinacionOptima: event.target.checked,
+  //     angulosOptimos: false,
+  //     requierePVGIS: true,
+  //   }))
+  // }
 
   const changeAzimut = (event, setValues, values) => {
     let featAcimut
@@ -150,7 +219,7 @@ export default function DialogBaseSolar({ data, onClose }) {
         errors.inclinacion = 'Debe ser un número entero entre 0 y 90'
       } else {
         value = parseInt(values.inclinacion)
-        if (value < 0 || value > 90) {
+        if (value < 0 || value > 80) {
           errors.inclinacion = 'El valor de la inclinación debe estar entre 0º y 90º'
         }
       }
@@ -180,6 +249,10 @@ export default function DialogBaseSolar({ data, onClose }) {
     return errors
   }
 
+  const canvasStyle = {
+    //border: '1px solid #000',
+  }
+
   return (
     <Formik
       initialValues={data}
@@ -190,7 +263,7 @@ export default function DialogBaseSolar({ data, onClose }) {
     >
       {({ values, setValues }) => (
         <Form>
-          <DialogTitle>{t('LOCATION.TITLE_DIALOG_NEW_BASE')}</DialogTitle>{' '}
+          <DialogTitle>{t('LOCATION.TITLE_DIALOG_NEW_BASE')}</DialogTitle>
           <DialogContent>
             <Box
               sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', flex: 1 }}
@@ -214,7 +287,6 @@ export default function DialogBaseSolar({ data, onClose }) {
                 }}
               />
               {/* PENDIENTE: hay que mejorar los iconos de los botones coplanar u horizontal */}
-              {/* PENDIENTE: agregar gráfico indicativo de la inclinacion */}
               <Box
                 sx={{
                   display: 'flex',
@@ -279,16 +351,41 @@ export default function DialogBaseSolar({ data, onClose }) {
                         flexDirection: 'column',
                       }}
                     >
-                      <SLDRInputField
-                        name="inclinacion"
-                        type="text"
-                        unit=" º"
-                        object="BaseSolar"
-                        value={values.inclinacion}
-                        onBlur={(event) => changeTilt(event, setValues)}
-                        sx={{ flex: 1, mb: '1rem' }}
-                      />
+                      {/* PENDIENTE: conseguir alineacion vertical de House, Slider y Field */}
+                      <Grid container alignItems="center" justifyContent="center">
+                        <Grid item xs={4} sx={{ flex: 2, mt: '-1rem' }}>
+                          <canvas
+                            ref={canvasRef}
+                            width="100%"
+                            height="100%"
+                            style={canvasStyle}
+                          ></canvas>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <input
+                            name="inclinacion"
+                            type="range"
+                            min="5"
+                            max="70"
+                            value={values.inclinacion}
+                            onChange={(event) => changeTilt(event, setValues, values)}
+                          />
+                          <label>{t('BaseSolar.PROP.inclinacion')}</label>
+                        </Grid>
+                        <Grid item xs={2}>
+                          <SLDRInputField
+                            name="inclinacion"
+                            type="text"
+                            unit=" º"
+                            object="BaseSolar"
+                            value={values.inclinacion}
+                            onChange={(event) => changeTilt(event, setValues, values)}
+                            sx={{ flex: 1 }}
+                          />
+                        </Grid>
+                      </Grid>
                     </Box>
+                    {/*  Removed based on request done by SOM-Autoproduccion meeting 9/3/2024
                     {values.roofType === 'Horizontal' && (
                       <Field name="inclinacionOptima">
                         {({ field }) => (
@@ -307,6 +404,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                         )}
                       </Field>
                     )}
+                          */}
                     <Typography variant="body" sx={{ mb: '1rem', mt: '1rem' }}>
                       {t('BaseSolar.DESCRIPTION.inAcimut')}
                     </Typography>
