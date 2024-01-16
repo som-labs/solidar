@@ -247,9 +247,8 @@ LOCATION:
   LABEL_BASES_SUMMARY: Summary
   PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
   ERROR_DEFINE_BASE: You must define solar bases before continue
-  ERROR_NOMINATIM_FETCH: Error executing FECTH in nominatim. \n {{err}} \n {{url}}
-  ERROR_TERRITORIO: The application is only valid for Spain
-
+  ERROR_tryError: Error executing FECTH in nominatim. \n {{err}}
+  ERROR_countryFailure: The application is only valid for Spain
   TOOLTIP_BORRA_BASE: Delete the selected base
   posicionLonLat_LBL: Long-Lat
   posicionLonLat_TT: It is not necessary to fill this field it is only used to focus the map on these coordinates

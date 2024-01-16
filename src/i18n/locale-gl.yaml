@@ -254,8 +254,8 @@ LOCATION:
   LABEL_BASES_SUMMARY: Resumen
   PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
   ERROR_DEFINE_BASE: Debe definir las bases solares antes de continuar
-  ERROR_NOMINATIM_FETCH: Erro ao executar fecth en nominatim.\n{{er}} \n {{url}}}
-  ERROR_TERRITORIO: A aplicación só é válida para España
+  ERROR_tryError: Erro ao executar fecth en nominatim.\n{{er}}
+  ERROR_countryFailure: A aplicación só é válida para España
 
   TOOLTIP_BORRA_BASE: Elimina a base seleccionada
   posicionLonLat_LBL: Lonxitude-Latitude

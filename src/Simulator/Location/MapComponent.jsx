@@ -22,9 +22,22 @@ import DialogBaseSolar from './DialogBaseSolar'
 import { useDialog } from '../../components/DialogProvider'
 import { AlertContext } from '../components/Alert'
 
-// Solidar objects
+// Local Location module
+import verificaTerritorio from './Nominatim.js'
+
+// Solidar global modules
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
+
+/**
+ * A React component to create BaseSolar on the OpenLayer map interface
+ * @component
+ * @property {string} cause Can be ['save'-> buton , 'cancel' -> buton, Pointevent -> backdropClick]
+ * @param {Object} data - The properties of the BaseSolar component
+ * @param {function} onClose - Function to be called when finishing edit. formData is the data after manipulation.
+ * @returns {JSX.Element} The rendered JSX element.
+
+ */
 
 export default function MapComponent() {
   const { t } = useTranslation()
@@ -152,7 +165,6 @@ export default function MapComponent() {
   /**
    * Creates a new measure tooltip
    */
-
   function createMeasureTooltip() {
     if (measureTooltipElement) {
       measureTooltipElement.parentNode.removeChild(measureTooltipElement)
@@ -176,6 +188,7 @@ export default function MapComponent() {
 
   createMeasureTooltip()
 
+  //Define several interaction events on the map
   baseInteraction.on('drawstart', (evt) => {
     drawing = true
     sketch = evt.feature
@@ -261,7 +274,7 @@ export default function MapComponent() {
         controls: [],
       })
 
-      //Define interaction to allow bases drawing
+      //Load interactions to allow bases drawing
       mapRef.current.addInteraction(baseInteraction)
 
       //Event to call the function that will create the base once the geometry is defined in the map
@@ -278,6 +291,7 @@ export default function MapComponent() {
     mapRef.current.addOverlay(measureTooltip)
   }, [])
 
+  // Function called when properties dialog is closed
   function endDialog(reason, formData) {
     switch (reason) {
       case undefined:
@@ -295,7 +309,7 @@ export default function MapComponent() {
     closeDialog()
   }
 
-  //Event when a base geometry has been created
+  //Called when a base geometry has been created in the map
   async function construirBaseSolar(geoBaseSolar) {
     // Get unique featID
     TCB.featIdUnico++
@@ -315,9 +329,18 @@ export default function MapComponent() {
     const puntoAplicacion_4326 = transform(puntoAplicacion, 'EPSG:3857', 'EPSG:4326')
 
     //Verificamos que el punto esta en España y ademas fijamos el territorio
-    const territorioEnEspana = await verificaTerritorio(puntoAplicacion_4326)
-    if (!territorioEnEspana) {
-      //Si no esta en España no seguimos
+    // REVISAR: no esta esperando VerificaTerritorio
+    const cursorOriginal = document.body.style.cursor
+    document.body.style.cursor = 'progress'
+    const { status, territorio } = await verificaTerritorio(puntoAplicacion_4326)
+    document.body.style.cursor = cursorOriginal
+
+    if (status !== 'success') {
+      SLDRAlert(
+        'NOMINATIM error',
+        t('LOCATION.ERROR_' + status, { message: JSON.stringify(territorio) }),
+        'ERROR',
+      )
       TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
       return false
     }
@@ -327,7 +350,7 @@ export default function MapComponent() {
     let midPoint = [0, 0]
     let coef
 
-    // Si el dibujo es libre
+    // Si el dibujo es libre, es decir sin cumbrera primero
     //    let rotate = 0
     // if (largo2 > largo1) {
     //   coef = (azimutLength / largo1) * 2
@@ -394,116 +417,10 @@ export default function MapComponent() {
       children: (
         <DialogBaseSolar
           data={nuevaBaseSolar}
-          editing={false}
           onClose={(cause, formData) => endDialog(cause, formData)}
         />
       ),
     })
-  }
-
-  /** Vamos a verificar si el punto dado esta en España
-  Devuelve false si no lo esta o alguno de los siguientes valores en caso de estar en España
-  ['Peninsula', 'Islas Baleares', 'Canarias', 'Melilla', 'Ceuta']
- * 
- * @param {array} point [Latitud, Longitud]
- * @returns false si no esta en España
- * @returns true si el punto esta en territorio español
- */
-  async function verificaTerritorio(point) {
-    const nominatimInfo = await verificaTerritorioNominatim(point)
-
-    if (nominatimInfo === null) {
-      // Las coordenadas no estan en España
-      SLDRAlert('VALIDACION', t('LOCATION.ERROR_TERRITORIO'), 'error')
-      //alert(t('LOCATION.ERROR_TERRITORIO')) //Quiere decir que no estamos en España
-      TCB.territorio = ''
-      return false
-    } else if (!nominatimInfo) {
-      //Ha habido un error en la llamada a Nominatim
-      return false
-    } else {
-      //Verificamos que la base creada esta en el mismo territorio si es que ya habia otras creadas.
-      if (TCB.territorio !== '' && TCB.territorio !== nominatimInfo.zona) {
-        SLDRAlert('VALIDACION', t('LOCATION.ERROR_MISMO_TERRITORIO'), 'error')
-        return false
-      } else {
-        TCB.territorio = nominatimInfo.zona
-        return true
-      }
-    }
-  }
-
-  /**
-   * Realiza la llamada a Nominatim para determinar el territorio donde se encuentra point
-   * @param {array} point [Latitud, Longitud]
-   * @returns null si el territorio no es España
-   * @returns false en caso de error en la llamada Nominatim
-   * @returns territorio entre los siguientes valores: ['Peninsula', 'Illes Balears', 'Canarias', 'Melilla', 'Ceuta'];
-   */
-  async function verificaTerritorioNominatim(point) {
-    let status
-    const cursorOriginal = document.body.style.cursor
-    document.body.style.cursor = 'wait'
-
-    let url =
-      'https://nominatim.openstreetmap.org/reverse?lat=' +
-      point[1].toFixed(4) +
-      '&lon=' +
-      point[0].toFixed(4) +
-      "&format=geocodejson&zoom=18&accept-language='es'"
-    UTIL.debugLog('Call reverse Nominatim :' + url)
-    try {
-      const respTerritorio = await fetch(url)
-      if (respTerritorio.status === 200) {
-        let datoTerritorio = await respTerritorio.text()
-
-        let jsonTerritorio = JSON.parse(datoTerritorio)
-        if (jsonTerritorio['error'] !== undefined) {
-          throw jsonTerritorio['error']
-        }
-
-        UTIL.debugLog('El punto esta en:', jsonTerritorio)
-        let localizacion = jsonTerritorio.features[0].properties.geocoding
-        if (localizacion.country === 'España') {
-          // Verificamos si estamos en territorio insular.
-          let territorio = 'Peninsula'
-          let detalle = localizacion.state
-          const islas = ['Illes Balears', 'Canarias', 'Melilla', 'Ceuta']
-          if (detalle == undefined) detalle = localizacion.city //Para Ceuta y Melilla Nominatim no devuelve state pero usamos city.
-          if (islas.includes(detalle)) territorio = detalle
-          UTIL.debugLog('Localización:' + territorio)
-          status = {
-            zona: territorio,
-            calle: localizacion.street,
-            ciudad: localizacion.city,
-          }
-        } else {
-          UTIL.debugLog('Localización erronea:' + localizacion.country)
-          status = null
-        }
-      } else {
-        SLDRAlert(
-          'VALIDACION',
-          t('LOCATION.ERROR_NOMINATIM_FETCH', {
-            err: respTerritorio,
-            url: url,
-          }),
-          'error',
-        )
-        await UTIL.copyClipboard(url)
-        status = false
-      }
-    } catch (err) {
-      SLDRAlert(
-        'VALIDACION',
-        t('LOCATION.ERROR_NOMINATIM_FETCH', { err: err, url: url }),
-        'error',
-      )
-      await UTIL.copyClipboard(url)
-      status = false
-    }
-    document.body.style.cursor = cursorOriginal
-    return status
   }
 
   return (

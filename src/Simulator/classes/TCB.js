@@ -37,7 +37,7 @@ const TCB = {
   fechaCreacion: new Date(),
   descripcion: '',
 
-  territorio: '',
+  territorio: null,
 
   importando: false, //Es verdadero durante el proceso de importacion
   //Donde se guardan los datos a exportar
