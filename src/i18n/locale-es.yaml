@@ -325,9 +325,9 @@ LOCATION:
   MSG_AREA_TOTAL: |
     Area total disponible en esta configuración: {{areaTotal}} <br />
     Potencia máxima a instalar: {{potenciaMaxima}}
-  ERROR_NOMINATIM_FETCH: Error ejecutando fecth en Nominatim.\n {{err}} \n {{url}}
-  ERROR_TERRITORIO: La aplicación solo es valida para España
-  ERROR_MISMO_TERRITORIO: Todas las bases deben estar en el mismo territorio
+  ERROR_tryError: Error ejecutando fecth en Nominatim.\n {{err}}
+  ERROR_countryFailure: La aplicación solo es valida para España. Detectado {{message}}
+  ERROR_noSameTerritory: Todas las bases deben estar en el mismo territorio.
   TOOLTIP_BORRA_BASE: Borra la base seleccionada
   TOOLTIP_EDITA_BASE: Modifica la base seleccionada
 
