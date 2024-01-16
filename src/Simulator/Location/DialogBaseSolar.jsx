@@ -1,28 +1,32 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Formik, Field, Form } from 'formik'
+
+//Formik objects
+import { Formik, Form } from 'formik'
 
 // OpenLayers objects
 import { LineString } from 'ol/geom'
 import { Style } from 'ol/style'
 
 // MUI objects
-import { Box, Button, Switch, FormControlLabel, Typography, Grid } from '@mui/material'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogTitle from '@mui/material/DialogTitle'
+import { Box, Button, Typography, Grid } from '@mui/material'
+import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
 
 // REACT Solidar Components
 import coplanarSvgFile from '../datos/coplanar.svg'
 import horizontalSvgFile from '../datos/horizontal.svg'
 import { SLDRInputField } from '../../components/SLDRComponents'
 
-// Solidar objects
+// Solidar global modules
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 export default function DialogBaseSolar({ data, onClose }) {
   const { t } = useTranslation()
+  /*
+  roofType state is needed for UseEffect that is needed to recover canvas each time the user 
+  goes through the Optimos option where canvas is not rendered.
+  */
   const [roofType, setRoofType] = useState(data.roofType)
   const canvasRef = useRef()
   const inclinacionDefault = 20
@@ -42,43 +46,47 @@ export default function DialogBaseSolar({ data, onClose }) {
     const alfaRad = (inclinacion / 180) * Math.PI
     const w = canvasRef.current.width
     const h = canvasRef.current.height
-    let a = 0.7 * h
-    let b = h - a
-    let c, d
+    let c, d, t
 
     ctx.beginPath()
-    ctx.fillStyle = 'blue'
+    ctx.lineWidth = 2
+    ctx.fillStyle = 'rgb(218,137,16)' //Same color then house in coplanar.svg
     if (roofType === 'Coplanar') {
-      if (b + (w / 2) * Math.tan(alfaRad) < h) {
+      if ((w / 2) * Math.tan(alfaRad) < h / 2) {
         d = w / 2
         c = d * Math.tan(alfaRad)
+        t = h / 2
       } else {
-        d = a * Math.tan(Math.PI / 2 - alfaRad)
-        c = a
+        c = h / 2
+        d = c / Math.tan(alfaRad)
+        t = c
       }
-      ctx.fillRect(w / 2 - d, a, 2 * d, b)
+      ctx.fillRect(w / 2 - d, t, 2 * d, h - t)
+      ctx.strokeRect(w / 2 - d, t, 2 * d, h - t)
       ctx.stroke()
       ctx.beginPath()
 
-      ctx.fillStyle = 'red'
-      ctx.moveTo(w / 2 - d, a)
-      ctx.lineTo(w / 2, a - c)
-      ctx.lineTo(w / 2 + d, a)
+      ctx.fillStyle = 'red' //Same color then house in coplanar.svg
+      ctx.moveTo(w / 2 - d, t)
+      ctx.lineTo(w / 2, t - c)
+      ctx.lineTo(w / 2 + d, t)
 
       ctx.closePath()
       ctx.fill()
       ctx.stroke()
     } else {
       ctx.beginPath()
-      ctx.fillStyle = 'blue'
-      ctx.fillRect(0, a, w, b)
+      ctx.fillStyle = 'grey' //Same color then house in coplanar.svg
+      t = h / 3
+      ctx.fillRect(0, t, w, t)
+      ctx.strokeRect(0, t, w, t)
       ctx.stroke()
       for (let i = 1; i <= 3; i++) {
         const xb = i * 0.3 * w
         const xt = xb - w * 0.3 * Math.cos(alfaRad)
-        const yt = a - w * 0.3 * Math.sin(alfaRad)
+        const yt = t - w * 0.3 * Math.sin(alfaRad)
         ctx.beginPath()
-        ctx.moveTo(xb, a)
+        ctx.moveTo(xb, t)
         ctx.lineTo(xt, yt)
         ctx.stroke()
       }
@@ -86,9 +94,11 @@ export default function DialogBaseSolar({ data, onClose }) {
   }
 
   const changeRoofType = (event, setValues, values) => {
-    // //Al crear la geometria de la base hemos construido un acimut.
-    // //El acimut se debe dibujar solo si la configuración no es de angulos optimos
-    // //Cuando cambia la configuracion debemos hacer aparecer el acimut
+    /* 
+    Al crear la geometria de la base hemos construido un acimut.
+    El acimut se debe dibujar solo si la configuración no es de angulos optimos
+    Cuando cambia la configuracion debemos hacer aparecer o desaparecer el acimut
+    */
     const componente = 'BaseSolar.acimut.' + data.idBaseSolar
     const featAcimut = TCB.origenDatosSolidar.getFeatureById(componente)
 
@@ -113,7 +123,7 @@ export default function DialogBaseSolar({ data, onClose }) {
           roofType: 'Horizontal',
           inclinacionOptima: false,
           angulosOptimos: false,
-          inclinacion: inclinacionDefault, //El angulo optimo definitivo lo dará PVGIS pero para la peninsula esta entre 31º y 32º. 20 es el recomendado por los instaladores
+          inclinacion: inclinacionDefault,
           requierePVGIS: true,
         }))
         featAcimut.setStyle(null)
@@ -249,6 +259,7 @@ export default function DialogBaseSolar({ data, onClose }) {
     return errors
   }
 
+  //Just for alignment debug. TBRemoved
   const canvasStyle = {
     //border: '1px solid #000',
   }
@@ -380,7 +391,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                             object="BaseSolar"
                             value={values.inclinacion}
                             onChange={(event) => changeTilt(event, setValues, values)}
-                            sx={{ flex: 1 }}
+                            sx={{ flex: 1, mb: '2rem' }}
                           />
                         </Grid>
                       </Grid>
