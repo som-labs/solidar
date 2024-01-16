@@ -242,8 +242,8 @@ LOCATION:
   LABEL_BASES_SUMMARY: Resumen
   PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
   ERROR_DEFINE_BASE: Cal definir las bases solares abans de seguir
-  ERROR_NOMINATIM_FETCH: Error en executar fecth a Nominatim. \n {{err}} \n {{url}}
-  ERROR_TERRITORIO: L’aplicació només és vàlida per a Espanya
+  ERROR_tryError: Error en executar fecth a Nominatim. \n {{err}}
+  ERROR_countryFailure: L’aplicació només és vàlida per a Espanya
   TOOLTIP_BORRA_BASE: Suprimeix la base seleccionada
   posicionLonLat_LBL: Long-Lat
   posicionLonLat_TT: No cal omplir aquest camp només es fa servir per centrar el mapa en aquestes coordenades

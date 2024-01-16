@@ -11,6 +11,7 @@ import { useDialog } from '../../components/DialogProvider'
 const AlertContext = createContext()
 
 function BasicAlert(props) {
+  const { t } = useTranslation()
   const { title, contents, type, onClose } = props
   return (
     <>
@@ -20,7 +21,7 @@ function BasicAlert(props) {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} variant="contained" color="primary">
-          Agree
+          {t('BASIC.LABEL_CLOSE')}
         </Button>
       </DialogActions>
     </>
