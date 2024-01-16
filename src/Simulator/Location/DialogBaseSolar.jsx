@@ -21,6 +21,24 @@ import { SLDRInputField } from '../../components/SLDRComponents'
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
+/**
+ * A React component to be used in conjunction with useDialog for create or edit a BaseSolar
+ * @component
+ * @property {string} cause Can be ['save'-> buton , 'cancel' -> buton, Pointevent -> backdropClick]
+ * @param {Object} data - The properties of the BaseSolar component
+ * @param {function} onClose - Function to be called when finishing edit. formData is the data after manipulation.
+ * @returns {JSX.Element} The rendered JSX element.
+ * @example
+ *   openDialog({
+ *     children: (
+ *       <DialogBaseSolar
+ *         data={nuevaBaseSolar}
+ *         onClose={(cause, formData) => endDialog(cause, formData)}
+ *       />
+ *     ),
+ *   })
+ */
+
 export default function DialogBaseSolar({ data, onClose }) {
   const { t } = useTranslation()
   /*
