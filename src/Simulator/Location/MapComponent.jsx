@@ -36,7 +36,6 @@ import * as UTIL from '../classes/Utiles'
  * @param {Object} data - The properties of the BaseSolar component
  * @param {function} onClose - Function to be called when finishing edit. formData is the data after manipulation.
  * @returns {JSX.Element} The rendered JSX element.
-
  */
 
 export default function MapComponent() {
@@ -113,24 +112,10 @@ export default function MapComponent() {
   //set a custom listener name escKey
   baseInteraction.set('escKey', '')
 
-  //MEDIDAS
-  /**
-   * Currently drawn feature.
-   * @type {import("../src/ol/Feature.js").default}
-   */
-  let sketch
-
-  /**
-   * The measure tooltip element.
-   * @type {HTMLElement}
-   */
-  let measureTooltipElement
-
-  /**
-   * Overlay to show the measurement.
-   * @type {Overlay}
-   */
-  let measureTooltip
+  // Measuring Tooltip variables
+  let sketch //Currently drawn OL feature.
+  let measureTooltipElement //HTMLElement -The measure tooltip element.
+  let measureTooltip //OL Overlay where to show measurement
   /**
 
   /**
@@ -318,7 +303,7 @@ export default function MapComponent() {
     let geometria = geoBaseSolar.feature.getGeometry()
     let puntos = geometria.getCoordinates()[0]
 
-    // // First two points define cumbrera
+    // First two points define cumbrera
     const cumbrera = UTIL.distancia(puntos[0], puntos[1])
     const ancho = UTIL.distancia(puntos[1], puntos[2])
 
@@ -329,23 +314,28 @@ export default function MapComponent() {
     const puntoAplicacion_4326 = transform(puntoAplicacion, 'EPSG:3857', 'EPSG:4326')
 
     //Verificamos que el punto esta en España y ademas fijamos el territorio
-    // REVISAR: no esta esperando VerificaTerritorio
     const cursorOriginal = document.body.style.cursor
     document.body.style.cursor = 'progress'
-    const { status, territorio } = await verificaTerritorio(puntoAplicacion_4326)
-    document.body.style.cursor = cursorOriginal
-
-    if (status !== 'success') {
-      SLDRAlert(
-        'NOMINATIM error',
-        t('LOCATION.ERROR_' + status, { message: JSON.stringify(territorio) }),
-        'ERROR',
-      )
+    try {
+      const { status, details } = await verificaTerritorio(puntoAplicacion_4326)
+      document.body.style.cursor = cursorOriginal
+      if (status !== 'success') {
+        SLDRAlert(
+          'NOMINATIM error 1',
+          t('LOCATION.ERROR_' + status, { err: details }),
+          'ERROR',
+        )
+        TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
+        return false
+      }
+    } catch (error) {
+      console.log('CATCHED', error)
+      SLDRAlert('NOMINATIM error 2', error, 'ERROR')
       TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
       return false
     }
 
-    //NUEVO: Calculo propuesta de acimut
+    // Calculo propuesta de acimut basandose en la cumbrera
     const azimutLength = 100
     let midPoint = [0, 0]
     let coef
@@ -361,12 +351,10 @@ export default function MapComponent() {
     //   midPoint[0] = puntos[0][0] + (puntos[1][0] - puntos[0][0]) / 2
     //   midPoint[1] = puntos[0][1] + (puntos[1][1] - puntos[0][1]) / 2
     // }
-
     // if (midPoint[1] > puntoAplicacion[1]) {
     //   rotate = Math.PI
     // }
 
-    // Si primero se dibuja la cumbrera
     midPoint[0] = puntos[2][0] + (puntos[3][0] - puntos[2][0]) / 2
     midPoint[1] = puntos[2][1] + (puntos[3][1] - puntos[2][1]) / 2
     coef = azimutLength / ancho
@@ -378,7 +366,7 @@ export default function MapComponent() {
     let point1 = acimutCoordinates[0]
     let point2 = acimutCoordinates[1]
 
-    // Take into account angles are measured with 0 at south (axis -Y) and positive west (axis +X)
+    // Angles are measured with 0 at south (axis -Y) and positive west (axis +X)
     let acimut =
       (Math.atan2(-1 * (point1[0] - point2[0]), point1[1] - point2[1]) * 180) / Math.PI
     acimut = parseInt(acimut)
