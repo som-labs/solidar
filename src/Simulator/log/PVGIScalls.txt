@@ -18,3 +18,5 @@
 1705046481214;2024/01/12 09:01:29;2024/01/12 09:01:33;https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?&pvcalculation=1&peakpower=1&outputformat=json&startyear=2015&lat=40.4505&lon=-3.6988&loss=20&optimalangles=1&pvtechchoice=crystSi
 1705047752898;2024/01/12 09:22:39;2024/01/12 09:22:43;https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?&pvcalculation=1&peakpower=1&outputformat=json&startyear=2015&lat=40.4504&lon=-3.6993&loss=20&optimalangles=1&pvtechchoice=crystSi
 1705048250359;2024/01/12 09:30:59;2024/01/12 09:31:04;https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?&pvcalculation=1&peakpower=1&outputformat=json&startyear=2015&lat=40.4504&lon=-3.6993&loss=20&optimalangles=1&pvtechchoice=crystSi
+1705597083677;2024/01/18 19:11:54;2024/01/18 19:11:58;https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?&pvcalculation=1&peakpower=1&outputformat=json&startyear=2015&lat=40.4499&lon=-3.7016&loss=20&angle=22&aspect=75&pvtechchoice=crystSi
+1705652136991;2024/01/19 10:04:21;2024/01/19 10:04:28;https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?&pvcalculation=1&peakpower=1&outputformat=json&startyear=2015&lat=40.4502&lon=-3.6993&loss=20&angle=50&aspect=-57&pvtechchoice=crystSi

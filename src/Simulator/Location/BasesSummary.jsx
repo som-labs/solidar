@@ -147,7 +147,6 @@ export default function BasesSummary() {
       children: (
         <DialogBaseSolar
           data={_base}
-          editing={true}
           onClose={(reason, formData) => endDialog(reason, formData)}
         />
       ),
