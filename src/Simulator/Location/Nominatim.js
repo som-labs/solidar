@@ -11,33 +11,49 @@ import * as UTIL from '../classes/Utiles'
  * @returns true si el punto esta en territorio español
  */
 export default async function verificaTerritorio(point) {
-  const { status, details } = await verificaTerritorioNominatim(point)
-
-  if (status !== 'success') {
-    return { status: status, territorio: details }
-  } else {
-    //Verificamos que la base creada esta en el mismo territorio si es que ya habia otras creadas.
-    console.log(TCB.territorio, details.zona)
-    if (TCB.territorio !== null && TCB.territorio !== details.zona) {
-      return { status: 'noSameTerritory', territorio: details }
-      //   SLDRAlert('VALIDACION', t('LOCATION.ERROR_MISMO_TERRITORIO'), 'error')
-      //   return false
+  try {
+    const { status, details } = await verificaTerritorioNominatim(point)
+    if (status !== 'success') {
+      return { status: status, details: details }
     } else {
-      TCB.territorio = details.zona
-      return { status: 'success', territorio: details }
+      //Check new base is in Spain
+      if (details.country === 'España') {
+        // Verificamos si estamos en territorio insular o no.
+        //Para Ceuta y Melilla Nominatim no devuelve state pero usamos city.
+        let detalle = details.zona ?? details.city
+        // Verify if it is in other spanish territory. Needed for REE consumption type
+        const islas = ['Illes Balears', 'Canarias', 'Melilla', 'Ceuta']
+        if (islas.includes(detalle)) details.zona = detalle
+        else details.zona = 'Peninsula'
+
+        //Verificamos que la base creada esta en el mismo territorio si es que ya habia otras creadas.
+        if (TCB.territorio !== null && TCB.territorio !== details.zona) {
+          return { status: 'noSameTerritory', details: details }
+        } else {
+          TCB.territorio = details.zona
+          return { status: 'success', details: details }
+        }
+      } else {
+        // El punto no esta en España
+        UTIL.debugLog('Localización erronea:' + details.country)
+        return { status: 'countryFailure', details: details.country }
+      }
     }
+  } catch (error) {
+    return error
   }
 }
 
 /**
- * Realiza la llamada a Nominatim para determinar el territorio donde se encuentra point
+ * Call Nominatim service to get details where the point is
  * @param {array} point [Latitud, Longitud]
+ * @property {string} status [success if OK, ]
+ * @property {object} details
  * @returns null si el territorio no es España
  * @returns false en caso de error en la llamada Nominatim
  * @returns territorio entre los siguientes valores: ['Peninsula', 'Illes Balears', 'Canarias', 'Melilla', 'Ceuta'];
  */
 async function verificaTerritorioNominatim(point) {
-  let returnCode
   let url =
     'https://nominatim.openstreetmap.org/reverse?lat=' +
     point[1].toFixed(4) +
@@ -46,45 +62,42 @@ async function verificaTerritorioNominatim(point) {
     "&format=geocodejson&zoom=18&accept-language='es'"
   UTIL.debugLog('Call reverse Nominatim :' + url)
   try {
-    const respTerritorio = await fetch(url)
-    if (respTerritorio.status === 200) {
-      let datoTerritorio = await respTerritorio.text()
-
-      let jsonTerritorio = JSON.parse(datoTerritorio)
-      if (jsonTerritorio['error'] !== undefined) {
-        throw jsonTerritorio['error']
-      }
-
-      UTIL.debugLog('El punto esta en:', jsonTerritorio)
-      let localizacion = jsonTerritorio.features[0].properties.geocoding
-      if (localizacion.country === 'España') {
-        // Verificamos si estamos en territorio insular.
-        let territorio = 'Peninsula'
-        let detalle = localizacion.state
-        const islas = ['Illes Balears', 'Canarias', 'Melilla', 'Ceuta']
-        if (detalle == undefined) detalle = localizacion.city //Para Ceuta y Melilla Nominatim no devuelve state pero usamos city.
-        if (islas.includes(detalle)) territorio = detalle
-        UTIL.debugLog('Localización:' + territorio)
-        returnCode = {
-          status: 'success',
-          details: {
-            zona: territorio,
-            calle: localizacion.street,
-            ciudad: localizacion.city,
-          },
-        }
-      } else {
-        UTIL.debugLog('Localización erronea:' + localizacion.country)
-        returnCode = { status: 'countryFailure', details: localizacion.country }
-      }
-    } else {
-      returnCode = { status: 'fetchReturnError', details: respTerritorio }
-    }
-  } catch (err) {
-    console.log(err)
-    returnCode = { status: 'tryError', details: err }
+    return new Promise((resolve, reject) => {
+      fetch(url)
+        .then((respNominatim) => {
+          if (!respNominatim.ok) {
+            // This is a network error
+            reject({ status: 'fetchReturnError', details: respNominatim })
+          } else {
+            return respNominatim.json()
+          }
+        })
+        .then((jsonNominatim) => {
+          if (jsonNominatim['error'] !== undefined) {
+            reject({ status: 'nominatimError', details: jsonNominatim['error'] })
+          } else {
+            return jsonNominatim
+          }
+        })
+        .then((jsonTerritorio) => {
+          UTIL.debugLog('El punto esta en:', jsonTerritorio)
+          let localizacion = jsonTerritorio.features[0].properties.geocoding
+          UTIL.debugLog('Localización:' + localizacion)
+          resolve({
+            status: 'success',
+            details: {
+              country: localizacion.country,
+              zona: localizacion.state,
+              calle: localizacion.street,
+              ciudad: localizacion.city,
+            },
+          })
+        })
+        .catch((error) => {
+          reject({ status: 'tryError', details: error })
+        })
+    })
+  } catch {
+    console.log('error incontrolado')
   }
-  return returnCode
 }
-
-export {}
