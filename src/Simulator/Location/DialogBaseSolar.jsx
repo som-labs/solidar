@@ -12,7 +12,7 @@ import { Style } from 'ol/style'
 import { Box, Button, Typography, Grid } from '@mui/material'
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
 
-// REACT Solidar Components
+//React global components
 import coplanarSvgFile from '../datos/coplanar.svg'
 import horizontalSvgFile from '../datos/horizontal.svg'
 import { SLDRInputField } from '../../components/SLDRComponents'
@@ -380,7 +380,6 @@ export default function DialogBaseSolar({ data, onClose }) {
                         flexDirection: 'column',
                       }}
                     >
-                      {/* PENDIENTE: conseguir alineacion vertical de House, Slider y Field */}
                       <Grid container alignItems="center" justifyContent="center">
                         <Grid item xs={4} sx={{ flex: 2, mt: '-1rem' }}>
                           <canvas
