@@ -234,7 +234,6 @@ async function importProject(fichero) {
   TCB.areaTotal = datosImportar.areaTotal
   TCB.conversionCO2 = datosImportar.conversionCO2
 
-  //PENDIENTE: Decidr si la configuracion de la tarifa debe ser exportada o no
   // Import Tarifa
   TCB.nombreTarifaActiva = datosImportar.nombreTarifaActiva
   TCB.tipoTarifa = datosImportar.tipoTarifa
