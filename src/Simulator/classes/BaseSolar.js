@@ -46,7 +46,7 @@ class BaseSolar extends DiaHora {
         enumerable: true,
         set(valor) {}, //Esta aqui para evitar error al intentar set desde update
         get() {
-          return this.anchoReal * this.cumbrera
+          return this.area / Math.cos((this.#inclinacion * Math.PI) / 180)
         },
       },
       panelesMaximo: {
@@ -69,7 +69,7 @@ class BaseSolar extends DiaHora {
     //                                optimos => PVGIS determinará la inclinación y el acimut
     this.cumbrera = area.cumbrera //Longitud de la base en la parte alta cuando roofType === coplanar
     this.ancho = area.ancho //Longitud de la dimension transversal a la cumbrera medida en el mapa
-
+    this.area = area.area //Superficie plana sobre el mapa
     //Configuracion de los paneles
     this.filas = 0
     this.columnas = 0
