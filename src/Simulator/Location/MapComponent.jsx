@@ -12,6 +12,7 @@ import Feature from 'ol/Feature'
 import { Point, LineString, Polygon } from 'ol/geom'
 import { transform, fromLonLat } from 'ol/proj'
 import { Draw } from 'ol/interaction'
+import { getArea, getLength, getDistance } from 'ol/sphere.js'
 
 // MUI objects
 import { Button, Tooltip, Typography, Box } from '@mui/material'
@@ -131,17 +132,23 @@ export default function MapComponent() {
     const vertices = polygon.getCoordinates()[0]
     if (vertices.length < 2) return ''
 
-    cumbrera = UTIL.distancia(vertices[0], vertices[1])
+    const start = transform(vertices[0], 'EPSG:3857', 'EPSG:4326')
+    const end = transform(vertices[1], 'EPSG:3857', 'EPSG:4326')
+    cumbrera = getDistance(start, end)
+
     if (vertices.length === 2) {
       output = t('LOCATION.TOOLTIP_CUMBRERA', {
         cumbrera: UTIL.formatoValor('longitud', Math.round(cumbrera)),
       })
     } else {
-      ancho = UTIL.distancia(vertices[1], vertices[2])
+      const start = transform(vertices[1], 'EPSG:3857', 'EPSG:4326')
+      const end = transform(vertices[2], 'EPSG:3857', 'EPSG:4326')
+      ancho = getDistance(start, end)
+
       output = t('LOCATION.TOOLTIP_MEASURES', {
         cumbrera: UTIL.formatoValor('longitud', cumbrera),
         ancho: UTIL.formatoValor('longitud', ancho),
-        area: UTIL.formatoValor('superficie', ancho * cumbrera),
+        area: UTIL.formatoValor('superficie', getArea(polygon)),
       })
     }
     return output
@@ -300,12 +307,18 @@ export default function MapComponent() {
     TCB.featIdUnico++
 
     // Construimos la geometria de la BaseSolar que es un paralelogramo a partir de tres puntos
-    let geometria = geoBaseSolar.feature.getGeometry()
-    let puntos = geometria.getCoordinates()[0]
+    const geometria = geoBaseSolar.feature.getGeometry()
+    const puntos = geometria.getCoordinates()[0]
 
-    // First two points define cumbrera
-    const cumbrera = UTIL.distancia(puntos[0], puntos[1])
-    const ancho = UTIL.distancia(puntos[1], puntos[2])
+    let start, end
+    // First two points defines cumbrera
+    start = transform(puntos[0], 'EPSG:3857', 'EPSG:4326')
+    end = transform(puntos[1], 'EPSG:3857', 'EPSG:4326')
+    const cumbrera = getDistance(start, end)
+    //Third point defines ancho
+    start = transform(puntos[1], 'EPSG:3857', 'EPSG:4326')
+    end = transform(puntos[2], 'EPSG:3857', 'EPSG:4326')
+    const ancho = getDistance(start, end)
 
     // Calculamos una coordenada central para esta base que utilizaremos en PVGIS y donde la rotularemos
     const puntoAplicacion = geometria.getInteriorPoint().getCoordinates()
@@ -387,6 +400,7 @@ export default function MapComponent() {
     nuevaBaseSolar.nombreBaseSolar = 'Base ' + nuevaBaseSolar.idBaseSolar
     nuevaBaseSolar.cumbrera = cumbrera
     nuevaBaseSolar.ancho = ancho
+    nuevaBaseSolar.area = getArea(geometria)
     nuevaBaseSolar.inclinacion = 0
     nuevaBaseSolar.inclinacionOptima = true
     nuevaBaseSolar.roofType = 'Optimos'
