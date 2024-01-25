@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Plotly objects
@@ -13,13 +14,21 @@ import { isEmpty } from 'ol/extent'
 
 export default function MapaMesHora({ activo }) {
   const { t } = useTranslation()
+  const graphElement = useRef()
+  const graphWidth = useRef()
 
-  // console.log(activo)
+  useEffect(() => {
+    // Function to get the width of the element
+    const getWidth = () => {
+      if (graphElement.current) {
+        graphWidth.current = graphElement.current.offsetWidth
+      }
+    }
+    // Call the function to get the width after initial render
+    getWidth()
+  }, [])
+
   if (activo === isEmpty) return
-  // const consumo = TCB.TipoConsumo.find((t) => {
-  //   return t.idTipoConsumo === activo.idTipoConsumo
-  // })
-  // console.log(consumo)
   const consumo = activo
 
   let maxHora
@@ -30,47 +39,78 @@ export default function MapaMesHora({ activo }) {
   let valores = []
   let text = []
   let sizes = []
+
+  const rangees = 3
+  for (let i = 0; i <= rangees; i++) {
+    horas.push([])
+    meses.push([])
+    colores.push([])
+    valores.push([])
+    text.push([])
+    sizes.push([])
+  }
+
   let maxConsumoMes = -Infinity
-  let radio = 20
+  let radio = 25
   const mesMapa = Array.from(i18nextMes())
 
-  // console.log('CONSUMO TABLE:', consumo)
-  // console.log(typeof consumo.idxTable[0].fecha)
-  // console.log('FECHA: ', consumo.idxTable[0])
-
+  let fullValores = []
   for (let hora = 0; hora < 24; hora++) {
     let _valorHora = consumo.getHora(hora)
     let _consMes = new Array(12).fill(0)
     let _diasMes = new Array(12).fill(0)
     for (let dia = 0; dia < 365; dia++) {
-      // console.log('FECHA CONSUMO: ', consumo.idxTable[dia].fecha)
-      // console.log('FECHA CONSUMO GET MONTH: ', consumo.idxTable[dia].fecha.getMonth())
       _consMes[consumo.idxTable[dia].fecha.getMonth()] += _valorHora[dia]
       _diasMes[consumo.idxTable[dia].fecha.getMonth()]++
     }
+
+    let valoresMes = []
     for (let mes = 0; mes < 12; mes++) {
-      horas.push(hora + 1)
-      meses.push(mesMapa[mes])
-      let valor = _consMes[mes] / _diasMes[mes]
-      if (maxConsumoMes < valor) {
-        maxConsumoMes = valor
+      const valorMes = _consMes[mes] / _diasMes[mes]
+      valoresMes.push(valorMes)
+      if (maxConsumoMes < valorMes) {
+        maxConsumoMes = valorMes
         maxHora = hora + 1
         maxMes = mes
       }
-      valores.push(valor)
-      text.push(valor.toFixed(6) + 'kWh')
+    }
+    fullValores.push(valoresMes)
+  }
+
+  for (let hora = 0; hora < 24; hora++) {
+    for (let mes = 0; mes < 12; mes++) {
+      horas[0].push(hora + 1)
+      meses[0].push(mesMapa[mes])
+      valores[0].push(0)
     }
   }
 
-  let tono
-  for (let valor of valores) {
-    tono = parseInt((255 * valor) / maxConsumoMes)
-    let _r = tono
-    let _g = 255 - tono
-    let _b = 0
-    colores.push('rgb(' + _r + ',' + _g + ',' + _b + ')') //"rgb("+tono+",0,0)");
-    sizes.push((radio * valor) / maxConsumoMes)
+  for (let hora = 0; hora < 24; hora++) {
+    for (let mes = 0; mes < 12; mes++) {
+      let pos = Math.trunc((fullValores[hora][mes] / maxConsumoMes) * rangees)
+      pos = pos === 3 ? 3 : pos + 1
+      horas[pos].push(hora + 1)
+      meses[pos].push(mesMapa[mes])
+      valores[pos].push(fullValores[hora][mes])
+      text[pos].push(fullValores[hora][mes].toFixed(6) + 'kWh')
+      sizes[pos].push((radio * fullValores[hora][mes]) / maxConsumoMes)
+      let tono = parseInt((255 * fullValores[hora][mes]) / maxConsumoMes)
+      let _r = tono
+      let _g = 255 - tono
+      let _b = 0
+      colores[pos].push('rgb(' + _r + ',' + _g + ',' + _b + ')')
+    }
   }
+
+  // let tono
+  // for (let valor of valores) {
+  //   tono = parseInt((255 * valor) / maxConsumoMes)
+  //   let _r = tono
+  //   let _g = 255 - tono
+  //   let _b = 0
+  //   colores.push('rgb(' + _r + ',' + _g + ',' + _b + ')') //"rgb("+tono+",0,0)");
+  //   sizes.push((radio * valor) / maxConsumoMes)
+  // }
 
   function i18nextMes() {
     let _mes = []
@@ -109,30 +149,47 @@ export default function MapaMesHora({ activo }) {
     document.body.removeChild(link)
   }
 
-  const data = {
-    type: 'scatter',
-    name: t('CONSUMPTION.HOOVER_MAPA_CONSUMO_MES_HORA'),
-    x: horas,
-    y: meses,
-    text: text,
-    mode: 'markers',
-    hovertemplate:
-      '%{yaxis.title.text}: %{y}<br>' + '%{xaxis.title.text}: %{x}<br>' + '%{text}',
-    marker: {
-      symbol: 'circle',
-      size: sizes,
-      color: colores, //'rgba(200, 50, 100, .7)',
-    },
+  let traces = []
+  const delta = maxConsumoMes / rangees
+  for (let i = 0; i <= rangees; i++) {
+    var data = {
+      type: 'scatter',
+      name:
+        '<' +
+        UTIL.formatoValor('energia', (i - 1) * delta) +
+        ' - ' +
+        UTIL.formatoValor('energia', i * delta),
+      x: horas[i],
+      y: meses[i],
+      text: text[i],
+      mode: 'markers',
+      showlegend: true,
+      hovertemplate:
+        '%{yaxis.title.text}: %{y}<br>' + '%{xaxis.title.text}: %{x}<br>' + '%{text}',
+      marker: {
+        symbol: 'circle',
+        size: sizes[i],
+        color: colores[i], //'rgba(200, 50, 100, .7)',
+      },
+    }
+    if (i === 0) data.showlegend = false
+    traces.push(data)
   }
-
   const layout = {
+    showlegend: true,
+    width: 0.9 * graphWidth.current,
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
     margin: {
-      l: 70,
+      l: 0,
       r: 0,
       b: 65,
       t: 25,
+    },
+    legend: {
+      x: 1,
+      y: 0.5,
+      orientation: 'v',
     },
 
     xaxis: {
@@ -149,8 +206,8 @@ export default function MapaMesHora({ activo }) {
     yaxis: {
       title: t('CONSUMPTION.YAXIS_MAPA_CONSUMO_MES_HORA'),
       ticktext: meses,
-      title_standoff: 40,
       showticklabels: true,
+      automargin: true,
     },
     hovermode: 'closest',
     annotations: [
@@ -170,22 +227,6 @@ export default function MapaMesHora({ activo }) {
         ax: 12,
         ay: 12,
       },
-      //PENDIENTE: Resolver leyenda del grafico
-      // {
-      //   x: 25, // X-coordinate for the legend annotations
-      //   y: [1, 5, 10], // Y-coordinates for each legend entry
-      //   text: ['A', 'B', 'C'], // Text for each legend entry
-      //   mode: 'markers',
-      //   marker: {
-      //     size: [maxConsumoMes * 0.1, maxConsumoMes * 0.5, maxConsumoMes], // Sizes for the circles in the legend (change as per your data)
-      //     // sizemode: 'area', // Define marker size mode ('area' for the marker size in area)
-      //     // sizeref: 0.1, // Reference scale for marker sizes
-      //     symbol: 'circle', // Shape of the legend markers
-      //     opacity: 1, // Opacity of the legend markers
-      //     color: colores, // Color of the legend markers
-      //   },
-      //   //showlegend: false, // Hide default legend for the trace
-      // },
     ],
   }
 
@@ -196,7 +237,7 @@ export default function MapaMesHora({ activo }) {
   }
 
   return (
-    <Container>
+    <Container ref={graphElement}>
       <Box
         sx={{
           display: 'flex',
@@ -214,7 +255,8 @@ export default function MapaMesHora({ activo }) {
         <Typography variant="body">{t('CONSUMPTION.DESC_MAP_MONTH_HOUR')}</Typography>
 
         <Box>
-          <Plot data={[data]} layout={layout} config={config} />
+          {/* <Plot data={[data]} layout={layout} config={config} /> */}
+          <Plot data={traces} layout={layout} config={config} />
         </Box>
         {/* <Button onClick={handleExportCSV}>Export to CSV</Button> */}
       </Box>
