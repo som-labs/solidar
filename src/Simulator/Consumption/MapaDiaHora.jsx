@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Plotly objects
@@ -21,6 +21,19 @@ export default function MapaDiaHora({ activo }) {
 
   const [diaActivo, setdiaActivo] = useState()
   const divGraph = useRef()
+  const graphElement = useRef()
+  const graphWidth = useRef()
+
+  useEffect(() => {
+    // Function to get the width of the element
+    const getWidth = () => {
+      if (graphElement.current) {
+        graphWidth.current = graphElement.current.offsetWidth
+      }
+    }
+    // Call the function to get the width after initial render
+    getWidth()
+  }, [])
 
   if (activo === undefined) return
   const consumo = activo
@@ -79,6 +92,8 @@ export default function MapaDiaHora({ activo }) {
     zaxis: { title: 'kWh' },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
+    width: 0.8 * graphWidth.current,
+    height: 0.6 * graphWidth.current,
     autosize: true,
     margin: {
       l: 75,
@@ -131,7 +146,7 @@ export default function MapaDiaHora({ activo }) {
   }
 
   return (
-    <Container>
+    <Container ref={graphElement}>
       <Box
         sx={{
           display: 'flex',

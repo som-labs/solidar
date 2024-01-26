@@ -29,7 +29,6 @@ import * as UTIL from '../classes/Utiles'
 
 export default function DialogConsumption({ data, previous, onClose }) {
   const { t } = useTranslation()
-  console.log(data)
 
   const handleFile = (event, setValues) => {
     setValues((prevValues) => ({ ...prevValues, ['ficheroCSV']: event }))

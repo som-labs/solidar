@@ -88,7 +88,7 @@ echo $data;
 
 $t2=date("Y/m/d H:i:s");
 //Log call
-$file = fopen("./log/PVGIScalls.txt", "a");
+$file = fopen("./log/PVGIScalls.txt", "a+");
 fwrite($file, $idSesion . ";" . $t1 . ";" . $t2 . ";" . $url . PHP_EOL);
 fclose($file);
 
