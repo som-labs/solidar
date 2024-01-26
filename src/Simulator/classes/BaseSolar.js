@@ -38,15 +38,20 @@ class BaseSolar extends DiaHora {
         enumerable: true,
         set(valor) {}, //Esta aqui para evitar error al intentar set desde update
         get() {
-          //El ancho corregido por la inclinacion del tejado
-          return this.ancho / Math.cos((this.#inclinacion * Math.PI) / 180)
+          //El ancho corregido por la inclinacion del tejado en caso coplanar
+          if (this.roofType === 'Coplanar')
+            return this.ancho / Math.cos((this.#inclinacion * Math.PI) / 180)
+          else return this.ancho
         },
       },
       areaReal: {
         enumerable: true,
         set(valor) {}, //Esta aqui para evitar error al intentar set desde update
         get() {
-          return this.area / Math.cos((this.#inclinacion * Math.PI) / 180)
+          //El ancho corregido por la inclinacion del tejado en caso coplanar
+          if (this.roofType === 'Coplanar')
+            return this.area / Math.cos((this.#inclinacion * Math.PI) / 180)
+          else return this.area
         },
       },
       panelesMaximo: {
