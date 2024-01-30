@@ -7,7 +7,7 @@ import Container from '@mui/material/Container'
 import Download from '@mui/icons-material/Download'
 import Print from '@mui/icons-material/Print'
 import { Button } from '@mui/material'
-
+import Report from './Report/Report'
 //
 import { GeneraInformePDF } from './GeneraInformePDF'
 import MonthEnergyBalance from '../EnergyBalance/MonthEnergyBalance'
@@ -84,6 +84,7 @@ export default function FinalNote() {
           <GeneraInformePDF pdfSummary={pdfSummary} />
         </>
          )} */}
+        <Report></Report>
       </Container>
     </>
   )

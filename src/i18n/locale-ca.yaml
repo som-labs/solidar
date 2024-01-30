@@ -291,7 +291,7 @@ ENERGY_BALANCE:
   MSG_disclaimerProduccion: |
     Notificació-> Les dades per estimar la producció de panells solars s'obtenen de PVGIS. <a href:"https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en">Ver documentación aqui</a>
     <br /><br />
-    Es tenen en compte: <ul> <li> La temperatura de l'aire a 2 metres i la velocitat del vent a 10 metres </li> <li> L'efecte de la temperatura sobre el rendiment </li> <li> La variació de l’espectre electromagnètic durant tot el dia </li> <li> Els aerosols mitjans de l’entorn (no canvis sobtats) </li> </ul> ",
+    Es tenen en compte: <ul> <li> La temperatura de l'aire a 2 metres i la velocitat del vent a 10 metres </li> <li> L'efecte de la temperatura sobre el rendiment </li> <li> La variació de l’espectre electromagnètic durant tot el dia </li> <li> Els aerosols mitjans de l’entorn (no canvis sobtats) </li> </ul> 
     "resultados_MSG_disclaimerProduccionNo":"No són tinguts en compte:<ul><li>l'efecte de les nevades</li><li>l'acumulació de pols i brutícia als panells</li><li>les pèrdues per ombres properes</li> </ul><br>
 
   LABEL_fuenteInfoCO2: Dades de conversió per  {{territorio}}
@@ -493,3 +493,71 @@ REPORT:
   balanceEconomico: Balanç econòmic
   balanceFinanciero: Balanç financer (Euros)
   informe_MSG_procesarPrimero: Has d’obtenir el balanç d'energia abans de poder generar l’informe
+
+  TITLE_PRIMER: INFORME PROVISIONAL
+  TITLE_STRONG: AUTOGENERACIÓ
+  TITLE_SEGON: FOTOVOLTAICA
+  ATENCIO: 'Atenció: Aquest informe procura donar una informació orientativa a partir de les dades reals de consum del període dd-mm-aaaa al dd-mm-aaaa i estimacions aproximades del rendiment de la instal·lació així com del seu cost Hem procurat que les fonts siguin el màxim fiables i pròximes a la realitat però en cap cas garantim des de Som Energia el seu acompliment en el transcurs dels 25 anys de vida utils estimats.'
+  DADES_TITLE: Dades principals
+  DADES_NOM: Nom
+  DADES_DIRECCIO: Direcció
+  DADES_CONTRACTE: Contracte
+  COBERTA_TITLE: Dades coberta
+  COBERTA_ORIENTACIO: Orientació
+  COBERTA_INCLINACIO: Inclinació
+  COBERTA_SUPERFICIE: Superficie util
+  US_TITLE: Ús del l'energia
+  US_POTENCIA: Potencia contractada
+  US_TARIFA: Tarifa
+  US_ANUAL: Ús anual de lenergia
+  INSTALACIO_TITLE: Característiques instal·lació proposada
+  INSTALACIO_NOMBRE: Nombre de panells
+  INSTALACIO_POTENCIA: Potència panells
+  INSTALACIO_TOTAL: Potència total
+  INSTALACIO_ANUAL: Generació anual
+  INSTALACIO_COST: Cost aproximat
+  ESTUDI_TITLE: Estudi energètic - econòmic
+  ESTUDI_AUTOGENERACIO: Autogeneració directa anual
+  ESTUDI_EXCEDENT: Excedent
+  ESTUDI_XARXA: Energia de xarxa
+  ESTUDI_ESTALVI: Estalvi total anual
+  ESTUDI_RETORN: Retorn inversió
+  PIE_AUTOCONSUM_TITLE: '% Autoconsum directe'
+  PIE_AUTOCONSUM_DESCRIPTION: (Energia anual consumida / energia anual produida)
+  PIE_AUTOSUFICIENCIA_TITLE: Consum per mesos (€)
+  PIE_AUTOSUFICIENCIA_DESCRIPTION: (Energia anual autoconsumida / energia anual denergia
+  PERFIL_TITLE: El teu perfil diari denergia
+  PERFIL_ELECTRIC: Electric
+  PERFIL_AUTOPRODUCCIO: Autoproduccio
+  CONSUM_TITLE: Consum per mesos
+  PROPERESPASES_TITLE: Properes pases
+  PROPERESPASES_DESCRIPTION: Apuntat a una
+  PROPERESPASES_DESCRIPTION_STRONG: compra col·lectiva
+  PROPERESPASES_DESCRIPTION_FINAL: de Som Energia
+  PROPERESPASES_TEXT: Accedeix a lapartat de comprescol·lectives de la web deSom Energia i mira si hi ha alguna iniciativa oberta a la teva zona.
+  PROPERESPASES_LINK: Com funcionen les compres col·lectives de Som Energia?
+  PROPERESPASES_TITLE_SEGON: Contacta amb una
+  PROPERESPASES_TITLE_SEGON_STRONG: empresa instal·ladora especialitzada i de confiança
+  PROPERESPASES_TEXT_SEGON: Com no pot ser duna altra manera, et recomanem contactar empreses cooperatives de leconomia solidària com ara les que trobaràs en aquest enllaç.
+  PROPERESPASES_TEXT_TERCER: També pots buscar entre les empreses que han tirat endavant les diferents compres col·lectives de lSom Energia o també altres empreses expertes del sector que pots trobaraquí.
+  AUTOGENERACIO_TITLE: Informació general sobre autogeneració
+  AUTOGENERACIO_TEXT: Pots trobar informació general sobre
+  AUTOGENERACIO_TEXT_STRONG: què és i com funciona lautoconsum en els següents articles del nostre centre d'ajuda
+  AUTOGENERACIO_TEXT_FINAL: en els següents articles del nostre centre d'ajuda
+  AUTOGENERACIO_LINK: Informació general sobre autogeneració
+  AUTOGENERACIO_LINK_PRIMER: Què és lautoproducció?
+  AUTOGENERACIO_LINK_SEGON: Com funciona la compensació simplificada dexcedents?
+  AUTOGENERACIO_LINK_TERCER: Què passa si marxa la llum i tinc plaques solars?
+  AUTOGENERACIO_LINK_CUART: Mes artícles sobre lautogeneració
+  INFORME_TITLE: Com shan generat els càlculs daquest informe?
+  GENERACIO_TITLE: Dades de Generació
+  GENERACIO_DESCRIPTION: Font PVGis Ubicació de referencia Generació estimada segons ubicació Afectació de la inclinació Afectació de la orientació
+  GENERACIO_TEXT: Cal tenir en compte que, tot i estar extretes de fons oficials, aquestes son dades estimades teòriques i per tant no sajustaran 100% a la realitat. També cal tenir en compte possibles ombres que en aquest estudi no shan tingut en compte i poden afectar de forma molt important els resultats.
+  TITLE: Dades de consum
+  DESCRIPTION: Corbes de consum extretes dels comptadors gestionats per lempresa de distribució elèctrica de la teva zona.
+  TEXT: Cal tenir en compte que si es modifiquen aquests usos denergia es pot millorar o empitjorar els resultats daquest informe. Lobjectiu de tota persona autogeneradora és incrementar al màxim lautogeneració directa, es a dir, utilitzar lenergia en hores solars.
+  ECONOMIQUES_TITLE: Dades de economiques
+  ECONOMIQUES_DESCRIPTION: 'Tarifes d’ús de l’energia de referència: P1: 0,245 €/kWh P2: 0,146 €/kWh P3: 0,101 €/kWh Tarifa de compensació d’excedents 0,066 €/kWh (impostos apart)'
+  PEU: Per a qualsevol dubte pots escriure a auto@somenergia.coop
+  ANY: any
+  ANYS: anys
