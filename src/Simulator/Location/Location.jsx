@@ -51,8 +51,12 @@ const LocationStep = () => {
           ></SLDRDetalle>
         )}
       </Grid>
-      <Grid item xs={12}>
-        <SLDRInfoBox>
+      <Grid
+        item
+        xs={10}
+        sx={{ alignItems: 'center', alignContent: ' center', justifyContent: 'center' }}
+      >
+        <SLDRInfoBox sx={{ width: '80%', ml: 20 }}>
           <MapComponent></MapComponent>
         </SLDRInfoBox>
       </Grid>

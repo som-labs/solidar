@@ -51,13 +51,7 @@ export default function SummaryPreciosTarifa() {
         </Grid>
       </Grid>
 
-      <Grid
-        container
-        spacing={1}
-        alignItems="center"
-        justifyContent="space-evenly"
-        sx={{ mb: '1rem' }}
-      >
+      <Grid container spacing={1} alignItems="center" justifyContent="space-evenly">
         {TCB.tarifaActiva.precios.map((precio, index) => {
           if (index !== 0 && index < nPrecios) {
             return (
