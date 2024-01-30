@@ -79,7 +79,6 @@ export const PDF = forwardRef(({ data }, ref) => {
         interactions: [],
       })
     } else {
-      console.log('existe')
       mapRef.current.setTarget(mapElement.current)
     }
 
@@ -115,8 +114,7 @@ export const PDF = forwardRef(({ data }, ref) => {
               {t('REPORT.DADES_NOM')}: <strong>{'data.contract.owner_name'}</strong>
             </li>
             <li style={styles.listitem}>
-              {t('REPORT.DADES_DIRECCIO')}:{' '}
-              <strong>{'data.contract.address.place_name'}</strong>
+              {t('REPORT.DADES_DIRECCIO')}: <strong>{TCB.direccion}</strong>
             </li>
             <li style={styles.listitem}>
               {t('REPORT.DADES_CONTRACTE')}: <strong>{'data.contract.name'}</strong>
@@ -125,7 +123,7 @@ export const PDF = forwardRef(({ data }, ref) => {
         </div>
       </div>
       <div style={styles.dades}>
-        <h2 style={styles.title}> {t('REPORT.COBERTA_TITLE')}</h2>
+        {/* <h2 style={styles.title}> {t('REPORT.COBERTA_TITLE')}</h2>
         <ul style={styles.list}>
           <li style={styles.listitem}>
             {t('REPORT.COBERTA_ORIENTACIO')}:{' '}
@@ -139,29 +137,56 @@ export const PDF = forwardRef(({ data }, ref) => {
             {t('REPORT.COBERTA_SUPERFICIE')}:{' '}
             <strong>{UTIL.formatoValor('superficie', TCB.BaseSolar[0].areaReal)}</strong>
           </li>
-        </ul>
-        {/* <SummaryAutoproduccion></SummaryAutoproduccion> */}
+        </ul> */}
+        <InstallationSummary></InstallationSummary>
       </div>
 
       <div style={styles.us}>
         <h2 style={styles.title}> {t('REPORT.US_TITLE')}</h2>
         <ul style={styles.list}>
+          {/*
           <li style={styles.listitem}>
+ 
             {t('REPORT.US_POTENCIA')}:{' '}
             <div style={styles.listpowers}>
-              {/* {data.contract.powers.map((value, index) => (
+              {data.contract.powers.map((value, index) => (
                 <span key={index}>
                   {'P' + (index + 1)}: <strong>{formatNumber(value)}kW</strong>
                 </span>
-              ))} */}
+              ))} 
             </div>
-          </li>
+          </li>*/}
           {/* <li style={styles.listitem}>
             {t('REPORT.US_TARIFA')}: <strong>{TCB.nombreTarifaActiva}</strong>
           </li> */}
           <li style={styles.listitem}>
-            {t('REPORT.US_ANUAL')}: <SummaryPreciosTarifa></SummaryPreciosTarifa>
-            {/* <div style={styles.listpowers}>
+            {t('REPORT.US_ANUAL') + '  '}
+            <div style={styles.listpowers}>
+              {TCB.consumo.periodo.map((value, index) => (
+                <span key={index}>
+                  {'P' + (index + 1)}:{' '}
+                  <strong>{UTIL.formatoValor('energia', value)}</strong>
+                </span>
+              ))}
+            </div>
+          </li>
+          <li style={styles.listitem}>
+            {'Consumo durante horas de sol' + '  '}
+            <span>
+              <strong>
+                {UTIL.formatoValor('energia', TCB.balance.consumoDiurno) +
+                  '( ' +
+                  UTIL.formatoValor(
+                    'porciento',
+                    (TCB.balance.consumoDiurno / TCB.consumo.cTotalAnual) * 100,
+                  ) +
+                  ') del total'}
+              </strong>
+            </span>
+          </li>
+
+          <SummaryPreciosTarifa></SummaryPreciosTarifa>
+          {/* <div style={styles.listpowers}>
               {data.scenario.loadByPeriodKwh &&
                 Object.entries(data.scenario.loadByPeriodKwh)
                   .sort()
@@ -171,7 +196,6 @@ export const PDF = forwardRef(({ data }, ref) => {
                     </span>
                   ))}
             </div> */}
-          </li>
         </ul>
       </div>
       {/* REVISAR: Aqui va el mapa */}
