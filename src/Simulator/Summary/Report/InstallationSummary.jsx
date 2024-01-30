@@ -60,13 +60,13 @@ export default function InstallationSummary() {
   function footerSummary() {
     return (
       <SLDRFooterBox sx={{ flexDirection: 'row' }}>
-        <div style={{ flex: '2' }} /> {/* Placeholder for ID column */}
-        <div style={{ flex: '1', textAlign: 'center' }}>
+        <div style={{ flex: '5' }} /> {/* Placeholder for ID column */}
+        <div style={{ flex: '2', textAlign: 'center' }}>
           <strong>
             {bases.reduce((sum, tBase) => sum + parseInt(tBase.paneles), 0)}
           </strong>
         </div>
-        <div style={{ flex: '1', textAlign: 'right' }}>
+        <div style={{ flex: '2', textAlign: 'right' }}>
           <strong>
             {UTIL.formatoValor(
               'potenciaTotal',
@@ -96,6 +96,7 @@ export default function InstallationSummary() {
             rows={bases}
             columns={columns}
             hideFooter={false}
+            rowHeight={30}
             autoHeight
             disableColumnMenu
             slots={{ footer: footerSummary }}

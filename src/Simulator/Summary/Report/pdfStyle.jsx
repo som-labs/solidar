@@ -37,7 +37,6 @@ const style = {
     display: 'inline-flex',
     alignItems: 'center',
     gap: 5,
-    textTransform: 'uppercase',
   },
   warning: {
     gridColumn: '1/4',
@@ -204,6 +203,7 @@ const style = {
     padding: 10,
     border: '1px solid #ccc',
     textAlign: 'center',
+    fontWeight: 'bold',
   },
   container: {
     display: 'flex',

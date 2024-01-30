@@ -29,6 +29,7 @@ class Consumo extends DiaHora {
    */
   constructor(consumo) {
     super()
+    this.periodo //Will store kWh per fee period (P1, P2, ...)
 
     if (consumo === undefined) {
       //Creacion del consumo global
