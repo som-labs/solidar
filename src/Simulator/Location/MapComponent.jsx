@@ -297,13 +297,6 @@ export default function MapComponent() {
         return
       case 'save':
         processFormData(reason, formData)
-
-        //REVISAR: como evitar Unable to clone canvas as it is tainted
-        html2canvas(mapElement.current).then(function (canvas) {
-          // Convert the canvas content to a data URL
-          TCB.mapURL = canvas.toDataURL('image/png')
-        })
-
         break
       case 'cancel':
         UTIL.deleteBaseGeometries(formData.idBaseSolar)
@@ -402,6 +395,7 @@ export default function MapComponent() {
         TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
         return false
       }
+      TCB.direccion = details.direccion
     } catch (error) {
       console.log('CATCHED', error)
       SLDRAlert('NOMINATIM error 2', error, 'ERROR')
@@ -410,7 +404,7 @@ export default function MapComponent() {
     }
 
     // Calculo propuesta de acimut basandose en la cumbrera
-    const azimutLength = 100
+    const azimutLength = 30
     let midPoint = [0, 0]
     let coef
 
