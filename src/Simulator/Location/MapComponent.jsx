@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
+import html2canvas from 'html2canvas'
 
 // OpenLayers objects
 import { Map, View } from 'ol'
@@ -12,7 +13,7 @@ import Feature from 'ol/Feature'
 import { Point, LineString, Polygon } from 'ol/geom'
 import { transform, fromLonLat } from 'ol/proj'
 import { Draw } from 'ol/interaction'
-import { getArea, getLength, getDistance } from 'ol/sphere.js'
+import { getArea, getDistance } from 'ol/sphere.js'
 
 // MUI objects
 import { Button, Tooltip, Typography, Box } from '@mui/material'
@@ -223,17 +224,23 @@ export default function MapComponent() {
       //Landbase Open Street Map
       const OpenS = new TileLayer({
         source: new OSM({
-          crossOrigin: null,
           maxZoom: 30,
         }),
       })
       OpenS.set('name', 'OSM')
 
       // SAT is satellite layer provided by ESRI via arcgisonline
+      // const SAT = new TileLayer({
+      //   source: new XYZ({
+      //     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      //     maxZoom: 30,
+      //   }),
+      // })
+
       const SAT = new TileLayer({
         source: new XYZ({
-          url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-          maxZoom: 30,
+          url: 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoiam9zZWx1aXMtc29saWRhciIsImEiOiJjbHJ1amIybXAwZ3IyMmt0ZWplc3dkczI5In0.ZtRIGwqCgRQI5djHEFmOVA',
+          tileSize: 512,
         }),
       })
       SAT.set('name', 'SAT')
@@ -290,6 +297,13 @@ export default function MapComponent() {
         return
       case 'save':
         processFormData(reason, formData)
+
+        //REVISAR: como evitar Unable to clone canvas as it is tainted
+        html2canvas(mapElement.current).then(function (canvas) {
+          // Convert the canvas content to a data URL
+          TCB.mapURL = canvas.toDataURL('image/png')
+        })
+
         break
       case 'cancel':
         UTIL.deleteBaseGeometries(formData.idBaseSolar)
@@ -299,6 +313,53 @@ export default function MapComponent() {
         break
     }
     closeDialog()
+  }
+
+  //Mismo problema tainted
+  function captureMap() {
+    var mapCanvas = document.createElement('canvas')
+    var size = mapRef.current.getSize()
+    mapCanvas.width = size[0]
+    mapCanvas.height = size[1]
+    var mapContext = mapCanvas.getContext('2d')
+    Array.prototype.forEach.call(
+      mapRef.current.getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer'),
+      function (canvas) {
+        if (canvas.width > 0) {
+          const opacity = canvas.parentNode.style.opacity || canvas.style.opacity
+          mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity)
+          let matrix
+          const transform = canvas.style.transform
+          if (transform) {
+            // Get the transform parameters from the style's transform matrix
+            matrix = transform
+              .match(/^matrix\(([^\(]*)\)$/)[1]
+              .split(',')
+              .map(Number)
+          } else {
+            matrix = [
+              parseFloat(canvas.style.width) / canvas.width,
+              0,
+              0,
+              parseFloat(canvas.style.height) / canvas.height,
+              0,
+              0,
+            ]
+          }
+          // Apply the transform to the export map context
+          CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix)
+          const backgroundColor = canvas.parentNode.style.backgroundColor
+          if (backgroundColor) {
+            mapContext.fillStyle = backgroundColor
+            mapContext.fillRect(0, 0, canvas.width, canvas.height)
+          }
+          mapContext.drawImage(canvas, 0, 0)
+        }
+      },
+    )
+    mapContext.globalAlpha = 1
+    mapContext.setTransform(1, 0, 0, 1, 0, 0)
+    TCB.mapCanvas = mapCanvas.toDataURL()
   }
 
   //Called when a base geometry has been created in the map
@@ -439,12 +500,13 @@ export default function MapComponent() {
       <div
         ref={mapElement}
         className="map"
-        style={{ width: '100%', height: '300px' }}
+        style={{ width: '100%', height: '500px' }}
       ></div>
       {/* Boton para cambiar vista mapa vs satelite */}
       <Tooltip title={t('LOCATION.TOOLTIP_MAP_TYPE')} placement="top">
         <Button
           variant="contained"
+          size="medium"
           onClick={() => {
             if (mapType === 'LOCATION.LABEL_SATELITE') setMapType('LOCATION.LABEL_VECTOR')
             else setMapType('LOCATION.LABEL_SATELITE')
@@ -463,6 +525,24 @@ export default function MapComponent() {
           {t(mapType)}
         </Button>
       </Tooltip>
+      <Button
+        variant="contained"
+        size="medium"
+        onClick={() => {
+          //Fit map view to bases
+          if (TCB.BaseSolar.length > 0) {
+            const mapView = map.getView()
+            const center = mapView.getCenter()
+            mapView.fit(TCB.origenDatosSolidar.getExtent())
+            if (mapView.getZoom() > 20) {
+              mapView.setCenter(center)
+              mapView.setZoom(20)
+            }
+          }
+        }}
+      >
+        Fit
+      </Button>
     </>
   )
 }
