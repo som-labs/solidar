@@ -537,6 +537,7 @@ SUMMARY:
   LABEL_disclaimer2: SOM Energia no tiene ningún interés económico ni directo ni indirecto en este estudio salvo contribuir a una transición energética justa con los usuarios eficiente descentralizada y limpia.
   LABEL_PRINT: Imprime resumen
   LABEL_PDF_REPORT: Genera PDF
+  LABEL_SOM_REPORT: Informe SOM
 
 BASIC:
   LABEL_OK: Guardar
@@ -742,69 +743,74 @@ REPORT:
   informe_MSG_procesarPrimero: Debe obtener el balance de energía antes de poder generar el informe
 
   TITLE_PRIMER: INFORME PROVISIONAL
-  TITLE_STRONG: AUTOGENERACIÓ
+  TITLE_STRONG: AUTOGENERACIÓN
   TITLE_SEGON: FOTOVOLTAICA
-  ATENCIO: 'Atenció: Aquest informe procura donar una informació orientativa a partir de les dades reals de consum del període dd-mm-aaaa al dd-mm-aaaa i estimacions aproximades del rendiment de la instal·lació així com del seu cost Hem procurat que les fonts siguin el màxim fiables i pròximes a la realitat però en cap cas garantim des de Som Energia el seu acompliment en el transcurs dels 25 anys de vida utils estimats.'
-  DADES_TITLE: Dades principals
-  DADES_NOM: Nom
-  DADES_DIRECCIO: Direcció
-  DADES_CONTRACTE: Contracte
-  COBERTA_TITLE: Dades coberta
-  COBERTA_ORIENTACIO: Orientació
-  COBERTA_INCLINACIO: Inclinació
-  COBERTA_SUPERFICIE: Superficie util
-  US_TITLE: Ús del l'energia
-  US_POTENCIA: Potencia contractada
+  ATENCIO: 'Atención: Este informe intenta dar una información orientativa a partir de los datos reales de consumo, del período dd-mm-aaaa al dd-mm-aaaa y estimaciones aproximadas del rendimiento de la instalación, así como de su coste. Hemos intentado que las fuentes sean lo más fiables y próximas a la realidad, pero en ningún caso garantizamos desde Som Energia, que estos valores sean los reales en el transcurso de los 25 años de vida útiles estimados.'
+  DADES_TITLE: Datos principales
+  DADES_NOM: Nombre
+  DADES_DIRECCIO: Dirección
+  DADES_CONTRACTE: Contrato
+  COBERTA_TITLE: Datos cubierta
+  COBERTA_ORIENTACIO: Orientación
+  COBERTA_INCLINACIO: Inclinación
+  COBERTA_SUPERFICIE: Superficie útil
+  US_TITLE: Uso de la energía
+  US_POTENCIA: Potencia contratada
   US_TARIFA: Tarifa
-  US_ANUAL: Ús anual de lenergia
-  INSTALACIO_TITLE: Característiques instal·lació proposada
-  INSTALACIO_NOMBRE: Nombre de panells
-  INSTALACIO_POTENCIA: Potència panells
-  INSTALACIO_TOTAL: Potència total
-  INSTALACIO_ANUAL: Generació anual
-  INSTALACIO_COST: Cost aproximat
-  ESTUDI_TITLE: Estudi energètic - econòmic
-  ESTUDI_AUTOGENERACIO: Autogeneració directa anual
-  ESTUDI_EXCEDENT: Excedent
-  ESTUDI_XARXA: Energia de xarxa
-  ESTUDI_ESTALVI: Estalvi total anual
-  ESTUDI_RETORN: Retorn inversió
-  PIE_AUTOCONSUM_TITLE: '% Autoconsum directe'
-  PIE_AUTOCONSUM_DESCRIPTION: (Energia anual consumida / energia anual produida)
-  PIE_AUTOSUFICIENCIA_TITLE: Consum per mesos (€)
-  PIE_AUTOSUFICIENCIA_DESCRIPTION: (Energia anual autoconsumida / energia anual denergia
-  PERFIL_TITLE: El teu perfil diari denergia
-  PERFIL_ELECTRIC: Electric
-  PERFIL_AUTOPRODUCCIO: Autoproduccio
-  CONSUM_TITLE: Consum per mesos
-  PROPERESPASES_TITLE: Properes pases
-  PROPERESPASES_DESCRIPTION: Apuntat a una
-  PROPERESPASES_DESCRIPTION_STRONG: compra col·lectiva
-  PROPERESPASES_DESCRIPTION_FINAL: de Som Energia
-  PROPERESPASES_TEXT: Accedeix a lapartat de comprescol·lectives de la web deSom Energia i mira si hi ha alguna iniciativa oberta a la teva zona.
-  PROPERESPASES_LINK: Com funcionen les compres col·lectives de Som Energia?
-  PROPERESPASES_TITLE_SEGON: Contacta amb una
-  PROPERESPASES_TITLE_SEGON_STRONG: empresa instal·ladora especialitzada i de confiança
-  PROPERESPASES_TEXT_SEGON: Com no pot ser duna altra manera, et recomanem contactar empreses cooperatives de leconomia solidària com ara les que trobaràs en aquest enllaç.
-  PROPERESPASES_TEXT_TERCER: També pots buscar entre les empreses que han tirat endavant les diferents compres col·lectives de lSom Energia o també altres empreses expertes del sector que pots trobaraquí.
-  AUTOGENERACIO_TITLE: Informació general sobre autogeneració
-  AUTOGENERACIO_TEXT: Pots trobar informació general sobre
-  AUTOGENERACIO_TEXT_STRONG: què és i com funciona lautoconsum en els següents articles del nostre centre d'ajuda
-  AUTOGENERACIO_TEXT_FINAL: en els següents articles del nostre centre d'ajuda
-  AUTOGENERACIO_LINK: Informació general sobre autogeneració
-  AUTOGENERACIO_LINK_PRIMER: Què és lautoproducció?
-  AUTOGENERACIO_LINK_SEGON: Com funciona la compensació simplificada dexcedents?
-  AUTOGENERACIO_LINK_TERCER: Què passa si marxa la llum i tinc plaques solars?
-  AUTOGENERACIO_LINK_CUART: Mes artícles sobre lautogeneració
-  INFORME_TITLE: Com shan generat els càlculs daquest informe?
-  GENERACIO_TITLE: Dades de Generació
-  GENERACIO_DESCRIPTION: Font PVGis Ubicació de referencia Generació estimada segons ubicació Afectació de la inclinació Afectació de la orientació
-  GENERACIO_TEXT: Cal tenir en compte que, tot i estar extretes de fons oficials, aquestes son dades estimades teòriques i per tant no sajustaran 100% a la realitat. També cal tenir en compte possibles ombres que en aquest estudi no shan tingut en compte i poden afectar de forma molt important els resultats.
-  TITLE: Dades de consum
-  DESCRIPTION: Corbes de consum extretes dels comptadors gestionats per lempresa de distribució elèctrica de la teva zona.
-  TEXT: Cal tenir en compte que si es modifiquen aquests usos denergia es pot millorar o empitjorar els resultats daquest informe. Lobjectiu de tota persona autogeneradora és incrementar al màxim lautogeneració directa, es a dir, utilitzar lenergia en hores solars.
-  ECONOMIQUES_TITLE: Dades de economiques
-  ECONOMIQUES_DESCRIPTION: 'Tarifes d’ús de l’energia de referència: P1: 0,245 €/kWh P2: 0,146 €/kWh P3: 0,101 €/kWh Tarifa de compensació d’excedents 0,066 €/kWh (impostos apart)'
-  PEU: Per a qualsevol dubte pots escriure a auto@somenergia.coop
-  ANY: any
-  ANYS: anys
+  US_ANUAL: Uso anual de la energía
+  US_HORAS_SOL: Consumo durante horas de sol
+  INSTALACIO_TITLE: Características instalación propuesta
+  INSTALACIO_NOMBRE: Número de paneles
+  INSTALACIO_POTENCIA: Potencia total instalada
+  INSTALACIO_POTENCIA_UNITARIA: Potencia unitaria por panel
+  INSTALACIO_TOTAL: Potencia total
+  INSTALACIO_ANUAL: Generación anual
+  INSTALACIO_COST: Coste aproximado
+  ESTUDI_TITLE: Estudio energético - económico
+  ESTUDI_AUTOGENERACIO: Autogeneración directa anual
+  ESTUDI_EXCEDENT: Excedente
+  ESTUDI_XARXA: Energía de red
+  ESTUDI_ESTALVI: Ahorro total anual
+  ESTUDI_RETORN: Retorno inversión
+  PIE_AUTOCONSUM_TITLE: '% Autoconsumo directo'
+  PIE_AUTOCONSUM_DESCRIPTION: (Energía autoconsumida / energía total producida)
+  PIE_AUTOSUFICIENCIA_TITLE: '% Autosuficiencia'
+  PIE_AUTOSUFICIENCIA_DESCRIPTION: (Energía autoconsumida / energía total consumida)
+  PIE_CONSUMO_HORAS_SOL_TITLE: Consumo horas sol
+  PIE_CONSUMO_HORAS_SOL_DESCRIPTION: '% del consumo total realizado en horas con sol'
+  PERFIL_TITLE: Tu perfil diario de energía
+  PERFIL_ELECTRIC: Eléctrica
+  PERFIL_AUTOPRODUCCIO: Autoproducción
+  CONSUM_TITLE: Consumo por meses
+  PROPERESPASES_TITLE: Próximos pasos
+  PROPERESPASES_DESCRIPTION: Apuntado a una
+  PROPERESPASES_DESCRIPTION_STRONG: compra colectiva
+  PROPERESPASES_DESCRIPTION_FINAL: de Som Energía
+  PROPERESPASES_TEXT: Accede al apartado de compras colectivas de la web de Som Energia y mira si hay alguna iniciativa abierta en tu zona.
+  PROPERESPASES_LINK: ¿Cómo funcionan las compras colectivas de Som Energía?
+  PROPERESPASES_TITLE_SEGON: Contacta con una
+  PROPERESPASES_TITLE_SEGON_STRONG: empresa instaladora especializada y de confianza
+  PROPERESPASES_TEXT_SEGON: Como no puede ser de otra forma, te recomendamos contactar empresas cooperativas de la economía solidaria como las que encontrarás en este enlace.
+  PROPERESPASES_TEXT_TERCER: También puedes buscar entre las empresas que han sacado adelante las diferentes compras colectivas del Som Energia o también otras empresas expertas del sector que puedes encontrar aquí.
+  AUTOGENERACIO_TITLE: Información general sobre autogeneración
+  AUTOGENERACIO_TEXT: Puedes encontrar información general sobre
+  AUTOGENERACIO_TEXT_STRONG: qué es y cómo funciona el autoconsumo en los siguientes artículos de nuestro centro de ayuda
+  AUTOGENERACIO_TEXT_FINAL: en los siguientes artículos de nuestro centro de ayuda
+  AUTOGENERACIO_LINK: Información general sobre autoproducción
+  AUTOGENERACIO_LINK_PRIMER: ¿Qué es la autoproducción?
+  AUTOGENERACIO_LINK_SEGON: ¿Cómo funciona la compensación simplificada de excedentes?
+  AUTOGENERACIO_LINK_TERCER: ¿Qué pasa si me cae el suministroeléctrico y tengo placas solares?
+  AUTOGENERACIO_LINK_CUART: Más artículos sobre la autoproducción
+  INFORME_TITLE: ¿Cómo se han generado los cálculos de este informe?
+  GENERACIO_TITLE: Datos de Generación
+  GENERACIO_DESCRIPTION: Fuente PVGis Ubicación de referencia Generación estimada según ubicación Afectación de la inclinación Afectación de la orientación
+  GENERACIO_TEXT: Hay que tener en cuenta que, a pesar de estar extraídas de fondos oficiales, estos son datos estimados teóricos y por tanto no se ajustarán 100% a la realidad. También es necesario tener en cuenta posibles sombras que en este estudio no se han considerado y pueden afectar de forma muy importante a los resultados.
+  TITLE: Datos de consumo
+  DESCRIPTION: Curvas de consumo extraídas de los contadores gestionados por la empresa de distribución eléctrica de tu zona.
+  TEXT: Hay que tener en cuenta que si se modifican estos usos de energía se puede mejorar o empeorar los resultados de este informe. El objetivo de toda persona autogeneradora es incrementar al máximo la autogeneración directa, es decir, utilizar la energía en horas solares.
+  ECONOMIQUES_TITLE: Datos económicos
+  ECONOMIQUES_DESCRIPTION: Tarifas de uso de la energía de referencia
+  PEU: Para cualquier duda puedes escribir a auto@somenergia.coop
+  ANY: año
+  ANYS: años
+  RETURN: Volver a la simulación

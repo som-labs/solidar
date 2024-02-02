@@ -512,7 +512,8 @@ REPORT:
   US_ANUAL: Ús anual de lenergia
   INSTALACIO_TITLE: Característiques instal·lació proposada
   INSTALACIO_NOMBRE: Nombre de panells
-  INSTALACIO_POTENCIA: Potència panells
+  INSTALACIO_POTENCIA: Potència total panells
+  INSTALACIO_POTENCIA_UNITARIA: Potència unitaria per panell
   INSTALACIO_TOTAL: Potència total
   INSTALACIO_ANUAL: Generació anual
   INSTALACIO_COST: Cost aproximat
@@ -523,9 +524,9 @@ REPORT:
   ESTUDI_ESTALVI: Estalvi total anual
   ESTUDI_RETORN: Retorn inversió
   PIE_AUTOCONSUM_TITLE: '% Autoconsum directe'
-  PIE_AUTOCONSUM_DESCRIPTION: (Energia anual consumida / energia anual produida)
-  PIE_AUTOSUFICIENCIA_TITLE: Consum per mesos (€)
-  PIE_AUTOSUFICIENCIA_DESCRIPTION: (Energia anual autoconsumida / energia anual denergia
+  PIE_AUTOCONSUM_DESCRIPTION: (Energia autoconsumida / energia  total produida)
+  PIE_AUTOSUFICIENCIA_TITLE: '% Autosuficiencia'
+  PIE_AUTOSUFICIENCIA_DESCRIPTION: (Energia autoconsumida / energia total consumida)
   PERFIL_TITLE: El teu perfil diari denergia
   PERFIL_ELECTRIC: Electric
   PERFIL_AUTOPRODUCCIO: Autoproduccio

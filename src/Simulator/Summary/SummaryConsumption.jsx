@@ -46,7 +46,6 @@ export default function SummaryConsumption() {
           {t('SUMMARY.TITLE_CONSUMO')}
         </Typography>
         <SummaryPreciosTarifa></SummaryPreciosTarifa>
-        <Typography variant="body">{t('SUMMARY.DESCRIPTION_CONSUMO')}</Typography>
         <DataGrid
           autoHeight
           rowHeight={30}
@@ -59,6 +58,7 @@ export default function SummaryConsumption() {
             border: 2,
             borderColor: 'primary.light',
             mb: '0.5rem',
+            mt: '1rem',
           }}
         />
       </Container>
