@@ -27,7 +27,7 @@ export default function InstallationSummary() {
       headerName: t('BaseSolar.PROP.nombreBaseSolar'),
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
-      flex: 2,
+      flex: 5,
       description: t('BaseSolar.TOOLTIP.nombreBaseSolar'),
       sortable: false,
     },
@@ -37,17 +37,32 @@ export default function InstallationSummary() {
       headerName: t('Instalacion.PROP.paneles'),
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
-      flex: 1,
+      flex: 2,
       align: 'center',
       description: t('Instalacion.TOOLTIP.paneles'),
       sortable: false,
     },
+    // {
+    //   field: 'configuracion',
+    //   editable: true,
+    //   headerName: t('Instalacion.PROP.config'),
+    //   headerClassName: 'super-app-theme--header',
+    //   headerAlign: 'center',
+    //   flex: 2,
+    //   align: 'center',
+    //   description: t('Instalacion.TOOLTIP.paneles'),
+    //   sortable: false,
+    //   renderCell: (params) => {
+    //     console.log(params)
+    //     return params.row.columnas + '-' + params.row.filas
+    //   },
+    // },
     {
       field: 'potenciaTotal',
       headerName: t('Instalacion.PROP.potenciaTotal'),
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
-      flex: 1,
+      flex: 3,
       align: 'right',
       description: t('Instalacion.TOOLTIP.potenciaTotal'),
       sortable: false,
@@ -66,11 +81,11 @@ export default function InstallationSummary() {
             {bases.reduce((sum, tBase) => sum + parseInt(tBase.paneles), 0)}
           </strong>
         </div>
-        <div style={{ flex: '2', textAlign: 'right' }}>
+        <div style={{ flex: '3', textAlign: 'right' }}>
           <strong>
             {UTIL.formatoValor(
               'potenciaTotal',
-              bases.reduce((sum, tBase) => sum + parseInt(tBase.potenciaTotal), 0),
+              bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
             )}
           </strong>
         </div>

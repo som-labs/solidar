@@ -26,7 +26,6 @@ function SLDRFooterBox(props) {
     flex: 1,
     textAlign: 'center',
     justifyContent: 'center',
-    backgroundColor: '#E5FFCC',
   }
 
   const StyledBox = styled(Box)(() => ({

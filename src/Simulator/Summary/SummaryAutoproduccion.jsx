@@ -31,7 +31,6 @@ export default function SummaryAutoproduccion() {
   }
 
   produccionAnual = TCB.produccion.pTotalAnual
-
   const columns = [
     {
       field: 'nombreBaseSolar',

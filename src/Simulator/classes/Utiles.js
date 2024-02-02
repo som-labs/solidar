@@ -47,7 +47,7 @@ const campos = {
   lonlatBaseSolar: { unidad: '', salvar: true, mostrar: true, order: 3 },
   roofType: { unidad: '', salvar: true, mostrar: true, order: 4 },
   cumbrera: { unidad: 'm', decimales: 1, salvar: true, mostrar: true, order: 5 },
-  ancho: { unidad: 'm', decimales: 1, salvar: true, mostrar: true, order: 5 },
+  ancho: { unidad: 'm', decimales: 1, salvar: true, mostrar: false, order: 5 },
   columnas: { unidad: '', decimales: 0, salvar: true, mostrar: true, order: 6 },
   anchoReal: { unidad: 'm', decimales: 1, salvar: true, mostrar: true, order: 7 },
   filas: { unidad: '', decimales: 0, salvar: true, mostrar: true, order: 8 },

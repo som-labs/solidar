@@ -29,7 +29,7 @@ const Text = ({ percentage }) => {
       y="50%"
       dominantBaseline="central"
       textAnchor="middle"
-      fontSize={'2em'}
+      fontSize={'3em'}
       fontWeight="bold"
     >
       {percentage.toFixed(0)}%
@@ -42,7 +42,7 @@ const PieChart = ({ percentage, color, label, description }) => {
   return (
     <div style={{ textAlign: 'center' }}>
       <h3>{label}</h3>
-      <p style={{ fontSize: 11, fontStyle: 'italic', margin: 0 }}>
+      <p style={{ fontSize: 12, fontStyle: 'italic', margin: 0 }}>
         <small>{description}</small>
       </p>
       <svg width={200} height={200}>

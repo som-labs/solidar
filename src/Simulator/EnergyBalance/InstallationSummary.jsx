@@ -84,7 +84,7 @@ export default function InstallationSummary() {
     },
     {
       field: 'potenciaUnitaria',
-      editable: true,
+      //editable: true, //por ahora no dejamos cambiar la potencia unitaria del panel despues de haber hecho el cálculo del balance de energía.
       headerName: t('Instalacion.PROP.potenciaUnitaria'),
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
@@ -127,6 +127,7 @@ export default function InstallationSummary() {
       ],
     },
   ]
+
   function showProperties(id) {
     const baseActiva = TCB.BaseSolar.find((base) => {
       return base.idBaseSolar === id
@@ -137,6 +138,7 @@ export default function InstallationSummary() {
       ),
     })
   }
+
   function footerSummary() {
     return (
       <SLDRFooterBox sx={{ flexDirection: 'row' }}>
@@ -155,7 +157,7 @@ export default function InstallationSummary() {
           <strong>
             {UTIL.formatoValor(
               'potenciaMaxima',
-              bases.reduce((sum, tBase) => sum + parseInt(tBase.potenciaMaxima), 0),
+              bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0),
             )}
           </strong>
         </div>
@@ -164,7 +166,7 @@ export default function InstallationSummary() {
           <strong>
             {UTIL.formatoValor(
               'potenciaTotal',
-              bases.reduce((sum, tBase) => sum + parseInt(tBase.potenciaTotal), 0),
+              bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
             )}
           </strong>
         </div>
