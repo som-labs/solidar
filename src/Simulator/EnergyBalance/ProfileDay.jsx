@@ -30,7 +30,7 @@ export default function ProfileDay(props) {
     type: 'scatter',
     showlegend: true,
     name: t('GRAPHICS.LABEL_CONSUMPTION'),
-    line: { shape: 'spline', width: 3, color: 'rgb(0,0,255' },
+    line: { shape: 'spline', width: 3, color: 'rgb(0,0,255)' },
     fill: 'tozeroy',
   }
 

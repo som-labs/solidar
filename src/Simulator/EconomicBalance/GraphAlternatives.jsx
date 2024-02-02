@@ -40,11 +40,12 @@ export default function GraphAlternatives() {
     numeroMaximoPaneles > 2 * TCB.totalPaneles
       ? 2 * TCB.totalPaneles
       : numeroMaximoPaneles
+
   var intentos = [
     1,
-    0.25 * maximoPanelesEnX,
-    0.5 * maximoPanelesEnX,
-    0.75 * maximoPanelesEnX,
+    Math.round(0.25 * maximoPanelesEnX),
+    Math.round(0.5 * maximoPanelesEnX),
+    Math.round(0.75 * maximoPanelesEnX),
     maximoPanelesEnX,
   ]
   intentos.sort((a, b) => a - b)

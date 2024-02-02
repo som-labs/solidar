@@ -46,17 +46,17 @@ function App() {
 
   return (
     <GlobalTheme>
-      <DialogProvider>
-        <AlertProvider>
-          <BasesContextProvider>
-            <ConsumptionContextProvider>
-              <EconomicContextProvider>
+      <BasesContextProvider>
+        <ConsumptionContextProvider>
+          <EconomicContextProvider>
+            <DialogProvider>
+              <AlertProvider>
                 <RouterProvider router={router} />
-              </EconomicContextProvider>
-            </ConsumptionContextProvider>
-          </BasesContextProvider>
-        </AlertProvider>
-      </DialogProvider>
+              </AlertProvider>
+            </DialogProvider>
+          </EconomicContextProvider>
+        </ConsumptionContextProvider>
+      </BasesContextProvider>
     </GlobalTheme>
   )
 }

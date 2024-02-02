@@ -36,6 +36,7 @@ const TCB = {
   telefonoContacto: '',
   fechaCreacion: new Date(),
   descripcion: '',
+  direccion: '',
 
   territorio: null,
 
