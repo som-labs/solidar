@@ -20,6 +20,7 @@
     "@mui/x-data-grid": "^6.14.0",
     "autosuggest-highlight": "^3.3.4",
     "formik": "^2.4.5",
+    "html2pdf": "^0.0.11",
     "i18next": "^23.4.5",
     "i18next-browser-languagedetector": "^7.1.0",
     "mui-file-input": "^3.0.2",
@@ -30,7 +31,9 @@
     "react-i18next": "^13.2.0",
     "react-markdown": "^9.0.0",
     "react-plotly.js": "^2.6.0",
-    "react-router-dom": "^6.15.0"
+    "react-router-dom": "^6.15.0",
+    "react-to-print": "^2.14.15",
+    "recharts": "^2.10.4"
   },
   "devDependencies": {
     "@modyfi/vite-plugin-yaml": "^1.0.4",

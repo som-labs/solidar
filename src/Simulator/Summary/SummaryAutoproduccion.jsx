@@ -31,7 +31,6 @@ export default function SummaryAutoproduccion() {
   }
 
   produccionAnual = TCB.produccion.pTotalAnual
-
   const columns = [
     {
       field: 'nombreBaseSolar',
@@ -46,7 +45,7 @@ export default function SummaryAutoproduccion() {
       headerName: t('BaseSolar.PROP.areaReal'),
       headerAlign: 'center',
       flex: 1,
-      align: 'right',
+      align: 'center',
       sortable: false,
       description: t('BaseSolar.TOOLTIP.areaReal'),
       renderCell: (params) => {
@@ -70,7 +69,7 @@ export default function SummaryAutoproduccion() {
       headerName: t('Instalacion.PROP.potenciaTotal'),
       headerAlign: 'center',
       flex: 1,
-      align: 'right',
+      align: 'center',
       sortable: false,
       renderCell: (params) => {
         return UTIL.formatoValor('potenciaTotal', params.value)

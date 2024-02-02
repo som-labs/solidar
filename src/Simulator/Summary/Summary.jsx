@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -8,66 +9,77 @@ import SummaryAutoproduccion from './SummaryAutoproduccion'
 import SummaryConsumption from './SummaryConsumption'
 import SummaryEconomicBalance from './SummaryEconomicBalance'
 import SummaryEnergyBalance from './SummaryEnergyBalance'
-import FinalNote from './FinalNote'
+import Reports from './Reports'
 
 const SummaryStep = () => {
   const { t } = useTranslation()
+  const contentRef = useRef(null)
 
   return (
     <>
       <Paper elevation={10} style={{ padding: 16 }}>
-        <Container>
+        <Container ref={contentRef}>
           <Typography variant="body">{t('SUMMARY.DESCRIPTION')}</Typography>
-        </Container>
 
-        <Box
-          sx={{
-            display: 'flex',
-          }}
-        >
-          <SLDRInfoBox
+          <Box
             sx={{
-              mr: '0.3rem',
-              mb: '0.3rem',
+              display: 'flex',
             }}
           >
-            <SummaryAutoproduccion></SummaryAutoproduccion>
-          </SLDRInfoBox>
-          <SLDRInfoBox sx={{ mb: '0.3rem' }}>
-            <SummaryConsumption></SummaryConsumption>
-          </SLDRInfoBox>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            width: '100%',
-          }}
-        >
-          <SLDRInfoBox
+            <SLDRInfoBox
+              sx={{
+                mr: '0.3rem',
+                mb: '0.3rem',
+              }}
+            >
+              <SummaryAutoproduccion></SummaryAutoproduccion>
+            </SLDRInfoBox>
+            <SLDRInfoBox sx={{ mb: '0.3rem' }}>
+              <SummaryConsumption></SummaryConsumption>
+            </SLDRInfoBox>
+          </Box>
+          <Box
             sx={{
-              mr: '0.3rem',
-              mb: '0.3rem',
+              display: 'flex',
+              flexWrap: 'wrap',
+              width: '100%',
             }}
           >
-            <SummaryEconomicBalance></SummaryEconomicBalance>
-          </SLDRInfoBox>
-          <SLDRInfoBox
-            sx={{
-              mb: '0.3rem',
+            <SLDRInfoBox
+              sx={{
+                mr: '0.3rem',
+                mb: '0.3rem',
+              }}
+            >
+              <SummaryEconomicBalance></SummaryEconomicBalance>
+            </SLDRInfoBox>
+            <SLDRInfoBox
+              sx={{
+                mb: '0.3rem',
+              }}
+            >
+              <SummaryEnergyBalance></SummaryEnergyBalance>
+            </SLDRInfoBox>
+          </Box>
+
+          <Reports ref={contentRef}></Reports>
+
+          <Typography variant="h4" sx={{ mt: '1rem' }}>
+            {t('BASIC.LABEL_AVISO')}
+          </Typography>
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('SUMMARY.LABEL_disclaimer1'),
             }}
-          >
-            <SummaryEnergyBalance></SummaryEnergyBalance>
-          </SLDRInfoBox>
-        </Box>
-        <SLDRInfoBox
-          sx={{
-            mr: '0.3rem',
-            mb: '0.3rem',
-          }}
-        >
-          <FinalNote></FinalNote>
-        </SLDRInfoBox>
+          />
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('SUMMARY.LABEL_disclaimer2'),
+            }}
+          />
+        </Container>
       </Paper>
     </>
   )
