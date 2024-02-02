@@ -37,27 +37,21 @@ export default function SummaryPreciosTarifa() {
         alignItems="center"
         justifyContent="space-evenly"
       >
-        <Grid item xs={6} sx={{ borderRadius: '5px' }}>
+        <Grid item xs={6}>
           {t('Tarifa.PROP.tipoTarifa')}
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} sx={{ fontWeight: 'bold' }}>
           {TCB.nombreTarifaActiva}
         </Grid>
         <Grid item xs={6}>
           {t('Tarifa.PROP.P0')}
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} sx={{ fontWeight: 'bold' }}>
           {TCB.tarifas[TCB.nombreTarifaActiva].precios[0] + ' €/kWh'}
         </Grid>
       </Grid>
 
-      <Grid
-        container
-        spacing={1}
-        alignItems="center"
-        justifyContent="space-evenly"
-        sx={{ mb: '1rem' }}
-      >
+      <Grid container spacing={1} alignItems="center" justifyContent="space-evenly">
         {TCB.tarifaActiva.precios.map((precio, index) => {
           if (index !== 0 && index < nPrecios) {
             return (
@@ -69,8 +63,10 @@ export default function SummaryPreciosTarifa() {
                   item
                   xs={3}
                   sx={{
+                    fontWeight: 'bold',
                     border: 1,
-                    textAlign: 'right',
+                    borderRadius: 3,
+                    textAlign: 'center',
                     padding: 0.5,
                     borderColor: 'primary.light',
                   }}

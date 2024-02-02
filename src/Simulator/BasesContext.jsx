@@ -30,6 +30,8 @@ const BasesContextProvider = ({ children }) => {
     anchoReal: undefined,
     areaReal: undefined,
     panelesMaximo: undefined,
+    filas: undefined,
+    columnas: undefined,
   }
 
   // Move data object to the hdr template

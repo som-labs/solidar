@@ -145,16 +145,6 @@ export default function MonthSaving() {
   return (
     <>
       <Container>
-        <Typography variant="h4" textAlign={'center'}>
-          {t('ECONOMIC_BALANCE.TITLE_MONTH_SAVINGS')}
-        </Typography>
-        <Typography
-          variant="body"
-          dangerouslySetInnerHTML={{
-            __html: t('ECONOMIC_BALANCE.DESCRIPTION_MONTH_SAVINGS'),
-          }}
-        />
-
         <Typography variant="h5">
           {t('ECONOMIC_BALANCE.GRAPH_TITLE_MONTH_SAVINGS')}
         </Typography>

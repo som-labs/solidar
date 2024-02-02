@@ -59,7 +59,7 @@ async function verificaTerritorioNominatim(point) {
     point[1].toFixed(4) +
     '&lon=' +
     point[0].toFixed(4) +
-    "&format=geocodejson&zoom=18&accept-language='es'"
+    "&format=geocodejson&zoom=18&accept-language='es'&addressdetails=1"
   UTIL.debugLog('Call reverse Nominatim :' + url)
   try {
     return new Promise((resolve, reject) => {
@@ -90,6 +90,7 @@ async function verificaTerritorioNominatim(point) {
               zona: localizacion.state,
               calle: localizacion.street,
               ciudad: localizacion.city,
+              direccion: localizacion.label,
             },
           })
         })

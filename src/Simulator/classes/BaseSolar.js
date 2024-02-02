@@ -121,8 +121,8 @@ class BaseSolar extends DiaHora {
     let vColumnas
     let vFilas
     let vGap
-    // Caso coplanar
-    if (this.roofType === 'coplanar') {
+    // Caso Coplanar
+    if (this.roofType === 'Coplanar') {
       // Opcion largo panel paralelo a cumbrera
       hColumnas = Math.trunc(
         (this.cumbrera - 2 * TCB.parametros.margen) / TCB.parametros.largoPanel,
@@ -130,6 +130,7 @@ class BaseSolar extends DiaHora {
       hFilas = Math.trunc(
         (this.anchoReal - 2 * TCB.parametros.margen) / TCB.parametros.anchoPanel,
       )
+
       // Opcion largo panel perpendicular a cumpbrera
       vColumnas = Math.trunc(
         (this.cumbrera - 2 * TCB.parametros.margen) / TCB.parametros.anchoPanel,
@@ -176,6 +177,11 @@ class BaseSolar extends DiaHora {
       this.filas = vFilas
       this.modoInstalacion = 'Vertical'
     }
+    UTIL.debugLog('Configuración', {
+      modo: this.modoInstalacion,
+      columnas: this.columnas,
+      filas: this.filas,
+    })
   }
 
   updateBase(newData) {
