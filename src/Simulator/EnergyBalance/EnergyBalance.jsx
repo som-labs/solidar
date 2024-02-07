@@ -11,6 +11,7 @@ import CollapsibleCard from '../components/CollapsibleCard'
 import { SLDRInfoBox } from '../../components/SLDRComponents'
 
 // REACT Solidar Components
+import CallSankey from './SankeyFlow/CallSankey'
 import InstallationSummary from './InstallationSummary'
 import ConsumoGeneracion3D from './ConsumoGeneracion3D'
 import EnergyFlow from './EnergyFlow'
@@ -62,6 +63,7 @@ export default function EnergyBalanceStep() {
       deficit: TCB.balance.deficitAnual,
       autoconsumo: TCB.balance.autoconsumo,
       excedente: TCB.balance.excedenteAnual,
+      consumoDiurno: TCB.balance.consumoDiurno,
     })
     setMonthlyConsumoProduccion({
       consumo: TCB.consumo.resumenMensual('suma'),
@@ -88,6 +90,7 @@ export default function EnergyBalanceStep() {
       deficit: TCB.balance.deficitAnual,
       autoconsumo: TCB.balance.autoconsumo,
       excedente: TCB.balance.excedenteAnual,
+      consumoDiurno: TCB.balance.consumoDiurno,
     })
     setMonthlyConsumoProduccion({
       consumo: TCB.consumo.resumenMensual('suma'),
@@ -115,6 +118,9 @@ export default function EnergyBalanceStep() {
       </SLDRInfoBox>
       <SLDRInfoBox>
         <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
+      </SLDRInfoBox>
+      <SLDRInfoBox>
+        <CallSankey yearlyData={yearlyData}></CallSankey>
       </SLDRInfoBox>
       <CollapsibleCard
         title={t('BASIC.LABEL_AVISO')}
