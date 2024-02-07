@@ -33,6 +33,7 @@ export default function EnergyFlow(props) {
   const stTitulo = 'font-size: 13px; text-anchor: middle; dominant-baseline: middle'
 
   const { consumo, produccion, deficit, autoconsumo, excedente } = props.yearlyData
+  console.log('ENERGYFLOW props', props.yearlyData)
 
   useEffect(() => {
     if (grafResumen.current) {
