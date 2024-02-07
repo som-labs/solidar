@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import { Typography, Container } from '@mui/material'
+import { Typography, Container, MenuItem, TextField } from '@mui/material'
 
 //React global components
 import { BasesContext } from '../BasesContext'
@@ -17,9 +17,11 @@ import EnergyFlow from './EnergyFlow'
 import MonthThreeParts from './MonthThreeParts'
 import MonthEnergyBalance from './MonthEnergyBalance'
 import EnvironmentalImpact from './EnvironmentalImpact'
+import HourlyEnergyBalance from './HourlyEnergyBalance'
 
 // Solidar objects
 import TCB from '../classes/TCB'
+import * as UTIL from '../classes/Utiles'
 import calculaResultados from '../classes/calculaResultados'
 
 export default function EnergyBalanceStep() {
@@ -30,7 +32,7 @@ export default function EnergyBalanceStep() {
   const [monthlyConsumoProduccion, setMonthlyConsumoProduccion] = useState({})
   const { bases, setBases } = useContext(BasesContext)
   const { setEcoData } = useContext(EconomicContext)
-
+  const [mes, setMes] = useState('')
   // El proceso de PreparaEnergyBalance ejecutado como exit del wizard ha hecho cambios sobre las bases que se crearon en location por lo que se deben actualizar
   // El optimizador ha asignado la instalacion
   // El rendimiento ha podido cambiar la inclinacion y por lo tanto el area, la configuracion de paneles y la potenciaMaxima
@@ -124,6 +126,29 @@ export default function EnergyBalanceStep() {
         descriptionSX={{ fontSize: '15px' }}
         description={t('ENERGY_BALANCE.MSG_disclaimerProduccion')}
       ></CollapsibleCard>
+      <SLDRInfoBox sx={{ alignItems: 'center' }}>
+        <Typography variant="h6">
+          {t('ENERGY_BALANCE.TITLE_HOURLY_ENERGY_BALANCE')}
+        </Typography>
+        <TextField
+          sx={{ width: 200, height: 50, mt: '1rem', mb: '1rem', ml: '1rem' }}
+          select
+          value={mes}
+          defaultValue={-1}
+          label={t('BASIC.LABEL_MES')}
+          onChange={(event) => setMes(event.target.value)}
+        >
+          <MenuItem key={-1} value={''}>
+            {t('ENERGY_BALANCE.VALUE_FULL_YEAR')}
+          </MenuItem>
+          {UTIL.nombreMes.map((nombreMes, index) => (
+            <MenuItem key={index} value={index}>
+              {t(nombreMes)}
+            </MenuItem>
+          ))}
+        </TextField>
+        <HourlyEnergyBalance mes={mes}></HourlyEnergyBalance>
+      </SLDRInfoBox>
       <SLDRInfoBox>
         <MonthEnergyBalance
           monthlyConsumoProduccion={monthlyConsumoProduccion}
