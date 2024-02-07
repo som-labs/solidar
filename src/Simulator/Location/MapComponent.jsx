@@ -437,7 +437,7 @@ export default function MapComponent() {
     // Angles are measured with 0 at south (axis -Y) and positive west (axis +X)
     let acimut =
       (Math.atan2(-1 * (point1[0] - point2[0]), point1[1] - point2[1]) * 180) / Math.PI
-    acimut = parseInt(acimut)
+    acimut = -parseInt(acimut)
     const acimutLine = new Feature({
       geometry: geomAcimut,
     })
