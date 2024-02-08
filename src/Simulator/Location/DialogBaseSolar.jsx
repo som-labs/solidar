@@ -204,7 +204,7 @@ export default function DialogBaseSolar({ data, onClose }) {
     const puntoAplicacion = featBase.getGeometry().getInteriorPoint().getCoordinates()
 
     let finAcimut = []
-    finAcimut[0] = puntoAplicacion[0] + Math.sin(angle) * azimutLength
+    finAcimut[0] = puntoAplicacion[0] - Math.sin(angle) * azimutLength
     finAcimut[1] = puntoAplicacion[1] - Math.cos(angle) * azimutLength
     geomAcimut = new LineString([puntoAplicacion, finAcimut])
     featAcimut.setGeometry(geomAcimut)
