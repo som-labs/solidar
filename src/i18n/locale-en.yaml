@@ -355,6 +355,7 @@ BASIC:
   valor_false: 'False'
   LABEL_NEXT: Next
   LABEL_PREVIOUS: Previous
+  LABEL_MES: Month
 
 DIALOG_PROPERTIES:
   TITLE: Properties
