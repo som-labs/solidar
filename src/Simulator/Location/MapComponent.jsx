@@ -308,53 +308,6 @@ export default function MapComponent() {
     closeDialog()
   }
 
-  //Mismo problema tainted
-  function captureMap() {
-    var mapCanvas = document.createElement('canvas')
-    var size = mapRef.current.getSize()
-    mapCanvas.width = size[0]
-    mapCanvas.height = size[1]
-    var mapContext = mapCanvas.getContext('2d')
-    Array.prototype.forEach.call(
-      mapRef.current.getViewport().querySelectorAll('.ol-layer canvas, canvas.ol-layer'),
-      function (canvas) {
-        if (canvas.width > 0) {
-          const opacity = canvas.parentNode.style.opacity || canvas.style.opacity
-          mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity)
-          let matrix
-          const transform = canvas.style.transform
-          if (transform) {
-            // Get the transform parameters from the style's transform matrix
-            matrix = transform
-              .match(/^matrix\(([^\(]*)\)$/)[1]
-              .split(',')
-              .map(Number)
-          } else {
-            matrix = [
-              parseFloat(canvas.style.width) / canvas.width,
-              0,
-              0,
-              parseFloat(canvas.style.height) / canvas.height,
-              0,
-              0,
-            ]
-          }
-          // Apply the transform to the export map context
-          CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix)
-          const backgroundColor = canvas.parentNode.style.backgroundColor
-          if (backgroundColor) {
-            mapContext.fillStyle = backgroundColor
-            mapContext.fillRect(0, 0, canvas.width, canvas.height)
-          }
-          mapContext.drawImage(canvas, 0, 0)
-        }
-      },
-    )
-    mapContext.globalAlpha = 1
-    mapContext.setTransform(1, 0, 0, 1, 0, 0)
-    TCB.mapCanvas = mapCanvas.toDataURL()
-  }
-
   //Called when a base geometry has been created in the map
   async function construirBaseSolar(geoBaseSolar) {
     // Get unique featID
@@ -480,6 +433,27 @@ export default function MapComponent() {
     })
   }
 
+  //Fit map view to bases if any
+  function fitMap() {
+    if (TCB.BaseSolar.length > 0) {
+      const mapView = map.getView()
+      const center = mapView.getCenter()
+      mapView.fit(TCB.origenDatosSolidar.getExtent())
+      if (mapView.getZoom() > 20) {
+        mapView.setCenter(center)
+        mapView.setZoom(20)
+      }
+    }
+  }
+
+  function openGoogleEarth() {
+    const center = mapRef.current.getView().getCenter()
+    const lonLat = transform(center, 'EPSG:3857', 'EPSG:4326')
+    const lon = lonLat[0]
+    const lat = lonLat[1]
+    window.open('https://earth.google.com/web/search/' + lat + ',' + lon + '/', '_blank')
+  }
+
   return (
     <>
       <Box sx={{ mt: '1rem', ml: '1rem' }}>
@@ -500,7 +474,7 @@ export default function MapComponent() {
       <Tooltip title={t('LOCATION.TOOLTIP_MAP_TYPE')} placement="top">
         <Button
           variant="contained"
-          size="medium"
+          size="large"
           onClick={() => {
             if (mapType === 'LOCATION.LABEL_SATELITE') setMapType('LOCATION.LABEL_VECTOR')
             else setMapType('LOCATION.LABEL_SATELITE')
@@ -519,23 +493,11 @@ export default function MapComponent() {
           {t(mapType)}
         </Button>
       </Tooltip>
-      <Button
-        variant="contained"
-        size="medium"
-        onClick={() => {
-          //Fit map view to bases
-          if (TCB.BaseSolar.length > 0) {
-            const mapView = map.getView()
-            const center = mapView.getCenter()
-            mapView.fit(TCB.origenDatosSolidar.getExtent())
-            if (mapView.getZoom() > 20) {
-              mapView.setCenter(center)
-              mapView.setZoom(20)
-            }
-          }
-        }}
-      >
-        Fit
+      <Button variant="contained" size="large" onClick={fitMap}>
+        {t('LOCATION.LABEL_FITMAP')}
+      </Button>
+      <Button variant="contained" size="large" onClick={openGoogleEarth}>
+        {t('LOCATION.LABLE_GOOGLE_EARTH')}
       </Button>
     </>
   )
