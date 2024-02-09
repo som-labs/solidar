@@ -293,6 +293,8 @@ LOCATION:
   TOOLTIP_MEASURES: 'Cumbrera: {{cumbrera}}<br />Ancho: {{ancho}}<br />Area: {{area}}'
   LABEL_SATELITE: Vista satélite
   LABEL_VECTOR: Vista mapa
+  LABEL_FITMAP: Ajustar mapa
+  LABLE_GOOGLE_EARTH: Ver Google Earth
   TOOLTIP_MAP_TYPE: Permite intercambiar entre vista satélite o mapa
   IN_LINE_HELP:
     PRE_ADDRESS: |
