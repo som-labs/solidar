@@ -416,6 +416,12 @@ ENERGY_BALANCE:
   LABEL_AUTOCONSUMO: Autoconsumo
   LABEL_ENERGIA_RED: Energía obtenida de la red
   LABEL_ENERGIA_PANELES: Energía obtenida de los paneles
+  TITLE_HOURLY_ENERGY_BALANCE: Balance horario por mes
+  LABEL_HOURLY_PRODUCTION_YEAR: Producción horaria media anual
+  LABEL_HOURLY_CONSUMPTION_YEAR: Consumo horario medio anual
+  LABEL_HOURLY_PRODUCTION_MONTH: Producción horaria media del mes
+  LABEL_HOURLY_CONSUMPTION_MONTH: Consumo horario medio del mes
+  VALUE_FULL_YEAR: Todo el año
   TITLE_YEAR_ENERGY_BALANCE: Balance energético anual
   DESCRIPTION_YEAR_ENERGY_BALANCE: |
     Con este número de paneles podrás cubrir el {{porcientoAutoconsumo}} de tu demanda total de energía ({{consumoTotal}}). El resto de electricidad ({{porcientoDemanda}}), tendrás que comprarla de la red.<br />
@@ -547,6 +553,7 @@ BASIC:
   LABEL_NEXT: Siguiente
   LABEL_PREVIOUS: Anterior
   LABEL_CLOSE: Cerrar
+  LABEL_MES: Mes
   main_TAB_noMostrarMas: No volver a mostrar este mensaje
   valor_true: Verdadero
   valor_false: Falso
