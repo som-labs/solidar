@@ -46,10 +46,11 @@ async function InicializaAplicacion() {
   // lectura del fichero de tarifas del servidor. Si falla se usan las de la TCB
   //if (!UTIL.cargaTarifasDesdeSOM() ) { //Dejamos esta llamada hasta que el tiempo de respuesta de SOM sea aceptable
   const ficheroTarifa = './datos/tarifas.json'
-  UTIL.debugLog('Tarifas leidas desde servidor:' + ficheroTarifa)
+
   try {
     const respuesta = await fetch(ficheroTarifa)
     if (respuesta.status === 200) {
+      UTIL.debugLog('Tarifas leidas desde servidor:' + ficheroTarifa)
       TCB.tarifas = await respuesta.json()
     }
   } catch (err) {
