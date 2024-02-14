@@ -25,15 +25,10 @@ export default function ParametersMenu() {
     if (reason === undefined) return
     if (reason === 'save') {
       for (const objProp in values) {
-        if (objProp !== 'tecnologia') {
-          console.log()
-          TCB.parametros[objProp] =
-            typeof values[objProp] === 'string'
-              ? parseFloat(values[objProp].replace(',', '.'))
-              : values[objProp]
-        } else {
-          TCB.parametros.tecnologia = values.tecnologia
-        }
+        TCB.parametros[objProp] =
+          typeof values[objProp] === 'string'
+            ? parseFloat(values[objProp].replace(',', '.'))
+            : values[objProp]
       }
       closeDialog()
     } else {
