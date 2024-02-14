@@ -117,15 +117,20 @@ Instalacion:
     potenciaUnitaria: Potencia por panel en kWp
     paneles: Paneis
     potenciaTotal: Potencia disponible
+    potencia: Panel de inicio de potencia unitaria (KWP)
+    tecnologia: Tecnoloxía dos paneis
   TOOLTIP:
     precioInstalacion: Custo estimado de instalación
     potenciaUnitaria: Potencia unitaria dos paneis instalados
     paneles: Número recomendado de paneis que se instalarán nesta base. Pódese modificar
     potenciaTotal: Potencia pico total instalada na base
+    potencia: Potencia KWP do panel inicial usado nos cálculos
+    tecnologia: "Podes escoller tres tipos de paneis para realizar as estimacións: \n- aqueles que teñen células de silicio cristalino\n- módulos de cobre delgado e lámina india Seleniuro (Cuinse) ou cobre indio e galo seleniuro (cuingase) \n - Módulos de teluro de Cadmium Teluro (CDTE) \n-desconocido\nescolle unha das tres primeiras opcións no cálculo da produción fotovoltaica terá en conta o efecto de temperatura. Se se elixe a outra opción (descoñecida) no cálculo asumiranse algunhas perdas de enerxía debido ao efecto de temperatura do 8% (valor xenérico que se considera razoable para climas temperados). O efecto da distribución espectral da irradiación recibida na produción só se pode calcular para tecnoloxías de silicio cristalino e CDTE."
+
   DESCRIPTION:
     precioInstalacion: |
       A pesar de intentar manter os prezos actualizados esta cantidade debe considerarse como unha orientación provisional no proxecto que un instalador pode formular (especialmente se ten máis información sobre o sitio final). Se é necesario) substitución de illamento ou tellas antigas na cuberta Levantar significa se é necesario modificacións que o distribuidor ou administración poida requirir a instalación e algúns impostos e taxas que o Concello podería cobrar (ICIO ou licenza de licenza de obras)
-
+  LABEL_tecnologiaDesconocida: Descoñecido
 Tarifa:
   NAME: Taxa
   PROP:
@@ -378,12 +383,6 @@ PARAMETROS:
   TOOLTIP_perdidasSistema: As perdas do sistema fotovoltaico debido á deterioración dalgúns compoñentes condicións adversas investidores pobres etc.
   LABEL_interesVAN: Interese base (%) para o cálculo da furgoneta
   TOOLTIP_interesVAN: Taxa de desconto para aplicar no cálculo do valor neto actual
-  LABEL_potenciaPanelInicio: Panel de inicio de potencia unitaria (KWP)
-  TOOLTIP_potenciaPanelInicio: Potencia KWP do panel inicial usado nos cálculos
-  LABEL_tecnologia: Tecnoloxía dos paneis
-  TOOLTIP_tecnologia: "Podes escoller tres tipos de paneis para realizar as estimacións: \n- aqueles que teñen células de silicio cristalino\n- módulos de cobre delgado e lámina india Seleniuro (Cuinse) ou cobre indio e galo seleniuro (cuingase) \n - Módulos de teluro de Cadmium Teluro (CDTE) \n-desconocido\nescolle unha das tres primeiras opcións no cálculo da produción fotovoltaica terá en conta o efecto de temperatura. Se se elixe a outra opción (descoñecida) no cálculo asumiranse algunhas perdas de enerxía debido ao efecto de temperatura do 8% (valor xenérico que se considera razoable para climas temperados). O efecto da distribución espectral da irradiación recibida na produción só se pode calcular para tecnoloxías de silicio cristalino e CDTE."
-  LABEL_tecnologiaDesconocida: Descoñecido
-
   tarifasLocales_LBL: Ficheiro de taxa local
   ficheroTarifas_LBL: Ficheiro de taxa local (ver exemplo)
   ficheroTarifas_TT: O usuario pode personalizar un ficheiro cos prezos que desexa ao cumprir o formato dado no exemplo

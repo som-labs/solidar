@@ -124,15 +124,30 @@ Instalacion:
     precioInstalacionCorregido: Precio de la instalación corregido
     potenciaUnitaria: Potencia unitaria
     paneles: Paneles
+    tipoPanel: Tipo de panel
     potenciaTotal: Potencia disponible
+    potencia: Potencia unitaria
+    tecnologia: Tecnología de los paneles
+    largo: Largo del panel propuesto
+    ancho: Ancho del panel propuesto
+
   TOOLTIP:
     precioInstalacion: Precio de la instalación
     potenciaUnitaria: Potencia unitaria de los paneles instalados en la base
     paneles: Número de paneles recomendados en esta base. Se puede modificar
+    tipoPanel: Tipología predefinida de paneles
     potenciaTotal: Potencia pico total instalada en la base
+    potencia: Potencia en kWp del panel utilizado en los cálculos
+    tecnologia: "Se pueden elegir tres tipos de paneles para realizar las estimaciones \n- los que tienen células de silicio cristalino\n- módulos de lámina delgada de seleniuro de cobre e indio (CuInSe) o seleniuro de cobre indio y galio (CuInGaSe)\n- módulos de lámina delgada de teluro de cadmio (CdTe)\n- Desconocido\nSi se elige alguna de las tres primeras opciones en el cálculo de la producción fotovoltaica se tendrá en cuenta el efecto de la temperatura. Si se elige la otra opción (desconocido) en el cálculo se asumirán unas pérdidas de potencia debido al efecto de la temperatura del 8% (valor genérico que se considera razonable para climas templados). El efecto de la distribución espectral de la irradiancia recibida sobre la producción sólo puede calcularse para las tecnologías de silicio cristalino y de CdTe."
+    largo: A efectos del cálculo del número de paneles admisible en el área
+    ancho: A efectos del cálculo del número de paneles admisible en el área
+
   DESCRIPTION:
     precioInstalacion: |
       A pesar de procurar mantener los precios actualizados, debe considerarse este importe como una orientación provisional sobre el proyecto que un instalador pueda formular (sobre todo si cuenta con más información sobre el emplazamiento final).\nAquí no está repercutidos algunos gastos como obra civil (si fuera necesaria), sustitución de aislante o tejas viejas en la cubierta, medios de elevación si fueran necesarios, modificaciones que la distribuidora o la Administración pudieran exigir a la instalación y algunos impuestos y tasas que el ayuntamiento pudiera cobrar (ICIO o licencia de obras)
+    paneles: |
+      Para realizar la simulación, se utilizará un panel de tecnología tipo <strong>{{tecnologia}}</strong> de <strong>{{potencia}}</strong> con unas dimensiones de <strong>{{largo}}</strong> de largo por <strong>{{ancho}}</strong> de ancho. Si lo deseas lo puedes cambiar.
+  LABEL_tecnologiaDesconocida: Desconocida
 
 Tarifa:
   NAME: Tarifa
@@ -269,6 +284,11 @@ Economico:
   economico_MSG_disclaimerAhorroHdr: Aviso Tabla de amotización
   economico_MSG_disclaimerPrecioInstalacion: En la estimación del coste de la instalación está repercutida la mano de obra y materiales. No están incluidos ni las tasas e impuestos municipales (ICIO) ni la obra civil y maquinaria de elevación (si fueran necesarias) ni las modificaciones que la distribuidora o la Administración exigiera tras comprobar la instalación realizada
   economico_MSG_disclaimerPrecioInstalacionHdr: Aviso sobre el coste de instalación
+
+DIALOG_PANELS:
+  TITLE: Definición de paneles solares a utilizar
+  DESCRIPTION: Hemos definido una serie de paneles tipo con sus caracteristicas para que puedas seleccionar.
+  OTHERS: Sin embargo, si por algún motivo deseas utilizar un panel que no esta en la lista, puedes definir sus caracteristicas en los siguientes campos.
 
 LOCATION:
   LABEL: Localización
@@ -584,15 +604,6 @@ PARAMETROS:
   TOOLTIP_perdidasSistema: Las pérdidas estimas del sistema fotovoltaico debidas al deterioro de algunos componentes condiciones adversas inversores deficientes etc.
   LABEL_interesVAN: Interés base (%) para calculo de VAN
   TOOLTIP_interesVAN: Tasa de descuento a aplicar en el cálculo del valor actual neto
-  LABEL_potenciaPanelInicio: Potencia unitaria (kWp) panel inicio
-  TOOLTIP_potenciaPanelInicio: Potencia kWp del panel inicial utilizado en los cálculos
-  LABEL_tecnologia: Tecnología de los paneles
-  TOOLTIP_tecnologia: "Se pueden elegir tres tipos de paneles para realizar las estimaciones \n- los que tienen células de silicio cristalino\n- módulos de lámina delgada de seleniuro de cobre e indio (CuInSe) o seleniuro de cobre indio y galio (CuInGaSe)\n- módulos de lámina delgada de teluro de cadmio (CdTe)\n- Desconocido\nSi se elige alguna de las tres primeras opciones en el cálculo de la producción fotovoltaica se tendrá en cuenta el efecto de la temperatura. Si se elige la otra opción (desconocido) en el cálculo se asumirán unas pérdidas de potencia debido al efecto de la temperatura del 8% (valor genérico que se considera razonable para climas templados). El efecto de la distribución espectral de la irradiancia recibida sobre la producción sólo puede calcularse para las tecnologías de silicio cristalino y de CdTe."
-  LABEL_tecnologiaDesconocida: Desconocida
-  LABEL_largoPanel: Largo del panel propuesto en metros
-  TOOLTIP_largoPanel: A efectos del cálculo del número de paneles
-  LABEL_anchoPanel: Ancho del panel propuesto en metros
-  TOOLTIP_anchoPanel: A efectos del cálculo del número de paneles
   LABEL_margen: Margen de instalación en metros
   TOOLTIP_margen: Distancia dejada alrededor de la instalación a efectos de mantenimiento
 

@@ -1,0 +1,30 @@
+[
+  {
+    "nombre": "crystSi - 505Wp",
+    "tecnologia": "crystSi",
+    "potencia": 0.505,
+    "ancho": 1.134,
+    "largo": 2.094
+  },
+  {
+    "nombre": "crystSi - 410Wp",
+    "tecnologia": "crystSi",
+    "potencia": 0.41,
+    "ancho": 1.134,
+    "largo": 1.762
+  },
+  {
+    "nombre": "crystSi - 320Wp",
+    "tecnologia": "crystSi",
+    "potencia": 0.32,
+    "ancho": 0.992,
+    "largo": 1.658
+  },
+  {
+    "nombre": "otros",
+    "tecnologia": "Unknown",
+    "potencia": "",
+    "ancho": "",
+    "largo": ""
+  }
+]
