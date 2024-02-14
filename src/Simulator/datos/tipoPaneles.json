@@ -1,0 +1,22 @@
+{
+  "tipoPaneles": [
+    {
+      "tecnologia": "crystSi",
+      "potenciaPanelInicio": 0.32,
+      "anchoPanel": 992,
+      "largoPanel": 1.658
+    },
+    {
+      "tecnologia": "crystSi",
+      "potenciaPanelInicio": 0.41,
+      "anchoPanel": 1.134,
+      "largoPanel": 1.762
+    },
+    {
+      "tecnologia": "crystSi",
+      "potenciaPanelInicio": 0.505,
+      "anchoPanel": 1.134,
+      "largoPanel": 2.094
+    }
+  ]
+}
