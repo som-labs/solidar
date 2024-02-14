@@ -117,15 +117,21 @@ Instalacion:
     potenciaUnitaria: Potència per panell a kWp
     paneles: Panells
     potenciaTotal: Potència disponible
+    potencia: Potència unitària (kWp) panell inici
+    tecnologia: Tecnologia dels panells
 
   TOOLTIP:
     precioInstalacion: Cost d’instal·lació estimat
     potenciaUnitaria: Potència unitària en kWp dels panells instal·lats
     paneles: Nombre recomanat de panells a instal·lar en aquesta base. Es pot modificar
     potenciaTotal: Potència màxima disponible
+    potencia: Potència kWp del panell inicial utilitzat en els càlculs
+    tecnologia: "Pots triar tres tipus de panells per realitzar les estimacions:  \n- Els que tenen cèl·lules de silici cristal·lí \n- mòduls de làmina prima de seleniur de coure i indi (CulnSe) o seleniur de coure indi i gal·li (CuInGaSe) \n - Mòduls de làmina prima de teluro de cadmi (CdTe) \n- Desconegut \n Si es tria una de les tres primeres opcions en el càlcul de la producció fotovoltaica es tindrà en compte l'efecte de la temperatura. Si es tria l’altra opció (desconegut) en el càlcul s’assumiran unes pèrdues d’energia a causa de l’efecte de temperatura del 8% (valor genèric que es considera raonable pels climes temperats). L’efecte de la distribució espectral de la irradiància rebuda en la producció només es pot calcular per a les tecnologies de silici cristal·lí i de CdTe."
+
   DESCRIPTION:
     precioInstalacion: |
       Tot i intentar mantenir els preus actualitzats aquesta quantitat s’hauria de considerar com una orientació provisional del projecte que un instal·lador pot formular (sobretot si té més informació sobre el lloc final). \n Aquí no estan repercutides algunes despeses: obra civil (si fos necessària) substitució de l’aïllament o les teules antigues de la coberta mitjans d'elevació si calguessin modificacions que la distribuïdora o l'Administració poguessin requerir per a la instal·lació i alguns impostos i taxes que l'ajuntament podria cobrar (ICIO o llicència d'obres)
+  LABEL_tecnologiaDesconocida: Desconeguda
 
 Tarifa:
   NAME: Tarifa
@@ -352,11 +358,6 @@ PARAMETROS:
   TOOLTIP_perdidasSistema: Les pèrdues estimades del sistema fotovoltaic degudes al deteriorament d'alguns components condicions adverses inversors deficients etc.
   LABEL_interesVAN: Interès base (%) per al càlcul de VAN
   TOOLTIP_interesVAN: Taxa de descompte a aplicar en el càlcul del valor actual net
-  LABEL_potenciaPanelInicio: Potència unitària (kWp) panell inici
-  TOOLTIP_potenciaPanelInicio: Potència kWp del panell inicial utilitzat en els càlculs
-  LABEL_tecnologia: Tecnologia dels panells
-  TOOLTIP_tecnologia: "Pots triar tres tipus de panells per realitzar les estimacions:  \n- Els que tenen cèl·lules de silici cristal·lí \n- mòduls de làmina prima de seleniur de coure i indi (CulnSe) o seleniur de coure indi i gal·li (CuInGaSe) \n - Mòduls de làmina prima de teluro de cadmi (CdTe) \n- Desconegut \n Si es tria una de les tres primeres opcions en el càlcul de la producció fotovoltaica es tindrà en compte l'efecte de la temperatura. Si es tria l’altra opció (desconegut) en el càlcul s’assumiran unes pèrdues d’energia a causa de l’efecte de temperatura del 8% (valor genèric que es considera raonable pels climes temperats). L’efecte de la distribució espectral de la irradiància rebuda en la producció només es pot calcular per a les tecnologies de silici cristal·lí i de CdTe."
-  LABEL_tecnologiaDesconocida: Desconeguda
 
   tarifasLocales_LBL: Fitxer de tarifes locals
   ficheroTarifas_LBL: Fitxer de tarifes local (veu l'exemple)

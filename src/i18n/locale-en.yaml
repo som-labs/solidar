@@ -105,14 +105,21 @@ Instalacion:
     potenciaUnitaria: Power per panel in kWp
     paneles: Panels
     potenciaTotal: Available power
+    potencia: Unitary Power (kWp)
+    tecnologia: Panel technology
+
   TOOLTIP:
     precioInstalacion: Estimated installation cost
     potenciaUnitaria: Unit power in kWp of the installed panels
     paneles: Recommended number of panels to be installed in this base. Can be modified
     potenciaTotal: Maximum power available in this base
+    potencia: KWP power of the initial panel used in calculations
+    tecnologia: "You can choose three types of panels to perform the estimates:  \n- those that have crystalline silicon cells \n- Modules of thin copper and Indian seleniuro lamina (CuInSe) or copper Indian and Gallic seleniuro (CuInGaSe) \n- Thin Cadmium Teluro (CdTe) \n- unknown. \nIf one of the first three options is chosen in the calculation of photovoltaic production the temperature effect will be taken into account. If the other option (unknown) is chosen in the calculation some power losses will be assumed due to the temperature effect of 8% (generic value that is considered reasonable for temperate climates). The effect of the spectral distribution of irradiance received on production can only be calculated for crystalline and CDTE silicon technologies."
+
   DESCRIPTION:
     precioInstalacion: |
       Despite trying to keep prices updated this amount should be considered as a provisional guideline on the project that an installer can formulate (especially if he has more information about the final location).\nSome expenses are not included here as civil works ( if necessary) replacement of insulation or old tiles on the roof lifting means if necessary modifications that the distributor or the Administration may require of the installation and some taxes and fees that the city council may collect (ICIO or building license )
+  LABEL_tecnologiaDesconocida: Unknown
 
 Tarifa:
   NAME: Tarifa
@@ -373,12 +380,6 @@ PARAMETROS:
   TOOLTIP_perdidasSistema: The losses of the photovoltaic system due to the deterioration of some components adverse conditions poor investors etc.
   LABEL_interesVAN: Base interest (%) for Van Calculation
   TOOLTIP_interesVAN: Discount rate to apply in the calculation of the net current value
-  LABEL_potenciaPanelInicio: Unitary Power (kWp) Start Panel
-  TOOLTIP_potenciaPanelInicio: KWP power of the initial panel used in calculations
-  LABEL_tecnologia: Panel technology
-  TOOLTIP_tecnologia: "You can choose three types of panels to perform the estimates:  \n- those that have crystalline silicon cells \n- Modules of thin copper and Indian seleniuro lamina (CuInSe) or copper Indian and Gallic seleniuro (CuInGaSe) \n- Thin Cadmium Teluro (CdTe) \n- unknown. \nIf one of the first three options is chosen in the calculation of photovoltaic production the temperature effect will be taken into account. If the other option (unknown) is chosen in the calculation some power losses will be assumed due to the temperature effect of 8% (generic value that is considered reasonable for temperate climates). The effect of the spectral distribution of irradiance received on production can only be calculated for crystalline and CDTE silicon technologies."
-  LABEL_tecnologiaDesconocida: Unknown
-
   tarifasLocales_LBL: Local Rate file
   ficheroTarifas_LBL: Local Rate file (see example)
   ficheroTarifas_TT: The user can customize a file with different prices while complying with the format given in the example

@@ -73,7 +73,7 @@ class Rendimiento extends DiaHora {
       addurl += '&loss=' + TCB.parametros.perdidasSistema
     }
 
-    addurl += '&pvtechchoice=' + TCB.parametros.tecnologia
+    addurl += '&pvtechchoice=' + TCB.tipoPanelActivo.tecnologia
     let [lon, lat] = base.lonlatBaseSolar.split(',')
 
     if (TCB.modoActivo === 'DESARROLLO')

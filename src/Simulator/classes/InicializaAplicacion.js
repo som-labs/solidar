@@ -43,6 +43,25 @@ async function InicializaAplicacion() {
     )
   }
 
+  // lectura del fichero de tipos de paneles.
+  const ficheroTipoPaneles = './datos/tipoPaneles.json'
+  UTIL.debugLog('Tipos de paneles leidos desde servidor:' + ficheroTipoPaneles)
+  let tipoPaneles
+  try {
+    const paneles = await fetch(ficheroTipoPaneles)
+    if (paneles.status === 200) {
+      TCB.tipoPaneles = await paneles.json()
+      //First entry used as default
+      TCB.tipoPanelActivo = TCB.tipoPaneles[0]
+    }
+  } catch (err) {
+    UTIL.debugLog(
+      'Error leyendo tipos de paneles del servidor ' +
+        err.message +
+        '<br>Seguimos con TCB',
+    )
+  }
+
   // lectura del fichero de tarifas del servidor. Si falla se usan las de la TCB
   //if (!UTIL.cargaTarifasDesdeSOM() ) { //Dejamos esta llamada hasta que el tiempo de respuesta de SOM sea aceptable
   const ficheroTarifa = './datos/tarifas.json'

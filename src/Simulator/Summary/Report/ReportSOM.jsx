@@ -167,7 +167,7 @@ export default function ReportSOM({ onClose }) {
             <li style={styles.listitem}>
               {t('REPORT.INSTALACIO_POTENCIA_UNITARIA')}:{' '}
               <strong>
-                {UTIL.formatoValor('potencia', TCB.parametros.potenciaPanelInicio)}
+                {UTIL.formatoValor('potencia', TCB.tipoPanelActivo.potencia)}
               </strong>
             </li>
             <li style={styles.listitem}>
@@ -175,7 +175,7 @@ export default function ReportSOM({ onClose }) {
               <strong>
                 {UTIL.formatoValor(
                   'potencia',
-                  TCB.totalPaneles * TCB.parametros.potenciaPanelInicio,
+                  TCB.totalPaneles * TCB.tipoPanelActivo.potencia,
                 )}
               </strong>
             </li>

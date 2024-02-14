@@ -8,6 +8,7 @@ import { Typography, Grid } from '@mui/material'
 import { SLDRDetalle, SLDRInfoBox } from '../../components/SLDRComponents'
 import { AlertContext } from '../components/Alert'
 import AddressSearch from './AddressSearch'
+import PanelsSelector from './PanelsSelector.jsx'
 import MapComponent from './MapComponent'
 import BasesSummary from './BasesSummary'
 
@@ -40,9 +41,16 @@ const LocationStep = () => {
       </Grid>
 
       {/* Campo  para introducir una direccion */}
+
       <Grid item xs={12}>
         <AddressSearch></AddressSearch>
       </Grid>
+
+      {/* Box to define panels characteristics */}
+      <SLDRInfoBox>
+        <PanelsSelector></PanelsSelector>
+      </SLDRInfoBox>
+
       <Grid item xs={12}>
         {inLineHelp && (
           <SLDRDetalle
@@ -51,6 +59,7 @@ const LocationStep = () => {
           ></SLDRDetalle>
         )}
       </Grid>
+
       <Grid
         item
         xs={10}

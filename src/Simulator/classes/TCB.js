@@ -209,18 +209,42 @@ const TCB = {
 
   // Parametros por defecto
   parametros: {
-    // conversionAreakWp: 6,
     impuestoElectrico: 5.113,
-    IVAenergia: 5.0,
+    IVAenergia: 10.0,
     IVAinstalacion: 21.0,
     perdidasSistema: 20,
     interesVAN: 3,
-    tecnologia: 'crystSi',
-    potenciaPanelInicio: 0.505,
-    anchoPanel: 1.134,
-    largoPanel: 2.094,
     margen: 0.5,
   },
+
+  tipoPanelActivo: {
+    tecnologia: 'crystSi',
+    potencia: 0.505,
+    ancho: 1.134,
+    largo: 2.094,
+  }, //Por default
+
+  // This data will be read from datos/tipoPaneles.json
+  tipoPaneles: [
+    {
+      tecnologia: 'crystSi',
+      potencia: 0.32,
+      ancho: 0.992,
+      largo: 1.658,
+    },
+    {
+      tecnologia: 'crystSi',
+      potencia: 0.41,
+      ancho: 1.134,
+      largo: 1.762,
+    },
+    {
+      tecnologia: 'crystSi',
+      potencia: 0.505,
+      ancho: 1.134,
+      largo: 2.094,
+    },
+  ],
 
   /** Constante donde se define el precio estimado de la instalación en base a la potencia instalada
    * @typedef {object} precioInstalacion
