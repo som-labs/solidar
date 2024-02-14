@@ -91,7 +91,7 @@ function SLDRDetalle(props) {
   )
 }
 
-function SLDRInputField({ unit, object, MUIType, ...props }) {
+function SLDRInputField({ unit, object, MUIType, toolTipPlacement, ...props }) {
   const [field, meta] = useField(props)
   const { t } = useTranslation()
 
@@ -128,7 +128,7 @@ function SLDRInputField({ unit, object, MUIType, ...props }) {
       {MUIType === undefined && (
         <SLDRTooltip
           title={<Typography>{t(`${object}.TOOLTIP.${props.name}`)}</Typography>}
-          placement="top"
+          placement={toolTipPlacement ?? 'top'}
         >
           <TextField {...field} {...sxFull} />
         </SLDRTooltip>
