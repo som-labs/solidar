@@ -78,7 +78,7 @@ export default function ProjectMenu() {
         for (let base of TCB.BaseSolar) {
           addTCBBaseToState(base)
         }
-        // State cleaning done here becasue importProject is not React
+        // State cleaning done here because importProject is not React
         setTipoConsumo([])
         //Add imported tipoconsumo to consumption context
         for (let tipo of TCB.TipoConsumo) {
