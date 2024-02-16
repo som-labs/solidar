@@ -10,6 +10,7 @@ import { Button } from '@mui/material'
 
 //
 import { GeneraInformePDF } from './GeneraInformePDF'
+import { exportProject } from '../Project/ImportExport'
 import { useDialog } from '../../components/DialogProvider'
 import ReportSOM from './Report/ReportSOM'
 
@@ -59,8 +60,11 @@ const Reports = forwardRef((props, ref) => {
       >
         {t('SUMMARY.LABEL_PDF_REPORT')}
       </Button>
-      <Button variant="contained" size="large" onClick={SOMSummary}>
+      <Button sx={{ mr: '1rem' }} variant="contained" size="large" onClick={SOMSummary}>
         {t('SUMMARY.LABEL_SOM_REPORT')}
+      </Button>
+      <Button variant="contained" size="large" onClick={exportProject}>
+        {t('Proyecto.LABEL.exportarProyecto')}
       </Button>
     </Container>
   )

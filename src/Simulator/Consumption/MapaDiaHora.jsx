@@ -76,7 +76,7 @@ export default function MapaDiaHora({ activo }) {
       t('CONSUMPTION.XAXIS_MAPA_CONSUMO_MONTH_DAY_HOUR') +
       ': %{x}<br>' +
       t('CONSUMPTION.HOOVER_MAPA_CONSUMO_MONTH_DAY') +
-      ': %{z:.2f} kWh',
+      ': %{z:.2f} kWh<extra></extra>',
   }
 
   const layout = {

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import { Typography, IconButton } from '@mui/material'
+import { Typography, IconButton, Box } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 
 // REACT Solidar Components
@@ -65,7 +65,7 @@ export default function PanelsSelector() {
   }
 
   return (
-    <>
+    <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', padding: 1 }}>
       <Typography
         variant="body"
         dangerouslySetInnerHTML={{
@@ -76,11 +76,10 @@ export default function PanelsSelector() {
             ancho: UTIL.formatoValor('longitud', tipo.ancho),
           }),
         }}
-      />
-
+      ></Typography>
       <IconButton onClick={changePanelsType}>
         <EditIcon />
       </IconButton>
-    </>
+    </Box>
   )
 }

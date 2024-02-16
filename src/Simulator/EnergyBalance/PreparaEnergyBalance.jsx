@@ -28,7 +28,11 @@ export default async function PreparaEnergyBalance() {
   UTIL.debugLog(
     'PreparaEnergyBalance - Necesario optimizador? ' + TCB.requiereOptimizador,
   )
-  if (TCB.requiereOptimizador) {
+
+  //Si estamos importando un solimp que solo tiene bases y tipoConsumo no existe produccion por lo que hay que hacer el ciclo de cálculo
+  const notExistProduccion = Object.keys(TCB.produccion).length === 0
+
+  if (TCB.requiereOptimizador || notExistProduccion) {
     // Comprobamos que estan cargados todos los rendimientos. Es el flag base.rendimiento.PVGISresults.status. True si todo OK, undefined si pendiente, False si error en PVGIS
     let waitLoop = 0
     for (let base of TCB.BaseSolar) {

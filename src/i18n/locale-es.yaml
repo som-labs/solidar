@@ -66,6 +66,7 @@ BaseSolar:
     filas: Max. paneles fila
     idBaseSolar: id
     lonlatBaseSolar: Long-Lat
+    modoInstalacion: Disposición de los paneles
   TOOLTIP:
     nombreBaseSolar: Identifica el nombre de esta base para futuras referencias
     angulosOptimos: Marque este campo si desea que el sistema calcule el valor óptimo de inclinación y acimut
@@ -148,6 +149,7 @@ Instalacion:
     paneles: |
       Para realizar la simulación, se utilizará un panel de tecnología tipo <strong>{{tecnologia}}</strong> de <strong>{{potencia}}</strong> con unas dimensiones de <strong>{{largo}}</strong> de largo por <strong>{{ancho}}</strong> de ancho. Si lo deseas lo puedes cambiar.
   LABEL_tecnologiaDesconocida: Desconocida
+  LABEL_tipoPanel: Seleccione tipo panel
 
 Tarifa:
   NAME: Tarifa

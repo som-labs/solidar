@@ -200,7 +200,7 @@ export default function SankeyFun(
     svg
       .append('g')
       .attr('font-family', 'sans-serif')
-      .attr('font-size', 40)
+      .attr('font-size', 30)
       .selectAll('text')
       .data(nodes)
       .join('text')

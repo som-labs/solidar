@@ -72,6 +72,7 @@ const campos = {
     mostrar: true,
     order: 16,
   },
+  modoInstalacion: { unidad: '', salvar: true, mostrar: true, order: 4.1 },
 
   requierePVGIS: { unidad: '', salvar: true, mostrar: false },
 
@@ -603,13 +604,14 @@ function dumpData(nombre, idxTable, dataTable) {
   document.body.removeChild(element)
 }
 
-/** Genera los strings formateados de todos los campos de la aplicación
+/** Genera los strings formateados de todos los campos de la aplicación.
  * @memberof! Utiles.js
  * @param {string} campo
  * @param {any} valor
+ * @param {string} unidadFinal Optional overide unidad en UTIL.campos
  * @returns {string} valor formateado segun definición de UTIL.campos
  */
-function formatoValor(campo, valor) {
+function formatoValor(campo, valor, unidadFinal) {
   if (valor === undefined) return undefined
 
   const dato = campos[campo]
@@ -643,6 +645,7 @@ function formatoValor(campo, valor) {
     return tvalor.toLocaleDateString(TCB.i18next.language, options)
   }
 
+  const unidad = unidadFinal ?? dato.unidad
   if (dato.decimales !== undefined) {
     /*Segun la definición ISO (https://st.unicode.org/cldr-apps/v#/es/Symbols/70ef5e0c9d323e01) los numeros en 'es' no llevan '.' si no hay mas de dos digitos delante del '.' Minimum Grouping Digits = 2. Como no estoy de acuerdo con este criterio en el caso de 'es' lo cambio a 'ca' que funciona bien */
     let lng =
@@ -653,10 +656,10 @@ function formatoValor(campo, valor) {
       valor.toLocaleString(lng, {
         maximumFractionDigits: dato.decimales,
         minimumFractionDigits: dato.decimales,
-      }) + dato.unidad
+      }) + unidad
     )
   } else {
-    return valor.toLocaleString() + dato.unidad
+    return valor.toLocaleString() + unidad
   }
 }
 /** formatoValor desde una celda de Tabulator
@@ -951,8 +954,12 @@ function hdrToolTip(e, col) {
   el.innerText = TCB.i18next.t(col.getField() + '_TT') //getDefinition().title);
   return el
 }
+
 async function cargaTarifasDesdeSOM() {
-  const urlSOMTarifas = './proxy SOM.php?nombre='
+  if (TCB.modoActivo === 'DESARROLLO')
+    TCB.basePath = 'http://localhost/SOM/REACT/solidar/src/Simulator/'
+
+  const urlSOMTarifas = TCB.basePath + 'proxy SOM.php?nombre='
   debugLog('Tarifas leidas desde SOM:' + urlSOMTarifas)
   let _url
   let respuesta
@@ -962,20 +969,34 @@ async function cargaTarifasDesdeSOM() {
     respuesta = await fetch(_url)
     if (respuesta.status === 200) {
       txtTarifas = await respuesta.text()
-      TCB.tarifas['2.0TD'].precios = txtTarifas.split(',')
+      TCB.tarifas['2.0TD'].precios = txtTarifas.split(',').map((t) => {
+        return parseFloat(t)
+      })
     }
-    console.log(txtTarifas)
+    debugLog('Tarifas 2.0TD desde SOM', { txtTarifas })
+    //console.log(TCB.tarifas['2.0TD'].precios)
     _url = urlSOMTarifas + '3.0TD'
     respuesta = await fetch(_url)
     if (respuesta.status === 200) {
       txtTarifas = await respuesta.text()
-      TCB.tarifas['3.0TD-Peninsula'].precios = txtTarifas.split(',')
-      TCB.tarifas['3.0TD-Ceuta'].precios = txtTarifas.split(',')
-      TCB.tarifas['3.0TD-Melilla'].precios = txtTarifas.split(',')
-      TCB.tarifas['3.0TD-Islas Baleares'].precios = txtTarifas.split(',')
-      TCB.tarifas['3.0TD-Canarias'].precios = txtTarifas.split(',')
+      TCB.tarifas['3.0TD-Peninsula'].precios = txtTarifas.split(',').map((t) => {
+        return parseFloat(t)
+      })
+      TCB.tarifas['3.0TD-Ceuta'].precios = txtTarifas.split(',').map((t) => {
+        return parseFloat(t)
+      })
+      TCB.tarifas['3.0TD-Melilla'].precios = txtTarifas.split(',').map((t) => {
+        return parseFloat(t)
+      })
+      TCB.tarifas['3.0TD-Illes Balears'].precios = txtTarifas.split(',').map((t) => {
+        return parseFloat(t)
+      })
+      TCB.tarifas['3.0TD-Canarias'].precios = txtTarifas.split(',').map((t) => {
+        return parseFloat(t)
+      })
     }
-    console.log(txtTarifas)
+    debugLog('Tarifas 3.0TD desde SOM', { txtTarifas })
+    //console.log(TCB.tarifas['3.0TD-Peninsula'].precios)
     return true
   } catch (err) {
     alert(
@@ -1019,6 +1040,7 @@ function preparaInput(campo, changeFunction, datoOrigen) {
 }
 export {
   cambioValor,
+  cargaTarifasDesdeSOM,
   //copyClipboard,
   csvToArray,
   debugLog,

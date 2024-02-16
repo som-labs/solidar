@@ -83,6 +83,7 @@ async function exportProject() {
   TCB.datosProyecto.nombreTarifaActiva = TCB.nombreTarifaActiva
   TCB.datosProyecto.tipoTarifa = TCB.tipoTarifa
   TCB.datosProyecto.tarifaActiva = TCB.tarifaActiva
+  TCB.datosProyecto.tipoPanelActivo = TCB.tipoPanelActivo
 
   // Guardamos los datos del mapa en formato geoJSON
   TCB.datosProyecto.mapa = salvarDatosMapa()
@@ -243,9 +244,11 @@ async function importProject(fichero) {
   for (let param in datosImportar.parametros) {
     TCB.parametros[param] = datosImportar.parametros[param]
   }
+  TCB.tipoPanelActivo = datosImportar.tipoPanelActivo
 
   importLocalizacion(datosImportar)
   importTipoConsumo(datosImportar)
+
   return { status: true, error: '' }
 }
 

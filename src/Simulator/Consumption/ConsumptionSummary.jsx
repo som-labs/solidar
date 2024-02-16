@@ -127,7 +127,7 @@ export default function ConsumptionSummary() {
     editing.current = false
     // console.log('EDITING NEW', editing)
     const initialValues = {
-      nombreTipoConsumo: 'Consumo tipo ' + TCB.featIdUnico,
+      nombreTipoConsumo: 'Vivienda ' + TCB.featIdUnico,
       fuente: 'CSV',
       ficheroCSV: null,
       consumoAnualREE: '',

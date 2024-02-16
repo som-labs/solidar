@@ -92,7 +92,7 @@ export default function MapaMesHora({ activo }) {
       horas[pos].push(hora + 1)
       meses[pos].push(mesMapa[mes])
       valores[pos].push(fullValores[hora][mes])
-      text[pos].push(fullValores[hora][mes].toFixed(6) + 'kWh')
+      text[pos].push(fullValores[hora][mes].toFixed(3) + 'kWh')
       sizes[pos].push((radio * fullValores[hora][mes]) / maxConsumoMes)
       let tono = parseInt((255 * fullValores[hora][mes]) / maxConsumoMes)
       let _r = tono
@@ -165,7 +165,9 @@ export default function MapaMesHora({ activo }) {
       mode: 'markers',
       showlegend: true,
       hovertemplate:
-        '%{yaxis.title.text}: %{y}<br>' + '%{xaxis.title.text}: %{x}<br>' + '%{text}',
+        '%{yaxis.title.text}: %{y}<br>' +
+        '%{xaxis.title.text}: %{x}<br>' +
+        '%{text}<extra></extra>',
       marker: {
         symbol: 'circle',
         size: sizes[i],

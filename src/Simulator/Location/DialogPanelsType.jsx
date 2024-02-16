@@ -60,7 +60,6 @@ export default function DialogBaseSolar({ data, onClose }) {
 
   function validateFields(values) {
     let errors = {}
-
     for (const prop in values) {
       if (prop !== 'tecnologia' && prop !== 'nombre') {
         if (values[prop] === '') {
@@ -107,7 +106,7 @@ export default function DialogBaseSolar({ data, onClose }) {
               </Typography>
               <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <SLDRInputField
-                  sx={{ width: 200, height: 50, textAlign: 'center', mb: '1rem' }}
+                  sx={{ height: 50, textAlign: 'center', mb: '1rem' }}
                   select
                   label={t('Instalacion.PROP.tipoPanel')}
                   onChange={(e) => cambiaTipoPanel(e, values, setValues)}
@@ -116,7 +115,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                   object="Instalacion"
                 >
                   <MenuItem key={-1} value={-1}>
-                    {'Select value'}
+                    {t('Instalacion.LABEL_tipoPanel')}
                   </MenuItem>
                   {TCB.tipoPaneles.map((panelType, index) => (
                     <MenuItem key={index} value={index}>
