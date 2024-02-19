@@ -9,7 +9,7 @@ import { LineString } from 'ol/geom'
 import { Style } from 'ol/style'
 
 // MUI objects
-import { Box, Button, Typography, Grid } from '@mui/material'
+import { Box, Button, Typography, Grid, FormLabel } from '@mui/material'
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
 
 //React global components
@@ -126,12 +126,12 @@ export default function DialogBaseSolar({ data, onClose }) {
           ...prev,
           roofType: 'Coplanar',
           inclinacionOptima: false,
-          inAcimut: values.inAcimut,
+          //inAcimut: values.inAcimut,
           angulosOptimos: false,
           inclinacion: inclinacionDefault,
           requierePVGIS: true,
         }))
-        featAcimut.setStyle(null)
+        //featAcimut.setStyle(null)
         setRoofType('Coplanar', values)
         drawHouse(canvasRef.current, inclinacionDefault, 'Coplanar')
         break
@@ -144,7 +144,7 @@ export default function DialogBaseSolar({ data, onClose }) {
           inclinacion: inclinacionDefault,
           requierePVGIS: true,
         }))
-        featAcimut.setStyle(null)
+        //featAcimut.setStyle(null)
         setRoofType('Horizontal')
         drawHouse(canvasRef.current, inclinacionDefault, 'Horizontal')
         break
@@ -167,7 +167,7 @@ export default function DialogBaseSolar({ data, onClose }) {
   const changeTilt = (event, setValues, values) => {
     setValues((prevValues) => ({
       ...prevValues,
-      inclinacion: parseInt(event.target.value),
+      inclinacion: event.target.value,
       inclinacionOptima: false,
       angulosOptimos: false,
       requierePVGIS: true,
@@ -186,36 +186,36 @@ export default function DialogBaseSolar({ data, onClose }) {
   //   }))
   // }
 
-  const changeAzimut = (event, setValues, values) => {
-    let featAcimut
-    let geomAcimut
-    let componente
-    let angle
+  // const changeAzimut = (event, setValues, values) => {
+  //   let featAcimut
+  //   let geomAcimut
+  //   let componente
+  //   let angle
 
-    componente = 'BaseSolar.acimut.' + values.idBaseSolar
-    featAcimut = TCB.origenDatosSolidar.getFeatureById(componente)
+  //   componente = 'BaseSolar.acimut.' + values.idBaseSolar
+  //   featAcimut = TCB.origenDatosSolidar.getFeatureById(componente)
 
-    geomAcimut = featAcimut.getGeometry().clone()
-    const azimutLength = geomAcimut.getLength()
-    angle = (event.target.value / 180) * Math.PI
+  //   geomAcimut = featAcimut.getGeometry().clone()
+  //   const azimutLength = geomAcimut.getLength()
+  //   angle = (event.target.value / 180) * Math.PI
 
-    componente = 'BaseSolar.area.' + values.idBaseSolar
-    const featBase = TCB.origenDatosSolidar.getFeatureById(componente)
-    const puntoAplicacion = featBase.getGeometry().getInteriorPoint().getCoordinates()
+  //   componente = 'BaseSolar.area.' + values.idBaseSolar
+  //   const featBase = TCB.origenDatosSolidar.getFeatureById(componente)
+  //   const puntoAplicacion = featBase.getGeometry().getInteriorPoint().getCoordinates()
 
-    let finAcimut = []
-    finAcimut[0] = puntoAplicacion[0] - Math.sin(angle) * azimutLength
-    finAcimut[1] = puntoAplicacion[1] - Math.cos(angle) * azimutLength
-    geomAcimut = new LineString([puntoAplicacion, finAcimut])
-    featAcimut.setGeometry(geomAcimut)
+  //   let finAcimut = []
+  //   finAcimut[0] = puntoAplicacion[0] - Math.sin(angle) * azimutLength
+  //   finAcimut[1] = puntoAplicacion[1] - Math.cos(angle) * azimutLength
+  //   geomAcimut = new LineString([puntoAplicacion, finAcimut])
+  //   featAcimut.setGeometry(geomAcimut)
 
-    setValues((prevValues) => ({
-      ...prevValues,
-      angulosOptimos: false,
-      inAcimut: parseInt(event.target.value),
-      requierePVGIS: true,
-    }))
-  }
+  //   setValues((prevValues) => ({
+  //     ...prevValues,
+  //     angulosOptimos: false,
+  //     inAcimut: parseInt(event.target.value),
+  //     requierePVGIS: true,
+  //   }))
+  // }
 
   const handleCancel = (values) => {
     onClose('cancel', values)
@@ -244,11 +244,11 @@ export default function DialogBaseSolar({ data, onClose }) {
         errors.inclinacion = 'Requerido'
       }
       if (!UTIL.ValidateEntero(values.inclinacion)) {
-        errors.inclinacion = 'Debe ser un número entero entre 0 y 90'
+        errors.inclinacion = 'Debe ser un número entero entre 0 y 80'
       } else {
         value = parseInt(values.inclinacion)
         if (value < 0 || value > 80) {
-          errors.inclinacion = 'El valor de la inclinación debe estar entre 0º y 90º'
+          errors.inclinacion = 'El valor de la inclinación debe estar entre 0º y 80º'
         }
       }
     }
@@ -266,14 +266,14 @@ export default function DialogBaseSolar({ data, onClose }) {
       }
     }
 
-    if (!UTIL.ValidateEntero(values.inAcimut)) {
-      errors.inAcimut = 'Debe ser un número entero entre -180º y 180º'
-    } else {
-      value = parseInt(values.inAcimut)
-      if (value < -180 || value > 180) {
-        errors.inAcimut = 'El valor del acimut debe estar entre -180º y 180º'
-      }
-    }
+    // if (!UTIL.ValidateEntero(values.inAcimut)) {
+    //   errors.inAcimut = 'Debe ser un número entero entre -180º y 180º'
+    // } else {
+    //   value = parseInt(values.inAcimut)
+    //   if (value < -180 || value > 180) {
+    //     errors.inAcimut = 'El valor del acimut debe estar entre -180º y 180º'
+    //   }
+    // }
     return errors
   }
 
@@ -346,7 +346,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                   <img src={horizontalSvgFile} width="70" height="70" alt="SVG Image" />
                   {/* <ApartmentIcon /> */}
                 </Button>
-                <Button
+                {/* <Button
                   variant={values.roofType === 'Optimos' ? 'contained' : 'outlined'}
                   name="roofType"
                   value="Optimos"
@@ -355,10 +355,27 @@ export default function DialogBaseSolar({ data, onClose }) {
                   onClick={(event) => changeRoofType(event, setValues)}
                 >
                   {t('BaseSolar.PROP.angulosOptimos')}
-                </Button>
+                </Button> */}
               </Box>
+              {values.roofType === 'Horizontal' && (
+                <FormLabel>
+                  <SLDRInputField
+                    MUIType="Checkbox"
+                    name="inclinacionOptima"
+                    object="CONTACTO"
+                    checked={values.inclinacionOptima}
+                    onChange={() => {
+                      setValues((prevValues) => ({
+                        ...prevValues,
+                        inclinacionOptima: !values.inclinacionOptima,
+                      }))
+                    }}
+                  />
+                  {t('Inclinacion PVGIS optimo')}
+                </FormLabel>
+              )}
 
-              {values.roofType !== 'Optimos' && (
+              {!values.inclinacionOptima && (
                 <>
                   <Box
                     sx={{
@@ -444,7 +461,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                         flexDirection: 'column',
                       }}
                     >
-                      <SLDRInputField
+                      {/* <SLDRInputField
                         name="inAcimut"
                         type="text"
                         unit=" º"
@@ -452,13 +469,13 @@ export default function DialogBaseSolar({ data, onClose }) {
                         value={values.inAcimut}
                         onBlur={(event) => changeAzimut(event, setValues, values)}
                         sx={{ flex: 1 }}
-                      />
+                      /> */}
                     </Box>
                   </Box>
                 </>
               )}
 
-              {values.roofType === 'Optimos' && (
+              {/* {values.roofType === 'Optimos' && (
                 <>
                   <Box sx={{ mt: '1rem' }}>
                     <Typography variant="body">
@@ -466,7 +483,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                     </Typography>
                   </Box>
                 </>
-              )}
+              )} */}
             </Box>
           </DialogContent>
           <DialogActions sx={{ mt: '1rem' }}>
