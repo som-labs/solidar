@@ -27,7 +27,7 @@ import * as UTIL from '../classes/Utiles'
 export default function DialogBaseSolar({ data, onClose }) {
   const { t, i18n } = useTranslation()
   const ndxPanel = useRef(-1)
-  const [tipoPanel, setTipoPanel] = useState(TCB.tipoPanelActivo)
+  //const [tipoPanel, setTipoPanel] = useState(TCB.tipoPanelActivo)
 
   const tecnologias = [
     { value: 'crystSi', text: 'Crystaline silicon' },
@@ -36,10 +36,10 @@ export default function DialogBaseSolar({ data, onClose }) {
     { value: 'Unknown', text: t('Instalacion.LABEL_tecnologiaDesconocida') },
   ]
 
-  useEffect(() => {
-    //setNdxPanel(0)
-    setTipoPanel(data)
-  }, [])
+  // useEffect(() => {
+  //   //setNdxPanel(0)
+  //   //setTipoPanel(data)
+  // }, [])
 
   function cambiaTipoPanel(event, values, setValues) {
     const newValues = TCB.tipoPaneles[event.target.value]
