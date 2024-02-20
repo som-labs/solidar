@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
-import html2canvas from 'html2canvas'
 
 // OpenLayers objects
 import { Map, View } from 'ol'
@@ -10,17 +9,19 @@ import { OSM, Vector as VectorSource, XYZ } from 'ol/source'
 import { Style, Fill, Stroke } from 'ol/style'
 import VectorLayer from 'ol/layer/Vector'
 import Feature from 'ol/Feature'
-import { Point, LineString, Polygon } from 'ol/geom'
+import { Point, Polygon } from 'ol/geom'
 import { transform, fromLonLat } from 'ol/proj'
 import { Draw } from 'ol/interaction'
 import { getArea, getDistance } from 'ol/sphere.js'
 
 // MUI objects
-import { Button, Tooltip, Typography, Box } from '@mui/material'
+import { Button, Tooltip, Typography, Box, IconButton, Container } from '@mui/material'
+import HelpIcon from '@mui/icons-material/HelpOutlineRounded.js'
 
 //React global components
 import { BasesContext } from '../BasesContext'
 import DialogBaseSolar from './DialogBaseSolar'
+import HelpAvailableAreas from './HelpAvailableAreas.jsx'
 import { useDialog } from '../../components/DialogProvider'
 import { AlertContext } from '../components/Alert'
 
@@ -139,7 +140,7 @@ export default function MapComponent() {
 
     if (vertices.length === 2) {
       output = t('LOCATION.TOOLTIP_CUMBRERA', {
-        cumbrera: UTIL.formatoValor('longitud', Math.round(cumbrera)),
+        cumbrera: UTIL.formatoValor('longitud', cumbrera),
       })
     } else {
       const start = transform(vertices[1], 'EPSG:3857', 'EPSG:4326')
@@ -454,15 +455,52 @@ export default function MapComponent() {
     window.open('https://earth.google.com/web/search/' + lat + ',' + lon + '/', '_blank')
   }
 
+  function help(level) {
+    openDialog({
+      children: <HelpAvailableAreas level={level}></HelpAvailableAreas>,
+    })
+  }
+
   return (
-    <>
-      <Box sx={{ mt: '1rem', ml: '1rem' }}>
+    <Container>
+      {/* REVISAR: Icono causa agrandar interlineado */}
+      <Box>
+        <Typography variant="body">{t('LOCATION.PROMPT_DISPONIBLE')}</Typography>
+        <IconButton
+          onClick={() => help(1)}
+          size="small"
+          style={{
+            fontSize: 'inherit',
+            verticalAlign: 'text-center',
+            transform: 'scale(0.8)',
+          }}
+        >
+          <HelpIcon />
+        </IconButton>
+      </Box>
+      <Box>
         <Typography
           variant="body"
           dangerouslySetInnerHTML={{
-            __html: t('LOCATION.PROMPT_DRAW'),
+            __html: t('LOCATION.PROMPT_SOMBRAS'),
           }}
         />
+      </Box>
+      <Box>
+        <Typography variant="body" style={{ lineHeight: 'inherit' }}>
+          {t('LOCATION.PROMPT_DRAW')}
+        </Typography>
+        <IconButton
+          onClick={() => help(2)}
+          size="small"
+          style={{
+            fontSize: 'inherit',
+            verticalAlign: 'text-center',
+            transform: 'scale(0.8)',
+          }}
+        >
+          <HelpIcon />
+        </IconButton>
       </Box>
       {/* El mapa */}
       <div
@@ -499,6 +537,6 @@ export default function MapComponent() {
       <Button variant="contained" size="large" onClick={openGoogleEarth}>
         {t('LOCATION.LABLE_GOOGLE_EARTH')}
       </Button>
-    </>
+    </Container>
   )
 }

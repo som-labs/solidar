@@ -50,16 +50,16 @@ BaseSolar:
   NAME: Base solar
   PROP:
     roofType: Tipo de montaje
-    nombreBaseSolar: Nombre de la base solar
+    nombreBaseSolar: Nombre del área
     angulosOptimos: Angulos óptimos
     inclinacion: Inclinación
     inclinacionTejado: Inclinación del tejado
     inclinacionPaneles: Inclinación de los paneles
     inclinacionOptima: Inclinación óptima
-    inAcimut: Orientación al sur (Acimut)
-    areaReal: Area disponible
-    panelesMaximo: Max. Paneles
-    potenciaMaxima: Max. kWp
+    inAcimut: Orientación
+    areaReal: Superficie disponible
+    panelesMaximo: Núm. de paneles máximos
+    potenciaMaxima: Potencia máxima
     anchoReal: Longitud transversal
     cumbrera: Longitud cumbrera
     columnas: Max. paneles columna
@@ -300,14 +300,14 @@ LOCATION:
     A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.<br />
     Su rendimiento se calculará a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).<br />
 
-  DESCRIPTION_ADDRESS: En este campo puedes introducir un localizador (region, ciudad, dirección) que te permitirá posicionar el mapa en la zona de trabajo deseada.
+  DESCRIPTION_ADDRESS: Indica tu dirección a través del localizador o bien navega por el mapa para identificarla.
   PROMPT_ADDRESS: Buscar lugar o dirección
   PROMPT_CANDIDATE: Seleccione la dirección que corresponda de la lista
   TOOLTIP_ADDRESS: A medida que escribas tendrás candidatos para seleccionar
 
-  PROMPT_DRAW: |
-    Dibuja en el mapa las áreas disponibles del edificio. En caso de alternativas, puedes dibujar tantas áreas como quieras. El sistema distribuirá los paneles de la forma mas eficiente.<br />
-    En caso de instalación coplanar en tejado inclinado, los dos primeros puntos serán considerados la cumbrera (la parte alta del tejado)
+  PROMPT_DISPONIBLE: Dibuja en el mapa las áreas disponibles del edificio. En caso de alternativas, puedes dibujar tantas áreas como quieras. El sistema distribuirá los paneles de la forma mas eficiente.
+  PROMPT_SOMBRAS: Es <strong>IMPORTANTE</strong> tener en cuenta que Solidar <strong>no incorpora el estudio de posibles sombras</strong>❓ que puedan afectar al rendimiento de la instalación propuesta.
+  PROMPT_DRAW: Si tu cubierta es inclinada, los dos primeros puntos que marques serán considerados la parte alta del tejado.
   PROMPT_INICIO_CUMBRERA: Dibujaremos cumbrera
   PROMPT_CUMBRERA: Dibujando cumbrera
   PROMPT_ANCHO: Dibujando ancho
@@ -340,13 +340,20 @@ LOCATION:
       <p><b><span>Orientación (Acimut)</span></b>: es el ángulo con el que los paneles se orientan con respecto al sur (0º). Este ángulo es -90º en una orientación pura al este y 90º en orientación oeste. Para ayudarte a calcularlo puedes posicionarte en el campo <i class='fa fa-compass'></i> y ayudarte con el rumbo en el mapa indicando la orientación de los paneles. Si no lo sabes utiliza la opción <b>Angulos óptimos</b>. 
       <p>En el caso de multiples bases candidatas para instalar paneles es importante definir el acimut de cada una de ellas por separado ya que el sistema utilizará las bases con mayor rendimiento para asignar los paneles</p>
     POST_TABLA: <p>Con estos datos el sistema se conectará con el servidor PVGIS para obtener los datos concretos de cada base y pasaremos a la ventana que nos permitirá definir los consumos
+  HELP:
+    TITLE: ¿Cuáles son mis áreas disponibles?
+    CUALES: |
+      Las áreas disponibles son aquellas en las que se pueden instalar placas solares. Hay que descontar del área disponible las chimeneas, antenas, salidas de humo o cualquier otro elemento que ocupe espacio en la cubierta.
+    CUALES_1: 1. Área total de cubierta
+    CUALES_2: 2. Áreas disponibles
+    DOS_AGUAS: Si tienes un tejado a dos o más aguas, deberás seleccionar cada parte del tejado como diferentes áreas. La inclinación puede ser distinta en cada parte. Cada parte inclinada puede tener una posición respecto al sur distinta.
 
   TITLE_DIALOG_NEW_BASE: Nueva base solar
   HORIZONTAL_ROOF: En el caso de tejado horizontal te propondremos el ángulo óptimo de  los paneles al finalizar el cálculo.
   ERROR_COPLANAR_NOANGLE: 'Instalación coplanar con tejado a 0º de inclinación?'
 
   LABEL_BASES_SUMMARY: Resumen
-  PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
+  PROMPT_BASES_SUMMARY: Recuerda que puedes indicar diferentes áreas disponibles y que cada una de ellas puede tener una orientación respecto al sur distinta. Revisa que los datos del resumen son correctos.
   ERROR_DEFINE_BASE: Debe definir las bases solares antes de continuar
   MSG_AREA_TOTAL: |
     Area total disponible en esta configuración: {{areaTotal}} <br />
@@ -354,8 +361,8 @@ LOCATION:
   ERROR_tryError: Error ejecutando fecth en Nominatim.\n {{err}}
   ERROR_countryFailure: La aplicación solo es valida para España. Detectado {{message}}
   ERROR_noSameTerritory: Todas las bases deben estar en el mismo territorio.
-  TOOLTIP_BORRA_BASE: Borra la base seleccionada
-  TOOLTIP_EDITA_BASE: Modifica la base seleccionada
+  TOOLTIP_BORRA_BASE: Borra el área seleccionada
+  TOOLTIP_EDITA_BASE: Modifica el área seleccionada
 
   posicionLonLat_LBL: Long-Lat
   posicionLonLat_TT: No hace falta rellenar este campo solo se utiliza para centrar el mapa en estas coordenadas
