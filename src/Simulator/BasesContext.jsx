@@ -60,15 +60,14 @@ const BasesContextProvider = ({ children }) => {
   }
 
   function computeCoplanarAcimut(formData, center, area) {
-    console.log('IN', formData)
     const puntos = area.getCoordinates()[0]
     let acimut = parseInt(
       (Math.atan2(puntos[1][0] - puntos[2][0], puntos[1][1] - puntos[2][1]) * 180) /
         Math.PI,
     )
 
-    let midPoint = [0, 0]
-    const puntoAplicacion = center.getCoordinates()
+    // let midPoint = [0, 0]
+    // const puntoAplicacion = center.getCoordinates()
 
     // let start, end
     // // First two points defines cumbrera
@@ -80,12 +79,7 @@ const BasesContextProvider = ({ children }) => {
     // end = transform(puntos[2], 'EPSG:3857', 'EPSG:4326')
     // const ancho = getDistance(start, end)
 
-    const anchoReal = formData.ancho / Math.cos((formData.inclinacion * Math.PI) / 180)
-    const { columnas, filas, modoInstalacion } = configuraPaneles(
-      formData.cumbrera,
-      anchoReal,
-      0,
-    )
+    const { columnas, filas, modoInstalacion } = BaseSolar.configuraPaneles(formData)
 
     // midPoint[0] = puntos[2][0] + (puntos[3][0] - puntos[2][0]) / 2
     // midPoint[1] = puntos[2][1] + (puntos[3][1] - puntos[2][1]) / 2
@@ -110,7 +104,6 @@ const BasesContextProvider = ({ children }) => {
     // TCB.origenDatosSolidar.addFeature(acimutLine)
 
     return {
-      anchoReal: anchoReal,
       columnas: columnas,
       filas: filas,
       modoInstalacion: modoInstalacion,
@@ -118,119 +111,61 @@ const BasesContextProvider = ({ children }) => {
     }
   }
 
-  function computeHorizontalAcimut(formData, center, area) {
+  function computeAcimut(formData, center, area) {
+    let acimut
     const puntos = area.getCoordinates()[0]
-    let acimutCumbrera =
-      (Math.atan2(puntos[0][0] - puntos[1][0], puntos[0][1] - puntos[1][1]) * 180) /
-      Math.PI
-    let acimutAncho = acimutCumbrera < 90 ? acimutCumbrera + 90 : acimutCumbrera - 90
-    console.log(acimutCumbrera, acimutAncho)
 
-    let finalAcimutCumbrera
-    if (Math.abs(acimutCumbrera) >= 90) {
-      finalAcimutCumbrera =
-        acimutCumbrera < 0 ? acimutCumbrera + 180 : acimutCumbrera - 180
+    if (formData.roofType === 'Coplanar') {
+      acimut = parseInt(
+        (Math.atan2(puntos[1][0] - puntos[2][0], puntos[1][1] - puntos[2][1]) * 180) /
+          Math.PI,
+      )
     } else {
-      finalAcimutCumbrera = acimutCumbrera
-    }
+      let acimutCumbrera =
+        (Math.atan2(puntos[0][0] - puntos[1][0], puntos[0][1] - puntos[1][1]) * 180) /
+        Math.PI
+      let acimutAncho = acimutCumbrera < 90 ? acimutCumbrera + 90 : acimutCumbrera - 90
 
-    let finalAcimutAncho
+      console.log('REAL ACIMUTS', acimutCumbrera, acimutAncho)
 
-    if (Math.abs(acimutAncho) >= 90) {
-      finalAcimutAncho = acimutAncho < 0 ? acimutAncho + 180 : acimutAncho - 180
-    } else {
-      finalAcimutAncho = acimutAncho
-    }
-
-    console.log(finalAcimutCumbrera, finalAcimutAncho)
-
-    const { cumbrera, ancho, inclinacion } = formData
-    const A = configuraPaneles(cumbrera, ancho, inclinacion, formData.lonlatBaseSolar)
-    console.log(A, finalAcimutAncho, getPVGIS(finalAcimutAncho))
-
-    const B = configuraPaneles(ancho, cumbrera, inclinacion, formData.lonlatBaseSolar)
-    console.log(B, finalAcimutCumbrera, getPVGIS(finalAcimutCumbrera))
-    let acimutData
-    if (
-      A.filas * A.columnas * getPVGIS(finalAcimutAncho) >
-      B.filas * B.columnas * getPVGIS(finalAcimutCumbrera)
-    ) {
-      acimutData = {
-        columnas: A.columnas,
-        filas: A.filas,
-        modoInstalacion: A.modoInstalacion,
-        inAcimut: finalAcimutAncho,
+      let finalAcimutCumbrera
+      if (Math.abs(acimutCumbrera) >= 90) {
+        finalAcimutCumbrera =
+          acimutCumbrera < 0 ? acimutCumbrera + 180 : acimutCumbrera - 180
+      } else {
+        finalAcimutCumbrera = acimutCumbrera
       }
-    } else {
-      acimutData = {
-        columnas: B.columnas,
-        filas: B.filas,
-        modoInstalacion: B.modoInstalacion,
-        inAcimut: finalAcimutCumbrera,
+
+      let finalAcimutAncho
+      if (Math.abs(acimutAncho) >= 90) {
+        finalAcimutAncho = acimutAncho < 0 ? acimutAncho + 180 : acimutAncho - 180
+      } else {
+        finalAcimutAncho = acimutAncho
+      }
+
+      console.log('FINAL ACIMUTS', finalAcimutCumbrera, finalAcimutAncho)
+
+      const A = BaseSolar.configuraPaneles(formData)
+      console.log('OPTION ANCHO', A, finalAcimutAncho, getPVGIS(finalAcimutAncho))
+
+      const B = BaseSolar.configuraPaneles(formData)
+      console.log(
+        'OPTION CUMBRERA',
+        B,
+        finalAcimutCumbrera,
+        getPVGIS(finalAcimutCumbrera),
+      )
+
+      if (
+        A.filas * A.columnas * getPVGIS(finalAcimutAncho) >
+        B.filas * B.columnas * getPVGIS(finalAcimutCumbrera)
+      ) {
+        acimut = finalAcimutAncho
+      } else {
+        acimut = finalAcimutCumbrera
       }
     }
-    return acimutData
-  }
-
-  function configuraPaneles(cumbrera, ancho, inclinacion, lonlat) {
-    let hColumnas
-    let hFilas
-    let vColumnas
-    let vFilas
-    let hGap
-    let vGap
-    let config = {}
-
-    if (inclinacion === 0) {
-      // Opcion largo panel paralelo a cumbrera
-      hColumnas = Math.trunc(
-        (cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
-      )
-      hFilas = Math.trunc((ancho - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho)
-
-      // Opcion largo panel perpendicular a cumbrera
-      vColumnas = Math.trunc(
-        (cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
-      )
-      vFilas = Math.trunc((ancho - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo)
-      // Elegimos la configuracion que nos permite mas paneles
-    } else {
-      //Caso tejado horizontal u optimo
-      const latitud = parseFloat(lonlat.split(',')[1])
-      // Opcion largo panel paralelo a la cumbrera
-      hGap =
-        TCB.tipoPanelActivo.ancho * Math.cos((inclinacion * Math.PI) / 180) +
-        (TCB.tipoPanelActivo.ancho * Math.sin((inclinacion * Math.PI) / 180)) /
-          Math.tan(((61 - latitud) * Math.PI) / 180)
-      hColumnas = Math.trunc(
-        (cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
-      )
-      hFilas = Math.trunc((ancho - 2 * TCB.parametros.margen) / hGap)
-      //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
-      hFilas = hFilas === 0 ? 1 : hFilas
-
-      //console.log(hGap, hColumnas, hFilas)
-      // Opcion largo panel perpendicular a cumpbrera
-      vGap =
-        TCB.tipoPanelActivo.largo * Math.cos((inclinacion * Math.PI) / 180) +
-        (TCB.tipoPanelActivo.largo * Math.sin((inclinacion * Math.PI) / 180)) /
-          Math.tan(((61 - latitud) * Math.PI) / 180)
-      vColumnas = Math.trunc(
-        (cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
-      )
-      vFilas = Math.trunc((ancho - 2 * TCB.parametros.margen) / vGap)
-      //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
-      vFilas = vFilas === 0 ? 1 : vFilas
-    }
-
-    if (hColumnas * hFilas > vColumnas * vFilas) {
-      config = { columnas: hColumnas, filas: hFilas, modoInstalacion: 'Horizontal' }
-    } else {
-      config = { columnas: vColumnas, filas: vFilas, modoInstalacion: 'Vertical' }
-    }
-
-    UTIL.debugLog('Configuración', config)
-    return config
+    return acimut
   }
 
   function getPVGIS(acimut) {
@@ -249,10 +184,11 @@ const BasesContextProvider = ({ children }) => {
         (Math.abs(acimut) - PV[i].desde)
     )
   }
+
   //Function to be executed at closeDialog del DialogNewBaseSolar. Is here because can be used as exit of DailogNewBaseSolar from BasesSuammry as edit and from MapComponent as new.
   function processFormData(reason, formData) {
-    console.log(typeof formData, formData)
     //Update openlayers label with nombreBaseSolar
+    console.log('FROM DIALOG', formData)
     const labelFeatId = 'BaseSolar.label.' + formData.idBaseSolar
     const labelFeature = TCB.origenDatosSolidar.getFeatureById(labelFeatId)
     UTIL.setLabel(
@@ -262,24 +198,36 @@ const BasesContextProvider = ({ children }) => {
       TCB.baseLabelBGColor,
     )
 
-    //Will compute acimut
+    //Update ancho based on inclinacion in case of rooftype coplanar
+    if (formData.roofType === 'Coplanar') {
+      formData.anchoReal =
+        formData.ancho / Math.cos((formData.inclinacion * Math.PI) / 180)
+    } else {
+      formData.anchoReal = formData.ancho
+      /*In order to compute panels configuration based on shadows we need to have a aproximate angle.
+      when asked to PVGIS for Spain  get an average of 35º will be used to avoid big configuration changes between 
+      now and BalanceEnergia when final optimal tilt will be gotten. */
+      if (formData.inclinacionOptima) formData.inclinacion = 35
+    }
+    formData.areaReal = formData.cumbrera * formData.anchoReal
+    console.log('CONVERTED TO REAL', formData)
+
+    //Will compute acimut in case it is a new base
     const centerPoint = labelFeature.getGeometry()
     const areaComponent = 'BaseSolar.area.' + formData.idBaseSolar
     const areaShape = TCB.origenDatosSolidar.getFeatureById(areaComponent).getGeometry()
-
-    let acimutData
-    if (formData.roofType === 'Coplanar') {
-      acimutData = computeCoplanarAcimut(formData, centerPoint, areaShape)
-      formData = Object.assign({}, formData, acimutData)
+    if (reason === 'save') {
+      formData.inAcimut = computeAcimut(formData, centerPoint, areaShape)
+      console.log('CON ACIMUT DATA', formData)
     } else {
-      acimutData = computeHorizontalAcimut(formData, centerPoint, areaShape)
-      formData = Object.assign({}, formData, acimutData)
+      console.log('estamos editando por ahora no hay cambio de acimut desde dialogo')
     }
+    formData = Object.assign({}, formData, BaseSolar.configuraPaneles(formData))
+    console.log('CON CONFIGURACION DATA', formData)
+
+    //Will draw acimut line
     const puntoAplicacion = centerPoint.getCoordinates()
     let midPoint = []
-    console.log(puntoAplicacion[0], -30 * Math.sin((formData.inAcimut / 180) * Math.PI))
-    console.log(puntoAplicacion[1], -30 * Math.cos((formData.inAcimut / 180) * Math.PI))
-
     midPoint[0] = puntoAplicacion[0] - 30 * Math.sin((formData.inAcimut / 180) * Math.PI)
     midPoint[1] = puntoAplicacion[1] - 30 * Math.cos((formData.inAcimut / 180) * Math.PI)
     const geomAcimut = new LineString([puntoAplicacion, midPoint])
@@ -290,9 +238,10 @@ const BasesContextProvider = ({ children }) => {
     acimutLine.setStyle(null)
     TCB.origenDatosSolidar.addFeature(acimutLine)
 
-    console.log('TOCREATE', formData)
+    console.log('TO CREATE UPDATE', formData)
     //Update or create a TCB.BaseSolar with formData
     let baseIndex
+
     if (reason === 'save') {
       // We are creating a new base
       baseIndex = TCB.BaseSolar.push(new BaseSolar(formData)) - 1

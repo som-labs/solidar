@@ -450,9 +450,11 @@ export default function DialogBaseSolar({ data, onClose }) {
                       </Field>
                     )}
                           */}
+                    {/*
                     <Typography variant="body" sx={{ mb: '1rem', mt: '1rem' }}>
                       {t('BaseSolar.DESCRIPTION.inAcimut')}
                     </Typography>
+
                     <Box
                       style={{
                         display: 'flex',
@@ -461,7 +463,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                         flexDirection: 'column',
                       }}
                     >
-                      {/* <SLDRInputField
+                       <SLDRInputField
                         name="inAcimut"
                         type="text"
                         unit=" º"
@@ -469,8 +471,8 @@ export default function DialogBaseSolar({ data, onClose }) {
                         value={values.inAcimut}
                         onBlur={(event) => changeAzimut(event, setValues, values)}
                         sx={{ flex: 1 }}
-                      /> */}
-                    </Box>
+                      /> 
+                    </Box>*/}
                   </Box>
                 </>
               )}

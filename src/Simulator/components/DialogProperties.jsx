@@ -37,7 +37,6 @@ export default function DialogProperties({ data, onClose }) {
               {/* Object row */}
               <Grid
                 container
-                xs={12}
                 key={objName}
                 alignItems="center"
                 justifyContent="center"
