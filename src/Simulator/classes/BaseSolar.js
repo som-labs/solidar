@@ -21,7 +21,7 @@ class BaseSolar extends DiaHora {
         enumerable: true,
         set(angulo) {
           this.#inclinacion = angulo
-          BaseSolar.configuraInclinacion(this)
+          //BaseSolar.configuraPaneles(this)
         },
         get() {
           return this.#inclinacion
@@ -113,6 +113,74 @@ class BaseSolar extends DiaHora {
     this.rendimiento = new Rendimiento(this)
   }
 
+  static configuraPaneles(area) {
+    let hColumnas
+    let hFilas
+    let vColumnas
+    let vFilas
+    let hGap
+    let vGap
+    let config = {}
+
+    console.log('IN CONFIGURA PANELES', area)
+    const { roofType, cumbrera, anchoReal, inclinacion, lonlatBaseSolar } = area
+
+    if (roofType === 'Coplanar') {
+      // Opcion largo panel paralelo a cumbrera
+      hColumnas = Math.trunc(
+        (cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
+      )
+      hFilas = Math.trunc(
+        (anchoReal - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
+      )
+
+      // Opcion largo panel perpendicular a cumbrera
+      vColumnas = Math.trunc(
+        (cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
+      )
+      vFilas = Math.trunc(
+        (anchoReal - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
+      )
+      // Elegimos la configuracion que nos permite mas paneles
+    } else {
+      //Caso tejado horizontal u optimo
+      const latitud = parseFloat(lonlatBaseSolar.split(',')[1])
+      // Opcion largo panel paralelo a la cumbrera
+      hGap =
+        TCB.tipoPanelActivo.ancho * Math.cos((inclinacion * Math.PI) / 180) +
+        (TCB.tipoPanelActivo.ancho * Math.sin((inclinacion * Math.PI) / 180)) /
+          Math.tan(((61 - latitud) * Math.PI) / 180)
+      hColumnas = Math.trunc(
+        (cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
+      )
+      hFilas = Math.trunc((anchoReal - 2 * TCB.parametros.margen) / hGap)
+      //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
+      hFilas = hFilas === 0 ? 1 : hFilas
+
+      //console.log(hGap, hColumnas, hFilas)
+      // Opcion largo panel perpendicular a cumpbrera
+      vGap =
+        TCB.tipoPanelActivo.largo * Math.cos((inclinacion * Math.PI) / 180) +
+        (TCB.tipoPanelActivo.largo * Math.sin((inclinacion * Math.PI) / 180)) /
+          Math.tan(((61 - latitud) * Math.PI) / 180)
+      vColumnas = Math.trunc(
+        (cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
+      )
+      vFilas = Math.trunc((anchoReal - 2 * TCB.parametros.margen) / vGap)
+      //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
+      vFilas = vFilas === 0 ? 1 : vFilas
+    }
+
+    if (hColumnas * hFilas > vColumnas * vFilas) {
+      config = { columnas: hColumnas, filas: hFilas, modoInstalacion: 'Horizontal' }
+    } else {
+      config = { columnas: vColumnas, filas: vFilas, modoInstalacion: 'Vertical' }
+    }
+
+    UTIL.debugLog('Configuración', config)
+    return config
+  }
+
   static configuraInclinacion(aThis) {
     let hColumnas
     let hFilas
@@ -141,6 +209,7 @@ class BaseSolar extends DiaHora {
     } else {
       //Caso tejado horizontal u optimo
       const latitud = parseFloat(aThis.lonlatBaseSolar.split(',')[1])
+      console.log(latitud)
       // Opcion largo panel paralelo a la cumbrera
       hGap =
         TCB.tipoPanelActivo.ancho * Math.cos((aThis.inclinacion * Math.PI) / 180) +
