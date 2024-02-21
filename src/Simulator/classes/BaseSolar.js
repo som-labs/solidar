@@ -31,6 +31,7 @@ class BaseSolar extends DiaHora {
         enumerable: true,
         set(valor) {}, //Esta aqui para evitar error al intentar set desde update
         get() {
+          console.log(TCB.tipoPanelActivo.potencia)
           return this.columnas * this.filas * TCB.tipoPanelActivo.potencia
         },
       },

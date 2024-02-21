@@ -32,7 +32,6 @@ export default function PanelsSelector() {
   function endDialog(reason, formData) {
     if (reason === 'save') {
       setTipo(formData)
-
       //If we are changing panel technology need to update PVGIS data for existing bases
       if (TCB.tipoPanelActivo.tecnologia !== formData.tecnologia) {
         TCB.tipoPanelActivo.tecnologia = formData.tecnologia
@@ -43,7 +42,7 @@ export default function PanelsSelector() {
 
       //If the panel peak power has changes optimizer has to be executed
       if (TCB.tipoPanelActivo.potencia !== formData.potencia) {
-        TCB.tipoPanelActivo.potencia = formData.potencia
+        TCB.tipoPanelActivo.potencia = UTIL.returnFloat(formData.potencia)
         TCB.requiereOptimizador = true
       }
 
@@ -52,15 +51,14 @@ export default function PanelsSelector() {
         TCB.tipoPanelActivo.ancho !== formData.ancho ||
         TCB.tipoPanelActivo.largo !== formData.largo
       ) {
-        TCB.tipoPanelActivo.ancho = formData.ancho
-        TCB.tipoPanelActivo.largo = formData.largo
+        TCB.tipoPanelActivo.ancho = UTIL.returnFloat(formData.ancho)
+        TCB.tipoPanelActivo.largo = UTIL.returnFloat(formData.largo)
         TCB.BaseSolar.forEach((base) => {
           base.configuraInclinacion()
         })
         TCB.requiereOptimizador = true
       }
     }
-
     closeDialog()
   }
 

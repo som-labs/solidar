@@ -139,10 +139,12 @@ export default function InstallationSummary() {
     })
   }
 
+  //REVISAR: porque no se hace mas ancha la fila del footer con el height del sx
   function footerSummary() {
     return (
-      <SLDRFooterBox sx={{ flexDirection: 'row' }}>
-        <div style={{ flex: '0 0 250px' }} /> {/* Placeholder for ID column */}
+      <SLDRFooterBox sx={{ flexDirection: 'row', height: '36px' }}>
+        <div style={{ flex: '0 0 250px' }} />
+        {/* Placeholder for ID column */}
         <div style={{ flex: '0.5', textAlign: 'center' }}>
           <strong>
             {bases.reduce((sum, tBase) => sum + parseInt(tBase.paneles), 0)}
@@ -250,7 +252,9 @@ export default function InstallationSummary() {
     >
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="body">{t('Tabla bases asignadas')}</Typography>
+          <Typography variant="h5" sx={{ textAlign: 'center' }}>
+            {t('Tabla bases asignadas')}
+          </Typography>
         </Grid>
         <Grid item xs={12}>
           <DataGrid
@@ -258,6 +262,7 @@ export default function InstallationSummary() {
             rows={bases}
             columns={columns}
             hideFooter={false}
+            rowHeight={30}
             autoHeight
             disableColumnMenu
             onCellEditStop={(params, event) => {
