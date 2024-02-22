@@ -58,7 +58,7 @@ BaseSolar:
     inclinacionOptima: Inclinación óptima
     inAcimut: Orientación
     areaReal: Superficie disponible
-    panelesMaximo: Núm. de paneles máximos
+    panelesMaximo: Número de paneles máximo
     potenciaMaxima: Potencia máxima
     anchoReal: Longitud transversal
     cumbrera: Longitud cumbrera
@@ -78,23 +78,23 @@ BaseSolar:
     potenciaMaxima: Máxima potencia pico a instalar en esta base en funcion de la superficie disponible (Ver parametro de conversión)
     lonlatBaseSolar: Coordenadas geográficas de la base
   DESCRIPTION:
-    roofType: Indicanos cúal es la configuracion de tu tejado<br />
-    nombreBaseSolar: En caso de que exista mas de un área donde instalar los paneles solares es bueno identificar cada una de ellas con un nombre
-    angulosOptimos: En este caso la aplicación te propondrá la mejor orientación geográfica (acimut) e inclinación de los paneles de modo que se obtenga el máximo rendimiento de la instalación.
+    roofType: Indica qué tipo de cubierta tienes
+    nombreBaseSolar: Ponle un nombre a tu área disponible
+    angulosOptimos: En este caso la aplicación te propondrá la mejor  inclinación de los paneles de modo que se obtenga el máximo rendimiento de la instalación.
     inclinacionTejado: Indicanos la inclinación del tejado donde se montarán los paneles medida con respecto a la horizontal del terreno.
-    inclinacionPaneles: Indicanos la inclinación de los paneles medida con respecto a la horizontal del terreno. Puedes seleccionar la opción Optima si quieres que el sistema lo calcule por ti.
+    inclinacionPaneles: Indicanos la inclinación de los paneles medida con respecto a la cubierta.
     inAcimut: Debes indicar la orientación que tendrán los paneles con respecto al sur geográfico. La primera propuesta la hace la aplicación en base al area que has dibujado pero la puedes cambiar en este campo.
-    inclinacionOptima: Marque este campo si desea que el sistema calcule el valor óptimo de la inclinación de los paneles
+    inclinacionOptima: Marca este campo si deseas que el sistema calcule el valor óptimo
 
 TipoConsumo:
   NAME: Tipo de consumo
   PROP:
     idTipoConsumo: id
-    nombreTipoConsumo: Nombre
+    nombreTipoConsumo: Tipo de uso eléctrico
     fuente: Fuente
-    nombreFicheroCSV: Nombre fichero fuente
+    nombreFicheroCSV: Nombre del fichero
     consumoAnualREE: Consumo anual REE
-    cTotalAnual: Consumo anual
+    cTotalAnual: Uso anual eléctrico
   TOOLTIP:
     nombreTipoConsumo: Identique el nombre de este consumo para futuras referencias
     fuente: Seleccione el tipo de fuente desde donde se cargará el perfil de consumo
@@ -102,8 +102,38 @@ TipoConsumo:
     consumoAnualREE: En caso de optar por el perfil tipo REE debe indicar el consumo anual estimado en kWh
     cTotalAnual: Consumo eléctrico anual
 
-  DESCRIPTION_fuente: "Existen tres formas de proveer la información del perfil de consumo <li>CSV-> un fichero con valores separados por punto y coma obtenido desde la web de tu empresa distribuidora.<a href='./datos/Guias publicadas/Enlaces para descarga CSV individual.htm 'target='_blank'> Ver instrucciones aquí </a></li><li>REE-> utilizando el perfil estandar de REE según <a href='https//www.ree.es/es/clientes/generador/gestion-medidas-electricas/consulta-perfiles-de-consumo' target='_blank'> perfiles finales de consumo a partir de los perfiles iniciales en función de la demanda real del sistema</a> y el consumo anual estimado de la instalación</li><li>DATADIS-> un fichero obtenido de la plataforma de las empresas distribuidoras llamada <a href: 'https: //datadis.es/home' target='_blank'>DATADIS</a></li><p>Debes elegir una u otra según la información que dispongas.</p>"
-
+  DESCRIPTION_fuente_original: |
+    "Existen tres formas de proveer la información del perfil de consumo <li>CSV-> un fichero con valores separados por punto y coma obtenido desde la web de tu empresa distribuidora.<a href='./datos/Guias publicadas/Enlaces para descarga CSV individual.htm 'target='_blank'> Ver instrucciones aquí </a></li><li>REE-> utilizando el perfil estandar de REE según <a href='https//www.ree.es/es/clientes/generador/gestion-medidas-electricas/consulta-perfiles-de-consumo' target='_blank'> perfiles finales de consumo a partir de los perfiles iniciales en función de la demanda real del sistema</a> y el consumo anual estimado de la instalación</li><li>DATADIS-> un fichero obtenido de la plataforma de las empresas distribuidoras llamada <a href: 'https: //datadis.es/home' target='_blank'>DATADIS</a></li><p>Debes elegir una u otra según la información que dispongas.</p>"
+  DESCRIPTION_fuente_final: |
+    Existen diferentes formas de obtener la información referente al uso eléctrico anual:<br />
+    Curvas  de uso de energía a través de un fichero con información horaria de tu uso real.<br />
+    Si tu contrato está activo en Som Energia puedes descargar el <strong>fichero CSV</strong> a través de tu <a href='https://oficinavirtual.somenergia.coop/es/'>Oficina Virtual.</a> Tienes las instrucciones en el siguiente enlace: <a href='https://es.support.somenergia.coop/article/942--las-curvas-horarias-de-uso-de-energia'>Las curvas horarias de Som Energia</a><br /><br />
+    Empresa de distribución eléctrica: <a href='./datos/Guias publicadas/Enlaces para descarga CSV individual.htm 'target='_blank'>En este enlace </a>puedes encontrar las instrucciones para descargar el fichero CSV de las siguientes compañías de distribución eléctrica:
+    <ul>
+    <li>E-Distribución Redes Digitales- Endesa distribución</li>
+    <li>I-DE Redes Eléctricas Inteligentes- Iberdrola distribución</li>
+    <li>Unión Fenosa Distribución- Grupo Naturgy</li>
+    <li>E-Redes Distribución Eléctrica- Empresa distribuidora del grupo EDP</li>
+    <li>Viesgo Distribución- Cantábrico</li>
+    </ul>
+    DATADIS: se trata de una plataforma creada por las empresas de distribución eléctrica para simplificar el acceso a los datos. <a href: 'https: //datadis.es/home' target='_blank'>Tienes las instrucciones aquí.</a><br />
+    Consumo anual informado mediante tu factura eléctrica
+    REE: mediante tu uso de energía anual Red Eléctrica Española tiene definido un perfil de usuario estandarizado que se usará como modelo.<br />
+    Elige una u otra opción según la información que dispongas.
+  DESCRIPTION_fuente: |
+    Existen diferentes formas de obtener la información referente al uso eléctrico anual:<br />
+    Curvas  de uso de energía a través de un fichero con información horaria de tu uso real.<br />
+    <u><strong>Empresa de distribución eléctrica (CSV):</strong></u> <a href='./datos/Guias publicadas/Enlaces para descarga CSV individual.htm 'target='_blank'>En este enlace </a>puedes encontrar las instrucciones para descargar el fichero CSV de las siguientes compañías de distribución eléctrica:
+    <ul>
+    <li>E-Distribución Redes Digitales- Endesa distribución</li>
+    <li>I-DE Redes Eléctricas Inteligentes- Iberdrola distribución</li>
+    <li>Unión Fenosa Distribución- Grupo Naturgy</li>
+    <li>E-Redes Distribución Eléctrica- Empresa distribuidora del grupo EDP</li>
+    <li>Viesgo Distribución- Cantábrico</li>
+    </ul>
+    <u><strong>DATADIS:</strong></u> se trata de una plataforma creada por las empresas de distribución eléctrica para simplificar el acceso a los datos. <a href: 'https: //datadis.es/home' target='_blank'>Tienes las instrucciones aquí.</a><br />
+     <u><strong>Consumo anual informado mediante tu factura eléctrica (REE):</strong></u> mediante tu uso de energía anual Red Eléctrica Española tiene definido un perfil de usuario estandarizado que se usará como modelo.<br />
+    Elige una u otra opción según la información que dispongas.
 Consumo:
   NAME: Consumo
   PROP:
@@ -123,10 +153,10 @@ Instalacion:
   PROP:
     precioInstalacion: Precio de la instalación
     precioInstalacionCorregido: Precio de la instalación corregido
-    potenciaUnitaria: Potencia unitaria
-    paneles: Paneles
+    potenciaUnitaria: Potencia del panel
+    paneles: Paneles propuestos
     tipoPanel: Tipo de panel
-    potenciaTotal: Potencia disponible
+    potenciaTotal: Potencia propuesta
     potencia: Potencia unitaria
     tecnologia: Tecnología de los paneles
     largo: Largo del panel propuesto
@@ -307,7 +337,7 @@ LOCATION:
 
   PROMPT_DISPONIBLE: Dibuja en el mapa las áreas disponibles del edificio. En caso de alternativas, puedes dibujar tantas áreas como quieras. El sistema distribuirá los paneles de la forma mas eficiente.
   PROMPT_SOMBRAS: Es <strong>IMPORTANTE</strong> tener en cuenta que Solidar <strong>no incorpora el estudio de posibles sombras</strong>❓ que puedan afectar al rendimiento de la instalación propuesta.
-  PROMPT_DRAW: Si tu cubierta es inclinada, los dos primeros puntos que marques serán considerados la parte alta del tejado.
+  PROMPT_DRAW: Si tu cubierta es inclinada, <strong>los dos primeros puntos que marques serán considerados la parte alta del tejado.</strong>
   PROMPT_INICIO_CUMBRERA: Dibujaremos cumbrera
   PROMPT_CUMBRERA: Dibujando cumbrera
   PROMPT_ANCHO: Dibujando ancho
@@ -316,7 +346,9 @@ LOCATION:
   LABEL_SATELITE: Vista satélite
   LABEL_VECTOR: Vista mapa
   LABEL_FITMAP: Ajustar mapa
-  LABLE_GOOGLE_EARTH: Ver Google Earth
+  LABEL_GOOGLE_EARTH: Ver en Google Earth
+  LABEL_SHADOW_MAP: Ver en Shadow map
+  botonShadow_TT: Abre ventana de Google Shadow centrada en este mapa
   TOOLTIP_MAP_TYPE: Permite intercambiar entre vista satélite o mapa
   IN_LINE_HELP:
     PRE_ADDRESS: |
@@ -341,12 +373,26 @@ LOCATION:
       <p>En el caso de multiples bases candidatas para instalar paneles es importante definir el acimut de cada una de ellas por separado ya que el sistema utilizará las bases con mayor rendimiento para asignar los paneles</p>
     POST_TABLA: <p>Con estos datos el sistema se conectará con el servidor PVGIS para obtener los datos concretos de cada base y pasaremos a la ventana que nos permitirá definir los consumos
   HELP:
-    TITLE: ¿Cuáles son mis áreas disponibles?
+    TITLE_1: ¿Cuáles son mis áreas disponibles?
     CUALES: |
       Las áreas disponibles son aquellas en las que se pueden instalar placas solares. Hay que descontar del área disponible las chimeneas, antenas, salidas de humo o cualquier otro elemento que ocupe espacio en la cubierta.
     CUALES_1: 1. Área total de cubierta
     CUALES_2: 2. Áreas disponibles
-    DOS_AGUAS: Si tienes un tejado a dos o más aguas, deberás seleccionar cada parte del tejado como diferentes áreas. La inclinación puede ser distinta en cada parte. Cada parte inclinada puede tener una posición respecto al sur distinta.
+    TITLE_2: ¿Mas de una orientación o inclinación?
+    DOS_AGUAS: Si tienes un tejado a dos o más aguas, deberás seleccionar cada parte del tejado como diferentes áreas. Tanto la inclinación como la posición respecto al sur puede ser distinta en cada area.
+    TITLE_3: ¿Como afectan las sombras?
+    SOMBRAS_1: |
+      Como puedes ver en este video, capturado de la aplicación Shadowmap, las sombras pueden afectar de manera significativa la zona donde instalarás los paneles y por lo tanto el rendimiento de los mismos.
+    SOMBRAS_2: |
+      Las siguientes herramientas pueden ayudarte a evaluar su impacto.
+      <ul>
+      <li>
+      <a href='https://app.shadowmap.org/?lat={{lat}}&lng={{lon}}&zoom=16.31&azimuth=-0.07499&basemap=map&elevation=nextzen&f=29.0&polar=0.52360&vq=2 'target='_blank'>ShadowMap</a> para una visión 3D del territorio.
+      </li>
+      <li>
+      <a href='http://shadowcalculator.eu/#/lat/{{lat}}/lng/{{lon}} 'target='_blank'>Shadow calculator</a> te permitirá dibujar formas y ver su proyección a distinats horas del dia y epoca del año.
+      </li>
+      </ul>
 
   TITLE_DIALOG_NEW_BASE: Nueva base solar
   HORIZONTAL_ROOF: En el caso de tejado horizontal te propondremos el ángulo óptimo de  los paneles al finalizar el cálculo.
@@ -372,10 +418,21 @@ CONSUMPTION:
   TIPO_CONSUMO_DESCRIPTION: |
     A continuación necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.<br />
     El documento de consumo CSV nos permitirá conocer tus hábitos de consumo saber en qué tramos horarios y en qué meses del año sueles consumir más energía.<br />
-  TARIFA_DESCRIPTION: |
-    Para evaluar los posibles beneficios económicos que pudieras obtener de la instalación de los paneles necesitamos conocer tu tarifa y los precios por tramos horarios de tu comercializadora.Necesitamos conocer tambien el precio de compensación por excedentes de tu comercializadora para calcular parte del ahorro en la factura. Recuerda que tu factura no será en ningún momento de un importe positivo.
-  TITLE_MAP_MONTH_HOUR: Gráfico de consumo anual para {{nombreTipoConsumo}}
-  DESC_MAP_MONTH_HOUR: El siguiente gráfico muestra la distribución de tu consumo eléctrico en el año por meses y horas. Puedes visualizar en que momentos y horas del año tu consumo es mayor o menor.
+  TARIFA_DESCRIPTION_1: |
+    Necesitamos conocer tu tarifa, los precios por tramos horarios de cada período y el precio de la compensación de excedentes ℹ{{icono}} de tu comercializadora si es otra diferente a Som Energia.
+  TARIFA_DESCRIPTION_2: |
+    Indica los precios sin impuestos.<br />
+    En caso de tener una tarifa indexada, Som Energia muestra en sus facturas el precio medio ponderado para cada período. Te lo explicamos <a href='https://es.support.somenergia.coop/article/1368-por-que-veo-periodos-en-la-factura-de-indexada'>aquí.</a><br />
+    Si tu contrato está con otra comercializadora deberás consultar la mediana de los precios en los diferentes periodos. Ten en cuenta que la tarifa indexada no ofrece precios fijos en la parte de uso ni en la compensación de excedentes por lo que el cálculo será en base a una información que puede ser muy variable.
+  COMPENSACION_TITLE: Compensación simplificada de excedentes
+  COMPENSACION_DESCRIPTION: |
+    La energía excedentaria es aquella que ha sido generada por las placas solares fotovoltaicas y que, como no se utiliza de forma instantánea, circula a través del contador y se vierte a la red eléctrica de distribución.
+    Esta energía excedentaria se contabiliza en el contador en tramos de una hora. A partir de los valores registrados, se aplican dos mecanismos de manera consecutiva: primero se aplica el balance neto horario y, después, en el momento de facturar, se aplica la compensación simplificada de excedentes.
+    <a href='https://es.support.somenergia.coop/article/784-como-funciona-la-compensacion-simplificada-de-excedentes'>¿Cómo funciona la compensación simplificada de excedentes?</a>
+
+  TITLE_MAP_MONTH_HOUR: Gráfico de uso eléctrico anual para {{nombreTipoConsumo}}
+  TITLE_MAP_MONTH_HOUR_TOTAL: Gráfico del total de los usos eléctricos
+  DESC_MAP_MONTH_HOUR: El siguiente gráfico muestra la distribución de tu uso eléctrico en el año por meses y horas. Puedes visualizar en qué momentos y horas del año tu uso es mayor o menor.
   TOTAL_DEMMAND: Demanda total de energia anual {{consumoTotal}}
 
   HOOVER_MAPA_CONSUMO_MES_HORA: Consumo medio <br>horario por mes
@@ -387,10 +444,11 @@ CONSUMPTION:
   TITLE_MAP_MONTH_DAY: Valores diarios de consumo
   TOOLTIP_MAP_MONTH_DAY: Gráfico interactivo. Clica en un punto y verás el perfil horario de consumo de ese dia.
   DESC_MAP_MONTH_DAY: |
-    El consumo por horas varia depenediendo si se trata de un dia festivo o laboral. Los dias loborables hay un consumo mínimo durante las horas de trabajo, a no ser que teletrabajes.<br />
-    También varia según las estaciones del año y la zona geográfica. En el norte de España en invierno, el pico de consumo estña en las horas del amanecer y del anochecer con la calefacción, mientras que en el sur de España en verano el pico de consumo se encuentra e medio dia, por el aire acondicionado.<br />
-    Consejo: para aprovechar al máximo tu autoproducción, puedes intentar llevar a cabo tus tareas domésticas en horas de máxima producción.<br />
-  LABEL_TITLE_MAP_MONTH_DAY: Mapa de consumo horario en kWh
+    El uso eléctrico por horas varia en función de si se trata de un día festivo o laborable. En los días laborables suele haber un uso mínimo durante las horas de trabajo, a no ser que teletrabajes.<br />
+    También varía según las estaciones del año y la zona geográfica. En el norte de España en invierno, el mayor uso eléctrico se concentra en las horas del amanecer y del anochecer debido al uso de la calefacción, mientras que en el sur de España en verano, el mayor uso eléctrico se encuentra al mediodía, debido al uso del aire acondicionado.<br />
+    El siguiente gráfico es interactivo. Pulsa en un punto y podrás ver el perfil de uso horario de ese día.
+
+  LABEL_TITLE_MAP_MONTH_DAY: Mapa de uso horario en kWh
   HOOVER_MAPA_CONSUMO_MONTH_DAY: Consumo horario
   XAXIS_MAPA_CONSUMO_MONTH_DAY_HOUR: Hora
   YAXIS_MAPA_CONSUMO_MONTH_DAY_DAY: Dia
@@ -398,7 +456,7 @@ CONSUMPTION:
   ERROR_DEFINIR_CONSUMO_REE: Debe definir un consumo anual base mayor que 0 para el perfil de REE
   ERROR_AL_MENOS_UN_TIPOCONSUMO: Debe definir al menos un tipo de consumo
   ERROR_FALTA_FICHERO_CONSUMO: Debe definir el fichero de consumos antes de continuar
-  LABEL_BUTTON_NUEVO_TIPOCONSUMO: Nuevo tipo consumo
+  LABEL_BUTTON_NUEVO_TIPOCONSUMO: Añade tu uso eléctrico
   TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Boton para crear un nuevo tipo de consumo
   TOOLTIP_BUTTON_TOTAL_DEMMAND: Boton para visualizar los gráficos correspondientes a la suma de todos los tipos de cosnumo definidos en la tabla.
   TITLE_DIALOG_NEW_CONSUMPTION: Formulario para crear un nuevo tipo de consumo
@@ -429,10 +487,14 @@ CONSUMPTION:
 ENERGY_BALANCE:
   TITLE: Balance de Energía
   DESCRIPTION: |
-    A partir de tu documento de consumo hemos hecho el cálculo del número de paneles que necesitarías para cubrirlo.<br />
-    (i) Los paneles se asignan primero a las áreas más eficientes desde el punto de vista de rendimiento energético.<br />
-    En la siguiente tabla puedes cambiar el número de paneles en cada área individualmente.
+    A partir de los datos de uso eléctrico facilitados se muestra la cantidad de paneles necesarios para cubrirlo.<br />
+    La asignación de los paneles se ha hecho teniendo en cuenta las áreas más eficientes desde el punto de vista de rendimiento energético según la inclinación y orientación proporcionadas. No se han tenido en cuenta las posibles sombras que estas superficies pueden tener.<br />
+    A continuación puedes cambiar el número de paneles asignados a cada una de las áreas.
 
+  SUMMARY_TITLE: Tabla bases asignadas
+  SUMMARY_FOOTER: |
+    Total de paneles propuestos: {{paneles}} paneles<br />
+    Potencia total propuesta: {{potencia}}
   TITLE_GRAFICO_CONSUMOGENERACION3D: Gráfico resumen de consumos y producción
   TOOLTIP_GRAFICO_CONSUMOGENERACION3D: Gráfico interactivo. Clica en un punto y verás el perfil horario de producción y consumo de ese dia.
   TITLE_GRAFICO_PROFILE: 'Perfil diario de consumo y produccion  {{dia}} / {{mes}}'
@@ -693,8 +755,6 @@ MAPA:
   botonBaseSolar_TT: Boton para crear una nueva base para instalar paneles
   botonDeshacer_LBL: Deshacer
   botonDeshacer_TT: Permite anular el último vertice creado
-  botonShadow_LBL: Google Shadow
-  botonShadow_TT: Abre ventana de Google Shadow centrada en este mapa
 
 RESULTS:
   TOOLTIP_botonInfoBase: Información detallada de la base seleccionada

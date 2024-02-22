@@ -2,7 +2,8 @@ import { useContext } from 'react' //DEMO: Detalle
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import { Typography, Grid } from '@mui/material'
+import { Typography, Grid, IconButton } from '@mui/material'
+import HelpIcon from '@mui/icons-material/HelpOutlineRounded.js'
 
 // REACT Solidar Components
 import { SLDRDetalle, SLDRInfoBox } from '../../components/SLDRComponents'
@@ -11,12 +12,44 @@ import AddressSearch from './AddressSearch'
 import PanelsSelector from './PanelsSelector.jsx'
 import MapComponent from './MapComponent'
 import BasesSummary from './BasesSummary'
+import HelpAvailableAreas from './HelpAvailableAreas.jsx'
+import { BasesContext } from '../BasesContext'
+
+//React global components
+import { useDialog } from '../../components/DialogProvider'
+
+import TCB from '../classes/TCB'
+import { transform } from 'ol/proj'
 
 const LocationStep = () => {
   const { t } = useTranslation()
   //DEMO: Detalle
   const { inLineHelp } = useContext(AlertContext)
+  const [openDialog, closeDialog] = useDialog()
+  const { map } = useContext(BasesContext)
 
+  function help(level) {
+    const title = t('LOCATION.HELP.TITLE_' + level)
+    let lon, lat
+    if (level === 3) {
+      const center = map.getView().getCenter()
+      const lonLat = transform(center, 'EPSG:3857', 'EPSG:4326')
+      lon = lonLat[0]
+      lat = lonLat[1]
+    }
+
+    openDialog({
+      children: (
+        <HelpAvailableAreas
+          title={title}
+          level={level}
+          lon={lon}
+          lat={lat}
+          onClose={() => closeDialog()}
+        />
+      ),
+    })
+  }
   return (
     <Grid container rowSpacing={1}>
       <Grid item xs={12}>
@@ -35,13 +68,11 @@ const LocationStep = () => {
           ></SLDRDetalle>
         )}
       </Grid>
-
       <Grid item xs={12}>
         <Typography variant="body">{t('LOCATION.DESCRIPTION_ADDRESS')}</Typography>
       </Grid>
 
       {/* Campo  para introducir una direccion */}
-
       <Grid item xs={12}>
         <AddressSearch></AddressSearch>
       </Grid>
@@ -60,12 +91,71 @@ const LocationStep = () => {
         )}
       </Grid>
 
+      <Grid container>
+        <Grid item xs={12}>
+          <Typography variant="body">{t('LOCATION.PROMPT_DISPONIBLE')}</Typography>
+          <IconButton
+            onClick={() => help(1)}
+            size="small"
+            style={{
+              fontSize: 'inherit',
+              padding: 0,
+              verticalAlign: 'text-center',
+              transform: 'scale(0.8)',
+            }}
+          >
+            <HelpIcon />
+          </IconButton>
+        </Grid>
+        <Grid>
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('LOCATION.PROMPT_SOMBRAS'),
+            }}
+          />
+          <IconButton
+            onClick={() => help(3)}
+            size="small"
+            style={{
+              fontSize: 'inherit',
+              padding: 0,
+              verticalAlign: 'text-center',
+              transform: 'scale(0.8)',
+            }}
+          >
+            <HelpIcon />
+          </IconButton>
+        </Grid>
+        <Grid>
+          <Typography
+            variant="body"
+            style={{ lineHeight: 'inherit' }}
+            dangerouslySetInnerHTML={{
+              __html: t('LOCATION.PROMPT_DRAW'),
+            }}
+          />
+
+          <IconButton
+            onClick={() => help(2)}
+            size="small"
+            style={{
+              fontSize: 'inherit',
+              verticalAlign: 'text-center',
+              transform: 'scale(0.8)',
+              padding: 0,
+            }}
+          >
+            <HelpIcon />
+          </IconButton>
+        </Grid>
+      </Grid>
       <Grid
         item
-        xs={10}
+        xs={12}
         sx={{ alignItems: 'center', alignContent: ' center', justifyContent: 'center' }}
       >
-        <SLDRInfoBox sx={{ width: '90%', ml: 15 }}>
+        <SLDRInfoBox sx={{ width: '100%' }}>
           <MapComponent></MapComponent>
         </SLDRInfoBox>
       </Grid>

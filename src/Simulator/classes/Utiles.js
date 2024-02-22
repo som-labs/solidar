@@ -294,8 +294,10 @@ const returnFloat = (value) => {
     floatValue = parseFloat(
       value.replace(/,/g, '.').toLocaleString(undefined, { useGrouping: true }),
     )
+    return floatValue
+  } else {
+    return value
   }
-  return floatValue
 }
 const ValidateDecimal = (language, inputValue) => {
   const number = 1.1

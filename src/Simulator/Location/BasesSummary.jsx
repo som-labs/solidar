@@ -42,7 +42,7 @@ export default function BasesSummary() {
       headerName: t('BaseSolar.PROP.areaReal'),
       headerAlign: 'center',
       flex: 1,
-      align: 'right',
+      align: 'center',
       sortable: false,
       description: t('BaseSolar.TOOLTIP.areaReal'),
       renderCell: (params) => {
@@ -89,7 +89,7 @@ export default function BasesSummary() {
       headerName: t('BaseSolar.PROP.potenciaMaxima'),
       headerAlign: 'center',
       flex: 1,
-      align: 'right',
+      align: 'center',
       sortable: false,
       description: t('BaseSolar.TOOLTIP.potenciaMaxima'),
       renderCell: (params) => {
@@ -181,7 +181,6 @@ export default function BasesSummary() {
       </SLDRFooterBox>
     )
   }
-
   return (
     <>
       <Typography variant="h3">{t('LOCATION.LABEL_BASES_SUMMARY')}</Typography>

@@ -57,11 +57,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function DialogContainer(props) {
   const { children, open, onClose, onKill, fullScreenBelow = 'md', ...extraprops } = props
 
-  let fullScreen
+  let fullScreen, maxWidth
   const theme = useTheme()
   fullScreen = useMediaQuery(theme.breakpoints.down(fullScreenBelow))
   if (props.children.props.fullScreen !== undefined) {
     fullScreen = props.children.props.fullScreen
+  }
+  if (props.children.props.maxWidth !== undefined) {
+    maxWidth = props.children.props.maxWidth
   }
 
   return (
@@ -74,6 +77,7 @@ function DialogContainer(props) {
       onClose={onClose}
       fullScreen={fullScreen}
       scroll="paper"
+      maxWidth={maxWidth}
       {...extraprops}
     >
       {children}

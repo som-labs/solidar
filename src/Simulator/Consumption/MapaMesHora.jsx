@@ -30,7 +30,7 @@ export default function MapaMesHora({ activo }) {
 
   if (activo === isEmpty) return
   const consumo = activo
-
+  console.log(consumo)
   let maxHora
   let maxMes
   let horas = []
@@ -118,36 +118,36 @@ export default function MapaMesHora({ activo }) {
     return _mes
   }
 
-  // Function to convert the MapaMesHora data to CSV format
-  const convertToCSV = () => {
-    const strHeader =
-      i18nextMes().reduce((result, str) => result + ',' + str, 'Hora') + '\n'
-    console.log(strHeader)
-    let csv = Array(12).fill('')
+  // Function to convert the MapaMesHora data to CSV format only for Fernando
+  // const convertToCSV = () => {
+  //   const strHeader =
+  //     i18nextMes().reduce((result, str) => result + ',' + str, 'Hora') + '\n'
+  //   console.log(strHeader)
+  //   let csv = Array(12).fill('')
 
-    for (let hora = 0; hora < 24; hora++) {
-      let valorHoraMes = [hora + 1]
-      for (let mes = 0; mes < 12; mes++) {
-        valorHoraMes.push(valores[hora * 12 + mes])
-      }
-      csv[hora] = [...valorHoraMes].join(',') // + '\n'
-    }
-    const finalRows = [...csv].join('\n')
-    return strHeader + finalRows
-  }
+  //   for (let hora = 0; hora < 24; hora++) {
+  //     let valorHoraMes = [hora + 1]
+  //     for (let mes = 0; mes < 12; mes++) {
+  //       valorHoraMes.push(valores[hora * 12 + mes])
+  //     }
+  //     csv[hora] = [...valorHoraMes].join(',') // + '\n'
+  //   }
+  //   const finalRows = [...csv].join('\n')
+  //   return strHeader + finalRows
+  // }
 
   // Function to handle CSV export only for Fernando example
-  const handleExportCSV = () => {
-    const csvData = convertToCSV()
-    const blob = new Blob([csvData], { type: 'text/csv' })
-    const url = window.URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.setAttribute('download', 'resumenMesHora.csv')
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
+  // const handleExportCSV = () => {
+  //   const csvData = convertToCSV()
+  //   const blob = new Blob([csvData], { type: 'text/csv' })
+  //   const url = window.URL.createObjectURL(blob)
+  //   const link = document.createElement('a')
+  //   link.href = url
+  //   link.setAttribute('download', 'resumenMesHora.csv')
+  //   document.body.appendChild(link)
+  //   link.click()
+  //   document.body.removeChild(link)
+  // }
 
   let traces = []
   const delta = maxConsumoMes / rangees
@@ -238,6 +238,14 @@ export default function MapaMesHora({ activo }) {
     displayModeBar: false,
   }
 
+  let title
+  if (consumo.nombreTipoConsumo === 'Totales') {
+    title = t('CONSUMPTION.TITLE_MAP_MONTH_HOUR_TOTAL')
+  } else {
+    title = t('CONSUMPTION.TITLE_MAP_MONTH_HOUR', {
+      nombreTipoConsumo: activo.nombreTipoConsumo,
+    })
+  }
   return (
     <Container ref={graphElement}>
       <Box
@@ -250,9 +258,7 @@ export default function MapaMesHora({ activo }) {
         justifyContent="center"
       >
         <Typography variant="h4" gutterBottom>
-          {t('CONSUMPTION.TITLE_MAP_MONTH_HOUR', {
-            nombreTipoConsumo: activo.nombreTipoConsumo,
-          })}
+          {title}
         </Typography>
         <Typography variant="body">{t('CONSUMPTION.DESC_MAP_MONTH_HOUR')}</Typography>
 
