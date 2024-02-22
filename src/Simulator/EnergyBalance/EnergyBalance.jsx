@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import { Typography, Container, MenuItem, TextField } from '@mui/material'
+import { Typography, Container, MenuItem, TextField, Skeleton } from '@mui/material'
 
 //React global components
 import { BasesContext } from '../BasesContext'
@@ -102,6 +102,7 @@ export default function EnergyBalanceStep() {
     setEcoData(TCB.economico)
   }, [bases, setEcoData])
 
+  //REVISAR: porque se muestra la tabla reducida primero y luego crece
   return (
     <Container>
       <Typography
@@ -114,7 +115,9 @@ export default function EnergyBalanceStep() {
       <SLDRInfoBox>
         <InstallationSummary></InstallationSummary>
       </SLDRInfoBox>
-      {/* </Box> */}
+      {/* REVISAR: para evitar la tabla apareciendo
+      <Skeleton variant="rectangular" width={'100%'} height={60} /> 
+      */}
       <SLDRInfoBox>
         <ConsumoGeneracion3D></ConsumoGeneracion3D>
       </SLDRInfoBox>

@@ -117,6 +117,8 @@ export default function ConsumptionSummary() {
         <DialogConsumption
           data={row}
           previous={tipoConsumo}
+          maxWidth={'lg'}
+          fullWidth={true}
           onClose={(cause, formData) => endDialog(cause, formData)}
         ></DialogConsumption>
       ),
@@ -136,6 +138,8 @@ export default function ConsumptionSummary() {
       children: (
         <DialogConsumption
           data={initialValues}
+          maxWidth={'lg'}
+          fullWidth={true}
           previous={tipoConsumo} //Needed to check duplicate name
           onClose={(cause, formData) => endDialog(cause, formData)}
         ></DialogConsumption>
@@ -193,7 +197,7 @@ export default function ConsumptionSummary() {
           TCB.TipoConsumo.splice(idxTC, 1, TCB.TipoConsumo.pop())
         }
         addTCBTipoToState(TCB.TipoConsumo[idxTC])
-        showGraphsTC(nuevoTipoConsumo)
+        //showGraphsTC(nuevoTipoConsumo)
       } else {
         console.log('cargaCSV catch ')
         TCB.TipoConsumo.pop()

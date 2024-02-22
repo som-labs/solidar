@@ -140,39 +140,61 @@ export default function InstallationSummary() {
   }
 
   //REVISAR: porque no se hace mas ancha la fila del footer con el height del sx
+  // function footerSummary() {
+  //   return (
+  //     <SLDRFooterBox sx={{ flexDirection: 'row', height: '36px' }}>
+  //       <div style={{ flex: '0 0 250px' }} />
+  //       {/* Placeholder for ID column */}
+  //       <div style={{ flex: '0.5', textAlign: 'center' }}>
+  //         <strong>
+  //           {bases.reduce((sum, tBase) => sum + parseInt(tBase.paneles), 0)}
+  //         </strong>
+  //       </div>
+  //       <div style={{ flex: '1', textAlign: 'center' }}>
+  //         <strong>
+  //           {bases.reduce((sum, tBase) => sum + parseInt(tBase.panelesMaximo), 0)}
+  //         </strong>
+  //       </div>
+  //       <div style={{ flex: '1', textAlign: 'right' }}>
+  //         <strong>
+  //           {UTIL.formatoValor(
+  //             'potenciaMaxima',
+  //             bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0),
+  //           )}
+  //         </strong>
+  //       </div>
+  //       <div style={{ flex: '1' }} /> {/* Placeholder for ID column */}
+  //       <div style={{ flex: '1', textAlign: 'right' }}>
+  //         <strong>
+  //           {UTIL.formatoValor(
+  //             'potenciaTotal',
+  //             bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
+  //           )}
+  //         </strong>
+  //       </div>
+  //       <div style={{ flex: '0.7', textAlign: 'center' }}></div>
+  //     </SLDRFooterBox>
+  //   )
+  // }
+
   function footerSummary() {
+    // PENDIENTE: Cual debería ser el colorbackground de los boxes con informacion relevante */
     return (
-      <SLDRFooterBox sx={{ flexDirection: 'row', height: '36px' }}>
-        <div style={{ flex: '0 0 250px' }} />
-        {/* Placeholder for ID column */}
-        <div style={{ flex: '0.5', textAlign: 'center' }}>
-          <strong>
-            {bases.reduce((sum, tBase) => sum + parseInt(tBase.paneles), 0)}
-          </strong>
-        </div>
-        <div style={{ flex: '1', textAlign: 'center' }}>
-          <strong>
-            {bases.reduce((sum, tBase) => sum + parseInt(tBase.panelesMaximo), 0)}
-          </strong>
-        </div>
-        <div style={{ flex: '1', textAlign: 'right' }}>
-          <strong>
-            {UTIL.formatoValor(
-              'potenciaMaxima',
-              bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0),
-            )}
-          </strong>
-        </div>
-        <div style={{ flex: '1' }} /> {/* Placeholder for ID column */}
-        <div style={{ flex: '1', textAlign: 'right' }}>
-          <strong>
-            {UTIL.formatoValor(
-              'potenciaTotal',
-              bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
-            )}
-          </strong>
-        </div>
-        <div style={{ flex: '0.7', textAlign: 'center' }}></div>
+      <SLDRFooterBox>
+        <Typography
+          variant="h6"
+          textAlign={'center'}
+          sx={{ mt: '1rem' }}
+          dangerouslySetInnerHTML={{
+            __html: t('ENERGY_BALANCE.SUMMARY_FOOTER', {
+              paneles: Math.round(bases.reduce((sum, tBase) => sum + tBase.paneles, 0)),
+              potencia: UTIL.formatoValor(
+                'potencia',
+                bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
+              ),
+            }),
+          }}
+        />
       </SLDRFooterBox>
     )
   }
@@ -236,7 +258,9 @@ export default function InstallationSummary() {
     setBases(updateBases)
   }
   return (
-    <Box
+    <Grid
+      container
+      rowSpacing={1}
       sx={{
         '& .super-app.negative': {
           backgroundColor: '#ff0000',
@@ -250,28 +274,26 @@ export default function InstallationSummary() {
         },
       }}
     >
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant="h5" sx={{ textAlign: 'center' }}>
-            {t('Tabla bases asignadas')}
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <DataGrid
-            getRowId={getRowId}
-            rows={bases}
-            columns={columns}
-            hideFooter={false}
-            rowHeight={30}
-            autoHeight
-            disableColumnMenu
-            onCellEditStop={(params, event) => {
-              nuevaInstalacion(params, event)
-            }}
-            slots={{ footer: footerSummary }}
-          />
-        </Grid>
+      <Grid item xs={12}>
+        <Typography variant="h5" sx={{ textAlign: 'center' }}>
+          {t('ENERGY_BALANCE.SUMMARY_TITLE')}
+        </Typography>
       </Grid>
-    </Box>
+      <Grid item xs={12}>
+        <DataGrid
+          getRowId={getRowId}
+          rows={bases}
+          columns={columns}
+          hideFooter={false}
+          rowHeight={30}
+          autoHeight
+          disableColumnMenu
+          onCellEditStop={(params, event) => {
+            nuevaInstalacion(params, event)
+          }}
+          slots={{ footer: footerSummary }}
+        />
+      </Grid>
+    </Grid>
   )
 }

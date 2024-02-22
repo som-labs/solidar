@@ -59,58 +59,6 @@ const BasesContextProvider = ({ children }) => {
     setBases((prevBases) => [...prevBases, hdrFill(base)])
   }
 
-  function computeCoplanarAcimut(formData, center, area) {
-    const puntos = area.getCoordinates()[0]
-    let acimut = parseInt(
-      (Math.atan2(puntos[1][0] - puntos[2][0], puntos[1][1] - puntos[2][1]) * 180) /
-        Math.PI,
-    )
-
-    // let midPoint = [0, 0]
-    // const puntoAplicacion = center.getCoordinates()
-
-    // let start, end
-    // // First two points defines cumbrera
-    // start = transform(puntos[0], 'EPSG:3857', 'EPSG:4326')
-    // end = transform(puntos[1], 'EPSG:3857', 'EPSG:4326')
-    // const cumbrera = getDistance(start, end)
-    // //Third point defines ancho
-    // start = transform(puntos[1], 'EPSG:3857', 'EPSG:4326')
-    // end = transform(puntos[2], 'EPSG:3857', 'EPSG:4326')
-    // const ancho = getDistance(start, end)
-
-    const { columnas, filas, modoInstalacion } = BaseSolar.configuraPaneles(formData)
-
-    // midPoint[0] = puntos[2][0] + (puntos[3][0] - puntos[2][0]) / 2
-    // midPoint[1] = puntos[2][1] + (puntos[3][1] - puntos[2][1]) / 2
-    // const geomAcimut = new LineString([puntoAplicacion, midPoint])
-
-    //Scale to take three times ancho
-    // geomAcimut.scale(3, 3, puntoAplicacion)
-    // const acimutCoordinates = geomAcimut.getCoordinates()
-    // let point1 = acimutCoordinates[0]
-    // let point2 = acimutCoordinates[1]
-
-    // Angles are measured with 0 at south (axis -Y) and positive west (axis +X)
-    // let acimut =
-    //   (Math.atan2(point1[0] - point2[0], point1[1] - point2[1]) * 180) / Math.PI
-    // acimut = parseInt(acimut)
-
-    // const acimutLine = new Feature({
-    //   geometry: geomAcimut,
-    // })
-    // acimutLine.setId('BaseSolar.acimut.' + formData.idBaseSolar)
-    // acimutLine.setStyle(null)
-    // TCB.origenDatosSolidar.addFeature(acimutLine)
-
-    return {
-      columnas: columnas,
-      filas: filas,
-      modoInstalacion: modoInstalacion,
-      inAcimut: acimut,
-    }
-  }
-
   function computeAcimut(formData, center, area) {
     let acimut
     const puntos = area.getCoordinates()[0]

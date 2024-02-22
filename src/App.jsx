@@ -1,8 +1,7 @@
-import { useState } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
 import './i18n/i18n'
-import { useTranslation } from 'react-i18next'
+
 import GlobalTheme from './components/GlobalTheme'
 import TestPage from './components/TestPage'
 import HomePage from './Home/Page'
@@ -41,9 +40,6 @@ const routes = [
 const router = createBrowserRouter(routes)
 
 function App() {
-  const { t, i18n } = useTranslation()
-  const [count, setCount] = useState(0)
-
   return (
     <GlobalTheme>
       <BasesContextProvider>

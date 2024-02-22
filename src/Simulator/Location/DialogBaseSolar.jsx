@@ -9,7 +9,7 @@ import { LineString } from 'ol/geom'
 import { Style } from 'ol/style'
 
 // MUI objects
-import { Box, Button, Typography, Grid, FormLabel } from '@mui/material'
+import { Box, Button, Typography, Grid, FormLabel, Skeleton } from '@mui/material'
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
 
 //React global components
@@ -47,7 +47,7 @@ export default function DialogBaseSolar({ data, onClose }) {
   */
   const [roofType, setRoofType] = useState(data.roofType)
   const canvasRef = useRef()
-  const inclinacionDefault = 20
+  const inclinacionDefault = 30
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -305,7 +305,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                 type="text"
                 object="BaseSolar"
                 unit=""
-                sx={{ flex: 1, mb: '1rem', textAlign: 'center' }}
+                sx={{ flex: 1, textAlign: 'center' }}
               />
 
               <Typography
@@ -357,47 +357,59 @@ export default function DialogBaseSolar({ data, onClose }) {
                   {t('BaseSolar.PROP.angulosOptimos')}
                 </Button> */}
               </Box>
-              {values.roofType === 'Horizontal' && (
-                <FormLabel>
-                  <SLDRInputField
-                    MUIType="Checkbox"
-                    name="inclinacionOptima"
-                    object="CONTACTO"
-                    checked={values.inclinacionOptima}
-                    onChange={() => {
-                      setValues((prevValues) => ({
-                        ...prevValues,
-                        inclinacionOptima: !values.inclinacionOptima,
-                      }))
-                    }}
-                  />
-                  {t('Inclinacion PVGIS optimo')}
-                </FormLabel>
-              )}
 
-              {!values.inclinacionOptima && (
-                <>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flex: 2,
-                      flexDirection: 'column',
-                      flexWrap: 'wrap',
-                    }}
-                  >
+              {/* {!values.inclinacionOptima && ( */}
+              <>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flex: 2,
+                    flexDirection: 'column',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  {values.roofType === 'Coplanar' && (
                     <Typography variant="body" sx={{ mt: '1rem', mb: '1rem' }}>
                       {t('BaseSolar.DESCRIPTION.inclinacionTejado')}
                     </Typography>
+                  )}
 
-                    <Box
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        flexDirection: 'column',
-                      }}
-                    >
+                  {values.roofType === 'Horizontal' && (
+                    <>
+                      <Typography variant="body" sx={{ mt: '1rem', mb: '1rem' }}>
+                        {t('BaseSolar.DESCRIPTION.inclinacionPaneles')}
+                      </Typography>
+
+                      <FormLabel>
+                        <SLDRInputField
+                          MUIType="Checkbox"
+                          name="inclinacionOptima"
+                          object="CONTACTO"
+                          checked={values.inclinacionOptima}
+                          onChange={() => {
+                            setValues((prevValues) => ({
+                              ...prevValues,
+                              inclinacionOptima: !values.inclinacionOptima,
+                              inclinacion: inclinacionDefault,
+                            }))
+                          }}
+                        />
+                        {t('BaseSolar.DESCRIPTION.inclinacionOptima')}
+                      </FormLabel>
+                    </>
+                  )}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flexDirection: 'column',
+                      mt: '1rem',
+                    }}
+                  >
+                    {!values.inclinacionOptima ? (
                       <Grid container alignItems="center" justifyContent="center">
+                        {/* REVISAR: porque no se redibuja el canvas? */}
                         <Grid item xs={4} sx={{ flex: 2, mt: '-1rem' }}>
                           <canvas
                             ref={canvasRef}
@@ -429,8 +441,13 @@ export default function DialogBaseSolar({ data, onClose }) {
                           />
                         </Grid>
                       </Grid>
-                    </Box>
-                    {/*  Removed based on request done by SOM-Autoproduccion meeting 9/3/2024
+                    ) : (
+                      <Typography variant="body" sx={{ mt: '1rem', mb: '1rem' }}>
+                        {t('BaseSolar.DESCRIPTION.angulosOptimos')}
+                      </Typography>
+                    )}
+                  </Box>
+                  {/*  Removed based on request done by SOM-Autoproduccion meeting 9/3/2024
                     {values.roofType === 'Horizontal' && (
                       <Field name="inclinacionOptima">
                         {({ field }) => (
@@ -450,7 +467,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                       </Field>
                     )}
                           */}
-                    {/*
+                  {/*
                     <Typography variant="body" sx={{ mb: '1rem', mt: '1rem' }}>
                       {t('BaseSolar.DESCRIPTION.inAcimut')}
                     </Typography>
@@ -473,9 +490,9 @@ export default function DialogBaseSolar({ data, onClose }) {
                         sx={{ flex: 1 }}
                       /> 
                     </Box>*/}
-                  </Box>
-                </>
-              )}
+                </Box>
+              </>
+              {/* )} */}
 
               {/* {values.roofType === 'Optimos' && (
                 <>

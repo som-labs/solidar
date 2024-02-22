@@ -31,7 +31,6 @@ class BaseSolar extends DiaHora {
         enumerable: true,
         set(valor) {}, //Esta aqui para evitar error al intentar set desde update
         get() {
-          console.log(TCB.tipoPanelActivo.potencia)
           return this.columnas * this.filas * TCB.tipoPanelActivo.potencia
         },
       },
@@ -123,7 +122,7 @@ class BaseSolar extends DiaHora {
     let vGap
     let config = {}
 
-    console.log('IN CONFIGURA PANELES', area)
+    console.log('IN CONFIGURA PANELES', area, TCB.tipoPanelActivo)
     const { roofType, cumbrera, anchoReal, inclinacion, lonlatBaseSolar } = area
 
     if (roofType === 'Coplanar') {
@@ -177,7 +176,7 @@ class BaseSolar extends DiaHora {
     } else {
       config = { columnas: vColumnas, filas: vFilas, modoInstalacion: 'Vertical' }
     }
-
+    console.log('OUT CONFIGURA PANELES', config)
     UTIL.debugLog('Configuración', config)
     return config
   }

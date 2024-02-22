@@ -157,9 +157,6 @@ export default function MapaDiaHora({ activo }) {
         justifyContent="center"
       >
         <Typography variant="h4">{t('CONSUMPTION.TITLE_MAP_MONTH_DAY')}</Typography>
-        <Tooltip title={t('CONSUMPTION.TOOLTIP_MAP_MONTH_DAY')} placement="top">
-          <InfoIcon />
-        </Tooltip>
 
         <Typography
           variant="body"
@@ -179,7 +176,7 @@ export default function MapaDiaHora({ activo }) {
         }}
         justifyContent="center"
       >
-        <Typography variant="h5" align="center">
+        <Typography variant="h5" align="center" sx={{ mt: '1rem' }}>
           {t('CONSUMPTION.LABEL_TITLE_MAP_MONTH_DAY')}
         </Typography>
         <div ref={divGraph}>
