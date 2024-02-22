@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -8,15 +8,18 @@ import EditIcon from '@mui/icons-material/Edit'
 // REACT Solidar Components
 import { useDialog } from '../../components/DialogProvider'
 import DialogPanelsType from './DialogPanelsType'
+import { BasesContext } from '../BasesContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
+import BaseSolar from '../classes/BaseSolar'
 
 export default function PanelsSelector() {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
   const [tipo, setTipo] = useState(TCB.tipoPanelActivo)
+  const { bases, setBases } = useContext(BasesContext)
 
   function changePanelsType() {
     openDialog({
@@ -53,9 +56,25 @@ export default function PanelsSelector() {
       ) {
         TCB.tipoPanelActivo.ancho = UTIL.returnFloat(formData.ancho)
         TCB.tipoPanelActivo.largo = UTIL.returnFloat(formData.largo)
-        TCB.BaseSolar.forEach((base) => {
-          base.configuraInclinacion()
+        //If panel ancho or largo has changed need to update bases configuration
+        let updatedBases = []
+        TCB.BaseSolar.forEach((TCBbase) => {
+          const config = BaseSolar.configuraPaneles(TCBbase)
+          //Update in TCB
+          TCBbase.updateBase(config)
+          //Update in BasesContext
+          const CTXbase = bases.find((base) => {
+            if (base.idBaseSolar === TCBbase.idBaseSolar) {
+              return base
+            }
+          })
+          updatedBases.push({
+            ...CTXbase,
+            ...config,
+            panelesMaximo: config.filas * config.columnas,
+          })
         })
+        setBases(updatedBases)
         TCB.requiereOptimizador = true
       }
     }

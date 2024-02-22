@@ -16,12 +16,10 @@ import { getArea, getDistance } from 'ol/sphere.js'
 
 // MUI objects
 import { Button, Tooltip, Typography, Box, IconButton, Container } from '@mui/material'
-import HelpIcon from '@mui/icons-material/HelpOutlineRounded.js'
 
 //React global components
 import { BasesContext } from '../BasesContext'
 import DialogBaseSolar from './DialogBaseSolar'
-import HelpAvailableAreas from './HelpAvailableAreas.jsx'
 import { useDialog } from '../../components/DialogProvider'
 import { AlertContext } from '../components/Alert'
 
@@ -285,6 +283,7 @@ export default function MapComponent() {
       //Store the map in BasesContext
       mapRef.current.on('pointermove', pointerMoveHandler)
       setMap(mapRef.current)
+      TCB.map = mapRef.current
     } else {
       mapRef.current.setTarget(mapElement.current)
     }
@@ -455,53 +454,22 @@ export default function MapComponent() {
     window.open('https://earth.google.com/web/search/' + lat + ',' + lon + '/', '_blank')
   }
 
-  function help(level) {
-    openDialog({
-      children: <HelpAvailableAreas level={level}></HelpAvailableAreas>,
-    })
+  function openShadowMap() {
+    const center = mapRef.current.getView().getCenter()
+    const lonLat = transform(center, 'EPSG:3857', 'EPSG:4326')
+    const lon = lonLat[0]
+    const lat = lonLat[1]
+    window.open(
+      'https://app.shadowmap.org/?lat=' +
+        lat +
+        '&lng=' +
+        lon +
+        '&zoom=16.31&azimuth=-0.07499&basemap=map&elevation=nextzen&f=29.0&polar=0.52360&time=1708600229817&vq=2',
+    )
   }
 
   return (
     <Container>
-      {/* REVISAR: Icono causa agrandar interlineado */}
-      <Box>
-        <Typography variant="body">{t('LOCATION.PROMPT_DISPONIBLE')}</Typography>
-        <IconButton
-          onClick={() => help(1)}
-          size="small"
-          style={{
-            fontSize: 'inherit',
-            verticalAlign: 'text-center',
-            transform: 'scale(0.8)',
-          }}
-        >
-          <HelpIcon />
-        </IconButton>
-      </Box>
-      <Box>
-        <Typography
-          variant="body"
-          dangerouslySetInnerHTML={{
-            __html: t('LOCATION.PROMPT_SOMBRAS'),
-          }}
-        />
-      </Box>
-      <Box>
-        <Typography variant="body" style={{ lineHeight: 'inherit' }}>
-          {t('LOCATION.PROMPT_DRAW')}
-        </Typography>
-        <IconButton
-          onClick={() => help(2)}
-          size="small"
-          style={{
-            fontSize: 'inherit',
-            verticalAlign: 'text-center',
-            transform: 'scale(0.8)',
-          }}
-        >
-          <HelpIcon />
-        </IconButton>
-      </Box>
       {/* El mapa */}
       <div
         ref={mapElement}
@@ -535,7 +503,7 @@ export default function MapComponent() {
         {t('LOCATION.LABEL_FITMAP')}
       </Button>
       <Button variant="contained" size="large" onClick={openGoogleEarth}>
-        {t('LOCATION.LABLE_GOOGLE_EARTH')}
+        {t('LOCATION.LABEL_GOOGLE_EARTH')}
       </Button>
     </Container>
   )

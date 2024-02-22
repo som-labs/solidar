@@ -1,12 +1,15 @@
 import { useTranslation } from 'react-i18next'
-import { Typography, Box } from '@mui/material'
-import { DialogContent, DialogTitle } from '@mui/material'
+import { Typography, Box, Button } from '@mui/material'
+import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
+//import { useDialog } from '../../components/DialogProvider'
 
 export default function HelpAvailableAreas(props) {
   const { t } = useTranslation()
+  const { lat, lon, title } = props
+  //const [openDialog, closeDialog] = useDialog()
   return (
     <>
-      <DialogTitle>{t('LOCATION.HELP.TITLE')}</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', flex: 1 }}>
           {props.level === 1 && (
@@ -37,8 +40,46 @@ export default function HelpAvailableAreas(props) {
               ></img>
             </>
           )}
+          {props.level === 3 && (
+            <>
+              <Typography variant="body">{t('LOCATION.HELP.SOMBRAS_1')}</Typography>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <div>
+                  <video autoPlay width="320" height="200" loop>
+                    <source src="./datos/sombras.mp4" type="video/mp4" />
+                  </video>
+                </div>
+              </div>
+              <Typography
+                variant="body"
+                dangerouslySetInnerHTML={{
+                  __html: t('LOCATION.HELP.SOMBRAS_2', { lat: lat, lon: lon }),
+                }}
+              />
+            </>
+          )}
         </Box>
       </DialogContent>
+      <DialogActions sx={{ mt: '1rem' }}>
+        <Button onClick={() => props.onClose()}>{t('BASIC.LABEL_CANCEL')}</Button>
+        {/* REVISAR: CloseDialog cierra los dos dialogos abiertos 
+        <Button
+          onClick={() =>
+            openDialog({
+              children: <HelpAvailableAreas level={2} onClose={() => closeDialog()} />,
+            })
+          }
+        >
+          {t('BASIC.LABEL_OK')}
+        </Button>
+        */}
+      </DialogActions>
     </>
   )
 }
