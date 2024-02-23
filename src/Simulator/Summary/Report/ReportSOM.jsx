@@ -151,9 +151,7 @@ export default function ReportSOM({ onClose }) {
             <SummaryPreciosTarifa></SummaryPreciosTarifa>
           </ul>
         </div>
-        {/* REVISAR: Aqui va el mapa */}
         <div style={styles.image} ref={mapElement}></div>
-        {/* Fin prueba mapa*/}
 
         <div style={styles.plaques}>
           <img src={casa} width="auto" height="200px" />

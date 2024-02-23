@@ -1,3 +1,6 @@
+import { useState, useEffect } from 'react'
+import { createBrowserRouter, RouterProvider, useLocation } from 'react-router-dom'
+
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -13,6 +16,16 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import SendIcon from '@mui/icons-material/Send'
 import React from 'react'
+
+function ScrollToTop() {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
+  return null
+}
 
 function DefaultWizardPage(params) {
   const {
@@ -32,6 +45,7 @@ function DefaultWizardPage(params) {
 
   return (
     <>
+      <ScrollToTop />
       <Box
         sx={{
           width: '100%',
