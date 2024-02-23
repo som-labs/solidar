@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import { Typography, Grid, Box, Tooltip } from '@mui/material'
+import { Typography, Grid, Tooltip } from '@mui/material'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid'
 import InfoIcon from '@mui/icons-material/Info'
 import clsx from 'clsx'
@@ -24,7 +24,7 @@ export default function InstallationSummary() {
   const { SLDRAlert } = useContext(AlertContext)
 
   const [openDialog, closeDialog] = useDialog()
-  const { bases, setBases } = useContext(BasesContext)
+  const { bases, setBases, updateTCBBasesToState } = useContext(BasesContext)
 
   const getRowId = (row) => {
     return row.idBaseSolar
@@ -42,12 +42,17 @@ export default function InstallationSummary() {
     },
     {
       field: 'paneles',
+      type: 'number',
       editable: true,
       headerName: t('Instalacion.PROP.paneles'),
       headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
-      flex: 0.5,
+      flex: 0.7,
       align: 'center',
+      editProps: {
+        min: 0,
+        // max: 100,
+      },
       description: t('Instalacion.TOOLTIP.paneles'),
       renderCell: (params) => {
         return UTIL.formatoValor('paneles', params.value)
@@ -133,49 +138,9 @@ export default function InstallationSummary() {
       return base.idBaseSolar === id
     })
     openDialog({
-      children: (
-        <DialogProperties data={baseActiva} descripcion={'DDD'} onClose={closeDialog} />
-      ),
+      children: <DialogProperties data={baseActiva} onClose={closeDialog} />,
     })
   }
-
-  //REVISAR: porque no se hace mas ancha la fila del footer con el height del sx
-  // function footerSummary() {
-  //   return (
-  //     <SLDRFooterBox sx={{ flexDirection: 'row', height: '36px' }}>
-  //       <div style={{ flex: '0 0 250px' }} />
-  //       {/* Placeholder for ID column */}
-  //       <div style={{ flex: '0.5', textAlign: 'center' }}>
-  //         <strong>
-  //           {bases.reduce((sum, tBase) => sum + parseInt(tBase.paneles), 0)}
-  //         </strong>
-  //       </div>
-  //       <div style={{ flex: '1', textAlign: 'center' }}>
-  //         <strong>
-  //           {bases.reduce((sum, tBase) => sum + parseInt(tBase.panelesMaximo), 0)}
-  //         </strong>
-  //       </div>
-  //       <div style={{ flex: '1', textAlign: 'right' }}>
-  //         <strong>
-  //           {UTIL.formatoValor(
-  //             'potenciaMaxima',
-  //             bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0),
-  //           )}
-  //         </strong>
-  //       </div>
-  //       <div style={{ flex: '1' }} /> {/* Placeholder for ID column */}
-  //       <div style={{ flex: '1', textAlign: 'right' }}>
-  //         <strong>
-  //           {UTIL.formatoValor(
-  //             'potenciaTotal',
-  //             bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
-  //           )}
-  //         </strong>
-  //       </div>
-  //       <div style={{ flex: '0.7', textAlign: 'center' }}></div>
-  //     </SLDRFooterBox>
-  //   )
-  // }
 
   function footerSummary() {
     // PENDIENTE: Cual debería ser el colorbackground de los boxes con informacion relevante */
@@ -199,63 +164,83 @@ export default function InstallationSummary() {
     )
   }
   /**
-   * Funcion para gestionar el evento generado por cambio de paneles o potenciaUnitaria en la tabla de bases
-   * @param {params} DataGrid parmas object {field, row} que ha cambiado de valor
-   * @param {string} propiedad Puede ser paneles o potenica unitaria
+   * Funcion para gestionar el evento generado por cambio de paneles en la tabla de bases
+   * @param {params} DataGrid params object {field, row} que ha cambiado de valor
+   * @param {Event} event Valor cambiado
    */
 
   function nuevaInstalacion(params, event) {
-    let tmpPaneles
+    let tmpPaneles = params.row.paneles
     if (params.field === 'paneles') {
-      tmpPaneles = parseInt(event.target.value)
-      if (tmpPaneles > params.row.panelesMaximo) {
+      if (UTIL.ValidateEntero(event.target.value)) {
+        tmpPaneles = parseInt(event.target.value)
+        if (tmpPaneles < 0) {
+          SLDRAlert(
+            'VALIDACION',
+            'El número de paneles debe ser mayor o igual a cero e idealmente menor que los ' +
+              params.row.panelesMaximo +
+              ' paneles que estimamos se pueden instalar en el area definida',
+            'error',
+          )
+          return
+        }
+
+        if (tmpPaneles > params.row.panelesMaximo) {
+          SLDRAlert(
+            'VALIDACION',
+            'Esta asignando mas paneles que los ' +
+              params.row.panelesMaximo +
+              ' que estimamos se pueden instalar en el area definida',
+            'error',
+          )
+        }
+
+        //Update this BaseSolar panels and potenciaUnitaria in TCB
+        let baseActiva = TCB.BaseSolar.find((base) => {
+          return base.idBaseSolar === params.id
+        })
+        //baseActiva.instalacion.potenciaUnitaria = tmpPotenciaUnitaria
+        baseActiva.instalacion.paneles = tmpPaneles
+
+        //Update context with new TCB data
+        updateTCBBasesToState()
+        //Update total number of panels in TCB
+        TCB.totalPaneles = TCB.BaseSolar.reduce((a, b) => {
+          return a + b.instalacion.paneles
+        }, 0)
+
+        // //Update this BaseSolar panels and potenciaUnitaria in context
+        // let newBases = bases.map((b) => {
+        //   if (b.idBaseSolar === params.id) {
+        //     b.paneles = tmpPaneles
+        //   }
+        //   return b
+        // })
+        // setBases(newBases)
+
+        // //Update bases in BasesContext
+        // const updateBases = bases.map((row) => {
+        //   if (row.idBaseSolar === params.id) {
+        //     return {
+        //       ...row,
+        //       [params.field]: event.target.value,
+        //       ['potenciaTotal']: tmpPaneles * tmpPotenciaUnitaria,
+        //     }
+        //   } else {
+        //     return row
+        //   }
+        // })
+        // setBases(updateBases)
+      } else {
         SLDRAlert(
           'VALIDACION',
-          'Esta asignando mas paneles que los ' +
+          'El número de paneles debe ser mayor o igual a cero e idealmente menor que los ' +
             params.row.panelesMaximo +
-            ' que estimamos se pueden instalar en el area definida',
+            ' paneles que estimamos se pueden instalar en el area definida',
           'error',
         )
       }
     }
-    let tmpPotenciaUnitaria =
-      params.field === 'potenciaUnitaria'
-        ? parseFloat(event.target.value)
-        : params.row.potenciaUnitaria
-
-    //Update this BaseSolar panels and potenciaUnitaria in context
-    let newBases = bases.map((b) => {
-      if (b.idBaseSolar === params.id) {
-        b.paneles = tmpPaneles
-      }
-      return b
-    })
-    setBases(newBases)
-    //Update this BaseSolar panels and potenciaUnitaria in TCB
-    let baseActiva = TCB.BaseSolar.find((base) => {
-      return base.idBaseSolar === params.id
-    })
-    baseActiva.instalacion.potenciaUnitaria = tmpPotenciaUnitaria
-    baseActiva.instalacion.paneles = tmpPaneles
-
-    //Update total number of panels in TCB
-    TCB.totalPaneles = bases.reduce((a, b) => {
-      return a + b.paneles
-    }, 0)
-
-    //Update bases in BasesContext
-    const updateBases = bases.map((row) => {
-      if (row.idBaseSolar === params.id) {
-        return {
-          ...row,
-          [params.field]: event.target.value,
-          ['potenciaTotal']: tmpPaneles * tmpPotenciaUnitaria,
-        }
-      } else {
-        return row
-      }
-    })
-    setBases(updateBases)
   }
   return (
     <Grid

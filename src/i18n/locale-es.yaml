@@ -611,6 +611,8 @@ ECONOMIC_BALANCE:
   TITLE_DATA_AS_PANELS: Gráfico alternativas según número de paneles
   LABEL_FOOTER_VAN: 'Valor actual neto (VAN): {{VANProyecto}}'
   LABEL_FOOTER_TIR: 'Valor actual neto (TIR): {{TIRProyecto}}'
+  MSG_NO_FINANCE: |
+    Un número de paneles excesivo provoca que el retorno de la inversión no se obtenga antes de {{periodo}} años por lo que el resultado financiero no es significativo. Por favor reduzca el número de paneles, lo que reducirá la inversión, o aumente el consumo de energia, para incrementar el ahorro. De ese modo mejorará el cashflow.
 
 SUMMARY:
   TITLE: Resumen
