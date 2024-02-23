@@ -31,9 +31,25 @@ export default function Page() {
   const { SLDRAlert } = useContext(AlertContext)
   const { validaBases } = useContext(BasesContext)
   const { validaTipoConsumo } = useContext(ConsumptionContext)
-  const { setEcoData } = useContext(EconomicContext)
+  const { ecoData, setEcoData } = useContext(EconomicContext)
 
   let results
+
+  function validaEnergyBalanceStep() {
+    //If periodoAmortizacion is less than zero means it is bigger than maximum number of years expected for the economic balance and cannot continue.
+    if (ecoData.periodoAmortizacion < 0) {
+      SLDRAlert(
+        'VALIDACION',
+        t('ECONOMIC_BALANCE.MSG_NO_FINANCE', {
+          periodo: Math.abs(ecoData.periodoAmortizacion),
+        }),
+        'error',
+      )
+      return false
+    } else {
+      return true
+    }
+  }
 
   function validaLocationStep() {
     results = validaBases()
@@ -79,7 +95,11 @@ export default function Page() {
               title={t('CONSUMPTION.TITLE')}
               next={validaConsumptionStep}
             />
-            <EnergyBalanceStep label="energybalance" title={t('ENERGY_BALANCE.TITLE')} />
+            <EnergyBalanceStep
+              label="energybalance"
+              title={t('ENERGY_BALANCE.TITLE')}
+              next={validaEnergyBalanceStep}
+            />
             <EconomicBalanceStep
               label="economicbalance"
               title={t('ECONOMIC_BALANCE.TITLE')}

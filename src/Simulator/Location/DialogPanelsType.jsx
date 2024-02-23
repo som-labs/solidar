@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 //Formik objects
@@ -27,7 +27,7 @@ import * as UTIL from '../classes/Utiles'
 export default function DialogBaseSolar({ data, onClose }) {
   const { t, i18n } = useTranslation()
   const ndxPanel = useRef(-1)
-  const [tipoPanel, setTipoPanel] = useState(TCB.tipoPanelActivo)
+  //const [tipoPanel, setTipoPanel] = useState(TCB.tipoPanelActivo)
 
   const tecnologias = [
     { value: 'crystSi', text: 'Crystaline silicon' },
@@ -35,11 +35,6 @@ export default function DialogBaseSolar({ data, onClose }) {
     { value: 'Cadmium Telluride', text: 'cdTe' },
     { value: 'Unknown', text: t('Instalacion.LABEL_tecnologiaDesconocida') },
   ]
-
-  useEffect(() => {
-    //setNdxPanel(0)
-    setTipoPanel(data)
-  }, [])
 
   function cambiaTipoPanel(event, values, setValues) {
     const newValues = TCB.tipoPaneles[event.target.value]
@@ -70,8 +65,6 @@ export default function DialogBaseSolar({ data, onClose }) {
               errors[prop] = 'Formato incorrecto'
             } else if (values[prop] <= 0) {
               errors[prop] = 'Debe ser mayor que cero'
-            } else {
-              TCB.tipoPanelActivo[prop] = values[prop]
             }
           }
         }
@@ -166,6 +159,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                   name="potencia"
                   object="Instalacion"
                   unit=" kWp"
+                  value={UTIL.formatoValor('potencia', values.potencia, '')}
                   sx={{ textAlign: 'right', width: '100%' }}
                 ></SLDRInputField>
 
@@ -175,6 +169,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                   name="ancho"
                   object="Instalacion"
                   unit=" m"
+                  value={UTIL.formatoValor('longitud', values.ancho, '')}
                   sx={{ textAlign: 'right', width: '100%' }}
                 ></SLDRInputField>
 
@@ -184,6 +179,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                   name="largo"
                   object="Instalacion"
                   unit=" m"
+                  value={UTIL.formatoValor('longitud', values.largo, '')}
                   sx={{ textAlign: 'right', width: '100%' }}
                 ></SLDRInputField>
               </Box>

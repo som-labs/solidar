@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -8,15 +8,18 @@ import EditIcon from '@mui/icons-material/Edit'
 // REACT Solidar Components
 import { useDialog } from '../../components/DialogProvider'
 import DialogPanelsType from './DialogPanelsType'
+import { BasesContext } from '../BasesContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
+import BaseSolar from '../classes/BaseSolar'
 
 export default function PanelsSelector() {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
   const [tipo, setTipo] = useState(TCB.tipoPanelActivo)
+  const { bases, setBases, updateTCBBasesToState } = useContext(BasesContext)
 
   function changePanelsType() {
     openDialog({
@@ -32,7 +35,6 @@ export default function PanelsSelector() {
   function endDialog(reason, formData) {
     if (reason === 'save') {
       setTipo(formData)
-
       //If we are changing panel technology need to update PVGIS data for existing bases
       if (TCB.tipoPanelActivo.tecnologia !== formData.tecnologia) {
         TCB.tipoPanelActivo.tecnologia = formData.tecnologia
@@ -43,7 +45,7 @@ export default function PanelsSelector() {
 
       //If the panel peak power has changes optimizer has to be executed
       if (TCB.tipoPanelActivo.potencia !== formData.potencia) {
-        TCB.tipoPanelActivo.potencia = formData.potencia
+        TCB.tipoPanelActivo.potencia = UTIL.returnFloat(formData.potencia)
         TCB.requiereOptimizador = true
       }
 
@@ -52,15 +54,21 @@ export default function PanelsSelector() {
         TCB.tipoPanelActivo.ancho !== formData.ancho ||
         TCB.tipoPanelActivo.largo !== formData.largo
       ) {
-        TCB.tipoPanelActivo.ancho = formData.ancho
-        TCB.tipoPanelActivo.largo = formData.largo
-        TCB.BaseSolar.forEach((base) => {
-          base.configuraInclinacion()
-        })
-        TCB.requiereOptimizador = true
-      }
-    }
+        TCB.tipoPanelActivo.ancho = UTIL.returnFloat(formData.ancho)
+        TCB.tipoPanelActivo.largo = UTIL.returnFloat(formData.largo)
 
+        //If panel ancho or largo has changed need to update bases configuration
+
+        TCB.BaseSolar.forEach((TCBbase) => {
+          const config = BaseSolar.configuraPaneles(TCBbase)
+          //Update in TCB
+          TCBbase.updateBase(config)
+        })
+      }
+
+      updateTCBBasesToState()
+      TCB.requiereOptimizador = true
+    }
     closeDialog()
   }
 

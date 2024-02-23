@@ -107,7 +107,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
                 name="nombreTipoConsumo"
                 type="text"
                 object="TipoConsumo"
-                sx={{ flex: 1, mb: '1rem', textAlign: 'center' }}
+                sx={{ flex: 1, textAlign: 'center' }}
               />
               <Typography
                 sx={{ mt: '1rem' }}
@@ -121,13 +121,12 @@ export default function DialogConsumption({ data, previous, onClose }) {
                 labelPlacement="start"
                 control={
                   <SLDRInputField
-                    sx={{ width: 200, height: 50 }}
+                    sx={{ width: 200, height: 50, mt: '1rem' }}
                     select
                     value={values.fuente}
                     name="fuente"
                     defaultValue="CSV"
                     object="TipoConsumo"
-                    label="Tipo fichero fuente"
                     onChange={(event) => handleFuente(event, values, setValues)}
                   >
                     <MenuItem value={'CSV'}>CSV</MenuItem>
