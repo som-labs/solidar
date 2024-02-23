@@ -59,14 +59,16 @@ export default function GraphAlternatives() {
       // Se realizan todos los calculos
       calculaResultados()
 
-      // Se extraen los valores de las variables que forman parte del grafico
-      paneles.push(intento)
-      autoconsumo.push((TCB.balance.autoconsumo / TCB.produccion.pTotalAnual) * 100)
-      autosuficiencia.push((TCB.balance.autoconsumo / TCB.consumo.cTotalAnual) * 100)
-      consvsprod.push((TCB.consumo.cTotalAnual / TCB.produccion.pTotalAnual) * 100)
-      TIR.push(TCB.economico.TIRProyecto)
-      precioInstalacion.push(TCB.economico.precioInstalacionCorregido)
-      ahorroAnual.push(TCB.economico.ahorroAnual)
+      if (TCB.economico.periodoAmortizacion > 0) {
+        // Se extraen los valores de las variables que forman parte del grafico
+        paneles.push(intento)
+        autoconsumo.push((TCB.balance.autoconsumo / TCB.produccion.pTotalAnual) * 100)
+        autosuficiencia.push((TCB.balance.autoconsumo / TCB.consumo.cTotalAnual) * 100)
+        consvsprod.push((TCB.consumo.cTotalAnual / TCB.produccion.pTotalAnual) * 100)
+        TIR.push(TCB.economico.TIRProyecto)
+        precioInstalacion.push(TCB.economico.precioInstalacionCorregido)
+        ahorroAnual.push(TCB.economico.ahorroAnual)
+      }
     }
   }
 

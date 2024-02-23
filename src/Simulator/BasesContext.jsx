@@ -51,12 +51,25 @@ const BasesContextProvider = ({ children }) => {
   const hdrFill = (data) => {
     let newData = {}
     for (let field in hdrBase) newData[field] = data[field]
+    newData.paneles = data?.instalacion.paneles
+    newData.potenciaUnitaria = data?.instalacion.potenciaUnitaria
+    newData.potenciaTotal = data?.instalacion.potenciaTotal
     return newData
   }
 
   // Add base object to the bases state
   function addTCBBaseToState(base) {
     setBases((prevBases) => [...prevBases, hdrFill(base)])
+  }
+
+  // Update context bases with TCB ones
+  function updateTCBBasesToState() {
+    //Update CTX state
+    let updatedBases = []
+    TCB.BaseSolar.forEach((TCBbase) => {
+      updatedBases.push(hdrFill(TCBbase))
+    })
+    setBases(updatedBases)
   }
 
   function computeAcimut(formData, center, area) {
@@ -133,10 +146,14 @@ const BasesContextProvider = ({ children }) => {
     )
   }
 
-  //Function to be executed at closeDialog del DialogNewBaseSolar. Is here because can be used as exit of DailogNewBaseSolar from BasesSuammry as edit and from MapComponent as new.
+  /** Function to be executed at closeDialog of DialogNewBaseSolar. Is used as exit of DailogNewBaseSolar from BasesSummary as edit and from MapComponent as new.
+   *
+   * @param {string} reason Can be save or edit
+   * @param {Object} formData New data provided by dialog
+   */
+
   function processFormData(reason, formData) {
     //Update openlayers label with nombreBaseSolar
-    console.log('FROM DIALOG', formData)
     const labelFeatId = 'BaseSolar.label.' + formData.idBaseSolar
     const labelFeature = TCB.origenDatosSolidar.getFeatureById(labelFeatId)
     UTIL.setLabel(
@@ -158,7 +175,6 @@ const BasesContextProvider = ({ children }) => {
       if (formData.inclinacionOptima) formData.inclinacion = 35
     }
     formData.areaReal = formData.cumbrera * formData.anchoReal
-    console.log('CONVERTED TO REAL', formData)
 
     //Will compute acimut in case it is a new base
     const centerPoint = labelFeature.getGeometry()
@@ -166,12 +182,10 @@ const BasesContextProvider = ({ children }) => {
     const areaShape = TCB.origenDatosSolidar.getFeatureById(areaComponent).getGeometry()
     if (reason === 'save') {
       formData.inAcimut = computeAcimut(formData, centerPoint, areaShape)
-      console.log('CON ACIMUT DATA', formData)
     } else {
       console.log('estamos editando por ahora no hay cambio de acimut desde dialogo')
     }
     formData = Object.assign({}, formData, BaseSolar.configuraPaneles(formData))
-    console.log('CON CONFIGURACION DATA', formData)
 
     //Will draw acimut line
     const puntoAplicacion = centerPoint.getCoordinates()
@@ -186,15 +200,12 @@ const BasesContextProvider = ({ children }) => {
     acimutLine.setStyle(null)
     TCB.origenDatosSolidar.addFeature(acimutLine)
 
-    console.log('TO CREATE UPDATE', formData)
     //Update or create a TCB.BaseSolar with formData
     let baseIndex
 
     if (reason === 'save') {
       // We are creating a new base
       baseIndex = TCB.BaseSolar.push(new BaseSolar(formData)) - 1
-      //Adding created BaseSolar to BasesContext
-      addTCBBaseToState(TCB.BaseSolar[baseIndex])
     } else {
       //We are updating existing base
       baseIndex = TCB.BaseSolar.findIndex((base) => {
@@ -202,15 +213,9 @@ const BasesContextProvider = ({ children }) => {
       })
       //Update TCB.BaseSolar with formData
       TCB.BaseSolar[baseIndex].updateBase(formData)
-      //Update BaseSolar in BasesContext with formData
-      const updatedBases = bases.map((base) => {
-        if (base.idBaseSolar === formData.idBaseSolar) {
-          return { ...formData } // Replace the item with same idBaseSolar
-        }
-        return base // Keep other items unchanged
-      })
-      setBases(updatedBases)
     }
+    //Update context with new TCB data
+    updateTCBBasesToState()
   }
 
   function validaBases() {
@@ -245,6 +250,7 @@ const BasesContextProvider = ({ children }) => {
     processFormData,
     validaBases,
     addTCBBaseToState,
+    updateTCBBasesToState,
   }
   return <BasesContext.Provider value={contextValue}>{children}</BasesContext.Provider>
 }

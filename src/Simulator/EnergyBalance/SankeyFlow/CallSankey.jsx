@@ -4,7 +4,6 @@ import SankeyFun from './SankeyFun'
 import TCB from '../../classes/TCB'
 export default function CallSankey(props) {
   var svgRef = useRef(null)
-  console.log('EN CALLSANKEY', props)
 
   const consumo = TCB.consumo.cTotalAnual
   const produccion = TCB.produccion.pTotalAnual
@@ -14,10 +13,6 @@ export default function CallSankey(props) {
   const consumoDiurno = TCB.balance.consumoDiurno
 
   useEffect(() => {
-    // const { consumo, produccion, deficit, autoconsumo, excedente, consumoDiurno } =
-    //   props.yearlyData
-    console.log('EN CALLSANKEY', props)
-
     const data = [
       { source: 'Producción paneles', target: 'Excedente', value: excedente },
       {

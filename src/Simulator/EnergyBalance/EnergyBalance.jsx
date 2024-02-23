@@ -31,7 +31,7 @@ export default function EnergyBalanceStep() {
   const [monthlyData, setMonthlyData] = useState({})
   const [yearlyData, setYearlyData] = useState({})
   const [monthlyConsumoProduccion, setMonthlyConsumoProduccion] = useState({})
-  const { bases, setBases } = useContext(BasesContext)
+  const { bases, setBases, updateTCBBasesToState } = useContext(BasesContext)
   const { setEcoData } = useContext(EconomicContext)
   const [mes, setMes] = useState('')
   // El proceso de PreparaEnergyBalance ejecutado como exit del wizard ha hecho cambios sobre las bases que se crearon en location por lo que se deben actualizar
@@ -39,21 +39,23 @@ export default function EnergyBalanceStep() {
   // El rendimiento ha podido cambiar la inclinacion y por lo tanto el area, la configuracion de paneles y la potenciaMaxima
   // Si se usaron angulos optimos tambien ha cambiado el acimut.
   useEffect(() => {
-    let oldBases = [...bases]
-    for (let base of TCB.BaseSolar) {
-      const nIndex = oldBases.findIndex((t) => {
-        return t.idBaseSolar === base.idBaseSolar
-      })
-      oldBases[nIndex].paneles = base.instalacion.paneles
-      oldBases[nIndex].potenciaUnitaria = base.instalacion.potenciaUnitaria
-      oldBases[nIndex].potenciaTotal = base.instalacion.potenciaTotal
-      oldBases[nIndex].potenciaMaxima = base.potenciaMaxima
-      oldBases[nIndex].areaReal = base.areaReal
-      oldBases[nIndex].inclinacion = base.inclinacion
-      oldBases[nIndex].inAcimut = base.inAcimut
-      oldBases[nIndex].panelesMaximo = base.panelesMaximo
-    }
-    setBases(oldBases)
+    // let oldBases = [...bases]
+    // for (let base of TCB.BaseSolar) {
+    //   const nIndex = oldBases.findIndex((t) => {
+    //     return t.idBaseSolar === base.idBaseSolar
+    //   })
+    //   oldBases[nIndex].paneles = base.instalacion.paneles
+    //   oldBases[nIndex].potenciaUnitaria = base.instalacion.potenciaUnitaria
+    //   oldBases[nIndex].potenciaTotal = base.instalacion.potenciaTotal
+    //   oldBases[nIndex].potenciaMaxima = base.potenciaMaxima
+    //   oldBases[nIndex].areaReal = base.areaReal
+    //   oldBases[nIndex].inclinacion = base.inclinacion
+    //   oldBases[nIndex].inAcimut = base.inAcimut
+    //   oldBases[nIndex].panelesMaximo = base.panelesMaximo
+    // }
+    // setBases(oldBases)
+    updateTCBBasesToState()
+
     setMonthlyData({
       deficit: TCB.balance.resumenMensual('deficit'),
       autoconsumo: TCB.balance.resumenMensual('autoconsumo'),
@@ -75,7 +77,7 @@ export default function EnergyBalanceStep() {
 
   useEffect(() => {
     //REVISAR: porque se ejecuta 3 veces
-    console.log('USEEFFECT de ENERGYBALANCE')
+    console.log('USEEFFECT de ENERGYBALANCE por cambio de CTXbases')
 
     // Cuando cambian las bases se realiza el cálculo de todas las variables del sistema
     calculaResultados()

@@ -8,6 +8,7 @@ import calculaResultados from '../classes/calculaResultados'
 
 // Solidar objects
 import Consumo from '../classes/Consumo'
+import BaseSolar from '../classes/BaseSolar'
 
 export default async function PreparaEnergyBalance() {
   let cursorOriginal = document.body.style.cursor
@@ -60,8 +61,11 @@ export default async function PreparaEnergyBalance() {
         }
       }
       // PENDIENTE: limpiar alert de espera
-      base.inAcimut = base.rendimiento.acimut
-      base.inclinacion = base.rendimiento.inclinacion
+      //base.inAcimut = base.rendimiento.acimut
+      if (base.inclinacionOptima) {
+        base.inclinacion = base.rendimiento.inclinacion
+        BaseSolar.configuraPaneles(base)
+      }
     }
     UTIL.debugLog('PreparaEnergyBalance - Todas las bases listas llama optimizador')
     // Se ejecuta el optimizador para determinar la configuración inicial propuesta
