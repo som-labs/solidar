@@ -4,6 +4,10 @@ import * as UTIL from './Utiles'
  * @class Economico
  * @classdesc Clase representa las condiciones economico financieras de la configuración global o de cada Finca individualmente
  */
+
+//Numero maximo de años esperando cashflow positivo
+const maxNumberCashFlow = 20
+
 class Economico {
   constructor() {
     // Inicializa la tabla indice de acceso
@@ -20,6 +24,7 @@ class Economico {
         diaSemana: 0,
       }
     }
+
     //Este array contiene lo pagado por consumo, lo cobrado por compensacion y el balance neto sin tener en cuenta posibles limites
 
     this.diaHoraPrecioOriginal = Array.from(Array(365), () => new Array(24).fill(0))
@@ -294,7 +299,8 @@ class Economico {
     while (unFlow.ano < 10 || unFlow.pendiente < 0) {
       //Puede ser que la cuota de la hucha haga que el ahorro sea negativo. En ese caso mostramos los resultados de 10 años
       if (unFlow.ano > 10 && unFlow.ahorro < 0) break
-      if (unFlow.ano > 20) break
+      if (unFlow.ano > maxNumberCashFlow) break
+
       let lastPendiente = unFlow.pendiente
       unFlow = {}
       unFlow.ano = ++i
@@ -322,13 +328,23 @@ class Economico {
     this.periodoAmortizacion = this.cashFlow.findIndex((c) => {
       return c.pendiente > 0
     })
-    if (cuotaPeriodo[0] < 0) {
-      this.VANProyecto = this.VAN(this.interesVAN, cuotaPeriodo)
-      this.TIRProyecto = this.TIR(this.interesVAN * 2, cuotaPeriodo)
+
+    if (this.periodoAmortizacion > 0) {
+      if (cuotaPeriodo[0] < 0) {
+        this.VANProyecto = this.VAN(this.interesVAN, cuotaPeriodo)
+        this.TIRProyecto = this.TIR(this.interesVAN * 2, cuotaPeriodo)
+      } else {
+        //Estamos en una finca añadida que no tiene participación en la inversión. No tiene sentido el cashflow
+        this.VANProyecto = 'N/A'
+        this.TIRProyecto = 'N/A'
+      }
     } else {
-      //Estamos en una finca añadida que no tiene participación en la inversión. No tiene sentido el cashflow
-      this.VANProyecto = 'N/A'
-      this.TIRProyecto = 'N/A'
+      this.periodoAmortizacion = -maxNumberCashFlow
+      // alert(
+      //   'Probable número excesivo de paneles -> mucha inversión -> retorno > ' +
+      //     maxNumberCashFlow +
+      //     ' años',
+      // )
     }
 
     if (coefInversion === 100) {
@@ -353,7 +369,7 @@ class Economico {
    * @returns {number} TIR
    */
   TIR(initRate, args) {
-    var depth = 20
+    var depth = 30
     var numberOfTries = 1
 
     var positive, negative
@@ -373,7 +389,9 @@ class Economico {
         flag = true
         rate = rate - delta
         if (rate < 0) {
-          alert('rate:' + rate)
+          alert(
+            'Probable número excesivo de paneles -> mucha inversión -> retorno > 30 años',
+          )
           numberOfTries = depth
         }
       } else {

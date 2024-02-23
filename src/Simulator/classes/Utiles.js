@@ -67,7 +67,7 @@ const campos = {
   },
   potenciaMaxima: {
     unidad: ' kWp',
-    decimales: 0,
+    decimales: 1,
     salvar: true,
     mostrar: true,
     order: 16,
@@ -288,6 +288,17 @@ export const indiceDia = [
   [11, 334, 364],
 ]
 
+const returnFloat = (value) => {
+  let floatValue
+  if (typeof value === 'string') {
+    floatValue = parseFloat(
+      value.replace(/,/g, '.').toLocaleString(undefined, { useGrouping: true }),
+    )
+    return floatValue
+  } else {
+    return value
+  }
+}
 const ValidateDecimal = (language, inputValue) => {
   const number = 1.1
   const decimalSeparator = number.toLocaleString(language).substring(1, 2)
@@ -1065,6 +1076,7 @@ export {
   nombreMesLargo,
   obtenerPropiedades,
   promedio,
+  returnFloat,
   round2Decimales,
   selectTCB,
   setActivo,

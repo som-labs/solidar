@@ -3,6 +3,7 @@ import { cleanup, render, screen, fireEvent, act, waitFor } from '@testing-libra
 import Wizard from './Wizard'
 import React from 'react'
 
+//REVISAR: al dar next o previous hacer que la pagina vaya a top
 function nextButton() {
   return screen.queryByText('Next')
 }

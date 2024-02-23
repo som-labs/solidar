@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
-import html2canvas from 'html2canvas'
 
 // OpenLayers objects
 import { Map, View } from 'ol'
@@ -10,13 +9,13 @@ import { OSM, Vector as VectorSource, XYZ } from 'ol/source'
 import { Style, Fill, Stroke } from 'ol/style'
 import VectorLayer from 'ol/layer/Vector'
 import Feature from 'ol/Feature'
-import { Point, LineString, Polygon } from 'ol/geom'
+import { Point, Polygon } from 'ol/geom'
 import { transform, fromLonLat } from 'ol/proj'
 import { Draw } from 'ol/interaction'
 import { getArea, getDistance } from 'ol/sphere.js'
 
 // MUI objects
-import { Button, Tooltip, Typography, Box } from '@mui/material'
+import { Button, Tooltip, Typography, Box, IconButton, Container } from '@mui/material'
 
 //React global components
 import { BasesContext } from '../BasesContext'
@@ -139,7 +138,7 @@ export default function MapComponent() {
 
     if (vertices.length === 2) {
       output = t('LOCATION.TOOLTIP_CUMBRERA', {
-        cumbrera: UTIL.formatoValor('longitud', Math.round(cumbrera)),
+        cumbrera: UTIL.formatoValor('longitud', cumbrera),
       })
     } else {
       const start = transform(vertices[1], 'EPSG:3857', 'EPSG:4326')
@@ -284,6 +283,7 @@ export default function MapComponent() {
       //Store the map in BasesContext
       mapRef.current.on('pointermove', pointerMoveHandler)
       setMap(mapRef.current)
+      TCB.map = mapRef.current
     } else {
       mapRef.current.setTarget(mapElement.current)
     }
@@ -357,9 +357,9 @@ export default function MapComponent() {
     }
 
     // Calculo propuesta de acimut basandose en la cumbrera
-    const azimutLength = 30
-    let midPoint = [0, 0]
-    let coef
+    // const azimutLength = 30
+    // let midPoint = [0, 0]
+    // let coef
 
     // Si el dibujo es libre, es decir sin cumbrera primero
     //    let rotate = 0
@@ -376,28 +376,28 @@ export default function MapComponent() {
     //   rotate = Math.PI
     // }
 
-    midPoint[0] = puntos[2][0] + (puntos[3][0] - puntos[2][0]) / 2
-    midPoint[1] = puntos[2][1] + (puntos[3][1] - puntos[2][1]) / 2
-    coef = azimutLength / ancho
+    // midPoint[0] = puntos[2][0] + (puntos[3][0] - puntos[2][0]) / 2
+    // midPoint[1] = puntos[2][1] + (puntos[3][1] - puntos[2][1]) / 2
+    // coef = azimutLength / ancho
 
     //Dibujamos un acimut pequeño que aparecerá o no según la configuracion elegida
-    const geomAcimut = new LineString([puntoAplicacion, midPoint])
-    geomAcimut.scale(coef, coef, puntoAplicacion)
-    const acimutCoordinates = geomAcimut.getCoordinates()
-    let point1 = acimutCoordinates[0]
-    let point2 = acimutCoordinates[1]
+    // const geomAcimut = new LineString([puntoAplicacion, midPoint])
+    // geomAcimut.scale(coef, coef, puntoAplicacion)
+    // const acimutCoordinates = geomAcimut.getCoordinates()
+    // let point1 = acimutCoordinates[0]
+    // let point2 = acimutCoordinates[1]
 
     // Angles are measured with 0 at south (axis -Y) and positive west (axis +X)
-    let acimut =
-      (Math.atan2(-1 * (point1[0] - point2[0]), point1[1] - point2[1]) * 180) / Math.PI
-    acimut = -parseInt(acimut)
-    const acimutLine = new Feature({
-      geometry: geomAcimut,
-    })
-    acimutLine.setId('BaseSolar.acimut.' + TCB.featIdUnico)
-    acimutLine.setStyle(new Style({}))
-    TCB.origenDatosSolidar.addFeature(acimutLine)
-    acimutLine.setStyle(new Style({}))
+    // let acimut =
+    //   (Math.atan2(-1 * (point1[0] - point2[0]), point1[1] - point2[1]) * 180) / Math.PI
+    // acimut = -parseInt(acimut)
+    // const acimutLine = new Feature({
+    //   geometry: geomAcimut,
+    // })
+    // acimutLine.setId('BaseSolar.acimut.' + TCB.featIdUnico)
+    // acimutLine.setStyle(new Style({}))
+    // TCB.origenDatosSolidar.addFeature(acimutLine)
+    // acimutLine.setStyle(new Style({}))
 
     //Preparamos los datos default para constuir un objeto BaseSolar
     geoBaseSolar.feature.setId('BaseSolar.area.' + TCB.featIdUnico)
@@ -409,10 +409,10 @@ export default function MapComponent() {
     nuevaBaseSolar.cumbrera = cumbrera
     nuevaBaseSolar.ancho = ancho
     nuevaBaseSolar.area = getArea(geometria)
-    nuevaBaseSolar.inclinacion = 0
-    nuevaBaseSolar.inclinacionOptima = true
-    nuevaBaseSolar.roofType = 'Optimos'
-    nuevaBaseSolar.inAcimut = acimut
+    nuevaBaseSolar.inclinacion = 20
+    nuevaBaseSolar.inclinacionOptima = false
+    nuevaBaseSolar.roofType = 'Coplanar'
+    nuevaBaseSolar.inAcimut = undefined
     nuevaBaseSolar.angulosOptimos = true
     nuevaBaseSolar.requierePVGIS = true
     nuevaBaseSolar.lonlatBaseSolar =
@@ -454,16 +454,22 @@ export default function MapComponent() {
     window.open('https://earth.google.com/web/search/' + lat + ',' + lon + '/', '_blank')
   }
 
+  function openShadowMap() {
+    const center = mapRef.current.getView().getCenter()
+    const lonLat = transform(center, 'EPSG:3857', 'EPSG:4326')
+    const lon = lonLat[0]
+    const lat = lonLat[1]
+    window.open(
+      'https://app.shadowmap.org/?lat=' +
+        lat +
+        '&lng=' +
+        lon +
+        '&zoom=16.31&azimuth=-0.07499&basemap=map&elevation=nextzen&f=29.0&polar=0.52360&time=1708600229817&vq=2',
+    )
+  }
+
   return (
-    <>
-      <Box sx={{ mt: '1rem', ml: '1rem' }}>
-        <Typography
-          variant="body"
-          dangerouslySetInnerHTML={{
-            __html: t('LOCATION.PROMPT_DRAW'),
-          }}
-        />
-      </Box>
+    <Container>
       {/* El mapa */}
       <div
         ref={mapElement}
@@ -497,8 +503,8 @@ export default function MapComponent() {
         {t('LOCATION.LABEL_FITMAP')}
       </Button>
       <Button variant="contained" size="large" onClick={openGoogleEarth}>
-        {t('LOCATION.LABLE_GOOGLE_EARTH')}
+        {t('LOCATION.LABEL_GOOGLE_EARTH')}
       </Button>
-    </>
+    </Container>
   )
 }
