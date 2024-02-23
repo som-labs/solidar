@@ -26,7 +26,6 @@ const ConsumptionStep = () => {
       children: <HelpExcedentCompensation onClose={() => closeDialog()} />,
     })
   }
-  const htmlT = t('CONSUMPTION.TARIFA_DESCRIPTION', { icono: '<HelpIcon />' })
 
   return (
     <>

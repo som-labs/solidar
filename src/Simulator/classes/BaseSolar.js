@@ -122,7 +122,6 @@ class BaseSolar extends DiaHora {
     let vGap
     let config = {}
 
-    console.log('IN CONFIGURA PANELES', area, TCB.tipoPanelActivo)
     const { roofType, cumbrera, anchoReal, inclinacion, lonlatBaseSolar } = area
 
     if (roofType === 'Coplanar') {
@@ -176,82 +175,81 @@ class BaseSolar extends DiaHora {
     } else {
       config = { columnas: vColumnas, filas: vFilas, modoInstalacion: 'Vertical' }
     }
-    console.log('OUT CONFIGURA PANELES', config)
     UTIL.debugLog('Configuración', config)
     return config
   }
 
-  static configuraInclinacion(aThis) {
-    let hColumnas
-    let hFilas
-    let hGap
+  // static configuraInclinacion(aThis) {
+  //   let hColumnas
+  //   let hFilas
+  //   let hGap
 
-    let vColumnas
-    let vFilas
-    let vGap
-    // Caso Coplanar
-    if (aThis.roofType === 'Coplanar') {
-      // Opcion largo panel paralelo a cumbrera
-      hColumnas = Math.trunc(
-        (aThis.cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
-      )
-      hFilas = Math.trunc(
-        (aThis.anchoReal - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
-      )
+  //   let vColumnas
+  //   let vFilas
+  //   let vGap
+  //   // Caso Coplanar
+  //   if (aThis.roofType === 'Coplanar') {
+  //     // Opcion largo panel paralelo a cumbrera
+  //     hColumnas = Math.trunc(
+  //       (aThis.cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
+  //     )
+  //     hFilas = Math.trunc(
+  //       (aThis.anchoReal - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
+  //     )
 
-      // Opcion largo panel perpendicular a cumbrera
-      vColumnas = Math.trunc(
-        (aThis.cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
-      )
-      vFilas = Math.trunc(
-        (aThis.anchoReal - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
-      )
-    } else {
-      //Caso tejado horizontal u optimo
-      const latitud = parseFloat(aThis.lonlatBaseSolar.split(',')[1])
-      console.log(latitud)
-      // Opcion largo panel paralelo a la cumbrera
-      hGap =
-        TCB.tipoPanelActivo.ancho * Math.cos((aThis.inclinacion * Math.PI) / 180) +
-        (TCB.tipoPanelActivo.ancho * Math.sin((aThis.inclinacion * Math.PI) / 180)) /
-          Math.tan(((61 - latitud) * Math.PI) / 180)
-      hColumnas = Math.trunc(
-        (aThis.cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
-      )
-      hFilas = Math.trunc((aThis.anchoReal - 2 * TCB.parametros.margen) / hGap)
-      //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
-      hFilas = hFilas === 0 ? 1 : hFilas
+  //     // Opcion largo panel perpendicular a cumbrera
+  //     vColumnas = Math.trunc(
+  //       (aThis.cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
+  //     )
+  //     vFilas = Math.trunc(
+  //       (aThis.anchoReal - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
+  //     )
+  //   } else {
+  //     //Caso tejado horizontal u optimo
+  //     const latitud = parseFloat(aThis.lonlatBaseSolar.split(',')[1])
+  //     console.log(latitud)
+  //     // Opcion largo panel paralelo a la cumbrera
+  //     hGap =
+  //       TCB.tipoPanelActivo.ancho * Math.cos((aThis.inclinacion * Math.PI) / 180) +
+  //       (TCB.tipoPanelActivo.ancho * Math.sin((aThis.inclinacion * Math.PI) / 180)) /
+  //         Math.tan(((61 - latitud) * Math.PI) / 180)
+  //     hColumnas = Math.trunc(
+  //       (aThis.cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
+  //     )
+  //     hFilas = Math.trunc((aThis.anchoReal - 2 * TCB.parametros.margen) / hGap)
+  //     //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
+  //     hFilas = hFilas === 0 ? 1 : hFilas
 
-      //console.log(hGap, hColumnas, hFilas)
-      // Opcion largo panel perpendicular a cumpbrera
-      vGap =
-        TCB.tipoPanelActivo.largo * Math.cos((aThis.inclinacion * Math.PI) / 180) +
-        (TCB.tipoPanelActivo.largo * Math.sin((aThis.inclinacion * Math.PI) / 180)) /
-          Math.tan(((61 - latitud) * Math.PI) / 180)
-      vColumnas = Math.trunc(
-        (aThis.cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
-      )
-      vFilas = Math.trunc((aThis.anchoReal - 2 * TCB.parametros.margen) / vGap)
-      //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
-      vFilas = vFilas === 0 ? 1 : vFilas
-    }
-    //console.log(vGap, vColumnas, vFilas)
-    // Elegimos la configuracion que nos permite mas paneles
-    if (hColumnas * hFilas > vColumnas * vFilas) {
-      aThis.columnas = hColumnas
-      aThis.filas = hFilas
-      aThis.modoInstalacion = 'Horizontal'
-    } else {
-      aThis.columnas = vColumnas
-      aThis.filas = vFilas
-      aThis.modoInstalacion = 'Vertical'
-    }
-    UTIL.debugLog('Configuración', {
-      modo: aThis.modoInstalacion,
-      columnas: aThis.columnas,
-      filas: aThis.filas,
-    })
-  }
+  //     //console.log(hGap, hColumnas, hFilas)
+  //     // Opcion largo panel perpendicular a cumpbrera
+  //     vGap =
+  //       TCB.tipoPanelActivo.largo * Math.cos((aThis.inclinacion * Math.PI) / 180) +
+  //       (TCB.tipoPanelActivo.largo * Math.sin((aThis.inclinacion * Math.PI) / 180)) /
+  //         Math.tan(((61 - latitud) * Math.PI) / 180)
+  //     vColumnas = Math.trunc(
+  //       (aThis.cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
+  //     )
+  //     vFilas = Math.trunc((aThis.anchoReal - 2 * TCB.parametros.margen) / vGap)
+  //     //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
+  //     vFilas = vFilas === 0 ? 1 : vFilas
+  //   }
+  //   //console.log(vGap, vColumnas, vFilas)
+  //   // Elegimos la configuracion que nos permite mas paneles
+  //   if (hColumnas * hFilas > vColumnas * vFilas) {
+  //     aThis.columnas = hColumnas
+  //     aThis.filas = hFilas
+  //     aThis.modoInstalacion = 'Horizontal'
+  //   } else {
+  //     aThis.columnas = vColumnas
+  //     aThis.filas = vFilas
+  //     aThis.modoInstalacion = 'Vertical'
+  //   }
+  //   UTIL.debugLog('Configuración', {
+  //     modo: aThis.modoInstalacion,
+  //     columnas: aThis.columnas,
+  //     filas: aThis.filas,
+  //   })
+  // }
 
   updateBase(newData) {
     //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto

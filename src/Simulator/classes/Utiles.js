@@ -67,7 +67,7 @@ const campos = {
   },
   potenciaMaxima: {
     unidad: ' kWp',
-    decimales: 0,
+    decimales: 1,
     salvar: true,
     mostrar: true,
     order: 16,
