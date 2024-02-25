@@ -195,6 +195,7 @@ export default function BasesSummary() {
             rowHeight={30}
             autoHeight
             disableColumnMenu
+            localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
             sx={{
               mb: '1rem',
             }}
