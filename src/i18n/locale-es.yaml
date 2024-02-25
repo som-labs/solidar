@@ -652,6 +652,7 @@ BASIC:
   main_TAB_noMostrarMas: No volver a mostrar este mensaje
   valor_true: Verdadero
   valor_false: Falso
+  LABEL_NO_ROWS: Sin datos
 
 GRAPHICS:
   LABEL_CONSUMPTION: Consumo
