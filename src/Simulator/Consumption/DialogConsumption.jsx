@@ -132,6 +132,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
                     <MenuItem value={'CSV'}>CSV</MenuItem>
                     <MenuItem value={'DATADIS'}>DATADIS</MenuItem>
                     <MenuItem value={'REE'}>REE</MenuItem>
+                    <MenuItem value={'SOM'}>SOM Oficina Virtual</MenuItem>
                   </SLDRInputField>
                 }
                 label={t('TipoConsumo.PROP.fuente')}
