@@ -158,9 +158,15 @@ export default function HourlyEnergyBalance(props) {
     margin: { b: 50, t: 50, r: 10, l: 100 },
   }
 
+  const config = {
+    // Disable selection to prevent click events from being sent
+    // This prevents the selection of data points on click
+    displayModeBar: false,
+  }
+
   return (
     <Container ref={graphElement}>
-      <Plot data={data} layout={layout} />
+      <Plot data={data} layout={layout} config={config} />
     </Container>
   )
 }

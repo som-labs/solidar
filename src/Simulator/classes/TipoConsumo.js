@@ -1,5 +1,7 @@
 // import TCB from "./TCB";
 import DiaHora from './DiaHora'
+import * as UTIL from './Utiles'
+import TCB from './TCB'
 /**
  * Clase representa un perfil específico de consumo. Se puede obtener a partir de un fichero CSV de distribuidora o del perfile estandar de REE
  * @extends DiaHora
@@ -44,49 +46,66 @@ class TipoConsumo extends DiaHora {
   } // End constructor
 
   /**
-   * Function to define options ofor the diaHora.loadFromCsv method
-   * @param {string} fuente [CVS, REE, DATADIS]
+   * Function to define options for the loadFromCsv function
+   * @param {string} fuente [CVS, REE, DATADIS, SOM]
    * @returns
    */
   selectCSVOptions(fuente) {
+    let options = { metodo: 'PROMEDIO', fuente: fuente }
     if (fuente === 'REE') {
-      return {
-        delimiter: ';',
-        decimal: '.',
-        fechaHdr: 'FECHA',
-        horaHdr: 'HORA',
+      options = {
         valorArr: this.tipoTarifaREE,
         factor: this.consumoAnualREE,
       }
     } else {
-      return {
-        delimiter: ';',
-        decimal: ',',
-        fechaHdr: 'FECHA',
-        horaHdr: 'HORA',
-        valorArr: ['CONSUMO', 'CONSUMO_KWH', 'AE_KWH'],
+      options = {
+        valorArr: ['consumo_kWh', 'AE_kWh', 'Consumo_kWh', 'Consumo'],
         factor: 1,
-        metodo: 'PROMEDIO',
-        //Si la fuente es CSV de DATADIS loadcsv debera cambiar el formato de fecha de AAAA/MM/DD a DD/MM/AAAA
-        fechaSwp: fuente === 'DATADIS',
       }
     }
+    //Si la fuente es CSV de DATADIS loadcsv debera cambiar el formato de fecha de AAAA/MM/DD a DD/MM/AAAA
+    options.fechaSwp = fuente === 'DATADIS'
+    //Si la fuente es SOM loadcsv la hora ya viene 0:23, si no viene 1:24
+    options.deltaHour = fuente === 'SOM' ? 0 : -1
+    return options
   }
 
-  async loadTipoConsumoFromCSV(fuente, fichero) {
-    //if (fuente !== this.fuente || fichero.name !== this.nombreFicheroCSV) {
+  async loadTipoConsumoFromCSV() {
     this.inicializa()
-    //}
-    let aStatus
-    await this.loadFromCSV(this.ficheroCSV, this.options)
-      .then((r) => {
-        aStatus = true
+    var astatus = false
+
+    await UTIL.loadFromCSV(this.ficheroCSV, this, this.options)
+      .then((returnObject) => {
+        //Verificamos que tenemos 365 dias registrados.
+        let faltan = 0
+        for (let i = 0; i < 365; i++) {
+          if (this.idxTable[i].fecha === '') faltan++
+        }
+        if (faltan !== 0) {
+          UTIL.debugLog('Faltan datos de ' + faltan + ' dias')
+          if (
+            window.confirm(
+              TCB.i18next.t('CONSUMPTION.ERROR_FALTAN_DATOS', { faltan: faltan }),
+            )
+          ) {
+            astatus = true
+          }
+        } else astatus = true
+        if (astatus) {
+          this.fechaInicio = returnObject.fechaInicio
+          this.horaInicio = returnObject.horaInicio
+          this.fechaFin = returnObject.fechaFin
+          this.horaFin = returnObject.horaFin
+          this.numeroRegistros = returnObject.numeroRegistros
+          this.datosCargados = true
+          this.sintesis()
+        }
       })
       .catch((e) => {
         alert(e)
-        aStatus = false
+        astatus = false
       })
-    return aStatus
+    return astatus
   }
 }
 export default TipoConsumo

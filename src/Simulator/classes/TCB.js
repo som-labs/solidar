@@ -272,7 +272,7 @@ const TCB = {
     Comunitaria: { '<=10kWp': 710, '>10kWp': 535 },
   },
 
-  coefHucha: 0,
+  coefHucha: 80,
   cuotaHucha: 0,
 
   conversionCO2: {
