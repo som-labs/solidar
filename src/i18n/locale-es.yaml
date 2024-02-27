@@ -462,10 +462,13 @@ CONSUMPTION:
   TITLE_DIALOG_NEW_CONSUMPTION: Formulario para crear un nuevo tipo de consumo
   TOOLTIP_botonBorraTipoConsumo: Borra el perfil de consumo seleccionado
   TOOLTIP_botonMuestraMapaTipoConsumo: Muestra gráfico mapa de consumo de este perfil
-
+  ERROR_CABECERAS_CSV: Error formato CSV falta cabecera {{cabeceras}}
+  ERROR_fuenteTipoErroneo_CSV: Posible error leyendo fichero con formato SOM para fuente CSV distribuidora
+  ERROR_fuenteTipoErroneo_DATADIS: Posible error leyendo fichero con formato DATADIS para fuente tipo CSV distribuidora o viceversa
+  ERROR_fuenteTipoErroneo_SOM: Posible error leyendo fichero con formato DATADIS o CSV distribuidora para fuente tipo SOM
+  ERROR_FALTAN_DATOS: 'Faltan datos de {{faltan}} dias. ¿Desea continuar?'
   nombreTipoConsumoDuplicado_MSG: El nombre del tipo de consumo no puede estar duplicado
   tipoConsumoDefault_MSG: Defina tipo de fichero a utilizar y tarifa aplicable
-  fuenteTipoConsumoErronea_MSG: Posible error definiendo DATADIS cuando debería ser CSV o viceversa
 
   tcMaximoAnual_LBL: Máximo consumo horario anual
   numeroDias_LBL: Días procesados
@@ -479,7 +482,7 @@ CONSUMPTION:
   consumo_MSG_hayFincasAsociadas: No se puede borrar un tipo de consumo que tiene fincas asociadas
 
   consumo_MSG_errorLecturaFicheroConsumo: Error de lectura fichero CSV de consumos
-  consumo_MSG_errorCabeceras: Error formato CSV falta cabecera {{cabeceras}}
+
   consumo_MSG_resumen: '{{registros}} registros de consumo cargados desde {{desde}} hasta {{hasta}}'
   consumo_MSG_numeroLimitadoRegistros: Aviso-> solo existen {{registros}} registros que no completan un año de estadísticas
   consumo_MSG_nombreCSVPorDefinir: Por definir

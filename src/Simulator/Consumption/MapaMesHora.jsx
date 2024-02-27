@@ -60,8 +60,10 @@ export default function MapaMesHora({ activo }) {
     let _consMes = new Array(12).fill(0)
     let _diasMes = new Array(12).fill(0)
     for (let dia = 0; dia < 365; dia++) {
-      _consMes[consumo.idxTable[dia].fecha.getMonth()] += _valorHora[dia]
-      _diasMes[consumo.idxTable[dia].fecha.getMonth()]++
+      if (consumo.idxTable[dia].fecha !== '') {
+        _consMes[consumo.idxTable[dia].fecha.getMonth()] += _valorHora[dia]
+        _diasMes[consumo.idxTable[dia].fecha.getMonth()]++
+      }
     }
 
     let valoresMes = []
