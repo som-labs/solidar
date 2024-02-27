@@ -142,13 +142,17 @@ export default function MonthSaving() {
     ]
   }
 
+  const config = {
+    displayModeBar: false,
+  }
+
   return (
     <>
       <Container>
         <Typography variant="h5">
           {t('ECONOMIC_BALANCE.GRAPH_TITLE_MONTH_SAVINGS')}
         </Typography>
-        <Plot data={data} layout={layout} style={{ width: '100%' }} />
+        <Plot data={data} layout={layout} config={config} style={{ width: '100%' }} />
         <br />
       </Container>
     </>

@@ -11,6 +11,7 @@
 
 import TCB from './TCB'
 import { Style, Fill, Text } from 'ol/style'
+import Papa from 'papaparse'
 
 /*global bootstrap, ol*/
 const campos = {
@@ -462,23 +463,54 @@ function setActivo(cell) {
   return _activo
 }
 
-function mete(unDia, idxTable, outTable) {
-  var indiceDia = indiceDesdeDiaMes(unDia.dia, unDia.mes)
+/**
+ * Introduce los valores de un dia en diaHora y actualiza la tabla idx del dia correspondiente
+ * En caso de existir valores previos para ese dia calcula los promedios
+ * @param {object} unDia Estructura a carga
+ * @param {Date} unDia.fecha Fecha del registro al que se insertarán estos datos
+ * @param {Array(24)<number>} unDia.valores Valores a insertar en esta fila
+ */
+function mete(unDia, aThis, metodo) {
+  let _dia = unDia.fecha.getDate()
+  let _mes = unDia.fecha.getMonth()
+  var indiceDia = indiceDesdeDiaMes(_dia, _mes)
   for (let hora = 0; hora < 24; hora++) {
-    if (idxTable[indiceDia].previos > 0) {
-      //Implica que ya habia registros previos para ese dia
-      unDia.valores[hora] =
-        (outTable[indiceDia][hora] * idxTable[indiceDia].previos + unDia.valores[hora]) /
-        (idxTable[indiceDia].previos + 1)
+    if (metodo === 'PROMEDIO') {
+      if (aThis.idxTable[indiceDia].previos > 0) {
+        //Implica que ya habia registros previos para ese dia por lo que recalculamos el promedio
+        unDia.valores[hora] =
+          (aThis.diaHora[indiceDia][hora] * aThis.idxTable[indiceDia].previos +
+            unDia.valores[hora]) /
+          (aThis.idxTable[indiceDia].previos + 1)
+      }
     }
-    outTable[indiceDia][hora] = unDia.valores[hora]
+    aThis.diaHora[indiceDia][hora] = unDia.valores[hora]
   }
-  idxTable[indiceDia].previos = idxTable[indiceDia].previos + 1
-  idxTable[indiceDia].dia = unDia.dia
-  idxTable[indiceDia].mes = unDia.mes
-  idxTable[indiceDia].suma = suma(unDia.valores)
-  idxTable[indiceDia].maximo = Math.max(...unDia.valores)
+
+  aThis.idxTable[indiceDia].fecha = unDia.fecha
+  aThis.idxTable[indiceDia].previos = aThis.idxTable[indiceDia].previos + 1
+  aThis.idxTable[indiceDia].suma = suma(unDia.valores)
+  aThis.idxTable[indiceDia].promedio = promedio(unDia.valores)
+  aThis.idxTable[indiceDia].maximo = Math.max(...unDia.valores)
 }
+
+// function mete(unDia, idxTable, outTable) {
+//   var indiceDia = indiceDesdeDiaMes(unDia.dia, unDia.mes)
+//   for (let hora = 0; hora < 24; hora++) {
+//     if (idxTable[indiceDia].previos > 0) {
+//       //Implica que ya habia registros previos para ese dia
+//       unDia.valores[hora] =
+//         (outTable[indiceDia][hora] * idxTable[indiceDia].previos + unDia.valores[hora]) /
+//         (idxTable[indiceDia].previos + 1)
+//     }
+//     outTable[indiceDia][hora] = unDia.valores[hora]
+//   }
+//   idxTable[indiceDia].previos = idxTable[indiceDia].previos + 1
+//   idxTable[indiceDia].dia = unDia.dia
+//   idxTable[indiceDia].mes = unDia.mes
+//   idxTable[indiceDia].suma = suma(unDia.valores)
+//   idxTable[indiceDia].maximo = Math.max(...unDia.valores)
+// }
 
 async function getFileFromUrl(url, type) {
   const response = await fetch(url)
@@ -487,58 +519,242 @@ async function getFileFromUrl(url, type) {
   return new File([data], metadata)
 }
 
-function csvToArray(str, delimiter = ',') {
-  // slice from start of text to the first \n index
-  // use split to create an array from string by delimiter
-  try {
-    var headers = str.slice(0, str.indexOf('\n')).split(delimiter)
-    for (let i = 0; i < headers.length; i++) headers[i] = headers[i].trim()
-  } catch (e) {
-    alert('Posible error de formato fichero de consumos\n' + str)
-    return
-  }
-  debugLog('Cabecera CSV:', headers)
+/**
+ * @typedef {object} options Define la forma de interpretar el CSV
+ * @property {Object} options Define la forma de interpretar el CSV
+ * @property {string} options.fuente Origen del CSV [REE, CSV, DATADIS, SOM]
+ * @property {number} options.factor Se multiplica los valores leidos por este factor. Si undefined -> 1
+ * @property {Array<string>} options.valorArr Array con los nombres de campos donde se almacena el valor a cargar. Por ejemplo: Consumo en Naturgy y Consumo_kWh en Iberdrola y VIESGO y AE_kWh en ENDESA.
+ */
+/**
+ * Carga los datos contenidos en fichero CSV con un registro por hora dentro de DiaHora.
+ * @async
+ * @param {File} csvFile Estructura desde donde se cargará los datos
+ * @param {object} aThis Object extending DiaHora where values will be loaded
+ * @param {options} options Opciones de carga del csv
+ */
 
-  // la diferencia entre los ficheros de Naturgy y de Iberdrola es que
-  // la cuarta columna donde esta el consumo se llama Consumo en Naturgy y Consumo_kWh en Iberdrola y VIESGO y AE_kWh en ENDESA.
-  // unificamos en "Consumo"
-  if (headers[3] == 'Consumo_kWh') headers[3] = 'Consumo'
-  if (headers[3] == 'AE_kWh') headers[3] = 'Consumo'
+async function loadFromCSV(csvFile, aThis, options) {
+  return new Promise((resolve, reject) => {
+    var tHoraChk = 0
+    Papa.parse(csvFile, {
+      header: true,
+      transformHeader: (header) => {
+        // Rename headers
+        if (options.valorArr.includes(header)) return 'consumo'
+        if (['energiaVertida_kWh'].includes(header)) return 'excedente'
+        if (['Fecha'].includes(header)) return 'fecha'
+        if (['Hora'].includes(header)) return 'hora'
+        return header
+      },
 
-  let chk_consumo = false
-  let chk_fecha = false
-  let chk_hora = false
-  headers.forEach((hdr) => {
-    if (hdr === 'Consumo' || hdr === '2.0TD' || hdr === '3.0TD') chk_consumo = true
-    if (hdr === 'Fecha') chk_fecha = true
-    if (hdr === 'Hora') chk_hora = true
+      transform: (value, header) => {
+        // Convert 'consumo' column to float
+        if (header === 'consumo') {
+          return parseFloat(value.replace(',', '.'))
+        }
+        if (header === 'fecha') {
+          //Para gestionar fechas en formato dd/mm/aaaa como vienen en el CSV debamos invertir a aaaa/mm/dd en javascript
+          let posDia = options.fechaSwp ? 2 : 0
+          let posMes = 1
+          let posAno = options.fechaSwp ? 0 : 2
+          let parts = value.split('/')
+          let _dia = parts[posDia]
+          let _mes = parts[posMes] - 1 //_mes es el indice interno gestionado por JS pero es 1-24 en los ficheros de las distribuidoras
+          let _ano = parts[posAno]
+          if (_dia > 31 || _mes > 11) {
+            //Es probable que hayan definido DATADIS para un CSV de distribuidora
+            const tError = new Error(
+              TCB.i18next.t('CONSUMPTION.ERROR_fuenteTipoErroneo_DATADIS'),
+            )
+            reject(tError)
+          }
+          let currFecha = new Date(_ano, _mes, _dia, 0, 0)
+          return currFecha
+        }
+
+        if (header === 'hora') {
+          let tHora = parseInt(value.split(':')[0]) + options.deltaHour
+          //Hay casos en ficheros CSV que aparece una hora 25 los dias de cambio de horario.
+          if (tHora > 23) {
+            tHora = 23
+            tHoraChk++
+          }
+          if (tHora < 0) {
+            //Es probable que hayan definido CSV de distribuidora para un DATADIS
+            const tError = new Error(
+              TCB.i18next.t('CONSUMPTION.ERROR_fuenteTipoErroneo_CSV'),
+            )
+            reject(tError)
+          }
+        }
+
+        return value // Return original value for other columns
+      },
+
+      complete: (results) => {
+        // Check if the header row contains both "Name" and "Value" headers
+        const headers = results.meta.fields
+        let chkHeaders = true
+        let failHdr = []
+        if (!headers.includes('consumo')) {
+          failHdr = [...options.valorArr]
+          chkHeaders = false
+        }
+        if (!headers.includes('fecha')) {
+          failHdr.push('fecha')
+          chkHeaders = false
+        }
+        if (!headers.includes('hora')) {
+          failHdr.push('hora')
+          chkHeaders = false
+        }
+        if (!chkHeaders) {
+          let errorStatus = true
+          let errorMsg = TCB.i18next.t('CONSUMPTION.ERROR_CABECERAS_CSV', {
+            cabeceras: failHdr.join(','),
+          })
+          const tError = new Error(errorMsg)
+          reject(tError)
+        }
+
+        if (results.data.length === 0) return false
+
+        if (tHoraChk > 1) {
+          const tError = new Error(
+            TCB.i18next.t('CONSUMPTION.ERROR_fuenteTipoErroneo_SOM'),
+          )
+          reject(tError)
+        }
+
+        debugLog(
+          'CSV procesando ' +
+            results.data.length +
+            ' registros del fichero ' +
+            csvFile.name,
+        )
+        try {
+          var lastFecha = new Date(1970, 1, 1)
+          var returnObject = {}
+          var lastLine
+          var lastHora
+          var unDia = { fecha: lastFecha, valores: Array(24).fill(0) } //el mes es 0-11, la hora es 0-23
+          let firstRow = true
+          // Se han detectado ficheros de Naturgy con registros vacios al final del mismo
+          // si el campo fecha viene vacio consideramos que hay que ignorar el registro
+
+          let hasData
+          results.data.forEach((linea) => {
+            lastLine = linea
+            if (linea.fecha === undefined) return
+            if (linea.fecha.getMonth() == 1 && linea.fecha.getDate() == 29) return //Ignoramos el 29/2 de los años bisiestos
+
+            if (linea.fecha.getTime() == lastFecha.getTime()) {
+              //debemos cambiar la , por el . para obtener el valor
+              unDia.valores[linea.hora] = linea.consumo * options.factor
+              hasData = true
+            } else {
+              if (firstRow) {
+                returnObject.fechaInicio = linea.fecha
+                returnObject.horaInicio = linea.hora
+                unDia = {
+                  fecha: linea.fecha,
+                  valores: Array(24).fill(0),
+                }
+                unDia.valores[linea.hora] = linea.consumo * options.factor
+                firstRow = false
+                hasData = true
+              } else {
+                mete(unDia, aThis, options.metodo)
+                hasData = false
+                unDia = {
+                  fecha: linea.fecha,
+                  valores: Array(24).fill(0),
+                }
+                unDia.valores[linea.hora] = linea.consumo * options.factor
+                hasData = true
+              }
+              lastFecha = linea.fecha
+            }
+            lastHora = linea.hora
+          })
+
+          // Si el ultimo registro no vino vacio lo metemos
+          if (hasData) mete(unDia, aThis, options.metodo)
+
+          returnObject.fechaFin = lastFecha
+          returnObject.horaFin = lastHora
+          returnObject.numeroRegistros = results.data.length
+          returnObject.datosCargados = true
+          resolve(returnObject)
+        } catch (error) {
+          returnObject.numeroRegistros = 0
+          returnObject.datosCargados = false
+          debugLog('Error lectura en linea:\n' + JSON.stringify(lastLine) + '\n' + error)
+          reject('Error lectura en linea:\n' + JSON.stringify(lastLine) + '\n' + error)
+        }
+      },
+
+      error: (error) => {
+        console.error('Error parsing CSV:', error.message)
+        reject(error)
+      },
+    })
   })
-  if (!(chk_consumo && chk_fecha && chk_hora)) {
-    let failHdr = ''
-    if (!chk_consumo) failHdr += 'Consumo '
-    if (!chk_fecha) failHdr += 'Fecha '
-    if (!chk_hora) failHdr += 'Hora '
-    alert(TCB.i18next.t('consumo_MSG_errorCabeceras', { cabeceras: failHdr }))
-    return []
-  }
-  // slice from \n index + 1 to the end of the text
-  // use split to create an array of each csv value row
-  const rows = str.slice(str.indexOf('\n') + 1).split('\n')
-  let arr = []
-  rows.forEach((row) => {
-    if (row.length > 1) {
-      const values = row.split(delimiter)
-      const el = headers.reduce(function (object, header, index) {
-        object[header] = values[index]
-        return object
-      }, {})
-      arr.push(el)
-    }
-  })
-
-  // return the array
-  return arr
 }
+
+// function csvToArray(str, delimiter = ',') {
+//   // slice from start of text to the first \n index
+//   // use split to create an array from string by delimiter
+//   try {
+//     var headers = str.slice(0, str.indexOf('\n')).split(delimiter)
+//     for (let i = 0; i < headers.length; i++) headers[i] = headers[i].trim()
+//   } catch (e) {
+//     alert('Posible error de formato fichero de consumos\n' + str)
+//     return
+//   }
+//   debugLog('Cabecera CSV:', headers)
+
+//   // la diferencia entre los ficheros de Naturgy y de Iberdrola es que
+//   // la cuarta columna donde esta el consumo se llama Consumo en Naturgy y Consumo_kWh en Iberdrola y VIESGO y AE_kWh en ENDESA.
+//   // unificamos en "Consumo"
+//   if (headers[3] == 'Consumo_kWh') headers[3] = 'Consumo'
+//   if (headers[3] == 'AE_kWh') headers[3] = 'Consumo'
+
+//   let chk_consumo = false
+//   let chk_fecha = false
+//   let chk_hora = false
+//   headers.forEach((hdr) => {
+//     if (hdr === 'Consumo' || hdr === '2.0TD' || hdr === '3.0TD') chk_consumo = true
+//     if (hdr === 'Fecha') chk_fecha = true
+//     if (hdr === 'Hora') chk_hora = true
+//   })
+//   if (!(chk_consumo && chk_fecha && chk_hora)) {
+//     let failHdr = ''
+//     if (!chk_consumo) failHdr += 'Consumo '
+//     if (!chk_fecha) failHdr += 'Fecha '
+//     if (!chk_hora) failHdr += 'Hora '
+//     alert(TCB.i18next.t('consumo_MSG_errorCabeceras', { cabeceras: failHdr }))
+//     return []
+//   }
+//   // slice from \n index + 1 to the end of the text
+//   // use split to create an array of each csv value row
+//   const rows = str.slice(str.indexOf('\n') + 1).split('\n')
+//   let arr = []
+//   rows.forEach((row) => {
+//     if (row.length > 1) {
+//       const values = row.split(delimiter)
+//       const el = headers.reduce(function (object, header, index) {
+//         object[header] = values[index]
+//         return object
+//       }, {})
+//       arr.push(el)
+//     }
+//   })
+
+//   // return the array
+//   return arr
+// }
 
 function promedio(arr) {
   return arr.reduce((a, b) => a + b) / arr.length
@@ -1019,41 +1235,41 @@ async function cargaTarifasDesdeSOM() {
   }
 }
 
-function preparaInput(campo, changeFunction, datoOrigen) {
-  let t = document.getElementById(campo)
-  //Guardamos el valor original en el atributo dato-origen del campo
-  t.setAttribute('dato-origen', datoOrigen)
-  /* 
-  La definicion del formato numero en español no es correcta para el separador de miles menos que 9999 por lo que cambiamos a catalan
-  */
-  let lng =
-    TCB.i18next.language.substring(0, 2) === 'es'
-      ? 'ca'
-      : TCB.i18next.language.substring(0, 2)
-  t.setAttribute('lng', lng)
+// function preparaInput(campo, changeFunction, datoOrigen) {
+//   let t = document.getElementById(campo)
+//   //Guardamos el valor original en el atributo dato-origen del campo
+//   t.setAttribute('dato-origen', datoOrigen)
+//   /*
+//   La definicion del formato numero en español no es correcta para el separador de miles menos que 9999 por lo que cambiamos a catalan
+//   */
+//   let lng =
+//     TCB.i18next.language.substring(0, 2) === 'es'
+//       ? 'ca'
+//       : TCB.i18next.language.substring(0, 2)
+//   t.setAttribute('lng', lng)
 
-  t.addEventListener('change', (e) => changeFunction(e))
+//   t.addEventListener('change', (e) => changeFunction(e))
 
-  t.addEventListener('focus', (e) => {
-    console.log(
-      'get focus en ' + t.id + ' para valor anterior ' + t.getAttribute('dato-origen'),
-    )
-    e.target.value = t.getAttribute('dato-origen')
-    e.target.type = 'number'
-  })
-  t.addEventListener('focusout', (e) => {
-    console.log('salgo de ' + t.id + ' con valor ' + e.target.value)
-    t.setAttribute('dato-origen', e.target.value)
-    e.target.type = ''
-    e.target.value = formatoValor(campo, e.target.value)
-    console.log('mostrado como ' + e.target.value)
-  })
-}
+//   t.addEventListener('focus', (e) => {
+//     console.log(
+//       'get focus en ' + t.id + ' para valor anterior ' + t.getAttribute('dato-origen'),
+//     )
+//     e.target.value = t.getAttribute('dato-origen')
+//     e.target.type = 'number'
+//   })
+//   t.addEventListener('focusout', (e) => {
+//     console.log('salgo de ' + t.id + ' con valor ' + e.target.value)
+//     t.setAttribute('dato-origen', e.target.value)
+//     e.target.type = ''
+//     e.target.value = formatoValor(campo, e.target.value)
+//     console.log('mostrado como ' + e.target.value)
+//   })
+// }
 export {
   cambioValor,
   cargaTarifasDesdeSOM,
   //copyClipboard,
-  csvToArray,
+  //csvToArray,
   debugLog,
   deleteBaseGeometries,
   difDays,
@@ -1067,6 +1283,7 @@ export {
   hdrToolTip,
   indiceDesdeDiaMes,
   indiceDesdeFecha,
+  loadFromCSV,
   mensaje,
   mete,
   muestra,
