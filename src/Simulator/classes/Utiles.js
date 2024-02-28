@@ -587,6 +587,7 @@ async function loadFromCSV(csvFile, aThis, options) {
             )
             reject(tError)
           }
+          return tHora
         }
 
         return value // Return original value for other columns
@@ -610,7 +611,6 @@ async function loadFromCSV(csvFile, aThis, options) {
           chkHeaders = false
         }
         if (!chkHeaders) {
-          let errorStatus = true
           let errorMsg = TCB.i18next.t('CONSUMPTION.ERROR_CABECERAS_CSV', {
             cabeceras: failHdr.join(','),
           })

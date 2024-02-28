@@ -100,15 +100,6 @@ export default function MonthEnergyBalance() {
 
   return (
     <Container ref={graphElement}>
-      <Typography variant="h4" textAlign={'center'}>
-        {t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_CONSUMO_PRODUCCION')}
-      </Typography>
-      <Typography
-        variant="body"
-        dangerouslySetInnerHTML={{
-          __html: t('ENERGY_BALANCE.DESCRIPTION_MONTH_ENERGY_BALANCE'),
-        }}
-      />
       <Typography
         variant="h5"
         textAlign={'center'}
