@@ -14,30 +14,34 @@ export default function CallSankey(props) {
 
   useEffect(() => {
     const data = [
-      { source: 'Producción paneles', target: 'Excedente', value: excedente },
+      { source: 'Producción paneles', target: 'Excedentes', value: excedente },
       {
         source: 'Producción paneles',
-        target: 'Consumo diurno',
+        target: 'Uso eléctrico diurno',
         value: autoconsumo,
       },
 
       {
-        source: 'Consumo de red',
-        target: 'Consumo nocturno',
+        source: 'Energía de la red',
+        target: 'Uso eléctrico nocturno',
         value: consumo - consumoDiurno,
       },
       {
-        source: 'Consumo de red',
-        target: 'Consumo diurno',
+        source: 'Energía de la red',
+        target: 'Uso eléctrico diurno',
         value: consumoDiurno - autoconsumo,
       },
 
-      { source: 'Excedente', target: 'Volcado a red', value: excedente },
+      { source: 'Excedentes', target: 'Vertido a red', value: excedente },
 
-      { source: 'Consumo diurno', target: 'Consumo total', value: consumoDiurno },
       {
-        source: 'Consumo nocturno',
-        target: 'Consumo total',
+        source: 'Uso eléctrico diurno',
+        target: 'Uso de la energía total',
+        value: consumoDiurno,
+      },
+      {
+        source: 'Uso eléctrico nocturno',
+        target: 'Uso de la energía total',
         value: consumo - consumoDiurno,
       },
     ]

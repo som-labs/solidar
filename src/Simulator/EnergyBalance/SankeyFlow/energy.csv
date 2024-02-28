@@ -1,8 +1,0 @@
-source,target,value
-Consumo de red,Consumo Nocturno,1.652
-Consumo de red,Consumo Diurno,0.360
-Producción paneles,Excedente,2.239
-Excedente,Volcado a red,2.239
-Producción paneles,Consumo Diurno,1.589
-Consumo Diurno,Consumo total,1.949
-Consumo Nocturno,Consumo total,1.652

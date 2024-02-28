@@ -183,7 +183,6 @@ export default function ConsumptionSummary() {
       //Will create a new TipoConsumo always, if editing will replace previous one by new one.
       idxTC = TCB.TipoConsumo.push(new TipoConsumo(nuevoTipoConsumo)) - 1
       astatus = await TCB.TipoConsumo[idxTC].loadTipoConsumoFromCSV()
-      console.log('ASTATUS', astatus)
       if (astatus) {
         if (editing.current) {
           //Editando uno existente moveremos el recien creado a su posicion original

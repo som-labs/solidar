@@ -29,15 +29,6 @@ export default function EnvironmentalImpact() {
             width: '100%',
           }}
         >
-          <Typography variant="h4" textAlign={'center'}>
-            {t('ENERGY_BALANCE.TITLE_ENVIRONMENTAL_IMPACT')}
-          </Typography>
-          <Typography
-            variant="body"
-            dangerouslySetInnerHTML={{
-              __html: t('ENERGY_BALANCE.DESCRIPTION_ENVIRONMENTAL_IMPACT'),
-            }}
-          />
           <Typography variant="h4" color={'green'} textAlign={'center'}>
             {t('ENERGY_BALANCE.TITLE_graficoCO2')}
           </Typography>
