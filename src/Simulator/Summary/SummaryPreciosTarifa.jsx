@@ -25,7 +25,8 @@ export default function SummaryPreciosTarifa() {
     } else {
       setNPrecios(4)
     }
-    TCB.tarifaActiva = TCB.tarifas[TCB.nombreTarifaActiva]
+    // TCB.tarifaActiva = TCB.tarifas[TCB.nombreTarifaActiva]
+    // console.log('CAMBIO TARIFAS SUMMARY', TCB.tarifaActiva)
   }, [])
 
   return (

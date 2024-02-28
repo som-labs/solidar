@@ -159,6 +159,7 @@ export default function ConsumoGeneracion3D() {
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
+          flexFlow: 'row',
           flex: 1,
           textAlign: 'center',
         }}
@@ -167,12 +168,13 @@ export default function ConsumoGeneracion3D() {
         <Typography variant="h4" textAlign={'center'}>
           {t('ENERGY_BALANCE.TITLE_GRAFICO_CONSUMOGENERACION3D')}
         </Typography>
-        <SLDRTooltip
+        {/* <SLDRTooltip
           title={t('ENERGY_BALANCE.TOOLTIP_GRAFICO_CONSUMOGENERACION3D')}
           placement="top"
         >
+          {' '}
           <InfoIcon />
-        </SLDRTooltip>
+        </SLDRTooltip> */}
       </Box>
       <Box
         sx={{
