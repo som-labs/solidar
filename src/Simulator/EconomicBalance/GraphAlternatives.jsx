@@ -158,7 +158,7 @@ export default function GraphAlternatives() {
       linecolor: 'primary.light',
       tickfont_color: 'primary.light',
       showticklabels: true,
-      dtick: 1,
+      dtick: parseInt(paneles[4] / 10),
       ticks: 'outside',
       tickcolor: 'primary.light',
       range: [1, paneles[4]],

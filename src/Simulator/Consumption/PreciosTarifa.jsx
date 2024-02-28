@@ -28,7 +28,6 @@ export default function PreciosTarifa() {
     } else {
       setNPrecios(4)
     }
-    TCB.tarifaActiva = TCB.tarifas[TCB.nombreTarifaActiva]
   }, [])
 
   function cambiaTipoTarifa(event, setValues) {

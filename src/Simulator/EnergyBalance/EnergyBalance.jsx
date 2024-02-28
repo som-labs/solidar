@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import { Typography, Container, MenuItem, TextField, Skeleton } from '@mui/material'
+import { Typography, Container, MenuItem, TextField, Box } from '@mui/material'
 
 //React global components
 import { BasesContext } from '../BasesContext'
@@ -11,6 +11,7 @@ import CollapsibleCard from '../components/CollapsibleCard'
 import { SLDRInfoBox } from '../../components/SLDRComponents'
 
 // REACT Solidar Components
+import PieChart from '../Summary/Report/PieChart'
 import CallSankey from './SankeyFlow/CallSankey'
 import InstallationSummary from './InstallationSummary'
 import ConsumoGeneracion3D from './ConsumoGeneracion3D'
@@ -19,6 +20,7 @@ import MonthThreeParts from './MonthThreeParts'
 import MonthEnergyBalance from './MonthEnergyBalance'
 import EnvironmentalImpact from './EnvironmentalImpact'
 import HourlyEnergyBalance from './HourlyEnergyBalance'
+import PieCharts from './PieCharts'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -39,21 +41,6 @@ export default function EnergyBalanceStep() {
   // El rendimiento ha podido cambiar la inclinacion y por lo tanto el area, la configuracion de paneles y la potenciaMaxima
   // Si se usaron angulos optimos tambien ha cambiado el acimut.
   useEffect(() => {
-    // let oldBases = [...bases]
-    // for (let base of TCB.BaseSolar) {
-    //   const nIndex = oldBases.findIndex((t) => {
-    //     return t.idBaseSolar === base.idBaseSolar
-    //   })
-    //   oldBases[nIndex].paneles = base.instalacion.paneles
-    //   oldBases[nIndex].potenciaUnitaria = base.instalacion.potenciaUnitaria
-    //   oldBases[nIndex].potenciaTotal = base.instalacion.potenciaTotal
-    //   oldBases[nIndex].potenciaMaxima = base.potenciaMaxima
-    //   oldBases[nIndex].areaReal = base.areaReal
-    //   oldBases[nIndex].inclinacion = base.inclinacion
-    //   oldBases[nIndex].inAcimut = base.inAcimut
-    //   oldBases[nIndex].panelesMaximo = base.panelesMaximo
-    // }
-    // setBases(oldBases)
     updateTCBBasesToState()
 
     setMonthlyData({
@@ -117,18 +104,34 @@ export default function EnergyBalanceStep() {
       <SLDRInfoBox>
         <InstallationSummary></InstallationSummary>
       </SLDRInfoBox>
-      {/* REVISAR: para evitar la tabla apareciendo
-      <Skeleton variant="rectangular" width={'100%'} height={60} /> 
-      */}
-      <SLDRInfoBox>
-        <ConsumoGeneracion3D></ConsumoGeneracion3D>
-      </SLDRInfoBox>
+      {/* 
+
+
       <SLDRInfoBox>
         <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
-      </SLDRInfoBox>
+      </SLDRInfoBox> */}
+
+      <Box
+        sx={{
+          display: 'flex',
+          mb: 3,
+          flexDirection: 'column',
+        }}
+      >
+        <Typography variant="h4" textAlign={'center'}>
+          {t('ENERGY_BALANCE.FLOW_TITLE')}
+        </Typography>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('ENERGY_BALANCE.FLOW_DESCRIPTION'),
+          }}
+        />
+      </Box>
       <SLDRInfoBox>
         <CallSankey yearlyData={yearlyData}></CallSankey>
       </SLDRInfoBox>
+
       <CollapsibleCard
         title={t('BASIC.LABEL_AVISO')}
         titleVariant="body"
@@ -137,6 +140,11 @@ export default function EnergyBalanceStep() {
         descriptionSX={{ fontSize: '15px' }}
         description={t('ENERGY_BALANCE.MSG_disclaimerProduccion')}
       ></CollapsibleCard>
+
+      <SLDRInfoBox sx={{ alignItems: 'center' }}>
+        <PieCharts yearlyData={yearlyData}></PieCharts>
+      </SLDRInfoBox>
+
       <SLDRInfoBox sx={{ alignItems: 'center' }}>
         <Typography variant="h6">
           {t('ENERGY_BALANCE.TITLE_HOURLY_ENERGY_BALANCE')}
@@ -149,7 +157,7 @@ export default function EnergyBalanceStep() {
           label={t('BASIC.LABEL_MES')}
           onChange={(event) => setMes(event.target.value)}
         >
-          <MenuItem key={-1} value={''}>
+          <MenuItem key={-1} value={t('ENERGY_BALANCE.VALUE_FULL_YEAR')}>
             {t('ENERGY_BALANCE.VALUE_FULL_YEAR')}
           </MenuItem>
           {UTIL.nombreMes.map((nombreMes, index) => (
@@ -160,16 +168,41 @@ export default function EnergyBalanceStep() {
         </TextField>
         <HourlyEnergyBalance mes={mes}></HourlyEnergyBalance>
       </SLDRInfoBox>
+
+      <Typography variant="h4" textAlign={'center'}>
+        {t('ENERGY_BALANCE.TITLE_MONTH_ENERGY_BALANCE')}
+      </Typography>
+      <Typography
+        variant="body"
+        dangerouslySetInnerHTML={{
+          __html: t('ENERGY_BALANCE.DESCRIPTION_MONTH_ENERGY_BALANCE'),
+        }}
+      />
       <SLDRInfoBox>
         <MonthEnergyBalance
           monthlyConsumoProduccion={monthlyConsumoProduccion}
         ></MonthEnergyBalance>
       </SLDRInfoBox>
+
       <SLDRInfoBox>
         <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>
       </SLDRInfoBox>
-      <SLDRInfoBox>
+
+      <Typography variant="h4" textAlign={'center'}>
+        {t('ENERGY_BALANCE.TITLE_ENVIRONMENTAL_IMPACT')}
+      </Typography>
+      <Typography
+        variant="body"
+        dangerouslySetInnerHTML={{
+          __html: t('ENERGY_BALANCE.DESCRIPTION_ENVIRONMENTAL_IMPACT'),
+        }}
+      />
+      <SLDRInfoBox sx={{ mt: '1rem' }}>
         <EnvironmentalImpact></EnvironmentalImpact>
+      </SLDRInfoBox>
+
+      <SLDRInfoBox>
+        <ConsumoGeneracion3D></ConsumoGeneracion3D>
       </SLDRInfoBox>
     </Container>
   )

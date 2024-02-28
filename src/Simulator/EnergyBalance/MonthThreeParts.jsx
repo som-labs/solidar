@@ -82,22 +82,20 @@ export default function MonthThreeParts(props) {
     width: graphWidth.current * 0.9,
     margin: { b: 10, t: 20, r: 40, l: 100 },
   }
+  const config = {
+    displayModeBar: false,
+  }
 
   return (
     <Container ref={graphElement}>
-      <Typography variant="h4" textAlign={'center'}>
-        {t('ENERGY_BALANCE.TITLE_MONTH_ENERGY_BALANCE')}
-      </Typography>
-      <Typography
-        variant="body"
-        dangerouslySetInnerHTML={{
-          __html: t('ENERGY_BALANCE.DESCRIPTION_MONTH_ENERGY_BALANCE'),
-        }}
-      />
       <Typography variant="h5" textAlign={'center'} sx={{ mt: '1rem' }}>
         {t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_THREE_PARTS')}
       </Typography>
-      <Plot data={[trace_deficit, trace_autoconsumo, trace_excedente]} layout={layout} />
+      <Plot
+        data={[trace_deficit, trace_autoconsumo, trace_excedente]}
+        layout={layout}
+        config={config}
+      />
     </Container>
   )
 }

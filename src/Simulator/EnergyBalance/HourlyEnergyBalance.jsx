@@ -18,7 +18,8 @@ export default function HourlyEnergyBalance(props) {
   const graphWidth = useRef()
   const maxHour = useRef()
   const minHour = useRef()
-  const { mes = '' } = props
+
+  let mes = props.mes === '' ? t('ENERGY_BALANCE.VALUE_FULL_YEAR') : props.mes
 
   let mProduccion
   let mConsumo
@@ -29,9 +30,23 @@ export default function HourlyEnergyBalance(props) {
   let yProduccion = []
   let yConsumo = []
 
+  useEffect(() => {
+    // Function to get the width of the element
+    const getWidth = () => {
+      if (graphElement.current) {
+        graphWidth.current = graphElement.current.offsetWidth
+      }
+    }
+
+    // Call the function to get the width after initial render
+    getWidth()
+    maxHour.current = Math.max(Math.max(...hConsumo), Math.max(...hProduccion))
+    minHour.current = Math.min(Math.min(...hConsumo), Math.min(...hProduccion))
+  }, [])
+
   for (let hora = 0; hora < 24; hora++) {
     hHora.push(hora)
-    if (mes !== '') {
+    if (mes !== t('ENERGY_BALANCE.VALUE_FULL_YEAR')) {
       mProduccion = TCB.produccion
         .getHora(hora)
         .slice(UTIL.indiceDia[mes][1], UTIL.indiceDia[mes][2] + 1)
@@ -49,28 +64,14 @@ export default function HourlyEnergyBalance(props) {
   minHour.current = Math.min(Math.min(...yConsumo), Math.min(...yProduccion))
   const delta = (maxHour.current - minHour.current) / 7
 
-  useEffect(() => {
-    // Function to get the width of the element
-    const getWidth = () => {
-      if (graphElement.current) {
-        graphWidth.current = graphElement.current.offsetWidth
-      }
-    }
-
-    // Call the function to get the width after initial render
-    getWidth()
-    maxHour.current = Math.max(Math.max(...hConsumo), Math.max(...hProduccion))
-    minHour.current = Math.min(Math.min(...hConsumo), Math.min(...hProduccion))
-  }, [])
-
   let data
 
-  if (mes === '') {
+  if (mes === t('ENERGY_BALANCE.VALUE_FULL_YEAR')) {
     const consumoAnual = {
       x: hHora,
       y: yConsumo,
       type: 'scatter',
-      line: { shape: 'spline', width: 3, color: '#4671ad' },
+      line: { shape: 'spline', width: 5, color: '#4671ad' },
       fill: 'tozeroy',
       fillcolor: '#a1bee5',
       name: t('ENERGY_BALANCE.LABEL_HOURLY_CONSUMPTION_YEAR'),
@@ -80,7 +81,7 @@ export default function HourlyEnergyBalance(props) {
       x: hHora,
       y: yProduccion,
       type: 'scatter',
-      line: { shape: 'spline', width: 3, color: '#ff9700' },
+      line: { shape: 'spline', width: 5, color: '#ff9700' },
       fill: 'tozeroy',
       fillcolor: 'rgba(255,193,0,0.4)',
       name: t('ENERGY_BALANCE.LABEL_HOURLY_PRODUCTION_YEAR'),
@@ -111,7 +112,7 @@ export default function HourlyEnergyBalance(props) {
       type: 'scatter',
       line: { shape: 'spline', width: 1, color: '#4671ad' },
       fill: 'tozeroy',
-      fillcolor: 'rgba(161,120,0,0.4)', //'#a1bee5',
+      fillcolor: 'rgba(102,178,255,0.4)', //'#a1bee5',
       name: t('ENERGY_BALANCE.LABEL_HOURLY_CONSUMPTION_MONTH'),
     }
 
@@ -159,8 +160,6 @@ export default function HourlyEnergyBalance(props) {
   }
 
   const config = {
-    // Disable selection to prevent click events from being sent
-    // This prevents the selection of data points on click
     displayModeBar: false,
   }
 

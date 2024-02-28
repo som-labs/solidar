@@ -2,17 +2,14 @@ import React, { useRef, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import Container from '@mui/material/Container'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
-import CardMedia from '@mui/material/CardMedia'
+import { Container, Typography, Box, CardMedia } from '@mui/material'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
 
 export default function EnergyFlow(props) {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
 
   const [anchoPanel, setAnchoPanel] = useState()
   const [leftMargin, setLeftMargin] = useState()
@@ -222,24 +219,6 @@ export default function EnergyFlow(props) {
             width: '100%',
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              mb: 3,
-              flexDirection: 'column',
-            }}
-          >
-            <Typography variant="h4" textAlign={'center'}>
-              {t('ENERGY_BALANCE.FLOW_TITLE')}
-            </Typography>
-            <Typography
-              variant="body"
-              dangerouslySetInnerHTML={{
-                __html: t('ENERGY_BALANCE.FLOW_DESCRIPTION'),
-              }}
-            />
-          </Box>
-
           <Box
             id="rootBox"
             sx={{
