@@ -419,7 +419,7 @@ CONSUMPTION:
     A continuación necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.<br />
     El documento de consumo CSV nos permitirá conocer tus hábitos de consumo saber en qué tramos horarios y en qué meses del año sueles consumir más energía.<br />
   TARIFA_DESCRIPTION_1: |
-    Necesitamos conocer tu tarifa, los precios por tramos horarios de cada período y el precio de la compensación de excedentes ℹ{{icono}} de tu comercializadora si es otra diferente a Som Energia.
+    Necesitamos conocer tu tarifa, los precios por tramos horarios de cada período y el precio de la compensación de excedentes {{icono}} de tu comercializadora si es otra diferente a Som Energia.
   TARIFA_DESCRIPTION_2: |
     Indica los precios sin impuestos.<br />
     En caso de tener una tarifa indexada, Som Energia muestra en sus facturas el precio medio ponderado para cada período. Te lo explicamos <a href='https://es.support.somenergia.coop/article/1368-por-que-veo-periodos-en-la-factura-de-indexada'>aquí.</a><br />
@@ -498,15 +498,13 @@ ENERGY_BALANCE:
   SUMMARY_FOOTER: |
     Total de paneles propuestos: {{paneles}} paneles<br />
     Potencia total propuesta: {{potencia}}
-  TITLE_GRAFICO_CONSUMOGENERACION3D: Gráfico resumen de consumos y producción
+  TITLE_GRAFICO_CONSUMOGENERACION3D: Gráfico detallado de uso eléctrico y producción
   TOOLTIP_GRAFICO_CONSUMOGENERACION3D: Gráfico interactivo. Clica en un punto y verás el perfil horario de producción y consumo de ese dia.
   TITLE_GRAFICO_PROFILE: 'Perfil diario de consumo y produccion  {{dia}} / {{mes}}'
   TOTAL_PANELS: 'Número total de paneles: {{paneles}}'
   FLOW_TITLE: ¿A dónde va la electricidad producida por los paneles?
   FLOW_DESCRIPTION: |
-    Parte de la electricidad producida en tu instalación fotovoltáica se autoconsumo. <br />
-    El resto de la electricidad producida no se consume,(por ejemplo porque no hay nadie en la vivienda en las horas centrales del dia, que es donde mas electicidad se produce) se vierte a la red (excedentes) <br />
-    Lo mas probable es que sin baterías no puedas cubrir tu cosumo total. El resto de la energía que te falte tendrás que obtenerla de la red.<br />
+    Parte de la electricidad producida en tu instalación fotovoltaica se utiliza de manera instantánea, el resto que no se utiliza en el mismo momento (por ejemplo porque no hay nadie en la vivienda en las horas centrales del día, que es cuando más electricidad se produce) se vierte a la red (excedentes)<br />Durante las horas en que no haya producción necesitarás obtener la energía de la red. En caso de instalar baterías podrás disminuir de forma considerable el uso eléctrico de la red.
   LABEL_EXCEDENTE_ANUAL: Electricidad sobrante
   TOOLTIP_EXCEDENTE_ANUAL: Electricidad sobrante volcada a la red
   LABEL_AUTOCONSUMO: Autoconsumo
@@ -514,9 +512,9 @@ ENERGY_BALANCE:
   LABEL_ENERGIA_PANELES: Energía obtenida de los paneles
   TITLE_HOURLY_ENERGY_BALANCE: Balance horario por mes
   LABEL_HOURLY_PRODUCTION_YEAR: Producción horaria media anual
-  LABEL_HOURLY_CONSUMPTION_YEAR: Consumo horario medio anual
+  LABEL_HOURLY_CONSUMPTION_YEAR: Uso horario medio anual
   LABEL_HOURLY_PRODUCTION_MONTH: Producción horaria media del mes
-  LABEL_HOURLY_CONSUMPTION_MONTH: Consumo horario medio del mes
+  LABEL_HOURLY_CONSUMPTION_MONTH: Uso horario medio del mes
   VALUE_FULL_YEAR: Todo el año
   TITLE_YEAR_ENERGY_BALANCE: Balance energético anual
   DESCRIPTION_YEAR_ENERGY_BALANCE: |
@@ -525,8 +523,8 @@ ENERGY_BALANCE:
   TITLE_MONTH_ENERGY_BALANCE: Balance energético mensual
   DESCRIPTION_MONTH_ENERGY_BALANCE: |
     La <strong>autoproducción</strong> es mayor en verano (mas horas de luz) que en invierno.<br />
-    El <strong>consumo</strong> varia según los meses y la zona geográfica: en el norte de España elconsumo más alto se produce en los meses de invierno y mientras que en sur los picos de cosnumo se producen en verano. En general los meses de primavera y otoño son las mas estables en toda España.<br />
-    En el siguiente gráfico se ve la comparación entre tu consumo y tu autoproducción mes a mes.
+    El <strong>uso eléctrico</strong> varia según los meses y la zona geográfica: en el norte de España el uso eléctrico más alto se produce en los meses de invierno y mientras que en sur los picos de uso eléctrico se producen en verano. En general los meses de primavera y otoño son las mas estables en toda España.<br />
+    En el siguiente gráfico se ve la comparación entre tu uso eléctrico y tu autoproducción mes a mes.
   TITLE_GRAPH_MONTH_CONSUMO_PRODUCCION: Autoproducción y consumo
   TITLE_GRAPH_MONTH_ENERGY_BALANCE: |
     Producción versus consumo mensual <br />
@@ -542,7 +540,7 @@ ENERGY_BALANCE:
   DESCRIPTION_ENVIRONMENTAL_IMPACT: |
     Las placas solares, al generar energia limpia, reducen la utilización de energías fosiles y de esta forma también reducen las emisiones de dióxido de carbono (CO2) causantes del efecto invernadero y calentamiento global. Contribuyen de esta forma al cuidado del ambiente.
   LABEL_fuenteInfoCO2: Datos de conversion para {{territorio}}
-  TITLE_graficoCO2: Ahorro de kg de CO2 al año
+  TITLE_graficoCO2: Ahorro de CO2 anual
   LABEL_CO2AnualRenovable: Si la electricidad contratada proviene de <br /><strong>fuentes renovables</strong>
   TOOLTIP_CO2AnualRenovable: CO2 (kg) no expulsados a la atmósfera si el origen de la energía fuera peninsular y renovable. Se puede modificar en la ventana de Parámetros.
   LABEL_CO2AnualNoRenovable: Si la electricidad contratada proviene de <br /><strong>fuentes no renovables</strong>
