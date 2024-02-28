@@ -30,7 +30,6 @@ export default function MapaMesHora({ activo }) {
 
   if (activo === isEmpty) return
   const consumo = activo
-  console.log(consumo)
   let maxHora
   let maxMes
   let horas = []
