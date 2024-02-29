@@ -76,7 +76,7 @@ const BasesContextProvider = ({ children }) => {
     let acimut
     const puntos = area.getCoordinates()[0]
 
-    if (formData.roofType === 'Coplanar') {
+    if (formData.roofType === 'Inclinado') {
       acimut = parseInt(
         (Math.atan2(puntos[1][0] - puntos[2][0], puntos[1][1] - puntos[2][1]) * 180) /
           Math.PI,
@@ -163,8 +163,8 @@ const BasesContextProvider = ({ children }) => {
       TCB.baseLabelBGColor,
     )
 
-    //Update ancho based on inclinacion in case of rooftype coplanar
-    if (formData.roofType === 'Coplanar') {
+    //Update ancho based on inclinacion in case of rooftype inclinado
+    if (formData.roofType === 'Inclinado') {
       formData.anchoReal =
         formData.ancho / Math.cos((formData.inclinacion * Math.PI) / 180)
     } else {
@@ -183,7 +183,7 @@ const BasesContextProvider = ({ children }) => {
     if (reason === 'save') {
       formData.inAcimut = computeAcimut(formData, centerPoint, areaShape)
     } else {
-      console.log('estamos editando por ahora no hay cambio de acimut desde dialogo')
+      //console.log('estamos editando por ahora no hay cambio de acimut desde dialogo')
     }
     formData = Object.assign({}, formData, BaseSolar.configuraPaneles(formData))
 

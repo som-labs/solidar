@@ -69,7 +69,7 @@ export default function DialogBaseSolar({ data, onClose }) {
     ctx.beginPath()
     ctx.lineWidth = 2
     ctx.fillStyle = 'rgb(218,137,16)' //Same color then house in coplanar.svg
-    if (roofType === 'Coplanar') {
+    if (roofType === 'Inclinado') {
       if ((w / 2) * Math.tan(alfaRad) < h / 2) {
         d = w / 2
         c = d * Math.tan(alfaRad)
@@ -121,10 +121,10 @@ export default function DialogBaseSolar({ data, onClose }) {
     const featAcimut = TCB.origenDatosSolidar.getFeatureById(componente)
 
     switch (event.currentTarget.value) {
-      case 'Coplanar':
+      case 'Inclinado':
         setValues((prev) => ({
           ...prev,
-          roofType: 'Coplanar',
+          roofType: 'Inclinado',
           inclinacionOptima: false,
           //inAcimut: values.inAcimut,
           angulosOptimos: false,
@@ -132,8 +132,8 @@ export default function DialogBaseSolar({ data, onClose }) {
           requierePVGIS: true,
         }))
         //featAcimut.setStyle(null)
-        setRoofType('Coplanar', values)
-        drawHouse(canvasRef.current, inclinacionDefault, 'Coplanar')
+        setRoofType('Inclinado', values)
+        drawHouse(canvasRef.current, inclinacionDefault, 'Inclinado')
         break
       case 'Horizontal':
         setValues((prev) => ({
@@ -144,7 +144,6 @@ export default function DialogBaseSolar({ data, onClose }) {
           inclinacion: inclinacionDefault,
           requierePVGIS: true,
         }))
-        //featAcimut.setStyle(null)
         setRoofType('Horizontal')
         drawHouse(canvasRef.current, inclinacionDefault, 'Horizontal')
         break
@@ -165,14 +164,16 @@ export default function DialogBaseSolar({ data, onClose }) {
   }
 
   const changeTilt = (event, setValues, values) => {
-    setValues((prevValues) => ({
-      ...prevValues,
-      inclinacion: event.target.value,
-      inclinacionOptima: false,
-      angulosOptimos: false,
-      requierePVGIS: true,
-    }))
-    drawHouse(canvasRef.current, parseInt(event.target.value), values.roofType)
+    if (UTIL.ValidateEntero(event.target.value)) {
+      setValues((prevValues) => ({
+        ...prevValues,
+        inclinacion: event.target.value,
+        inclinacionOptima: false,
+        angulosOptimos: false,
+        requierePVGIS: true,
+      }))
+      drawHouse(canvasRef.current, parseInt(event.target.value), values.roofType)
+    }
   }
 
   // Removed based on request done by SOM-Autoproduccion meeting 9/3/2024
@@ -222,12 +223,6 @@ export default function DialogBaseSolar({ data, onClose }) {
   }
 
   async function handleClose(values) {
-    // En caso de roofType coplanar pedimos confirmacion si la inclinacion es cero
-    if (values.roofType === 'Coplanar' && values.inclinacion === 0) {
-      if (!window.confirm(t('LOCATION.ERROR_COPLANAR_NOANGLE'))) {
-        return
-      }
-    }
     onClose('save', values)
   }
 
@@ -239,12 +234,16 @@ export default function DialogBaseSolar({ data, onClose }) {
       errors.nombre = 'Requerido'
     }
 
-    if (values.roofType === 'Coplanar') {
-      if (values.inclinacion === '' || values.inclinacion === 0) {
+    if (values.roofType === 'Inclinado') {
+      if (values.inclinacion === '') {
         errors.inclinacion = 'Requerido'
       }
+      if (parseInt(values.inclinacion) === 0) {
+        errors.inclinacion = t('LOCATION.ERROR_INCLINADO_NOANGLE')
+      }
       if (!UTIL.ValidateEntero(values.inclinacion)) {
-        errors.inclinacion = 'Debe ser un número entero entre 0 y 80'
+        errors.inclinacion =
+          'Debe ser un número entero mayor que 0 y menor o igual que 80'
       } else {
         value = parseInt(values.inclinacion)
         if (value < 0 || value > 80) {
@@ -315,7 +314,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                   __html: t('BaseSolar.DESCRIPTION.roofType'),
                 }}
               />
-              {/* PENDIENTE: hay que mejorar los iconos de los botones coplanar u horizontal */}
+              {/* PENDIENTE: hay que mejorar los iconos de los botones inclinado u horizontal */}
               <Box
                 sx={{
                   display: 'flex',
@@ -325,9 +324,9 @@ export default function DialogBaseSolar({ data, onClose }) {
                 }}
               >
                 <Button
-                  variant={values.roofType === 'Coplanar' ? 'contained' : 'outlined'}
+                  variant={values.roofType === 'Inclinado' ? 'contained' : 'outlined'}
                   name="roofType"
-                  value="Coplanar"
+                  value="Inclinado"
                   sx={{ flex: 1 }}
                   className={'roofTypeButton'}
                   onClick={(event) => changeRoofType(event, setValues, values)}
@@ -368,7 +367,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                     flexWrap: 'wrap',
                   }}
                 >
-                  {values.roofType === 'Coplanar' && (
+                  {values.roofType === 'Inclinado' && (
                     <Typography variant="body" sx={{ mt: '1rem', mb: '1rem' }}>
                       {t('BaseSolar.DESCRIPTION.inclinacionTejado')}
                     </Typography>
