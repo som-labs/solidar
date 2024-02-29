@@ -49,7 +49,7 @@ dic: diciembre
 BaseSolar:
   NAME: Base solar
   PROP:
-    roofType: Tipo de montaje
+    roofType: Tipo de cubierta
     nombreBaseSolar: Nombre del área
     angulosOptimos: Angulos óptimos
     inclinacion: Inclinación
@@ -365,7 +365,7 @@ LOCATION:
 
       <b><span>Inclinación: </b>Es el ángulo del panel con respecto a la horizontal del terreno. Dependiendo de la configuración seleccionada este angulo puede ser:</span>
 
-      <ul><b>Coplanar: </b>es la inclinaciónel del tejado.</ul>
+      <ul><b>Inclinado: </b>es la inclinación del del tejado.</ul>
       <ul><b>Horizontal: </b>es el ángulo que tienen los paneles con respecto al tejado o azotea.</ul> 
       <ul><b>Inclinación óptima</span></b> Dejaremos que el sistema lo calcule.</ul>
 
@@ -396,7 +396,7 @@ LOCATION:
 
   TITLE_DIALOG_NEW_BASE: Nueva base solar
   HORIZONTAL_ROOF: En el caso de tejado horizontal te propondremos el ángulo óptimo de  los paneles al finalizar el cálculo.
-  ERROR_COPLANAR_NOANGLE: 'Instalación coplanar con tejado a 0º de inclinación?'
+  ERROR_INCLINADO_NOANGLE: 'Definir tejado horizontal'
 
   LABEL_BASES_SUMMARY: Resumen
   PROMPT_BASES_SUMMARY: Recuerda que puedes indicar diferentes áreas disponibles y que cada una de ellas puede tener una orientación respecto al sur distinta. Revisa que los datos del resumen son correctos.
