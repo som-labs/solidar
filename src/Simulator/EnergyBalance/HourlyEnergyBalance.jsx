@@ -19,7 +19,10 @@ export default function HourlyEnergyBalance(props) {
   const maxHour = useRef()
   const minHour = useRef()
 
-  let mes = props.mes === '' ? t('ENERGY_BALANCE.VALUE_FULL_YEAR') : props.mes
+  let mes =
+    props.mes === '' || props.mes === undefined
+      ? t('ENERGY_BALANCE.VALUE_FULL_YEAR')
+      : props.mes
 
   let mProduccion
   let mConsumo
