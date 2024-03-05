@@ -29,8 +29,8 @@ import calculaResultados from '../classes/calculaResultados'
 
 export default function EnergyBalanceStep() {
   const { t } = useTranslation()
-
-  const [monthlyData, setMonthlyData] = useState({})
+  const [dataReady, setDataReady] = useState(false)
+  const [monthlyData, setMonthlyData] = useState()
   const [yearlyData, setYearlyData] = useState({})
   const [monthlyConsumoProduccion, setMonthlyConsumoProduccion] = useState({})
   const { bases, setBases, updateTCBBasesToState } = useContext(BasesContext)
@@ -41,6 +41,7 @@ export default function EnergyBalanceStep() {
   // El rendimiento ha podido cambiar la inclinacion y por lo tanto el area, la configuracion de paneles y la potenciaMaxima
   // Si se usaron angulos optimos tambien ha cambiado el acimut.
   useEffect(() => {
+    console.log('USEEFFECT de ENERGYBALANCE sin condiciones')
     updateTCBBasesToState()
 
     setMonthlyData({
@@ -60,6 +61,7 @@ export default function EnergyBalanceStep() {
       consumo: TCB.consumo.resumenMensual('suma'),
       produccion: TCB.produccion.resumenMensual('suma'),
     })
+    setDataReady(true)
   }, [])
 
   useEffect(() => {
@@ -89,9 +91,11 @@ export default function EnergyBalanceStep() {
     })
 
     setEcoData(TCB.economico)
+    setDataReady(true)
   }, [bases, setEcoData])
 
   //REVISAR: porque se muestra la tabla reducida primero y luego crece
+
   return (
     <Container>
       <Typography
@@ -141,9 +145,11 @@ export default function EnergyBalanceStep() {
         description={t('ENERGY_BALANCE.MSG_disclaimerProduccion')}
       ></CollapsibleCard>
 
-      <SLDRInfoBox sx={{ alignItems: 'center' }}>
-        <PieCharts yearlyData={yearlyData}></PieCharts>
-      </SLDRInfoBox>
+      {dataReady && (
+        <SLDRInfoBox sx={{ alignItems: 'center' }}>
+          <PieCharts yearlyData={yearlyData}></PieCharts>
+        </SLDRInfoBox>
+      )}
 
       <SLDRInfoBox sx={{ alignItems: 'center' }}>
         <Typography variant="h6">
@@ -179,13 +185,15 @@ export default function EnergyBalanceStep() {
         }}
       />
       <SLDRInfoBox>
-        <MonthEnergyBalance
-          monthlyConsumoProduccion={monthlyConsumoProduccion}
-        ></MonthEnergyBalance>
+        {dataReady && (
+          <MonthEnergyBalance
+            monthlyConsumoProduccion={monthlyConsumoProduccion}
+          ></MonthEnergyBalance>
+        )}
       </SLDRInfoBox>
 
       <SLDRInfoBox>
-        <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>
+        {dataReady && <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>}
       </SLDRInfoBox>
 
       <Typography variant="h4" textAlign={'center'}>

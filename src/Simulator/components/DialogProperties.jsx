@@ -23,10 +23,12 @@ export default function DialogProperties({ data, onClose }) {
 
   const vectorPropiedades = UTIL.obtenerPropiedades(objeto, 0)
   for (let val in vectorPropiedades) {
-    //console.log(val, vectorPropiedades[val])
     vectorPropiedades[val].sort((a, b) => {
       if (a.valor === 'Objeto' || b.valor === 'Objeto') return -1
-      else return UTIL.campos[a.nombre].order - UTIL.campos[b.nombre].order
+      else {
+        console.log(a.nombre)
+        return UTIL.campos[a.nombre].order - UTIL.campos[b.nombre].order
+      }
     })
   }
   return (
