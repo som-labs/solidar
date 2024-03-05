@@ -25,7 +25,7 @@ export default function ConsumoGeneracion3D() {
   const meses = Array.from(i18nextMes())
   var g_produccion = {
     z: TCB.produccion.diaHora,
-    y: TCB.consumo.idxTable.map((e) => {
+    y: TCB.produccion.idxTable.map((e) => {
       let mes = parseInt(e.fecha.getMonth()) + 1
       return e.fecha.getDate() + '/' + mes
     }),
@@ -60,7 +60,7 @@ export default function ConsumoGeneracion3D() {
 
   var g_consumo = {
     z: TCB.consumo.diaHora,
-    y: TCB.consumo.idxTable.map((e) => {
+    y: TCB.produccion.idxTable.map((e) => {
       let mes = parseInt(e.fecha.getMonth()) + 1
       return e.fecha.getDate() + '/' + mes
     }),

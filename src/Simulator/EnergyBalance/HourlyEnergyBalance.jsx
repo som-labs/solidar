@@ -37,7 +37,7 @@ export default function HourlyEnergyBalance(props) {
     // Function to get the width of the element
     const getWidth = () => {
       if (graphElement.current) {
-        graphWidth.current = graphElement.current.offsetWidth
+        graphWidth.current = graphElement.current.offsetWidth * 0.9
       }
     }
 

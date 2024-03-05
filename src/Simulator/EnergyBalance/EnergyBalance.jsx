@@ -108,12 +108,10 @@ export default function EnergyBalanceStep() {
       <SLDRInfoBox>
         <InstallationSummary></InstallationSummary>
       </SLDRInfoBox>
-      {/* 
-
 
       <SLDRInfoBox>
         <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
-      </SLDRInfoBox> */}
+      </SLDRInfoBox>
 
       <Box
         sx={{

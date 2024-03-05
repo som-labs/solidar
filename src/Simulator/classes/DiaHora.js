@@ -400,16 +400,10 @@ class DiaHora {
   resumenMensual(propiedad) {
     let valorMensual = new Array(12).fill(0)
     for (let i = 0; i < 365; i++) {
-      valorMensual[this.idxTable[i].fecha.getMonth()] += this.idxTable[i][propiedad]
+      if (this.idxTable[i].fecha !== '')
+        valorMensual[this.idxTable[i].fecha.getMonth()] += this.idxTable[i][propiedad]
     }
     return valorMensual
-  }
-
-  transformaFechas() {
-    if (typeof this.idxTable[0].fecha === 'string')
-      for (let dia = 0; dia < 365; dia++) {
-        this.idxTable[dia].fecha = new Date(this.idxTable[dia].fecha)
-      }
   }
 }
 export default DiaHora
