@@ -17,9 +17,8 @@ import ReportSOM from './Report/ReportSOM'
 // eslint-disable-next-line react/display-name
 const Reports = forwardRef((props, ref) => {
   const { t } = useTranslation()
-  // const graph_1 = useRef()
+
   const [openDialog, closeDialog] = useDialog()
-  // const [reporting, setReporting] = useState(false)
 
   const printSummary = useReactToPrint({
     content: () => ref.current,

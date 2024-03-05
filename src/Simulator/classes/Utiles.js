@@ -973,6 +973,7 @@ function swapTabla(tabla) {
           }
         }
       } else {
+        console.log(obj, propiedades[obj])
         for (let prop of propiedades[obj]) {
           if (campos[prop.nombre] !== undefined && campos[prop.nombre].mostrar) {
             if (tTabla[obj][prop.nombre] === undefined) {
@@ -1033,10 +1034,32 @@ var prop_val
  * @returns {propiedades}
  */
 
+function getAllPropertyDescriptors(obj) {
+  let descriptors = {}
+  let currentObj = obj
+
+  // const filteredObjB = Object.fromEntries(
+  //   Object.entries(objB).filter(([key]) => key !== 'd'),
+  // )
+  console.log('currentDescriptors name', currentObj.constructor.name)
+
+  //while (currentObj && currentObj.constructor.name !== 'Object') {
+  let currentDescriptors = Object.getOwnPropertyDescriptors(currentObj)
+  console.log('currentDescriptors', currentObj.constructor.name, currentDescriptors)
+  descriptors = { ...descriptors, ...currentDescriptors }
+  currentObj = Object.getPrototypeOf(currentObj)
+  //}
+
+  return descriptors
+}
+
 function obtenerPropiedades(objeto, nivel) {
   if (objeto === undefined || objeto === null || objeto instanceof File) return
   if (nivel == 0) prop_val = {}
-  const propiedades = Object.getOwnPropertyDescriptors(objeto)
+  let propiedades = getAllPropertyDescriptors(objeto)
+  console.log('getAllPropertyDescriptors', propiedades)
+  //propiedades = Object.getOwnPropertyDescriptors(objeto)
+  //console.log(propiedades)
 
   //REVISAR: totalAnual de diaHora es una propiedad que cada objeto mapea con un nombre mendiate getter. No se obtiene en getOwnPropertyDescriptors por lo que no se puede filtar en campos si lo queires mostrar o no.
 
