@@ -33,7 +33,6 @@ const campos = {
     decimales: 2,
     salvar: true,
     mostrar: false,
-    antes: 'maximoAnual',
   },
   totalAnual: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true },
   // Especificos
@@ -90,16 +89,7 @@ const campos = {
 
   /* produccion */
   produccionCreada: { unidad: '', salvar: false, mostrar: false },
-  pTotalAnual: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true, order: 1 },
   cnumeroDias: { unidad: '', salvar: true, mostrar: false },
-  pMaximoAnual: {
-    unidad: ' kWh',
-    decimales: 2,
-    salvar: true,
-    mostrar: true,
-    antes: 'maximoAnual',
-    order: 2,
-  },
   CO2AnualRenovable: { unidad: 'kg', decimales: 0, salvar: true, mostrar: true },
   CO2AnualNoRenovable: { unidad: 'kg', decimales: 0, salvar: true, mostrar: true },
   /* rendimiento */
@@ -138,29 +128,12 @@ const campos = {
   idTipoConsumo: { unidad: '', decimales: 0, salvar: true, mostrar: false },
   nombreTipoConsumo: { unidad: '', decimales: 0, salvar: true, mostrar: true },
   nombreFicheroCSV: { unidad: '', decimales: 0, salvar: true, mostrar: true },
-  tcMaximoAnual: {
-    unidad: ' kWh',
-    decimales: 2,
-    salvar: true,
-    mostrar: true,
-    antes: 'maximoAnual',
-  },
-  cTotalAnual: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true },
   numeroRegistros: { unidad: '', decimales: 0, salvar: false, mostrar: false },
   numeroDias: { unidad: '', decimales: 0, salvar: false, mostrar: false },
   fuente: { unidad: '', salvar: true, mostrar: true },
   consumoAnualREE: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true },
   csvCargado: { salvar: false, mostrar: false },
   ficheroCSV: { unidad: '', salvar: false, mostrar: false },
-
-  /* Consumo */
-  cMaximoAnual: {
-    unidad: ' kWh',
-    decimales: 2,
-    salvar: true,
-    mostrar: true,
-    antes: 'maximoAnual',
-  },
 
   /* Tarifa */
   idTarifa: { unidad: '', salvar: true, mostrar: false },
@@ -1091,11 +1064,6 @@ function obtenerPropiedades(objeto, nivel) {
             obtenerPropiedades(objeto[prop], 1)
           }
         }
-      } else {
-        if (campos[prop] !== undefined && campos[prop].mostrar)
-          if (prop !== 'totalAnual' || actobj === 'Produccion')
-            //WARNING: este es un caso particular feo pero obtenerPropiedades no devuelve pTotalAnual
-            prop_val[actobj].push({ nombre: prop, valor: objeto[prop] })
       }
     } else {
       // hay que ver como hacemos con el precio de Tarifa que es un array

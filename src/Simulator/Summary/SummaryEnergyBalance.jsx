@@ -37,7 +37,7 @@ export default function SummaryEnergyBalance() {
           <Typography variant="h4" color={'green'} textAlign={'center'}>
             {UTIL.formatoValor(
               'porciento',
-              (TCB.balance.autoconsumo / TCB.produccion.pTotalAnual) * 100,
+              (TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100,
             )}
           </Typography>
           <Typography
@@ -70,20 +70,20 @@ export default function SummaryEnergyBalance() {
             </Grid>
 
             <Grid item xs={7}>
-              <Typography variant="h5">{t('Consumo.PROP.cTotalAnual')}</Typography>
+              <Typography variant="h5">{t('Consumo.PROP.totalAnual')}</Typography>
             </Grid>
             <Grid item xs={5}>
               <Typography variant="h5" textAlign={'right'}>
-                {UTIL.formatoValor('energia', TCB.consumo.cTotalAnual)}
+                {UTIL.formatoValor('energia', TCB.consumo.totalAnual)}
               </Typography>
             </Grid>
 
             <Grid item xs={7}>
-              <Typography variant="h5">{t('Produccion.PROP.pTotalAnual')}</Typography>
+              <Typography variant="h5">{t('Produccion.PROP.totalAnual')}</Typography>
             </Grid>
             <Grid item xs={5}>
               <Typography variant="h5" textAlign={'right'}>
-                {UTIL.formatoValor('energia', TCB.produccion.pTotalAnual)}
+                {UTIL.formatoValor('energia', TCB.produccion.totalAnual)}
               </Typography>
             </Grid>
 

@@ -88,27 +88,27 @@ TipoConsumo:
     fuente: Font tipus
     nombreFicheroCSV: Fitxer consum horari (només CSV)
     consumoAnualREE: Consum anual en kWh
-    cTotalAnual: Consum anual
+    ttotalAnual: Consum anual
 
   TOOLTIP:
     nombreTipoConsumo: Identifica el nom d’aquest consum per a referències futures
     fuente: Seleccioneu el tipus de font des d'on es carregarà el perfil de consum
     nombreFicheroCSV: Identifica el fitxer de consum horari descarregat des de la teva distribuïdora
     consumoAnualREE: En cas d’optar pel perfil de tipus REE cal indicar el consum estimat anual en kWh
-    cTotalAnual: Consum elèctric anual
+    totalAnual: Consum elèctric anual
 
 Consumo:
   NAME: Consum
   PROP:
-    cMaximoAnual: Consum horari màxim
+    maximoAnual: Consum horari màxim
     consumoDiario: Consum diari
     consumoMensual: Consum mensual
-    cTotalAnual: Consum anual
+    totalAnual: Consum anual
   TOOLTIP:
-    cMaximoAnual: Consum elèctric màxim en una hora
+    maximoAnual: Consum elèctric màxim en una hora
     consumoDiario: Consum mitjà diari d'electricitat
     consumoMensual: Consum mitjà mensual d'electricitat
-    cTotalAnual: Consum elèctric anual
+    totalAnual: Consum elèctric anual
 
 Instalacion:
   NAME: Instal·lació
@@ -205,12 +205,12 @@ Produccion:
     produccionDiaria: Producció diària
     produccionMensual: Producció mensual
     totalAnual: Producció anual
-    pTotalAnual: Producció anual
-    pMaximoAnual: Producció diària màxima
+
+    maximoAnual: Producció diària màxima
   TOOLTIP:
     produccionDiaria: Producció fotovoltaica mitjana diària estimada
     produccionMensual: Producció fotovoltaica mitjana mensula estimada
-    pTotalAnual: Producció fotovoltaica mitjana anual estimada
+    totalAnual: Producció fotovoltaica mitjana anual estimada
 
 Economico:
   NAME: Econòmic
@@ -269,7 +269,7 @@ CONSUMPTION:
   tipoConsumoDefault_MSG: Defina tipo de fichero a utilizar y tarifa aplicable
   fuenteTipoConsumoErronea_MSG: Posible error definiendo DATADIS cuando debería ser CSV o viceversa
 
-  tcMaximoAnual_LBL: Màxim consum horari anual
+  maximoAnual_LBL: Màxim consum horari anual
   numeroDias_LBL: Dies processats
   botonBorraTipoConsumo_TT: Esborra el perfil de consum seleccionat
   botonMuestraMapaTipoConsumo_TT: Mostra gràfic mapa de consum d'aquest perfil

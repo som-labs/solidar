@@ -16,24 +16,24 @@ export default function GraphBoxAutoconsumo() {
   let heightGap
   let coef
 
-  if (TCB.consumo.cTotalAnual > TCB.produccion.pTotalAnual) {
+  if (TCB.consumo.totalAnual > TCB.produccion.totalAnual) {
     gapConsumo = false
     gapProduccion = true
-    coef = 200 / TCB.consumo.cTotalAnual
-    heightGap = (TCB.consumo.cTotalAnual - TCB.produccion.pTotalAnual) * coef
+    coef = 200 / TCB.consumo.totalAnual
+    heightGap = (TCB.consumo.totalAnual - TCB.produccion.totalAnual) * coef
   } else {
     gapConsumo = true
     gapProduccion = false
-    coef = 200 / TCB.produccion.pTotalAnual
-    heightGap = (TCB.produccion.pTotalAnual - TCB.consumo.cTotalAnual) * coef
+    coef = 200 / TCB.produccion.totalAnual
+    heightGap = (TCB.produccion.totalAnual - TCB.consumo.totalAnual) * coef
   }
 
   const heightAutoconsumo = parseInt(TCB.balance.autoconsumo * coef)
   const heightConsumo = parseInt(
-    (TCB.consumo.cTotalAnual - TCB.balance.autoconsumo) * coef,
+    (TCB.consumo.totalAnual - TCB.balance.autoconsumo) * coef,
   )
   const heightProduccion = parseInt(
-    (TCB.produccion.pTotalAnual - TCB.balance.autoconsumo) * coef,
+    (TCB.produccion.totalAnual - TCB.balance.autoconsumo) * coef,
   )
 
   return (
@@ -192,7 +192,7 @@ export default function GraphBoxAutoconsumo() {
           }}
         >
           <Typography variant="body" textAlign={'center'}>
-            {t('Consumo.PROP.cTotalAnual')}
+            {t('Consumo.PROP.totalAnual')}
           </Typography>
         </Box>
         <Box
@@ -205,7 +205,7 @@ export default function GraphBoxAutoconsumo() {
           }}
         >
           <Typography variant="body" textAlign={'center'}>
-            {t('Produccion.PROP.pTotalAnual')}
+            {t('Produccion.PROP.totalAnual')}
           </Typography>
         </Box>
       </Box>
@@ -230,7 +230,7 @@ export default function GraphBoxAutoconsumo() {
           }}
         >
           <Typography variant="h5" textAlign={'center'}>
-            {UTIL.formatoValor('energia', TCB.consumo.cTotalAnual)}
+            {UTIL.formatoValor('energia', TCB.consumo.totalAnual)}
           </Typography>
         </Box>
         <Box
@@ -244,7 +244,7 @@ export default function GraphBoxAutoconsumo() {
           }}
         >
           <Typography variant="h5" textAlign={'center'}>
-            {UTIL.formatoValor('energia', TCB.produccion.pTotalAnual)}
+            {UTIL.formatoValor('energia', TCB.produccion.totalAnual)}
           </Typography>
         </Box>
       </Box>

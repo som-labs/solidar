@@ -253,7 +253,7 @@ class Economico {
     var valorSubvencionEU
 
     if (
-      (TCB.consumo.cTotalAnual / TCB.produccion.pTotalAnual) * 100 < 80 ||
+      (TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100 < 80 ||
       tipoSubvencionEU === 'Sin'
     ) {
       valorSubvencionEU = 0

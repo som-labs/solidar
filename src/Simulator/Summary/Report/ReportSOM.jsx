@@ -180,7 +180,7 @@ export default function ReportSOM({ onClose }) {
 
             <li style={styles.listitem}>
               {t('REPORT.INSTALACIO_ANUAL')}:{' '}
-              <strong>{UTIL.formatoValor('energia', TCB.produccion.pTotalAnual)}</strong>
+              <strong>{UTIL.formatoValor('energia', TCB.produccion.totalAnual)}</strong>
             </li>
             <li style={styles.listitem}>
               {t('REPORT.INSTALACIO_COST')}:{' '}
@@ -203,7 +203,7 @@ export default function ReportSOM({ onClose }) {
                   {t('REPORT.ESTUDI_AUTOGENERACIO')}
                 </Grid>
                 <Grid xs={3} item style={styles.tableCell}>
-                  {UTIL.formatoValor('energia', TCB.produccion.pTotalAnual)}
+                  {UTIL.formatoValor('energia', TCB.produccion.totalAnual)}
                 </Grid>
                 <Grid xs={3} item style={styles.tableCell}>
                   {UTIL.formatoValor(
@@ -260,7 +260,7 @@ export default function ReportSOM({ onClose }) {
 
             <Grid item xs={3}>
               <PieChart
-                percentage={(TCB.balance.autoconsumo / TCB.produccion.pTotalAnual) * 100}
+                percentage={(TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100}
                 color="#b9db42"
                 label={t('REPORT.PIE_AUTOCONSUM_TITLE')}
                 description={t('REPORT.PIE_AUTOCONSUM_DESCRIPTION')}
@@ -269,7 +269,7 @@ export default function ReportSOM({ onClose }) {
             <Grid item xs={3}>
               {/* Por ahora ponemos % consumo horas sol */}
               <PieChart
-                percentage={(TCB.balance.consumoDiurno / TCB.consumo.cTotalAnual) * 100}
+                percentage={(TCB.balance.consumoDiurno / TCB.consumo.totalAnual) * 100}
                 color="#b9db42"
                 label={t('REPORT.PIE_CONSUMO_HORAS_SOL_TITLE')}
                 description={t('REPORT.PIE_CONSUMO_HORAS_SOL_DESCRIPTION')}
