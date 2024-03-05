@@ -101,19 +101,19 @@ async function GeneraInformePDF() {
       'Dato',
       i++,
       'Consumo.PROP.consumoDiario',
-      UTIL.formatoValor('energia', TCB.consumo.cTotalAnual / 365),
+      UTIL.formatoValor('energia', TCB.consumo.totalAnual / 365),
     )
     nuevaLinea(
       'Dato',
       i++,
       'Consumo.PROP.consumoMensual',
-      UTIL.formatoValor('energia', TCB.consumo.cTotalAnual / 12),
+      UTIL.formatoValor('energia', TCB.consumo.totalAnual / 12),
     )
     nuevaLinea(
       'Dato',
       i++,
       'Consumo.PROP.cTotalAnual',
-      UTIL.formatoValor('energia', TCB.consumo.cTotalAnual),
+      UTIL.formatoValor('energia', TCB.consumo.totalAnual),
     )
 
     i += 4
@@ -187,7 +187,7 @@ async function GeneraInformePDF() {
       'Balance.PROP.Produccion%Consumo',
       UTIL.formatoValor(
         'porciento',
-        (TCB.produccion.pTotalAnual / TCB.consumo.cTotalAnual) * 100,
+        (TCB.produccion.pTotalAnual / TCB.consumo.totalAnual) * 100,
       ),
     )
     nuevaLinea(
@@ -196,11 +196,11 @@ async function GeneraInformePDF() {
       'Balance.PROP.Consumo%Produccion',
       UTIL.formatoValor(
         'porciento',
-        (TCB.consumo.cTotalAnual / TCB.produccion.pTotalAnual) * 100,
+        (TCB.consumo.totalAnual / TCB.produccion.pTotalAnual) * 100,
       ),
     )
     let p_autoconsumo = (TCB.balance.autoconsumo / TCB.produccion.pTotalAnual) * 100
-    let p_autosuficiencia = (TCB.balance.autoconsumo / TCB.consumo.cTotalAnual) * 100
+    let p_autosuficiencia = (TCB.balance.autoconsumo / TCB.consumo.totalAnual) * 100
     nuevaLinea(
       'Dato',
       i++,
@@ -240,7 +240,7 @@ async function GeneraInformePDF() {
         ' -> ' +
         UTIL.formatoValor(
           'porciento',
-          (TCB.balance.deficitAnual / TCB.consumo.cTotalAnual) * 100,
+          (TCB.balance.deficitAnual / TCB.consumo.totalAnual) * 100,
         ),
     )
 
