@@ -5,8 +5,8 @@ import TCB from '../../classes/TCB'
 export default function CallSankey(props) {
   var svgRef = useRef(null)
 
-  const consumo = TCB.consumo.cTotalAnual
-  const produccion = TCB.produccion.pTotalAnual
+  const consumo = TCB.consumo.totalAnual
+  const produccion = TCB.produccion.totalAnual
   const deficit = TCB.balance.deficitAnual
   const autoconsumo = TCB.balance.autoconsumo
   const excedente = TCB.balance.excedenteAnual

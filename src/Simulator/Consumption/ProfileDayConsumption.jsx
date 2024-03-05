@@ -72,7 +72,7 @@ export default function ProfileDayConsumption(props) {
     hoverinfo: 'none',
     marker: {
       color: consumo.diaHora[diaActivo],
-      cmax: consumo.cMaximoAnual,
+      cmax: consumo.maximoAnual,
       cmin: 0,
       colorscale: colorProfile,
     },
@@ -105,7 +105,7 @@ export default function ProfileDayConsumption(props) {
       ticks: 'outside',
       tickcolor: 'primary.light',
       tickmode: 'auto',
-      range: [0, consumo.cMaximoAnual],
+      range: [0, consumo.maximoAnual],
     },
   }
 

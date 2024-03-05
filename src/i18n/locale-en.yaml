@@ -77,26 +77,26 @@ TipoConsumo:
     fuente: Source type
     nombreFicheroCSV: Consumption file (only CSV)
     consumoAnualREE: Annual consumption in kWh
-    cTotalAnual: Annual consumption
+    totalAnual: Annual consumption
   TOOLTIP:
     nombreTipoConsumo: Identize the name of this consumption for future references
     fuente: Select the source type from which the consumption profile will be loaded
     nombreFicheroCSV: Identify the Consumption file downloaded from your distribution company
     consumoAnualREE: In case of opting for the REE type profile the estimated annual consumption must be indicated
-    cTotalAnual: Annual energy consumption of this profile
+    totalAnual: Annual energy consumption of this profile
 
 Consumo:
   NAME: Consumption
   PROP:
-    cMaximoAnual: Maximum hourly consumption
+    maximoAnual: Maximum hourly consumption
     consumoMensual: Monthly consumption
-    cTotalAnual: Annual consumption
+    totalAnual: Annual consumption
     consumoDiario: Daily consumption
   TOOLTIP:
     consumoDiario: Average Daily Electricity Consumption
-    cMaximoAnual: Maximum electricity consumption in an hour
+    maximoAnual: Maximum electricity consumption in an hour
     consumoMensual: Average monthly consumption of electricity
-    cTotalAnual: Annual energy consumption of this profile
+    totalAnual: Annual energy consumption of this profile
 
 Instalacion:
   NAME: Facility
@@ -200,7 +200,7 @@ Produccion:
     produccionDiaria: Daily production
     produccionMensual: Monthly production
     totalAnual: Annual production
-    pTotalAnual: Annual production
+
   TOOLTIP:
     produccionDiaria: Estimated average daily photovoltaic production
     produccionMensual: Estimated monthly average photovoltaic production
@@ -279,7 +279,7 @@ CONSUMPTION:
   nombreTipoConsumoDuplicado_MSG: The name of the type of consumption cannot be duplicate
   tipoConsumoDefault_MSG: Define type of file to use and applicable rate
   fuenteTipoConsumoErronea_MSG: Possible error defining datadis when it should be CSV or vice versa
-  tcMaximoAnual_LBL: Maximum annual hourly consumption
+  maximoAnual_LBL: Maximum annual hourly consumption
   numeroDias_LBL: Processed days
   botonBorraTipoConsumo_LBL:
   botonMuestraMapaTipoConsumo_LBL:

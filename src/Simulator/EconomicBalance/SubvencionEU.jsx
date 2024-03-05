@@ -30,7 +30,7 @@ export default function SubvencionEU() {
     setEcoData(TCB.economico)
   }
 
-  if ((TCB.consumo.cTotalAnual / TCB.produccion.pTotalAnual) * 100 < 80) {
+  if ((TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100 < 80) {
     setSubvencionEU('Sin')
     return (
       <Container>
@@ -44,7 +44,7 @@ export default function SubvencionEU() {
             __html: t('ECONOMIC_BALANCE.DESCRIPTION_Consumo%Produccion', {
               Consumo_Produccion: UTIL.formatoValor(
                 'porciento',
-                (TCB.consumo.cTotalAnual / TCB.produccion.pTotalAnual) * 100,
+                (TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100,
               ),
             }),
           }}

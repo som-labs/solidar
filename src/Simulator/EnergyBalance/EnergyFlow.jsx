@@ -60,7 +60,7 @@ export default function EnergyFlow(props) {
       leftMargin,
       linea,
       wConsumo,
-      t('Consumo.PROP.cTotalAnual'),
+      t('Consumo.PROP.totalAnual'),
       stFlujo,
       stTitulo,
     )
@@ -293,23 +293,23 @@ export default function EnergyFlow(props) {
           variant="body"
           dangerouslySetInnerHTML={{
             __html: t('ENERGY_BALANCE.DESCRIPTION_YEAR_ENERGY_BALANCE', {
-              consumoTotal: UTIL.formatoValor('energia', TCB.consumo.cTotalAnual),
+              consumoTotal: UTIL.formatoValor('energia', TCB.consumo.totalAnual),
               porcientoAutoconsumo: UTIL.formatoValor(
                 'porciento',
-                (TCB.balance.autoconsumo / TCB.consumo.cTotalAnual) * 100,
+                (TCB.balance.autoconsumo / TCB.consumo.totalAnual) * 100,
               ),
               porcientoDemanda: UTIL.formatoValor(
                 'porciento',
-                (TCB.balance.deficitAnual / TCB.consumo.cTotalAnual) * 100,
+                (TCB.balance.deficitAnual / TCB.consumo.totalAnual) * 100,
               ),
               porcientoAutoproduccion: UTIL.formatoValor(
                 'porciento',
-                (TCB.balance.autoconsumo / TCB.produccion.pTotalAnual) * 100,
+                (TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100,
               ),
-              produccionTotal: UTIL.formatoValor('energia', TCB.produccion.pTotalAnual),
+              produccionTotal: UTIL.formatoValor('energia', TCB.produccion.totalAnual),
               porcientoVertido: UTIL.formatoValor(
                 'porciento',
-                (TCB.balance.excedenteAnual / TCB.produccion.pTotalAnual) * 100,
+                (TCB.balance.excedenteAnual / TCB.produccion.totalAnual) * 100,
               ),
             }),
           }}

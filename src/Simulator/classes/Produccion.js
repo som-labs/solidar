@@ -6,19 +6,6 @@ import * as UTIL from './Utiles'
  * @extends DiaHora
  */
 class Produccion extends DiaHora {
-  // Estas propiedades se definen para que exista un nombre único para cada campo en toda la aplicación.
-  get pMaximoAnual() {
-    return this.maximoAnual
-  } //Pico máximo de consumo
-  set pMaximoAnual(valor) {
-    this.maximoAnual = valor
-  }
-  get pTotalAnual() {
-    return this.totalAnual
-  } //Produccion total anual
-  set pTotalAnual(valor) {
-    this.totalAnual = valor
-  }
   get csvCargado() {
     return this.datosCargados
   }
