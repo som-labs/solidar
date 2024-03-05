@@ -54,6 +54,7 @@ const campos = {
   panelesMaximo: { unidad: '', decimales: 0, salvar: true, mostrar: true, order: 9 },
   tipoBaseSolar: { unidad: '', decimales: 0, salvar: false, mostrar: false },
   areaReal: { unidad: ' m²', decimales: 0, salvar: true, mostrar: true, order: 10 },
+  area: { unidad: ' m²', decimales: 0, salvar: true, mostrar: false },
   acimut: { unidad: 'º', decimales: 2, salvar: true, mostrar: true, order: 11 },
   inAcimut: { unidad: 'º', decimales: 2, salvar: true, mostrar: true, order: 12 },
   inclinacionOptima: { unidad: '', salvar: true, mostrar: true, order: 13 },
@@ -134,7 +135,7 @@ const campos = {
   consumoAnualREE: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true },
   csvCargado: { salvar: false, mostrar: false },
   ficheroCSV: { unidad: '', salvar: false, mostrar: false },
-
+  rendimientoCreado: { salvar: false, mostrar: false },
   /* Tarifa */
   idTarifa: { unidad: '', salvar: true, mostrar: false },
   nombreTarifa: { unidad: '', salvar: true, mostrar: true },
@@ -981,7 +982,9 @@ function swapTabla(tabla) {
                 enumerable: true,
               })
             } else {
-              tTabla[obj][prop.nombre].push(formatoValor(prop.nombre, prop.valor))
+              //Particular case don't want to get totalAnual of rendimiento
+              if (!(obj === 'Rendimiento' && prop.nombre === 'totalAnual'))
+                tTabla[obj][prop.nombre].push(formatoValor(prop.nombre, prop.valor))
             }
           }
         }
@@ -1036,15 +1039,8 @@ var prop_val
 function obtenerPropiedades(objeto, nivel) {
   if (objeto === undefined || objeto === null || objeto instanceof File) return
   if (nivel == 0) prop_val = {}
-  const propiedades = Object.getOwnPropertyDescriptors(objeto)
 
-  //REVISAR: totalAnual de diaHora es una propiedad que cada objeto mapea con un nombre mendiate getter. No se obtiene en getOwnPropertyDescriptors por lo que no se puede filtar en campos si lo queires mostrar o no.
-
-  // console.log('PROPIEDADES' + objeto.constructor.name, propiedades)
-  // const proto = Object.getPrototypeOf(objeto)
-  // console.log('PROTO', proto)
-  // const descriptors = Object.getOwnPropertyDescriptors(proto)
-  // console.log('DESCRIPTOS', descriptors)
+  let propiedades = Object.getOwnPropertyDescriptors(objeto)
 
   let actobj = objeto.constructor.name
   if (actobj === 'Object') return //No esta previsto mostrar campos de tipo objeto javascript como puede ser el status del rendimiento
@@ -1064,9 +1060,12 @@ function obtenerPropiedades(objeto, nivel) {
             obtenerPropiedades(objeto[prop], 1)
           }
         }
+      } else {
+        if (campos[prop] !== undefined && campos[prop].mostrar)
+          if (!(actobj === 'Rendimiento' && prop === 'totalAnual'))
+            //Particular case don't want to get totalAnual of rendimiento
+            prop_val[actobj].push({ nombre: prop, valor: objeto[prop] })
       }
-    } else {
-      // hay que ver como hacemos con el precio de Tarifa que es un array
     }
   }
   return prop_val
