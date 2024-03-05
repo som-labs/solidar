@@ -7,16 +7,6 @@ import TCB from './TCB'
  * @extends DiaHora
  */
 class TipoConsumo extends DiaHora {
-  // Estas propiedades se definen para que exista un nombre único para cada campo en toda la aplicación.
-  get tcMaximoAnual() {
-    return this.maximoAnual
-  } //Pico máximo de consumo
-  get cTotalAnual() {
-    return this.totalAnual
-  } //Consumo total anual
-  set cTotalAnual(valor) {
-    this.totalAnual = valor
-  }
   get csvCargado() {
     return this.datosCargados
   }

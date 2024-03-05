@@ -12,7 +12,7 @@ import TCB from './TCB'
  * @returns {Float} energiaPendiente Es el valor de la energía que no ha podiodo ser asignada
  */
 function optimizador(bases, consumo, potenciaPanelInicio) {
-  let energiaPendiente = consumo.cTotalAnual
+  let energiaPendiente = consumo.totalAnual
   let energiaAsignada = 0
   let tmpPaneles
   TCB.totalPaneles = 0

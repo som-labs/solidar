@@ -18,7 +18,7 @@ const ConsumptionContextProvider = ({ children }) => {
     consumoAnualREE: undefined,
     ficheroCSV: undefined,
     nombreFicheroCSV: undefined,
-    cTotalAnual: undefined,
+    totalAnual: undefined,
   }
 
   // Move data object to the hdr template
