@@ -50,7 +50,6 @@ export default function ProjectMenu() {
     let mapView
     let returnCondition
 
-    console.log(reason)
     switch (reason) {
       case 'importProject':
         UTIL.debugLog('Importando :', formData)

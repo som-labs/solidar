@@ -76,8 +76,8 @@ async function GeneraInformePDF() {
     nuevaLinea(
       'Dato',
       i++,
-      'Produccion.PROP.pTotalAnual',
-      UTIL.formatoValor('energia', TCB.produccion.pTotalAnual),
+      'Produccion.PROP.totalAnual',
+      UTIL.formatoValor('energia', TCB.produccion.totalAnual),
     )
     nuevaLinea(
       'Dato',
@@ -109,26 +109,26 @@ async function GeneraInformePDF() {
   nuevaLinea(
     'Dato',
     i++,
-    'Consumo.PROP.cMaximoAnual',
-    UTIL.formatoValor('energia', TCB.consumo.cMaximoAnual),
+    'Consumo.PROP.maximoAnual',
+    UTIL.formatoValor('energia', TCB.consumo.maximoAnual),
   )
   nuevaLinea(
     'Dato',
     i++,
     'Consumo.PROP.consumoDiario',
-    UTIL.formatoValor('energia', TCB.consumo.cTotalAnual / 365),
+    UTIL.formatoValor('energia', TCB.consumo.totalAnual / 365),
   )
   nuevaLinea(
     'Dato',
     i++,
     'Consumo.PROP.consumoMensual',
-    UTIL.formatoValor('energia', TCB.consumo.cTotalAnual / 12),
+    UTIL.formatoValor('energia', TCB.consumo.totalAnual / 12),
   )
   nuevaLinea(
     'Dato',
     i++,
-    'Consumo.PROP.cTotalAnual',
-    UTIL.formatoValor('energia', TCB.consumo.cTotalAnual),
+    'Consumo.PROP.totalAnual',
+    UTIL.formatoValor('energia', TCB.consumo.totalAnual),
   )
 
   i += 4
@@ -137,19 +137,19 @@ async function GeneraInformePDF() {
     'Dato',
     i++,
     'Produccion.PROP.produccionDiaria',
-    UTIL.formatoValor('energia', TCB.produccion.pTotalAnual / 365),
+    UTIL.formatoValor('energia', TCB.produccion.totalAnual / 365),
   )
   nuevaLinea(
     'Dato',
     i++,
     'Produccion.PROP.produccionMensual',
-    UTIL.formatoValor('energia', TCB.produccion.pTotalAnual / 12),
+    UTIL.formatoValor('energia', TCB.produccion.totalAnual / 12),
   )
   nuevaLinea(
     'Dato',
     i++,
-    'Produccion.PROP.pTotalAnual',
-    UTIL.formatoValor('energia', TCB.produccion.pTotalAnual),
+    'Produccion.PROP.totalAnual',
+    UTIL.formatoValor('energia', TCB.produccion.totalAnual),
   )
   nuevaLinea(
     'Dato',
@@ -182,7 +182,7 @@ async function GeneraInformePDF() {
     'Balance.PROP.Produccion%Consumo',
     UTIL.formatoValor(
       'porciento',
-      (TCB.produccion.pTotalAnual / TCB.consumo.cTotalAnual) * 100,
+      (TCB.produccion.totalAnual / TCB.consumo.totalAnual) * 100,
     ),
   )
   nuevaLinea(
@@ -191,11 +191,11 @@ async function GeneraInformePDF() {
     'Balance.PROP.Consumo%Produccion',
     UTIL.formatoValor(
       'porciento',
-      (TCB.consumo.cTotalAnual / TCB.produccion.pTotalAnual) * 100,
+      (TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100,
     ),
   )
-  let p_autoconsumo = (TCB.balance.autoconsumo / TCB.produccion.pTotalAnual) * 100
-  let p_autosuficiencia = (TCB.balance.autoconsumo / TCB.consumo.cTotalAnual) * 100
+  let p_autoconsumo = (TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100
+  let p_autosuficiencia = (TCB.balance.autoconsumo / TCB.consumo.totalAnual) * 100
   nuevaLinea(
     'Dato',
     i++,
@@ -224,7 +224,7 @@ async function GeneraInformePDF() {
       ' -> ' +
       UTIL.formatoValor(
         'porciento',
-        (TCB.balance.excedenteAnual / TCB.produccion.pTotalAnual) * 100,
+        (TCB.balance.excedenteAnual / TCB.produccion.totalAnual) * 100,
       ),
   )
   nuevaLinea(
@@ -235,14 +235,14 @@ async function GeneraInformePDF() {
       ' -> ' +
       UTIL.formatoValor(
         'porciento',
-        (TCB.balance.deficitAnual / TCB.consumo.cTotalAnual) * 100,
+        (TCB.balance.deficitAnual / TCB.consumo.totalAnual) * 100,
       ),
   )
 
   doc.addImage({
     imageData: TCB.graphs.MonthThreeParts,
     x: margenIzquierdo,
-    y: currentY,
+    y: currentY + 10,
     w: margenDerecho - margenIzquierdo,
     h: 100,
   })
@@ -337,13 +337,15 @@ async function GeneraInformePDF() {
     columns: tcolumns,
     body: trows,
     margin: { left: 25, top: 50 },
-    textColor: [0, 0, 0],
-    lineWidth: 0.1,
-    lineColor: [0, 0, 0],
-    minCellHeight: 5,
     theme: 'striped',
     startY: currentY,
-    styles: { halign: 'right', textColor: [0, 0, 0], lineWidth: 0.1, minCellHeight: 6 },
+    styles: {
+      halign: 'right',
+      textColor: [0, 0, 0],
+      lineWidth: 0.1,
+      lineColor: [0, 0, 0],
+      minCellHeight: 6,
+    },
     headStyles: { halign: 'center', fillColor: [255, 255, 255], lineColor: [0, 0, 0] },
     alternateRowStyles: { fillColor: [229, 255, 204] },
   })

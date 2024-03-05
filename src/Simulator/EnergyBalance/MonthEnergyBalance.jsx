@@ -96,7 +96,6 @@ export default function MonthEnergyBalance() {
       Plotly.toImage(gd, { format: 'png', height: 500, width: 800 }).then(
         function (dataUri) {
           //Saving image for PDF report
-          console.log('MonthEnergyBalance saved')
           TCB.graphs.MonthEnergyBalance = dataUri
         },
       )
