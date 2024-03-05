@@ -143,7 +143,7 @@ export default function HourlyEnergyBalance(props) {
 
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
-    width: 0.9 * graphWidth.current,
+    width: graphWidth.current,
     autosize: true,
     xaxis: {
       dtick: 1,

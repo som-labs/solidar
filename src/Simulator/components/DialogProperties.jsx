@@ -22,6 +22,7 @@ export default function DialogProperties({ data, onClose }) {
   const [objeto, setObjeto] = useState(data)
 
   const vectorPropiedades = UTIL.obtenerPropiedades(objeto, 0)
+  console.log('PROPIEDADES', vectorPropiedades)
   for (let val in vectorPropiedades) {
     //console.log(val, vectorPropiedades[val])
     vectorPropiedades[val].sort((a, b) => {
