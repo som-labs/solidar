@@ -1,12 +1,11 @@
 import TCB from './TCB'
 import * as UTIL from './Utiles'
 import Rendimiento from './Rendimiento'
-import DiaHora from './DiaHora'
 /**
  * @class BaseSolar
  * @classdesc Clase para definir las bases solares en las que se instalarán las fuentes de producción
  */
-class BaseSolar extends DiaHora {
+class BaseSolar {
   #inclinacion
 
   /**
@@ -14,8 +13,6 @@ class BaseSolar extends DiaHora {
    * @param {Object} area Descripción de la base donde se instalarán los paneles
    */
   constructor(area) {
-    super()
-
     Object.defineProperties(this, {
       inclinacion: {
         enumerable: true,
