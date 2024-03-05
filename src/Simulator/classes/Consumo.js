@@ -7,22 +7,6 @@ import DiaHora from './DiaHora'
  * @extends DiaHora
  */
 class Consumo extends DiaHora {
-  // Estas propiedades se definen para que exista un nombre único para cada campo en toda la aplicación.
-  /**@property {number} cMaximoAnual Sinonimo de diaHora.maximoAnual */
-  get cMaximoAnual() {
-    return this.maximoAnual
-  } //Pico máximo de consumo
-  set cMaximoAnual(valor) {
-    this.maximoAnual = valor
-  }
-  /**@property {number} cTotalAnual Sinonimo de diaHora.totalAnual */
-  get cTotalAnual() {
-    return this.totalAnual
-  } //Consumo total anual
-  set cTotalAnual(valor) {
-    this.totalAnual = valor
-  }
-
   /**
    * @constructor
    * @param {Object} consumo A JS object to be used as template for a Solidar Consumo object

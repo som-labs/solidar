@@ -26,12 +26,12 @@ export default function SummaryConsumption() {
       description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
     },
     {
-      field: 'cTotalAnual',
-      headerName: t('TipoConsumo.PROP.cTotalAnual'),
+      field: 'totalAnual',
+      headerName: t('TipoConsumo.PROP.totalAnual'),
       type: 'number',
       width: 150,
-      description: t('TipoConsumo.TOOLTIP.cTotalAnual'),
-      valueFormatter: (params) => UTIL.formatoValor('cTotalAnual', params.value),
+      description: t('TipoConsumo.TOOLTIP.totalAnual'),
+      valueFormatter: (params) => UTIL.formatoValor('totalAnual', params.value),
     },
   ]
 

@@ -57,12 +57,12 @@ export default function ConsumptionSummary() {
       sortable: false,
     },
     {
-      field: 'cTotalAnual',
-      headerName: t('TipoConsumo.PROP.cTotalAnual'),
+      field: 'totalAnual',
+      headerName: t('TipoConsumo.PROP.totalAnual'),
       type: 'number',
       width: 150,
-      description: t('TipoConsumo.TOOLTIP.cTotalAnual'),
-      valueFormatter: (params) => formatoValor('cTotalAnual', params.value),
+      description: t('TipoConsumo.TOOLTIP.totalAnual'),
+      valueFormatter: (params) => formatoValor('totalAnual', params.value),
       sortable: false,
     },
     {
@@ -262,7 +262,7 @@ export default function ConsumptionSummary() {
                 __html: t('CONSUMPTION.TOTAL_DEMMAND', {
                   consumoTotal: formatoValor(
                     'energia',
-                    Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.cTotalAnual, 0)),
+                    Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.totalAnual, 0)),
                   ),
                 }),
               }}

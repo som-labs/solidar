@@ -94,13 +94,13 @@ TipoConsumo:
     fuente: Fuente
     nombreFicheroCSV: Nombre del fichero
     consumoAnualREE: Consumo anual REE
-    cTotalAnual: Uso anual eléctrico
+    totalAnual: Uso anual eléctrico
   TOOLTIP:
     nombreTipoConsumo: Identique el nombre de este consumo para futuras referencias
     fuente: Seleccione el tipo de fuente desde donde se cargará el perfil de consumo
     nombreFicheroCSV: Nombre fichero fuente seleccionado
     consumoAnualREE: En caso de optar por el perfil tipo REE debe indicar el consumo anual estimado en kWh
-    cTotalAnual: Consumo eléctrico anual
+    totalAnual: Consumo eléctrico anual
 
   DESCRIPTION_fuente_original: |
     "Existen tres formas de proveer la información del perfil de consumo <li>CSV-> un fichero con valores separados por punto y coma obtenido desde la web de tu empresa distribuidora.<a href='./datos/Guias publicadas/Enlaces para descarga CSV individual.htm 'target='_blank'> Ver instrucciones aquí </a></li><li>REE-> utilizando el perfil estandar de REE según <a href='https//www.ree.es/es/clientes/generador/gestion-medidas-electricas/consulta-perfiles-de-consumo' target='_blank'> perfiles finales de consumo a partir de los perfiles iniciales en función de la demanda real del sistema</a> y el consumo anual estimado de la instalación</li><li>DATADIS-> un fichero obtenido de la plataforma de las empresas distribuidoras llamada <a href: 'https: //datadis.es/home' target='_blank'>DATADIS</a></li><p>Debes elegir una u otra según la información que dispongas.</p>"
@@ -137,16 +137,16 @@ TipoConsumo:
 Consumo:
   NAME: Consumo
   PROP:
-    cMaximoAnual: Consumo horario máximo
+    maximoAnual: Consumo horario máximo
     consumoHorario: Consumo horario medio
     consumoDiario: Consumo diario
     consumoMensual: Consumo mensual
-    cTotalAnual: Consumo anual
+    totalAnual: Consumo anual
   TOOLTIP:
-    cMaximoAnual: Máximo consumo de electricidad en una hora
+    maximoAnual: Máximo consumo de electricidad en una hora
     consumoDiario: Consumo medio diario de electricidad
     consumoMensual: Consumo medio mensual de electricidad
-    cTotalAnual: Consumo eléctrico anual
+    totalAnual: Consumo eléctrico anual
 
 Instalacion:
   NAME: Instalación
@@ -265,15 +265,15 @@ Produccion:
     produccionDiaria: Producción diaria
     produccionMensual: Producción mensual
     totalAnual: Producción anual
-    pTotalAnual: Producción anual
+
     potenciaTotal: Potencia total instalada
-    pMaximoAnual: Producción diaria máxima
+    maximoAnual: Producción diaria máxima
     CO2AnualRenovable: Ahorro CO2 si fuente renovable
     CO2AnualNoRenovable: Ahorro CO2 si fuente no renovable
   TOOLTIP:
     produccionDiaria: Producción fotovoltaica diaria estimada
     produccionMensual: Producción fotovoltaica media mensual estimada
-    pTotalAnual: Producción fotovoltaica media anual estimada
+    totalAnual: Producción fotovoltaica media anual estimada
 
 Economico:
   NAME: Económico
@@ -470,7 +470,7 @@ CONSUMPTION:
   nombreTipoConsumoDuplicado_MSG: El nombre del tipo de consumo no puede estar duplicado
   tipoConsumoDefault_MSG: Defina tipo de fichero a utilizar y tarifa aplicable
 
-  tcMaximoAnual_LBL: Máximo consumo horario anual
+  maximoAnual_LBL: Máximo consumo horario anual
   numeroDias_LBL: Días procesados
   botonBorraTipoConsumo_LBL:
   botonMuestraMapaTipoConsumo_LBL:

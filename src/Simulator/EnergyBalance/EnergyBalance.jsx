@@ -49,8 +49,8 @@ export default function EnergyBalanceStep() {
       excedente: TCB.balance.resumenMensual('excedente'),
     })
     setYearlyData({
-      consumo: TCB.consumo.cTotalAnual,
-      produccion: TCB.produccion.pTotalAnual,
+      consumo: TCB.consumo.totalAnual,
+      produccion: TCB.produccion.totalAnual,
       deficit: TCB.balance.deficitAnual,
       autoconsumo: TCB.balance.autoconsumo,
       excedente: TCB.balance.excedenteAnual,
@@ -76,8 +76,8 @@ export default function EnergyBalanceStep() {
     })
 
     setYearlyData({
-      consumo: TCB.consumo.cTotalAnual,
-      produccion: TCB.produccion.pTotalAnual,
+      consumo: TCB.consumo.totalAnual,
+      produccion: TCB.produccion.totalAnual,
       deficit: TCB.balance.deficitAnual,
       autoconsumo: TCB.balance.autoconsumo,
       excedente: TCB.balance.excedenteAnual,
