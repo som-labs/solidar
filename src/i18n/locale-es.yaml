@@ -122,17 +122,28 @@ TipoConsumo:
     Elige una u otra opción según la información que dispongas.
   DESCRIPTION_fuente: |
     Existen diferentes formas de obtener la información referente al uso eléctrico anual:<br />
-    Curvas  de uso de energía a través de un fichero con información horaria de tu uso real.<br />
-    <u><strong>Empresa de distribución eléctrica (CSV):</strong></u> <a href='./datos/Guias publicadas/Enlaces para descarga CSV individual.htm 'target='_blank'>En este enlace </a>puedes encontrar las instrucciones para descargar el fichero CSV de las siguientes compañías de distribución eléctrica:
     <ul>
-    <li>E-Distribución Redes Digitales- Endesa distribución</li>
-    <li>I-DE Redes Eléctricas Inteligentes- Iberdrola distribución</li>
-    <li>Unión Fenosa Distribución- Grupo Naturgy</li>
-    <li>E-Redes Distribución Eléctrica- Empresa distribuidora del grupo EDP</li>
-    <li>Viesgo Distribución- Cantábrico</li>
+      <li><strong>(CSV) Desde empresa de distribución eléctrica: </strong>
+        <a href='./datos/Guias publicadas/Enlaces para descarga CSV individual.htm' target='_blank'>En este enlace </a>puedes encontrar las instrucciones para descargar el fichero CSV de las siguientes compañías de distribución eléctrica:
+        <ul>
+          <li>E-Distribución Redes Digitales- Endesa distribución</li>
+          <li>I-DE Redes Eléctricas Inteligentes- Iberdrola distribución</li>
+          <li>Unión Fenosa Distribución- Grupo Naturgy</li>
+          <li>E-Redes Distribución Eléctrica- Empresa distribuidora del grupo EDP</li>
+          <li>Viesgo Distribución- Cantábrico</li>
+        </ul>
+      </li>
+      <li><strong>DATADIS:</strong>
+        se trata de una plataforma creada por las empresas de distribución eléctrica para simplificar el acceso a los datos.
+        <a href='https://datadis.es/home' target='_blank'>Tienes las instrucciones aquí.</a>
+      </li>
+      <li><strong>(REE) Consumo anual informado mediante tu factura eléctrica: </strong>
+        mediante tu uso de energía anual Red Eléctrica Española tiene definido un perfil de usuario estandarizado que se usará como modelo.
+      </li>
+      <li><strong>SOM Oficina Virtual:</strong>
+        <a href="https://es.support.somenergia.coop/article/942--las-curvas-horarias-de-uso-de-energia" target="_blank">Tienes las instrucciones aquí.</a>
+      </li>
     </ul>
-    <u><strong>DATADIS:</strong></u> se trata de una plataforma creada por las empresas de distribución eléctrica para simplificar el acceso a los datos. <a href: 'https: //datadis.es/home' target='_blank'>Tienes las instrucciones aquí.</a><br />
-     <u><strong>Consumo anual informado mediante tu factura eléctrica (REE):</strong></u> mediante tu uso de energía anual Red Eléctrica Española tiene definido un perfil de usuario estandarizado que se usará como modelo.<br />
     Elige una u otra opción según la información que dispongas.
 Consumo:
   NAME: Consumo
@@ -336,7 +347,7 @@ LOCATION:
   TOOLTIP_ADDRESS: A medida que escribas tendrás candidatos para seleccionar
 
   PROMPT_DISPONIBLE: Dibuja en el mapa las áreas disponibles del edificio. En caso de alternativas, puedes dibujar tantas áreas como quieras. El sistema distribuirá los paneles de la forma mas eficiente.
-  PROMPT_SOMBRAS: Es <strong>IMPORTANTE</strong> tener en cuenta que Solidar <strong>no incorpora el estudio de posibles sombras</strong>❓ que puedan afectar al rendimiento de la instalación propuesta.
+  PROMPT_SOMBRAS: Es <strong>IMPORTANTE</strong> tener en cuenta que Solidar <strong>no incorpora el estudio de posibles sombras</strong> que puedan afectar al rendimiento de la instalación propuesta.
   PROMPT_DRAW: Si tu cubierta es inclinada, <strong>los dos primeros puntos que marques serán considerados la parte alta del tejado.</strong>
   PROMPT_INICIO_CUMBRERA: Dibujaremos cumbrera
   PROMPT_CUMBRERA: Dibujando cumbrera
@@ -587,11 +598,9 @@ ECONOMIC_BALANCE:
   TITLE_YEAR_SAVINGS: Ahorro anual en la factura
   DESCRIPTION_YEAR_SAVINGS: |
     Con placas solares te ahorrarás el {{porcientoAhorro}} del importe de gastos de consumo anual.<br />
-    En el siguiente gráfico se compara el gastos anual en electricidad con placas y sin placas.
+    En el siguiente gráfico se compara el gasto anual en electricidad con placas y sin placas.
   GRAPH_TITLE_YEAR_SAVINGS: Consumo y autoproducción
   TITLE_MONTH_SAVINGS: Ahorro mensual en la factura
-  DESCRIPTION_MONTH_SAVINGS: |
-    En el siguiente gráfico se compara el balance económico mensual con y sin placas.
   GRAPH_TITLE_MONTH_SAVINGS: Gasto de electricidad comparado con placas y sin placas por meses
   TITLE_FINANCE_SUMMARY: Balance económico completo
   LABEL_ANO: Año

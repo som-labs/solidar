@@ -25,10 +25,7 @@ export default function DialogProperties({ data, onClose }) {
   for (let val in vectorPropiedades) {
     vectorPropiedades[val].sort((a, b) => {
       if (a.valor === 'Objeto' || b.valor === 'Objeto') return -1
-      else {
-        console.log(a.nombre)
-        return UTIL.campos[a.nombre].order - UTIL.campos[b.nombre].order
-      }
+      else return UTIL.campos[a.nombre].order - UTIL.campos[b.nombre].order
     })
   }
   return (
@@ -47,16 +44,17 @@ export default function DialogProperties({ data, onClose }) {
                 container
                 alignItems="center"
                 justifyContent="center"
+                sx={{ mt: '1rem' }}
                 style={{
                   backgroundColor: 'rgba(220, 249, 233, 1)',
-                  height: '50px',
                   fontWeight: 'bold',
+                  height: '30px',
+                  padding: 4,
                 }}
               >
                 {t(objName + '.NAME')}
               </Grid>
-              {/* Property row */}
-              {/* <Grid> */}
+
               {objProps.map((prop) => (
                 <Fragment key={objName + '-' + prop.nombre}>
                   {UTIL.campos[prop.nombre] !== undefined &&
@@ -66,11 +64,15 @@ export default function DialogProperties({ data, onClose }) {
                           item
                           xs={6}
                           key={objName + prop.nombre}
-                          style={{ height: '20px', padding: 8 }}
+                          style={{ height: '15px', padding: 10, textAlign: 'right' }}
                         >
                           {t(objName + '.PROP.' + prop.nombre)}
                         </Grid>
-                        <Grid item xs={6} style={{ padding: 8 }}>
+                        <Grid
+                          item
+                          xs={6}
+                          style={{ textAlign: 'center', height: '20px', padding: 10 }}
+                        >
                           {UTIL.formatoValor(prop.nombre, prop.valor)}
                         </Grid>
                       </Grid>

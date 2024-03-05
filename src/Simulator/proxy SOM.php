@@ -25,6 +25,7 @@ if(isset($_GET['nombre']))
 }
 
     $url = $urlBase . 'type=' . $nombre;
+
     //Initialize cURL.
     $ch = curl_init();
     //Set the URL that you want to GET by using the CURLOPT_URL option.
@@ -39,11 +40,16 @@ if(isset($_GET['nombre']))
     curl_close($ch);
     //Print the data out onto the page.
     $tarifa = json_decode($serviceData);
-    $tmp = $tarifa->data[0]->prices->current->autoconsumo->P1->value . ",";
-    foreach($tarifa->data as $unidad) {
-        foreach($unidad->prices->current->activeEnergy as $clave=>$valor) {
-            $tmp = $tmp . $valor->value . ",";
+
+    if ($tarifa->count > 0) {
+        $tmp = $tarifa->data[0]->prices->current->autoconsumo->P1->value . ",";
+        foreach($tarifa->data as $unidad) {
+            foreach($unidad->prices->current->activeEnergy as $clave=>$valor) {
+                $tmp = $tmp . $valor->value . ",";
+            }
+            echo substr($tmp, 0, -1);
         }
-        echo substr($tmp, 0, -1);
+    } else {
+        echo 'error:' . $serviceData;
     }
 ?>

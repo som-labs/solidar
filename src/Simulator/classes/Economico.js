@@ -64,68 +64,72 @@ class Economico {
       this.idxTable[dia].compensado = 0
 
       //LONGTERM: cambiar a calcular la fecha desde dia y no idxTable, solo debemos decidir que año se usa para saber sabados y domingos
-      let diaSemana = _tc.idxTable[dia].fecha.getDay()
-      let idxPeriodo
-      //Vamos a calcular el precio de la energia cada hora
-      for (let hora = 0; hora < 24; hora++) {
-        if (TCB.tipoTarifa === '2.0TD') {
-          if (diaSemana == 0 || diaSemana == 6) {
-            //es un fin de semana por lo que tarifa P3 todo el dia
-            this.diaHoraTarifaOriginal[dia][hora] = TCB.tarifaActiva.precios[3]
-            idxPeriodo = 3
+      if (_tc.idxTable[dia].fecha !== '') {
+        let diaSemana = _tc.idxTable[dia].fecha.getDay()
+        let idxPeriodo
+        //Vamos a calcular el precio de la energia cada hora
+        for (let hora = 0; hora < 24; hora++) {
+          if (TCB.tipoTarifa === '2.0TD') {
+            if (diaSemana == 0 || diaSemana == 6) {
+              //es un fin de semana por lo que tarifa P3 todo el dia
+              this.diaHoraTarifaOriginal[dia][hora] = TCB.tarifaActiva.precios[3]
+              idxPeriodo = 3
+            } else {
+              this.diaHoraTarifaOriginal[dia][hora] =
+                TCB.tarifaActiva.precios[TCB.tarifaActiva.horas[hora]]
+              idxPeriodo = TCB.tarifaActiva.horas[hora]
+            }
           } else {
-            this.diaHoraTarifaOriginal[dia][hora] =
-              TCB.tarifaActiva.precios[TCB.tarifaActiva.horas[hora]]
-            idxPeriodo = TCB.tarifaActiva.horas[hora]
+            if (diaSemana == 0 || diaSemana == 6) {
+              this.diaHoraTarifaOriginal[dia][hora] = TCB.tarifaActiva.precios[6] //es un fin de semana por lo que tarifa P6 todo el dia
+              idxPeriodo = 6
+            } else {
+              this.diaHoraTarifaOriginal[dia][hora] =
+                TCB.tarifaActiva.precios[
+                  [TCB.tarifaActiva.horas[this.idxTable[dia].mes][hora]]
+                ]
+              idxPeriodo = TCB.tarifaActiva.horas[hora]
+            }
           }
-        } else {
-          if (diaSemana == 0 || diaSemana == 6) {
-            this.diaHoraTarifaOriginal[dia][hora] = TCB.tarifaActiva.precios[6] //es un fin de semana por lo que tarifa P6 todo el dia
-            idxPeriodo = 6
-          } else {
-            this.diaHoraTarifaOriginal[dia][hora] =
-              TCB.tarifaActiva.precios[
-                [TCB.tarifaActiva.horas[this.idxTable[dia].mes][hora]]
-              ]
-            idxPeriodo = TCB.tarifaActiva.horas[hora]
-          }
-        }
 
-        // La tarifa original es -> this.diaHoraTarifaOriginal[dia][hora]
-        this.diaHoraPrecioOriginal[dia][hora] =
-          TCB.consumo.diaHora[dia][hora] *
-          this.diaHoraTarifaOriginal[dia][hora] *
-          coefImpuesto
-
-        // Store energia consumed by fee period
-
-        TCB.consumo.periodo[idxPeriodo - 1] += TCB.consumo.diaHora[dia][hora]
-        if (idxPeriodo > 6) console.log(dia, hora)
-        // Determinamos el precio de esa hora (la tarifa) segun sea el balance es decir teniendo en cuanta los paneles. Si es negativo compensa
-        if (TCB.balance.diaHora[dia][hora] < 0) {
-          //Aportamos energia a la red de distribución
-          this.diaHoraTarifaConPaneles[dia][hora] = TCB.tarifaActiva.precios[0] //Es el precio de compensacion
-          this.idxTable[dia].ahorradoAutoconsumo += this.diaHoraPrecioOriginal[dia][hora] //Ahorro del gasto original
-
-          this.diaHoraPrecioConPaneles[dia][hora] +=
-            TCB.balance.diaHora[dia][hora] *
-            this.diaHoraTarifaConPaneles[dia][hora] *
-            coefImpuesto
-          this.idxTable[dia].compensado += this.diaHoraPrecioConPaneles[dia][hora]
-        } else {
-          //Demandamos energia de la red de distribucion
-          this.diaHoraTarifaConPaneles[dia][hora] = this.diaHoraTarifaOriginal[dia][hora]
-          this.diaHoraPrecioConPaneles[dia][hora] =
-            TCB.balance.diaHora[dia][hora] *
-            this.diaHoraTarifaConPaneles[dia][hora] *
-            coefImpuesto
-          this.idxTable[dia].ahorradoAutoconsumo +=
-            ((TCB.produccion.diaHora[dia][hora] * 100) / 100) *
+          // La tarifa original es -> this.diaHoraTarifaOriginal[dia][hora]
+          this.diaHoraPrecioOriginal[dia][hora] =
+            TCB.consumo.diaHora[dia][hora] *
             this.diaHoraTarifaOriginal[dia][hora] *
             coefImpuesto
+
+          // Store energia consumed by fee period
+
+          TCB.consumo.periodo[idxPeriodo - 1] += TCB.consumo.diaHora[dia][hora]
+          if (idxPeriodo > 6) console.log(dia, hora)
+          // Determinamos el precio de esa hora (la tarifa) segun sea el balance es decir teniendo en cuanta los paneles. Si es negativo compensa
+          if (TCB.balance.diaHora[dia][hora] < 0) {
+            //Aportamos energia a la red de distribución
+            this.diaHoraTarifaConPaneles[dia][hora] = TCB.tarifaActiva.precios[0] //Es el precio de compensacion
+            this.idxTable[dia].ahorradoAutoconsumo +=
+              this.diaHoraPrecioOriginal[dia][hora] //Ahorro del gasto original
+
+            this.diaHoraPrecioConPaneles[dia][hora] +=
+              TCB.balance.diaHora[dia][hora] *
+              this.diaHoraTarifaConPaneles[dia][hora] *
+              coefImpuesto
+            this.idxTable[dia].compensado += this.diaHoraPrecioConPaneles[dia][hora]
+          } else {
+            //Demandamos energia de la red de distribucion
+            this.diaHoraTarifaConPaneles[dia][hora] =
+              this.diaHoraTarifaOriginal[dia][hora]
+            this.diaHoraPrecioConPaneles[dia][hora] =
+              TCB.balance.diaHora[dia][hora] *
+              this.diaHoraTarifaConPaneles[dia][hora] *
+              coefImpuesto
+            this.idxTable[dia].ahorradoAutoconsumo +=
+              ((TCB.produccion.diaHora[dia][hora] * 100) / 100) *
+              this.diaHoraTarifaOriginal[dia][hora] *
+              coefImpuesto
+          }
+          this.idxTable[dia].consumoOriginal += this.diaHoraPrecioOriginal[dia][hora]
+          this.idxTable[dia].consumoConPlacas += this.diaHoraPrecioConPaneles[dia][hora]
         }
-        this.idxTable[dia].consumoOriginal += this.diaHoraPrecioOriginal[dia][hora]
-        this.idxTable[dia].consumoConPlacas += this.diaHoraPrecioConPaneles[dia][hora]
       }
     }
 

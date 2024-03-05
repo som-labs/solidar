@@ -46,7 +46,6 @@ async function InicializaAplicacion() {
   // lectura del fichero de tipos de paneles.
   const ficheroTipoPaneles = './datos/tipoPaneles.json'
   UTIL.debugLog('Tipos de paneles leidos desde servidor:' + ficheroTipoPaneles)
-  let tipoPaneles
   try {
     const paneles = await fetch(ficheroTipoPaneles)
     if (paneles.status === 200) {
@@ -65,12 +64,11 @@ async function InicializaAplicacion() {
   // lectura del fichero de tarifas del servidor. Si falla se usan las de la TCB
   if (!UTIL.cargaTarifasDesdeSOM()) {
     //Dejamos esta llamada hasta que el tiempo de respuesta de SOM sea aceptable
-    console.log('FALLO TARIFAS SOM')
     const ficheroTarifa = './datos/tarifas.json'
     try {
       const respuesta = await fetch(ficheroTarifa)
       if (respuesta.status === 200) {
-        UTIL.debugLog('Tarifas leidas desde servidor:' + ficheroTarifa)
+        UTIL.debugLog('Tarifas leidas desde solidarenergia.es:' + ficheroTarifa)
         TCB.tarifas = await respuesta.json()
       }
     } catch (err) {
