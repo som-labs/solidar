@@ -145,7 +145,7 @@ export default function SummaryEconomicBalance() {
           >
             <Grid container spacing={3} alignItems="center">
               <Grid item xs={8}>
-                <Typography variant="h5">
+                <Typography variant="h6">
                   {t('Economico.PROP.gastoConPlacasAnual')}
                 </Typography>
               </Grid>

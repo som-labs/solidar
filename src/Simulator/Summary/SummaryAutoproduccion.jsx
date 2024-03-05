@@ -167,7 +167,7 @@ export default function SummaryAutoproduccion() {
               }}
             >
               <Typography variant="h4" color={'green'}>
-                {produccionAnual.toFixed(2)}
+                {UTIL.formatoValor('energia', produccionAnual, '')}
               </Typography>
               <Typography
                 variant="body"

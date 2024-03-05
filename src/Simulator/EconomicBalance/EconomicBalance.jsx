@@ -70,12 +70,6 @@ export default function EconomicBalanceStep() {
           <Typography variant="h4" textAlign={'center'}>
             {t('ECONOMIC_BALANCE.TITLE_MONTH_SAVINGS')}
           </Typography>
-          <Typography
-            variant="body"
-            dangerouslySetInnerHTML={{
-              __html: t('ECONOMIC_BALANCE.DESCRIPTION_MONTH_SAVINGS'),
-            }}
-          />
           <MonthSaving></MonthSaving>
         </SLDRInfoBox>
         <SLDRInfoBox

@@ -17,7 +17,7 @@ import Papa from 'papaparse'
 const campos = {
   ahorroFincaAnual: { unidad: ' €', decimales: 2, salvar: true, mostrar: true },
   // Genericos
-  energia: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true },
+  energia: { unidad: ' kWh', decimales: 0, salvar: true, mostrar: true },
   potencia: { unidad: ' kWp', decimales: 3, salvar: true, mostrar: true },
   porciento: { unidad: '%', decimales: 2, salvar: true, mostrar: true },
   peso: { unidad: ' Kg', decimales: 2, salvar: true, mostrar: true },
@@ -34,7 +34,7 @@ const campos = {
     salvar: true,
     mostrar: false,
   },
-  totalAnual: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true },
+  totalAnual: { unidad: ' kWh', decimales: 0, salvar: true, mostrar: true },
   // Especificos
   /* Proyecto */
   nombreProyecto: { unidad: '', salvar: true, mostrar: true },
@@ -132,7 +132,7 @@ const campos = {
   numeroRegistros: { unidad: '', decimales: 0, salvar: false, mostrar: false },
   numeroDias: { unidad: '', decimales: 0, salvar: false, mostrar: false },
   fuente: { unidad: '', salvar: true, mostrar: true },
-  consumoAnualREE: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true },
+  consumoAnualREE: { unidad: ' kWh', decimales: 0, salvar: true, mostrar: true },
   csvCargado: { salvar: false, mostrar: false },
   ficheroCSV: { unidad: '', salvar: false, mostrar: false },
   rendimientoCreado: { salvar: false, mostrar: false },
@@ -1136,102 +1136,64 @@ function selectTCB(tabla, campo, valor) {
   return recordSet
 }
 
-function hdrToolTip(e, col) {
-  //e - mouseover event
-  //cell - cell component
-  //onRendered - onRendered callback registration function
-
-  var el = document.createElement('div')
-  el.style.backgroundColor = 'black'
-  el.style.color = 'white'
-  el.style.fontSize = 'medium'
-  el.innerText = TCB.i18next.t(col.getField() + '_TT') //getDefinition().title);
-  return el
-}
-
 async function cargaTarifasDesdeSOM() {
   if (TCB.modoActivo === 'DESARROLLO')
     TCB.basePath = 'http://localhost/SOM/REACT/solidar/src/Simulator/'
 
   const urlSOMTarifas = TCB.basePath + 'proxy SOM.php?nombre='
-  debugLog('Tarifas leidas desde SOM:' + urlSOMTarifas)
+
   let _url
   let respuesta
   let txtTarifas
   try {
     _url = urlSOMTarifas + '2.0TD'
+    debugLog('Tarifas leidas desde SOM:' + _url)
     respuesta = await fetch(_url)
     if (respuesta.status === 200) {
       txtTarifas = await respuesta.text()
-      TCB.tarifas['2.0TD'].precios = txtTarifas.split(',').map((t) => {
-        return parseFloat(t)
-      })
+      if (txtTarifas.includes('error')) throw new Error(txtTarifas)
+      else
+        TCB.tarifas['2.0TD'].precios = txtTarifas.split(',').map((t) => {
+          return parseFloat(t)
+        })
     }
     debugLog('Tarifas 2.0TD desde SOM', { txtTarifas })
-    //console.log(TCB.tarifas['2.0TD'].precios)
+
     _url = urlSOMTarifas + '3.0TD'
     respuesta = await fetch(_url)
     if (respuesta.status === 200) {
       txtTarifas = await respuesta.text()
-      TCB.tarifas['3.0TD-Peninsula'].precios = txtTarifas.split(',').map((t) => {
-        return parseFloat(t)
-      })
-      TCB.tarifas['3.0TD-Ceuta'].precios = txtTarifas.split(',').map((t) => {
-        return parseFloat(t)
-      })
-      TCB.tarifas['3.0TD-Melilla'].precios = txtTarifas.split(',').map((t) => {
-        return parseFloat(t)
-      })
-      TCB.tarifas['3.0TD-Illes Balears'].precios = txtTarifas.split(',').map((t) => {
-        return parseFloat(t)
-      })
-      TCB.tarifas['3.0TD-Canarias'].precios = txtTarifas.split(',').map((t) => {
-        return parseFloat(t)
-      })
+      if (txtTarifas.includes('error')) throw new Error(txtTarifas)
+      else {
+        TCB.tarifas['3.0TD-Peninsula'].precios = txtTarifas.split(',').map((t) => {
+          return parseFloat(t)
+        })
+        TCB.tarifas['3.0TD-Ceuta'].precios = txtTarifas.split(',').map((t) => {
+          return parseFloat(t)
+        })
+        TCB.tarifas['3.0TD-Melilla'].precios = txtTarifas.split(',').map((t) => {
+          return parseFloat(t)
+        })
+        TCB.tarifas['3.0TD-Illes Balears'].precios = txtTarifas.split(',').map((t) => {
+          return parseFloat(t)
+        })
+        TCB.tarifas['3.0TD-Canarias'].precios = txtTarifas.split(',').map((t) => {
+          return parseFloat(t)
+        })
+      }
     }
     debugLog('Tarifas 3.0TD desde SOM', { txtTarifas })
-    //console.log(TCB.tarifas['3.0TD-Peninsula'].precios)
     return true
   } catch (err) {
     alert(
-      'Error leyendo tarifas desde SOM Energia' +
+      'Error leyendo tarifas desde SOM Energia\n' +
         err.message +
-        '<br>Seguimos con fichero de Solidar',
+        '\nSeguimos con fichero de solidarenergia.es',
     )
     return false
   }
 }
 
-// function preparaInput(campo, changeFunction, datoOrigen) {
-//   let t = document.getElementById(campo)
-//   //Guardamos el valor original en el atributo dato-origen del campo
-//   t.setAttribute('dato-origen', datoOrigen)
-//   /*
-//   La definicion del formato numero en español no es correcta para el separador de miles menos que 9999 por lo que cambiamos a catalan
-//   */
-//   let lng =
-//     TCB.i18next.language.substring(0, 2) === 'es'
-//       ? 'ca'
-//       : TCB.i18next.language.substring(0, 2)
-//   t.setAttribute('lng', lng)
-
-//   t.addEventListener('change', (e) => changeFunction(e))
-
-//   t.addEventListener('focus', (e) => {
-//     console.log(
-//       'get focus en ' + t.id + ' para valor anterior ' + t.getAttribute('dato-origen'),
-//     )
-//     e.target.value = t.getAttribute('dato-origen')
-//     e.target.type = 'number'
-//   })
-//   t.addEventListener('focusout', (e) => {
-//     console.log('salgo de ' + t.id + ' con valor ' + e.target.value)
-//     t.setAttribute('dato-origen', e.target.value)
-//     e.target.type = ''
-//     e.target.value = formatoValor(campo, e.target.value)
-//     console.log('mostrado como ' + e.target.value)
-//   })
-// }
 export {
   cambioValor,
   cargaTarifasDesdeSOM,
@@ -1247,7 +1209,6 @@ export {
   formularioAtributos,
   getFileFromUrl,
   getParametrosEntrada,
-  hdrToolTip,
   indiceDesdeDiaMes,
   indiceDesdeFecha,
   loadFromCSV,
