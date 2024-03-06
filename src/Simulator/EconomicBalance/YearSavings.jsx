@@ -35,9 +35,6 @@ export default function YearSaving() {
           }}
         />
 
-        <Typography variant="h5">
-          {t('ECONOMIC_BALANCE.GRAPH_TITLE_YEAR_SAVINGS')}
-        </Typography>
         <GraphBoxSavings></GraphBoxSavings>
       </Container>
     </>
