@@ -25,7 +25,13 @@ export default function EconomicBalanceStep() {
   return (
     <>
       <Container>
-        <Typography variant="body">{t('ECONOMIC_BALANCE.DESCRIPTION')}</Typography>
+        <Typography
+          variant="body"
+          textAlign={'center'}
+          dangerouslySetInnerHTML={{
+            __html: t('ECONOMIC_BALANCE.DESCRIPTION'),
+          }}
+        ></Typography>
         <Box
           sx={{
             display: 'flex',
