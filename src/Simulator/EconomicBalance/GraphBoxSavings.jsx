@@ -15,7 +15,6 @@ export default function GraphBoxSavings() {
   const { t } = useTranslation()
 
   const { ecoData } = useContext(EconomicContext)
-
   return (
     <Box
       sx={{
@@ -79,6 +78,8 @@ export default function GraphBoxSavings() {
         id="B2"
         sx={{
           flex: 1,
+          display: 'flex',
+          flexFlow: 'column',
         }}
       >
         <Box
@@ -147,66 +148,70 @@ export default function GraphBoxSavings() {
           </Typography>
         </Box>
       </Box>
-      <Box
-        id="B3"
-        sx={{
-          flex: 1,
-        }}
-      >
+      {UTIL.suma(ecoData.perdidaMes) > 0 && (
         <Box
-          id="B31"
+          id="B3"
           sx={{
-            height: parseInt(
-              (200 / ecoData.gastoSinPlacasAnual) *
-                (ecoData.gastoSinPlacasAnual - UTIL.suma(ecoData.perdidaMes)),
-            ),
-            mr: '0.3rem',
+            flex: 1,
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'rgba(0,0,0,0)',
-          }}
-        ></Box>
-        <Box
-          id="B32"
-          sx={{
-            height: parseInt(
-              (200 / ecoData.gastoSinPlacasAnual) * UTIL.suma(ecoData.perdidaMes),
-            ),
-            mr: '0.3rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'grey',
-          }}
-        ></Box>
-        <Box
-          id="B33"
-          sx={{
-            mr: '0.3rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            flexFlow: 'column',
           }}
         >
-          <Typography variant="body" textAlign={'center'}>
-            {t('Economico.PROP.noCompensadoAnual')}
-          </Typography>
+          <Box
+            id="B31"
+            sx={{
+              height: parseInt(
+                (200 / ecoData.gastoSinPlacasAnual) *
+                  (ecoData.gastoSinPlacasAnual - UTIL.suma(ecoData.perdidaMes)),
+              ),
+              mr: '0.3rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'rgba(0,0,0,0)',
+            }}
+          ></Box>
+          <Box
+            id="B32"
+            sx={{
+              height: parseInt(
+                (200 / ecoData.gastoSinPlacasAnual) * UTIL.suma(ecoData.perdidaMes),
+              ),
+              mr: '0.3rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'grey',
+            }}
+          ></Box>
+          <Box
+            id="B33"
+            sx={{
+              mr: '0.3rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Typography variant="body" textAlign={'center'}>
+              {t('Economico.PROP.noCompensadoAnual')}
+            </Typography>
+          </Box>
+          <Box
+            id="B34"
+            sx={{
+              mr: '0.3rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Typography variant="h5" textAlign={'right'}>
+              {UTIL.formatoValor('dinero', UTIL.suma(ecoData.perdidaMes))}
+            </Typography>
+          </Box>
         </Box>
-        <Box
-          id="B34"
-          sx={{
-            mr: '0.3rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Typography variant="h5" textAlign={'right'}>
-            {UTIL.formatoValor('dinero', UTIL.suma(ecoData.perdidaMes))}
-          </Typography>
-        </Box>
-      </Box>
+      )}
     </Box>
   )
 }
