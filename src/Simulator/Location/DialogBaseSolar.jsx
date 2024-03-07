@@ -4,16 +4,12 @@ import { useTranslation } from 'react-i18next'
 //Formik objects
 import { Formik, Form } from 'formik'
 
-// OpenLayers objects
-import { LineString } from 'ol/geom'
-import { Style } from 'ol/style'
-
 // MUI objects
-import { Box, Button, Typography, Grid, FormLabel, Skeleton } from '@mui/material'
+import { Box, Button, Typography, Grid, FormLabel } from '@mui/material'
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
 
 //React global components
-import coplanarSvgFile from '../datos/coplanar.svg'
+import coplanarSvgFile from '../datos/coplanar.png'
 import horizontalSvgFile from '../datos/horizontal.svg'
 import { SLDRInputField } from '../../components/SLDRComponents'
 
@@ -46,15 +42,14 @@ export default function DialogBaseSolar({ data, onClose }) {
   goes through the Optimos option where canvas is not rendered.
   */
   const [roofType, setRoofType] = useState(data.roofType)
+  const [inclinacionOptima, setInclinacionOptima] = useState(false)
   const canvasRef = useRef()
   const inclinacionDefault = 30
 
   useEffect(() => {
     const canvas = canvasRef.current
-    if (roofType !== 'Optimo') {
-      drawHouse(canvas, inclinacionDefault, roofType)
-    }
-  }, [roofType])
+    if (!inclinacionOptima) drawHouse(canvas, inclinacionDefault, roofType)
+  }, [roofType, inclinacionOptima])
 
   const drawHouse = (canvas, inclinacion, roofType) => {
     if (!canvas) return
@@ -112,14 +107,6 @@ export default function DialogBaseSolar({ data, onClose }) {
   }
 
   const changeRoofType = (event, setValues, values) => {
-    /* 
-    Al crear la geometria de la base hemos construido un acimut.
-    El acimut se debe dibujar solo si la configuración no es de angulos optimos
-    Cuando cambia la configuracion debemos hacer aparecer o desaparecer el acimut
-    */
-    const componente = 'BaseSolar.acimut.' + data.idBaseSolar
-    const featAcimut = TCB.origenDatosSolidar.getFeatureById(componente)
-
     switch (event.currentTarget.value) {
       case 'Inclinado':
         setValues((prev) => ({
@@ -131,8 +118,8 @@ export default function DialogBaseSolar({ data, onClose }) {
           inclinacion: inclinacionDefault,
           requierePVGIS: true,
         }))
-        //featAcimut.setStyle(null)
         setRoofType('Inclinado', values)
+        setInclinacionOptima(false)
         drawHouse(canvasRef.current, inclinacionDefault, 'Inclinado')
         break
       case 'Horizontal':
@@ -145,21 +132,22 @@ export default function DialogBaseSolar({ data, onClose }) {
           requierePVGIS: true,
         }))
         setRoofType('Horizontal')
+        setInclinacionOptima(false)
         drawHouse(canvasRef.current, inclinacionDefault, 'Horizontal')
         break
 
-      case 'Optimos': {
-        setValues((prev) => ({
-          ...prev,
-          roofType: 'Optimos',
-          angulosOptimos: true,
-          inclinacionOptima: true,
-          requierePVGIS: true,
-        }))
-        setRoofType('Optimo')
-        featAcimut.setStyle(new Style({}))
-        break
-      }
+      // case 'Optimos': {
+      //   setValues((prev) => ({
+      //     ...prev,
+      //     roofType: 'Optimos',
+      //     angulosOptimos: true,
+      //     inclinacionOptima: true,
+      //     requierePVGIS: true,
+      //   }))
+      //   setRoofType('Optimo')
+      //   featAcimut.setStyle(new Style({}))
+      //   break
+      // }
     }
   }
 
@@ -174,6 +162,15 @@ export default function DialogBaseSolar({ data, onClose }) {
       }))
       drawHouse(canvasRef.current, parseInt(event.target.value), values.roofType)
     }
+  }
+
+  const changeInclinacionOptima = (event, setValues, values) => {
+    setInclinacionOptima(!values.inclinacionOptima)
+    setValues((prevValues) => ({
+      ...prevValues,
+      inclinacionOptima: !values.inclinacionOptima,
+      inclinacion: inclinacionDefault,
+    }))
   }
 
   // Removed based on request done by SOM-Autoproduccion meeting 9/3/2024
@@ -331,7 +328,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                   className={'roofTypeButton'}
                   onClick={(event) => changeRoofType(event, setValues, values)}
                 >
-                  <img src={coplanarSvgFile} width="70" height="70" alt="SVG Image" />
+                  <img src={coplanarSvgFile} width="170" height="90" alt="SVG Image" />
                   {/* <HomeIcon /> */}
                 </Button>
                 <Button
@@ -385,13 +382,9 @@ export default function DialogBaseSolar({ data, onClose }) {
                           name="inclinacionOptima"
                           object="CONTACTO"
                           checked={values.inclinacionOptima}
-                          onChange={() => {
-                            setValues((prevValues) => ({
-                              ...prevValues,
-                              inclinacionOptima: !values.inclinacionOptima,
-                              inclinacion: inclinacionDefault,
-                            }))
-                          }}
+                          onChange={(event) =>
+                            changeInclinacionOptima(event, setValues, values)
+                          }
                         />
                         {t('BaseSolar.DESCRIPTION.inclinacionOptima')}
                       </FormLabel>
