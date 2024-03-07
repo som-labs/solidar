@@ -9,7 +9,7 @@ import { Box, Button, Typography, Grid, FormLabel } from '@mui/material'
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
 
 //React global components
-import coplanarSvgFile from '../datos/coplanar.svg'
+import coplanarSvgFile from '../datos/coplanar.png'
 import horizontalSvgFile from '../datos/horizontal.svg'
 import { SLDRInputField } from '../../components/SLDRComponents'
 
@@ -328,7 +328,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                   className={'roofTypeButton'}
                   onClick={(event) => changeRoofType(event, setValues, values)}
                 >
-                  <img src={coplanarSvgFile} width="70" height="70" alt="SVG Image" />
+                  <img src={coplanarSvgFile} width="170" height="90" alt="SVG Image" />
                   {/* <HomeIcon /> */}
                 </Button>
                 <Button
