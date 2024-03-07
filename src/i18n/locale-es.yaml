@@ -290,8 +290,8 @@ Economico:
   NAME: Económico
   PROP:
     precioInstalacionCorregido: Precio de la instalación corregido
-    gastoSinPlacasAnual: Sin placas
-    gastoConPlacasAnual: Con placas
+    gastoSinPlacasAnual: Sin paneles
+    gastoConPlacasAnual: Con paneles
     ahorroAnualPorciento: Ahorro anual / gasto original
     ahorroAnual: Ahorro anual
     noCompensadoAnual: No compensada
@@ -560,19 +560,15 @@ ENERGY_BALANCE:
 ECONOMIC_BALANCE:
   TITLE: Balance Económico
   DESCRIPTION: |
-    En esta pantalla conocerás cuánto tendrás que invertir en la instalación, cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión, teniendo en cuenta las posibles subvenciones provenientes de fondos UE, bonificaciones de IBI y uso de bateria virtual en el caso que tu comercializadora te lo ofrezca.
+    En esta pantalla conocerás cuánto tendrás que invertir en la instalación, cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión, teniendo en cuenta las posibles subvenciones que puedan haber en ese momento, bonificaciones de IBI (si el ayuntamiento las ofrece) y herramientas para obtener descuentos por los <a href='https://es.support.somenergia.coop/article/1398-que-son-los-excedentes-no-compensados' target='_blank'>excedentes no compensados</a> como el <a href='https://es.support.somenergia.coop/article/1372-que-es-el-flux-solar' target='_blank'>Flux Solar</a>, baterías virtuales o hucha solar en caso de que tu comercializadora lo ofrezca.
   TITLE_IBI: Reducción del IBI
   DESCRIPTION_IBI: |
-    Si instalas placas solares pordrás optar a una reducción de IBI. El porcentaje de la reducción del IBI y la duración de la bonificación dependen del municipio en el que vivas.
-
-    *¿Dónde encuentro la bonificación que me corresponde por municipio?*
-
+    Si instalas paneles solares es posible que puedas optar a una bonificación sobre el IBI. <a href='https://fundacionrenovables.org/averigua-municipio-bonifica-ibi-icio-autoconsumo/' target='_blank'>¿Dónde encuentro la bonificación que me corresponde por municipio?</a><br />
     Rellena la tabla con el precio del IBI de la edificación y la bonificación que le corresponde por municipio.
 
   EU_TITLE: Subvenciones EU Next Generation
   EU_DESCRIPTION: |
-    Las subvenciones EU Next Generation reducen el importe total de la inversión entre un 40% y un 50%.
-    Escoge la opción que represente tu instalación.
+    Es posible que existan subvenciones para la instalación de paneles solares y que ésto suponga un ahorro. Si es así, indica el % o el importe subvencionado.<br />
     <p style="color: red;">CUIDADO: Las subvenciones EU Next Generation tienen plazo de solicitud hasta el 31 de diciembre de 2023.
 
   DESCRIPTION_Consumo%Produccion: Para poder optar a la subvención de los Fondos Next Generation el porcentaje del consumo respecto a la producción ha de ser siempre superior al 80%. En esta configuración este valor es de {{Consumo_Produccion}}
@@ -586,20 +582,20 @@ ECONOMIC_BALANCE:
     Este es el número de años que tardarás en recuperar la inversión realizada
   PROMPT_AMORTIZATION_TIME: Los paneles tienen una vida útil de 15 a 30 años (si se mantienen correctamente
   LABEL_INSTALLATION_COST: Coste previsto de la instalación (€ sin IVA)
-  TITLE_VIRTUAL_BATTERY: Gestión hucha (Bateria virtual)
+  TITLE_VIRTUAL_BATTERY: Excedentes no compensados
   DESCRIPTION_VIRTUAL_BATTERY: |
-    En este bloque se define la forma en la que se compensan los excedentes económicos de cada mes incluyendo el concepto de batería virtual o hucha.
-  DESCRIPTION_RECOGNITION_VIRTUAL_BATTERY: '% Transferencia hucha:  es el porcentaje del excedente económico de cada mes que pasa a formar parte de la hucha.'
+    La forma de aplicar los descuentos depende de la comercializadora, los descuentos pueden ser un porcentaje del total de excedentes no compensados, como en el caso del Flux Solar o una cuota mensual fija por ofrecer el servicio.
+  DESCRIPTION_RECOGNITION_VIRTUAL_BATTERY: 'Porcentaje correspondiente'
   LABEL_RECOGNITION_VIRTUAL_BATTERY: '% transferencia hucha'
   TOOLTIP_RECOGNITION_VIRTUAL_BATTERY: Porcentaje del saldo no compensado que pasa a la hucha
-  DESCRIPTION_FEE_VIRTUAL_BATTERY: 'Cuota gestión hucha: es la cuota mensual sin IVA que carga la empresa comercializadora por la gestíon de la hucha.'
+  DESCRIPTION_FEE_VIRTUAL_BATTERY: 'Cuota mensual sin IVA'
   LABEL_FEE_VIRTUAL_BATTERY: Cuota gestión hucha sin IVA
   TOOLTIP_FEE_VIRTUAL_BATTERY: Cuota fija mensual en Euros sin IVA que la empresa comercializadora cobra por la gestión de la hucha
   TITLE_YEAR_SAVINGS: Ahorro anual en la factura
   DESCRIPTION_YEAR_SAVINGS: |
-    Con placas solares te ahorrarás el {{porcientoAhorro}} del importe de gastos de consumo anual.<br />
-    En el siguiente gráfico se compara el gasto anual en electricidad con placas y sin placas.
-  GRAPH_TITLE_YEAR_SAVINGS: Consumo y autoproducción
+    Con la instalación propuesta y los parámetros indicados te ahorrarás el {{porcientoAhorro}} del importe anual del término de energía.<br />
+    En el siguiente gráfico se compara el coste anual en electricidad con paneles y sin paneles, teniendo en cuenta todos los mecanismos de ahorro: uso de energía autoproducida, compensación simplificada de excedentes y descuentos por los excedentes no compensados.
+
   TITLE_MONTH_SAVINGS: Ahorro mensual en la factura
   GRAPH_TITLE_MONTH_SAVINGS: Gasto de electricidad comparado con placas y sin placas por meses
   TITLE_FINANCE_SUMMARY: Balance económico completo
@@ -613,14 +609,14 @@ ECONOMIC_BALANCE:
   TOOLTIP_AHORRO: Ahorro obtenido en el periodo
   LABEL_IBI: Bonificación IBI
   TOOLTIP_IBI: Descuento obtenido en el IBI
-  LABEL_SUBVENCION: Subvención UE
-  TOOLTIP_SUBVENCION: Subvención obtenida de la UE
+  LABEL_SUBVENCION: Subvención
+  TOOLTIP_SUBVENCION: Subvención obtenida
   LABEL_PENDIENTE: Pendiente
   TOOLTIP_PENDIENTE: Pendiente de amortizar al final del periodo
   DESCRIPTION_DATA_AS_PANELS: 'En el siguiente gráfico puedes obeservar la relación existente entre las variables: Inversion necesaria, Ahorro obtenido, porcentajes de autoconsumo y autosuficiencia, asi como la tasa interna de retorno en función del número de paneles instalados.'
   TITLE_DATA_AS_PANELS: Gráfico alternativas según número de paneles
   LABEL_FOOTER_VAN: 'Valor actual neto (VAN): {{VANProyecto}}'
-  LABEL_FOOTER_TIR: 'Valor actual neto (TIR): {{TIRProyecto}}'
+  LABEL_FOOTER_TIR: 'Tasa interna de retorno (TIR): {{TIRProyecto}}'
   MSG_NO_FINANCE: |
     Un número de paneles excesivo provoca que el retorno de la inversión no se obtenga antes de {{periodo}} años por lo que el resultado financiero no es significativo. Por favor reduzca el número de paneles, lo que reducirá la inversión, o aumente el consumo de energia, para incrementar el ahorro. De ese modo mejorará el cashflow.
 
@@ -795,9 +791,9 @@ GRAFICOS:
   LABEL_graficasExcedente: Excedente
   LABEL_graficasDeficit: Déficit
   LABEL_graficasAutoconsumo: Autoconsumo
-  LABEL_graficasCompensacion: Compensado
-  LABEL_SALDO_VIRTUAL_BATTERY: Saldo en hucha
-  LABEL_EXTRACCION_VIRTUAL_BATTERY: Extracción hucha
+  LABEL_graficasCompensacion: Compensación simplificada
+  LABEL_SALDO_VIRTUAL_BATTERY: Descuentos disponibles
+  LABEL_EXTRACCION_VIRTUAL_BATTERY: Descuento aplicado
 
   graficos_LBL_balanceConsumo: Balance mensual de consumo con {{potencia}} instalados
   graficos_LBL_balanceProduccion: Balance mensual de producción con {{potencia}} instalados
