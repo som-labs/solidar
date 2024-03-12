@@ -430,7 +430,7 @@ CONSUMPTION:
     A continuación necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.<br />
     El documento de consumo CSV nos permitirá conocer tus hábitos de consumo saber en qué tramos horarios y en qué meses del año sueles consumir más energía.<br />
   TARIFA_DESCRIPTION_1: |
-    Necesitamos conocer tu tarifa, los precios por tramos horarios de cada período y el precio de la compensación de excedentes {{icono}} de tu comercializadora si es otra diferente a Som Energia.
+    Necesitamos conocer tu tarifa, los precios por tramos horarios de cada período y el precio de la compensación de excedentes de tu comercializadora si es otra diferente a Som Energia.
   TARIFA_DESCRIPTION_2: |
     Indica los precios sin impuestos.<br />
     En caso de tener una tarifa indexada, Som Energia muestra en sus facturas el precio medio ponderado para cada período. Te lo explicamos <a href='https://es.support.somenergia.coop/article/1368-por-que-veo-periodos-en-la-factura-de-indexada'>aquí.</a><br />
