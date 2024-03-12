@@ -10,7 +10,7 @@ import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
 
 //React global components
 import coplanarSvgFile from '../datos/coplanar.png'
-import horizontalSvgFile from '../datos/horizontal.svg'
+import horizontalSvgFile from '../datos/horizontal.png'
 import { SLDRInputField } from '../../components/SLDRComponents'
 
 // Solidar global modules
@@ -318,28 +318,50 @@ export default function DialogBaseSolar({ data, onClose }) {
                   flexDirection: 'row',
                   flexWrap: 'wrap',
                   mt: '1rem',
+                  mb: '1rem',
+                  justifyContent: 'space-between',
                 }}
               >
                 <Button
-                  variant={values.roofType === 'Inclinado' ? 'contained' : 'outlined'}
+                  style={{
+                    backgroundColor:
+                      values.roofType === 'Inclinado' ? 'green' : 'lightgray',
+                    color: values.roofType === 'Inclinado' ? 'white' : 'black',
+                    boxShadow:
+                      values.roofType !== 'Inclinado'
+                        ? '7px 7px 1px 2px rgba(0, 0, 0, 0.3)'
+                        : 'none',
+                  }}
                   name="roofType"
                   value="Inclinado"
-                  sx={{ flex: 1 }}
-                  className={'roofTypeButton'}
+                  sx={{ ml: '2rem', flex: 0.4 }}
                   onClick={(event) => changeRoofType(event, setValues, values)}
                 >
                   <img src={coplanarSvgFile} width="170" height="90" alt="SVG Image" />
                   {/* <HomeIcon /> */}
                 </Button>
                 <Button
-                  variant={values.roofType === 'Horizontal' ? 'contained' : 'outlined'}
+                  style={{
+                    backgroundColor:
+                      values.roofType === 'Horizontal' ? 'green' : 'lightgray',
+                    color: values.roofType === 'Horizontal' ? 'white' : 'black',
+                    boxShadow:
+                      values.roofType !== 'Horizontal'
+                        ? '7px 7px 1px 2px rgba(0, 0, 0, 0.3)'
+                        : 'none',
+                  }}
                   name="roofType"
                   value="Horizontal"
-                  sx={{ flex: 1 }}
-                  className={'roofTypeButton'}
+                  sx={{ mr: '2rem', flex: 0.4 }}
                   onClick={(event) => changeRoofType(event, setValues)}
                 >
-                  <img src={horizontalSvgFile} width="70" height="70" alt="SVG Image" />
+                  <img
+                    src={horizontalSvgFile}
+                    width="170"
+                    height="80"
+                    style={{ padding: 1 }}
+                    alt="SVG Image"
+                  />
                   {/* <ApartmentIcon /> */}
                 </Button>
                 {/* <Button
