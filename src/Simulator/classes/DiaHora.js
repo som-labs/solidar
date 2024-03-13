@@ -405,5 +405,12 @@ class DiaHora {
     }
     return valorMensual
   }
+
+  transformaFechas() {
+    if (typeof this.idxTable[0].fecha === 'string')
+      for (let dia = 0; dia < 365; dia++) {
+        this.idxTable[dia].fecha = new Date(this.idxTable[dia].fecha)
+      }
+  }
 }
 export default DiaHora
