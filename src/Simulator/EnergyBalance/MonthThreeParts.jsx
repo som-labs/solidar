@@ -6,7 +6,6 @@ import Plot from 'react-plotly.js'
 import Plotly from 'plotly.js-dist'
 
 // MUI objects
-
 import Typography from '@mui/material/Typography'
 import { Container } from '@mui/material'
 
@@ -16,6 +15,7 @@ import TCB from '../classes/TCB'
 
 export default function MonthThreeParts(props) {
   const { t } = useTranslation()
+
   const { autoconsumo, excedente, deficit } = props.monthlyData
 
   const graphElement = useRef()
@@ -31,7 +31,9 @@ export default function MonthThreeParts(props) {
 
     // Call the function to get the width after initial render
     getWidth()
+  }, [])
 
+  if (graphElement.current) {
     const i18nextMes = () => {
       let _mes = []
       for (let i = 0; i < 12; _mes.push(t(UTIL.nombreMes[i++])));
@@ -98,7 +100,7 @@ export default function MonthThreeParts(props) {
         },
       )
     })
-  }, [])
+  }
 
   return (
     <Container>

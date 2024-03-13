@@ -27,20 +27,20 @@ export default function AmortizationTime() {
             width: '100%',
           }}
         >
-          <Typography variant="h4">
+          <Typography variant="h4" textAlign={'center'}>
             {t('ECONOMIC_BALANCE.TITLE_AMORTIZATION_TIME')}
           </Typography>
-          <Typography
+          {/* <Typography
             variant="body"
             dangerouslySetInnerHTML={{
               __html: t('ECONOMIC_BALANCE.DESCRIPTION_AMORTIZATION_TIME'),
             }}
-          />
+          /> */}
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <Typography variant="h4" color={'green'} textAlign={'center'}>
-              {ecoData.periodoAmortizacion}
+              {ecoData.periodoAmortizacion + ' ' + t('BASIC.LABEL_AÑOS')}
             </Typography>
-            <Typography variant="body">
+            <Typography variant="body" textAlign={'center'}>
               {t('ECONOMIC_BALANCE.PROMPT_AMORTIZATION_TIME')}
             </Typography>
             <br />

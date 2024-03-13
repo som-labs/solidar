@@ -402,7 +402,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                         <SLDRInputField
                           MUIType="Checkbox"
                           name="inclinacionOptima"
-                          object="CONTACTO"
+                          object="BaseSolar"
                           checked={values.inclinacionOptima}
                           onChange={(event) =>
                             changeInclinacionOptima(event, setValues, values)
@@ -423,7 +423,6 @@ export default function DialogBaseSolar({ data, onClose }) {
                   >
                     {!values.inclinacionOptima ? (
                       <Grid container alignItems="center" justifyContent="center">
-                        {/* REVISAR: porque no se redibuja el canvas? */}
                         <Grid item xs={4} sx={{ flex: 2, mt: '-1rem' }}>
                           <canvas
                             ref={canvasRef}
