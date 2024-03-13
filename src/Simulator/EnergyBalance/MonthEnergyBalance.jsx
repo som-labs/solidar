@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Plotly objects
@@ -38,7 +38,9 @@ export default function MonthEnergyBalance() {
 
     // Call the function to get the width after initial render
     getWidth()
+  }, [])
 
+  if (graphElement.current) {
     maxMonth.current = Math.max(Math.max(...consumo), Math.max(...produccion))
     minMonth.current = Math.min(Math.min(...consumo), Math.min(...produccion))
 
@@ -100,8 +102,7 @@ export default function MonthEnergyBalance() {
         },
       )
     })
-  }, [])
-
+  }
   return (
     <Container>
       <Typography

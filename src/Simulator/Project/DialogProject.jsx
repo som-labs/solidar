@@ -38,7 +38,6 @@ export default function DialogProject({ recoverFormData, onClose }) {
   }
 
   function exportProject(values) {
-    console.log(values)
     recoverFormData('exportProject', values)
   }
 

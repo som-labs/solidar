@@ -8,8 +8,8 @@ const EconomicContextProvider = ({ children }) => {
     porcientoSubvencionIBI: 0,
     tiempoSubvencionIBI: 0,
   })
-  const [subvencionEU, setSubvencionEU] = useState('Sin')
-  const [valorSubvencionEU, setValorSubvencionEU] = useState(0)
+  const [porcientoSubvencion, setPorcientoSubvencion] = useState('Sin')
+  const [valorSubvencion, setValorSubvencion] = useState(0)
   const [cuotaHucha, setCuotaHucha] = useState(0)
   const [coefHucha, setCoefHucha] = useState(80)
   const [ecoData, setEcoData] = useState({})
@@ -17,10 +17,10 @@ const EconomicContextProvider = ({ children }) => {
   const contextValue = {
     IBI,
     setIBI,
-    subvencionEU,
-    setSubvencionEU,
-    valorSubvencionEU,
-    setValorSubvencionEU,
+    valorSubvencion,
+    setValorSubvencion,
+    porcientoSubvencion,
+    setPorcientoSubvencion,
     cuotaHucha,
     setCuotaHucha,
     coefHucha,

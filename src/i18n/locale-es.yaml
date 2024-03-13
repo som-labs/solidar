@@ -295,11 +295,8 @@ Economico:
     ahorroAnualPorciento: Ahorro anual / gasto original
     ahorroAnual: Ahorro anual
     noCompensadoAnual: No compensada
-    valorSubvencionEU: Valor de la subvención EU
-    tipoSubvencionEU: Tipo subvención EU
-    sinSubvencion: Sin subvención
-    subvencionIndividual: Instalación individual
-    subvencionComunitaria: Instalación colectiva
+    valorSubvencion: Valor de la subvención
+    porcientoSubvencion: Porcentaje de subvención
     valorSubvencionIBI: IBI (€)
     porcientoSubvencionIBI: Bonificación %
     tiempoSubvencionIBI: Duración bonificación (años)
@@ -313,10 +310,12 @@ Economico:
     ahorroAnualPorciento: Ahorro anual en relación al gasto original
     ahorroAnual_TT: Diferencia gasto anual en electricidad con y sin paneles solares
     noCompensadoAnual: El importe de la energía excedentaria que la comercializadora no compensará.\nLa ley (RD 244/2019) no permite que al consumidor se le abone ningún importe cuando el balance entre el coste de la energía sobrante y el de lo consumido de cualquier día resultara favorable al consumidor.\nSuele suceder cuando se instalan más paneles de los aconsejables cuando se consume muy por debajo de lo habitual (en vacaciones) o cuando el precio de compensación de la comercializadora fuera alto (muy improbable).
-    tipoSubvencionEU: Si se fueran a solicitar la subvención de los fondos Next Generation indíquese si la instalación fuera colectiva (una comunidad de propietarios por ejemplo) o individual. La subvención no se concederá si la energía generada al año fuera superior al 80% de la energía consumida anualmente
+
     valorSubvencionIBI: Rellénese si el municipio donde se realice la instalación bonifica el impuesto de bienes inmuebles.\nLa Fundación Renovables facilita una lista de municipios con bonificaciones en el IBI y reducciones en ICIO.
     porcientoSubvencionIBI: El porcentaje con el ayuntamiento bonifica el importe del IBI
     tiempoSubvencionIBI: El número de años durante los que se puede aplicar la bonificación en el IBI
+    valorSubvencion: Valor de la subvención
+    porcientoSubvencion: Porcentaje de subvención
     VANProyecto: El rendimiento de la inversión en la instalación fotovoltaica transcurridos los años que se muestran en la tabla
     TIRProyecto: Indicador de la rentabilidad del proyecto fotovoltaico transcurridos los años que se muestran en la tabla
 
@@ -433,7 +432,7 @@ CONSUMPTION:
     Necesitamos conocer tu tarifa, los precios por tramos horarios de cada período y el precio de la compensación de excedentes de tu comercializadora si es otra diferente a Som Energia.
   TARIFA_DESCRIPTION_2: |
     Indica los precios sin impuestos.<br />
-    En caso de tener una tarifa indexada, Som Energia muestra en sus facturas el precio medio ponderado para cada período. Te lo explicamos <a href='https://es.support.somenergia.coop/article/1368-por-que-veo-periodos-en-la-factura-de-indexada'>aquí.</a><br />
+    En caso de tener una tarifa indexada, Som Energia muestra en sus facturas el precio medio ponderado para cada período. Te lo explicamos <a href='https://es.support.somenergia.coop/article/1368-por-que-veo-periodos-en-la-factura-de-indexada' target='_blank'>aquí.</a><br />
     Si tu contrato está con otra comercializadora deberás consultar la mediana de los precios en los diferentes periodos. Ten en cuenta que la tarifa indexada no ofrece precios fijos en la parte de uso ni en la compensación de excedentes por lo que el cálculo será en base a una información que puede ser muy variable.
   COMPENSACION_TITLE: Compensación simplificada de excedentes
   COMPENSACION_DESCRIPTION: |
@@ -566,10 +565,9 @@ ECONOMIC_BALANCE:
     Si instalas paneles solares es posible que puedas optar a una bonificación sobre el IBI. <a href='https://fundacionrenovables.org/averigua-municipio-bonifica-ibi-icio-autoconsumo/' target='_blank'>¿Dónde encuentro la bonificación que me corresponde por municipio?</a><br />
     Rellena la tabla con el precio del IBI de la edificación y la bonificación que le corresponde por municipio.
 
-  EU_TITLE: Subvenciones EU Next Generation
-  EU_DESCRIPTION: |
-    Es posible que existan subvenciones para la instalación de paneles solares y que ésto suponga un ahorro. Si es así, indica el % o el importe subvencionado.<br />
-    <p style="color: red;">CUIDADO: Las subvenciones EU Next Generation tienen plazo de solicitud hasta el 31 de diciembre de 2023.
+  SUBVENCION_TITLE: Subvenciones
+  SUBVENCION_DESCRIPTION: |
+    Es posible que existan subvenciones para la instalación de paneles solares y que ésto suponga un ahorro. Si es así, indica el % o el importe subvencionado.
 
   DESCRIPTION_Consumo%Produccion: Para poder optar a la subvención de los Fondos Next Generation el porcentaje del consumo respecto a la producción ha de ser siempre superior al 80%. En esta configuración este valor es de {{Consumo_Produccion}}
   TITLE_INSTALLATION_COST: Precio de la instalación
@@ -580,7 +578,7 @@ ECONOMIC_BALANCE:
   TITLE_AMORTIZATION_TIME: Tiempo de amortización
   DESCRIPTION_AMORTIZATION_TIME: |
     Este es el número de años que tardarás en recuperar la inversión realizada
-  PROMPT_AMORTIZATION_TIME: Los paneles tienen una vida útil de 15 a 30 años (si se mantienen correctamente
+  PROMPT_AMORTIZATION_TIME: Los paneles tienen una vida útil de 15 a 30 años (si se mantienen correctamente)
   LABEL_INSTALLATION_COST: Coste previsto de la instalación (€ sin IVA)
   TITLE_VIRTUAL_BATTERY: Excedentes no compensados
   DESCRIPTION_VIRTUAL_BATTERY: |
@@ -655,6 +653,7 @@ BASIC:
   LABEL_PREVIOUS: Anterior
   LABEL_CLOSE: Cerrar
   LABEL_MES: Mes
+  LABEL_AÑOS: Años
   main_TAB_noMostrarMas: No volver a mostrar este mensaje
   valor_true: Verdadero
   valor_false: Falso

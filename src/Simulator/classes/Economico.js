@@ -253,29 +253,37 @@ class Economico {
     const porcientoSubvencionIBI = TCB.porcientoSubvencionIBI
 
     // Calculo de la subvención EU
-    const tipoSubvencionEU = TCB.tipoSubvencionEU
-    var valorSubvencionEU
+    var valorSubvencion
+    var porcientoSubvencion
 
-    if (
-      (TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100 < 80 ||
-      tipoSubvencionEU === 'Sin'
-    ) {
-      valorSubvencionEU = 0
-    } else {
-      if (TCB.produccion.potenciaTotalInstalada <= 10) {
-        valorSubvencionEU =
-          (TCB.subvencionEU[tipoSubvencionEU]['<=10kWp'] *
-            TCB.produccion.potenciaTotalInstalada *
-            coefInversion) /
-          100
-      } else {
-        valorSubvencionEU =
-          (TCB.subvencionEU[tipoSubvencionEU]['>10kWp'] *
-            TCB.produccion.potenciaTotalInstalada *
-            coefInversion) /
-          100
-      }
-    }
+    valorSubvencion =
+      TCB.valorSubvencion !== 0
+        ? TCB.valorSubvencion
+        : (TCB.porcientoSubvencion / 100) * this.precioInstalacionCorregido
+
+    //porcientoSubvencion is used when given a valorSubvencion has to calculate it for different panels configuration
+    porcientoSubvencion = (valorSubvencion / this.precioInstalacionCorregido) * 100
+
+    // if (
+    //   (TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100 < 80 ||
+    //   tipoSubvencionEU === 'Sin'
+    // ) {
+    //   valorSubvencionEU = 0
+    // } else {
+    //   if (TCB.produccion.potenciaTotalInstalada <= 10) {
+    //     valorSubvencionEU =
+    //       (TCB.subvencionEU[tipoSubvencionEU]['<=10kWp'] *
+    //         TCB.produccion.potenciaTotalInstalada *
+    //         coefInversion) /
+    //       100
+    //   } else {
+    //     valorSubvencionEU =
+    //       (TCB.subvencionEU[tipoSubvencionEU]['>10kWp'] *
+    //         TCB.produccion.potenciaTotalInstalada *
+    //         coefInversion) /
+    //       100
+    //   }
+    // }
 
     //Preparación del cashflow
     this.periodoAmortizacion = 0
@@ -313,7 +321,11 @@ class Economico {
       unFlow.inversion = 0 //LONGTERM: Cuidado probablemente en caso de prestamo cambie
       if (i == 2) {
         //La subvención se cobra con suerte despues de un año
-        unFlow.subvencion = (valorSubvencionEU * coefInversion) / 100
+        //unFlow.subvencion = (valorSubvencion * coefInversion) / 100
+        unFlow.subvencion =
+          (((this.precioInstalacionCorregido * coefInversion) / 100) *
+            porcientoSubvencion) /
+          100
       } else {
         unFlow.subvencion = 0
       }
@@ -356,15 +368,15 @@ class Economico {
       TCB.tiempoSubvencionIBI = tiempoSubvencionIBI
       TCB.valorSubvencionIBI = valorSubvencionIBI
       TCB.porcientoSubvencionIBI = porcientoSubvencionIBI
-      TCB.valorSubvencionEU = valorSubvencionEU
-      TCB.tipoSubvencionEU = tipoSubvencionEU
+      TCB.valorSubvencion = valorSubvencion
+      //TCB.tipoSubvencion = tipoSubvencion
     }
 
     this.tiempoSubvencionIBI = tiempoSubvencionIBI
     this.valorSubvencionIBI = valorSubvencionIBI
     this.porcientoSubvencionIBI = porcientoSubvencionIBI
-    this.valorSubvencionEU = valorSubvencionEU
-    this.tipoSubvencionEU = tipoSubvencionEU
+    this.valorSubvencion = valorSubvencion
+    //this.tipoSubvencion = tipoSubvencionEU
   }
   /**
    * Cálculo de la Tasa Interna de Retorno (TIR)

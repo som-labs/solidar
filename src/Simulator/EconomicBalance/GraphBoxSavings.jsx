@@ -148,7 +148,8 @@ export default function GraphBoxSavings() {
           </Typography>
         </Box>
       </Box>
-      {UTIL.suma(ecoData.perdidaMes) > 0 && (
+      {/* This code is showing a thrid column in the graph showin no compensated ammount */}
+      {/* {UTIL.suma(ecoData.perdidaMes) > 0 && (
         <Box
           id="B3"
           sx={{
@@ -211,7 +212,7 @@ export default function GraphBoxSavings() {
             </Typography>
           </Box>
         </Box>
-      )}
+      )} */}
     </Box>
   )
 }

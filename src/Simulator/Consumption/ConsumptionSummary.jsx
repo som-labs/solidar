@@ -193,9 +193,9 @@ export default function ConsumptionSummary() {
           TCB.TipoConsumo.splice(idxTC, 1, TCB.TipoConsumo.pop())
         }
         addTCBTipoToState(TCB.TipoConsumo[idxTC])
-        //showGraphsTC(nuevoTipoConsumo)
+        //showGraphsTC(nuevoTipoConsumo) //Autoproduccion tema decides not to show graph after loaded
       } else {
-        console.log('cargaCSV catch ')
+        UTIL.debugLog('Error detectado en carga de CSV')
         TCB.TipoConsumo.pop()
       }
     }
@@ -231,7 +231,9 @@ export default function ConsumptionSummary() {
     return (
       <GridToolbarContainer>
         <SLDRTooltip
-          title={t('CONSUMPTION.TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO')}
+          title={
+            <Typography>{t('CONSUMPTION.TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO')}</Typography>
+          }
           placement="top"
         >
           <Button

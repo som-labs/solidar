@@ -50,20 +50,20 @@ export default function VirtualBattery() {
             flexDirection: 'column',
             flexWrap: 'wrap',
             width: '100%',
+            gap: '10px',
           }}
         >
-          <Typography variant="h4">
+          <Typography variant="h4" textAlign={'center'}>
             {t('ECONOMIC_BALANCE.TITLE_VIRTUAL_BATTERY')}
           </Typography>
           <Typography
             variant="body"
+            textAlign={'center'}
             dangerouslySetInnerHTML={{
               __html: t('ECONOMIC_BALANCE.DESCRIPTION_VIRTUAL_BATTERY'),
             }}
           />
-          <Typography variant="body">
-            {t('ECONOMIC_BALANCE.DESCRIPTION_RECOGNITION_VIRTUAL_BATTERY')}
-          </Typography>
+
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <TextField
               type="text"
@@ -74,7 +74,7 @@ export default function VirtualBattery() {
               label={t('ECONOMIC_BALANCE.LABEL_RECOGNITION_VIRTUAL_BATTERY')}
               name="coefHucha"
               InputProps={{
-                endAdornment: <InputAdornment position="start"> %</InputAdornment>,
+                endAdornment: <InputAdornment position="start">&nbsp;%</InputAdornment>,
                 inputProps: {
                   style: { textAlign: 'right' },
                 },
@@ -95,7 +95,7 @@ export default function VirtualBattery() {
               label={t('ECONOMIC_BALANCE.LABEL_FEE_VIRTUAL_BATTERY')}
               name="cuotaHucha"
               InputProps={{
-                endAdornment: <InputAdornment position="start"> €</InputAdornment>,
+                endAdornment: <InputAdornment position="start">&nbsp;€</InputAdornment>,
                 inputProps: {
                   style: { textAlign: 'right' },
                 },
