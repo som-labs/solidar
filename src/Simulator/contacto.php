@@ -17,8 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
+// Set error reporting to display all errors
+error_reporting(E_ALL);
+
 // $email_to = "soporte@solidarenergia.es";
 $email_to = "joseluis@garciagruben.org";
+
 $email_subject = "Contacto desde SOM Simulador";
 $email_from = $_GET['email'];
 
@@ -41,12 +45,7 @@ $headers = 'From: '.$email_from."\r\n".
 if (mail($email_to, $email_subject, $email_message, $headers)) {
     echo "¡El formulario se ha enviado con éxito!";
 } else {
-    echo error_get_last()['message'];
-    $errorMessage = error_get_last()['message'] ?? 'Error desconocido';
-    echo '<script language="javascript">
-        alert("Error envio de correo. " . $errorMessage . ");"
-        window.location.href="index.html";
-        </script>';
+    echo "¡Error enviando el email!";
 }
 
 //REVISAR: error al enviar el email en modo desarrollo

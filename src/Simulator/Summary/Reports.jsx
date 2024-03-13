@@ -37,7 +37,7 @@ const Reports = forwardRef((props, ref) => {
   }
 
   return (
-    <Container>
+    <Container sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <Button
         sx={{ mr: '1rem' }}
         variant="contained"

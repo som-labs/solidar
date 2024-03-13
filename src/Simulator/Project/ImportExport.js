@@ -64,6 +64,11 @@ function export2txt(originalData) {
  * @returns {string} Generated filename
  */
 async function exportProject() {
+  //At least one BaseSolar should exist to export
+  if (TCB.BaseSolar.length === 0) {
+    alert(TCB.i18next.t('Debe existir al menos una base para exportar'))
+    return false
+  }
   // Proyecto hdr info
   TCB.datosProyecto.fechaExportacion = new Date()
   TCB.datosProyecto.nombreProyecto = TCB.nombreProyecto
@@ -101,8 +106,8 @@ async function exportProject() {
   TCB.datosProyecto.tiempoSubvencionIBI = TCB.tiempoSubvencionIBI
   TCB.datosProyecto.valorSubvencionIBI = TCB.valorSubvencionIBI
   TCB.datosProyecto.porcientoSubvencionIBI = TCB.porcientoSubvencionIBI
-  TCB.datosProyecto.valorSubvencionEU = TCB.valorSubvencionEU
-  TCB.datosProyecto.tipoSubvencionEU = TCB.tipoSubvencionEU
+  TCB.datosProyecto.valorSubvencion = TCB.valorSubvencion
+  TCB.datosProyecto.porcientoSubvencion = TCB.porcientoSubvencion
 
   //Generamos el fichero solimp
   const rFile = export2txt(TCB.datosProyecto)
