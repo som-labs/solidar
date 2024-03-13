@@ -103,7 +103,7 @@ export default function ProjectMenu() {
         rFile = await exportProject()
         //REVISAR: se genera loop infinito de renderizacion
         //SLDRAlert(t('Fichero generado'), rFile, 'Info')
-        alert(t('Fichero generado -> ') + rFile)
+        if (rFile) alert(t('Fichero generado -> ') + rFile)
         break
       case 'save':
         for (let key in formData) {

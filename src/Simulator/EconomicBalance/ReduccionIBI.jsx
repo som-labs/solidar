@@ -2,15 +2,16 @@ import { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
+import {
+  Box,
+  Typography,
+  Container,
+  FormControl,
+  TextField,
+  InputAdornment,
+} from '@mui/material'
 
 import { SLDRInputField } from '../../components/SLDRComponents'
-
-import FormControl from '@mui/material/FormControl'
-import TextField from '@mui/material/TextField'
-import InputAdornment from '@mui/material/InputAdornment'
 
 // REACT Solidar Components
 import { EconomicContext } from '../EconomicContext'
@@ -21,7 +22,7 @@ import TCB from '../classes/TCB'
 const ReduccionIBI = () => {
   const { t } = useTranslation()
 
-  const { IBI, setIBI, ecoData, setEcoData } = useContext(EconomicContext)
+  const { IBI, setIBI, setEcoData } = useContext(EconomicContext)
   const [_IBI, _setIBI] = useState(IBI)
 
   const setNewIBI = () => {
@@ -46,9 +47,12 @@ const ReduccionIBI = () => {
             flexDirection: 'column',
             flexWrap: 'wrap',
             width: '100%',
+            gap: '10px',
           }}
         >
-          <Typography variant="h4">{t('ECONOMIC_BALANCE.TITLE_IBI')}</Typography>
+          <Typography variant="h4" textAlign={'center'}>
+            {t('ECONOMIC_BALANCE.TITLE_IBI')}
+          </Typography>
           <Typography
             variant="body"
             textAlign={'center'}
@@ -59,7 +63,6 @@ const ReduccionIBI = () => {
 
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <TextField
-              required
               type="text"
               onChange={onChangeIBI}
               onBlur={setNewIBI}
@@ -67,7 +70,7 @@ const ReduccionIBI = () => {
               name="valorSubvencionIBI"
               value={_IBI.valorSubvencionIBI}
               InputProps={{
-                endAdornment: <InputAdornment position="start"> €</InputAdornment>,
+                endAdornment: <InputAdornment position="start">&nbsp;€</InputAdornment>,
                 inputProps: {
                   style: { textAlign: 'right' },
                 },
@@ -77,7 +80,6 @@ const ReduccionIBI = () => {
 
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <TextField
-              required
               type="text"
               onChange={onChangeIBI}
               onBlur={setNewIBI}
@@ -85,7 +87,7 @@ const ReduccionIBI = () => {
               name="porcientoSubvencionIBI"
               value={_IBI.porcientoSubvencionIBI}
               InputProps={{
-                endAdornment: <InputAdornment position="start"> %</InputAdornment>,
+                endAdornment: <InputAdornment position="start">&nbsp;%</InputAdornment>,
                 inputProps: {
                   style: { textAlign: 'right' },
                 },
@@ -95,7 +97,6 @@ const ReduccionIBI = () => {
 
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <TextField
-              required
               type="text"
               onChange={onChangeIBI}
               onBlur={setNewIBI}
@@ -103,7 +104,11 @@ const ReduccionIBI = () => {
               name="tiempoSubvencionIBI"
               value={_IBI.tiempoSubvencionIBI}
               InputProps={{
-                endAdornment: <InputAdornment position="start"></InputAdornment>,
+                endAdornment: (
+                  <InputAdornment position="start">
+                    &nbsp;{t('BASIC.LABEL_AÑOS')}
+                  </InputAdornment>
+                ),
                 inputProps: {
                   style: { textAlign: 'right' },
                 },

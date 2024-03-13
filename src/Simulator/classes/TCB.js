@@ -266,12 +266,13 @@ const TCB = {
   tiempoSubvencionIBI: 0,
   valorSubvencionIBI: 0,
   porcientoSubvencionIBI: 0,
-  valorSubvencionEU: 0,
-  tipoSubvencionEU: 'Sin',
-  subvencionEU: {
-    Individual: { '<=10kWp': 600, '>10kWp': 450 },
-    Comunitaria: { '<=10kWp': 710, '>10kWp': 535 },
-  },
+  valorSubvencion: 0,
+  porcientoSubvencion: 0,
+  // tipoSubvencionEU: 'Sin',
+  // subvencionEU: {
+  //   Individual: { '<=10kWp': 600, '>10kWp': 450 },
+  //   Comunitaria: { '<=10kWp': 710, '>10kWp': 535 },
+  // },
 
   coefHucha: 80,
   cuotaHucha: 0,

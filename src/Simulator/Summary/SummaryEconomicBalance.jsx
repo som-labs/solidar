@@ -17,7 +17,7 @@ import TCB from '../classes/TCB'
 
 export default function SummaryEconomicBalance() {
   const { t } = useTranslation()
-  const { IBI, valorSubvencionEU, ecoData } = useContext(EconomicContext)
+  const { IBI, valorSubvencion, ecoData } = useContext(EconomicContext)
 
   return (
     <>
@@ -107,7 +107,7 @@ export default function SummaryEconomicBalance() {
               <Typography variant="h4" color={'green'}>
                 {UTIL.formatoValor(
                   'dinero',
-                  parseFloat(IBI.valorSubvencionIBI) + parseFloat(valorSubvencionEU),
+                  parseFloat(IBI.valorSubvencionIBI) + parseFloat(valorSubvencion),
                 )}
               </Typography>
               <Typography
@@ -174,12 +174,12 @@ export default function SummaryEconomicBalance() {
               </Grid>
               <Grid item xs={8}>
                 <Typography variant="h5">
-                  {t('Economico.PROP.valorSubvencionEU')}
+                  {t('Economico.PROP.valorSubvencion')}
                 </Typography>
               </Grid>
               <Grid item xs={4}>
                 <Typography variant="h5" textAlign={'right'}>
-                  {UTIL.formatoValor('dinero', TCB.economico.valorSubvencionEU)}
+                  {UTIL.formatoValor('dinero', TCB.economico.valorSubvencion)}
                 </Typography>
               </Grid>
               <Grid item xs={8}>

@@ -17,6 +17,7 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  Tooltip,
 } from '@mui/material'
 import { MuiFileInput } from 'mui-file-input'
 
@@ -153,9 +154,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
                         <FormControlLabel
                           labelPlacement="start"
                           control={
-                            <SLDRTooltip
-                              title={t('TipoConsumo.TOOLTIP.nombreFicheroCSV')}
-                            >
+                            <Tooltip title={t('TipoConsumo.TOOLTIP.nombreFicheroCSV')}>
                               <MuiFileInput
                                 {...field}
                                 size="small"
@@ -164,7 +163,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
                                 onChange={(event) => handleFile(event, setValues)}
                                 value={values.ficheroCSV}
                               />
-                            </SLDRTooltip>
+                            </Tooltip>
                           }
                           label={t('TipoConsumo.PROP.nombreFicheroCSV')}
                         />

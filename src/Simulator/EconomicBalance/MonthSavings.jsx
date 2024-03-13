@@ -30,11 +30,15 @@ export default function MonthSaving() {
 
     // Call the function to get the width after initial render
     getWidth()
+  }, [])
+
+  if (graphElement.current) {
     const i18nextMes = () => {
       let _mes = []
       for (let i = 0; i < 12; _mes.push(t(UTIL.nombreMes[i++])));
       return _mes
     }
+
     const mesMapa = Array.from(i18nextMes())
 
     var _perdidas = new Array(12)
@@ -103,10 +107,13 @@ export default function MonthSaving() {
     var layout = {
       paper_bgcolor: 'rgba(0,0,0,0)',
       plot_bgcolor: 'rgba(0,0,0,0)',
-      // width: 800,
-      // height: 500,
       autosize: true,
-      //autoadjust: true,
+      margin: {
+        l: 40,
+        r: 60,
+        b: 0,
+        t: 20,
+      },
       barmode: 'relative',
       yaxis: {
         title: 'Euros',
@@ -114,6 +121,12 @@ export default function MonthSaving() {
       },
       xaxis: {
         gridcolor: 'grey',
+      },
+      legend: {
+        x: 0.1,
+        y: -0.1,
+        xref: 'paper',
+        orientation: 'h',
       },
     }
 
@@ -170,7 +183,8 @@ export default function MonthSaving() {
         },
       )
     })
-  }, [])
+  }
+
   return (
     <>
       <Container>

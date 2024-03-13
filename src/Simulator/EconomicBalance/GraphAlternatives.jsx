@@ -254,39 +254,40 @@ export default function GraphAlternatives() {
     })
   }
 
-  if (limiteSubvencion !== undefined) {
-    layout.annotations.push({
-      x: limiteSubvencion,
-      y: 65,
-      xref: 'x',
-      yref: 'y',
-      text: t('GRAFICOS.LABEL_limiteSubvencionEU'),
-      showarrow: true,
-      arrowhead: 3,
-      xanchor: 'left',
-      hovertext: limiteSubvencion.toFixed(1) + ' ' + t('graficos_LBL_paneles'),
-      ax: 20,
-      ay: 0,
-    })
-    layout.shapes.push(
-      {
-        type: 'line',
-        x0: 0,
-        y0: 80,
-        x1: limiteSubvencion,
-        y1: 80,
-        line: { color: 'rgb(87, 202, 0)', width: 2 },
-      },
-      {
-        type: 'line',
-        x0: limiteSubvencion,
-        y0: 0,
-        x1: limiteSubvencion,
-        y1: 80,
-        line: { color: 'rgb(87, 202, 0)', width: 2 },
-      },
-    )
-  }
+  // Only applicable when EU Next generation conditions
+  // if (limiteSubvencion !== undefined) {
+  //   layout.annotations.push({
+  //     x: limiteSubvencion,
+  //     y: 65,
+  //     xref: 'x',
+  //     yref: 'y',
+  //     text: t('GRAFICOS.LABEL_limiteSubvencionEU'),
+  //     showarrow: true,
+  //     arrowhead: 3,
+  //     xanchor: 'left',
+  //     hovertext: limiteSubvencion.toFixed(1) + ' ' + t('graficos_LBL_paneles'),
+  //     ax: 20,
+  //     ay: 0,
+  //   })
+  //   layout.shapes.push(
+  //     {
+  //       type: 'line',
+  //       x0: 0,
+  //       y0: 80,
+  //       x1: limiteSubvencion,
+  //       y1: 80,
+  //       line: { color: 'rgb(87, 202, 0)', width: 2 },
+  //     },
+  //     {
+  //       type: 'line',
+  //       x0: limiteSubvencion,
+  //       y0: 0,
+  //       x1: limiteSubvencion,
+  //       y1: 80,
+  //       line: { color: 'rgb(87, 202, 0)', width: 2 },
+  //     },
+  //   )
+  // }
   //LONGTERM: decidir si el click permite cambiar los paneles
   function handleClick(evt) {
     console.log(evt)

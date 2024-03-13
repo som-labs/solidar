@@ -10,7 +10,7 @@ import { SLDRInfoBox } from '../../components/SLDRComponents'
 
 // REACT Solidar Components
 import ReduccionIBI from './ReduccionIBI'
-import SubvencionEU from './SubvencionEU'
+import Subvencion from './Subvencion'
 import InstallationCost from './InstallationCost'
 import VirtualBattery from './VirtualBattery'
 import AmortizationTime from './AmortizationTime'
@@ -37,40 +37,37 @@ export default function EconomicBalanceStep() {
             display: 'flex',
             flexWrap: 'wrap',
             width: '100%',
+            gap: '15px',
+            mt: '1rem',
           }}
         >
-          <SLDRInfoBox sx={{ mr: '0.3rem' }}>
+          <SLDRInfoBox>
             <ReduccionIBI></ReduccionIBI>
           </SLDRInfoBox>
-          <SLDRInfoBox sx={{ mr: '0.3rem' }}>
-            <SubvencionEU></SubvencionEU>
+          <SLDRInfoBox>
+            <Subvencion></Subvencion>
           </SLDRInfoBox>
           <SLDRInfoBox>
             <VirtualBattery></VirtualBattery>
           </SLDRInfoBox>
         </Box>
-        <br />
+
         <Box
           sx={{
             display: 'flex',
             width: '100%',
+            gap: '15px',
           }}
         >
-          <SLDRInfoBox sx={{ mr: '0.3rem' }}>
+          <SLDRInfoBox>
             <InstallationCost></InstallationCost>
           </SLDRInfoBox>
           <SLDRInfoBox>
-            <AmortizationTime></AmortizationTime>
+            <YearSaving></YearSaving>
           </SLDRInfoBox>
         </Box>
-        <SLDRInfoBox
-          sx={{
-            width: '80%',
-            mt: '1rem',
-            ml: 15,
-          }}
-        >
-          <YearSaving></YearSaving>
+        <SLDRInfoBox>
+          <AmortizationTime></AmortizationTime>
         </SLDRInfoBox>
         <SLDRInfoBox sx={{ mt: '1rem' }}>
           <Typography variant="h4" textAlign={'center'}>
