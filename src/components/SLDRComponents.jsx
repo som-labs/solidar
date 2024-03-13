@@ -42,7 +42,7 @@ function SLDRInfoBox(props) {
     display: 'flex',
     flexWrap: 'wrap',
     flex: 1,
-    backgroundColor: theme.palette.infoBox.main, //'#E0FFCC',
+    //backgroundColor: theme.palette.infoBox.main, //'#E0FFCC',
     borderRadius: 4,
     border: '2px solid',
     borderColor: 'primary.light',
