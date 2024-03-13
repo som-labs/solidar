@@ -159,8 +159,8 @@ const campos = {
   tiempoSubvencionIBI: { unidad: '', decimales: 0, salvar: true, mostrar: true },
   valorSubvencionIBI: { unidad: ' €', decimales: 0, salvar: true, mostrar: true },
   porcientoSubvencionIBI: { unidad: '%', decimales: 2, salvar: true, mostrar: true },
-  tipoSubvencionEU: { unidad: '', salvar: true, mostrar: true },
-  valorSubvencionEU: { unidad: '', salvar: false, mostrar: true },
+  //tipoSubvencionEU: { unidad: '', salvar: true, mostrar: true },
+  valorSubvencion: { unidad: '', salvar: false, mostrar: true },
   previo: { unidad: ' €', decimales: 2, salvar: false, mostrar: true },
   inversion: { unidad: ' €', decimales: 2, salvar: false, mostrar: true },
   ahorro: { unidad: ' €', decimales: 2, salvar: false, mostrar: true },
@@ -515,10 +515,11 @@ async function loadFromCSV(csvFile, aThis, options) {
       header: true,
       transformHeader: (header) => {
         // Rename headers
+        let tmpHeader = header.toUpperCase()
         if (options.valorArr.includes(header)) return 'consumo'
-        if (['energiaVertida_kWh'].includes(header)) return 'excedente'
-        if (['Fecha'].includes(header)) return 'fecha'
-        if (['Hora'].includes(header)) return 'hora'
+        if (['ENERGIAVERTIDA_KWH'].includes(tmpHeader)) return 'excedente' //Not used yet
+        if (['FECHA'].includes(tmpHeader)) return 'fecha'
+        if (['HORA'].includes(tmpHeader)) return 'hora'
         return header
       },
 

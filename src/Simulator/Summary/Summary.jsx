@@ -24,17 +24,13 @@ const SummaryStep = () => {
           <Box
             sx={{
               display: 'flex',
+              gap: '10px',
             }}
           >
-            <SLDRInfoBox
-              sx={{
-                mr: '0.3rem',
-                mb: '0.3rem',
-              }}
-            >
+            <SLDRInfoBox>
               <SummaryAutoproduccion></SummaryAutoproduccion>
             </SLDRInfoBox>
-            <SLDRInfoBox sx={{ mb: '0.3rem' }}>
+            <SLDRInfoBox>
               <SummaryConsumption></SummaryConsumption>
             </SLDRInfoBox>
           </Box>
@@ -43,21 +39,13 @@ const SummaryStep = () => {
               display: 'flex',
               flexWrap: 'wrap',
               width: '100%',
+              gap: '10px',
             }}
           >
-            <SLDRInfoBox
-              sx={{
-                mr: '0.3rem',
-                mb: '0.3rem',
-              }}
-            >
+            <SLDRInfoBox>
               <SummaryEconomicBalance></SummaryEconomicBalance>
             </SLDRInfoBox>
-            <SLDRInfoBox
-              sx={{
-                mb: '0.3rem',
-              }}
-            >
+            <SLDRInfoBox>
               <SummaryEnergyBalance></SummaryEnergyBalance>
             </SLDRInfoBox>
           </Box>

@@ -55,7 +55,7 @@ const ConsumptionStep = () => {
           <Typography
             variant="body"
             dangerouslySetInnerHTML={{
-              __html: t('CONSUMPTION.TARIFA_DESCRIPTION_2', { icono: '<HelpIcon />' }),
+              __html: t('CONSUMPTION.TARIFA_DESCRIPTION_2'),
             }}
           />
         </Grid>

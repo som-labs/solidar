@@ -63,7 +63,7 @@ const InstallationCost = () => {
             width: '100%',
           }}
         >
-          <Typography variant="h4">
+          <Typography variant="h4" textAlign={'center'}>
             {t('ECONOMIC_BALANCE.TITLE_INSTALLATION_COST')}
           </Typography>
           <Typography
@@ -88,7 +88,7 @@ const InstallationCost = () => {
               label={t('ECONOMIC_BALANCE.LABEL_INSTALLATION_COST')}
               name="precioInstalacionCorregido"
               InputProps={{
-                endAdornment: <InputAdornment position="start"> €</InputAdornment>,
+                endAdornment: <InputAdornment position="start">&nbsp;€</InputAdornment>,
                 inputProps: {
                   style: { textAlign: 'right' },
                 },
