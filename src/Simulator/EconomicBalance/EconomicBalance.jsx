@@ -69,10 +69,7 @@ export default function EconomicBalanceStep() {
         <SLDRInfoBox>
           <AmortizationTime></AmortizationTime>
         </SLDRInfoBox>
-        <SLDRInfoBox sx={{ mt: '1rem' }}>
-          <Typography variant="h4" textAlign={'center'}>
-            {t('ECONOMIC_BALANCE.TITLE_MONTH_SAVINGS')}
-          </Typography>
+        <SLDRInfoBox>
           <MonthSaving></MonthSaving>
         </SLDRInfoBox>
         <SLDRInfoBox
