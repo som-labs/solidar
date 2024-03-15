@@ -297,7 +297,6 @@ export default function ReportSOM({ onClose }) {
         />
       </div> */}
         <div style={styles.graphicContainer}>
-          {/* <h3>{t('REPORT.PIE_AUTOSUFICIENCIA_TITLE')}</h3> */}
           <MonthSaving></MonthSaving>
         </div>
         <div style={styles.properespases}>

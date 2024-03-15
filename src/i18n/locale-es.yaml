@@ -432,7 +432,7 @@ CONSUMPTION:
     Necesitamos conocer tu tarifa, los precios por tramos horarios de cada período y el precio de la compensación de excedentes de tu comercializadora si es otra diferente a Som Energia.
   TARIFA_DESCRIPTION_2: |
     Indica los precios sin impuestos.<br />
-    En caso de tener una tarifa indexada, Som Energia muestra en sus facturas el precio medio ponderado para cada período. Te lo explicamos <a href='https://es.support.somenergia.coop/article/1368-por-que-veo-periodos-en-la-factura-de-indexada' target='_blank'>aquí.</a><br />
+    En caso de tener una <a href='https://es.support.somenergia.coop/article/1325-la-tarifa-2-0td-indexada' target='_blank'>tarifa indexada</a>, Som Energia muestra en sus facturas el precio medio ponderado para cada período. Te lo explicamos <a href='https://es.support.somenergia.coop/article/1368-por-que-veo-periodos-en-la-factura-de-indexada' target='_blank'>aquí.</a><br />
     Si tu contrato está con otra comercializadora deberás consultar la mediana de los precios en los diferentes periodos. Ten en cuenta que la tarifa indexada no ofrece precios fijos en la parte de uso ni en la compensación de excedentes por lo que el cálculo será en base a una información que puede ser muy variable.
   COMPENSACION_TITLE: Compensación simplificada de excedentes
   COMPENSACION_DESCRIPTION: |
@@ -470,8 +470,10 @@ CONSUMPTION:
   TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Boton para crear un nuevo tipo de consumo
   TOOLTIP_BUTTON_TOTAL_DEMMAND: Boton para visualizar los gráficos correspondientes a la suma de todos los tipos de cosnumo definidos en la tabla.
   TITLE_DIALOG_NEW_CONSUMPTION: Formulario para crear un nuevo tipo de consumo
-  TOOLTIP_botonBorraTipoConsumo: Borra el perfil de consumo seleccionado
-  TOOLTIP_botonMuestraMapaTipoConsumo: Muestra gráfico mapa de consumo de este perfil
+  TOOLTIP_botonBorraTipoConsumo: Borra el perfil de uso eléctrico
+  TOOLTIP_botonEditaTipoConsumo: Modifica la información de uso eléctrico
+  TOOLTIP_botonMuestraMapaTipoConsumo: Gráfico del perfil eléctrico
+  TOOLTIP_botonMuestraTodosTipoConsumo: Gráfico del total de los usos eléctricos
   ERROR_CABECERAS_CSV: Error formato CSV falta cabecera {{cabeceras}}
   ERROR_fuenteTipoErroneo_CSV: Posible error leyendo fichero con formato SOM para fuente CSV distribuidora
   ERROR_fuenteTipoErroneo_DATADIS: Posible error leyendo fichero con formato DATADIS para fuente tipo CSV distribuidora o viceversa
@@ -503,7 +505,8 @@ ENERGY_BALANCE:
     A partir de los datos de uso eléctrico facilitados se muestra la cantidad de paneles necesarios para cubrirlo.<br />
     La asignación de los paneles se ha hecho teniendo en cuenta las áreas más eficientes desde el punto de vista de rendimiento energético según la inclinación y orientación proporcionadas. No se han tenido en cuenta las posibles sombras que estas superficies pueden tener.<br />
     A continuación puedes cambiar el número de paneles asignados a cada una de las áreas.
-
+  ADVISE_TITLE: Consejo
+  ADVISE_DESCRIPTION: Para aprovechar al máximo tu instalación, puedes intentar hacer uso de tus electrodomésticos en las horas centrales del día que son los momentos de máxima producción.
   SUMMARY_TITLE: Tabla bases asignadas
   SUMMARY_FOOTER: |
     Total de paneles propuestos: {{paneles}} paneles<br />
@@ -765,7 +768,7 @@ MAPA:
   botonDeshacer_TT: Permite anular el último vertice creado
 
 RESULTS:
-  TOOLTIP_botonInfoBase: Información detallada de la base seleccionada
+  TOOLTIP_botonInfoBase: Información detallada del área seleccionada
   LABEL_ConsumoDiurno: Consumo realizado en horas solares
   TOOLTIP_ConsumoDiurno: Consumo realizado en horas en que los paneles tienen alguna producción
 

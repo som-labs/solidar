@@ -93,7 +93,7 @@ export default function ConsumptionSummary() {
         <GridActionsCellItem
           key={2}
           icon={
-            <Tooltip title={t('LOCATION.TOOLTIP_EDITA_BASE')}>
+            <Tooltip title={t('CONSUMPTION.TOOLTIP_botonEditaTipoConsumo')}>
               <EditIcon />
             </Tooltip>
           }
@@ -271,9 +271,11 @@ export default function ConsumptionSummary() {
             />
           </Grid>
           <Grid item>
-            <IconButton onClick={showGraphTotales}>
-              <AnalyticsIcon />
-            </IconButton>
+            <Tooltip title={t('CONSUMPTION.TOOLTIP_botonMuestraTodosTipoConsumo')}>
+              <IconButton onClick={showGraphTotales}>
+                <AnalyticsIcon />
+              </IconButton>
+            </Tooltip>
           </Grid>
         </Grid>
       </SLDRFooterBox>
