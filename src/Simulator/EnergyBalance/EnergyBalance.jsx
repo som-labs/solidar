@@ -2,7 +2,16 @@ import { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import { Typography, Container, MenuItem, TextField, Box } from '@mui/material'
+import {
+  Typography,
+  Container,
+  MenuItem,
+  TextField,
+  Box,
+  Grid,
+  IconButton,
+} from '@mui/material'
+import HelpIcon from '@mui/icons-material/HelpOutlineRounded.js'
 
 //React global components
 import { BasesContext } from '../BasesContext'
@@ -21,6 +30,10 @@ import MonthEnergyBalance from './MonthEnergyBalance'
 import EnvironmentalImpact from './EnvironmentalImpact'
 import HourlyEnergyBalance from './HourlyEnergyBalance'
 import PieCharts from './PieCharts'
+import HelpEnergyBalance from './HelpEnergyBalance'
+
+//React global components
+import { useDialog } from '../../components/DialogProvider'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -36,6 +49,7 @@ export default function EnergyBalanceStep() {
   const { bases, setBases, updateTCBBasesToState } = useContext(BasesContext)
   const { setEcoData } = useContext(EconomicContext)
   const [mes, setMes] = useState('')
+  const [openDialog, closeDialog] = useDialog()
   // El proceso de PreparaEnergyBalance ejecutado como exit del wizard ha hecho cambios sobre las bases que se crearon en location por lo que se deben actualizar
   // El optimizador ha asignado la instalacion
   // El rendimiento ha podido cambiar la inclinacion y por lo tanto el area, la configuracion de paneles y la potenciaMaxima
@@ -94,7 +108,11 @@ export default function EnergyBalanceStep() {
     setDataReady(true)
   }, [bases, setEcoData])
 
-  //REVISAR: porque se muestra la tabla reducida primero y luego crece
+  function help() {
+    openDialog({
+      children: <HelpEnergyBalance onClose={() => closeDialog()} />,
+    })
+  }
 
   return (
     <Container>
@@ -104,7 +122,6 @@ export default function EnergyBalanceStep() {
           __html: t('ENERGY_BALANCE.DESCRIPTION'),
         }}
       />
-      <br />
       <SLDRInfoBox>
         <InstallationSummary></InstallationSummary>
       </SLDRInfoBox>
@@ -113,23 +130,32 @@ export default function EnergyBalanceStep() {
         <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
       </SLDRInfoBox>
 
-      <Box
-        sx={{
-          display: 'flex',
-          mb: 3,
-          flexDirection: 'column',
-        }}
-      >
-        <Typography variant="h4" textAlign={'center'}>
-          {t('ENERGY_BALANCE.FLOW_TITLE')}
-        </Typography>
-        <Typography
-          variant="body"
-          dangerouslySetInnerHTML={{
-            __html: t('ENERGY_BALANCE.FLOW_DESCRIPTION'),
-          }}
-        />
-      </Box>
+      <Grid container>
+        <Grid item xs={12}>
+          <Typography variant="h4" textAlign={'center'}>
+            {t('ENERGY_BALANCE.FLOW_TITLE')}
+          </Typography>
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('ENERGY_BALANCE.FLOW_DESCRIPTION'),
+            }}
+          />
+          <IconButton
+            onClick={() => help()}
+            size="small"
+            style={{
+              fontSize: 'inherit',
+              verticalAlign: 'text-center',
+              transform: 'scale(0.8)',
+              padding: 0,
+            }}
+          >
+            <HelpIcon />
+          </IconButton>
+        </Grid>
+      </Grid>
+
       <SLDRInfoBox>
         <CallSankey yearlyData={yearlyData}></CallSankey>
       </SLDRInfoBox>
