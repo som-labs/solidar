@@ -30,6 +30,8 @@ const TCB = {
 
   modos: [INDIVIDUAL, COLECTIVO, COMUNIDAD, DESARROLLO],
   modoActivo: INDIVIDUAL,
+  estilos: ['SOM', 'CLARA'],
+  estiloActivo: 'SOM',
 
   graphs: {},
   nombreProyecto: 'Mi proyecto',

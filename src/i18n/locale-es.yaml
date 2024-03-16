@@ -626,17 +626,29 @@ SUMMARY:
   DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
   TITLE_AUTOPRODUCCION: Autoproducción
   DESCRIPTION_AUTOPRODUCCION: ''
-  LABEL_AREAS_ESCOGIDAS: <strong>áreas escogidas</strong> de {{areasDisponibles}} áreas disponibles
-  LABEL_PANELES_SUGERIDOS: paneles solares sugeridos
+
+  LABEL_AREAS_ESCOGIDAS_zero: área escogida
+  LABEL_AREAS_ESCOGIDAS_one: <strong>Un</strong> área escogida
+  LABEL_AREAS_ESCOGIDAS_other: <strong>{{count}}</strong> áreas escogidas
+  LABEL_AREAS_DISPONIBLES_one: ' de <strong>un</strong> área disponible'
+  LABEL_AREAS_DISPONIBLES_other: ' de <strong>{{count}}</strong> áreas disponibles'
+  LABEL_PANELES_SUGERIDOS_zero: paneles solares sugeridos
+  LABEL_PANELES_SUGERIDOS_one: '<strong>Un</strong> panel solar sugerido'
+  LABEL_PANELES_SUGERIDOS_other: '<strong>{{count}}</strong> paneles solares sugeridos'
+
   LABEL_PRODUCCION_ANUAL: kwh <br />produccion anual
+
+  LABEL_PRODUCCION: <strong>{{produccion}}</strong> producción anual
+  LABEL_POTENCIA: <strong>{{potencia}}</strong> potencia total instalada
+  LABEL_COSTE: <strong>{{coste}}</strong> coste de la instalación
 
   TITLE_CONSUMO: Consumo
   DESCRIPTION_CONSUMO: ''
   TITLE_ECONOMIC_BALANCE: Balance económico
   DESCRIPTION_ECONOMIC_BALANCE: ''
   LABEL_COSTE_INSTALACION: coste de la instalación
-  LABEL_AMORTIZACION: Años de amortización
-  LABEL_SUBVENCIONES: de ayudas y subvenciones
+  LABEL_AMORTIZACION: <strong>{{amortizacion}}</strong> Años de amortización
+  LABEL_SUBVENCIONES: <strong>{{subvenciones}}</strong> de ayudas y subvenciones
   TITLE_ENERGY_BALANCE: Balance energético
   DESCRIPTION_ENERGY_BALANCE: ''
   LABEL_AUTOCONSUMO: del consumo será autoproducido

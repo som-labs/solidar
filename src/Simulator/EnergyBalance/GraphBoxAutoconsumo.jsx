@@ -89,7 +89,7 @@ export default function GraphBoxAutoconsumo() {
             id="F1C1C"
             sx={{
               height: heightConsumo,
-              backgroundColor: '#FFB266',
+              backgroundColor: 'rgba(255,178,102,1)',
               display: 'flex',
             }}
           ></Box>
@@ -118,7 +118,7 @@ export default function GraphBoxAutoconsumo() {
             id="F1C2P"
             sx={{
               height: heightProduccion,
-              backgroundColor: '#33FF33',
+              backgroundColor: 'rgba(51,255,51,1)',
               display: 'flex',
             }}
           ></Box>
@@ -140,7 +140,7 @@ export default function GraphBoxAutoconsumo() {
           id="F2C1"
           sx={{
             height: heightAutoconsumo,
-            backgroundColor: '#FFFF66',
+            backgroundColor: 'rgba(255,178,102,0.6)', //'#CCB233',
             display: 'flex',
             verticalAlign: 'center',
             justifyContent: 'center',
@@ -156,7 +156,7 @@ export default function GraphBoxAutoconsumo() {
           id="F2C2"
           sx={{
             height: heightAutoconsumo,
-            backgroundColor: '#FFFF66',
+            backgroundColor: 'rgba(51,255,51,0.6)',
             display: 'flex',
             verticalAlign: 'center',
             justifyContent: 'center',
