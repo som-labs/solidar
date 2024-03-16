@@ -45,7 +45,6 @@ export default function EnergyBalanceStep() {
   const [dataReady, setDataReady] = useState(false)
   const [monthlyData, setMonthlyData] = useState()
   const [yearlyData, setYearlyData] = useState({})
-  const [monthlyConsumoProduccion, setMonthlyConsumoProduccion] = useState({})
   const { bases, setBases, updateTCBBasesToState } = useContext(BasesContext)
   const { setEcoData } = useContext(EconomicContext)
   const [mes, setMes] = useState('')
@@ -59,6 +58,8 @@ export default function EnergyBalanceStep() {
     updateTCBBasesToState()
 
     setMonthlyData({
+      consumo: TCB.consumo.resumenMensual('suma'),
+      produccion: TCB.produccion.resumenMensual('suma'),
       deficit: TCB.balance.resumenMensual('deficit'),
       autoconsumo: TCB.balance.resumenMensual('autoconsumo'),
       excedente: TCB.balance.resumenMensual('excedente'),
@@ -70,10 +71,6 @@ export default function EnergyBalanceStep() {
       autoconsumo: TCB.balance.autoconsumo,
       excedente: TCB.balance.excedenteAnual,
       consumoDiurno: TCB.balance.consumoDiurno,
-    })
-    setMonthlyConsumoProduccion({
-      consumo: TCB.consumo.resumenMensual('suma'),
-      produccion: TCB.produccion.resumenMensual('suma'),
     })
     setDataReady(true)
   }, [])
@@ -86,6 +83,8 @@ export default function EnergyBalanceStep() {
     calculaResultados()
 
     setMonthlyData({
+      consumo: TCB.consumo.resumenMensual('suma'),
+      produccion: TCB.produccion.resumenMensual('suma'),
       deficit: TCB.balance.resumenMensual('deficit'),
       autoconsumo: TCB.balance.resumenMensual('autoconsumo'),
       excedente: TCB.balance.resumenMensual('excedente'),
@@ -98,10 +97,6 @@ export default function EnergyBalanceStep() {
       autoconsumo: TCB.balance.autoconsumo,
       excedente: TCB.balance.excedenteAnual,
       consumoDiurno: TCB.balance.consumoDiurno,
-    })
-    setMonthlyConsumoProduccion({
-      consumo: TCB.consumo.resumenMensual('suma'),
-      produccion: TCB.produccion.resumenMensual('suma'),
     })
 
     setEcoData(TCB.economico)
@@ -209,11 +204,7 @@ export default function EnergyBalanceStep() {
         }}
       />
       <SLDRInfoBox>
-        {dataReady && (
-          <MonthEnergyBalance
-            monthlyConsumoProduccion={monthlyConsumoProduccion}
-          ></MonthEnergyBalance>
-        )}
+        {dataReady && <MonthEnergyBalance monthlyData={monthlyData}></MonthEnergyBalance>}
       </SLDRInfoBox>
 
       <SLDRInfoBox>

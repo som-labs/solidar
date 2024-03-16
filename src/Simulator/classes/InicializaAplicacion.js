@@ -17,6 +17,14 @@ async function InicializaAplicacion() {
   }
   UTIL.debugLog('_initEvents modo de trabajo: ' + TCB.modoActivo)
 
+  //Definimos el estilo. Por ahora puede ser SOM o GL. Cambia la pestaña de Resumen
+  let _estilo = UTIL.getParametrosEntrada('estilo')
+  if (_estilo) {
+    _estilo = _estilo.toUpperCase()
+    if (TCB.estilos.includes(_estilo)) TCB.estiloActivo = _estilo
+  }
+  UTIL.debugLog('_initEvents estilo de aplicacion: ' + TCB.estiloActivo)
+
   // Define la url base de la aplicación
   if (TCB.modoActivo === 'DESARROLLO') {
     TCB.basePath = 'http://localhost/SOM/REACT/solidar/'
