@@ -12,6 +12,7 @@ import GraphBoxAutoconsumo from '../EnergyBalance/GraphBoxAutoconsumo'
 import GraphBoxSavings from '../EconomicBalance/GraphBoxSavings'
 import SummaryEconomicBalance from './SummaryEconomicBalance'
 import Reports from './Reports'
+import MicroMap from '../Location/MicroMap'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -42,67 +43,70 @@ const SummarySOMStep = () => {
       <Paper elevation={10} style={{ padding: 16 }}>
         <Container ref={contentRef}>
           <Typography variant="body">{t('SUMMARY.DESCRIPTION')}</Typography>
-
-          <SLDRInfoBox
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              width: '100%',
-              gap: '10px',
-              alignContent: 'center',
-              flexDirection: 'column',
-            }}
-          >
-            <Typography variant="h3" textAlign={'center'}>
-              {t('SUMMARY.TITLE_AUTOPRODUCCION')}
-            </Typography>
-            <Typography variant="body">
-              {t('SUMMARY.DESCRIPTION_AUTOPRODUCCION')}
-            </Typography>
-            <Typography
-              variant="h5"
-              color={'green'}
-              textAlign={'center'}
-              dangerouslySetInnerHTML={{
-                __html:
-                  t('SUMMARY.LABEL_AREAS_ESCOGIDAS', {
-                    count: areasEscogidas,
-                  }) +
-                  t('SUMMARY.LABEL_AREAS_DISPONIBLES', {
-                    count: areasDisponibles,
+          <Box sx={{ display: 'flex', flexDirection: 'row', mt: '1rem' }}>
+            <SLDRInfoBox
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                flex: '2',
+                gap: '10px',
+                alignContent: 'center',
+                flexDirection: 'column',
+              }}
+            >
+              <Typography variant="h3" textAlign={'center'}>
+                {t('SUMMARY.TITLE_AUTOPRODUCCION')}
+              </Typography>
+              <Typography variant="body">
+                {t('SUMMARY.DESCRIPTION_AUTOPRODUCCION')}
+              </Typography>
+              <Typography
+                variant="h5"
+                color={'green'}
+                textAlign={'center'}
+                dangerouslySetInnerHTML={{
+                  __html:
+                    t('SUMMARY.LABEL_AREAS_ESCOGIDAS', {
+                      count: areasEscogidas,
+                    }) +
+                    t('SUMMARY.LABEL_AREAS_DISPONIBLES', {
+                      count: areasDisponibles,
+                    }),
+                }}
+              />
+              <Typography
+                variant="h5"
+                color={'green'}
+                textAlign={'center'}
+                dangerouslySetInnerHTML={{
+                  __html: t('SUMMARY.LABEL_PANELES_SUGERIDOS', { count: paneles }),
+                }}
+              />
+              <Typography
+                variant="h5"
+                color={'green'}
+                textAlign={'center'}
+                dangerouslySetInnerHTML={{
+                  __html: t('SUMMARY.LABEL_PRODUCCION', {
+                    produccion: UTIL.formatoValor('energia', produccionAnual),
                   }),
-              }}
-            />
-            <Typography
-              variant="h5"
-              color={'green'}
-              textAlign={'center'}
-              dangerouslySetInnerHTML={{
-                __html: t('SUMMARY.LABEL_PANELES_SUGERIDOS', { count: paneles }),
-              }}
-            />
-            <Typography
-              variant="h5"
-              color={'green'}
-              textAlign={'center'}
-              dangerouslySetInnerHTML={{
-                __html: t('SUMMARY.LABEL_PRODUCCION', {
-                  produccion: UTIL.formatoValor('energia', produccionAnual),
-                }),
-              }}
-            />
-            <Typography
-              variant="h5"
-              color={'green'}
-              textAlign={'center'}
-              dangerouslySetInnerHTML={{
-                __html: t('SUMMARY.LABEL_POTENCIA', {
-                  potencia: UTIL.formatoValor('potencia', potencia),
-                }),
-              }}
-            />
-          </SLDRInfoBox>
-
+                }}
+              />
+              <Typography
+                variant="h5"
+                color={'green'}
+                textAlign={'center'}
+                dangerouslySetInnerHTML={{
+                  __html: t('SUMMARY.LABEL_POTENCIA', {
+                    potencia: UTIL.formatoValor('potencia', potencia),
+                  }),
+                }}
+              />
+            </SLDRInfoBox>
+            <SLDRInfoBox sx={{ border: '0', display: 'flex', flex: '1' }}>
+              <MicroMap></MicroMap>
+            </SLDRInfoBox>
+          </Box>
           <SLDRInfoBox
             sx={{
               display: 'flex',

@@ -1,17 +1,16 @@
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useTheme } from '@mui/material/styles'
 
 // Plotly objects
 import Plot from 'react-plotly.js'
 
 // MUI objects
 import { Box, Typography } from '@mui/material'
-import InfoIcon from '@mui/icons-material/InfoRounded'
 
 // REACT Solidar Components
 import { useDialog } from '../../components/DialogProvider'
 import ProfileDay from './ProfileDay'
-import { SLDRTooltip } from '../../components/SLDRComponents'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -19,6 +18,8 @@ import * as UTIL from '../classes/Utiles'
 
 export default function ConsumoGeneracion3D() {
   const { t } = useTranslation()
+  const theme = useTheme()
+
   const [openDialog, closeDialog] = useDialog()
   const graphWidth = useRef()
 
@@ -94,6 +95,9 @@ export default function ConsumoGeneracion3D() {
     },
   }
   const layout = {
+    font: {
+      color: theme.palette.text.primary,
+    },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
     width: graphWidth.current,

@@ -26,6 +26,7 @@ import InstallationSummary from './InstallationSummary'
 import ConsumoGeneracion3D from './ConsumoGeneracion3D'
 import EnergyFlow from './EnergyFlow'
 import MonthThreeParts from './MonthThreeParts'
+import MonthFiveParts from './MonthFiveParts'
 import MonthEnergyBalance from './MonthEnergyBalance'
 import EnvironmentalImpact from './EnvironmentalImpact'
 import HourlyEnergyBalance from './HourlyEnergyBalance'
@@ -117,13 +118,15 @@ export default function EnergyBalanceStep() {
           __html: t('ENERGY_BALANCE.DESCRIPTION'),
         }}
       />
-      <SLDRInfoBox>
+      <SLDRInfoBox sx={{ mt: '1rem' }}>
         <InstallationSummary></InstallationSummary>
       </SLDRInfoBox>
 
-      <SLDRInfoBox>
-        <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
-      </SLDRInfoBox>
+      {TCB.estiloActivo === 'CLARA' && (
+        <SLDRInfoBox>
+          <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
+        </SLDRInfoBox>
+      )}
 
       <Grid container>
         <Grid item xs={12}>
@@ -194,22 +197,33 @@ export default function EnergyBalanceStep() {
         <HourlyEnergyBalance mes={mes}></HourlyEnergyBalance>
       </SLDRInfoBox>
 
-      <Typography variant="h4" textAlign={'center'}>
-        {t('ENERGY_BALANCE.TITLE_MONTH_ENERGY_BALANCE')}
-      </Typography>
-      <Typography
-        variant="body"
-        dangerouslySetInnerHTML={{
-          __html: t('ENERGY_BALANCE.DESCRIPTION_MONTH_ENERGY_BALANCE'),
-        }}
-      />
-      <SLDRInfoBox>
-        {dataReady && <MonthEnergyBalance monthlyData={monthlyData}></MonthEnergyBalance>}
-      </SLDRInfoBox>
+      {TCB.estiloActivo === 'CLARA' && (
+        <SLDRInfoBox>
+          <Typography variant="h4" textAlign={'center'}>
+            {t('ENERGY_BALANCE.TITLE_MONTH_ENERGY_BALANCE')}
+          </Typography>
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('ENERGY_BALANCE.DESCRIPTION_MONTH_ENERGY_BALANCE'),
+            }}
+          />
+
+          {dataReady && (
+            <MonthEnergyBalance monthlyData={monthlyData}></MonthEnergyBalance>
+          )}
+        </SLDRInfoBox>
+      )}
 
       <SLDRInfoBox>
-        {dataReady && <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>}
+        {dataReady && <MonthFiveParts monthlyData={monthlyData}></MonthFiveParts>}
       </SLDRInfoBox>
+
+      {TCB.estiloActivo === 'CLARA' && (
+        <SLDRInfoBox>
+          {dataReady && <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>}
+        </SLDRInfoBox>
+      )}
 
       <Typography variant="h4" textAlign={'center'}>
         {t('ENERGY_BALANCE.TITLE_ENVIRONMENTAL_IMPACT')}
@@ -220,6 +234,7 @@ export default function EnergyBalanceStep() {
           __html: t('ENERGY_BALANCE.DESCRIPTION_ENVIRONMENTAL_IMPACT'),
         }}
       />
+
       <SLDRInfoBox sx={{ mt: '1rem' }}>
         <EnvironmentalImpact></EnvironmentalImpact>
       </SLDRInfoBox>
