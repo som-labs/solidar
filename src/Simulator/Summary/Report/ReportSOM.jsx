@@ -1,7 +1,7 @@
 import { useRef, useEffect, forwardRef } from 'react'
 import styles from './pdfStyle'
 
-import { Grid, Container, Button } from '@mui/material'
+import { Grid, Container, Button, Box, Typography } from '@mui/material'
 import { useReactToPrint } from 'react-to-print'
 import Print from '@mui/icons-material/Print'
 import logo from './images/logo_som_energia.png'
@@ -28,6 +28,8 @@ import InstallationSummary from './InstallationSummary'
 
 import * as UTIL from '../../classes/Utiles'
 import TCB from '../../classes/TCB'
+import MicroMap from '../../Location/MicroMap'
+import { SLDRInfoBox } from '../../../components/SLDRComponents'
 
 export default function ReportSOM({ onClose }) {
   const { t, i18n } = useTranslation()
@@ -39,136 +41,190 @@ export default function ReportSOM({ onClose }) {
     content: () => componentRef.current,
   })
 
-  useEffect(() => {
-    // If there is not previous Map in MapContext create one
-    if (!mapRef.current) {
-      const SAT = new TileLayer({
-        source: new XYZ({
-          url: 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoiam9zZWx1aXMtc29saWRhciIsImEiOiJjbHJ1amIybXAwZ3IyMmt0ZWplc3dkczI5In0.ZtRIGwqCgRQI5djHEFmOVA',
-          tileSize: 512,
-          crossOrigin: 'Anonymous',
-        }),
-      })
-      SAT.set('name', 'SAT')
-      SAT.setVisible(true)
-
-      // Vector is the layers where new features (bases o puntosConsumo) are shown from vectorSource
-      const basesLayer = new VectorLayer({
-        source: TCB.origenDatosSolidar,
-        style: new Style({
-          stroke: new Stroke({
-            fillcolor: [0, 250, 0, 0.5],
-            color: [0, 250, 0, 1],
-            width: 4,
-          }),
-          fill: new Fill({
-            color: 'rgba(0, 255, 0, 0.3)',
-          }),
-        }),
-      })
-
-      //OpenLayers map creation
-      mapRef.current = new Map({
-        target: mapElement.current,
-        layers: [SAT, basesLayer],
-        view: new View({
-          maxZoom: 20,
-          zoom: 18,
-        }),
-        controls: [],
-        interactions: [],
-      })
-    } else {
-      mapRef.current.setTarget(mapElement.current)
-    }
-
-    const mapView = mapRef.current.getView()
-    mapView.fit(TCB.origenDatosSolidar.getExtent())
-    const center = mapView.getCenter()
-    if (mapView.getZoom() > 20) {
-      mapView.setCenter(center)
-      mapView.setZoom(20)
-    }
-  }, [])
-
   return (
     <Container>
-      <div ref={componentRef} style={styles.page}>
-        <div style={styles.header}>
-          <h1 style={styles.h1}>
+      <div ref={componentRef}>
+        <Box
+          sx={{
+            padding: 3,
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'flex-end',
+            gap: 10,
+          }}
+        >
+          <Typography
+            variant="h3"
+            sx={{ textAlign: 'center', textTransform: 'uppercase', margin: 0 }}
+          >
             {t('REPORT.TITLE_PRIMER')}
             <br />
-            <strong style={styles.strong}>{t('REPORT.TITLE_STRONG')}</strong>{' '}
+            <strong style={{ color: '#beaf17' }}>{t('REPORT.TITLE_STRONG')}</strong>{' '}
             {t('REPORT.TITLE_SEGON')}
-          </h1>
+          </Typography>
           <img src={logo} width="120" />
-        </div>
-        <div style={styles.warning}>
-          <p style={styles.warningText}>{t('REPORT.ATENCIO')}</p>
-        </div>
+        </Box>
+        <Box
+          sx={{
+            backgroundColor: '#f9cb9c',
+            padding: 3,
+            mb: 1,
+          }}
+        >
+          <Typography>{t('REPORT.ATENCIO')}</Typography>
+        </Box>
 
-        <div style={styles.dades}>
-          <div>
-            <h2 style={styles.title}>{t('REPORT.DADES_TITLE')}</h2>
-            <ul style={styles.list}>
-              <li style={styles.listitem}>
-                {t('REPORT.DADES_NOM')}: <strong>{TCB.nombreProyecto}</strong>
-              </li>
-              <li style={styles.listitem}>
-                {t('REPORT.DADES_DIRECCIO')}: <strong>{TCB.direccion}</strong>
-              </li>
-              {/* <li style={styles.listitem}>
-                {t('REPORT.DADES_CONTRACTE')}: <strong>{'data.contract.name'}</strong>
-              </li> */}
-            </ul>
-          </div>
-        </div>
-        <div style={styles.dades}>
-          <InstallationSummary></InstallationSummary>
-        </div>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+          }}
+        >
+          <Box
+            id="C1"
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 2,
+              gap: 1,
+            }}
+          >
+            <Box
+              id="C1F1"
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 2,
+              }}
+            >
+              <Box
+                id="C1F1C1"
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  flex: '1',
+                  backgroundColor: '#beaf17',
+                  padding: 1,
+                  gap: 1,
+                }}
+              >
+                <Typography variant="h5" sx={{ textAlign: 'center' }}>
+                  <strong>{t('REPORT.DADES_TITLE')}</strong>
+                </Typography>
+                <Typography>
+                  {t('REPORT.DADES_NOM')}: <strong>{TCB.nombreProyecto}</strong>
+                </Typography>
+                <Typography>
+                  {t('REPORT.DADES_DIRECCIO')}: <strong>{TCB.direccion}</strong>
+                </Typography>
+              </Box>
+              <Box
+                id="C1F1C2"
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  flex: '1',
+                  border: '1px solid',
+                }}
+              >
+                <div style={styles.dades}>
+                  <InstallationSummary></InstallationSummary>
+                </div>
+              </Box>
+            </Box>
+            <Box
+              id="C1F2"
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: '#d9d9d9',
+                padding: 1,
+                gap: 1,
+              }}
+            >
+              <Typography variant="h5" sx={{ textAlign: 'center' }}>
+                <strong>{t('REPORT.US_TITLE')}</strong>
+              </Typography>
 
-        <div style={styles.us}>
-          <h2 style={styles.title}> {t('REPORT.US_TITLE')}</h2>
-          <ul style={styles.list}>
-            <li style={styles.listitem}>
-              {t('REPORT.US_ANUAL') + '  '}
-              <div style={styles.listpowers}>
-                {TCB.consumo.periodo.map((value, index) => (
-                  <span key={index}>
-                    {'P' + (index + 1)}:{' '}
-                    <strong>{UTIL.formatoValor('energia', value)}</strong>
-                  </span>
-                ))}
-              </div>
-            </li>
-            <li style={styles.listitem}>
-              {t('REPORT.US_HORAS_SOL') + '   '}
-              <span>
-                <strong>{UTIL.formatoValor('energia', TCB.balance.consumoDiurno)}</strong>
-              </span>
-            </li>
+              <Typography>
+                {t('REPORT.US_ANUAL') + '  '}
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 5,
+                  }}
+                >
+                  {TCB.consumo.periodo.map((value, index) => (
+                    <span key={index}>
+                      {'P' + (index + 1)}:{' '}
+                      <strong>{UTIL.formatoValor('energia', value)}</strong>
+                    </span>
+                  ))}
+                </div>
+              </Typography>
 
-            <SummaryPreciosTarifa></SummaryPreciosTarifa>
-          </ul>
-        </div>
-        <div style={styles.image} ref={mapElement}></div>
+              <Typography>
+                {t('REPORT.US_HORAS_SOL') + '   '}
+                <span>
+                  <strong>
+                    {UTIL.formatoValor('energia', TCB.balance.consumoDiurno)}
+                  </strong>
+                </span>
+              </Typography>
+              <SummaryPreciosTarifa></SummaryPreciosTarifa>
+            </Box>
+          </Box>
 
-        <div style={styles.plaques}>
-          <img src={casa} width="auto" height="200px" />
-        </div>
-        <div style={styles.installacio}>
-          <h2 style={styles.title}>{t('REPORT.INSTALACIO_TITLE')}</h2>
-          <ul style={styles.list}>
-            <li style={styles.listitem}>
+          <Box id="C2" sx={{ display: 'flex', flex: 1, ml: -2, mr: -3 }}>
+            <MicroMap></MicroMap>
+          </Box>
+        </Box>
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            mt: 1,
+            mb: 1,
+            gap: 2,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flex: 1,
+              padding: 1,
+              gap: 2,
+              ml: '3rem',
+              mr: '3rem',
+            }}
+          >
+            <img src={casa} width="auto" height="200px" />
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              flex: 6,
+              padding: 1,
+              gap: 1,
+              backgroundColor: '#d9d9d9',
+            }}
+          >
+            <Typography variant="h5" sx={{ textAlign: 'center' }}>
+              <strong>{t('REPORT.INSTALACIO_TITLE')}</strong>
+            </Typography>
+            <Typography>
               {t('REPORT.INSTALACIO_NOMBRE')}: <strong>{TCB.totalPaneles}</strong>
-            </li>
-            <li style={styles.listitem}>
+            </Typography>
+            <Typography>
               {t('REPORT.INSTALACIO_POTENCIA_UNITARIA')}:{' '}
               <strong>
                 {UTIL.formatoValor('potencia', TCB.tipoPanelActivo.potencia)}
               </strong>
-            </li>
-            <li style={styles.listitem}>
+            </Typography>
+            <Typography>
               {t('REPORT.INSTALACIO_POTENCIA')}:{' '}
               <strong>
                 {UTIL.formatoValor(
@@ -176,22 +232,27 @@ export default function ReportSOM({ onClose }) {
                   TCB.totalPaneles * TCB.tipoPanelActivo.potencia,
                 )}
               </strong>
-            </li>
-
-            <li style={styles.listitem}>
+            </Typography>
+            <Typography>
               {t('REPORT.INSTALACIO_ANUAL')}:{' '}
               <strong>{UTIL.formatoValor('energia', TCB.produccion.totalAnual)}</strong>
-            </li>
-            <li style={styles.listitem}>
+            </Typography>
+            <Typography>
               {t('REPORT.INSTALACIO_COST')}:{' '}
               <strong>
                 {UTIL.formatoValor('dinero', TCB.economico.precioInstalacionCorregido)}
               </strong>
-            </li>
-          </ul>
-        </div>
-        <div style={styles.estudi}>
-          <h2 style={styles.heading}>{t('REPORT.ESTUDI_TITLE')}</h2>
+            </Typography>
+          </Box>
+        </Box>
+
+        <Box sx={{ backgroundColor: '#beaf17', padding: 2, display: 'flex' }}>
+          <Typography variant="h5">
+            <strong>{t('REPORT.ESTUDI_TITLE')}</strong>
+          </Typography>
+        </Box>
+
+        <Box>
           <Grid
             container
             spacing={0}
@@ -199,13 +260,40 @@ export default function ReportSOM({ onClose }) {
           >
             <Grid item xs={6}>
               <Grid container>
-                <Grid xs={5} item style={styles.tableHeading}>
+                <Grid
+                  xs={5}
+                  item
+                  sx={{
+                    backgroundColor: '#3f2c20',
+                    color: 'white',
+                    padding: 1,
+                    border: '1px solid #ccc',
+                  }}
+                >
                   {t('REPORT.ESTUDI_AUTOGENERACIO')}
                 </Grid>
-                <Grid xs={3} item style={styles.tableCell}>
+                <Grid
+                  xs={3}
+                  item
+                  sx={{
+                    padding: 1,
+                    border: '1px solid #ccc',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                  }}
+                >
                   {UTIL.formatoValor('energia', TCB.produccion.totalAnual)}
                 </Grid>
-                <Grid xs={3} item style={styles.tableCell}>
+                <Grid
+                  xs={3}
+                  item
+                  sx={{
+                    padding: 1,
+                    border: '1px solid #ccc',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                  }}
+                >
                   {UTIL.formatoValor(
                     'dinero',
                     UTIL.suma(TCB.economico.ahorradoAutoconsumoMes),
@@ -213,13 +301,39 @@ export default function ReportSOM({ onClose }) {
                 </Grid>
               </Grid>
               <Grid container>
-                <Grid xs={5} item style={styles.tableHeading}>
+                <Grid
+                  xs={5}
+                  sx={{
+                    backgroundColor: '#3f2c20',
+                    color: 'white',
+                    padding: 1,
+                    border: '1px solid #ccc',
+                  }}
+                >
                   {t('REPORT.ESTUDI_EXCEDENT')}
                 </Grid>
-                <Grid xs={3} item style={styles.tableCell}>
+                <Grid
+                  xs={3}
+                  item
+                  sx={{
+                    padding: 1,
+                    border: '1px solid #ccc',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                  }}
+                >
                   {UTIL.formatoValor('energia', TCB.balance.excedenteAnual)}
                 </Grid>
-                <Grid xs={3} item style={styles.tableCell}>
+                <Grid
+                  xs={3}
+                  item
+                  sx={{
+                    padding: 1,
+                    border: '1px solid #ccc',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                  }}
+                >
                   {UTIL.formatoValor(
                     'dinero',
                     UTIL.suma(TCB.economico.consumoConPlacasMensualCorregido),
@@ -227,13 +341,40 @@ export default function ReportSOM({ onClose }) {
                 </Grid>
               </Grid>
               <Grid container>
-                <Grid xs={5} item style={styles.tableHeading}>
+                <Grid
+                  xs={5}
+                  item
+                  sx={{
+                    backgroundColor: '#3f2c20',
+                    color: 'white',
+                    padding: 1,
+                    border: '1px solid #ccc',
+                  }}
+                >
                   {t('REPORT.ESTUDI_XARXA')}
                 </Grid>
-                <Grid xs={3} item style={styles.tableCell}>
+                <Grid
+                  xs={3}
+                  item
+                  sx={{
+                    padding: 1,
+                    border: '1px solid #ccc',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                  }}
+                >
                   {UTIL.formatoValor('energia', TCB.balance.deficitAnual)}
                 </Grid>
-                <Grid xs={3} item style={styles.tableCell}>
+                <Grid
+                  xs={3}
+                  item
+                  sx={{
+                    padding: 1,
+                    border: '1px solid #ccc',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                  }}
+                >
                   {UTIL.formatoValor(
                     'dinero',
                     -UTIL.suma(TCB.economico.compensadoMensualCorregido),
@@ -241,18 +382,54 @@ export default function ReportSOM({ onClose }) {
                 </Grid>
               </Grid>
               <Grid container>
-                <Grid xs={5} item style={styles.tableHeading}>
+                <Grid
+                  xs={5}
+                  item
+                  sx={{
+                    backgroundColor: '#3f2c20',
+                    color: 'white',
+                    padding: 1,
+                    border: '1px solid #ccc',
+                  }}
+                >
                   <strong>{t('REPORT.ESTUDI_ESTALVI')}</strong>
                 </Grid>
-                <Grid xs={6} item style={styles.tableCell}>
+                <Grid
+                  xs={6}
+                  item
+                  sx={{
+                    padding: 1,
+                    border: '1px solid #ccc',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                  }}
+                >
                   {UTIL.formatoValor('dinero', TCB.economico.ahorroAnual)}
                 </Grid>
               </Grid>
               <Grid container>
-                <Grid xs={5} item style={styles.tableHeading}>
+                <Grid
+                  xs={5}
+                  item
+                  sx={{
+                    backgroundColor: '#3f2c20',
+                    color: 'white',
+                    padding: 1,
+                    border: '1px solid #ccc',
+                  }}
+                >
                   <strong>{t('REPORT.ESTUDI_RETORN')}</strong>
                 </Grid>
-                <Grid xs={6} item style={styles.tableCell}>
+                <Grid
+                  xs={6}
+                  item
+                  sx={{
+                    padding: 1,
+                    border: '1px solid #ccc',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                  }}
+                >
                   {TCB.economico.periodoAmortizacion}
                 </Grid>
               </Grid>
@@ -276,29 +453,18 @@ export default function ReportSOM({ onClose }) {
               />
             </Grid>
           </Grid>
-        </div>
-        {/* <div style={styles.graphicContainer}>
-        <h3>{t('REPORT.PERFIL_TITLE')}</h3>
-        <GraphicPerfil
-          profile={data.scenario.dailyLoadProfileKwh}
-          autoproduction={data.scenario.dailyProductionProfileKwh}
-        />*/}
-        <div style={styles.graphicContainer}>
+        </Box>
+
+        <Box>
           <h3>{t('REPORT.PERFIL_TITLE')}</h3>
           <HourlyEnergyBalance></HourlyEnergyBalance>
-        </div>
-        {/*}
-      <div style={styles.graphicConsumContainer}>
-        <h3>{t('REPORT.PIE_AUTOSUFICIENCIA_TITLE')}</h3>
-        <ReportConsumGraph
-          autoconsum={data.scenario.monthlyProductionToLoadEuro}
-          consum={data.scenario.monthlyGridToLoadEuro}
-          excedencia={data.scenario.monthlyProductionToGridEuro}
-        />
-      </div> */}
-        <div style={styles.graphicContainer}>
+        </Box>
+
+        <Box sx={{ mb: 1 }}>
           <MonthSaving></MonthSaving>
-        </div>
+        </Box>
+
+        {/* PENDIENTE: remover dependencia CSS */}
         <div style={styles.properespases}>
           <h2 style={styles.heading}>{t('REPORT.PROPERESPASES_TITLE')}</h2>
           <div style={styles.container}>
@@ -414,34 +580,118 @@ export default function ReportSOM({ onClose }) {
         <div style={styles.calculs}>
           <h2 style={styles.heading}>{t('REPORT.INFORME_TITLE')} </h2>
         </div>
-        <div style={styles.calculsContainer}>
-          <img src={placa} style={styles.calculsImage} />
-          <h3 style={styles.calculsTitle}>{t('REPORT.GENERACIO_TITLE')} </h3>
-          <p style={styles.calculsPrimera}>{t('REPORT.GENERACIO_DESCRIPTION')} </p>
-          <p style={styles.calculsSegona}>{t('REPORT.GENERACIO_TEXT')} </p>
-        </div>
-        <div style={styles.calculsContainer}>
-          <img src={bombeta} style={styles.calculsImage} />
-          <h3 style={styles.calculsTitle}>{t('REPORT.TITLE')} </h3>
-          <p style={styles.calculsPrimera}>{t('REPORT.DESCRIPTION')} </p>
-          <p style={styles.calculsSegona}>{t('REPORT.TEXT')} </p>
-        </div>
-        <div style={styles.calculsContainer}>
-          <img src={euro} style={styles.calculsImage} />
-          <h3 style={styles.calculsTitle}>{t('REPORT.ECONOMIQUES_TITLE')} </h3>
-          <p style={styles.calculsPrimera}>
-            <a href="https://www.somenergia.coop/ca/tarifes-d-electricitat/">
-              {t('REPORT.ECONOMIQUES_DESCRIPTION')}{' '}
-            </a>{' '}
-          </p>
-          <p style={styles.calculsSegona}></p>
-        </div>
+
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+            <Box sx={{ display: 'flex', flex: 1, backgroundColor: '#b3b0b0' }}>
+              <img
+                src={placa}
+                style={{
+                  position: 'relative',
+                  right: 0,
+                  height: 40,
+                  width: 40,
+                }}
+              />
+              <Typography
+                sx={{
+                  padding: 1,
+                  fontSize: 18,
+                  fontWeight: 'normal',
+                  margin: 0,
+                }}
+              >
+                {t('REPORT.GENERACIO_TITLE')}
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', flex: 1, backgroundColor: '#b3b0b0' }}>
+              <img
+                src={bombeta}
+                style={{
+                  position: 'relative',
+                  right: 0,
+                  height: 40,
+                  width: 40,
+                }}
+              />
+              <Typography
+                sx={{
+                  padding: 1,
+                  fontSize: 18,
+                  fontWeight: 'normal',
+                  margin: 0,
+                }}
+              >
+                {t('REPORT.ECONOMIQUES_TITLE')}{' '}
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', flex: 1, backgroundColor: '#b3b0b0' }}>
+              <img
+                src={euro}
+                style={{
+                  position: 'relative',
+                  right: 0,
+                  height: 40,
+                  width: 40,
+                }}
+              />
+              <Typography
+                sx={{
+                  padding: 1,
+                  fontSize: 18,
+                  fontWeight: 'normal',
+                  margin: 0,
+                }}
+              >
+                {t('REPORT.ECONOMIQUES_TITLE')}{' '}
+              </Typography>
+            </Box>
+          </Box>
+
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+            <Box
+              sx={{ display: 'flex', flex: 1, backgroundColor: '#d9d9d9', padding: 1 }}
+            >
+              <Typography>{t('REPORT.GENERACIO_DESCRIPTION')}</Typography>
+            </Box>
+            <Box
+              sx={{ display: 'flex', flex: 1, backgroundColor: '#d9d9d9', padding: 1 }}
+            >
+              <Typography>{t('REPORT.DESCRIPTION')}</Typography>
+            </Box>
+            <Box
+              sx={{ display: 'flex', flex: 1, backgroundColor: '#d9d9d9', padding: 1 }}
+            >
+              <a href="https://www.somenergia.coop/ca/tarifes-d-electricitat/">
+                {t('REPORT.ECONOMIQUES_DESCRIPTION')}{' '}
+              </a>{' '}
+            </Box>
+          </Box>
+
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+            <Box
+              sx={{ display: 'flex', flex: 1, backgroundColor: '#f9cb9c', padding: 1 }}
+            >
+              {t('REPORT.GENERACIO_TEXT')}
+            </Box>
+            <Box
+              sx={{ display: 'flex', flex: 1, backgroundColor: '#f9cb9c', padding: 1 }}
+            >
+              {t('REPORT.TEXT')}
+            </Box>
+            <Box
+              sx={{ display: 'flex', flex: 1, backgroundColor: '#f9cb9c', padding: 1 }}
+            >
+              {' '}
+            </Box>
+          </Box>
+        </Box>
+
         <div style={styles.peu}>
           <p style={styles.peuText}>{t('REPORT.PEU')} </p>
           <img src={logo} width="120" />
         </div>
       </div>
-
       <Button
         variant="contained"
         sx={{ mr: '2rem' }}

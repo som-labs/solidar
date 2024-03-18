@@ -1,5 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useTheme } from '@mui/material/styles'
 
 // MUI objects
 import { Container, Typography, Box, CardMedia } from '@mui/material'
@@ -10,6 +11,7 @@ import TCB from '../classes/TCB'
 
 export default function EnergyFlow(props) {
   const { t } = useTranslation()
+  const theme = useTheme()
 
   const [anchoPanel, setAnchoPanel] = useState()
   const [leftMargin, setLeftMargin] = useState()
@@ -21,11 +23,16 @@ export default function EnergyFlow(props) {
   const graficoProduccion = useRef()
   const bar = useRef()
 
-  const stConsumo = 'fill: yellow; stroke: black; border-radius: 8em'
-  const stDeficit = 'fill: orange; stroke: black; border-radius: 1em'
-  const stAutoconsumo = 'fill: #39CC56; stroke: black; border-radius: 1em'
-  const stExcedente = 'fill: orange; stroke: black; border-radius: 1em'
-  const stProduccion = 'fill: aquamarine; stroke: black; border-radius: 1em'
+  const stConsumo =
+    'stroke: black; border-radius: 8em; fill:' + theme.palette.balance.consumo
+  const stDeficit =
+    'stroke: black; border-radius: 1em; fill:' + theme.palette.balance.deficit
+  const stAutoconsumo =
+    'stroke: black; border-radius: 1em; fill:' + theme.palette.balance.autoconsumo
+  const stExcedente =
+    'stroke: black; border-radius: 1em; fill:' + theme.palette.balance.excedente
+  const stProduccion =
+    'stroke: black; border-radius: 1em; fill:' + theme.palette.balance.produccion
   const stFlujo = 'fill: white; stroke: black; border-radius: 1em'
   const stTitulo = 'font-size: 13px; text-anchor: middle; dominant-baseline: middle'
 
@@ -61,7 +68,7 @@ export default function EnergyFlow(props) {
       linea,
       wConsumo,
       t('Consumo.PROP.totalAnual'),
-      stFlujo,
+      stConsumo,
       stTitulo,
     )
 
@@ -75,7 +82,7 @@ export default function EnergyFlow(props) {
       linea,
       wExcedente,
       t('ENERGY_BALANCE.LABEL_EXCEDENTE_ANUAL'),
-      stFlujo,
+      stExcedente,
       stTitulo,
     )
 
@@ -190,7 +197,7 @@ export default function EnergyFlow(props) {
       linea,
       wDeficit,
       t('ENERGY_BALANCE.LABEL_ENERGIA_RED'),
-      stFlujo,
+      stDeficit,
       stTitulo,
     )
     gSymbol = graficoDeficit.current
@@ -203,7 +210,7 @@ export default function EnergyFlow(props) {
       linea,
       wProduccion,
       t('ENERGY_BALANCE.LABEL_ENERGIA_PANELES'),
-      stFlujo,
+      stProduccion,
       stTitulo,
     )
     gSymbol = graficoProduccion.current

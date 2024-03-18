@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useTheme } from '@mui/material/styles'
 
 // Plotly objects
 import Plot from 'react-plotly.js'
@@ -10,6 +11,8 @@ export default function PieCharts(props) {
   const graphElement = useRef()
   const graphWidth = useRef()
   const { deficit, autoconsumo, excedente } = props.yearlyData
+
+  const theme = useTheme()
 
   useEffect(() => {
     // Function to get the width of the element
@@ -29,7 +32,7 @@ export default function PieCharts(props) {
       labels: ['Energia<br>de la red', 'Uso directo<br>de energía'],
       values: [deficit, autoconsumo],
       marker: {
-        colors: ['#B6722F', '#FFFF66'],
+        colors: [theme.palette.balance.deficit, theme.palette.balance.autoconsumo],
       },
       type: 'pie',
       textinfo: 'percent+label',
@@ -45,7 +48,7 @@ export default function PieCharts(props) {
       labels: ['Vertido<br>a la red', 'Uso directo<br>de energía'],
       values: [excedente, autoconsumo],
       marker: {
-        colors: ['#e15759', '#FFFF66'],
+        colors: [theme.palette.balance.excedente, theme.palette.balance.autoconsumo],
       },
       type: 'pie',
       textinfo: 'percent+label',
@@ -57,6 +60,9 @@ export default function PieCharts(props) {
   ]
 
   const layout = {
+    font: {
+      color: theme.palette.text.primary,
+    },
     width: graphWidth.current,
     height: 350,
     title: 'Demanda Energética',

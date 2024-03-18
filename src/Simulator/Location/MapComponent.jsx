@@ -356,49 +356,6 @@ export default function MapComponent() {
       return false
     }
 
-    // Calculo propuesta de acimut basandose en la cumbrera
-    // const azimutLength = 30
-    // let midPoint = [0, 0]
-    // let coef
-
-    // Si el dibujo es libre, es decir sin cumbrera primero
-    //    let rotate = 0
-    // if (largo2 > largo1) {
-    //   coef = (azimutLength / largo1) * 2
-    //   midPoint[0] = puntos[1][0] + (puntos[2][0] - puntos[1][0]) / 2
-    //   midPoint[1] = puntos[1][1] + (puntos[2][1] - puntos[1][1]) / 2
-    // } else {
-    //   coef = (azimutLength / largo2) * 2
-    //   midPoint[0] = puntos[0][0] + (puntos[1][0] - puntos[0][0]) / 2
-    //   midPoint[1] = puntos[0][1] + (puntos[1][1] - puntos[0][1]) / 2
-    // }
-    // if (midPoint[1] > puntoAplicacion[1]) {
-    //   rotate = Math.PI
-    // }
-
-    // midPoint[0] = puntos[2][0] + (puntos[3][0] - puntos[2][0]) / 2
-    // midPoint[1] = puntos[2][1] + (puntos[3][1] - puntos[2][1]) / 2
-    // coef = azimutLength / ancho
-
-    //Dibujamos un acimut pequeño que aparecerá o no según la configuracion elegida
-    // const geomAcimut = new LineString([puntoAplicacion, midPoint])
-    // geomAcimut.scale(coef, coef, puntoAplicacion)
-    // const acimutCoordinates = geomAcimut.getCoordinates()
-    // let point1 = acimutCoordinates[0]
-    // let point2 = acimutCoordinates[1]
-
-    // Angles are measured with 0 at south (axis -Y) and positive west (axis +X)
-    // let acimut =
-    //   (Math.atan2(-1 * (point1[0] - point2[0]), point1[1] - point2[1]) * 180) / Math.PI
-    // acimut = -parseInt(acimut)
-    // const acimutLine = new Feature({
-    //   geometry: geomAcimut,
-    // })
-    // acimutLine.setId('BaseSolar.acimut.' + TCB.featIdUnico)
-    // acimutLine.setStyle(new Style({}))
-    // TCB.origenDatosSolidar.addFeature(acimutLine)
-    // acimutLine.setStyle(new Style({}))
-
     //Preparamos los datos default para constuir un objeto BaseSolar
     geoBaseSolar.feature.setId('BaseSolar.area.' + TCB.featIdUnico)
     let nuevaBaseSolar = {}

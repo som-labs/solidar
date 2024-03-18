@@ -33,14 +33,21 @@ export default function SomEnergiaTheme(isDarkMode) {
         //PENDIENTE: decidir colores de infobox
         infoBox: {
           // main: isDarkMode ? '#F8F8FF' : '#FFF0F5',
-          main: isDarkMode ? '#F8F8FF' : '#FFF0F5',
-          borderColor: 'red',
+          main: isDarkMode ? '#333333' : '#F8F8F8',
           contrastText: 'black',
         },
 
         circulo: {
           main: isDarkMode ? '#e6cc00' : '#000',
           contrastText: 'white',
+        },
+
+        balance: {
+          produccion: isDarkMode ? '#59A14F' : '#59A14F',
+          consumo: isDarkMode ? '#B6722F' : '#B6722F',
+          autoconsumo: isDarkMode ? '#86AC41' : '#B3C100',
+          deficit: isDarkMode ? '#F4CC70' : '#F4CC70',
+          excedente: isDarkMode ? '#E15759' : '#E15759',
         },
       },
     }),

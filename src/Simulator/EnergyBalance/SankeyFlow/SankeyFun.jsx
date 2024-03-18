@@ -1,12 +1,16 @@
 import * as d3 from 'd3'
 import * as d3Sankey from 'd3-sankey'
+
 import * as UTIL from '../../classes/Utiles'
 // Copyright 2021 Observable, Inc.
 // Released under the ISC license.
 // https://observablehq.com/@d3/sankey-diagram
+
 export default function SankeyFun(
   { links, svgRef },
   {
+    textColor,
+    colors,
     nodes,
     // an iterable of link objects (typically [{source, target}, …]
     format = ',', // a function or format specifier for values in titles
@@ -32,8 +36,8 @@ export default function SankeyFun(
       `${d.source.id} → ${d.target.id}\n${UTIL.formatoValor('energia', d.value)}`, // given d in (computed) links
     linkColor = 'source-target', // source, target, source-target, or static color
     linkStrokeOpacity = 0.5, // link stroke opacity
-    linkMixBlendMode = 'multiply', // link blending mode
-    colors = d3.schemeTableau10, // array of colors
+    linkMixBlendMode, // = 'screen', //'multiply', // link blending mode
+    //colors = d3.schemeTableau10, // array of colors
     width = 540, // outer width, in pixels
     height = 400, // outer height, in pixels
     marginTop = 15, // top margin, in pixels
@@ -43,6 +47,7 @@ export default function SankeyFun(
   } = {},
 ) {
   // Convert nodeAlign from a name to a function (since d3-sankey is not part of core d3).
+
   if (typeof nodeAlign !== 'function')
     nodeAlign =
       {
@@ -71,19 +76,6 @@ export default function SankeyFun(
   // Ignore a group-based linkColor option if no groups are specified.
   if (!G && ['source', 'target', 'source-target'].includes(linkColor))
     linkColor = 'currentColor'
-
-  colors = [
-    '#59A14F', //Producción paneles
-    '#B6722F', //Consumo de red
-    '#e15759', //Excedente
-    '#FFFF66', //Cosumo diurno
-    '#A0A0A0', //Consumo nocturno
-    '#FF99CC', //Consumo total
-    '#af7aa1',
-    '#ff9da7',
-    '#9c755f',
-    '#bab0ab',
-  ]
 
   // Compute default domains.
   if (G && nodeGroups === undefined) nodeGroups = G
@@ -190,6 +182,7 @@ export default function SankeyFun(
       .append('g')
       .attr('font-family', 'sans-serif')
       .attr('font-size', 30)
+      .attr('fill', textColor)
       .selectAll('text')
       .data(nodes)
       .join('text')

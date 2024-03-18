@@ -159,7 +159,6 @@ export default function BasesSummary() {
   }
 
   function footerSummary() {
-    // PENDIENTE: Cual debería ser el colorbackground de los boxes con informacion relevante */
     return (
       <SLDRFooterBox>
         <Typography
@@ -185,7 +184,7 @@ export default function BasesSummary() {
     <>
       <Typography variant="h3">{t('LOCATION.LABEL_BASES_SUMMARY')}</Typography>
       <Typography variant="body">{t('LOCATION.PROMPT_BASES_SUMMARY')}</Typography>
-      <SLDRInfoBox>
+      <SLDRInfoBox sx={{ mt: '1rem' }}>
         {bases && (
           <DataGrid
             getRowId={getRowId}
@@ -196,10 +195,13 @@ export default function BasesSummary() {
             autoHeight
             disableColumnMenu
             localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
-            sx={{
-              mb: '1rem',
-            }}
             slots={{ footer: footerSummary }}
+            sx={{
+              border: 'none', // Remove external border
+              '& .MuiDataGrid-columnsContainer': {
+                borderBottom: 'none', // Remove border at the bottom of the header row
+              },
+            }}
           />
         )}
       </SLDRInfoBox>
