@@ -1,11 +1,12 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useTheme } from '@mui/material/styles'
 
 // Plotly objects
 import Plot from 'react-plotly.js'
 
 // MUI objects
-import Typography from '@mui/material/Typography'
+import { Container, Typography } from '@mui/material'
 
 // REACT Solidar Components
 import { EconomicContext } from '../EconomicContext'
@@ -17,7 +18,24 @@ import calculaResultados from '../classes/calculaResultados'
 
 export default function GraphAlternatives() {
   const { t } = useTranslation()
+  const theme = useTheme()
+
+  const graphElement = useRef()
+  const graphWidth = useRef()
+
   const { ecoData } = useContext(EconomicContext)
+
+  useEffect(() => {
+    // Function to get the width of the element
+    const getWidth = () => {
+      if (graphElement.current) {
+        graphWidth.current = graphElement.current.offsetWidth
+      }
+    }
+
+    // Call the function to get the width after initial render
+    getWidth()
+  }, [])
 
   var paneles = []
   var autoconsumo = []
@@ -140,17 +158,20 @@ export default function GraphAlternatives() {
   }
 
   var layout = {
+    font: {
+      color: theme.palette.text.primary,
+    },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
+    width: 0.9 * graphWidth.current,
     autosize: true,
     margin: {
-      l: 40,
-      r: 60,
+      l: 60,
+      r: 50,
       b: 0,
-      t: 10,
+      t: 20,
     },
-    // width: '100%',
-    // height: 500,
+
     xaxis: {
       tick0: 1,
       showgrid: false,
@@ -177,7 +198,7 @@ export default function GraphAlternatives() {
       range: [0, 100],
     },
     yaxis2: {
-      // title: 'Euros',
+      //title: 'Euros',
       overlaying: 'y',
       side: 'right',
       showticklabels: true,
@@ -338,7 +359,7 @@ export default function GraphAlternatives() {
   // }
 
   return (
-    <>
+    <Container ref={graphElement}>
       <Typography variant="h4" sx={{ mb: '1rem' }}>
         {t('ECONOMIC_BALANCE.TITLE_DATA_AS_PANELS')}
       </Typography>
@@ -355,6 +376,6 @@ export default function GraphAlternatives() {
         config={{ displayModeBar: false }}
         onClick={(event) => handleClick(event)}
       />
-    </>
+    </Container>
   )
 }

@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useTheme } from '@mui/material/styles'
 
 // Plotly objects
 import Plot from 'react-plotly.js'
@@ -14,6 +15,7 @@ import TCB from '../classes/TCB'
 
 export default function HourlyEnergyBalance(props) {
   const { t } = useTranslation()
+  const theme = useTheme()
   const graphElement = useRef()
   const graphWidth = useRef()
   const maxHour = useRef()
@@ -133,6 +135,9 @@ export default function HourlyEnergyBalance(props) {
   }
 
   var layout = {
+    font: {
+      color: theme.palette.text.primary,
+    },
     legend: {
       x: 0,
       xref: 'paper',

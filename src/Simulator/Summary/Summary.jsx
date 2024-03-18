@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Typography, Container, Box, Paper } from '@mui/material'
 
 import { SLDRInfoBox } from '../../components/SLDRComponents'
+import MicroMap from '../Location/MicroMap'
 import SummaryAutoproduccion from './SummaryAutoproduccion'
 import SummaryConsumption from './SummaryConsumption'
 import SummaryEconomicBalance from './SummaryEconomicBalance'
@@ -28,8 +29,14 @@ const SummaryStep = () => {
             }}
           >
             <SLDRInfoBox>
+              Micromap
+              <MicroMap></MicroMap>
+            </SLDRInfoBox>
+
+            <SLDRInfoBox>
               <SummaryAutoproduccion></SummaryAutoproduccion>
             </SLDRInfoBox>
+
             <SLDRInfoBox>
               <SummaryConsumption></SummaryConsumption>
             </SLDRInfoBox>
