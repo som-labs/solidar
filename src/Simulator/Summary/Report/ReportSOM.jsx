@@ -1,5 +1,6 @@
-import { useRef, useEffect, forwardRef } from 'react'
+import { useRef } from 'react'
 import styles from './pdfStyle'
+import { useTheme } from '@mui/material/styles'
 
 import { Grid, Container, Button, Box, Typography } from '@mui/material'
 import { useReactToPrint } from 'react-to-print'
@@ -12,13 +13,6 @@ import casa from './images/casa.png'
 import euro from './images/euro.png'
 
 import { useTranslation } from 'react-i18next'
-
-// OpenLayers objects
-import { Map, View } from 'ol'
-import TileLayer from 'ol/layer/Tile'
-import { Vector as VectorSource, XYZ } from 'ol/source'
-import { Style, Fill, Stroke } from 'ol/style'
-import VectorLayer from 'ol/layer/Vector'
 
 import SummaryPreciosTarifa from '../SummaryPreciosTarifa'
 import HourlyEnergyBalance from '../../EnergyBalance/HourlyEnergyBalance'
@@ -33,8 +27,8 @@ import { SLDRInfoBox } from '../../../components/SLDRComponents'
 
 export default function ReportSOM({ onClose }) {
   const { t, i18n } = useTranslation()
-  const mapElement = useRef()
-  const mapRef = useRef()
+  const theme = useTheme()
+
   const componentRef = useRef()
 
   const handlePrint = useReactToPrint({
@@ -68,16 +62,16 @@ export default function ReportSOM({ onClose }) {
           sx={{
             backgroundColor: '#f9cb9c',
             padding: 3,
-            mb: 1,
+            mb: 2,
           }}
         >
           <Typography>{t('REPORT.ATENCIO')}</Typography>
         </Box>
-
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'row',
+            gap: 2,
           }}
         >
           <Box
@@ -86,7 +80,7 @@ export default function ReportSOM({ onClose }) {
               display: 'flex',
               flexDirection: 'column',
               flex: 2,
-              gap: 1,
+              gap: 2,
             }}
           >
             <Box
@@ -97,17 +91,7 @@ export default function ReportSOM({ onClose }) {
                 gap: 2,
               }}
             >
-              <Box
-                id="C1F1C1"
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  flex: '1',
-                  backgroundColor: '#beaf17',
-                  padding: 1,
-                  gap: 1,
-                }}
-              >
+              <Box id="C1F1C1" sx={theme.informe.dataBox}>
                 <Typography variant="h5" sx={{ textAlign: 'center' }}>
                   <strong>{t('REPORT.DADES_TITLE')}</strong>
                 </Typography>
@@ -118,16 +102,8 @@ export default function ReportSOM({ onClose }) {
                   {t('REPORT.DADES_DIRECCIO')}: <strong>{TCB.direccion}</strong>
                 </Typography>
               </Box>
-              <Box
-                id="C1F1C2"
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  flex: '1',
-                  border: '1px solid',
-                }}
-              >
-                <div style={styles.dades}>
+              <Box id="C1F1C2" sx={theme.informe.dataBox}>
+                <div>
                   <InstallationSummary></InstallationSummary>
                 </div>
               </Box>
@@ -165,7 +141,7 @@ export default function ReportSOM({ onClose }) {
               </Typography>
 
               <Typography>
-                {t('REPORT.US_HORAS_SOL') + '   '}
+                {t('REPORT.US_HORAS_SOL') + '    '}
                 <span>
                   <strong>
                     {UTIL.formatoValor('energia', TCB.balance.consumoDiurno)}
@@ -176,17 +152,16 @@ export default function ReportSOM({ onClose }) {
             </Box>
           </Box>
 
-          <Box id="C2" sx={{ display: 'flex', flex: 1, ml: -2, mr: -3 }}>
+          <Box id="C2" sx={{ display: 'flex', flex: 1 }}>
             <MicroMap></MicroMap>
           </Box>
         </Box>
-
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'row',
-            mt: 1,
-            mb: 1,
+            mt: 2,
+            mb: 2,
             gap: 2,
           }}
         >
@@ -194,7 +169,7 @@ export default function ReportSOM({ onClose }) {
             sx={{
               display: 'flex',
               flex: 1,
-              padding: 1,
+              padding: 2,
               gap: 2,
               ml: '3rem',
               mr: '3rem',
@@ -207,7 +182,7 @@ export default function ReportSOM({ onClose }) {
               display: 'flex',
               flexDirection: 'column',
               flex: 6,
-              padding: 1,
+              padding: 2,
               gap: 1,
               backgroundColor: '#d9d9d9',
             }}
@@ -245,13 +220,11 @@ export default function ReportSOM({ onClose }) {
             </Typography>
           </Box>
         </Box>
-
-        <Box sx={{ backgroundColor: '#beaf17', padding: 2, display: 'flex' }}>
+        <Box sx={theme.informe.titleBox}>
           <Typography variant="h5">
             <strong>{t('REPORT.ESTUDI_TITLE')}</strong>
           </Typography>
         </Box>
-
         <Box>
           <Grid
             container
@@ -302,6 +275,7 @@ export default function ReportSOM({ onClose }) {
               </Grid>
               <Grid container>
                 <Grid
+                  item
                   xs={5}
                   sx={{
                     backgroundColor: '#3f2c20',
@@ -407,6 +381,7 @@ export default function ReportSOM({ onClose }) {
                   {UTIL.formatoValor('dinero', TCB.economico.ahorroAnual)}
                 </Grid>
               </Grid>
+
               <Grid container>
                 <Grid
                   xs={5}
@@ -454,132 +429,137 @@ export default function ReportSOM({ onClose }) {
             </Grid>
           </Grid>
         </Box>
-
         <Box>
           <h3>{t('REPORT.PERFIL_TITLE')}</h3>
           <HourlyEnergyBalance></HourlyEnergyBalance>
         </Box>
-
         <Box sx={{ mb: 1 }}>
           <MonthSaving></MonthSaving>
         </Box>
-
         {/* PENDIENTE: remover dependencia CSS */}
-        <div style={styles.properespases}>
-          <h2 style={styles.heading}>{t('REPORT.PROPERESPASES_TITLE')}</h2>
-          <div style={styles.container}>
-            <div style={styles.properespasesContainer}>
-              <h3 style={styles.primerpas}>
-                <img style={styles.primerpasImage} src={dona} />
-                {t('REPORT.PROPERESPASES_DESCRIPTION')}{' '}
-                <strong style={styles.primerpasBold}>
-                  {t('REPORT.PROPERESPASES_DESCRIPTION_STRONG')}
-                </strong>{' '}
-                {t('REPORT.PROPERESPASES_DESCRIPTION_FINAL')}
-              </h3>
-              {/* {console.log(
+        <Box sx={theme.informe.titleBox}>
+          <Typography variant="h5">
+            <strong>{t('REPORT.PROPERESPASES_TITLE')}</strong>
+          </Typography>
+        </Box>
+        <div style={styles.container}>
+          <div style={styles.properespasesContainer}>
+            <h3 style={styles.primerpas}>
+              <img style={styles.primerpasImage} src={dona} />
+              {t('REPORT.PROPERESPASES_DESCRIPTION')}{' '}
+              <strong style={styles.primerpasBold}>
+                {t('REPORT.PROPERESPASES_DESCRIPTION_STRONG')}
+              </strong>{' '}
+              {t('REPORT.PROPERESPASES_DESCRIPTION_FINAL')}
+            </h3>
+            {/* {console.log(
                 'https://www.somenergia.coop/' +
                   i18n.language +
                   '/produeix-energia-renovable/autoproduccio/',
               )} */}
-              <p style={styles.properespasesAmbImage}>
-                <a
-                  href={
-                    'https://www.somenergia.coop/' +
-                    i18n.language +
-                    '/produeix-energia-renovable/autoproduccio/'
-                  }
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {t('REPORT.PROPERESPASES_TEXT')}
-                </a>
-              </p>
-              {/* {console.log(
+            <p style={styles.properespasesAmbImage}>
+              <a
+                href={
+                  'https://www.somenergia.coop/' +
+                  i18n.language +
+                  '/produeix-energia-renovable/autoproduccio/'
+                }
+                target="_blank"
+                rel="noreferrer"
+              >
+                {t('REPORT.PROPERESPASES_TEXT')}
+              </a>
+            </p>
+            {/* {console.log(
                 'https://' +
                   i18n.language +
                   '.support.somenergia.coop/article/781-com-funcionen-les-compres-col-lectives-d-autoproduccio-de-som-energia',
               )} */}
-              <p style={styles.properespasesText}>
-                <a
-                  // href={
-                  //   'https://' +
-                  //   i18n.language +
-                  //   '.support.somenergia.coop/article/781-com-funcionen-les-compres-col-lectives-d-autoproduccio-de-som-energia'
-                  // }
-                  href={
-                    'https://ca.support.somenergia.coop/article/781-com-funcionen-les-compres-col-lectives-d-autoproduccio-de-som-energia'
-                  }
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {t('REPORT.PROPERESPASES_LINK')}{' '}
-                </a>
-              </p>
-            </div>
-            <div style={styles.properespasesContainer}>
-              <h3 style={styles.segonpas}>
-                {t('REPORT.PROPERESPASES_TITLE_SEGON')}{' '}
-                <strong style={styles.segonpasBold}>
-                  {t('REPORT.PROPERESPASES_TITLE_SEGON_STRONG')}{' '}
-                </strong>
-              </h3>
-              <p style={styles.properespasesText}>
-                <a href="https://docs.google.com/document/d/1b2J3-gZeJlrv6DkWiYRhpqvflW_ACQZcsOL3if8IyF0/edit">
-                  {t('REPORT.PROPERESPASES_TEXT_SEGON')}{' '}
-                </a>
-                .
-              </p>
-              <p style={styles.properespasesText}>
-                <a href="https://www.idae.es/companies/energetic-services">
-                  {t('REPORT.PROPERESPASES_TEXT_TERCER')}{' '}
-                </a>
-                .
-              </p>
-            </div>
+            <p style={styles.properespasesText}>
+              <a
+                // href={
+                //   'https://' +
+                //   i18n.language +
+                //   '.support.somenergia.coop/article/781-com-funcionen-les-compres-col-lectives-d-autoproduccio-de-som-energia'
+                // }
+                href={
+                  'https://ca.support.somenergia.coop/article/781-com-funcionen-les-compres-col-lectives-d-autoproduccio-de-som-energia'
+                }
+                target="_blank"
+                rel="noreferrer"
+              >
+                {t('REPORT.PROPERESPASES_LINK')}{' '}
+              </a>
+            </p>
+          </div>
+          <div style={styles.properespasesContainer}>
+            <h3 style={styles.segonpas}>
+              {t('REPORT.PROPERESPASES_TITLE_SEGON')}{' '}
+              <strong style={styles.segonpasBold}>
+                {t('REPORT.PROPERESPASES_TITLE_SEGON_STRONG')}{' '}
+              </strong>
+            </h3>
+            <p style={styles.properespasesText}>
+              <a href="https://docs.google.com/document/d/1b2J3-gZeJlrv6DkWiYRhpqvflW_ACQZcsOL3if8IyF0/edit">
+                {t('REPORT.PROPERESPASES_TEXT_SEGON')}{' '}
+              </a>
+              .
+            </p>
+            <p style={styles.properespasesText}>
+              <a href="https://www.idae.es/companies/energetic-services">
+                {t('REPORT.PROPERESPASES_TEXT_TERCER')}{' '}
+              </a>
+              .
+            </p>
           </div>
         </div>
-        <div style={styles.autogeneracio}>
-          <h2 style={styles.heading}>{t('REPORT.AUTOGENERACIO_TITLE')} </h2>
-          <div style={styles.container}>
-            <div>
-              <h3 style={styles.autogeneracioTitle}>
-                {t('REPORT.AUTOGENERACIO_TEXT')}{' '}
-                <strong style={styles.autogeneracioBold}>
-                  {t('REPORT.AUTOGENERACIO_TEXT_STRONG')}{' '}
-                </strong>
-                {t('REPORT.AUTOGENERACIO_TEXT_FINAL')}{' '}
-              </h3>
-            </div>
-            <div style={styles.listContainer}>
-              <ul style={styles.list}>
-                <li style={styles.listitem}>
-                  <a href="https://ca.support.somenergia.coop/article/778-que-es-l-autoproduccio">
-                    {t('REPORT.AUTOGENERACIO_LINK_PRIMER')}{' '}
-                  </a>
-                </li>
-                <li style={styles.listitem}>
-                  <a href="https://ca.support.somenergia.coop/article/783-com-funciona-la-compensacio-simplificada-dexcedents">
-                    {t('REPORT.AUTOGENERACIO_LINK_SEGON')}{' '}
-                  </a>
-                </li>
-                <li style={styles.listitem}>
-                  <a href="https://ca.support.somenergia.coop/article/929-autoproduccio-que-passa-si-marxa-la-llum">
-                    {t('REPORT.AUTOGENERACIO_LINK_TERCER')}{' '}
-                  </a>
-                </li>
-                <li style={styles.listitem}>
-                  <a href="https://ca.support.somenergia.coop/category/777-autoproduccio">
-                    {t('REPORT.AUTOGENERACIO_LINK_CUART')}{' '}
-                  </a>
-                </li>
-              </ul>
-            </div>
+        <Box sx={theme.informe.titleBox}>
+          <Typography variant="h5">
+            <strong>{t('REPORT.AUTOGENERACIO_TITLE')}</strong>
+          </Typography>
+        </Box>
+
+        <div style={styles.container}>
+          <div>
+            <h3 style={styles.autogeneracioTitle}>
+              {t('REPORT.AUTOGENERACIO_TEXT')}{' '}
+              <strong style={styles.autogeneracioBold}>
+                {t('REPORT.AUTOGENERACIO_TEXT_STRONG')}{' '}
+              </strong>
+              {t('REPORT.AUTOGENERACIO_TEXT_FINAL')}{' '}
+            </h3>
+          </div>
+          <div style={styles.listContainer}>
+            <ul style={styles.list}>
+              <li style={styles.listitem}>
+                <a href="https://ca.support.somenergia.coop/article/778-que-es-l-autoproduccio">
+                  {t('REPORT.AUTOGENERACIO_LINK_PRIMER')}{' '}
+                </a>
+              </li>
+              <li style={styles.listitem}>
+                <a href="https://ca.support.somenergia.coop/article/783-com-funciona-la-compensacio-simplificada-dexcedents">
+                  {t('REPORT.AUTOGENERACIO_LINK_SEGON')}{' '}
+                </a>
+              </li>
+              <li style={styles.listitem}>
+                <a href="https://ca.support.somenergia.coop/article/929-autoproduccio-que-passa-si-marxa-la-llum">
+                  {t('REPORT.AUTOGENERACIO_LINK_TERCER')}{' '}
+                </a>
+              </li>
+              <li style={styles.listitem}>
+                <a href="https://ca.support.somenergia.coop/category/777-autoproduccio">
+                  {t('REPORT.AUTOGENERACIO_LINK_CUART')}{' '}
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
-        <div style={styles.calculs}>
-          <h2 style={styles.heading}>{t('REPORT.INFORME_TITLE')} </h2>
-        </div>
+
+        <Box sx={theme.informe.titleBox}>
+          <Typography variant="h5">
+            <strong>{t('REPORT.INFORME_TITLE')}</strong>
+          </Typography>
+        </Box>
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
           <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
@@ -686,7 +666,6 @@ export default function ReportSOM({ onClose }) {
             </Box>
           </Box>
         </Box>
-
         <div style={styles.peu}>
           <p style={styles.peuText}>{t('REPORT.PEU')} </p>
           <img src={logo} width="120" />

@@ -39,20 +39,19 @@ function SLDRFooterBox(props) {
 function SLDRInfoBox(props) {
   const theme = useTheme()
 
-  let sxFix = {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flex: 1,
-    //bgcolor: 'theme.palette.infoBox.main', //'#E0FFCC',
-    borderRadius: 8,
-    border: '2px solid',
-    borderColor: 'theme.palette.infoBox.main',
-    mb: '1rem',
-    justifyContent: 'center',
-  }
-  sxFix.bgcolor = theme.palette.infoBox.main
+  // let sxFix = {
+  //   display: 'flex',
+  //   flexWrap: 'wrap',
+  //   flex: 1,
+  //   borderRadius: 0,
+  //   border: '2px solid',
+  //   borderColor: 'green',
+  //   mb: '1rem',
+  //   justifyContent: 'center',
+  // }
+  // sxFix.bgcolor = theme.palette.infoBox.main
 
-  let sxFull = { ...sxFix, ...props.sx }
+  let sxFull = { ...theme.palette.infoBox, ...props.sx }
   return (
     <>
       <Box sx={sxFull}>{props.children}</Box>
