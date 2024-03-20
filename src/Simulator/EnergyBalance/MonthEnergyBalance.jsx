@@ -13,7 +13,7 @@ import { Button, Container } from '@mui/material'
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
 
-export default function MonthEnergyBalance() {
+export default function MonthEnergyBalance(props) {
   const { t } = useTranslation()
 
   const graphElement = useRef()
@@ -21,8 +21,7 @@ export default function MonthEnergyBalance() {
   const maxMonth = useRef()
   const minMonth = useRef()
 
-  const consumo = TCB.consumo.resumenMensual('suma')
-  const produccion = TCB.produccion.resumenMensual('suma')
+  const { consumo, produccion } = props.monthlyData
 
   maxMonth.current = Math.max(Math.max(...consumo), Math.max(...produccion))
   minMonth.current = Math.min(Math.min(...consumo), Math.min(...produccion))

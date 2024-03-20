@@ -127,7 +127,6 @@ export default function ConsumptionSummary() {
 
   function createTipoConsumo() {
     editing.current = false
-    // console.log('EDITING NEW', editing)
     const initialValues = {
       nombreTipoConsumo: 'Vivienda ' + TCB.featIdUnico,
       fuente: 'CSV',
@@ -241,6 +240,7 @@ export default function ConsumptionSummary() {
             startIcon={<AddIcon />}
             onClick={createTipoConsumo}
             size="medium"
+            style={{ margin: 'auto' }}
           >
             {t('CONSUMPTION.LABEL_BUTTON_NUEVO_TIPOCONSUMO')}
           </Button>
@@ -306,10 +306,13 @@ export default function ConsumptionSummary() {
             autoHeight
             disableColumnMenu
             localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
-            sx={{
-              mb: '1rem',
-            }}
             slots={{ toolbar: newConsumption, footer: footerSummary }}
+            sx={{
+              border: 'none', // Remove external border
+              '& .MuiDataGrid-columnsContainer': {
+                borderBottom: 'none', // Remove border at the bottom of the header row
+              },
+            }}
           />
         </SLDRInfoBox>
       )}

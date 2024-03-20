@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useTheme } from '@mui/material/styles'
 
 // Plotly objects
 import Plot from 'react-plotly.js'
@@ -14,6 +15,8 @@ import { isEmpty } from 'ol/extent'
 
 export default function MapaMesHora({ activo }) {
   const { t } = useTranslation()
+  const theme = useTheme()
+
   const graphElement = useRef()
   const graphWidth = useRef()
 
@@ -179,6 +182,9 @@ export default function MapaMesHora({ activo }) {
     traces.push(data)
   }
   const layout = {
+    font: {
+      color: theme.palette.text.primary,
+    },
     showlegend: true,
     width: 0.9 * graphWidth.current,
     paper_bgcolor: 'rgba(0,0,0,0)',
