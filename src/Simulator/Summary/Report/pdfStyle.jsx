@@ -3,7 +3,7 @@ const style = {
     backgroundColor: 'white',
     display: 'grid',
     padding: '20px',
-    gridTemplateColumns: 'repeat(3,1fr)',
+
     gridGap: 10,
     fontSize: 14,
     maxWidth: 3508,
@@ -25,14 +25,7 @@ const style = {
   strong: {
     color: '#beaf17',
   },
-  header: {
-    gridColumn: '1/4',
-    padding: 10,
-    display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-end',
-    gap: 10,
-  },
+
   listpowers: {
     display: 'inline-flex',
     alignItems: 'center',

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 // MUI objects
 
-import { IconButton, Grid, Typography, Box } from '@mui/material'
+import { IconButton, Grid, Typography, Container, Box } from '@mui/material'
 import HelpIcon from '@mui/icons-material/HelpOutlineRounded.js'
 // REACT Solidar Components
 import PreciosTarifa from './PreciosTarifa'
@@ -28,10 +28,9 @@ const ConsumptionStep = () => {
   }
 
   return (
-    <>
-      <Grid container rowSpacing={1}>
+    <Container>
+      <Grid container rowSpacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h3">{t('CONSUMPTION.TITLE')}</Typography>
           <Typography
             variant="body"
             dangerouslySetInnerHTML={{
@@ -51,7 +50,7 @@ const ConsumptionStep = () => {
             <HelpIcon />
           </IconButton>
         </Grid>
-        <Grid>
+        <Grid item xs={12}>
           <Typography
             variant="body"
             dangerouslySetInnerHTML={{
@@ -64,7 +63,7 @@ const ConsumptionStep = () => {
             <PreciosTarifa></PreciosTarifa>
           </SLDRInfoBox>
         </Grid>
-        <Grid>
+        <Grid item xs={12}>
           <Typography
             variant="body"
             dangerouslySetInnerHTML={{
@@ -76,7 +75,7 @@ const ConsumptionStep = () => {
           <ConsumptionSummary></ConsumptionSummary>
         </Grid>
       </Grid>
-    </>
+    </Container>
   )
 }
 

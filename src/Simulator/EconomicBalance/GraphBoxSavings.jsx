@@ -56,7 +56,7 @@ export default function GraphBoxSavings() {
             justifyContent: 'center',
           }}
         >
-          <Typography variant="body" textAlign={'center'}>
+          <Typography variant="body" textAlign={'center'} color={'black'}>
             {t('Economico.PROP.gastoSinPlacasAnual')}
           </Typography>
         </Box>
@@ -69,7 +69,7 @@ export default function GraphBoxSavings() {
             justifyContent: 'center',
           }}
         >
-          <Typography variant="h5" textAlign={'center'}>
+          <Typography variant="h5" textAlign={'center'} color={'black'}>
             {UTIL.formatoValor('dinero', ecoData.gastoSinPlacasAnual)}
           </Typography>
         </Box>
@@ -95,13 +95,13 @@ export default function GraphBoxSavings() {
             border: '2px dashed grey',
           }}
         >
-          <Typography variant="body" textAlign={'center'}>
+          <Typography variant="body" textAlign={'center'} color={'black'}>
             {'ahorro anual'}
           </Typography>
-          <Typography variant="h5" textAlign={'center'}>
+          <Typography variant="h5" textAlign={'center'} color={'black'}>
             {UTIL.formatoValor('dinero', ecoData.ahorroAnual)}
           </Typography>
-          <Typography variant="body" textAlign={'center'}>
+          <Typography variant="body" textAlign={'center'} color={'black'}>
             {UTIL.formatoValor(
               'porciento',
               (ecoData.ahorroAnual / ecoData.gastoSinPlacasAnual) * 100,
@@ -130,7 +130,7 @@ export default function GraphBoxSavings() {
             justifyContent: 'center',
           }}
         >
-          <Typography variant="body" textAlign={'center'}>
+          <Typography variant="body" textAlign={'center'} color={'black'}>
             {t('Economico.PROP.gastoConPlacasAnual')}
           </Typography>
         </Box>
@@ -143,7 +143,7 @@ export default function GraphBoxSavings() {
             justifyContent: 'center',
           }}
         >
-          <Typography variant="h5" textAlign={'center'}>
+          <Typography variant="h5" textAlign={'center'} color={'black'}>
             {UTIL.formatoValor('dinero', ecoData.gastoConPlacasAnual)}
           </Typography>
         </Box>
