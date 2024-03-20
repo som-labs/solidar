@@ -15,7 +15,15 @@ import { Draw } from 'ol/interaction'
 import { getArea, getDistance } from 'ol/sphere.js'
 
 // MUI objects
-import { Button, Tooltip, Typography, Box, IconButton, Container } from '@mui/material'
+import {
+  Button,
+  Tooltip,
+  Typography,
+  Box,
+  IconButton,
+  Container,
+  Grid,
+} from '@mui/material'
 
 //React global components
 import { BasesContext } from '../BasesContext'
@@ -349,6 +357,7 @@ export default function MapComponent() {
         return false
       }
       TCB.direccion = details.direccion
+      console.log(TCB.direccion)
     } catch (error) {
       console.log('CATCHED', error)
       SLDRAlert('NOMINATIM error 2', error, 'ERROR')
@@ -426,42 +435,46 @@ export default function MapComponent() {
   }
 
   return (
-    <Container>
+    <Grid container>
       {/* El mapa */}
-      <div
+      <Box
         ref={mapElement}
         className="map"
         style={{ width: '100%', height: '500px' }}
-      ></div>
-      {/* Boton para cambiar vista mapa vs satelite */}
-      <Tooltip title={t('LOCATION.TOOLTIP_MAP_TYPE')} placement="top">
-        <Button
-          variant="contained"
-          size="large"
-          onClick={() => {
-            if (mapType === 'LOCATION.LABEL_SATELITE') setMapType('LOCATION.LABEL_VECTOR')
-            else setMapType('LOCATION.LABEL_SATELITE')
-            let OpenS = map
-              .getLayers()
-              .getArray()
-              .find((layer) => layer.get('name') == 'OSM')
-            let SAT = map
-              .getLayers()
-              .getArray()
-              .find((layer) => layer.get('name') == 'SAT')
-            OpenS.setVisible(!OpenS.getVisible())
-            SAT.setVisible(!SAT.getVisible())
-          }}
-        >
-          {t(mapType)}
+      ></Box>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', flex: 1 }}>
+        {/* Boton para cambiar vista mapa vs satelite */}
+        <Tooltip title={t('LOCATION.TOOLTIP_MAP_TYPE')} placement="top">
+          <Button
+            fullWidth
+            variant="contained"
+            size="large"
+            onClick={() => {
+              if (mapType === 'LOCATION.LABEL_SATELITE')
+                setMapType('LOCATION.LABEL_VECTOR')
+              else setMapType('LOCATION.LABEL_SATELITE')
+              let OpenS = map
+                .getLayers()
+                .getArray()
+                .find((layer) => layer.get('name') == 'OSM')
+              let SAT = map
+                .getLayers()
+                .getArray()
+                .find((layer) => layer.get('name') == 'SAT')
+              OpenS.setVisible(!OpenS.getVisible())
+              SAT.setVisible(!SAT.getVisible())
+            }}
+          >
+            {t(mapType)}
+          </Button>
+        </Tooltip>
+        <Button fullWidth variant="contained" size="large" onClick={fitMap}>
+          {t('LOCATION.LABEL_FITMAP')}
         </Button>
-      </Tooltip>
-      <Button variant="contained" size="large" onClick={fitMap}>
-        {t('LOCATION.LABEL_FITMAP')}
-      </Button>
-      <Button variant="contained" size="large" onClick={openGoogleEarth}>
-        {t('LOCATION.LABEL_GOOGLE_EARTH')}
-      </Button>
-    </Container>
+        <Button fullWidth variant="contained" size="large" onClick={openGoogleEarth}>
+          {t('LOCATION.LABEL_GOOGLE_EARTH')}
+        </Button>
+      </Box>
+    </Grid>
   )
 }

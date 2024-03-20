@@ -73,6 +73,7 @@ async function exportProject() {
   TCB.datosProyecto.fechaExportacion = new Date()
   TCB.datosProyecto.nombreProyecto = TCB.nombreProyecto
   TCB.datosProyecto.territorio = TCB.territorio
+  TCB.datosProyecto.direccion = TCB.direccion
   TCB.datosProyecto.emailContacto = TCB.emailContacto
   TCB.datosProyecto.telefonoContacto = TCB.telefonoContacto
   TCB.datosProyecto.fechaCreacion = TCB.fechaCreacion
@@ -229,6 +230,7 @@ async function importProject(fichero) {
 
   TCB.nombreProyecto = datosImportar.nombreProyecto
   TCB.territorio = datosImportar.territorio
+  TCB.direccion = datosImportar.direccion
   TCB.emailContacto = datosImportar.emailContacto
   TCB.telefonoContacto = datosImportar.telefonoContacto
   TCB.fechaCreacion = datosImportar.fechaCreacion

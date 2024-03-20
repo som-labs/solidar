@@ -24,7 +24,7 @@ function GlobalTheme({ children }) {
       },
       toggle: () => {
         if (colorMode === 'dark') return setColorMode('light')
-        if (colorMode === 'light') return setColorMode(null)
+        if (colorMode === 'light') return setColorMode('dark')
         return setColorMode('dark')
       },
     }),

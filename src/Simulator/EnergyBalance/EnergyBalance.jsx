@@ -118,17 +118,19 @@ export default function EnergyBalanceStep() {
           __html: t('ENERGY_BALANCE.DESCRIPTION'),
         }}
       />
-      <SLDRInfoBox sx={{ mt: '1rem' }}>
-        <InstallationSummary></InstallationSummary>
-      </SLDRInfoBox>
-
-      {TCB.estiloActivo === 'CLARA' && (
-        <SLDRInfoBox>
-          <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
-        </SLDRInfoBox>
-      )}
-
-      <Grid container>
+      <Grid container rowSpacing={2}>
+        <Grid item xs={12}>
+          <SLDRInfoBox sx={{ mt: '1rem' }}>
+            <InstallationSummary></InstallationSummary>
+          </SLDRInfoBox>
+        </Grid>
+        {TCB.estiloActivo === 'CLARA' && (
+          <Grid item xs={12}>
+            <SLDRInfoBox>
+              <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
+            </SLDRInfoBox>
+          </Grid>
+        )}
         <Grid item xs={12}>
           <Typography variant="h4" textAlign={'center'}>
             {t('ENERGY_BALANCE.FLOW_TITLE')}
@@ -152,96 +154,104 @@ export default function EnergyBalanceStep() {
             <HelpIcon />
           </IconButton>
         </Grid>
-      </Grid>
+        <Grid item xs={12}>
+          <SLDRInfoBox>
+            <CallSankey yearlyData={yearlyData}></CallSankey>
+          </SLDRInfoBox>
+        </Grid>
+        <Grid item xs={12}>
+          <CollapsibleCard
+            title={t('BASIC.LABEL_AVISO')}
+            titleVariant="body"
+            titleSX={{ color: 'blue', mb: '-1rem' }}
+            descriptionVariant="body"
+            descriptionSX={{ fontSize: '15px' }}
+            description={t('ENERGY_BALANCE.MSG_disclaimerProduccion')}
+          ></CollapsibleCard>
+        </Grid>
+        {dataReady && (
+          <Grid item xs={12}>
+            <SLDRInfoBox sx={{ alignItems: 'center' }}>
+              <PieCharts yearlyData={yearlyData}></PieCharts>
+            </SLDRInfoBox>
+          </Grid>
+        )}
+        <Grid item xs={12}>
+          <SLDRInfoBox sx={{ alignItems: 'center' }}>
+            <Typography variant="h6">
+              {t('ENERGY_BALANCE.TITLE_HOURLY_ENERGY_BALANCE')}
+            </Typography>
+            <TextField
+              sx={{ width: 200, height: 50, mt: '1rem', mb: '1rem', ml: '1rem' }}
+              select
+              value={mes}
+              defaultValue={-1}
+              label={t('BASIC.LABEL_MES')}
+              onChange={(event) => setMes(event.target.value)}
+            >
+              <MenuItem key={-1} value={t('ENERGY_BALANCE.VALUE_FULL_YEAR')}>
+                {t('ENERGY_BALANCE.VALUE_FULL_YEAR')}
+              </MenuItem>
+              {UTIL.nombreMes.map((nombreMes, index) => (
+                <MenuItem key={index} value={index}>
+                  {t(nombreMes)}
+                </MenuItem>
+              ))}
+            </TextField>
+            <HourlyEnergyBalance mes={mes}></HourlyEnergyBalance>
+          </SLDRInfoBox>
+        </Grid>
+        {TCB.estiloActivo === 'CLARA' && (
+          <Grid item xs={12}>
+            <SLDRInfoBox>
+              <Typography variant="h4" textAlign={'center'}>
+                {t('ENERGY_BALANCE.TITLE_MONTH_ENERGY_BALANCE')}
+              </Typography>
+              <Typography
+                variant="body"
+                dangerouslySetInnerHTML={{
+                  __html: t('ENERGY_BALANCE.DESCRIPTION_MONTH_ENERGY_BALANCE'),
+                }}
+              />
 
-      <SLDRInfoBox>
-        <CallSankey yearlyData={yearlyData}></CallSankey>
-      </SLDRInfoBox>
-
-      <CollapsibleCard
-        title={t('BASIC.LABEL_AVISO')}
-        titleVariant="body"
-        titleSX={{ color: 'blue', mb: '-1rem' }}
-        descriptionVariant="body"
-        descriptionSX={{ fontSize: '15px' }}
-        description={t('ENERGY_BALANCE.MSG_disclaimerProduccion')}
-      ></CollapsibleCard>
-
-      {dataReady && (
-        <SLDRInfoBox sx={{ alignItems: 'center' }}>
-          <PieCharts yearlyData={yearlyData}></PieCharts>
-        </SLDRInfoBox>
-      )}
-
-      <SLDRInfoBox sx={{ alignItems: 'center' }}>
-        <Typography variant="h6">
-          {t('ENERGY_BALANCE.TITLE_HOURLY_ENERGY_BALANCE')}
+              {dataReady && (
+                <MonthEnergyBalance monthlyData={monthlyData}></MonthEnergyBalance>
+              )}
+            </SLDRInfoBox>
+          </Grid>
+        )}
+        <Grid item xs={12}>
+          <SLDRInfoBox>
+            {dataReady && <MonthFiveParts monthlyData={monthlyData}></MonthFiveParts>}
+          </SLDRInfoBox>
+        </Grid>
+        {TCB.estiloActivo === 'CLARA' && (
+          <Grid item xs={12}>
+            <SLDRInfoBox>
+              {dataReady && <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>}
+            </SLDRInfoBox>
+          </Grid>
+        )}
+        <Typography variant="h4" textAlign={'center'}>
+          {t('ENERGY_BALANCE.TITLE_ENVIRONMENTAL_IMPACT')}
         </Typography>
-        <TextField
-          sx={{ width: 200, height: 50, mt: '1rem', mb: '1rem', ml: '1rem' }}
-          select
-          value={mes}
-          defaultValue={-1}
-          label={t('BASIC.LABEL_MES')}
-          onChange={(event) => setMes(event.target.value)}
-        >
-          <MenuItem key={-1} value={t('ENERGY_BALANCE.VALUE_FULL_YEAR')}>
-            {t('ENERGY_BALANCE.VALUE_FULL_YEAR')}
-          </MenuItem>
-          {UTIL.nombreMes.map((nombreMes, index) => (
-            <MenuItem key={index} value={index}>
-              {t(nombreMes)}
-            </MenuItem>
-          ))}
-        </TextField>
-        <HourlyEnergyBalance mes={mes}></HourlyEnergyBalance>
-      </SLDRInfoBox>
-
-      {TCB.estiloActivo === 'CLARA' && (
-        <SLDRInfoBox>
-          <Typography variant="h4" textAlign={'center'}>
-            {t('ENERGY_BALANCE.TITLE_MONTH_ENERGY_BALANCE')}
-          </Typography>
-          <Typography
-            variant="body"
-            dangerouslySetInnerHTML={{
-              __html: t('ENERGY_BALANCE.DESCRIPTION_MONTH_ENERGY_BALANCE'),
-            }}
-          />
-
-          {dataReady && (
-            <MonthEnergyBalance monthlyData={monthlyData}></MonthEnergyBalance>
-          )}
-        </SLDRInfoBox>
-      )}
-
-      <SLDRInfoBox>
-        {dataReady && <MonthFiveParts monthlyData={monthlyData}></MonthFiveParts>}
-      </SLDRInfoBox>
-
-      {TCB.estiloActivo === 'CLARA' && (
-        <SLDRInfoBox>
-          {dataReady && <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>}
-        </SLDRInfoBox>
-      )}
-
-      <Typography variant="h4" textAlign={'center'}>
-        {t('ENERGY_BALANCE.TITLE_ENVIRONMENTAL_IMPACT')}
-      </Typography>
-      <Typography
-        variant="body"
-        dangerouslySetInnerHTML={{
-          __html: t('ENERGY_BALANCE.DESCRIPTION_ENVIRONMENTAL_IMPACT'),
-        }}
-      />
-
-      <SLDRInfoBox sx={{ mt: '1rem' }}>
-        <EnvironmentalImpact></EnvironmentalImpact>
-      </SLDRInfoBox>
-
-      <SLDRInfoBox>
-        <ConsumoGeneracion3D></ConsumoGeneracion3D>
-      </SLDRInfoBox>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('ENERGY_BALANCE.DESCRIPTION_ENVIRONMENTAL_IMPACT'),
+          }}
+        />
+        <Grid item xs={12}>
+          <SLDRInfoBox sx={{ mt: '1rem' }}>
+            <EnvironmentalImpact></EnvironmentalImpact>
+          </SLDRInfoBox>
+        </Grid>{' '}
+        <Grid item xs={12}>
+          <SLDRInfoBox>
+            <ConsumoGeneracion3D></ConsumoGeneracion3D>
+          </SLDRInfoBox>
+        </Grid>
+      </Grid>
     </Container>
   )
 }

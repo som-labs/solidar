@@ -1,10 +1,7 @@
-import { useRef, useEffect, forwardRef } from 'react'
-
-import { Grid, Container, Button } from '@mui/material'
-import { useReactToPrint } from 'react-to-print'
-import Print from '@mui/icons-material/Print'
-
+import { useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import { Container } from '@mui/material'
 
 // OpenLayers objects
 import { Map, View } from 'ol'
@@ -22,13 +19,7 @@ export default function MicroMap() {
   const mapElement = useRef()
   const mapRef = useRef()
 
-  //   const componentRef = useRef()
-  //   const handlePrint = useReactToPrint({
-  //     content: () => componentRef.current,
-  //   })
-  console.log('PRE EFFECT', mapRef.current)
   useEffect(() => {
-    console.log('IN EFFECT', mapRef.current)
     // If there is not previous Map in MapContext create one
     if (!mapRef.current) {
       const SAT = new TileLayer({
@@ -81,12 +72,6 @@ export default function MicroMap() {
   }, [])
 
   return (
-    <Container>
-      <div
-        ref={mapElement}
-        className="map"
-        style={{ width: '100%', height: '100%' }}
-      ></div>
-    </Container>
+    <div ref={mapElement} className="map" style={{ width: '100%', height: '100%' }}></div>
   )
 }
