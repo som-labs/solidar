@@ -42,21 +42,6 @@ export default function InstallationSummary() {
       description: t('Instalacion.TOOLTIP.paneles'),
       sortable: false,
     },
-    // {
-    //   field: 'configuracion',
-    //   editable: true,
-    //   headerName: t('Instalacion.PROP.config'),
-    //   headerClassName: 'super-app-theme--header',
-    //   headerAlign: 'center',
-    //   flex: 2,
-    //   align: 'center',
-    //   description: t('Instalacion.TOOLTIP.paneles'),
-    //   sortable: false,
-    //   renderCell: (params) => {
-    //     console.log(params)
-    //     return params.row.columnas + '-' + params.row.filas
-    //   },
-    // },
     {
       field: 'potenciaTotal',
       headerName: t('Instalacion.PROP.potenciaTotal'),
@@ -75,7 +60,7 @@ export default function InstallationSummary() {
   function footerSummary() {
     return (
       <SLDRFooterBox sx={{ flexDirection: 'row' }}>
-        <div style={{ flex: '5' }} /> {/* Placeholder for ID column */}
+        <div style={{ flex: '6' }} /> {/* Placeholder for ID column */}
         <div style={{ flex: '2', textAlign: 'center' }}>
           <strong>
             {bases.reduce((sum, tBase) => sum + parseInt(tBase.paneles), 0)}
@@ -89,7 +74,7 @@ export default function InstallationSummary() {
             )}
           </strong>
         </div>
-        <div style={{ flex: '0.7', textAlign: 'center' }}></div>
+        <div style={{ flex: '0.6', textAlign: 'center' }}></div>
       </SLDRFooterBox>
     )
   }
@@ -100,24 +85,24 @@ export default function InstallationSummary() {
    */
 
   return (
-    <Box>
-      <Grid container>
-        <Grid item xs={12}>
-          <Typography variant="body">{t('Tabla bases asignadas')}</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <DataGrid
-            getRowId={getRowId}
-            rows={bases}
-            columns={columns}
-            hideFooter={false}
-            rowHeight={30}
-            autoHeight
-            disableColumnMenu
-            slots={{ footer: footerSummary }}
-          />
-        </Grid>
+    <Grid container>
+      <Grid item xs={12} sx={{ mt: '-0.5rem' }}>
+        <Typography variant="h5" sx={{ textAlign: 'center' }}>
+          <strong>{t('Tabla bases asignadas')}</strong>
+        </Typography>
       </Grid>
-    </Box>
+      <Grid item xs={12}>
+        <DataGrid
+          getRowId={getRowId}
+          rows={bases}
+          columns={columns}
+          hideFooter={false}
+          rowHeight={30}
+          autoHeight
+          disableColumnMenu
+          slots={{ footer: footerSummary }}
+        />
+      </Grid>
+    </Grid>
   )
 }

@@ -87,9 +87,15 @@ export default function SummaryEconomicBalance() {
               <Typography variant="h4" color={'green'}>
                 {ecoData.periodoAmortizacion}
               </Typography>
-              <Typography variant="body" textAlign={'center'}>
-                {t('SUMMARY.LABEL_AMORTIZACION')}
-              </Typography>
+              <Typography
+                variant="body"
+                textAlign={'center'}
+                dangerouslySetInnerHTML={{
+                  __html: t('SUMMARY.LABEL_AMORTIZACION', {
+                    amortizacion: '',
+                  }),
+                }}
+              />
             </Box>
             <Box
               sx={{
@@ -114,7 +120,7 @@ export default function SummaryEconomicBalance() {
                 variant="body"
                 textAlign={'center'}
                 dangerouslySetInnerHTML={{
-                  __html: t('SUMMARY.LABEL_SUBVENCIONES'),
+                  __html: t('SUMMARY.LABEL_SUBVENCIONES', { subvenciones: '' }),
                 }}
               />
             </Box>

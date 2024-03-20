@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useTheme } from '@mui/material/styles'
 
 // Plotly objects
 import Plot from 'react-plotly.js'
@@ -17,6 +18,8 @@ import * as UTIL from '../classes/Utiles'
 
 export default function MapaDiaHora({ activo }) {
   const { t } = useTranslation()
+  const theme = useTheme()
+
   const [openDialog, closeDialog] = useDialog()
 
   const [diaActivo, setdiaActivo] = useState()
@@ -45,8 +48,10 @@ export default function MapaDiaHora({ activo }) {
   }
   const mesMapa = Array.from(i18nextMes())
 
+  // main: isDarkMode ? '#333333' : '#F8F8F8',
+
   const colorProfile = [
-    [0.0, '#98FB98'],
+    [0.0, '#7FAF7F'],
     [0.2, '#ADFF2F'],
     [0.4, 'yellow'],
     [1.0, 'red'],
@@ -80,6 +85,9 @@ export default function MapaDiaHora({ activo }) {
   }
 
   const layout = {
+    font: {
+      color: theme.palette.text.primary,
+    },
     xaxis: { title: t('GRAPHICS.LABEL_HORA'), dtick: 2 },
     yaxis: {
       tickvals: UTIL.indiceDia.map((e) => {
@@ -108,6 +116,10 @@ export default function MapaDiaHora({ activo }) {
         xref: 'x',
         yref: 'y',
         text: 'Inicio',
+        font: {
+          color: 'black',
+          size: 16,
+        },
         xanchor: 'left',
         textangle: 0,
         ax: 2,

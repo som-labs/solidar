@@ -1,5 +1,7 @@
-import { useContext, useRef, useEffect, useState } from 'react'
+import { useContext, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useTheme } from '@mui/material/styles'
+
 // Plotly library
 import Plot from 'react-plotly.js'
 import Plotly from 'plotly.js-dist'
@@ -16,6 +18,7 @@ import TCB from '../classes/TCB'
 
 export default function MonthSaving() {
   const { t } = useTranslation()
+  const theme = useTheme()
 
   const { ecoData, coefHucha } = useContext(EconomicContext)
   const graphElement = useRef()
@@ -105,6 +108,9 @@ export default function MonthSaving() {
       }
 
       var layout = {
+        font: {
+          color: theme.palette.text.primary,
+        },
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
         autosize: true,

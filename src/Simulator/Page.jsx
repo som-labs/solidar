@@ -12,6 +12,7 @@ import ConsumptionStep from './Consumption/Consumption'
 import EnergyBalanceStep from './EnergyBalance/EnergyBalance'
 import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
 import SummaryStep from './Summary/Summary'
+import SummarySOMStep from './Summary/SummarySOM'
 
 import { ConsumptionContext } from './ConsumptionContext'
 import { BasesContext } from './BasesContext'
@@ -21,7 +22,7 @@ import { EconomicContext } from './EconomicContext'
 // Solidar objects
 import PreparaEnergyBalance from './EnergyBalance/PreparaEnergyBalance'
 import TCB from './classes/TCB'
-
+import * as UTIL from './classes/Utiles'
 import InicializaAplicacion from './classes/InicializaAplicacion'
 
 InicializaAplicacion()
@@ -36,7 +37,19 @@ export default function Page() {
   let results
 
   function validaEnergyBalanceStep() {
+    for (let base of TCB.BaseSolar) {
+      if (!UTIL.ValidateEntero(base.instalacion.paneles)) {
+        SLDRAlert(
+          'VALIDACION',
+          t('todas las bases deben tener un numero entero de paneles'),
+          'error',
+        )
+        return false
+      }
+    }
+
     //If periodoAmortizacion is less than zero means it is bigger than maximum number of years expected for the economic balance and cannot continue.
+
     if (ecoData.periodoAmortizacion < 0) {
       SLDRAlert(
         'VALIDACION',
@@ -104,7 +117,11 @@ export default function Page() {
               label="economicbalance"
               title={t('ECONOMIC_BALANCE.TITLE')}
             />
-            <SummaryStep label="summary" title={t('SUMMARY.TITLE')} />
+            {TCB.estiloActivo !== 'SOM' ? (
+              <SummaryStep label="summary" title={t('SUMMARY.TITLE')} />
+            ) : (
+              <SummarySOMStep label="summary" title={t('SUMMARY.TITLE')} />
+            )}
           </Wizard>
         </Container>
       </AppFrame>

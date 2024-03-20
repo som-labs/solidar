@@ -289,6 +289,7 @@ const ValidateDecimal = (language, inputValue) => {
 }
 
 const ValidateEntero = (inputValue) => {
+  if (inputValue === '') return false
   const decimalRegex = new RegExp(`^-?\\d*$`)
   return decimalRegex.test(inputValue)
 }

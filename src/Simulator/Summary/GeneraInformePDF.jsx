@@ -240,7 +240,7 @@ async function GeneraInformePDF() {
   )
 
   doc.addImage({
-    imageData: TCB.graphs.MonthThreeParts,
+    imageData: TCB.graphs.MonthFiveParts,
     x: margenIzquierdo,
     y: currentY + 10,
     w: margenDerecho - margenIzquierdo,

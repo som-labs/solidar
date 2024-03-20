@@ -2,8 +2,7 @@ import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
+import { Typography, Container, Box } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 
 // REACT Solidar Components
@@ -12,7 +11,6 @@ import { BasesContext } from '../BasesContext'
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import { Container } from '@mui/material'
 
 export default function SummaryAutoproduccion() {
   const { t } = useTranslation()
@@ -125,8 +123,8 @@ export default function SummaryAutoproduccion() {
                 variant="body"
                 textAlign={'center'}
                 dangerouslySetInnerHTML={{
-                  __html: t('SUMMARY.LABEL_AREAS_ESCOGIDAS', {
-                    areasDisponibles: areasDisponibles,
+                  __html: t('SUMMARY.LABEL_AREAS_DISPONIBLES', {
+                    count: areasDisponibles,
                   }),
                 }}
               />
@@ -149,9 +147,15 @@ export default function SummaryAutoproduccion() {
               <Typography variant="h4" color={'green'}>
                 {paneles}
               </Typography>
-              <Typography variant="body" textAlign={'center'}>
-                {t('SUMMARY.LABEL_PANELES_SUGERIDOS')}
-              </Typography>
+              <Typography
+                variant="body"
+                textAlign={'center'}
+                dangerouslySetInnerHTML={{
+                  __html: t('SUMMARY.LABEL_PANELES_SUGERIDOS', {
+                    count: 0,
+                  }),
+                }}
+              />
             </Box>
             <Box
               sx={{
