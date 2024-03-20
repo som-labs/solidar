@@ -36,17 +36,17 @@ export default function AppFrame({ children }) {
 
   const navigate = useNavigate()
 
-  const title = 'Solidar'
+  const title = 'Solidar Energia (Individual)'
   const logo = '/logo.svg'
   const pages = [
-    {
-      text: t('APP_FRAME.PAGE_HOME'),
-      path: '/',
-    },
-    {
-      text: t('APP_FRAME.PAGE_SIMULATORS'),
-      path: '/simulator',
-    },
+    // {
+    //   text: t('APP_FRAME.PAGE_HOME'),
+    //   path: '/',
+    // },
+    // {
+    //   text: t('APP_FRAME.PAGE_SIMULATORS'),
+    //   path: '/simulator',
+    // },
     {
       text: t('APP_FRAME.PAGE_ABOUT'),
       path: '/about',

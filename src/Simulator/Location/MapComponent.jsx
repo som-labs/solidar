@@ -357,7 +357,6 @@ export default function MapComponent() {
         return false
       }
       TCB.direccion = details.direccion
-      console.log(TCB.direccion)
     } catch (error) {
       console.log('CATCHED', error)
       SLDRAlert('NOMINATIM error 2', error, 'ERROR')

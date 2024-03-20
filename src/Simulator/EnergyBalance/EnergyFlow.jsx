@@ -33,7 +33,6 @@ export default function EnergyFlow(props) {
     'stroke: black; border-radius: 1em; fill:' + theme.palette.balance.excedente
   const stProduccion =
     'stroke: black; border-radius: 1em; fill:' + theme.palette.balance.produccion
-  const stFlujo = 'fill: white; stroke: black; border-radius: 1em'
   const stTitulo = 'font-size: 13px; text-anchor: middle; dominant-baseline: middle'
 
   const { consumo, produccion, deficit, autoconsumo, excedente } = props.yearlyData
