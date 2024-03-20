@@ -1,8 +1,9 @@
 import { useState, Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useTheme } from '@mui/material/styles'
 
 // MUI objects
-import { Grid, Typography } from '@mui/material'
+import { Button, Grid, Typography } from '@mui/material'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
@@ -19,6 +20,8 @@ import * as UTIL from '../classes/Utiles'
  */
 export default function DialogProperties({ data, onClose }) {
   const { t } = useTranslation()
+  const theme = useTheme()
+
   const [objeto, setObjeto] = useState(data)
 
   const vectorPropiedades = UTIL.obtenerPropiedades(objeto, 0)
@@ -44,13 +47,7 @@ export default function DialogProperties({ data, onClose }) {
                 container
                 alignItems="center"
                 justifyContent="center"
-                sx={{ mt: '1rem' }}
-                style={{
-                  backgroundColor: 'rgba(220, 249, 233, 1)',
-                  fontWeight: 'bold',
-                  height: '30px',
-                  padding: 4,
-                }}
+                sx={theme.informe.titleBox}
               >
                 {t(objName + '.NAME')}
               </Grid>
@@ -64,15 +61,11 @@ export default function DialogProperties({ data, onClose }) {
                           item
                           xs={6}
                           key={objName + prop.nombre}
-                          style={{ height: '15px', padding: 10, textAlign: 'right' }}
+                          style={{ height: '15px', textAlign: 'right' }}
                         >
                           {t(objName + '.PROP.' + prop.nombre)}
                         </Grid>
-                        <Grid
-                          item
-                          xs={6}
-                          style={{ textAlign: 'center', height: '20px', padding: 10 }}
-                        >
+                        <Grid item xs={6} style={{ textAlign: 'center', height: '22px' }}>
                           {UTIL.formatoValor(prop.nombre, prop.valor)}
                         </Grid>
                       </Grid>
@@ -83,6 +76,7 @@ export default function DialogProperties({ data, onClose }) {
           ))}
         </div>
       </Grid>
+      <Button onClick={onClose}>{t('BASIC.LABEL_CLOSE')}</Button>
     </>
   )
 }
