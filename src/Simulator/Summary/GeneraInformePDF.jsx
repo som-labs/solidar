@@ -164,13 +164,13 @@ async function GeneraInformePDF() {
     UTIL.formatoValor('peso', TCB.produccion.CO2AnualNoRenovable),
   )
 
-  doc.addImage({
-    imageData: TCB.graphs.MonthEnergyBalance,
-    x: margenIzquierdo,
-    y: currentY,
-    w: margenDerecho - margenIzquierdo,
-    h: 100,
-  })
+  // doc.addImage({
+  //   imageData: TCB.graphs.MonthEnergyBalance,
+  //   x: margenIzquierdo,
+  //   y: currentY,
+  //   w: margenDerecho - margenIzquierdo,
+  //   h: 100,
+  // })
   nuevaLinea('Pie', pagina++, true)
 
   i = 0
