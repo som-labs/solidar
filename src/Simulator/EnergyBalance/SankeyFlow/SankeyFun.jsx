@@ -7,7 +7,7 @@ import * as UTIL from '../../classes/Utiles'
 // https://observablehq.com/@d3/sankey-diagram
 
 export default function SankeyFun(
-  { links, svgRef },
+  { links, svgRef, setIconPosition },
   {
     textColor,
     colors,
@@ -47,6 +47,7 @@ export default function SankeyFun(
   } = {},
 ) {
   // Convert nodeAlign from a name to a function (since d3-sankey is not part of core d3).
+  if (svgRef.current === null) return
 
   if (typeof nodeAlign !== 'function')
     nodeAlign =
@@ -106,9 +107,7 @@ export default function SankeyFun(
   const uid = `O-${Math.random().toString(16).slice(2)}`
 
   const svg = d3.select(svgRef.current)
-
   svg.selectAll('*').remove()
-
   svg
     .attr('width', width)
     .attr('height', height)
@@ -181,7 +180,7 @@ export default function SankeyFun(
     svg
       .append('g')
       .attr('font-family', 'sans-serif')
-      .attr('font-size', 30)
+      .attr('font-size', 40)
       .attr('fill', textColor)
       .selectAll('text')
       .data(nodes)
@@ -198,4 +197,11 @@ export default function SankeyFun(
     return value !== null && typeof value === 'object' ? value.valueOf() : value
   }
   Object.assign(svg.node(), { scales: { color } })
+
+  //Return coordinates where the icons will be drawn
+  setIconPosition(
+    nodes.map((ns) => {
+      return (ns.y0 + ns.y1) / 2 / height
+    }),
+  )
 }
