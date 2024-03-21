@@ -548,7 +548,9 @@ ENERGY_BALANCE:
     <br />
     Son tenidos en cuenta: <ul><li>la temperatura del aire a 2 metros y la velocidad del viento a 10 metros</li><li>el efecto de la temperatura en el rendimiento</li><li>la variación del espectro electromagnético a lo largo del día</li><li>el promedio de aerosoles en el ambiente (no los cambios bruscos)</li></ul>
     No son tenidos en cuenta: <ul><li>el efecto de las nevadas</li><li>la acumulación de polvo y suciedad en los paneles</li><li>las pérdidas por sombras próximas</li></ul><br>
-
+  TITLE_GRAPH_ENERGY_DEMAND: Título
+  TITLE_GRAPH_DEMAND: Demanda energética
+  TITLE_GRAPH_AUTOPRODUCIDA: Energia autoproducida
   TITLE_ENVIRONMENTAL_IMPACT: Impacto medioambiental
   DESCRIPTION_ENVIRONMENTAL_IMPACT: |
     Las placas solares, al generar energia limpia, reducen la utilización de energías fosiles y de esta forma también reducen las emisiones de dióxido de carbono (CO2) causantes del efecto invernadero y calentamiento global. Contribuyen de esta forma al cuidado del ambiente.
