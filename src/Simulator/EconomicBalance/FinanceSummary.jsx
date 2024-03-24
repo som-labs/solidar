@@ -2,10 +2,9 @@ import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
+import { Box, Typography, Container } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { DataGrid } from '@mui/x-data-grid'
-import Container from '@mui/material/Container'
 import clsx from 'clsx'
 
 // REACT Solidar Components
@@ -17,6 +16,8 @@ import { SLDRFooterBox } from '../../components/SLDRComponents'
 
 export default function FinanceSummary() {
   const { t } = useTranslation()
+  const theme = useTheme()
+
   const { ecoData } = useContext(EconomicContext)
 
   if (ecoData.cashFlow === undefined) return
@@ -28,12 +29,12 @@ export default function FinanceSummary() {
   function footerSummary() {
     return (
       <SLDRFooterBox>
-        <Typography variant="h5">
+        <Typography sx={theme.titles.level_2}>
           {t('ECONOMIC_BALANCE.LABEL_FOOTER_VAN', {
             VANProyecto: UTIL.formatoValor('dinero', ecoData.VANProyecto),
           })}
         </Typography>
-        <Typography variant="h5">
+        <Typography sx={theme.titles.level_2}>
           {t('ECONOMIC_BALANCE.LABEL_FOOTER_TIR', {
             TIRProyecto: UTIL.formatoValor('porciento', ecoData.TIRProyecto),
           })}
@@ -94,7 +95,6 @@ export default function FinanceSummary() {
     {
       field: 'subvencion',
       headerName: t('ECONOMIC_BALANCE.LABEL_SUBVENCION'),
-      headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       align: 'right',
       sortable: false,
@@ -107,8 +107,6 @@ export default function FinanceSummary() {
     {
       field: 'IBI',
       headerName: t('ECONOMIC_BALANCE.LABEL_IBI'),
-      headerClassName: 'super-app-theme--header',
-      headerAlign: 'center',
       align: 'right',
       sortable: false,
       flex: 1,
@@ -120,8 +118,6 @@ export default function FinanceSummary() {
     {
       field: 'pendiente',
       headerName: t('ECONOMIC_BALANCE.LABEL_PENDIENTE'),
-      headerClassName: 'super-app-theme--header',
-      headerAlign: 'center',
       align: 'right',
       sortable: false,
       flex: 1,
@@ -142,9 +138,9 @@ export default function FinanceSummary() {
             flexWrap: 'wrap',
             width: '100%',
             '& .super-app.positive': {
-              backgroundColor: 'rgba(157, 255, 118, 0.49)',
+              backgroundColor: theme.palette.primary.main, //'rgba(157, 255, 118, 0.49)',
               color: '#1a3e72',
-              fontWeight: '400',
+              fontWeight: '700',
             },
             '& .super-app.negative': {
               backgroundColor: '#ffff99',
@@ -153,11 +149,12 @@ export default function FinanceSummary() {
             },
           }}
         >
-          <Typography variant="h4" textAlign={'center'}>
+          <Typography sx={theme.titles.level_1} textAlign={'center'}>
             {t('ECONOMIC_BALANCE.TITLE_FINANCE_SUMMARY')}
           </Typography>
           <br />
           <DataGrid
+            sx={theme.tables.headerWrap}
             getRowId={getRowId}
             rows={ecoData.cashFlow}
             columns={columns}

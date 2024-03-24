@@ -38,19 +38,6 @@ function SLDRFooterBox(props) {
 
 function SLDRInfoBox(props) {
   const theme = useTheme()
-
-  // let sxFix = {
-  //   display: 'flex',
-  //   flexWrap: 'wrap',
-  //   flex: 1,
-  //   borderRadius: 0,
-  //   border: '2px solid',
-  //   borderColor: 'green',
-  //   mb: '1rem',
-  //   justifyContent: 'center',
-  // }
-  // sxFix.bgcolor = theme.palette.infoBox.main
-
   let sxFull = { ...theme.palette.infoBox, ...props.sx }
   return (
     <>
@@ -76,7 +63,6 @@ const SLDRTooltip = ({ title, children, placement }) => {
   )
 }
 
-//DEMO
 function SLDRDetalle(props) {
   const { title, text } = props
   return (
@@ -87,8 +73,14 @@ function SLDRDetalle(props) {
         titleSX={{ color: 'blue', mb: '-1rem' }}
         descriptionVariant="body"
         descriptionSX={{ fontSize: '15px', color: 'green', fontStyle: 'italic' }}
-        description={text}
-      ></CollapsibleCard>
+      >
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: text,
+          }}
+        />
+      </CollapsibleCard>
     </Box>
   )
 }

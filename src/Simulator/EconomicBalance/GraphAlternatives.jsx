@@ -360,7 +360,7 @@ export default function GraphAlternatives() {
 
   return (
     <Container ref={graphElement}>
-      <Typography variant="h4" sx={{ mb: '1rem' }}>
+      <Typography sx={theme.titles.level_1} textAlign={'center'}>
         {t('ECONOMIC_BALANCE.TITLE_DATA_AS_PANELS')}
       </Typography>
 

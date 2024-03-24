@@ -5,7 +5,6 @@ import { Box, Typography, Container } from '@mui/material'
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
 import { useTheme } from '@mui/material/styles'
-//import { ColorModeContext } from '../../components/GlobalTheme'
 
 export default function EnvironmentalImpact() {
   const { t } = useTranslation()
@@ -27,12 +26,14 @@ export default function EnvironmentalImpact() {
             flexDirection: 'column',
             flexWrap: 'wrap',
             width: '100%',
+            mt: '1rem',
+            mb: '1rem',
           }}
         >
-          <Typography variant="h4" color={'green'} textAlign={'center'}>
+          <Typography sx={theme.titles.level_2} textAlign={'center'} color={'green'}>
             {t('ENERGY_BALANCE.TITLE_graficoCO2')}
           </Typography>
-          <br />
+
           <Box
             sx={{
               display: 'flex',
@@ -116,7 +117,8 @@ export default function EnvironmentalImpact() {
           <Typography
             variant="h6"
             component="a"
-            href="https://energia.gob.es/desarrollo/EficienciaEnergetica/RITE/Reconocidos/Reconocidos/Otros%20documentos/Factores_emision_CO2.pdf"
+            href="./datos/Factores_emision_CO2.pdf"
+            // href="https://energia.gob.es/desarrollo/EficienciaEnergetica/RITE/Reconocidos/Reconocidos/Otros%20documentos/Factores_emision_CO2.pdf"
             target="_blank"
             rel="noopener noreferrer"
             dangerouslySetInnerHTML={{

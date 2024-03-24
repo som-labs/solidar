@@ -2,9 +2,9 @@ import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
+import { Typography, Container, Box } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+
 import GraphBoxSavings from './GraphBoxSavings'
 
 // REACT Solidar Components
@@ -15,26 +15,44 @@ import * as UTIL from '../classes/Utiles'
 
 export default function YearSaving() {
   const { t } = useTranslation()
+  const theme = useTheme()
+
   const { ecoData } = useContext(EconomicContext)
 
   return (
     <>
       <Container>
-        <Typography variant="h4" textAlign={'center'}>
-          {t('ECONOMIC_BALANCE.TITLE_YEAR_SAVINGS')}
-        </Typography>
-        <Typography
-          variant="body"
-          dangerouslySetInnerHTML={{
-            __html: t('ECONOMIC_BALANCE.DESCRIPTION_YEAR_SAVINGS', {
-              porcientoAhorro: UTIL.formatoValor(
-                'porciento',
-                (ecoData.ahorroAnual / ecoData.gastoSinPlacasAnual) * 100,
-              ),
-            }),
+        <Box
+          component="form"
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            flexWrap: 'wrap',
+            width: '100%',
+            gap: '10px',
           }}
-        />
-        <GraphBoxSavings></GraphBoxSavings>
+        >
+          <Typography
+            sx={theme.titles.level_1}
+            textAlign={'center'}
+            marginTop="1rem"
+            color={theme.palette.primary.main}
+          >
+            {t('ECONOMIC_BALANCE.TITLE_YEAR_SAVINGS')}
+          </Typography>
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('ECONOMIC_BALANCE.DESCRIPTION_YEAR_SAVINGS', {
+                porcientoAhorro: UTIL.formatoValor(
+                  'porciento',
+                  (ecoData.ahorroAnual / ecoData.gastoSinPlacasAnual) * 100,
+                ),
+              }),
+            }}
+          />
+          <GraphBoxSavings></GraphBoxSavings>
+        </Box>
       </Container>
     </>
   )

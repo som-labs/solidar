@@ -12,6 +12,7 @@ import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
 import coplanarSvgFile from '../datos/coplanar.png'
 import horizontalSvgFile from '../datos/horizontal.png'
 import { SLDRInputField } from '../../components/SLDRComponents'
+import { useTheme } from '@mui/material/styles'
 
 // Solidar global modules
 import TCB from '../classes/TCB'
@@ -37,6 +38,7 @@ import * as UTIL from '../classes/Utiles'
 
 export default function DialogBaseSolar({ data, onClose }) {
   const { t } = useTranslation()
+  const theme = useTheme()
   /*
   roofType state is needed for UseEffect that is needed to recover canvas each time the user 
   goes through the Optimos option where canvas is not rendered.
@@ -135,19 +137,6 @@ export default function DialogBaseSolar({ data, onClose }) {
         setInclinacionOptima(false)
         drawHouse(canvasRef.current, inclinacionDefault, 'Horizontal')
         break
-
-      // case 'Optimos': {
-      //   setValues((prev) => ({
-      //     ...prev,
-      //     roofType: 'Optimos',
-      //     angulosOptimos: true,
-      //     inclinacionOptima: true,
-      //     requierePVGIS: true,
-      //   }))
-      //   setRoofType('Optimo')
-      //   featAcimut.setStyle(new Style({}))
-      //   break
-      // }
     }
   }
 
@@ -261,15 +250,6 @@ export default function DialogBaseSolar({ data, onClose }) {
         }
       }
     }
-
-    // if (!UTIL.ValidateEntero(values.inAcimut)) {
-    //   errors.inAcimut = 'Debe ser un número entero entre -180º y 180º'
-    // } else {
-    //   value = parseInt(values.inAcimut)
-    //   if (value < -180 || value > 180) {
-    //     errors.inAcimut = 'El valor del acimut debe estar entre -180º y 180º'
-    //   }
-    // }
     return errors
   }
 
@@ -288,7 +268,9 @@ export default function DialogBaseSolar({ data, onClose }) {
     >
       {({ values, setValues }) => (
         <Form>
-          <DialogTitle>{t('LOCATION.TITLE_DIALOG_NEW_BASE')}</DialogTitle>
+          <DialogTitle sx={theme.titles.level_1} textAlign={'center'}>
+            {t('LOCATION.TITLE_DIALOG_NEW_BASE')}
+          </DialogTitle>
           <DialogContent>
             <Box
               sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', flex: 1 }}

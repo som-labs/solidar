@@ -7,10 +7,10 @@ import {
   Container,
   MenuItem,
   TextField,
-  Box,
   Grid,
   IconButton,
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import HelpIcon from '@mui/icons-material/HelpOutlineRounded.js'
 
 //React global components
@@ -43,6 +43,8 @@ import calculaResultados from '../classes/calculaResultados'
 
 export default function EnergyBalanceStep() {
   const { t } = useTranslation()
+  const theme = useTheme()
+
   const [dataReady, setDataReady] = useState(false)
   const [monthlyData, setMonthlyData] = useState()
   const [yearlyData, setYearlyData] = useState({})
@@ -112,27 +114,29 @@ export default function EnergyBalanceStep() {
 
   return (
     <Container>
-      <Typography
-        variant="body"
-        dangerouslySetInnerHTML={{
-          __html: t('ENERGY_BALANCE.DESCRIPTION'),
-        }}
-      />
-      <Grid container rowSpacing={2}>
+      <Grid container rowSpacing={4}>
+        <Grid item xs={12}>
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('ENERGY_BALANCE.DESCRIPTION'),
+            }}
+          />
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('ENERGY_BALANCE.PROMPT'),
+            }}
+          />
+        </Grid>
         <Grid item xs={12}>
           <SLDRInfoBox sx={{ mt: '1rem' }}>
             <InstallationSummary></InstallationSummary>
           </SLDRInfoBox>
         </Grid>
-        {TCB.estiloActivo === 'CLARA' && (
-          <Grid item xs={12}>
-            <SLDRInfoBox>
-              <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
-            </SLDRInfoBox>
-          </Grid>
-        )}
+
         <Grid item xs={12}>
-          <Typography variant="h4" textAlign={'center'}>
+          <Typography sx={theme.titles.level_1} textAlign={'center'}>
             {t('ENERGY_BALANCE.FLOW_TITLE')}
           </Typography>
           <Typography
@@ -161,13 +165,30 @@ export default function EnergyBalanceStep() {
         </Grid>
         <Grid item xs={12}>
           <CollapsibleCard
+            expanded={false}
+            title={t('OTRA FORMA DE VERLO')}
+            titleVariant="body"
+            titleSX={{ color: 'blue', mb: '-1rem', borderTop: 2 }}
+          >
+            <SLDRInfoBox>
+              <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
+            </SLDRInfoBox>
+          </CollapsibleCard>
+        </Grid>
+        <Grid item xs={12}>
+          <CollapsibleCard
+            expanded={true}
             title={t('BASIC.LABEL_AVISO')}
             titleVariant="body"
-            titleSX={{ color: 'blue', mb: '-1rem' }}
-            descriptionVariant="body"
-            descriptionSX={{ fontSize: '15px' }}
-            description={t('ENERGY_BALANCE.MSG_disclaimerProduccion')}
-          ></CollapsibleCard>
+            titleSX={{ color: 'blue', mb: '-1rem', borderTop: 2 }}
+          >
+            <Typography
+              variant="body"
+              dangerouslySetInnerHTML={{
+                __html: t('ENERGY_BALANCE.MSG_disclaimerProduccion'),
+              }}
+            />
+          </CollapsibleCard>
         </Grid>
         {dataReady && (
           <Grid item xs={12}>
@@ -178,7 +199,7 @@ export default function EnergyBalanceStep() {
         )}
         <Grid item xs={12}>
           <SLDRInfoBox sx={{ alignItems: 'center' }}>
-            <Typography variant="h6">
+            <Typography sx={theme.titles.level_1} textAlign={'center'}>
               {t('ENERGY_BALANCE.TITLE_HOURLY_ENERGY_BALANCE')}
             </Typography>
             <TextField
@@ -221,6 +242,11 @@ export default function EnergyBalanceStep() {
           </Grid>
         )}
         <Grid item xs={12}>
+          <Typography sx={theme.titles.level_1} textAlign={'center'}>
+            {t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_THREE_PARTS')}
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
           <SLDRInfoBox>
             {dataReady && <MonthFiveParts monthlyData={monthlyData}></MonthFiveParts>}
           </SLDRInfoBox>
@@ -232,20 +258,22 @@ export default function EnergyBalanceStep() {
             </SLDRInfoBox>
           </Grid>
         )}
-        <Typography variant="h4" textAlign={'center'}>
-          {t('ENERGY_BALANCE.TITLE_ENVIRONMENTAL_IMPACT')}
-        </Typography>
-        <Typography
-          variant="body"
-          dangerouslySetInnerHTML={{
-            __html: t('ENERGY_BALANCE.DESCRIPTION_ENVIRONMENTAL_IMPACT'),
-          }}
-        />
         <Grid item xs={12}>
-          <SLDRInfoBox sx={{ mt: '1rem' }}>
-            <EnvironmentalImpact></EnvironmentalImpact>
-          </SLDRInfoBox>
-        </Grid>{' '}
+          <Typography sx={theme.titles.level_1} textAlign={'center'}>
+            {t('ENERGY_BALANCE.TITLE_ENVIRONMENTAL_IMPACT')}
+          </Typography>
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('ENERGY_BALANCE.DESCRIPTION_ENVIRONMENTAL_IMPACT'),
+            }}
+          />
+          <Grid item xs={12}>
+            <SLDRInfoBox sx={{ mt: '1rem' }}>
+              <EnvironmentalImpact></EnvironmentalImpact>
+            </SLDRInfoBox>
+          </Grid>
+        </Grid>
         <Grid item xs={12}>
           <SLDRInfoBox>
             <ConsumoGeneracion3D></ConsumoGeneracion3D>

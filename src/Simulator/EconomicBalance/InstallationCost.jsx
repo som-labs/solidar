@@ -1,20 +1,25 @@
 import { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
-import Container from '@mui/material/Container'
-import FormControl from '@mui/material/FormControl'
-import InputAdornment from '@mui/material/InputAdornment'
+// MUI objects
+import {
+  Box,
+  Typography,
+  Container,
+  FormControl,
+  TextField,
+  InputAdornment,
+} from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 import { EconomicContext } from '../EconomicContext'
 
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
 
-const InstallationCost = () => {
+export default function InstallationCost() {
   const { t, i18n } = useTranslation()
+  const theme = useTheme()
 
   const { setEcoData } = useContext(EconomicContext)
   const [precioInstalacionCorregido, setPrecioInstalacionCorregido] = useState('')
@@ -61,19 +66,24 @@ const InstallationCost = () => {
             flexDirection: 'column',
             flexWrap: 'wrap',
             width: '100%',
+            gap: '10px',
           }}
         >
-          <Typography variant="h4" textAlign={'center'}>
+          <Typography
+            sx={theme.titles.level_1}
+            textAlign={'center'}
+            marginTop="1rem"
+            color={theme.palette.primary.main}
+          >
             {t('ECONOMIC_BALANCE.TITLE_INSTALLATION_COST')}
           </Typography>
-          <Typography
-            variant="body"
-            dangerouslySetInnerHTML={{
-              __html: t('ECONOMIC_BALANCE.DESCRIPTION_INSTALLATION_COST'),
-            }}
-          />
+
           <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <Typography variant="h4" color={'green'} textAlign={'center'}>
+            <Typography
+              variant="h4"
+              color={theme.palette.primary.main}
+              textAlign={'center'}
+            >
               {UTIL.formatoValor('precioInstalacion', TCB.economico.precioInstalacion)}
             </Typography>
             <Typography variant="body">
@@ -102,10 +112,14 @@ const InstallationCost = () => {
               }
             />
           </FormControl>
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('ECONOMIC_BALANCE.DESCRIPTION_INSTALLATION_COST'),
+            }}
+          />
         </Box>
       </Container>
     </>
   )
 }
-
-export default InstallationCost

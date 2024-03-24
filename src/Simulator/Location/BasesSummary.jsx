@@ -2,10 +2,11 @@ import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import { Typography, Tooltip } from '@mui/material'
+import { Typography, Tooltip, Grid } from '@mui/material'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
+import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { BasesContext } from '../BasesContext'
@@ -19,6 +20,8 @@ import * as UTIL from '../classes/Utiles'
 
 export default function BasesSummary() {
   const { t } = useTranslation()
+  const theme = useTheme()
+
   const [openDialog, closeDialog] = useDialog()
   const { bases, setBases, processFormData } = useContext(BasesContext)
 
@@ -30,9 +33,7 @@ export default function BasesSummary() {
     {
       field: 'nombreBaseSolar',
       headerName: t('BaseSolar.PROP.nombreBaseSolar'),
-      headerClassName: 'dataGrid-headers',
-      // renderHeader: () => <strong>{t('LOCATION.PROP.BASE_NAME')}</strong>,
-      headerAlign: 'center',
+      //headerAlign: 'center',
       width: 250,
       sortable: false,
       description: t('BaseSolar.TOOLTIP.nombreBaseSolar'),
@@ -67,6 +68,7 @@ export default function BasesSummary() {
     {
       field: 'inAcimut',
       headerName: t('BaseSolar.PROP.inAcimut'),
+      headerAlign: 'center',
       flex: 1,
       align: 'center',
       sortable: false,
@@ -79,6 +81,7 @@ export default function BasesSummary() {
     {
       field: 'panelesMaximo',
       headerName: t('BaseSolar.PROP.panelesMaximo'),
+      headerAlign: 'center',
       flex: 1,
       align: 'center',
       sortable: false,
@@ -161,32 +164,37 @@ export default function BasesSummary() {
   function footerSummary() {
     return (
       <SLDRFooterBox>
-        <Typography
-          variant="h6"
-          textAlign={'center'}
-          dangerouslySetInnerHTML={{
-            __html: t('LOCATION.MSG_AREA_TOTAL', {
-              areaTotal: UTIL.formatoValor(
-                'areaReal',
-                Math.round(bases.reduce((sum, tBase) => sum + tBase.areaReal, 0)),
-              ),
-              potenciaMaxima: UTIL.formatoValor(
-                'potenciaMaxima',
-                Math.trunc(bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0)),
-              ),
-            }),
-          }}
-        />
+        <Grid container alignItems="center" justifyContent="center" spacing={2}>
+          <Grid item sx={{ mt: '2rem' }}>
+            <Typography
+              sx={theme.titles.level_2}
+              textAlign={'center'}
+              dangerouslySetInnerHTML={{
+                __html: t('LOCATION.MSG_AREA_TOTAL', {
+                  areaTotal: UTIL.formatoValor(
+                    'areaReal',
+                    Math.round(bases.reduce((sum, tBase) => sum + tBase.areaReal, 0)),
+                  ),
+                  potenciaMaxima: UTIL.formatoValor(
+                    'potenciaMaxima',
+                    Math.trunc(
+                      bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0),
+                    ),
+                  ),
+                }),
+              }}
+            />
+          </Grid>
+        </Grid>
       </SLDRFooterBox>
     )
   }
   return (
     <>
-      <Typography variant="h3">{t('LOCATION.LABEL_BASES_SUMMARY')}</Typography>
-      <Typography variant="body">{t('LOCATION.PROMPT_BASES_SUMMARY')}</Typography>
       <SLDRInfoBox sx={{ mt: '1rem' }}>
         {bases && (
           <DataGrid
+            sx={theme.tables.headerWrap}
             getRowId={getRowId}
             rows={bases}
             columns={columns}
@@ -196,12 +204,6 @@ export default function BasesSummary() {
             disableColumnMenu
             localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
             slots={{ footer: footerSummary }}
-            sx={{
-              border: 'none', // Remove external border
-              '& .MuiDataGrid-columnsContainer': {
-                borderBottom: 'none', // Remove border at the bottom of the header row
-              },
-            }}
           />
         )}
       </SLDRInfoBox>

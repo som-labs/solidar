@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 // MUI objects
 import { Typography, Container, Box } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { DataGrid } from '@mui/x-data-grid'
 
 // REACT Solidar Components
@@ -14,6 +15,8 @@ import * as UTIL from '../classes/Utiles'
 
 export default function SummaryAutoproduccion() {
   const { t } = useTranslation()
+  const theme = useTheme()
+
   const { bases } = useContext(BasesContext)
 
   let areasEscogidas = 0
@@ -82,7 +85,7 @@ export default function SummaryAutoproduccion() {
   return (
     <>
       <Container>
-        <Typography variant="h3" textAlign={'center'}>
+        <Typography sx={theme.titles.level_1}>
           {t('SUMMARY.TITLE_AUTOPRODUCCION')}
         </Typography>
         <Typography variant="body">{t('SUMMARY.DESCRIPTION_AUTOPRODUCCION')}</Typography>

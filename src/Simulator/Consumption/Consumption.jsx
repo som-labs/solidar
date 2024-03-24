@@ -29,7 +29,7 @@ const ConsumptionStep = () => {
 
   return (
     <Container>
-      <Grid container rowSpacing={2}>
+      <Grid container rowSpacing={4}>
         <Grid item xs={12}>
           <Typography
             variant="body"

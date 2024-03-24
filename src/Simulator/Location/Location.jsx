@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 // MUI objects
 import { Typography, Grid, IconButton, Container } from '@mui/material'
 import HelpIcon from '@mui/icons-material/HelpOutlineRounded.js'
+import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { SLDRDetalle, SLDRInfoBox } from '../../components/SLDRComponents'
@@ -23,7 +24,8 @@ import { transform } from 'ol/proj'
 
 const LocationStep = () => {
   const { t } = useTranslation()
-  //DEMO: Detalle
+  const theme = useTheme()
+
   const { inLineHelp } = useContext(AlertContext)
   const [openDialog, closeDialog] = useDialog()
   const { map } = useContext(BasesContext)
@@ -70,7 +72,12 @@ const LocationStep = () => {
           )}
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="body">{t('LOCATION.DESCRIPTION_ADDRESS')}</Typography>
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('LOCATION.DESCRIPTION_ADDRESS'),
+            }}
+          />
         </Grid>
 
         {/* Campo  para introducir una direccion */}
@@ -96,7 +103,12 @@ const LocationStep = () => {
 
         <Grid container>
           <Grid item xs={12}>
-            <Typography variant="body">{t('LOCATION.PROMPT_DISPONIBLE')}</Typography>
+            <Typography
+              variant="body"
+              dangerouslySetInnerHTML={{
+                __html: t('LOCATION.PROMPT_DISPONIBLE'),
+              }}
+            />
             <IconButton
               onClick={() => help(1)}
               size="small"
@@ -162,22 +174,31 @@ const LocationStep = () => {
             <MapComponent></MapComponent>
           </SLDRInfoBox>
         </Grid>
-        <Grid item xs={12}>
-          {inLineHelp && (
+
+        {inLineHelp && (
+          <Grid item xs={12}>
             <SLDRDetalle
               title="TITULO 3"
               text={t('LOCATION.IN_LINE_HELP.PRE_TABLA')}
             ></SLDRDetalle>
-          )}
-
+          </Grid>
+        )}
+        <Grid item xs={12}>
+          <Typography sx={theme.titles.level_1} textAlign={'center'}>
+            {t('LOCATION.LABEL_BASES_SUMMARY')}
+          </Typography>
+          <Typography variant="body">{t('LOCATION.PROMPT_BASES_SUMMARY')}</Typography>
           <BasesSummary></BasesSummary>
-          {inLineHelp && (
+        </Grid>
+
+        {inLineHelp && (
+          <Grid item xs={12}>
             <SLDRDetalle
               title="TITULO 4"
               text={t('LOCATION.IN_LINE_HELP.POST_TABLA')}
             ></SLDRDetalle>
-          )}
-        </Grid>
+          </Grid>
+        )}
       </Grid>
     </Container>
   )

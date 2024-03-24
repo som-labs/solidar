@@ -16,6 +16,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import SendIcon from '@mui/icons-material/Send'
 import React from 'react'
+import { useTheme } from '@mui/material/styles'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -43,6 +44,8 @@ function DefaultWizardPage(params) {
     validationErrors,
   } = params
 
+  const theme = useTheme()
+
   return (
     <>
       <ScrollToTop />
@@ -62,7 +65,7 @@ function DefaultWizardPage(params) {
         >
           {prevLabel}
         </Button>
-        {title ? <Typography variant="h3">{title}</Typography> : null}
+        {title ? <Typography sx={theme.titles.level_0}>{title}</Typography> : null}
         <Button
           variant="contained"
           endIcon={<ArrowForwardIosIcon />}

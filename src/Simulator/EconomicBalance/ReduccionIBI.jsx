@@ -10,6 +10,7 @@ import {
   TextField,
   InputAdornment,
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 import { SLDRInputField } from '../../components/SLDRComponents'
 
@@ -19,8 +20,9 @@ import { EconomicContext } from '../EconomicContext'
 // Solidar objects
 import TCB from '../classes/TCB'
 
-const ReduccionIBI = () => {
+export default function ReduccionIBI() {
   const { t } = useTranslation()
+  const theme = useTheme()
 
   const { IBI, setIBI, setEcoData } = useContext(EconomicContext)
   const [_IBI, _setIBI] = useState(IBI)
@@ -50,7 +52,7 @@ const ReduccionIBI = () => {
             gap: '10px',
           }}
         >
-          <Typography variant="h4" textAlign={'center'}>
+          <Typography sx={theme.titles.level_1} textAlign={'center'}>
             {t('ECONOMIC_BALANCE.TITLE_IBI')}
           </Typography>
           <Typography
@@ -120,5 +122,3 @@ const ReduccionIBI = () => {
     </>
   )
 }
-
-export default ReduccionIBI
