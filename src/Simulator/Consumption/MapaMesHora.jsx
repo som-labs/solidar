@@ -106,16 +106,6 @@ export default function MapaMesHora({ activo }) {
     }
   }
 
-  // let tono
-  // for (let valor of valores) {
-  //   tono = parseInt((255 * valor) / maxConsumoMes)
-  //   let _r = tono
-  //   let _g = 255 - tono
-  //   let _b = 0
-  //   colores.push('rgb(' + _r + ',' + _g + ',' + _b + ')') //"rgb("+tono+",0,0)");
-  //   sizes.push((radio * valor) / maxConsumoMes)
-  // }
-
   function i18nextMes() {
     let _mes = []
     for (let i = 0; i < 12; _mes.push(t(UTIL.nombreMes[i++])));
@@ -264,13 +254,12 @@ export default function MapaMesHora({ activo }) {
         }}
         justifyContent="center"
       >
-        <Typography variant="h4" gutterBottom>
+        <Typography sx={theme.titles.level_2} textAlign={'center'} gutterBottom>
           {title}
         </Typography>
         <Typography variant="body">{t('CONSUMPTION.DESC_MAP_MONTH_HOUR')}</Typography>
 
         <Box>
-          {/* <Plot data={[data]} layout={layout} config={config} /> */}
           <Plot data={traces} layout={layout} config={config} />
         </Box>
         {/* <Button onClick={handleExportCSV}>Export to CSV</Button> */}

@@ -6,9 +6,10 @@ import { useTheme } from '@mui/material/styles'
 import Plot from 'react-plotly.js'
 
 // MUI objects
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, Tooltip } from '@mui/material'
 
-// REACT Solidar Components
+//React global components
+import { SLDRTooltip } from '../../components/SLDRComponents'
 import { useDialog } from '../../components/DialogProvider'
 import ProfileDay from './ProfileDay'
 
@@ -169,16 +170,14 @@ export default function ConsumoGeneracion3D() {
         }}
         justifyContent="center"
       >
-        <Typography variant="h4" textAlign={'center'}>
-          {t('ENERGY_BALANCE.TITLE_GRAFICO_CONSUMOGENERACION3D')}
-        </Typography>
-        {/* <SLDRTooltip
+        <Tooltip
           title={t('ENERGY_BALANCE.TOOLTIP_GRAFICO_CONSUMOGENERACION3D')}
           placement="top"
         >
-          {' '}
-          <InfoIcon />
-        </SLDRTooltip> */}
+          <Typography sx={theme.titles.level_1} textAlign={'center'}>
+            {t('ENERGY_BALANCE.TITLE_GRAFICO_CONSUMOGENERACION3D')}
+          </Typography>
+        </Tooltip>
       </Box>
       <Box
         sx={{

@@ -188,7 +188,7 @@ Instalacion:
     precioInstalacion: |
       A pesar de procurar mantener los precios actualizados, debe considerarse este importe como una orientación provisional sobre el proyecto que un instalador pueda formular (sobre todo si cuenta con más información sobre el emplazamiento final).\nAquí no está repercutidos algunos gastos como obra civil (si fuera necesaria), sustitución de aislante o tejas viejas en la cubierta, medios de elevación si fueran necesarios, modificaciones que la distribuidora o la Administración pudieran exigir a la instalación y algunos impuestos y tasas que el ayuntamiento pudiera cobrar (ICIO o licencia de obras)
     paneles: |
-      Para realizar la simulación, se utilizará un panel de tecnología tipo <strong>{{tecnologia}}</strong> de <strong>{{potencia}}</strong> con unas dimensiones de <strong>{{largo}}</strong> de largo por <strong>{{ancho}}</strong> de ancho. Si lo deseas lo puedes cambiar.
+      La simulación se realizará con un panel estándar de {{potencia}}. Si lo deseas puedes modificar la potencia y la tecnología utilizada.
   LABEL_tecnologiaDesconocida: Desconocida
   LABEL_tipoPanel: Seleccione tipo panel
 
@@ -340,12 +340,12 @@ LOCATION:
     A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.<br />
     Su rendimiento se calculará a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).<br />
 
-  DESCRIPTION_ADDRESS: Indica tu dirección a través del localizador o bien navega por el mapa para identificarla.
+  DESCRIPTION_ADDRESS: <strong>PASO 1.</strong> Indica tu dirección a través del localizador o bien navega por el mapa para identificarla.
   PROMPT_ADDRESS: Buscar lugar o dirección
   PROMPT_CANDIDATE: Seleccione la dirección que corresponda de la lista
   TOOLTIP_ADDRESS: A medida que escribas tendrás candidatos para seleccionar
 
-  PROMPT_DISPONIBLE: Dibuja en el mapa las áreas disponibles del edificio. En caso de alternativas, puedes dibujar tantas áreas como quieras. El sistema distribuirá los paneles de la forma mas eficiente.
+  PROMPT_DISPONIBLE: <strong>PASO 2.</strong> Dibuja en el mapa las áreas disponibles del edificio. En caso de alternativas, puedes dibujar tantas áreas como quieras. El sistema distribuirá los paneles de la forma mas eficiente.
   PROMPT_SOMBRAS: Es <strong>IMPORTANTE</strong> tener en cuenta que Solidar <strong>no incorpora el estudio de posibles sombras</strong> que puedan afectar al rendimiento de la instalación propuesta.
   PROMPT_DRAW: Si tu cubierta es inclinada, <strong>los dos primeros puntos que marques serán considerados la parte alta del tejado.</strong>
   PROMPT_INICIO_CUMBRERA: Dibujaremos cumbrera
@@ -426,12 +426,12 @@ LOCATION:
 CONSUMPTION:
   TITLE: Consumo
   TIPO_CONSUMO_DESCRIPTION: |
-    A continuación necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.<br />
+    <strong>PASO 4.</strong> A continuación necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.<br />
     El documento de consumo CSV nos permitirá conocer tus hábitos de consumo saber en qué tramos horarios y en qué meses del año sueles consumir más energía.<br />
   TARIFA_DESCRIPTION_1: |
     Necesitamos conocer tu tarifa, los precios por tramos horarios de cada período y el precio de la compensación de excedentes de tu comercializadora si es otra diferente a Som Energia.
   TARIFA_DESCRIPTION_2: |
-    Indica los precios sin impuestos.<br />
+    <strong>PASO 3.</strong> Indica los precios sin impuestos.<br />
     En caso de tener una <a href='https://es.support.somenergia.coop/article/1325-la-tarifa-2-0td-indexada' target='_blank'>tarifa indexada</a>, Som Energia muestra en sus facturas el precio medio ponderado para cada período. Te lo explicamos <a href='https://es.support.somenergia.coop/article/1368-por-que-veo-periodos-en-la-factura-de-indexada' target='_blank'>aquí.</a><br />
     Si tu contrato está con otra comercializadora deberás consultar la mediana de los precios en los diferentes periodos. Ten en cuenta que la tarifa indexada no ofrece precios fijos en la parte de uso ni en la compensación de excedentes por lo que el cálculo será en base a una información que puede ser muy variable.
   COMPENSACION_TITLE: Compensación simplificada de excedentes
@@ -504,7 +504,7 @@ ENERGY_BALANCE:
   DESCRIPTION: |
     A partir de los datos de uso eléctrico facilitados se muestra la cantidad de paneles necesarios para cubrirlo.<br />
     La asignación de los paneles se ha hecho teniendo en cuenta las áreas más eficientes desde el punto de vista de rendimiento energético según la inclinación y orientación proporcionadas. No se han tenido en cuenta las posibles sombras que estas superficies pueden tener.<br />
-    A continuación puedes cambiar el número de paneles asignados a cada una de las áreas.
+  PROMPT: <strong>PASO 5.</strong> A continuación puedes cambiar el número de paneles asignados a cada una de las áreas.
   ADVISE_TITLE: Consejo
   ADVISE_DESCRIPTION: Para aprovechar al máximo tu instalación, puedes intentar hacer uso de tus electrodomésticos en las horas centrales del día que son los momentos de máxima producción.
   SUMMARY_TITLE: Tabla bases asignadas
@@ -656,8 +656,8 @@ SUMMARY:
   LABEL_disclaimer1: "<p>Todas las estimaciones dadas se han realizado con la mayor precisión posible con la mejor intención y sin ningún compromiso.</p><p class='text-danger fw-bold'>Especial mención debemos hacer en cuanto al precio estimado de la instalación. Existe una alta volatilidad en este factor y no podemos garantizar que refleje la realidad del mercado en cada momento y territorio por lo que hemos incluido un campo que te permite corregir ese precio según las recomendaciones de tu instalador.</p>"
   LABEL_disclaimer2: SOM Energia no tiene ningún interés económico ni directo ni indirecto en este estudio salvo contribuir a una transición energética justa con los usuarios eficiente descentralizada y limpia.
   LABEL_PRINT: Imprime resumen
-  LABEL_PDF_REPORT: Genera PDF
-  LABEL_SOM_REPORT: Informe SOM
+  LABEL_PDF_REPORT: Informe detallado
+  LABEL_SOM_REPORT: Informe resumido
 
 BASIC:
   LABEL_OK: Guardar

@@ -102,6 +102,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
                 flexWrap: 'wrap',
                 justifyContent: 'center',
                 alignItems: 'center',
+                gap: 2,
               }}
             >
               <SLDRInputField
@@ -111,7 +112,6 @@ export default function DialogConsumption({ data, previous, onClose }) {
                 sx={{ flex: 1, textAlign: 'center' }}
               />
               <Typography
-                sx={{ mt: '1rem' }}
                 variant="body"
                 dangerouslySetInnerHTML={{
                   __html: t('TipoConsumo.DESCRIPTION_fuente'),
@@ -122,7 +122,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
                 labelPlacement="start"
                 control={
                   <SLDRInputField
-                    sx={{ width: 200, height: 50, mt: '1rem' }}
+                    sx={{ width: 200, height: 50 }}
                     select
                     value={values.fuente}
                     name="fuente"

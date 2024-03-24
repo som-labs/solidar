@@ -2,12 +2,15 @@ import { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
-import Container from '@mui/material/Container'
-import FormControl from '@mui/material/FormControl'
-import InputAdornment from '@mui/material/InputAdornment'
+import {
+  Box,
+  Typography,
+  TextField,
+  Container,
+  FormControl,
+  InputAdornment,
+} from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { EconomicContext } from '../EconomicContext'
@@ -17,6 +20,7 @@ import TCB from '../classes/TCB'
 
 export default function VirtualBattery() {
   const { t } = useTranslation()
+  const theme = useTheme()
 
   const { cuotaHucha, setCuotaHucha, coefHucha, setCoefHucha, setEcoData } =
     useContext(EconomicContext)
@@ -53,7 +57,7 @@ export default function VirtualBattery() {
             gap: '10px',
           }}
         >
-          <Typography variant="h4" textAlign={'center'}>
+          <Typography sx={theme.titles.level_1} textAlign={'center'}>
             {t('ECONOMIC_BALANCE.TITLE_VIRTUAL_BATTERY')}
           </Typography>
           <Typography

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 // MUI objects
 import { Typography, Grid, Tooltip } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid'
 import InfoIcon from '@mui/icons-material/Info'
 import clsx from 'clsx'
@@ -21,9 +22,10 @@ import * as UTIL from '../classes/Utiles'
 
 export default function InstallationSummary() {
   const { t } = useTranslation()
-  const { SLDRAlert } = useContext(AlertContext)
+  const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()
+  const { SLDRAlert } = useContext(AlertContext)
   const { bases, setBases, updateTCBBasesToState } = useContext(BasesContext)
 
   const getRowId = (row) => {
@@ -34,18 +36,15 @@ export default function InstallationSummary() {
     {
       field: 'nombreBaseSolar',
       headerName: t('BaseSolar.PROP.nombreBaseSolar'),
-      headerClassName: 'super-app-theme--header',
-      headerAlign: 'center',
       width: 250,
       description: t('BaseSolar.TOOLTIP.nombreBaseSolar'),
       sortable: false,
     },
     {
       field: 'paneles',
+      headerName: t('Instalacion.PROP.paneles'),
       type: 'number',
       editable: true,
-      headerName: t('Instalacion.PROP.paneles'),
-      headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       flex: 0.7,
       align: 'center',
@@ -67,9 +66,8 @@ export default function InstallationSummary() {
     {
       field: 'panelesMaximo',
       headerName: t('BaseSolar.PROP.panelesMaximo'),
-      headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
-      flex: 1,
+      flex: 0.8,
       align: 'center',
       description: t('BaseSolar.TOOLTIP.panelesMaximo'),
       sortable: false,
@@ -77,7 +75,6 @@ export default function InstallationSummary() {
     {
       field: 'potenciaMaxima',
       headerName: t('BaseSolar.PROP.potenciaMaxima'),
-      headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       flex: 1,
       align: 'right',
@@ -91,7 +88,6 @@ export default function InstallationSummary() {
       field: 'potenciaUnitaria',
       //editable: true, //por ahora no dejamos cambiar la potencia unitaria del panel despues de haber hecho el cálculo del balance de energía.
       headerName: t('Instalacion.PROP.potenciaUnitaria'),
-      headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       flex: 1,
       align: 'right',
@@ -104,7 +100,6 @@ export default function InstallationSummary() {
     {
       field: 'potenciaTotal',
       headerName: t('Instalacion.PROP.potenciaTotal'),
-      headerClassName: 'super-app-theme--header',
       headerAlign: 'center',
       flex: 1,
       align: 'right',
@@ -143,23 +138,27 @@ export default function InstallationSummary() {
   }
 
   function footerSummary() {
-    // PENDIENTE: Cual debería ser el colorbackground de los boxes con informacion relevante */
     return (
       <SLDRFooterBox>
-        <Typography
-          variant="h6"
-          textAlign={'center'}
-          sx={{ mt: '1rem' }}
-          dangerouslySetInnerHTML={{
-            __html: t('ENERGY_BALANCE.SUMMARY_FOOTER', {
-              paneles: Math.round(bases.reduce((sum, tBase) => sum + tBase.paneles, 0)),
-              potencia: UTIL.formatoValor(
-                'potencia',
-                bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
-              ),
-            }),
-          }}
-        />
+        <Grid container alignItems="center" justifyContent="center" spacing={2}>
+          <Grid item sx={{ mt: '1rem' }}>
+            <Typography
+              sx={theme.titles.level_2}
+              textAlign={'center'}
+              dangerouslySetInnerHTML={{
+                __html: t('ENERGY_BALANCE.SUMMARY_FOOTER', {
+                  paneles: Math.round(
+                    bases.reduce((sum, tBase) => sum + tBase.paneles, 0),
+                  ),
+                  potencia: UTIL.formatoValor(
+                    'potencia',
+                    bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
+                  ),
+                }),
+              }}
+            />
+          </Grid>
+        </Grid>
       </SLDRFooterBox>
     )
   }
@@ -260,12 +259,13 @@ export default function InstallationSummary() {
       }}
     >
       <Grid item xs={12}>
-        <Typography variant="h5" sx={{ textAlign: 'center' }}>
+        <Typography sx={theme.titles.level_2} textAlign="center">
           {t('ENERGY_BALANCE.SUMMARY_TITLE')}
         </Typography>
       </Grid>
       <Grid item xs={12}>
         <DataGrid
+          sx={theme.tables.headerWrap}
           getRowId={getRowId}
           rows={bases}
           columns={columns}
