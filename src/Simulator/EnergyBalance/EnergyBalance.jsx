@@ -167,8 +167,12 @@ export default function EnergyBalanceStep() {
           <CollapsibleCard
             expanded={false}
             title={t('OTRA FORMA DE VERLO')}
-            titleVariant="body"
-            titleSX={{ color: 'blue', mb: '-1rem', borderTop: 2 }}
+            titleSX={{
+              color: theme.palette.primary.main,
+              mb: '-1rem',
+              borderTop: 2,
+              textAlign: 'center',
+            }}
           >
             <SLDRInfoBox>
               <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
@@ -179,8 +183,13 @@ export default function EnergyBalanceStep() {
           <CollapsibleCard
             expanded={true}
             title={t('BASIC.LABEL_AVISO')}
-            titleVariant="body"
-            titleSX={{ color: 'blue', mb: '-1rem', borderTop: 2 }}
+            titleVariant="h2"
+            titleSX={{
+              color: theme.palette.primary.main,
+              mb: '-1rem',
+              borderTop: 2,
+              textAlign: 'center',
+            }}
           >
             <Typography
               variant="body"

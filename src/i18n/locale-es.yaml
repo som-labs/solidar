@@ -462,7 +462,7 @@ CONSUMPTION:
   HOOVER_MAPA_CONSUMO_MONTH_DAY: Consumo horario
   XAXIS_MAPA_CONSUMO_MONTH_DAY_HOUR: Hora
   YAXIS_MAPA_CONSUMO_MONTH_DAY_DAY: Dia
-  LABEL_TITLE_PROFILE_DAY: 'Perfil diario del {{dia}} de {{mes}}'
+  LABEL_TITLE_PROFILE_DAY: 'Perfil diario consumo del {{dia}} de {{mes}}'
   ERROR_DEFINIR_CONSUMO_REE: Debe definir un consumo anual base mayor que 0 para el perfil de REE
   ERROR_AL_MENOS_UN_TIPOCONSUMO: Debe definir al menos un tipo de consumo
   ERROR_FALTA_FICHERO_CONSUMO: Debe definir el fichero de consumos antes de continuar

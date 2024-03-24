@@ -7,7 +7,6 @@ import Plot from 'react-plotly.js'
 
 // MUI objects
 import { Typography, Container, Box, Tooltip } from '@mui/material'
-import InfoIcon from '@mui/icons-material/InfoRounded'
 
 // REACT Solidar Components
 import { useDialog } from '../../components/DialogProvider'
@@ -152,7 +151,13 @@ export default function MapaDiaHora({ activo }) {
 
     openDialog({
       children: (
-        <ProfileDayConsumption consumo={consumo} diaActivo={dia} onClose={closeDialog} />
+        <ProfileDayConsumption
+          consumo={consumo}
+          diaActivo={dia}
+          onClose={closeDialog}
+          maxWidth={'sd'}
+          fullWidth={true}
+        />
       ),
     })
   }
@@ -165,10 +170,13 @@ export default function MapaDiaHora({ activo }) {
           flexWrap: 'wrap',
           flex: 1,
           textAlign: 'center',
+          padding: 2,
         }}
         justifyContent="center"
       >
-        <Typography variant="h4">{t('CONSUMPTION.TITLE_MAP_MONTH_DAY')}</Typography>
+        <Typography sx={theme.titles.level_1} textAlign={'center'} gutterBottom>
+          {t('CONSUMPTION.TITLE_MAP_MONTH_DAY')}
+        </Typography>
 
         <Typography
           variant="body"
@@ -188,9 +196,11 @@ export default function MapaDiaHora({ activo }) {
         }}
         justifyContent="center"
       >
-        <Typography variant="h5" align="center" sx={{ mt: '1rem' }}>
-          {t('CONSUMPTION.LABEL_TITLE_MAP_MONTH_DAY')}
-        </Typography>
+        <Tooltip title={t('CONSUMPTION.TOOLTIP_MAP_MONTH_DAY')} placement="top">
+          <Typography variant="h5" align="center" sx={{ mt: '1rem' }}>
+            {t('CONSUMPTION.LABEL_TITLE_MAP_MONTH_DAY')}
+          </Typography>
+        </Tooltip>
         <div ref={divGraph}>
           <Plot
             data={[g_consumo]}

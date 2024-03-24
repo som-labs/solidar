@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useTheme } from '@mui/material/styles'
 
 // Plotly objects
 import Plot from 'react-plotly.js'
 
 // MUI objects
-import { Box, Button, Container } from '@mui/material'
+import { Box, Button, Container, Typography } from '@mui/material'
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
 
 // Solidar objects
@@ -13,6 +14,8 @@ import * as UTIL from '../classes/Utiles'
 
 export default function ProfileDayConsumption(props) {
   const { t } = useTranslation()
+  const theme = useTheme()
+
   const { diaActivo, onClose } = props
   const [consumo] = useState(props.consumo)
   const graphElement = useRef()
@@ -20,16 +23,8 @@ export default function ProfileDayConsumption(props) {
 
   //REVISAR: como saber el ancho del dialogo para ajustar el grafico
 
-  // useEffect(() => {
-  //   // Function to get the width of the element
-  //   const getWidth = () => {
-  //     if (graphElement.current) {
-  //       graphWidth.current = graphElement.current.offsetWidth
-  //     }
-  //   }
-  //   // Call the function to get the width after initial render
-  //   getWidth()
-  // }, [])
+  //useEffect(() => {
+  // Function to get the width of the element
   const getWidth = () => {
     if (graphElement.current) {
       graphWidth.current = graphElement.current.offsetWidth
@@ -37,6 +32,7 @@ export default function ProfileDayConsumption(props) {
   }
   // Call the function to get the width after initial render
   getWidth()
+  //}, [])
 
   if (diaActivo === undefined) return <></>
 
@@ -79,9 +75,12 @@ export default function ProfileDayConsumption(props) {
   }
 
   const layout = {
+    font: {
+      color: theme.palette.text.primary,
+    },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
-    width: 0.8 * graphWidth.current,
+    width: graphWidth.current,
     autosize: true,
     margin: {
       l: 50,
@@ -107,6 +106,33 @@ export default function ProfileDayConsumption(props) {
       tickmode: 'auto',
       range: [0, consumo.maximoAnual],
     },
+    annotations: [
+      {
+        x: 0,
+        y: consumo.maximoAnual,
+        xref: 'x',
+        yref: 'y',
+        text: 'Máximo anual',
+        font: {
+          color: 'red',
+          size: 20,
+        },
+        xanchor: 'left',
+        textangle: 0,
+        ax: 2,
+        ay: -15,
+      },
+    ],
+    shapes: [
+      {
+        type: 'line',
+        x0: -0.5,
+        y0: consumo.maximoAnual,
+        x1: 23.5,
+        y1: consumo.maximoAnual,
+        line: { color: 'rgb(255, 0, 0)', width: 3 },
+      },
+    ],
   }
 
   const config = {
@@ -116,10 +142,12 @@ export default function ProfileDayConsumption(props) {
     <Container ref={graphElement}>
       <Box>
         <DialogTitle>
-          {t('CONSUMPTION.LABEL_TITLE_PROFILE_DAY', {
-            dia: dia,
-            mes: mes,
-          })}
+          <Typography sx={theme.titles.level_1} textAlign={'center'} gutterBottom>
+            {t('CONSUMPTION.LABEL_TITLE_PROFILE_DAY', {
+              dia: dia,
+              mes: mes,
+            })}
+          </Typography>
         </DialogTitle>
         <DialogContent>
           {/* <Box

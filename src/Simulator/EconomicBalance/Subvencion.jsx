@@ -62,88 +62,63 @@ export default function Subvencion() {
     }
   }
 
-  // if ((TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100 < 80) {
-  //   setSubvencionEU('Sin')
-  //   return (
-  //     <Container>
-  //       <Typography variant="h4" color="red" textAlign={'center'}>
-  //         {t('No hay subvencion posible')}
-  //       </Typography>
-  //       <Typography
-  //         variant="body"
-  //         textAlign={'center'}
-  //         dangerouslySetInnerHTML={{
-  //           __html: t('ECONOMIC_BALANCE.DESCRIPTION_Consumo%Produccion', {
-  //             Consumo_Produccion: UTIL.formatoValor(
-  //               'porciento',
-  //               (TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100,
-  //             ),
-  //           }),
-  //         }}
-  //       />
-  //     </Container>
-  //   )
-  // } else {
   return (
-    <>
-      <Container>
-        <Box
-          component="form"
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            flexWrap: 'wrap',
-            width: '100%',
-            gap: '10px',
+    <Container>
+      <Box
+        component="form"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          flexWrap: 'wrap',
+          width: '100%',
+          gap: '10px',
+        }}
+      >
+        <Typography sx={theme.titles.level_1} textAlign={'center'} marginTop="1rem">
+          {t('ECONOMIC_BALANCE.SUBVENCION_TITLE')}
+        </Typography>
+        <Typography
+          variant="body"
+          textAlign={'center'}
+          dangerouslySetInnerHTML={{
+            __html: t('ECONOMIC_BALANCE.SUBVENCION_DESCRIPTION'),
           }}
-        >
-          <Typography sx={theme.titles.level_1} textAlign={'center'}>
-            {t('ECONOMIC_BALANCE.SUBVENCION_TITLE')}
-          </Typography>
-          <Typography
-            variant="body"
-            textAlign={'center'}
-            dangerouslySetInnerHTML={{
-              __html: t('ECONOMIC_BALANCE.SUBVENCION_DESCRIPTION'),
-            }}
-          />
-          <SLDRTooltip title={<Typography>{t('ayuda mutua')}</Typography>}>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <TextField
-                type="text"
-                onChange={onChangeSubvencion}
-                onBlur={setNewSubvencion}
-                label={t('Economico.PROP.valorSubvencion')}
-                name="valorSubvencion"
-                value={valor}
-                InputProps={{
-                  endAdornment: <InputAdornment position="start">&nbsp;€</InputAdornment>,
-                  inputProps: {
-                    style: { textAlign: 'right' },
-                  },
-                }}
-              />
-            </FormControl>
-          </SLDRTooltip>
+        />
+        <SLDRTooltip title={<Typography>{t('ayuda mutua')}</Typography>}>
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <TextField
               type="text"
               onChange={onChangeSubvencion}
               onBlur={setNewSubvencion}
-              label={t('Economico.PROP.porcientoSubvencion')}
-              name="porcientoSubvencion"
-              value={porciento}
+              label={t('Economico.PROP.valorSubvencion')}
+              name="valorSubvencion"
+              value={valor}
               InputProps={{
-                endAdornment: <InputAdornment position="start">&nbsp;%</InputAdornment>,
+                endAdornment: <InputAdornment position="start">&nbsp;€</InputAdornment>,
                 inputProps: {
                   style: { textAlign: 'right' },
                 },
               }}
             />
           </FormControl>
-        </Box>
-      </Container>
-    </>
+        </SLDRTooltip>
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <TextField
+            type="text"
+            onChange={onChangeSubvencion}
+            onBlur={setNewSubvencion}
+            label={t('Economico.PROP.porcientoSubvencion')}
+            name="porcientoSubvencion"
+            value={porciento}
+            InputProps={{
+              endAdornment: <InputAdornment position="start">&nbsp;%</InputAdornment>,
+              inputProps: {
+                style: { textAlign: 'right' },
+              },
+            }}
+          />
+        </FormControl>
+      </Box>
+    </Container>
   )
-  //}
 }
