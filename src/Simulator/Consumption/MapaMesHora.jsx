@@ -251,10 +251,11 @@ export default function MapaMesHora({ activo }) {
           flexWrap: 'wrap',
           flex: 1,
           textAlign: 'center',
+          padding: 2,
         }}
         justifyContent="center"
       >
-        <Typography sx={theme.titles.level_2} textAlign={'center'} gutterBottom>
+        <Typography sx={theme.titles.level_1} textAlign={'center'} gutterBottom>
           {title}
         </Typography>
         <Typography variant="body">{t('CONSUMPTION.DESC_MAP_MONTH_HOUR')}</Typography>

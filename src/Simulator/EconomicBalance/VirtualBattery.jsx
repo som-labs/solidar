@@ -57,7 +57,7 @@ export default function VirtualBattery() {
             gap: '10px',
           }}
         >
-          <Typography sx={theme.titles.level_1} textAlign={'center'}>
+          <Typography sx={theme.titles.level_1} textAlign={'center'} marginTop="1rem">
             {t('ECONOMIC_BALANCE.TITLE_VIRTUAL_BATTERY')}
           </Typography>
           <Typography

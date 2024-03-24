@@ -327,14 +327,18 @@ export default function ConsumptionSummary() {
         </Grid>
       )}
       {activo && preciosValidos && (
-        <Grid item xs={12}>
-          <SLDRInfoBox>
-            <MapaMesHora activo={activo}></MapaMesHora>
-          </SLDRInfoBox>
-          <SLDRInfoBox>
-            <MapaDiaHora activo={activo}></MapaDiaHora>
-          </SLDRInfoBox>
-        </Grid>
+        <>
+          <Grid item xs={12}>
+            <SLDRInfoBox>
+              <MapaMesHora activo={activo}></MapaMesHora>
+            </SLDRInfoBox>
+          </Grid>
+          <Grid item xs={12}>
+            <SLDRInfoBox>
+              <MapaDiaHora activo={activo}></MapaDiaHora>
+            </SLDRInfoBox>
+          </Grid>
+        </>
       )}
     </Grid>
   )

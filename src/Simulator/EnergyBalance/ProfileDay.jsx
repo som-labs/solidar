@@ -1,10 +1,12 @@
+import { useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useTheme } from '@mui/material/styles'
 
 // Plotly objects
 import Plot from 'react-plotly.js'
 
 // MUI objects
-import { Box, Button } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
 
 // Solidar objects
@@ -13,7 +15,24 @@ import * as UTIL from '../classes/Utiles'
 
 export default function ProfileDay(props) {
   const { t } = useTranslation()
+  const theme = useTheme()
+
   const { diaActivo, onClose } = props
+
+  const divGraph = useRef()
+  const graphElement = useRef()
+  const graphWidth = useRef()
+
+  //useEffect(() => {
+  // Function to get the width of the element
+  const getWidth = () => {
+    if (graphElement.current) {
+      graphWidth.current = graphElement.current.offsetWidth
+    }
+  }
+  // Call the function to get the width after initial render
+  getWidth()
+  //}, [])
 
   if (!diaActivo) {
     return <></>
@@ -49,10 +68,14 @@ export default function ProfileDay(props) {
   ])
 
   const layout = {
+    font: {
+      color: theme.palette.text.primary,
+    },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
-    autosize: false,
-    width: '100%',
+    width: graphWidth.current,
+    height: graphWidth.current,
+    autosize: true,
     margin: {
       l: 50,
       r: 70,
@@ -102,10 +125,14 @@ export default function ProfileDay(props) {
       }}
     >
       <DialogTitle>
-        {t('ENERGY_BALANCE.TITLE_GRAFICO_PROFILE', { dia: dia, mes: mes })}
+        <Typography sx={theme.titles.level_1} textAlign={'center'} gutterBottom>
+          {t('ENERGY_BALANCE.TITLE_GRAFICO_PROFILE', { dia: dia, mes: mes })}
+        </Typography>
       </DialogTitle>
       <DialogContent>
-        <Plot data={[trace1, trace2]} layout={layout} config={config} />
+        <div ref={divGraph}>
+          <Plot data={[trace1, trace2]} layout={layout} config={config} />
+        </div>
       </DialogContent>
       <DialogActions sx={{ mt: '1rem', mb: '2rem' }}>
         <Button onClick={onClose}>{t('BASIC.LABEL_CLOSE')}</Button>

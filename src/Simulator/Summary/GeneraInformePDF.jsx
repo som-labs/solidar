@@ -67,6 +67,9 @@ async function GeneraInformePDF() {
   //Volcamos las bases que incluyen el rendimiento, la produccion y la instalación de cada una de ellas
   nuevaLinea('Cabecera', null, null, 'REPORT.titulo')
 
+  nuevaLinea('Direccion', 0, TCB.direccion, '')
+
+  //nuevaLinea('Dato', i++, 'Dirección: ', TCB.direccion)
   showTabla(TCB.BaseSolar)
 
   i = 0
@@ -488,6 +491,13 @@ function nuevaLinea(tipo, linea, propiedad, valor) {
         if (valor !== undefined) doc.addPage(null, valor)
         else doc.addPage(null, 'p')
       }
+      break
+
+    case 'Direccion':
+      currentY += altoRenglon
+      doc.setFontSize(12)
+      lines = doc.splitTextToSize(propiedad, 170)
+      doc.text(lines, margenIzquierdo, currentY, { align: 'left' })
       break
 
     case 'Disclaimer':
