@@ -9,20 +9,21 @@ import {
   TextField,
   InputAdornment,
   Container,
-  Tooltip,
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { EconomicContext } from '../EconomicContext'
 // REACT Solidar Components
 //import { ConsumptionContext } from '../ConsumptionContext'
-import { SLDRInputField, SLDRTooltip } from '../../components/SLDRComponents'
+import { SLDRTooltip } from '../../components/SLDRComponents'
 
 // Solidar objects
 import TCB from '../classes/TCB'
 
 export default function Subvencion() {
   const { t } = useTranslation()
+  const theme = useTheme()
 
   const [valor, setValor] = useState(TCB.valorSubvencion)
   const [porciento, setPorciento] = useState(TCB.porcientoSubvencion)
@@ -96,7 +97,7 @@ export default function Subvencion() {
             gap: '10px',
           }}
         >
-          <Typography variant="h4" textAlign={'center'}>
+          <Typography sx={theme.titles.level_1} textAlign={'center'}>
             {t('ECONOMIC_BALANCE.SUBVENCION_TITLE')}
           </Typography>
           <Typography

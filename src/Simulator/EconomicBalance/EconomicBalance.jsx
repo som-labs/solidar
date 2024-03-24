@@ -24,14 +24,16 @@ export default function EconomicBalanceStep() {
 
   return (
     <Container>
-      <Typography
-        variant="body"
-        textAlign={'center'}
-        dangerouslySetInnerHTML={{
-          __html: t('ECONOMIC_BALANCE.DESCRIPTION'),
-        }}
-      ></Typography>
-      <Grid container rowSpacing={2}>
+      <Grid container rowSpacing={4}>
+        <Grid item xs={12}>
+          <Typography
+            variant="body"
+            textAlign={'center'}
+            dangerouslySetInnerHTML={{
+              __html: t('ECONOMIC_BALANCE.DESCRIPTION'),
+            }}
+          ></Typography>
+        </Grid>
         <Grid item xs={12}>
           <Box
             sx={{
@@ -39,16 +41,15 @@ export default function EconomicBalanceStep() {
               flexWrap: 'wrap',
               width: '100%',
               gap: '15px',
-              mt: '1rem',
             }}
           >
-            <SLDRInfoBox>
+            <SLDRInfoBox sx={{ borderRight: '1px solid grey' }}>
               <ReduccionIBI></ReduccionIBI>
             </SLDRInfoBox>
-            <SLDRInfoBox>
+            <SLDRInfoBox sx={{ borderRight: '1px solid grey' }}>
               <Subvencion></Subvencion>
             </SLDRInfoBox>
-            <SLDRInfoBox>
+            <SLDRInfoBox sx={{ borderRight: '1px solid grey' }}>
               <VirtualBattery></VirtualBattery>
             </SLDRInfoBox>
           </Box>
@@ -61,16 +62,18 @@ export default function EconomicBalanceStep() {
               gap: '15px',
             }}
           >
-            <SLDRInfoBox>
+            <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
               <InstallationCost></InstallationCost>
             </SLDRInfoBox>
-            <SLDRInfoBox>
+            {/* //REVISAR: porque nofunciona? //borderTop: '3px solid $
+            {theme.palette.primary.main}', */}
+            <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
               <YearSaving></YearSaving>
             </SLDRInfoBox>
           </Box>
         </Grid>
         <Grid item xs={12}>
-          <SLDRInfoBox>
+          <SLDRInfoBox sx={{ bgcolor: '#96b633AA' }}>
             <AmortizationTime></AmortizationTime>
           </SLDRInfoBox>
         </Grid>
@@ -88,14 +91,13 @@ export default function EconomicBalanceStep() {
           <Typography variant="body">
             {t('ECONOMIC_BALANCE.DESCRIPTION_DATA_AS_PANELS')}
           </Typography>
-        </Grid>{' '}
+        </Grid>
         <Grid item xs={12}>
           <SLDRInfoBox
             sx={{
               mt: '1rem',
               justifyContent: 'center',
               alignItems: 'center',
-
               flexFlow: 'column',
             }}
           >

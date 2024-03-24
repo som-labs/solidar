@@ -25,8 +25,6 @@ export default function InstallationSummary() {
     {
       field: 'nombreBaseSolar',
       headerName: t('BaseSolar.PROP.nombreBaseSolar'),
-      headerClassName: 'super-app-theme--header',
-      headerAlign: 'center',
       flex: 5,
       description: t('BaseSolar.TOOLTIP.nombreBaseSolar'),
       sortable: false,
@@ -35,8 +33,6 @@ export default function InstallationSummary() {
       field: 'paneles',
       editable: true,
       headerName: t('Instalacion.PROP.paneles'),
-      headerClassName: 'super-app-theme--header',
-      headerAlign: 'center',
       flex: 2,
       align: 'center',
       description: t('Instalacion.TOOLTIP.paneles'),
@@ -45,8 +41,6 @@ export default function InstallationSummary() {
     {
       field: 'potenciaTotal',
       headerName: t('Instalacion.PROP.potenciaTotal'),
-      headerClassName: 'super-app-theme--header',
-      headerAlign: 'center',
       flex: 3,
       align: 'right',
       description: t('Instalacion.TOOLTIP.potenciaTotal'),

@@ -1,6 +1,5 @@
 import { useContext, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useTheme } from '@mui/material/styles'
 
 // Plotly library
 import Plot from 'react-plotly.js'
@@ -8,6 +7,7 @@ import Plotly from 'plotly.js-dist'
 
 // MUI objects
 import { Typography, Container } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { EconomicContext } from '../EconomicContext'
@@ -194,7 +194,7 @@ export default function MonthSaving() {
 
   return (
     <Container>
-      <Typography variant="h4" textAlign={'center'}>
+      <Typography sx={theme.titles.level_1} textAlign={'center'}>
         {t('ECONOMIC_BALANCE.TITLE_MONTH_SAVINGS')}
       </Typography>
       <div ref={graphElement}></div>

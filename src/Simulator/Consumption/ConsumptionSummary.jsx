@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 // MUI objects
 import { Button, IconButton, Typography, Tooltip, Grid } from '@mui/material'
-
+import { useTheme } from '@mui/material/styles'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
@@ -26,16 +26,21 @@ import TipoConsumo from '../classes/TipoConsumo'
 
 export default function ConsumptionSummary() {
   const { t } = useTranslation()
+  const theme = useTheme()
+
   const [openDialog, closeDialog] = useDialog()
-  const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
   const { tipoConsumo, setTipoConsumo, preciosValidos, addTCBTipoToState } =
     useContext(ConsumptionContext)
+
+  const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
+
   const editing = useRef()
 
   const columns = [
     {
       field: 'nombreTipoConsumo',
       headerName: t('TipoConsumo.PROP.nombreTipoConsumo'),
+      headerAlign: 'center',
       editable: true,
       flex: 1,
       description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
@@ -44,6 +49,8 @@ export default function ConsumptionSummary() {
     {
       field: 'fuente',
       headerName: t('TipoConsumo.PROP.fuente'),
+      headerAlign: 'center',
+      align: 'center',
       type: 'select',
       description: t('TipoConsumo.TOOLTIP.fuente'),
       sortable: false,
@@ -51,6 +58,7 @@ export default function ConsumptionSummary() {
     {
       field: 'nombreFicheroCSV',
       headerName: t('TipoConsumo.PROP.nombreFicheroCSV'),
+      headerAlign: 'center',
       type: 'text',
       flex: 1,
       description: t('TipoConsumo.TOOLTIP.nombreFicheroCSV'),
@@ -59,6 +67,8 @@ export default function ConsumptionSummary() {
     {
       field: 'totalAnual',
       headerName: t('TipoConsumo.PROP.totalAnual'),
+      headerAlign: 'center',
+      align: 'center',
       type: 'number',
       width: 150,
       description: t('TipoConsumo.TOOLTIP.totalAnual'),
@@ -252,13 +262,16 @@ export default function ConsumptionSummary() {
   function footerSummary() {
     return (
       <SLDRFooterBox>
-        <Grid container alignItems="center" justifyContent="center" spacing={1}>
+        <Grid
+          container
+          alignItems="center"
+          justifyContent="center"
+          spacing={2}
+          sx={{ mt: '2rem' }}
+        >
           <Grid item>
             <Typography
-              variant="h6"
-              sx={{
-                textAlign: 'center',
-              }}
+              sx={theme.titles.level_2}
               textAlign={'center'}
               dangerouslySetInnerHTML={{
                 __html: t('CONSUMPTION.TOTAL_DEMMAND', {
@@ -294,38 +307,35 @@ export default function ConsumptionSummary() {
   }
 
   return (
-    <div>
+    <Grid container rowSpacing={4}>
       {preciosValidos && (
-        <SLDRInfoBox>
-          <DataGrid
-            getRowId={getRowId}
-            rows={tipoConsumo}
-            columns={columns}
-            hideFooter={false}
-            rowHeight={30}
-            autoHeight
-            disableColumnMenu
-            localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
-            slots={{ toolbar: newConsumption, footer: footerSummary }}
-            sx={{
-              border: 'none', // Remove external border
-              '& .MuiDataGrid-columnsContainer': {
-                borderBottom: 'none', // Remove border at the bottom of the header row
-              },
-            }}
-          />
-        </SLDRInfoBox>
+        <Grid item xs={12}>
+          <SLDRInfoBox>
+            <DataGrid
+              sx={theme.tables.headerWrap}
+              getRowId={getRowId}
+              rows={tipoConsumo}
+              columns={columns}
+              hideFooter={false}
+              rowHeight={30}
+              autoHeight
+              disableColumnMenu
+              localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
+              slots={{ toolbar: newConsumption, footer: footerSummary }}
+            />
+          </SLDRInfoBox>
+        </Grid>
       )}
       {activo && preciosValidos && (
-        <>
+        <Grid item xs={12}>
           <SLDRInfoBox>
             <MapaMesHora activo={activo}></MapaMesHora>
           </SLDRInfoBox>
           <SLDRInfoBox>
             <MapaDiaHora activo={activo}></MapaDiaHora>
           </SLDRInfoBox>
-        </>
+        </Grid>
       )}
-    </div>
+    </Grid>
   )
 }

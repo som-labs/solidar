@@ -6,12 +6,14 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import FormControl from '@mui/material/FormControl'
+import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { EconomicContext } from '../EconomicContext'
 
 export default function AmortizationTime() {
   const { t } = useTranslation()
+  const theme = useTheme()
 
   const { ecoData } = useContext(EconomicContext)
 
@@ -27,7 +29,7 @@ export default function AmortizationTime() {
             width: '100%',
           }}
         >
-          <Typography variant="h4" textAlign={'center'}>
+          <Typography sx={theme.titles.level_1} textAlign={'center'} marginTop="1rem">
             {t('ECONOMIC_BALANCE.TITLE_AMORTIZATION_TIME')}
           </Typography>
           {/* <Typography

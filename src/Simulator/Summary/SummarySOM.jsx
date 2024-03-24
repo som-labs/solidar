@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 // MUI objects
 import { Typography, Container, Box, Paper, Grid } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { EconomicContext } from '../EconomicContext'
@@ -20,6 +21,8 @@ import * as UTIL from '../classes/Utiles'
 
 const SummarySOMStep = () => {
   const { t } = useTranslation()
+  const theme = useTheme()
+
   const contentRef = useRef(null)
 
   const { bases } = useContext(BasesContext)
@@ -43,9 +46,16 @@ const SummarySOMStep = () => {
       <Paper elevation={10} style={{ padding: 16 }}>
         <Container ref={contentRef}>
           <Typography variant="body">{t('SUMMARY.DESCRIPTION')}</Typography>
-          <Grid container rowSpacing={2}>
+          <Grid container rowSpacing={6}>
             <Grid item xs={12}>
-              <Box sx={{ display: 'flex', flexDirection: 'row', mt: '1rem' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  mt: '2rem',
+                  borderTop: '3px solid #96b633',
+                }}
+              >
                 <SLDRInfoBox
                   sx={{
                     display: 'flex',
@@ -54,10 +64,15 @@ const SummarySOMStep = () => {
                     gap: '10px',
                     alignContent: 'center',
                     flexDirection: 'column',
+                    mt: '2rem',
                   }}
                 >
-                  <Typography variant="h3" textAlign={'center'}>
-                    {t('SUMMARY.TITLE_AUTOPRODUCCION')}
+                  <Typography
+                    sx={theme.titles.level_1}
+                    textAlign={'center'}
+                    marginTop={'1rem'}
+                  >
+                    {t('SUMMARY.TITLE_AUTOPRODUCCION').toUpperCase()}
                   </Typography>
                   <Typography variant="body">
                     {t('SUMMARY.DESCRIPTION_AUTOPRODUCCION')}
@@ -120,10 +135,15 @@ const SummarySOMStep = () => {
                   gap: '10px',
                   alignContent: 'center',
                   flexDirection: 'column',
+                  bgcolor: '#96b63388',
                 }}
               >
-                <Typography variant="h3" textAlign={'center'}>
-                  {t('SUMMARY.TITLE_ENERGY_BALANCE')}
+                <Typography
+                  sx={theme.titles.level_1}
+                  textAlign={'center'}
+                  marginTop={'2rem'}
+                >
+                  {t('SUMMARY.TITLE_ENERGY_BALANCE').toUpperCase()}
                 </Typography>
                 <Typography variant="body">
                   {t('SUMMARY.DESCRIPTION_ENERGY_BALANCE')}
@@ -155,10 +175,15 @@ const SummarySOMStep = () => {
                   gap: '10px',
                   alignContent: 'center',
                   flexDirection: 'column',
+                  bgcolor: '#CCCCCC88',
                 }}
               >
-                <Typography variant="h3" textAlign={'center'}>
-                  {t('SUMMARY.TITLE_ECONOMIC_BALANCE')}
+                <Typography
+                  sx={theme.titles.level_1}
+                  textAlign={'center'}
+                  marginTop={'2rem'}
+                >
+                  {t('SUMMARY.TITLE_ECONOMIC_BALANCE').toUpperCase()}
                 </Typography>
                 <Typography variant="body">
                   {t('SUMMARY.DESCRIPTION_ECONOMIC_BALANCE')}
@@ -222,8 +247,8 @@ const SummarySOMStep = () => {
             <Grid item xs={12}>
               <Reports ref={contentRef}></Reports>
             </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h4" sx={{ mt: '1rem' }}>
+            <Grid item xs={12} sx={{ mt: 8 }} padding={10}>
+              <Typography sx={theme.titles.level_1} textAlign={'center'}>
                 {t('BASIC.LABEL_AVISO')}
               </Typography>
               <Typography

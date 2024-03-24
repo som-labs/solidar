@@ -2,8 +2,8 @@ import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
+import { Typography, Box } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { EconomicContext } from '../EconomicContext'
@@ -13,6 +13,7 @@ import * as UTIL from '../classes/Utiles'
 
 export default function GraphBoxSavings() {
   const { t } = useTranslation()
+  const theme = useTheme()
 
   const { ecoData } = useContext(EconomicContext)
   return (
@@ -42,7 +43,7 @@ export default function GraphBoxSavings() {
           id="B11"
           sx={{
             height: 200,
-            backgroundColor: '#FFB266',
+            backgroundColor: theme.palette.primary.main,
             mr: '0.3rem',
             display: 'flex',
           }}
@@ -118,7 +119,7 @@ export default function GraphBoxSavings() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#FFB266',
+            backgroundColor: theme.palette.primary.main,
           }}
         ></Box>
         <Box

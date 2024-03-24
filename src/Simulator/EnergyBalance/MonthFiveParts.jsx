@@ -143,9 +143,6 @@ export default function MonthThreeParts(props) {
 
   return (
     <Container>
-      <Typography variant="h5" textAlign={'center'} sx={{ mt: '1rem' }}>
-        {t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_THREE_PARTS')}
-      </Typography>
       <div style={{ height: 500, width: '100%' }} ref={graphElement}></div>
     </Container>
   )

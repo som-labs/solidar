@@ -16,6 +16,7 @@ import {
   DialogTitle,
   Typography,
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { SLDRInputField } from '../../components/SLDRComponents'
@@ -26,6 +27,8 @@ import * as UTIL from '../classes/Utiles'
 
 export default function DialogBaseSolar({ data, onClose }) {
   const { t, i18n } = useTranslation()
+  const theme = useTheme()
+
   const ndxPanel = useRef(-1)
   //const [tipoPanel, setTipoPanel] = useState(TCB.tipoPanelActivo)
 

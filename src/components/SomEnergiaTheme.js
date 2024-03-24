@@ -34,7 +34,7 @@ export default function SomEnergiaTheme(isDarkMode) {
         infoBox: {
           // main: isDarkMode ? '#F8F8FF' : '#FFF0F5',
           bgcolor: isDarkMode ? '#333333' : '#F8F8F8',
-          border: isDarkMode ? '1px solid white' : '1px solid #96b633',
+          //border: isDarkMode ? '1px solid white' : '1px solid #96b633',
           contrastText: 'black',
           display: 'flex',
           flexWrap: 'wrap',
@@ -76,6 +76,59 @@ export default function SomEnergiaTheme(isDarkMode) {
           backgroundColor: isDarkMode ? '#666666' : '#beaf17',
           padding: 1,
           gap: 1,
+        },
+      },
+      titles: {
+        level_0: {
+          fontSize: '2.5rem',
+          fontWeight: 700,
+        },
+        level_1: {
+          fontSize: '1.7rem',
+          fontWeight: 700,
+        },
+        level_2: {
+          fontSize: '1.5rem',
+          fontWeight: 500,
+        },
+      },
+
+      //       fontWeight: 400,
+      // borderRadius: "var(--none, 0px)",
+      // borderBottom: "1px solid var(--divider, rgba(0, 0, 0, 0.12))",
+      // borderLeft: "var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12))",
+      // borderRight: "var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12))",
+      // borderTop: "var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12))",
+      // background: "var(--primary-selected, rgba(33, 150, 243, 0.08))",
+      // alignItems: 'space-between !important'
+      //REVISAR: como hacer la justificacion del texto del header aqui
+      tables: {
+        headerWrap: {
+          '& .MuiDataGrid-columnHeaderTitle': {
+            whiteSpace: 'normal',
+            lineHeight: 'normal',
+            //color: 'green',
+            alignItems: 'center !important',
+          },
+          '& .MuiDataGrid-columnHeader': {
+            // Forced to use important since overriding inline styles
+            height: 'unset !important',
+          },
+          '& .MuiDataGrid-columnHeaders': {
+            // Forced to use important since overriding inline styles
+            maxHeight: '168px !important',
+
+            //alignItems: 'center',
+            //textAlign: 'center',
+            //align: 'center',
+            //headerAlign: 'center',
+          },
+
+          // Remove external border
+          '& .MuiDataGrid-columnsContainer': {
+            border: 'none',
+            borderBottom: 'none', // Remove border at the bottom of the header row
+          },
         },
       },
     }),
