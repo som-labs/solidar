@@ -148,7 +148,14 @@ export default function ConsumoGeneracion3D() {
       return parseInt(a)
     })
     openDialog({
-      children: <ProfileDay diaActivo={fecha} onClose={closeDialog} />,
+      children: (
+        <ProfileDay
+          diaActivo={fecha}
+          onClose={closeDialog}
+          maxWidth={'sd'}
+          fullWidth={true}
+        />
+      ),
     })
   }
 

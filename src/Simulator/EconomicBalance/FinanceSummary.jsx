@@ -29,12 +29,12 @@ export default function FinanceSummary() {
   function footerSummary() {
     return (
       <SLDRFooterBox>
-        <Typography sx={theme.titles.level_2}>
+        <Typography sx={theme.titles.level_2} marginTop="1rem">
           {t('ECONOMIC_BALANCE.LABEL_FOOTER_VAN', {
             VANProyecto: UTIL.formatoValor('dinero', ecoData.VANProyecto),
           })}
         </Typography>
-        <Typography sx={theme.titles.level_2}>
+        <Typography sx={theme.titles.level_2} marginBottom="1rem">
           {t('ECONOMIC_BALANCE.LABEL_FOOTER_TIR', {
             TIRProyecto: UTIL.formatoValor('porciento', ecoData.TIRProyecto),
           })}
@@ -50,14 +50,14 @@ export default function FinanceSummary() {
       headerAlign: 'center',
       align: 'center',
       sortable: false,
-      flex: 1,
+      flex: 0.7,
       description: t('ECONOMIC_BALANCE.TOOLTIP_ANO'),
     },
     {
       field: 'previo',
       headerName: t('ECONOMIC_BALANCE.LABEL_PREVIO'),
       headerClassName: 'super-app-theme--header',
-      headerAlign: 'center',
+      headerAlign: 'right',
       align: 'right',
       sortable: false,
       flex: 1,
@@ -70,7 +70,7 @@ export default function FinanceSummary() {
       field: 'inversion',
       headerName: t('ECONOMIC_BALANCE.LABEL_INVERSION'),
       headerClassName: 'super-app-theme--header',
-      headerAlign: 'center',
+      headerAlign: 'right',
       align: 'right',
       sortable: false,
       flex: 1,
@@ -83,7 +83,7 @@ export default function FinanceSummary() {
       field: 'ahorro',
       headerName: t('ECONOMIC_BALANCE.LABEL_AHORRO'),
       headerClassName: 'super-app-theme--header',
-      headerAlign: 'center',
+      headerAlign: 'right',
       align: 'right',
       sortable: false,
       flex: 1,
@@ -95,7 +95,7 @@ export default function FinanceSummary() {
     {
       field: 'subvencion',
       headerName: t('ECONOMIC_BALANCE.LABEL_SUBVENCION'),
-      headerAlign: 'center',
+      headerAlign: 'right',
       align: 'right',
       sortable: false,
       flex: 1,
@@ -107,6 +107,7 @@ export default function FinanceSummary() {
     {
       field: 'IBI',
       headerName: t('ECONOMIC_BALANCE.LABEL_IBI'),
+      headerAlign: 'right',
       align: 'right',
       sortable: false,
       flex: 1,
@@ -118,6 +119,7 @@ export default function FinanceSummary() {
     {
       field: 'pendiente',
       headerName: t('ECONOMIC_BALANCE.LABEL_PENDIENTE'),
+      headerAlign: 'right',
       align: 'right',
       sortable: false,
       flex: 1,
@@ -128,50 +130,46 @@ export default function FinanceSummary() {
     },
   ]
   return (
-    <>
-      <Container>
-        <Box
-          component="form"
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            flexWrap: 'wrap',
-            width: '100%',
-            '& .super-app.positive': {
-              backgroundColor: theme.palette.primary.main, //'rgba(157, 255, 118, 0.49)',
-              color: '#1a3e72',
-              fontWeight: '700',
-            },
-            '& .super-app.negative': {
-              backgroundColor: '#ffff99',
-              color: '#1a3e72',
-              fontWeight: '400',
-            },
-          }}
-        >
-          <Typography sx={theme.titles.level_1} textAlign={'center'}>
-            {t('ECONOMIC_BALANCE.TITLE_FINANCE_SUMMARY')}
-          </Typography>
-          <br />
-          <DataGrid
-            sx={theme.tables.headerWrap}
-            getRowId={getRowId}
-            rows={ecoData.cashFlow}
-            columns={columns}
-            hideFooter={false}
-            rowHeight={30}
-            autoHeight
-            disableColumnMenu
-            getRowClassName={(params) =>
-              clsx('super-app', {
-                negative: params.row.pendiente < 0,
-                positive: params.row.pendiente > 0,
-              })
-            }
-            slots={{ footer: footerSummary }}
-          />
-        </Box>
-      </Container>
-    </>
+    <Box
+      component="form"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        flexWrap: 'wrap',
+        width: '100%',
+        '& .super-app.positive': {
+          backgroundColor: theme.palette.primary.main, //'rgba(157, 255, 118, 0.49)',
+          color: '#1a3e72',
+          fontWeight: '700',
+        },
+        '& .super-app.negative': {
+          backgroundColor: '#ffff99',
+          color: '#1a3e72',
+          fontWeight: '400',
+        },
+      }}
+    >
+      <Typography sx={theme.titles.level_1} textAlign={'center'} marginTop="1rem">
+        {t('ECONOMIC_BALANCE.TITLE_FINANCE_SUMMARY')}
+      </Typography>
+      <br />
+      <DataGrid
+        sx={theme.tables.headerWrap}
+        getRowId={getRowId}
+        rows={ecoData.cashFlow}
+        columns={columns}
+        hideFooter={false}
+        rowHeight={30}
+        autoHeight
+        disableColumnMenu
+        getRowClassName={(params) =>
+          clsx('super-app', {
+            negative: params.row.pendiente < 0,
+            positive: params.row.pendiente > 0,
+          })
+        }
+        slots={{ footer: footerSummary }}
+      />
+    </Box>
   )
 }

@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 const CollapsibleCard = (props) => {
-  console.log(props)
   const [expanded, setExpanded] = useState(props.expanded)
 
   // const [title, setTitle] = useState(content.title)
@@ -33,16 +32,7 @@ const CollapsibleCard = (props) => {
       />
 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent variant="outlined">
-          {props.children}
-          {/* <Typography
-            variant={props.descriptionVariant}
-            sx={props.descriptionSX}
-            dangerouslySetInnerHTML={{
-              __html: props.description,
-            }}
-          /> */}
-        </CardContent>
+        <CardContent variant="outlined">{props.children}</CardContent>
       </Collapse>
     </Card>
   )
