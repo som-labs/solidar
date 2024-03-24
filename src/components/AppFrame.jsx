@@ -36,7 +36,7 @@ export default function AppFrame({ children }) {
 
   const navigate = useNavigate()
 
-  const title = 'Solidar Energia (Individual)'
+  const title = 'Solidar Energia'
   const logo = '/logo.svg'
   const pages = [
     // {
