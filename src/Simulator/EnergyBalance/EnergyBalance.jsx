@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 // MUI objects
 import {
+  Box,
   Typography,
   Container,
   MenuItem,
@@ -16,11 +17,9 @@ import HelpIcon from '@mui/icons-material/HelpOutlineRounded.js'
 //React global components
 import { BasesContext } from '../BasesContext'
 import { EconomicContext } from '../EconomicContext'
-import CollapsibleCard from '../components/CollapsibleCard'
-import { SLDRInfoBox } from '../../components/SLDRComponents'
+import { SLDRInfoBox, SLDRCollapsibleCard } from '../../components/SLDRComponents'
 
 // REACT Solidar Components
-import PieChart from '../Summary/Report/PieChart'
 import CallSankey from './SankeyFlow/CallSankey'
 import InstallationSummary from './InstallationSummary'
 import ConsumoGeneracion3D from './ConsumoGeneracion3D'
@@ -164,40 +163,47 @@ export default function EnergyBalanceStep() {
           </SLDRInfoBox>
         </Grid>
         <Grid item xs={12}>
-          <CollapsibleCard
-            expanded={false}
-            title={t('OTRA FORMA DE VERLO')}
-            titleSX={{
-              color: theme.palette.primary.main,
-              mb: '-1rem',
-              borderTop: 2,
-              textAlign: 'center',
-            }}
-          >
+          <SLDRCollapsibleCard expanded={false} title={t('OTRA FORMA DE VERLO')}>
             <SLDRInfoBox>
               <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
             </SLDRInfoBox>
-          </CollapsibleCard>
+          </SLDRCollapsibleCard>
         </Grid>
         <Grid item xs={12}>
-          <CollapsibleCard
-            expanded={true}
-            title={t('BASIC.LABEL_AVISO')}
-            titleVariant="h2"
-            titleSX={{
-              color: theme.palette.primary.main,
-              mb: '-1rem',
-              borderTop: 2,
-              textAlign: 'center',
-            }}
-          >
+          <SLDRCollapsibleCard expanded={true} title={t('BASIC.LABEL_AVISO')}>
             <Typography
               variant="body"
+              gutterBottom
               dangerouslySetInnerHTML={{
-                __html: t('ENERGY_BALANCE.MSG_disclaimerProduccion'),
+                __html: t('ENERGY_BALANCE.TITLE_DISCLAIMER_PRODUCCION'),
               }}
             />
-          </CollapsibleCard>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 8,
+                mt: '1rem',
+              }}
+            >
+              <Box sx={{ display: 'flex', flex: 1 }}>
+                <Typography
+                  variant="body"
+                  dangerouslySetInnerHTML={{
+                    __html: t('ENERGY_BALANCE.DESCRIPTION_DISCLAIMER_PRODUCCION_SI'),
+                  }}
+                />
+              </Box>
+              <Box sx={{ display: 'flex', flex: 1 }}>
+                <Typography
+                  variant="body"
+                  dangerouslySetInnerHTML={{
+                    __html: t('ENERGY_BALANCE.DESCRIPTION_DISCLAIMER_PRODUCCION_NO'),
+                  }}
+                />
+              </Box>
+            </Box>
+          </SLDRCollapsibleCard>
         </Grid>
         {dataReady && (
           <Grid item xs={12}>
