@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import {
   Box,
   TextField,
@@ -6,17 +9,19 @@ import {
   Checkbox,
   Typography,
   Tooltip,
+  IconButton,
+  Card,
+  CardHeader,
+  CardContent,
+  Collapse,
 } from '@mui/material'
-//Formik
-import { ErrorMessage } from 'formik'
-
-//DEMO
-import CollapsibleCard from '../Simulator/components/CollapsibleCard'
-
 import { styled } from '@mui/material/styles'
 import { useTheme } from '@mui/material/styles'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+
+//Formik
+import { ErrorMessage } from 'formik'
 import { useField } from 'formik'
-import { useTranslation } from 'react-i18next'
 
 function SLDRFooterBox(props) {
   const defaultStyle = {
@@ -47,7 +52,7 @@ function SLDRInfoBox(props) {
 }
 
 //REVISAR: estos style no estan funcionando
-const SLDRTooltip = ({ title, children, placement }) => {
+function SLDRTooltip({ title, children, placement }) {
   const ToolTipStyle = {
     textAlign: 'left',
     padding: '8px',
@@ -67,7 +72,7 @@ function SLDRDetalle(props) {
   const { title, text } = props
   return (
     <Box>
-      <CollapsibleCard
+      <SLDRCollapsibleCard
         title={title}
         titleVariant="body"
         titleSX={{ color: 'blue', mb: '-1rem' }}
@@ -80,7 +85,7 @@ function SLDRDetalle(props) {
             __html: text,
           }}
         />
-      </CollapsibleCard>
+      </SLDRCollapsibleCard>
     </Box>
   )
 }
@@ -155,4 +160,53 @@ function SLDRInputField({ unit, object, MUIType, toolTipPlacement, ...props }) {
   )
 }
 
-export { SLDRFooterBox, SLDRInfoBox, SLDRInputField, SLDRTooltip, SLDRDetalle }
+function SLDRCollapsibleCard(props) {
+  const theme = useTheme()
+  const [expanded, setExpanded] = useState(props.expanded)
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded)
+  }
+
+  const defaultStyle = {
+    color: theme.palette.primary.main,
+    borderTop: 2,
+    textAlign: 'center',
+    padding: '8px',
+    fontFamily: 'inherit',
+    fontSize: 'inherit',
+  }
+
+  const titleStyle = { ...defaultStyle, ...props.titleSX }
+
+  return (
+    <Card>
+      <CardHeader
+        title={props.title}
+        sx={titleStyle}
+        action={
+          <IconButton
+            aria-expanded={expanded}
+            aria-label="show more"
+            onClick={handleExpandClick}
+          >
+            <ExpandMoreIcon />
+          </IconButton>
+        }
+      />
+
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent sx={theme.palette.infoBox}>{props.children}</CardContent>
+      </Collapse>
+    </Card>
+  )
+}
+
+export {
+  SLDRFooterBox,
+  SLDRInfoBox,
+  SLDRInputField,
+  SLDRTooltip,
+  SLDRDetalle,
+  SLDRCollapsibleCard,
+}

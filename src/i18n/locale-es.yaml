@@ -543,10 +543,11 @@ ENERGY_BALANCE:
     Producción versus consumo mensual <br />
     para {{potencia}} instalada
   TITLE_GRAPH_MONTH_THREE_PARTS: Autoconsumo, consumo de la red y excedentes
-  MSG_disclaimerProduccion: |
+  TITLE_DISCLAIMER_PRODUCCION: |
     Los datos para la estimación de la producción de los paneles solares se obtienen de PVGIS. <a href:"https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en">Ver documentación aqui</a>
-    <br />
+  DESCRIPTION_DISCLAIMER_PRODUCCION_SI: |
     Son tenidos en cuenta: <ul><li>la temperatura del aire a 2 metros y la velocidad del viento a 10 metros</li><li>el efecto de la temperatura en el rendimiento</li><li>la variación del espectro electromagnético a lo largo del día</li><li>el promedio de aerosoles en el ambiente (no los cambios bruscos)</li></ul>
+  DESCRIPTION_DISCLAIMER_PRODUCCION_NO: |
     No son tenidos en cuenta: <ul><li>el efecto de las nevadas</li><li>la acumulación de polvo y suciedad en los paneles</li><li>las pérdidas por sombras próximas</li></ul><br>
   TITLE_GRAPH_ENERGY_DEMAND: Título
   TITLE_GRAPH_DEMAND: Demanda energética
@@ -872,7 +873,7 @@ REPORT:
   US_POTENCIA: Potencia contratada
   US_TARIFA: Tarifa
   US_ANUAL: Uso anual de la energía
-  US_HORAS_SOL: Consumo durante horas de sol
+  US_HORAS_SOL: 'Consumo durante horas de sol: <strong>{{consumo}}</strong>'
   INSTALACIO_TITLE: Características instalación propuesta
   INSTALACIO_NOMBRE: Número de paneles
   INSTALACIO_POTENCIA: Potencia total instalada

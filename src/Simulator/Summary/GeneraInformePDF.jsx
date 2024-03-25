@@ -67,7 +67,12 @@ async function GeneraInformePDF() {
   //Volcamos las bases que incluyen el rendimiento, la produccion y la instalación de cada una de ellas
   nuevaLinea('Cabecera', null, null, 'REPORT.titulo')
 
-  nuevaLinea('Direccion', 0, TCB.direccion, '')
+  nuevaLinea(
+    'Direccion',
+    0,
+    TCB.i18next.t('REPORT.DADES_DIRECCIO') + ': ' + TCB.direccion,
+    '',
+  )
 
   //nuevaLinea('Dato', i++, 'Dirección: ', TCB.direccion)
   showTabla(TCB.BaseSolar)

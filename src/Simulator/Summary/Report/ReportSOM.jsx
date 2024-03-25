@@ -23,7 +23,6 @@ import InstallationSummary from './InstallationSummary'
 import * as UTIL from '../../classes/Utiles'
 import TCB from '../../classes/TCB'
 import MicroMap from '../../Location/MicroMap'
-import { SLDRInfoBox } from '../../../components/SLDRComponents'
 
 export default function ReportSOM({ onClose }) {
   const { t, i18n } = useTranslation()
@@ -67,6 +66,7 @@ export default function ReportSOM({ onClose }) {
         >
           <Typography>{t('REPORT.ATENCIO')}</Typography>
         </Box>
+
         <Box
           sx={{
             display: 'flex',
@@ -102,6 +102,7 @@ export default function ReportSOM({ onClose }) {
                   {t('REPORT.DADES_DIRECCIO')}: <strong>{TCB.direccion}</strong>
                 </Typography>
               </Box>
+
               <Box id="C1F1C2" sx={theme.informe.dataBox}>
                 <div>
                   <InstallationSummary></InstallationSummary>
@@ -123,31 +124,32 @@ export default function ReportSOM({ onClose }) {
               </Typography>
 
               <Typography>
-                {t('REPORT.US_ANUAL') + '  '}
-                <div
+                {t('REPORT.US_ANUAL')}
+                <Box
                   style={{
+                    marginLeft: 15,
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: 5,
+                    gap: 8,
                   }}
                 >
+                  {/* REVISAR: Causando error en consola */}
                   {TCB.consumo.periodo.map((value, index) => (
                     <span key={index}>
-                      {'P' + (index + 1)}:{' '}
+                      {' P' + (index + 1) + ': '}
                       <strong>{UTIL.formatoValor('energia', value)}</strong>
                     </span>
                   ))}
-                </div>
+                </Box>
               </Typography>
 
-              <Typography>
-                {t('REPORT.US_HORAS_SOL') + '    '}
-                <span>
-                  <strong>
-                    {UTIL.formatoValor('energia', TCB.balance.consumoDiurno)}
-                  </strong>
-                </span>
-              </Typography>
+              <Typography
+                dangerouslySetInnerHTML={{
+                  __html: t('REPORT.US_HORAS_SOL', {
+                    consumo: UTIL.formatoValor('energia', TCB.balance.consumoDiurno),
+                  }),
+                }}
+              />
               <SummaryPreciosTarifa></SummaryPreciosTarifa>
             </Box>
           </Box>
@@ -419,7 +421,6 @@ export default function ReportSOM({ onClose }) {
               />
             </Grid>
             <Grid item xs={3}>
-              {/* Por ahora ponemos % consumo horas sol */}
               <PieChart
                 percentage={(TCB.balance.consumoDiurno / TCB.consumo.totalAnual) * 100}
                 color="#b9db42"
@@ -436,12 +437,12 @@ export default function ReportSOM({ onClose }) {
         <Box sx={{ mb: 1 }}>
           <MonthSaving></MonthSaving>
         </Box>
-        {/* PENDIENTE: remover dependencia CSS */}
         <Box sx={theme.informe.titleBox}>
           <Typography variant="h5">
             <strong>{t('REPORT.PROPERESPASES_TITLE')}</strong>
           </Typography>
         </Box>
+
         <div style={styles.container}>
           <div style={styles.properespasesContainer}>
             <h3 style={styles.primerpas}>
@@ -452,11 +453,6 @@ export default function ReportSOM({ onClose }) {
               </strong>{' '}
               {t('REPORT.PROPERESPASES_DESCRIPTION_FINAL')}
             </h3>
-            {/* {console.log(
-                'https://www.somenergia.coop/' +
-                  i18n.language +
-                  '/produeix-energia-renovable/autoproduccio/',
-              )} */}
             <p style={styles.properespasesAmbImage}>
               <a
                 href={
@@ -470,18 +466,9 @@ export default function ReportSOM({ onClose }) {
                 {t('REPORT.PROPERESPASES_TEXT')}
               </a>
             </p>
-            {/* {console.log(
-                'https://' +
-                  i18n.language +
-                  '.support.somenergia.coop/article/781-com-funcionen-les-compres-col-lectives-d-autoproduccio-de-som-energia',
-              )} */}
+
             <p style={styles.properespasesText}>
               <a
-                // href={
-                //   'https://' +
-                //   i18n.language +
-                //   '.support.somenergia.coop/article/781-com-funcionen-les-compres-col-lectives-d-autoproduccio-de-som-energia'
-                // }
                 href={
                   'https://ca.support.somenergia.coop/article/781-com-funcionen-les-compres-col-lectives-d-autoproduccio-de-som-energia'
                 }
@@ -492,6 +479,7 @@ export default function ReportSOM({ onClose }) {
               </a>
             </p>
           </div>
+
           <div style={styles.properespasesContainer}>
             <h3 style={styles.segonpas}>
               {t('REPORT.PROPERESPASES_TITLE_SEGON')}{' '}
@@ -513,6 +501,7 @@ export default function ReportSOM({ onClose }) {
             </p>
           </div>
         </div>
+
         <Box sx={theme.informe.titleBox}>
           <Typography variant="h5">
             <strong>{t('REPORT.AUTOGENERACIO_TITLE')}</strong>
@@ -671,6 +660,7 @@ export default function ReportSOM({ onClose }) {
           <img src={logo} width="120" />
         </div>
       </div>
+
       <Button
         variant="contained"
         sx={{ mr: '2rem' }}
