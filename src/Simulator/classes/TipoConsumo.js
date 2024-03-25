@@ -69,7 +69,13 @@ class TipoConsumo extends DiaHora {
         //Verificamos que tenemos 365 dias registrados.
         let faltan = 0
         for (let i = 0; i < 365; i++) {
-          if (this.idxTable[i].fecha === '') faltan++
+          //Si un registro no tiene fecha le ponemos la que correspodne al indice
+          if (this.idxTable[i].fecha === '') {
+            faltan++
+            const ano = returnObject.fechaInicio.getFullYear()
+            const [dia, mes] = UTIL.fechaDesdeIndice(i)
+            this.idxTable[i].fecha = new Date(ano, mes, dia, 0, 0)
+          }
         }
         if (faltan !== 0) {
           UTIL.debugLog('Faltan datos de ' + faltan + ' dias')

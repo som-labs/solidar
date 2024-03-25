@@ -47,7 +47,7 @@ export default function EnergyBalanceStep() {
   const [dataReady, setDataReady] = useState(false)
   const [monthlyData, setMonthlyData] = useState()
   const [yearlyData, setYearlyData] = useState({})
-  const { bases, setBases, updateTCBBasesToState } = useContext(BasesContext)
+  const { bases, updateTCBBasesToState } = useContext(BasesContext)
   const { setEcoData } = useContext(EconomicContext)
   const [mes, setMes] = useState('')
   const [openDialog, closeDialog] = useDialog()
@@ -59,30 +59,30 @@ export default function EnergyBalanceStep() {
     console.log('USEEFFECT de ENERGYBALANCE sin condiciones')
     updateTCBBasesToState()
 
-    setMonthlyData({
-      consumo: TCB.consumo.resumenMensual('suma'),
-      produccion: TCB.produccion.resumenMensual('suma'),
-      deficit: TCB.balance.resumenMensual('deficit'),
-      autoconsumo: TCB.balance.resumenMensual('autoconsumo'),
-      excedente: TCB.balance.resumenMensual('excedente'),
-    })
-    setYearlyData({
-      consumo: TCB.consumo.totalAnual,
-      produccion: TCB.produccion.totalAnual,
-      deficit: TCB.balance.deficitAnual,
-      autoconsumo: TCB.balance.autoconsumo,
-      excedente: TCB.balance.excedenteAnual,
-      consumoDiurno: TCB.balance.consumoDiurno,
-    })
-    setDataReady(true)
+    //   setMonthlyData({
+    //     consumo: TCB.consumo.resumenMensual('suma'),
+    //     produccion: TCB.produccion.resumenMensual('suma'),
+    //     deficit: TCB.balance.resumenMensual('deficit'),
+    //     autoconsumo: TCB.balance.resumenMensual('autoconsumo'),
+    //     excedente: TCB.balance.resumenMensual('excedente'),
+    //   })
+    //   setYearlyData({
+    //     consumo: TCB.consumo.totalAnual,
+    //     produccion: TCB.produccion.totalAnual,
+    //     deficit: TCB.balance.deficitAnual,
+    //     autoconsumo: TCB.balance.autoconsumo,
+    //     excedente: TCB.balance.excedenteAnual,
+    //     consumoDiurno: TCB.balance.consumoDiurno,
+    //   })
+    //   setDataReady(true)
   }, [])
 
   useEffect(() => {
-    //REVISAR: porque se ejecuta 3 veces
-    console.log('USEEFFECT de ENERGYBALANCE por cambio de CTXbases')
+    //   //REVISAR: porque se ejecuta 3 veces
+    //   console.log('USEEFFECT de ENERGYBALANCE por cambio de CTXbases')
 
-    // Cuando cambian las bases se realiza el cálculo de todas las variables del sistema
-    calculaResultados()
+    //   // Cuando cambian las bases se realiza el cálculo de todas las variables del sistema
+    //   //calculaResultados()
 
     setMonthlyData({
       consumo: TCB.consumo.resumenMensual('suma'),

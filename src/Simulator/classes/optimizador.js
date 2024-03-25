@@ -22,12 +22,12 @@ function optimizador(bases, consumo, potenciaPanelInicio) {
   if (bases.length > 1)
     bases.sort((a, b) => b.rendimiento.unitarioTotal - a.rendimiento.unitarioTotal)
 
-  for (let base of bases) {
-    energiaAsignada = base.rendimiento.unitarioTotal * base.potenciaMaxima
+  for (let i = 0; i < bases.length; i++) {
+    energiaAsignada = bases[i].rendimiento.unitarioTotal * bases[i].potenciaMaxima
     energiaAsignada =
       energiaAsignada > energiaPendiente ? energiaPendiente : energiaAsignada
     tmpPaneles = Math.round(
-      energiaAsignada / base.rendimiento.unitarioTotal / potenciaPanelInicio,
+      energiaAsignada / bases[i].rendimiento.unitarioTotal / potenciaPanelInicio,
     )
     UTIL.debugLog(
       '_initInstalacion con' +
@@ -35,10 +35,16 @@ function optimizador(bases, consumo, potenciaPanelInicio) {
         ' paneles de ' +
         potenciaPanelInicio +
         'kWp en la base ',
-      base.id,
+      bases[i].id,
     )
+
+    //Si no hay consumo suficiente para justificar un panel ponemos un panel
+    if (tmpPaneles === 0 && i === 0) {
+      tmpPaneles = 1
+    }
+
     //Create a new instalation on this base of tmpPaneles
-    base.instalacion = new Instalacion({
+    bases[i].instalacion = new Instalacion({
       paneles: tmpPaneles,
       potenciaUnitaria: potenciaPanelInicio,
     })

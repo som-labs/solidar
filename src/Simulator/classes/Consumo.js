@@ -1,5 +1,4 @@
 import TCB from './TCB'
-import * as UTIL from './Utiles'
 import DiaHora from './DiaHora'
 /**
  * @class Consumo

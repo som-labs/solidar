@@ -81,9 +81,11 @@ export default async function PreparaEnergyBalance() {
           '\nContinuamos con el máximo número de paneles posible',
       )
     }
+    TCB.requiereOptimizador = false
+
+    document.body.style.cursor = cursorOriginal
+    UTIL.debugLog('PreparaEnergyBalance - pasa a calculaResultados')
+    await calculaResultados()
   }
-  document.body.style.cursor = cursorOriginal
-  UTIL.debugLog('PreparaEnergyBalance - pasa a calculaResultados')
-  await calculaResultados()
   return { status: true }
 }

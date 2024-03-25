@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 // MUI objects
 
-import { IconButton, Grid, Typography, Container, Box } from '@mui/material'
+import { IconButton, Grid, Typography, Container } from '@mui/material'
 import HelpIcon from '@mui/icons-material/HelpOutlineRounded.js'
 // REACT Solidar Components
 import PreciosTarifa from './PreciosTarifa'
