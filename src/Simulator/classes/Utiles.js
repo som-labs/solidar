@@ -128,11 +128,11 @@ const campos = {
   /* TipoConsumo */
   idTipoConsumo: { unidad: '', decimales: 0, salvar: true, mostrar: false },
   nombreTipoConsumo: { unidad: '', decimales: 0, salvar: true, mostrar: true },
-  nombreFicheroCSV: { unidad: '', decimales: 0, salvar: true, mostrar: true },
+  nombreFicheroCSV: { unidad: '', decimales: 0, salvar: true, mostrar: false },
   numeroRegistros: { unidad: '', decimales: 0, salvar: false, mostrar: false },
   numeroDias: { unidad: '', decimales: 0, salvar: false, mostrar: false },
   fuente: { unidad: '', salvar: true, mostrar: true },
-  consumoAnualREE: { unidad: ' kWh', decimales: 0, salvar: true, mostrar: true },
+  consumoAnualREE: { unidad: ' kWh', decimales: 0, salvar: true, mostrar: false },
   csvCargado: { salvar: false, mostrar: false },
   ficheroCSV: { unidad: '', salvar: false, mostrar: false },
   rendimientoCreado: { salvar: false, mostrar: false },
@@ -624,6 +624,9 @@ async function loadFromCSV(csvFile, aThis, options) {
             lastLine = linea
             if (linea.fecha === undefined) return
             if (linea.fecha.getMonth() == 1 && linea.fecha.getDate() == 29) return //Ignoramos el 29/2 de los años bisiestos
+
+            //Cualquier cosa que venga que no sea un numero pasa a cero
+            if (isNaN(linea.consumo)) linea.consumo = 0
 
             if (linea.fecha.getTime() == lastFecha.getTime()) {
               //debemos cambiar la , por el . para obtener el valor
