@@ -9,7 +9,7 @@ import InfoIcon from '@mui/icons-material/Info'
 import clsx from 'clsx'
 
 //React global components
-
+import calculaResultados from '../classes/calculaResultados'
 import { BasesContext } from '../BasesContext'
 import { SLDRFooterBox } from '../../components/SLDRComponents'
 import { AlertContext } from '../components/Alert'
@@ -169,6 +169,7 @@ export default function InstallationSummary() {
    */
 
   function nuevaInstalacion(params, event) {
+    console.log(params, event)
     let tmpPaneles = params.row.paneles
     if (params.field === 'paneles') {
       if (UTIL.ValidateEntero(event.target.value)) {
@@ -202,6 +203,7 @@ export default function InstallationSummary() {
         baseActiva.instalacion.paneles = tmpPaneles
 
         //Update context with new TCB data
+        calculaResultados()
         updateTCBBasesToState()
         //Update total number of panels in TCB
         TCB.totalPaneles = TCB.BaseSolar.reduce((a, b) => {

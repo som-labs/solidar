@@ -413,6 +413,22 @@ function showTabla(tabla) {
       didDrawPage: function (data) {
         currentY = data.cursor.y
       },
+      //REVISAR: No funciona
+      // didParseCell: function (data) {
+      //   // Check if the cell content exceeds the width of the cell
+
+      //   console.log('IN', data.cell.text[0])
+      //   if (data.cell.text[0].length > 30) {
+      //     console.log('IN', data.cell.text[0])
+      //     // Change 30 to your desired character limit
+      //     //data.cell.styles.cellWidth = 50 // Change 50 to your desired cell width
+      //     data.cell.text = doc.splitTextToSize(data.cell.text[0], 70)
+      //     data.cell.styles.halign = 'left' // Align text left
+      //     data.cell.styles.valign = 'top' // Align text top
+      //     console.log('OUT', data.cell)
+      //   }
+      // },
+
       body: data,
       startY: currentY,
       //tableWidth: 'wrap',
