@@ -123,8 +123,8 @@ export default function ReportSOM({ onClose }) {
                 <strong>{t('REPORT.US_TITLE')}</strong>
               </Typography>
 
-              <Typography>
-                {t('REPORT.US_ANUAL')}
+              <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+                <Typography>{t('REPORT.US_ANUAL')}</Typography>
                 <Box
                   style={{
                     marginLeft: 15,
@@ -141,7 +141,7 @@ export default function ReportSOM({ onClose }) {
                     </span>
                   ))}
                 </Box>
-              </Typography>
+              </Box>
 
               <Typography
                 dangerouslySetInnerHTML={{
