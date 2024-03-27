@@ -1,13 +1,15 @@
+import { lazy, Suspense } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
 import './i18n/i18n'
 
+const TestPage = lazy(() => import('./components/TestPage'))
+const HomePage = lazy(() => import('./Home/Page'))
+const SimulatorPage = lazy(() => import('./Simulator/Page'))
+const AboutPage = lazy(() => import('./About/Page'))
+const NotFoundPage = lazy(() => import('./NotFound/Page'))
+
 import GlobalTheme from './components/GlobalTheme'
-import TestPage from './components/TestPage'
-import HomePage from './Home/Page'
-import SimulatorPage from './Simulator/Page'
-import AboutPage from './About/Page'
-import NotFoundPage from './NotFound/Page'
 import DialogProvider from './components/DialogProvider'
 import { BasesContextProvider } from './Simulator/BasesContext'
 import { ConsumptionContextProvider } from './Simulator/ConsumptionContext'
@@ -47,7 +49,9 @@ function App() {
           <EconomicContextProvider>
             <DialogProvider>
               <AlertProvider>
-                <RouterProvider router={router} />
+                <Suspense fallback={'Loading...'}>
+                  <RouterProvider router={router} />
+                </Suspense>
               </AlertProvider>
             </DialogProvider>
           </EconomicContextProvider>

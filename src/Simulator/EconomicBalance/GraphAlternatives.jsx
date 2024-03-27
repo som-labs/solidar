@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react'
+import { useContext, useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '@mui/material/styles'
 
@@ -22,6 +22,9 @@ export default function GraphAlternatives() {
 
   const graphElement = useRef()
   const graphWidth = useRef()
+  const [layout, setLayout] = useState()
+  const [traces, setTraces] = useState([])
+  const [config, setConfig] = useState()
 
   const { ecoData } = useContext(EconomicContext)
 
@@ -35,280 +38,293 @@ export default function GraphAlternatives() {
 
     // Call the function to get the width after initial render
     getWidth()
-  }, [])
 
-  var paneles = []
-  var autoconsumo = []
-  var TIR = []
-  var autosuficiencia = []
-  var precioInstalacion = []
-  var consvsprod = []
-  var ahorroAnual = []
+    var paneles = []
+    var autoconsumo = []
+    var TIR = []
+    var autosuficiencia = []
+    var precioInstalacion = []
+    var consvsprod = []
+    var ahorroAnual = []
 
-  // Calcula el numero maximo de paneles que soportan todas la bases
-  let numeroMaximoPaneles = 0
-  let configuracionOriginal = []
-  for (let i = 0; i < TCB.BaseSolar.length; i++) {
-    numeroMaximoPaneles += TCB.BaseSolar[i].columnas * TCB.BaseSolar[i].filas
-    configuracionOriginal.push({ base: i, paneles: TCB.BaseSolar[i].instalacion.paneles })
-  }
+    // Calcula el numero maximo de paneles que soportan todas la bases
+    let numeroMaximoPaneles = 0
+    let configuracionOriginal = []
+    for (let i = 0; i < TCB.BaseSolar.length; i++) {
+      numeroMaximoPaneles += TCB.BaseSolar[i].columnas * TCB.BaseSolar[i].filas
+      configuracionOriginal.push({
+        base: i,
+        paneles: TCB.BaseSolar[i].instalacion.paneles,
+      })
+    }
 
-  // El maximo numero de paneles a graficar es el doble de lo propuesto o el máximo numero de paneles
-  let maximoPanelesEnX =
-    numeroMaximoPaneles > 2 * TCB.totalPaneles
-      ? 2 * TCB.totalPaneles
-      : numeroMaximoPaneles
+    // El maximo numero de paneles a graficar es el doble de lo propuesto o el máximo numero de paneles
+    let maximoPanelesEnX =
+      numeroMaximoPaneles > 2 * TCB.totalPaneles
+        ? 2 * TCB.totalPaneles
+        : numeroMaximoPaneles
 
-  var intentos = [
-    1,
-    Math.round(0.25 * maximoPanelesEnX),
-    Math.round(0.5 * maximoPanelesEnX),
-    Math.round(0.75 * maximoPanelesEnX),
-    maximoPanelesEnX,
-  ]
-  intentos.sort((a, b) => a - b)
+    var intentos = [
+      1,
+      Math.round(0.25 * maximoPanelesEnX),
+      Math.round(0.5 * maximoPanelesEnX),
+      Math.round(0.75 * maximoPanelesEnX),
+      maximoPanelesEnX,
+    ]
+    intentos.sort((a, b) => a - b)
 
-  // Bucle del calculo de resultados para cada alternativa propuesta
-  for (let intento of intentos) {
-    if (intento >= 1) {
-      // Establecemos la configuracion de bases para este numero de paneles
-      nuevoTotalPaneles(intento)
+    // Bucle del calculo de resultados para cada alternativa propuesta
+    for (let intento of intentos) {
+      if (intento >= 1) {
+        // Establecemos la configuracion de bases para este numero de paneles
+        nuevoTotalPaneles(intento)
 
-      // Se realizan todos los calculos
-      calculaResultados()
+        // Se realizan todos los calculos
+        calculaResultados()
 
-      if (TCB.economico.periodoAmortizacion > 0) {
-        // Se extraen los valores de las variables que forman parte del grafico
-        paneles.push(intento)
-        autoconsumo.push((TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100)
-        autosuficiencia.push((TCB.balance.autoconsumo / TCB.consumo.totalAnual) * 100)
-        consvsprod.push((TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100)
-        TIR.push(TCB.economico.TIRProyecto)
-        precioInstalacion.push(TCB.economico.precioInstalacionCorregido)
-        ahorroAnual.push(TCB.economico.ahorroAnual)
+        if (TCB.economico.periodoAmortizacion > 0) {
+          // Se extraen los valores de las variables que forman parte del grafico
+          paneles.push(intento)
+          autoconsumo.push((TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100)
+          autosuficiencia.push((TCB.balance.autoconsumo / TCB.consumo.totalAnual) * 100)
+          consvsprod.push((TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100)
+          TIR.push(TCB.economico.TIRProyecto)
+          precioInstalacion.push(TCB.economico.precioInstalacionCorregido)
+          ahorroAnual.push(TCB.economico.ahorroAnual)
+        }
       }
     }
-  }
 
-  //Dejamos las cosas como estaban al principio antes del loop
-  for (let i = 0; i < configuracionOriginal.length; i++) {
-    TCB.BaseSolar[configuracionOriginal[i].base].instalacion.paneles =
-      configuracionOriginal[i].paneles
-  }
+    //Dejamos las cosas como estaban al principio antes del loop
+    for (let i = 0; i < configuracionOriginal.length; i++) {
+      TCB.BaseSolar[configuracionOriginal[i].base].instalacion.paneles =
+        configuracionOriginal[i].paneles
+    }
 
-  calculaResultados()
+    calculaResultados()
 
-  //Buscamos punto en el que la produccion represente el 80% del consumo anual total para definir el limite subvencion EU
-  let i = 0
-  let limiteSubvencion
-  while (consvsprod[i] > 80 && i < 5) {
-    i++
-  }
-  if (i < 5) {
-    let pendiente = (consvsprod[i] - consvsprod[i - 1]) / (paneles[i] - paneles[i - 1])
-    let dif = 80 - consvsprod[i - 1]
-    limiteSubvencion = paneles[i - 1] + dif / pendiente
-  } else {
-    limiteSubvencion = undefined
-  }
+    //Buscamos punto en el que la produccion represente el 80% del consumo anual total para definir el limite subvencion EU
+    let i = 0
+    let limiteSubvencion
+    while (consvsprod[i] > 80 && i < 5) {
+      i++
+    }
+    if (i < 5) {
+      let pendiente = (consvsprod[i] - consvsprod[i - 1]) / (paneles[i] - paneles[i - 1])
+      let dif = 80 - consvsprod[i - 1]
+      limiteSubvencion = paneles[i - 1] + dif / pendiente
+    } else {
+      limiteSubvencion = undefined
+    }
 
-  //A efectos de la produccion en funcion del numero de paneles se asume que todas las bases tienen la misma potencia unitaria
+    //A efectos de la produccion en funcion del numero de paneles se asume que todas las bases tienen la misma potencia unitaria
 
-  const maxPrecio = precioInstalacion[4]
-  let tickVals = []
-  for (let i = 0; i <= 10; i++) tickVals.push(Math.trunc((i * 0.1 * maxPrecio) / 10) * 10)
-  var trace_TIR = {
-    x: paneles,
-    y: TIR,
-    name: 'TIR(%)',
-    yaxis: 'y',
-    type: 'scatter',
-  }
+    const maxPrecio = precioInstalacion[4]
+    let tickVals = []
+    for (let i = 0; i <= 10; i++)
+      tickVals.push(Math.trunc((i * 0.1 * maxPrecio) / 10) * 10)
+    var trace_TIR = {
+      x: paneles,
+      y: TIR,
+      name: 'TIR(%)',
+      yaxis: 'y',
+      type: 'scatter',
+    }
 
-  var trace_autosuficiencia = {
-    x: paneles,
-    y: autosuficiencia,
-    name: t('Autosuficiencia') + '(%)',
-    yaxis: 'y',
-    type: 'scatter',
-  }
+    var trace_autosuficiencia = {
+      x: paneles,
+      y: autosuficiencia,
+      name: t('Autosuficiencia') + '(%)',
+      yaxis: 'y',
+      type: 'scatter',
+    }
 
-  var trace_autoconsumo = {
-    x: paneles,
-    y: autoconsumo,
-    name: t('Autoconsumo') + '(%)',
-    yaxis: 'y',
-    type: 'scatter',
-  }
+    var trace_autoconsumo = {
+      x: paneles,
+      y: autoconsumo,
+      name: t('Autoconsumo') + '(%)',
+      yaxis: 'y',
+      type: 'scatter',
+    }
 
-  var trace_precioInstalacion = {
-    x: paneles,
-    y: precioInstalacion,
-    name: t('Inversion') + '(€)',
-    yaxis: 'y2',
-    type: 'scatter',
-  }
+    var trace_precioInstalacion = {
+      x: paneles,
+      y: precioInstalacion,
+      name: t('Inversion') + '(€)',
+      yaxis: 'y2',
+      type: 'scatter',
+    }
 
-  var trace_ahorroAnual = {
-    x: paneles,
-    y: ahorroAnual,
-    name: t('Ahorro') + '(€)',
-    yaxis: 'y2',
-    type: 'scatter',
-  }
+    var trace_ahorroAnual = {
+      x: paneles,
+      y: ahorroAnual,
+      name: t('Ahorro') + '(€)',
+      yaxis: 'y2',
+      type: 'scatter',
+    }
 
-  var layout = {
-    font: {
-      color: theme.palette.text.primary,
-    },
-    paper_bgcolor: 'rgba(0,0,0,0)',
-    plot_bgcolor: 'rgba(0,0,0,0)',
-    width: 0.9 * graphWidth.current,
-    autosize: true,
-    margin: {
-      l: 60,
-      r: 50,
-      b: 0,
-      t: 20,
-    },
+    setTraces([
+      trace_TIR,
+      trace_autoconsumo,
+      trace_autosuficiencia,
+      trace_precioInstalacion,
+      trace_ahorroAnual,
+    ])
 
-    xaxis: {
-      tick0: 1,
-      showgrid: false,
-      showline: true,
-      linecolor: 'primary.light',
-      tickfont_color: 'primary.light',
-      showticklabels: true,
-      dtick: parseInt(paneles[4] / 10),
-      ticks: 'outside',
-      tickcolor: 'primary.light',
-      range: [1, paneles[4]],
-    },
-    yaxis: {
-      title: '%',
-      showticklabels: true,
-      showgrid: true,
-      showline: true,
-      linecolor: 'primary.light',
-      tickfont_color: 'primary.light',
-      ticks: 'outside',
-      tickcolor: 'primary.light',
-      tickmode: 'auto',
-      nticks: 20,
-      range: [0, 100],
-    },
-    yaxis2: {
-      //title: 'Euros',
-      overlaying: 'y',
-      side: 'right',
-      showticklabels: true,
-      showgrid: true,
-      gridwidth: 0.1,
-      gridcolor: 'primary.light',
-      showline: true,
-      linecolor: 'primary.light',
-      tickfont_color: 'primary.light',
-      ticks: 'outside',
-      tickcolor: 'primary.light',
-      ticksuffix: '€',
-      tickvals: tickVals,
-      range: [0, maxPrecio],
-    },
-    legend: {
-      x: 0.1,
-      y: -0.1,
-      xref: 'paper',
-      orientation: 'h',
-    },
-    shapes: [
-      {
-        type: 'line',
-        x0: TCB.totalPaneles,
-        y0: 0,
-        x1: TCB.totalPaneles,
-        y1: 100,
-        line: { color: 'rgb(55, 128, 191)', width: 3 },
+    var _layout = {
+      font: {
+        color: theme.palette.text.primary,
       },
-    ],
-    annotations: [
-      {
-        x: TCB.totalPaneles,
-        y: 95,
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      width: 0.9 * graphWidth.current,
+      autosize: true,
+      margin: {
+        l: 60,
+        r: 50,
+        b: 0,
+        t: 20,
+      },
+
+      xaxis: {
+        tick0: 1,
+        showgrid: false,
+        showline: true,
+        linecolor: 'primary.light',
+        tickfont_color: 'primary.light',
+        showticklabels: true,
+        dtick: parseInt(paneles[4] / 10),
+        ticks: 'outside',
+        tickcolor: 'primary.light',
+        range: [1, paneles[4]],
+      },
+      yaxis: {
+        title: '%',
+        showticklabels: true,
+        showgrid: true,
+        showline: true,
+        linecolor: 'primary.light',
+        tickfont_color: 'primary.light',
+        ticks: 'outside',
+        tickcolor: 'primary.light',
+        tickmode: 'auto',
+        nticks: 20,
+        range: [0, 100],
+      },
+      yaxis2: {
+        //title: 'Euros',
+        overlaying: 'y',
+        side: 'right',
+        showticklabels: true,
+        showgrid: true,
+        gridwidth: 0.1,
+        gridcolor: 'primary.light',
+        showline: true,
+        linecolor: 'primary.light',
+        tickfont_color: 'primary.light',
+        ticks: 'outside',
+        tickcolor: 'primary.light',
+        ticksuffix: '€',
+        tickvals: tickVals,
+        range: [0, maxPrecio],
+      },
+      legend: {
+        x: 0.1,
+        y: -0.1,
+        xref: 'paper',
+        orientation: 'h',
+      },
+      shapes: [
+        {
+          type: 'line',
+          x0: TCB.totalPaneles,
+          y0: 0,
+          x1: TCB.totalPaneles,
+          y1: 100,
+          line: { color: 'rgb(55, 128, 191)', width: 3 },
+        },
+      ],
+      annotations: [
+        {
+          x: TCB.totalPaneles,
+          y: 95,
+          xref: 'x',
+          yref: 'y',
+          text: t('GRAFICOS.LABEL_panelesActuales', {
+            paneles: TCB.totalPaneles,
+          }),
+          showarrow: true,
+          arrowhead: 2,
+          xanchor: 'left',
+          hovertext: t('GRAFICOS.LABEL_panelesActuales', {
+            paneles: TCB.totalPaneles,
+          }),
+          ax: 20,
+          ay: -20,
+        },
+      ],
+    }
+    if (numeroMaximoPaneles === paneles[4]) {
+      _layout.annotations.push({
+        x: numeroMaximoPaneles,
+        y: 85,
         xref: 'x',
         yref: 'y',
-        text: t('GRAFICOS.LABEL_panelesActuales', {
-          paneles: TCB.totalPaneles,
+        text: t('GRAFICOS.LABEL_numeroMaximoPaneles', {
+          paneles: numeroMaximoPaneles,
         }),
         showarrow: true,
-        arrowhead: 2,
-        xanchor: 'left',
-        hovertext: t('GRAFICOS.LABEL_panelesActuales', {
-          paneles: TCB.totalPaneles,
-        }),
-        ax: 20,
-        ay: -20,
-      },
-    ],
-  }
-  if (numeroMaximoPaneles === paneles[4]) {
-    layout.annotations.push({
-      x: numeroMaximoPaneles,
-      y: 85,
-      xref: 'x',
-      yref: 'y',
-      text: t('GRAFICOS.LABEL_numeroMaximoPaneles', {
-        paneles: numeroMaximoPaneles,
-      }),
-      showarrow: true,
-      arrowhead: 3,
-      xanchor: 'right',
-      ax: -20,
-      ay: 0,
-    })
-    layout.shapes.push({
-      type: 'line',
-      x0: numeroMaximoPaneles,
-      y0: 0,
-      x1: numeroMaximoPaneles,
-      y1: 100,
-      line: { color: 'rgb(250, 20, 0)', width: 2 },
-    })
-  }
+        arrowhead: 3,
+        xanchor: 'right',
+        ax: -20,
+        ay: 0,
+      })
+      _layout.shapes.push({
+        type: 'line',
+        x0: numeroMaximoPaneles,
+        y0: 0,
+        x1: numeroMaximoPaneles,
+        y1: 100,
+        line: { color: 'rgb(250, 20, 0)', width: 2 },
+      })
+    }
+    setLayout(_layout)
 
-  // Only applicable when EU Next generation conditions
-  // if (limiteSubvencion !== undefined) {
-  //   layout.annotations.push({
-  //     x: limiteSubvencion,
-  //     y: 65,
-  //     xref: 'x',
-  //     yref: 'y',
-  //     text: t('GRAFICOS.LABEL_limiteSubvencionEU'),
-  //     showarrow: true,
-  //     arrowhead: 3,
-  //     xanchor: 'left',
-  //     hovertext: limiteSubvencion.toFixed(1) + ' ' + t('graficos_LBL_paneles'),
-  //     ax: 20,
-  //     ay: 0,
-  //   })
-  //   layout.shapes.push(
-  //     {
-  //       type: 'line',
-  //       x0: 0,
-  //       y0: 80,
-  //       x1: limiteSubvencion,
-  //       y1: 80,
-  //       line: { color: 'rgb(87, 202, 0)', width: 2 },
-  //     },
-  //     {
-  //       type: 'line',
-  //       x0: limiteSubvencion,
-  //       y0: 0,
-  //       x1: limiteSubvencion,
-  //       y1: 80,
-  //       line: { color: 'rgb(87, 202, 0)', width: 2 },
-  //     },
-  //   )
-  // }
+    // Only applicable when EU Next generation conditions
+    // if (limiteSubvencion !== undefined) {
+    //   layout.annotations.push({
+    //     x: limiteSubvencion,
+    //     y: 65,
+    //     xref: 'x',
+    //     yref: 'y',
+    //     text: t('GRAFICOS.LABEL_limiteSubvencionEU'),
+    //     showarrow: true,
+    //     arrowhead: 3,
+    //     xanchor: 'left',
+    //     hovertext: limiteSubvencion.toFixed(1) + ' ' + t('graficos_LBL_paneles'),
+    //     ax: 20,
+    //     ay: 0,
+    //   })
+    //   layout.shapes.push(
+    //     {
+    //       type: 'line',
+    //       x0: 0,
+    //       y0: 80,
+    //       x1: limiteSubvencion,
+    //       y1: 80,
+    //       line: { color: 'rgb(87, 202, 0)', width: 2 },
+    //     },
+    //     {
+    //       type: 'line',
+    //       x0: limiteSubvencion,
+    //       y0: 0,
+    //       x1: limiteSubvencion,
+    //       y1: 80,
+    //       line: { color: 'rgb(87, 202, 0)', width: 2 },
+    //     },
+    //   )
+    // }
+  }, [])
   //LONGTERM: decidir si el click permite cambiar los paneles
   function handleClick(evt) {
     console.log(evt)
@@ -365,13 +381,7 @@ export default function GraphAlternatives() {
       </Typography>
 
       <Plot
-        data={[
-          trace_TIR,
-          trace_autoconsumo,
-          trace_autosuficiencia,
-          trace_precioInstalacion,
-          trace_ahorroAnual,
-        ]}
+        data={traces}
         layout={layout}
         config={{ displayModeBar: false }}
         onClick={(event) => handleClick(event)}

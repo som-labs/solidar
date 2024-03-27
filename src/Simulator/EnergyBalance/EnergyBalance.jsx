@@ -78,12 +78,6 @@ export default function EnergyBalanceStep() {
   }, [])
 
   useEffect(() => {
-    //   //REVISAR: porque se ejecuta 3 veces
-    //   console.log('USEEFFECT de ENERGYBALANCE por cambio de CTXbases')
-
-    //   // Cuando cambian las bases se realiza el cálculo de todas las variables del sistema
-    //   //calculaResultados()
-
     setMonthlyData({
       consumo: TCB.consumo.resumenMensual('suma'),
       produccion: TCB.produccion.resumenMensual('suma'),
