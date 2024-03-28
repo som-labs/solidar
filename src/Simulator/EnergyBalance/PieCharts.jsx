@@ -108,9 +108,9 @@ export default function PieCharts(props) {
 
   return (
     <Container ref={graphElement}>
-      <Typography variant="h5" textAlign={'center'} sx={{ mt: '1rem' }}>
+      {/* <Typography variant="h5" textAlign={'center'} sx={{ mt: '1rem' }}>
         {t('ENERGY_BALANCE.TITLE_GRAPH_ENERGY_DEMAND')}
-      </Typography>
+      </Typography> */}
       <Plot data={data1} layout={layout} config={config} />
     </Container>
   )

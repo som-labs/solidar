@@ -220,53 +220,10 @@ const TCB = {
     margen: 0.5,
   },
 
-  tipoPanelActivo: {
-    nombre: 'crystSi - 450Wp',
-    tecnologia: 'crystSi',
-    potencia: 0.45,
-    ancho: 1.052,
-    largo: 2.115,
-  }, //Por default
-
-  // This data will be read from datos/tipoPaneles.json
-  tipoPaneles: [
-    {
-      nombre: 'crystSi - 505Wp',
-      tecnologia: 'crystSi',
-      potencia: 0.505,
-      ancho: 1.134,
-      largo: 2.094,
-    },
-    {
-      nombre: 'crystSi - 455Wp',
-      tecnologia: 'crystSi',
-      potencia: 0.455,
-      ancho: 1.039,
-      largo: 2.096,
-    },
-    {
-      nombre: 'crystSi - 430Wp',
-      tecnologia: 'crystSi',
-      potencia: 0.43,
-      ancho: 1.134,
-      largo: 1.762,
-    },
-
-    {
-      nombre: 'crystSi - 320Wp',
-      tecnologia: 'crystSi',
-      potencia: 0.32,
-      ancho: 0.992,
-      largo: 1.658,
-    },
-    {
-      nombre: 'otros',
-      tecnologia: 'Unknown',
-      potencia: '',
-      ancho: '',
-      largo: '',
-    },
-  ],
+  tipoPanelDefault: 2, //Which panel from the list is used as deafult
+  tipoPanelActivo: {},
+  // This data will be read from datos/tipoPaneles.json during InicailizaAplicacion
+  tipoPaneles: [],
 
   /** Constante donde se define el precio estimado de la instalación en base a la potencia instalada
    * @typedef {object} precioInstalacion

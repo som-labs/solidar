@@ -34,7 +34,7 @@ class Instalacion {
           // actualiza proporcionalmente el precio si ya tenia un precio asignado
           if (this.#precioInstalacion !== 0)
             this.#precioInstalacion *= potencia / this.#potenciaUnitaria
-          else this.getPrecioInstalacion()
+          else this.#precioInstalacion = Instalacion.getPrecioInstalacion(potencia)
 
           this.#potenciaUnitaria = potencia
         },
@@ -48,7 +48,10 @@ class Instalacion {
           // actualiza proporcionalemnte el precio si ya tenia un precio asignado
           if (this.#precioInstalacion !== 0)
             this.#precioInstalacion *= numero / this.#numeroPaneles
-          else this.getPrecioInstalacion()
+          else
+            this.#precioInstalacion = Instalacion.getPrecioInstalacion(
+              numero / this.#numeroPaneles,
+            )
 
           this.#numeroPaneles = numero
         },
@@ -67,16 +70,12 @@ class Instalacion {
       },
     })
 
-    UTIL.debugLog(
-      'Nueva instalacion con ' +
-        inInst.paneles +
-        ' paneles de ' +
-        inInst.potenciaUnitaria +
-        ' kWp',
-    )
     this.#potenciaUnitaria = inInst.potenciaUnitaria
     this.#numeroPaneles = inInst.paneles
-    this.getPrecioInstalacion()
+    this.#precioInstalacion = Instalacion.getPrecioInstalacion(
+      inInst.potenciaUnitaria * inInst.paneles,
+    )
+    UTIL.debugLog('Nueva instalacion creada', this)
   }
 
   toJSON() {
@@ -86,23 +85,24 @@ class Instalacion {
       precioInstalacion: this.#precioInstalacion,
     }
   }
-  /** Devuelve el precio teórico de la instalación según nuestra estimación
+  /** Devuelve el precio teórico de la instalación en base a su potencia según nuestra estimación
    * @see TCB.precioInstalacion
    *  return {number} Precio teorico de la instalación
    */
-  getPrecioInstalacion() {
-    if (this.potenciaTotal > 0) {
-      let potenciaBase = this.potenciaTotal
+  static getPrecioInstalacion(potenciaTotal) {
+    let precioInstalacion = 0
+    if (potenciaTotal > 0) {
+      let potenciaBase = potenciaTotal
       let i = TCB.precioInstalacion.precios.findIndex(
         (rango) => rango.desde <= potenciaBase && rango.hasta >= potenciaBase,
       )
-      this.#precioInstalacion =
-        this.potenciaTotal *
+
+      precioInstalacion =
+        potenciaTotal *
         TCB.precioInstalacion.precios[i].precio *
         (1 + TCB.parametros.IVAinstalacion / 100)
-    } else {
-      this.#precioInstalacion = 0
     }
+    return precioInstalacion
   }
 }
 export default Instalacion

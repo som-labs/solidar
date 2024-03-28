@@ -10,7 +10,7 @@ import PreciosTarifa from './PreciosTarifa'
 import ConsumptionSummary from './ConsumptionSummary'
 import { SLDRInfoBox, SLDRDetalle } from '../../components/SLDRComponents'
 import { AlertContext } from '../components/Alert'
-import HelpExcedentCompensation from './HelpExcedentCompensation'
+import HelpConsumption from './HelpConsumption'
 
 //React global components
 import { useDialog } from '../../components/DialogProvider'
@@ -23,7 +23,7 @@ const ConsumptionStep = () => {
 
   function help() {
     openDialog({
-      children: <HelpExcedentCompensation onClose={() => closeDialog()} />,
+      children: <HelpConsumption onClose={() => closeDialog()} />,
     })
   }
 

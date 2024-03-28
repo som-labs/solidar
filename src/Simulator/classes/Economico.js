@@ -1,5 +1,6 @@
 import TCB from './TCB'
 import * as UTIL from './Utiles'
+import Instalacion from './Instalacion'
 /**
  * @class Economico
  * @classdesc Clase representa las condiciones economico financieras de la configuración global o de cada Finca individualmente
@@ -139,16 +140,8 @@ class Economico {
     this.ahorradoAutoconsumoMes = this.resumenMensual('ahorradoAutoconsumo')
 
     //calculate installation cost
-    let ndx = TCB.precioInstalacion.precios.findIndex(
-      (rango) =>
-        rango.desde <= TCB.produccion.potenciaTotalInstalada &&
-        rango.hasta >= TCB.produccion.potenciaTotalInstalada,
-    )
-
-    this.precioInstalacion = parseInt(
-      TCB.produccion.potenciaTotalInstalada *
-        TCB.precioInstalacion.precios[ndx].precio *
-        (1 + TCB.parametros.IVAinstalacion / 100),
+    this.precioInstalacion = Instalacion.getPrecioInstalacion(
+      TCB.produccion.potenciaTotalInstalada,
     )
     this.precioInstalacionCorregido = this.precioInstalacion
 
@@ -252,7 +245,7 @@ class Economico {
     const tiempoSubvencionIBI = TCB.tiempoSubvencionIBI
     const porcientoSubvencionIBI = TCB.porcientoSubvencionIBI
 
-    // Calculo de la subvención EU
+    // Calculo de la subvención
     var valorSubvencion
     var porcientoSubvencion
 
@@ -264,26 +257,28 @@ class Economico {
     //porcientoSubvencion is used when given a valorSubvencion has to calculate it for different panels configuration
     porcientoSubvencion = (valorSubvencion / this.precioInstalacionCorregido) * 100
 
-    // if (
-    //   (TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100 < 80 ||
-    //   tipoSubvencionEU === 'Sin'
-    // ) {
-    //   valorSubvencionEU = 0
-    // } else {
-    //   if (TCB.produccion.potenciaTotalInstalada <= 10) {
-    //     valorSubvencionEU =
-    //       (TCB.subvencionEU[tipoSubvencionEU]['<=10kWp'] *
-    //         TCB.produccion.potenciaTotalInstalada *
-    //         coefInversion) /
-    //       100
-    //   } else {
-    //     valorSubvencionEU =
-    //       (TCB.subvencionEU[tipoSubvencionEU]['>10kWp'] *
-    //         TCB.produccion.potenciaTotalInstalada *
-    //         coefInversion) /
-    //       100
-    //   }
-    // }
+    /* Module to compute EU next Generation conditions
+    if (
+      (TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100 < 80 ||
+      tipoSubvencionEU === 'Sin'
+    ) {
+      valorSubvencionEU = 0
+    } else {
+      if (TCB.produccion.potenciaTotalInstalada <= 10) {
+        valorSubvencionEU =
+          (TCB.subvencionEU[tipoSubvencionEU]['<=10kWp'] *
+            TCB.produccion.potenciaTotalInstalada *
+            coefInversion) /
+          100
+      } else {
+        valorSubvencionEU =
+          (TCB.subvencionEU[tipoSubvencionEU]['>10kWp'] *
+            TCB.produccion.potenciaTotalInstalada *
+            coefInversion) /
+          100
+      }
+    }
+    */
 
     //Preparación del cashflow
     this.periodoAmortizacion = 0
@@ -293,15 +288,20 @@ class Economico {
 
     let i = 1
     let unFlow = {}
+    //InversionReal includes IVA
+    const inversionReal =
+      -this.precioInstalacionCorregido *
+      (coefInversion / 100) *
+      (1 + TCB.parametros.IVAinstalacion / 100)
+
     unFlow = {
       ano: i,
       ahorro: this.ahorroAnual,
       previo: 0,
-      inversion: (-this.precioInstalacionCorregido * coefInversion) / 100,
+      inversion: inversionReal,
       subvencion: 0,
       IBI: 0,
-      pendiente:
-        (-this.precioInstalacionCorregido * coefInversion) / 100 + this.ahorroAnual,
+      pendiente: inversionReal + this.ahorroAnual,
     }
     cuota = unFlow.inversion + unFlow.ahorro
     cuotaPeriodo.push(cuota)
@@ -369,15 +369,16 @@ class Economico {
       TCB.valorSubvencionIBI = valorSubvencionIBI
       TCB.porcientoSubvencionIBI = porcientoSubvencionIBI
       TCB.valorSubvencion = valorSubvencion
-      //TCB.tipoSubvencion = tipoSubvencion
+      //TCB.tipoSubvencion = tipoSubvencion //Only for EU Next generation
     }
 
     this.tiempoSubvencionIBI = tiempoSubvencionIBI
     this.valorSubvencionIBI = valorSubvencionIBI
     this.porcientoSubvencionIBI = porcientoSubvencionIBI
     this.valorSubvencion = valorSubvencion
-    //this.tipoSubvencion = tipoSubvencionEU
+    //this.tipoSubvencion = tipoSubvencionEU //Only for EU Next generation
   }
+
   /**
    * Cálculo de la Tasa Interna de Retorno (TIR)
    * @param {number} initRate Tasa de interes de referencia

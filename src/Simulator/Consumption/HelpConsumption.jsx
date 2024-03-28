@@ -3,7 +3,7 @@ import { Typography, Box, Button } from '@mui/material'
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
 //import { useDialog } from '../../components/DialogProvider'
 
-export default function HelpExcedentCompensation(props) {
+export default function HelpConsumption(props) {
   const { t } = useTranslation()
 
   //const [openDialog, closeDialog] = useDialog()

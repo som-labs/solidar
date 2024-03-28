@@ -83,9 +83,9 @@ export default async function PreparaEnergyBalance() {
     }
     TCB.requiereOptimizador = false
 
-    document.body.style.cursor = cursorOriginal
     UTIL.debugLog('PreparaEnergyBalance - pasa a calculaResultados')
     await calculaResultados()
   }
+  document.body.style.cursor = cursorOriginal
   return { status: true }
 }

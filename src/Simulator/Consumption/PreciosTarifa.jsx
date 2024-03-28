@@ -104,7 +104,7 @@ export default function PreciosTarifa() {
                     <Grid item xs>
                       <SLDRInputField
                         unit=" €"
-                        object="Tarifa"
+                        //object="Tarifa"
                         value={precio.toLocaleString(i18n.language)}
                         onChange={(ev) =>
                           cambiaPrecio(
@@ -115,7 +115,7 @@ export default function PreciosTarifa() {
                             setPreciosValidos,
                           )
                         }
-                        label={t('Tarifa.PROP.P' + index)}
+                        label={t('Tarifa.PROP.' + tipoTarifa + '.P' + index)}
                         name={String(index)}
                       ></SLDRInputField>
                     </Grid>

@@ -247,22 +247,32 @@ const SummarySOMStep = () => {
             <Grid item xs={12}>
               <Reports ref={contentRef}></Reports>
             </Grid>
-            <Grid item xs={12} sx={{ mt: 8 }} padding={10}>
-              <Typography sx={theme.titles.level_1} textAlign={'center'}>
-                {t('BASIC.LABEL_AVISO')}
-              </Typography>
-              <Typography
-                variant="body"
-                dangerouslySetInnerHTML={{
-                  __html: t('SUMMARY.LABEL_disclaimer1'),
+
+            <Grid item xs={12}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 2,
+                  padding: 4,
                 }}
-              />
-              <Typography
-                variant="body"
-                dangerouslySetInnerHTML={{
-                  __html: t('SUMMARY.LABEL_disclaimer2'),
-                }}
-              />
+              >
+                <Typography sx={theme.titles.level_1} textAlign={'center'}>
+                  {t('BASIC.LABEL_AVISO')}
+                </Typography>
+                <Typography
+                  variant="body"
+                  dangerouslySetInnerHTML={{
+                    __html: t('SUMMARY.LABEL_disclaimer1'),
+                  }}
+                />
+                <Typography
+                  variant="body"
+                  dangerouslySetInnerHTML={{
+                    __html: t('SUMMARY.LABEL_disclaimer2'),
+                  }}
+                />
+              </Box>
             </Grid>
           </Grid>
         </Container>
