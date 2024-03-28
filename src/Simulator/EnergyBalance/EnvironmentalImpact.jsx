@@ -118,7 +118,6 @@ export default function EnvironmentalImpact() {
             variant="h6"
             component="a"
             href="./datos/Factores_emision_CO2.pdf"
-            // href="https://energia.gob.es/desarrollo/EficienciaEnergetica/RITE/Reconocidos/Reconocidos/Otros%20documentos/Factores_emision_CO2.pdf"
             target="_blank"
             rel="noopener noreferrer"
             dangerouslySetInnerHTML={{

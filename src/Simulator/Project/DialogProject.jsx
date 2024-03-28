@@ -52,11 +52,6 @@ export default function DialogProject({ recoverFormData, onClose }) {
   const validate = (values) => {
     const errors = {}
 
-    // if (!values.nombreProyecto) {
-    //   errors.nombre = 'Requerido'
-    //   return errors
-    // }
-
     if (values.email) {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       console.log(emailPattern.test(values.email))
@@ -98,6 +93,7 @@ export default function DialogProject({ recoverFormData, onClose }) {
                 flexDirection: 'column',
                 flex: 1,
                 padding: '5px',
+                mb: '2rem',
               }}
             >
               <Typography variant="body" align="center">
@@ -157,7 +153,15 @@ export default function DialogProject({ recoverFormData, onClose }) {
                 object="Proyecto"
               ></SLDRInputField>
             </Box>
-            <Box style={{ mt: '2rem', border: 1 }}>
+            <Box
+              style={{
+                mt: '4rem',
+                border: 1,
+                display: 'flex',
+                gap: 8,
+                flexDirection: 'row',
+              }}
+            >
               {/* Hidden file input element */}
               <input
                 ref={fileInputRef}
@@ -171,6 +175,7 @@ export default function DialogProject({ recoverFormData, onClose }) {
               <Tooltip title={t('Proyecto.TOOLTIP.importarProyecto')}>
                 <Button
                   variant="contained"
+                  fullWidth
                   color="primary"
                   size="large"
                   onClick={handleImportClick}
@@ -181,6 +186,7 @@ export default function DialogProject({ recoverFormData, onClose }) {
 
               <Button
                 variant="contained"
+                fullWidth
                 color="primary"
                 size="large"
                 onClick={() => exportProject(values)}

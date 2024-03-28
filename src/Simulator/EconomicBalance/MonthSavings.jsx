@@ -194,9 +194,6 @@ export default function MonthSaving() {
 
   return (
     <Container>
-      <Typography sx={theme.titles.level_1} textAlign={'center'} marginTop="1rem">
-        {t('ECONOMIC_BALANCE.TITLE_MONTH_SAVINGS')}
-      </Typography>
       <div ref={graphElement}></div>
       {/* <Plot data={data} layout={layout} config={config} style={{ width: '100%' }} /> */}
     </Container>

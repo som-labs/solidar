@@ -10,7 +10,7 @@ import {
   Button,
   InputLabel,
   MenuItem,
-  FormControl,
+  FormControlLabel,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -29,23 +29,23 @@ export default function DialogBaseSolar({ data, onClose }) {
   const { t, i18n } = useTranslation()
   const theme = useTheme()
 
-  const ndxPanel = useRef(-1)
+  const ndxPanel = useRef(2)
   //const [tipoPanel, setTipoPanel] = useState(TCB.tipoPanelActivo)
 
   const tecnologias = [
-    { value: 'crystSi', text: 'Crystaline silicon' },
+    { value: 'crystSi', text: 'Silicio Cristalino' },
     { value: 'CIS', text: 'CIS' },
-    { value: 'Cadmium Telluride', text: 'cdTe' },
+    { value: 'Cadmium Telluride', text: 'CdTe' },
     { value: 'Unknown', text: t('Instalacion.LABEL_tecnologiaDesconocida') },
   ]
 
-  function cambiaTipoPanel(event, values, setValues) {
-    const newValues = TCB.tipoPaneles[event.target.value]
+  function cambiaTipoPanel(index, values, setValues) {
+    ndxPanel.current = index
+    const newValues = TCB.tipoPaneles[index]
     setValues((prevValues) => ({
       ...prevValues,
       ...newValues,
     }))
-    ndxPanel.current = event.target.value
   }
 
   const handleCancel = () => {
@@ -97,14 +97,43 @@ export default function DialogBaseSolar({ data, onClose }) {
                 alignItems: 'center',
               }}
             >
-              <Typography variant="body" sx={{ ml: '1rem' }}>
+              <Typography variant="body" sx={{ ml: '1rem', mb: '1rem' }}>
                 {t('DIALOG_PANELS.DESCRIPTION')}
               </Typography>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
+
+              <FormControlLabel
+                labelPlacement="start"
+                control={
+                  <SLDRInputField
+                    sx={{ width: 200, height: 50, justifyContent: 'flex-end' }}
+                    select
+                    value={ndxPanel.current}
+                    name="tipoPanel"
+                    //defaultValue={2}
+                    object="Instalacion"
+                    onChange={(event) =>
+                      cambiaTipoPanel(event.target.value, values, setValues)
+                    }
+                  >
+                    {TCB.tipoPaneles.map((panelType, index) => (
+                      <MenuItem
+                        key={index}
+                        value={index}
+                        sx={{ justifyContent: 'flex-end' }}
+                      >
+                        {panelType.nombre}
+                      </MenuItem>
+                    ))}
+                  </SLDRInputField>
+                }
+                label={t('Instalacion.LABEL_tipoPanel')}
+              />
+
+              {/* <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <SLDRInputField
                   sx={{ height: 50, textAlign: 'center', mb: '1rem' }}
                   select
-                  label={t('Instalacion.PROP.tipoPanel')}
+                  label={t('Instalacion.PROP.potenciaUnitaria')}
                   onChange={(e) => cambiaTipoPanel(e, values, setValues)}
                   name="tipoPanel"
                   value={ndxPanel.current}
@@ -119,8 +148,9 @@ export default function DialogBaseSolar({ data, onClose }) {
                     </MenuItem>
                   ))}
                 </SLDRInputField>
-              </FormControl>
-              <Typography variant="body" sx={{ ml: '1rem' }}>
+              </FormControl> */}
+
+              <Typography variant="body" sx={{ ml: '1rem', mt: '1rem' }}>
                 {t('DIALOG_PANELS.OTHERS')}
               </Typography>
               <Box

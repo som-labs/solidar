@@ -86,9 +86,7 @@ export default function VirtualBattery() {
               value={coef}
             />
           </FormControl>
-          <Typography variant="body">
-            {t('ECONOMIC_BALANCE.DESCRIPTION_FEE_VIRTUAL_BATTERY')}
-          </Typography>
+
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <TextField
               type="text"

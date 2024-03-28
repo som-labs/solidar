@@ -4,56 +4,78 @@ import { useTranslation } from 'react-i18next'
 // MUI objects
 import {
   Box,
+  IconButton,
   Typography,
   Container,
   FormControl,
   TextField,
   InputAdornment,
 } from '@mui/material'
+import InfoIcon from '@mui/icons-material/Info'
+
 import { useTheme } from '@mui/material/styles'
 
-import { EconomicContext } from '../EconomicContext'
+//React global components
+import { useDialog } from '../../components/DialogProvider'
 
+import { EconomicContext } from '../EconomicContext'
+import HelpEconomicBalance from './HelpEconomicBalance'
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
 
 export default function InstallationCost() {
   const { t, i18n } = useTranslation()
   const theme = useTheme()
+  const [openDialog, closeDialog] = useDialog()
+  const {
+    ecoData,
+    setEcoData,
+    precioInstalacionCorregido,
+    setPrecioInstalacionCorregido,
+  } = useContext(EconomicContext)
 
-  const { setEcoData } = useContext(EconomicContext)
-  const [precioInstalacionCorregido, setPrecioInstalacionCorregido] = useState('')
+  const [precioCorregido, setPrecioCorregido] = useState('')
   const [error, setError] = useState(false)
 
-  useEffect(() => {
-    setPrecioInstalacionCorregido('')
-  }, [])
+  // useEffect(() => {
+  //   setPrecioCorregido('')
+  // }, [])
 
   const setPrecioInstalacion = () => {
-    if (precioInstalacionCorregido === '') {
+    console.log('CORREGIDO', precioCorregido)
+    if (precioCorregido === '') {
       // If new cost field is empty will use app calculated cost
-      setPrecioInstalacionCorregido(TCB.economico.precioInstalacion)
+      setPrecioCorregido(TCB.economico.precioInstalacion)
       TCB.economico.precioInstalacionCorregido = TCB.economico.precioInstalacion
       setError(false)
-    } else if (!UTIL.ValidateDecimal(i18n.language, precioInstalacionCorregido)) {
+    } else if (!UTIL.ValidateDecimal(i18n.language, precioCorregido)) {
       setError(true)
     } else {
-      const intPrecio = parseInt(precioInstalacionCorregido)
-      if (intPrecio > 0) {
-        TCB.economico.precioInstalacionCorregido = intPrecio
+      console.log('CORREGIMOS A', parseInt(precioCorregido))
+      if (precioCorregido > 0) {
+        TCB.economico.precioInstalacionCorregido = precioCorregido
+        setPrecioInstalacionCorregido(precioCorregido)
         TCB.economico.calculoFinanciero(100, 100)
-        setPrecioInstalacionCorregido(intPrecio)
+        console.log('TCB', TCB.economico)
         setEcoData(TCB.economico)
+        console.log('STATE', ecoData)
         setError(false)
-      } else {
-        setError(true)
       }
     }
   }
 
   function changePrecioInstalacion(event) {
-    setError(!UTIL.ValidateDecimal(i18n.language, event.target.value))
-    setPrecioInstalacionCorregido(event.target.value)
+    if (!UTIL.ValidateDecimal(i18n.language, event.target.value)) setError(true)
+    else {
+      setError(false)
+      setPrecioCorregido(parseInt(event.target.value))
+    }
+  }
+
+  function help(level) {
+    openDialog({
+      children: <HelpEconomicBalance level={level} onClose={() => closeDialog()} />,
+    })
   }
 
   return (
@@ -77,20 +99,36 @@ export default function InstallationCost() {
           >
             {t('ECONOMIC_BALANCE.TITLE_INSTALLATION_COST')}
           </Typography>
-
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <Typography
-              variant="h4"
-              color={theme.palette.primary.main}
-              textAlign={'center'}
+          <Box flexDirection={'row'}>
+            <Typography variant={'body'} textAlign={'left'} marginTop="1rem">
+              {t('ECONOMIC_BALANCE.DESCRIPTION_INSTALLATION_COST')}
+            </Typography>
+            <IconButton
+              onClick={() => help(1)}
+              size="small"
+              style={{
+                color: 'green',
+                fontSize: 'inherit',
+                verticalAlign: 'text-center',
+                transform: 'scale(0.8)',
+                padding: 0,
+              }}
             >
-              {UTIL.formatoValor('precioInstalacion', TCB.economico.precioInstalacion)}
-            </Typography>
-            <Typography variant="body">
-              {t('ECONOMIC_BALANCE.PROMPT_INSTALLATION_COST')}
-            </Typography>
-            <br />
-
+              <InfoIcon />
+            </IconButton>
+          </Box>
+          <Typography
+            variant="h4"
+            color={theme.palette.primary.main}
+            textAlign={'center'}
+          >
+            {UTIL.formatoValor('precioInstalacion', TCB.economico.precioInstalacion)}
+          </Typography>
+          <Typography variant="body">
+            {t('ECONOMIC_BALANCE.PROMPT_INSTALLATION_COST')}
+          </Typography>
+          <br />
+          <FormControl sx={{ m: 1, minWidth: 120 }}>
             <TextField
               type="text"
               onBlur={setPrecioInstalacion}
@@ -106,8 +144,8 @@ export default function InstallationCost() {
               error={error}
               helperText={error ? 'Pon un número válido mayor que cero' : ''}
               value={
-                precioInstalacionCorregido !== TCB.produccion.precioInstalacion
-                  ? precioInstalacionCorregido
+                precioCorregido !== TCB.produccion.precioInstalacion
+                  ? precioCorregido
                   : ''
               }
             />
@@ -115,7 +153,7 @@ export default function InstallationCost() {
           <Typography
             variant="body"
             dangerouslySetInnerHTML={{
-              __html: t('ECONOMIC_BALANCE.DESCRIPTION_INSTALLATION_COST'),
+              __html: t('ECONOMIC_BALANCE.ADVICE_INSTALLATION_COST'),
             }}
           />
         </Box>
