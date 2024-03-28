@@ -125,12 +125,18 @@ function SLDRInputField({ unit, object, MUIType, toolTipPlacement, ...props }) {
   return (
     <>
       {MUIType === undefined && (
-        <SLDRTooltip
-          title={<Typography>{t(`${object}.TOOLTIP.${props.name}`)}</Typography>}
-          placement={toolTipPlacement ?? 'top'}
-        >
-          <TextField {...field} {...sxFull} />
-        </SLDRTooltip>
+        <>
+          {object !== undefined ? (
+            <SLDRTooltip
+              title={<Typography>{t(`${object}.TOOLTIP.${props.name}`)}</Typography>}
+              placement={toolTipPlacement ?? 'top'}
+            >
+              <TextField {...field} {...sxFull} />
+            </SLDRTooltip>
+          ) : (
+            <TextField {...field} {...sxFull} />
+          )}
+        </>
       )}
       {MUIType === 'TextareaAutosize' && (
         <SLDRTooltip
@@ -183,7 +189,7 @@ function SLDRCollapsibleCard(props) {
     <Card>
       <CardHeader
         title={props.title}
-        sx={titleStyle}
+        sx={theme.titles.collapsible}
         action={
           <IconButton
             aria-expanded={expanded}

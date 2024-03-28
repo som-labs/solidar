@@ -376,8 +376,8 @@ export default function GraphAlternatives() {
 
   return (
     <Container ref={graphElement}>
-      <Typography sx={theme.titles.level_1} textAlign={'center'} marginTop="1rem">
-        {t('ECONOMIC_BALANCE.TITLE_DATA_AS_PANELS')}
+      <Typography variant="body" sx={{ mb: '2rem' }}>
+        {t('ECONOMIC_BALANCE.DESCRIPTION_DATA_AS_PANELS')}
       </Typography>
 
       <Plot

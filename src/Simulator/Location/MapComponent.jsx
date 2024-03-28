@@ -15,15 +15,7 @@ import { Draw } from 'ol/interaction'
 import { getArea, getDistance } from 'ol/sphere.js'
 
 // MUI objects
-import {
-  Button,
-  Tooltip,
-  Typography,
-  Box,
-  IconButton,
-  Container,
-  Grid,
-} from '@mui/material'
+import { Button, Tooltip, Box, Grid } from '@mui/material'
 
 //React global components
 import { BasesContext } from '../BasesContext'

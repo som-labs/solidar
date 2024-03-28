@@ -6,7 +6,7 @@ import Container from '@mui/material/Container'
 import { Box, Grid } from '@mui/material'
 
 //React global components
-import { SLDRInfoBox } from '../../components/SLDRComponents'
+import { SLDRInfoBox, SLDRCollapsibleCard } from '../../components/SLDRComponents'
 
 // REACT Solidar Components
 import ReduccionIBI from './ReduccionIBI'
@@ -65,8 +65,6 @@ export default function EconomicBalanceStep() {
             <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
               <InstallationCost></InstallationCost>
             </SLDRInfoBox>
-            {/* //REVISAR: porque nofunciona? //borderTop: '3px solid $
-            {theme.palette.primary.main}', */}
             <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
               <YearSaving></YearSaving>
             </SLDRInfoBox>
@@ -78,31 +76,39 @@ export default function EconomicBalanceStep() {
           </SLDRInfoBox>
         </Grid>
         <Grid item xs={12}>
-          <SLDRInfoBox>
-            <MonthSaving></MonthSaving>
-          </SLDRInfoBox>
-        </Grid>
-        <Grid item xs={12}>
-          <SLDRInfoBox>
-            <FinanceSummary></FinanceSummary>
-          </SLDRInfoBox>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body">
-            {t('ECONOMIC_BALANCE.DESCRIPTION_DATA_AS_PANELS')}
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <SLDRInfoBox
-            sx={{
-              mt: '1rem',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexFlow: 'column',
-            }}
+          <SLDRCollapsibleCard
+            expanded={false}
+            title={t('ECONOMIC_BALANCE.TITLE_MONTH_SAVINGS')}
           >
-            <GraphAlternatives></GraphAlternatives>
-          </SLDRInfoBox>
+            <MonthSaving></MonthSaving>
+          </SLDRCollapsibleCard>
+        </Grid>
+        <Grid item xs={12}>
+          <SLDRCollapsibleCard
+            expanded={false}
+            title={t('ECONOMIC_BALANCE.TITLE_FINANCE_SUMMARY')}
+          >
+            <SLDRInfoBox>
+              <FinanceSummary></FinanceSummary>
+            </SLDRInfoBox>
+          </SLDRCollapsibleCard>
+        </Grid>
+        <Grid item xs={12}>
+          <SLDRCollapsibleCard
+            expanded={false}
+            title={t('ECONOMIC_BALANCE.TITLE_DATA_AS_PANELS')}
+          >
+            <SLDRInfoBox
+              sx={{
+                mt: '1rem',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexFlow: 'column',
+              }}
+            >
+              <GraphAlternatives></GraphAlternatives>
+            </SLDRInfoBox>
+          </SLDRCollapsibleCard>
         </Grid>
       </Grid>
     </Container>

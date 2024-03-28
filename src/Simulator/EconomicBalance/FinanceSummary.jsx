@@ -19,7 +19,6 @@ export default function FinanceSummary() {
   const theme = useTheme()
 
   const { ecoData } = useContext(EconomicContext)
-
   if (ecoData.cashFlow === undefined) return
 
   function getRowId(row) {
@@ -129,6 +128,7 @@ export default function FinanceSummary() {
       },
     },
   ]
+
   return (
     <Box
       component="form"
@@ -149,10 +149,6 @@ export default function FinanceSummary() {
         },
       }}
     >
-      <Typography sx={theme.titles.level_1} textAlign={'center'} marginTop="1rem">
-        {t('ECONOMIC_BALANCE.TITLE_FINANCE_SUMMARY')}
-      </Typography>
-      <br />
       <DataGrid
         sx={theme.tables.headerWrap}
         getRowId={getRowId}

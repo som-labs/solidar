@@ -91,6 +91,10 @@ export default function SomEnergiaTheme(isDarkMode) {
           fontSize: '1.5rem',
           fontWeight: 500,
         },
+        collapsible: {
+          fontSize: '1.7rem',
+          fontWeight: 700,
+        },
       },
 
       //       fontWeight: 400,

@@ -13,6 +13,7 @@ const EconomicContextProvider = ({ children }) => {
   const [cuotaHucha, setCuotaHucha] = useState(0)
   const [coefHucha, setCoefHucha] = useState(80)
   const [ecoData, setEcoData] = useState({})
+  const [precioInstalacionCorregido, setPrecioInstalacionCorregido] = useState('')
 
   const contextValue = {
     IBI,
@@ -21,6 +22,8 @@ const EconomicContextProvider = ({ children }) => {
     setValorSubvencion,
     porcientoSubvencion,
     setPorcientoSubvencion,
+    precioInstalacionCorregido,
+    setPrecioInstalacionCorregido,
     cuotaHucha,
     setCuotaHucha,
     coefHucha,

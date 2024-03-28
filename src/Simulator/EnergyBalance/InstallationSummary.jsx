@@ -72,25 +72,25 @@ export default function InstallationSummary() {
       description: t('BaseSolar.TOOLTIP.panelesMaximo'),
       sortable: false,
     },
-    {
-      field: 'potenciaMaxima',
-      headerName: t('BaseSolar.PROP.potenciaMaxima'),
-      headerAlign: 'center',
-      flex: 1,
-      align: 'right',
-      description: t('BaseSolar.TOOLTIP.potenciaMaxima'),
-      sortable: false,
-      renderCell: (params) => {
-        return UTIL.formatoValor('potenciaMaxima', params.value)
-      },
-    },
+    // {
+    //   field: 'potenciaMaxima',
+    //   headerName: t('BaseSolar.PROP.potenciaMaxima'),
+    //   headerAlign: 'center',
+    //   flex: 1,
+    //   align: 'right',
+    //   description: t('BaseSolar.TOOLTIP.potenciaMaxima'),
+    //   sortable: false,
+    //   renderCell: (params) => {
+    //     return UTIL.formatoValor('potenciaMaxima', params.value)
+    //   },
+    // },
     {
       field: 'potenciaUnitaria',
       //editable: true, //por ahora no dejamos cambiar la potencia unitaria del panel despues de haber hecho el cálculo del balance de energía.
       headerName: t('Instalacion.PROP.potenciaUnitaria'),
       headerAlign: 'center',
       flex: 1,
-      align: 'right',
+      align: 'center',
       description: t('Instalacion.TOOLTIP.potenciaUnitaria'),
       sortable: false,
       renderCell: (params) => {
@@ -102,7 +102,7 @@ export default function InstallationSummary() {
       headerName: t('Instalacion.PROP.potenciaTotal'),
       headerAlign: 'center',
       flex: 1,
-      align: 'right',
+      align: 'center',
       description: t('Instalacion.TOOLTIP.potenciaTotal'),
       sortable: false,
       renderCell: (params) => {
