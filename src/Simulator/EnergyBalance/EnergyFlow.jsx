@@ -5,6 +5,13 @@ import { useTheme } from '@mui/material/styles'
 // MUI objects
 import { Container, Typography, Box, CardMedia } from '@mui/material'
 
+//Solidar assets
+import imgConsumo from '../assets/consumo.svg'
+import imgRed from '../assets/red.svg'
+import imgPaneles from '../assets/paneles.svg'
+import arrowExcedente from '../assets/arrowExcedente.svg'
+import arrowDeficit from '../assets/arrowDeficit.svg'
+
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
@@ -236,7 +243,7 @@ export default function EnergyFlow(props) {
             <Box>
               <CardMedia
                 component="img"
-                src="./datos/consumo.svg"
+                src={imgConsumo}
                 ref={graficoConsumo}
                 alt="Consumos Totales"
                 title="Consumos totales"
@@ -249,7 +256,7 @@ export default function EnergyFlow(props) {
 
               <CardMedia
                 component="img"
-                src="./datos/red.svg"
+                src={imgRed}
                 ref={graficoExcedente}
                 sx={{
                   position: 'relative',
@@ -269,7 +276,7 @@ export default function EnergyFlow(props) {
               </Box>
               <CardMedia
                 component="img"
-                src="./datos/red.svg"
+                src={imgRed}
                 ref={graficoDeficit}
                 sx={{
                   position: 'relative',
@@ -282,7 +289,7 @@ export default function EnergyFlow(props) {
 
               <CardMedia
                 component="img"
-                src="./datos/paneles.svg"
+                src={imgPaneles}
                 ref={graficoProduccion}
                 sx={{
                   position: 'relative',
@@ -398,8 +405,11 @@ function _drawArrow(svg, x, linea, lineas, tipoFlecha) {
 
   var img = document.createElementNS(svgns, 'image')
   let alto = lineas * altoLinea
+  let link
+  if (tipoFlecha === 'Excedente') link = arrowExcedente
+  else link = arrowDeficit
 
-  const link = './datos/arrow' + tipoFlecha + '.svg'
+  //const link = './datos/arrow' + tipoFlecha + '.svg'
   const XLink_NS = 'http://www.w3.org/1999/xlink'
   img.setAttributeNS(XLink_NS, 'xlink:href', link)
   img.setAttribute('height', alto)
