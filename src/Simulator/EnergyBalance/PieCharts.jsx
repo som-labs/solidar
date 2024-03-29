@@ -78,7 +78,7 @@ export default function PieCharts(props) {
       {
         xref: 'paper',
         yref: 'paper',
-        x: 0.12,
+        x: 0.1,
         y: 1.3,
         text: t('ENERGY_BALANCE.TITLE_GRAPH_DEMAND'),
         showarrow: false,
@@ -90,7 +90,7 @@ export default function PieCharts(props) {
       {
         xref: 'paper',
         yref: 'paper',
-        x: 0.88,
+        x: 0.9,
         y: 1.3,
         text: t('ENERGY_BALANCE.TITLE_GRAPH_AUTOPRODUCIDA'), // Title for Subplot 2
         showarrow: false,
@@ -107,11 +107,13 @@ export default function PieCharts(props) {
   }
 
   return (
-    <Container ref={graphElement}>
+    <Container>
       {/* <Typography variant="h5" textAlign={'center'} sx={{ mt: '1rem' }}>
         {t('ENERGY_BALANCE.TITLE_GRAPH_ENERGY_DEMAND')}
       </Typography> */}
-      <Plot data={data1} layout={layout} config={config} />
+      <div ref={graphElement}>
+        <Plot data={data1} layout={layout} config={config} />
+      </div>
     </Container>
   )
 }

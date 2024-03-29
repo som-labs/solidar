@@ -77,7 +77,7 @@ export default function EconomicBalanceStep() {
         </Grid>
         <Grid item xs={12}>
           <SLDRCollapsibleCard
-            expanded={false}
+            expanded={true}
             title={t('ECONOMIC_BALANCE.TITLE_MONTH_SAVINGS')}
           >
             <MonthSaving></MonthSaving>
