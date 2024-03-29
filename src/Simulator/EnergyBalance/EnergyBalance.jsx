@@ -183,35 +183,35 @@ export default function EnergyBalanceStep() {
         </Grid>
 
         <Grid item xs={12}>
-          <SLDRCollapsibleCard
-            expanded={false}
+          {/* <SLDRCollapsibleCard
+            expanded={true}
             titleSX={theme.titles.level_1}
             title={t('ENERGY_BALANCE.TITLE_HOURLY_ENERGY_BALANCE')}
-          >
-            <SLDRInfoBox sx={{ alignItems: 'center' }}>
-              <Typography sx={theme.titles.level_2} textAlign={'center'}>
-                {t('ENERGY_BALANCE.TITLE_HOURLY_PERIODO')}
-              </Typography>
-              <TextField
-                sx={{ width: 200, height: 50, mt: '1rem', mb: '1rem', ml: '1rem' }}
-                select
-                value={mes}
-                defaultValue={t('ENERGY_BALANCE.VALUE_FULL_YEAR')}
-                //label={t('BASIC.LABEL_MES')}
-                onChange={(event) => setMes(event.target.value)}
-              >
-                <MenuItem key={-1} value={t('ENERGY_BALANCE.VALUE_FULL_YEAR')}>
-                  {t('ENERGY_BALANCE.VALUE_FULL_YEAR')}
+          > */}
+          <SLDRInfoBox sx={{ alignItems: 'center' }}>
+            <Typography sx={theme.titles.level_2} textAlign={'center'}>
+              {t('ENERGY_BALANCE.TITLE_HOURLY_PERIODO')}
+            </Typography>
+            <TextField
+              sx={{ width: 200, height: 50, mt: '1rem', mb: '1rem', ml: '1rem' }}
+              select
+              value={mes}
+              defaultValue={t('ENERGY_BALANCE.VALUE_FULL_YEAR')}
+              //label={t('BASIC.LABEL_MES')}
+              onChange={(event) => setMes(event.target.value)}
+            >
+              <MenuItem key={-1} value={t('ENERGY_BALANCE.VALUE_FULL_YEAR')}>
+                {t('ENERGY_BALANCE.VALUE_FULL_YEAR')}
+              </MenuItem>
+              {UTIL.nombreMes.map((nombreMes, index) => (
+                <MenuItem key={index} value={index}>
+                  {t(nombreMes)}
                 </MenuItem>
-                {UTIL.nombreMes.map((nombreMes, index) => (
-                  <MenuItem key={index} value={index}>
-                    {t(nombreMes)}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <HourlyEnergyBalance mes={mes}></HourlyEnergyBalance>
-            </SLDRInfoBox>
-          </SLDRCollapsibleCard>
+              ))}
+            </TextField>
+            <HourlyEnergyBalance mes={mes}></HourlyEnergyBalance>
+          </SLDRInfoBox>
+          {/* </SLDRCollapsibleCard> */}
         </Grid>
 
         {TCB.estiloActivo === 'CLARA' && (
@@ -235,15 +235,15 @@ export default function EnergyBalanceStep() {
         )}
 
         <Grid item xs={12}>
-          <SLDRCollapsibleCard
-            expanded={false}
+          {/* <SLDRCollapsibleCard
+            expanded={true}
             titleSX={theme.titles.level_1}
             title={t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_THREE_PARTS')}
-          >
-            <SLDRInfoBox>
-              {dataReady && <MonthFiveParts monthlyData={monthlyData}></MonthFiveParts>}
-            </SLDRInfoBox>
-          </SLDRCollapsibleCard>
+          > */}
+          <SLDRInfoBox>
+            {dataReady && <MonthFiveParts monthlyData={monthlyData}></MonthFiveParts>}
+          </SLDRInfoBox>
+          {/* </SLDRCollapsibleCard> */}
         </Grid>
 
         {TCB.estiloActivo === 'CLARA' && (

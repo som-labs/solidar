@@ -7,15 +7,16 @@ import { Formik, Form } from 'formik'
 // MUI objects
 import { Box, Button, Typography, Grid, FormLabel } from '@mui/material'
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
-
-//React global components
-import coplanarSvgFile from '../datos/coplanar.png'
-import horizontalSvgFile from '../datos/horizontal.png'
-import { SLDRInputField } from '../../components/SLDRComponents'
 import { useTheme } from '@mui/material/styles'
 
+//Solidar assets
+import coplanarSvgFile from '../assets/coplanar.png'
+import horizontalSvgFile from '../assets/horizontal.png'
+
+//React global components
+import { SLDRInputField } from '../../components/SLDRComponents'
+
 // Solidar global modules
-import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 /**

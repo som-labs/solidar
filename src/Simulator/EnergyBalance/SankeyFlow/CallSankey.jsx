@@ -1,12 +1,18 @@
 import { useRef, useState, useEffect, useContext, useCallback } from 'react'
 import { useTheme } from '@mui/material/styles'
-import SankeyFun from './SankeyFun'
-import { ColorModeContext } from '../../../components/GlobalTheme'
+
 // MUI objects
 import { Box, CardMedia } from '@mui/material'
 
+//Solidar assets
+import imgConsumo from '../../assets/consumo.svg'
+import imgRed from '../../assets/red.svg'
+import imgPaneles from '../../assets/paneles.svg'
+
 //React global components
 import { BasesContext } from '../../BasesContext'
+import SankeyFun from './SankeyFun'
+import { ColorModeContext } from '../../../components/GlobalTheme'
 
 export default function CallSankey(props) {
   var svgRef = useRef(null)
@@ -118,7 +124,7 @@ export default function CallSankey(props) {
         >
           <CardMedia
             component="img"
-            src="./datos/paneles.svg"
+            src={imgPaneles}
             sx={{
               height: 80,
               width: 80,
@@ -131,7 +137,7 @@ export default function CallSankey(props) {
 
           <CardMedia
             component="img"
-            src="./datos/red.svg"
+            src={imgRed}
             sx={{
               position: 'absolute',
               height: 80,
@@ -150,7 +156,7 @@ export default function CallSankey(props) {
         <Box display="flex" sx={{ flex: 1, position: 'relative' }} flexDirection="column">
           <CardMedia
             component="img"
-            src="./datos/red.svg"
+            src={imgRed}
             sx={{
               height: 90,
               width: 90,
@@ -163,7 +169,7 @@ export default function CallSankey(props) {
 
           <CardMedia
             component="img"
-            src="./datos/consumo.svg"
+            src={imgConsumo}
             alt="Consumos Totales"
             title="Consumos totales"
             sx={{
