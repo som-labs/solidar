@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react'
+import { Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '@mui/material/styles'
 
@@ -22,9 +22,7 @@ export default function DialogProperties({ data, onClose }) {
   const { t } = useTranslation()
   const theme = useTheme()
 
-  const [objeto, setObjeto] = useState(data)
-
-  const vectorPropiedades = UTIL.obtenerPropiedades(objeto, 0)
+  const vectorPropiedades = UTIL.obtenerPropiedades(data, 0)
   for (let val in vectorPropiedades) {
     vectorPropiedades[val].sort((a, b) => {
       if (a.valor === 'Objeto' || b.valor === 'Objeto') return -1

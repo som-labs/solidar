@@ -11,6 +11,7 @@ class Tarifa {
    *    Y - territorio = ['Peninsula', 'Islas Baleares', 'Canarias', 'Melilla', 'Ceuta']
    */
   constructor(nombreTarifa) {
+    this._name = 'Tarifa'
     this.idTarifa = TCB.featIdUnico++
     this.nombreTarifa = nombreTarifa
     this.precios = Array.from(TCB.tarifas[nombreTarifa].precios)

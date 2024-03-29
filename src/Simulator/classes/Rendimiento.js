@@ -19,7 +19,7 @@ class Rendimiento extends DiaHora {
 
   constructor(base) {
     super()
-
+    this._name = 'Rendimiento'
     this.PVGISfechaInicio = new Date(1, 1, 1900)
     this.PVGISfechaFin = new Date(1, 1, 1900)
 
