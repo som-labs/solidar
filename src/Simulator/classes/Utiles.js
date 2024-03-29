@@ -951,10 +951,7 @@ function swapTabla(tabla) {
   let tTabla = {}
   for (let k = 0; k < tabla.length; k++) {
     //Si estamos procesando el TipoConsumo que representa el consumo Global lo ignoramos
-    if (
-      tabla[k].constructor.name === 'TipoConsumo' &&
-      tabla[k].nombreTipoConsumo === 'Global'
-    ) {
+    if (tabla[k]._name === 'TipoConsumo' && tabla[k].nombreTipoConsumo === 'Global') {
       continue
     }
 
@@ -1046,9 +1043,12 @@ function obtenerPropiedades(objeto, nivel) {
   if (nivel == 0) prop_val = {}
 
   let propiedades = Object.getOwnPropertyDescriptors(objeto)
+  /*
+  Original was looking as actobj = objeto.constructor.name but minification change the object name and impossible to use generic code at runtime. Adding ._name property to each class as substitute of constructor.name
+  */
+  let actobj = objeto._name
 
-  let actobj = objeto.constructor.name
-  if (actobj === 'Object') return //No esta previsto mostrar campos de tipo objeto javascript como puede ser el status del rendimiento
+  if (actobj === 'Object' || actobj === undefined) return //No esta previsto mostrar campos de tipo objeto javascript como puede ser el status del rendimiento
   prop_val[actobj] = prop_val[actobj] ?? []
 
   for (let prop in propiedades) {
@@ -1060,16 +1060,17 @@ function obtenerPropiedades(objeto, nivel) {
             prop_val[actobj].push({ nombre: prop, valor: objeto[prop] })
         } else {
           if (prop !== 'geometria') {
-            let actobj = objeto.constructor.name
+            let actobj = objeto._name
             prop_val[actobj].push({ nombre: prop, valor: 'Objeto' })
             obtenerPropiedades(objeto[prop], 1)
           }
         }
       } else {
         if (campos[prop] !== undefined && campos[prop].mostrar)
-          if (!(actobj === 'Rendimiento' && prop === 'totalAnual'))
+          if (!(actobj === 'Rendimiento' && prop === 'totalAnual')) {
             //Particular case don't want to get totalAnual of rendimiento
             prop_val[actobj].push({ nombre: prop, valor: objeto[prop] })
+          }
       }
     }
   }

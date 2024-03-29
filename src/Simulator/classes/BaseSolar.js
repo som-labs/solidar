@@ -60,6 +60,7 @@ class BaseSolar {
       },
     })
 
+    this._name = 'BaseSolar'
     this.idBaseSolar = area.idBaseSolar
     this.nombreBaseSolar = area.nombreBaseSolar
     this.lonlatBaseSolar = area.lonlatBaseSolar

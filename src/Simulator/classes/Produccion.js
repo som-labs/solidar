@@ -20,7 +20,7 @@ class Produccion extends DiaHora {
    */
   constructor(base) {
     super()
-
+    this._name = 'Produccion'
     //this.potenciaTotal = 0
 
     // Generamos la produccion de esa base multiplicando la matriz de rendimiento unitario por la potencia instalada

@@ -133,7 +133,6 @@ export default function ReportSOM({ onClose }) {
                     gap: 8,
                   }}
                 >
-                  {/* REVISAR: Causando error en consola */}
                   {TCB.consumo.periodo.map((value, index) => (
                     <span key={index}>
                       {' P' + (index + 1) + ': '}

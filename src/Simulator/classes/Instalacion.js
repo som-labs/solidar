@@ -69,7 +69,7 @@ class Instalacion {
         },
       },
     })
-
+    this._name = 'Instalacion'
     this.#potenciaUnitaria = inInst.potenciaUnitaria
     this.#numeroPaneles = inInst.paneles
     this.#precioInstalacion = Instalacion.getPrecioInstalacion(

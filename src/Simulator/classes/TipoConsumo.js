@@ -16,6 +16,7 @@ class TipoConsumo extends DiaHora {
    */
   constructor(tipo) {
     super()
+    this._name = 'TipoConsumo'
     this.idTipoConsumo //Probablemente no se use
     this.nombreTipoConsumo //Es la clave unica
     this.fuente // CSV, REE o DATADIS

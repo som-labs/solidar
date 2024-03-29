@@ -21,9 +21,6 @@ export default function ProfileDayConsumption(props) {
   const graphElement = useRef()
   const graphWidth = useRef()
 
-  //REVISAR: como saber el ancho del dialogo para ajustar el grafico
-
-  //useEffect(() => {
   // Function to get the width of the element
   const getWidth = () => {
     if (graphElement.current) {
@@ -32,7 +29,6 @@ export default function ProfileDayConsumption(props) {
   }
   // Call the function to get the width after initial render
   getWidth()
-  //}, [])
 
   if (diaActivo === undefined) return <></>
 

@@ -22,6 +22,7 @@ class Balance extends DiaHora {
   constructor(produccion, consumo, coefEnergia) {
     UTIL.debugLog('Generando balance')
     super()
+    this._name = 'Balance'
     /**
      * Añade campos necesarios para el balance a la tabla IDX de DiaHora
      */

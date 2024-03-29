@@ -11,6 +11,7 @@ const maxNumberCashFlow = 20
 
 class Economico {
   constructor() {
+    this._name = 'Economico'
     // Inicializa la tabla indice de acceso
     this.idxTable = Array(365)
     for (let i = 0; i < 365; i++) {
