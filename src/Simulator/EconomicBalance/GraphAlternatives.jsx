@@ -325,10 +325,11 @@ export default function GraphAlternatives() {
     //   )
     // }
   }, [])
+
   //LONGTERM: decidir si el click permite cambiar los paneles
-  function handleClick(evt) {
-    console.log(evt)
-  }
+  // function handleClick(evt) {
+  //   console.log(evt)
+  // }
   //     Plotly.react(donde, data, layout);
   //     var gd = document.getElementById(donde);
   //     var xInDataCoord;
@@ -384,7 +385,7 @@ export default function GraphAlternatives() {
         data={traces}
         layout={layout}
         config={{ displayModeBar: false }}
-        onClick={(event) => handleClick(event)}
+        // onClick={(event) => handleClick(event)}
       />
     </Container>
   )
