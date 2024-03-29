@@ -80,7 +80,7 @@ export default function EnergyBalanceStep() {
 
     setEcoData(TCB.economico)
     setDataReady(true)
-  }, [bases, setEcoData])
+  }, [bases, setEcoData, mes])
 
   function help(level) {
     openDialog({
@@ -183,67 +183,27 @@ export default function EnergyBalanceStep() {
         </Grid>
 
         <Grid item xs={12}>
-          {/* <SLDRCollapsibleCard
-            expanded={true}
+          <SLDRCollapsibleCard
+            expanded={false}
             titleSX={theme.titles.level_1}
             title={t('ENERGY_BALANCE.TITLE_HOURLY_ENERGY_BALANCE')}
-          > */}
-          <SLDRInfoBox sx={{ alignItems: 'center' }}>
-            <Typography sx={theme.titles.level_2} textAlign={'center'}>
-              {t('ENERGY_BALANCE.TITLE_HOURLY_PERIODO')}
-            </Typography>
-            <TextField
-              sx={{ width: 200, height: 50, mt: '1rem', mb: '1rem', ml: '1rem' }}
-              select
-              value={mes}
-              defaultValue={t('ENERGY_BALANCE.VALUE_FULL_YEAR')}
-              //label={t('BASIC.LABEL_MES')}
-              onChange={(event) => setMes(event.target.value)}
-            >
-              <MenuItem key={-1} value={t('ENERGY_BALANCE.VALUE_FULL_YEAR')}>
-                {t('ENERGY_BALANCE.VALUE_FULL_YEAR')}
-              </MenuItem>
-              {UTIL.nombreMes.map((nombreMes, index) => (
-                <MenuItem key={index} value={index}>
-                  {t(nombreMes)}
-                </MenuItem>
-              ))}
-            </TextField>
-            <HourlyEnergyBalance mes={mes}></HourlyEnergyBalance>
-          </SLDRInfoBox>
-          {/* </SLDRCollapsibleCard> */}
+          >
+            <SLDRInfoBox>
+              <HourlyEnergyBalance></HourlyEnergyBalance>
+            </SLDRInfoBox>
+          </SLDRCollapsibleCard>
         </Grid>
 
-        {TCB.estiloActivo === 'CLARA' && (
-          <Grid item xs={12}>
-            <SLDRInfoBox>
-              <Typography variant="h4" textAlign={'center'}>
-                {t('ENERGY_BALANCE.TITLE_MONTH_ENERGY_BALANCE')}
-              </Typography>
-              <Typography
-                variant="body"
-                dangerouslySetInnerHTML={{
-                  __html: t('ENERGY_BALANCE.DESCRIPTION_MONTH_ENERGY_BALANCE'),
-                }}
-              />
-
-              {dataReady && (
-                <MonthEnergyBalance monthlyData={monthlyData}></MonthEnergyBalance>
-              )}
-            </SLDRInfoBox>
-          </Grid>
-        )}
-
         <Grid item xs={12}>
-          {/* <SLDRCollapsibleCard
+          <SLDRCollapsibleCard
             expanded={true}
             titleSX={theme.titles.level_1}
             title={t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_THREE_PARTS')}
-          > */}
-          <SLDRInfoBox>
-            {dataReady && <MonthFiveParts monthlyData={monthlyData}></MonthFiveParts>}
-          </SLDRInfoBox>
-          {/* </SLDRCollapsibleCard> */}
+          >
+            <SLDRInfoBox>
+              {dataReady && <MonthFiveParts monthlyData={monthlyData}></MonthFiveParts>}
+            </SLDRInfoBox>
+          </SLDRCollapsibleCard>
         </Grid>
 
         {TCB.estiloActivo === 'CLARA' && (
