@@ -12,6 +12,7 @@ class Consumo extends DiaHora {
    */
   constructor(consumo) {
     super()
+    this._name = 'Consumo'
     this.periodo //Will store kWh per fee period (P1, P2, ...)
 
     if (consumo === undefined) {
