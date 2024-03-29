@@ -16,15 +16,15 @@ import * as UTIL from '../classes/Utiles.js'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 
+//Solidar assets
+import logoPDF from '../assets/logoPDF.png'
+
 var i
 let pagina = 1
 let currentY = 0
 var doc
 
 var img = new Image(160, 60)
-// img.crossOrigin = ''
-// img.src = '../datos/logo.png'
-
 var margenIzquierdo
 var margenDerecho
 var pageWidth
@@ -48,7 +48,7 @@ async function GeneraInformePDF() {
 
   img = new Image()
   img.crossOrigin = ''
-  img.src = './datos/logo-pdf.png'
+  img.src = logoPDF //'./datos/logo-pdf.png'
 
   pageWidth = doc.internal.pageSize.width //Optional
   pageHeight = doc.internal.pageSize.height //Optional

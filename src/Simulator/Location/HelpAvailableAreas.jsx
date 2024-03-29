@@ -1,12 +1,18 @@
 import { useTranslation } from 'react-i18next'
+
+// MUI objects
 import { Typography, Box, Button } from '@mui/material'
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
-//import { useDialog } from '../../components/DialogProvider'
+
+//Solidar assets
+import image001 from '../assets/image001.png'
+import image002 from '../assets/image002.jpg'
+import sombras from '../assets/sombras.mp4'
 
 export default function HelpAvailableAreas(props) {
   const { t } = useTranslation()
   const { lat, lon, title } = props
-  //const [openDialog, closeDialog] = useDialog()
+
   return (
     <>
       <DialogTitle>{title}</DialogTitle>
@@ -21,23 +27,13 @@ export default function HelpAvailableAreas(props) {
               {/* <Typography variant="body"> {t('LOCATION.HELP.CUALES_1')}</Typography>
               <Typography variant="body"> {t('LOCATION.HELP.CUALES_2')}</Typography> */}
 
-              <img
-                width={567}
-                height={201}
-                id="Imagen 2"
-                src="./datos/image001.png"
-              ></img>
+              <img width={567} height={201} id="Imagen 1" src={image001}></img>
             </>
           )}
           {props.level === 2 && (
             <>
               <Typography variant="body"> {t('LOCATION.HELP.DOS_AGUAS')}</Typography>
-              <img
-                width={566}
-                height={183}
-                id="Imagen 1"
-                src="./datos/image002.jpg"
-              ></img>
+              <img width={566} height={183} id="Imagen 2" src={image002}></img>
             </>
           )}
           {props.level === 3 && (
@@ -52,7 +48,7 @@ export default function HelpAvailableAreas(props) {
               >
                 <div>
                   <video autoPlay width="320" height="200" loop>
-                    <source src="./datos/sombras.mp4" type="video/mp4" />
+                    <source src={sombras} type="video/mp4" />
                   </video>
                 </div>
               </div>
@@ -68,17 +64,6 @@ export default function HelpAvailableAreas(props) {
       </DialogContent>
       <DialogActions sx={{ mt: '1rem' }}>
         <Button onClick={() => props.onClose()}>{t('BASIC.LABEL_CANCEL')}</Button>
-        {/* REVISAR: CloseDialog cierra los dos dialogos abiertos 
-        <Button
-          onClick={() =>
-            openDialog({
-              children: <HelpAvailableAreas level={2} onClose={() => closeDialog()} />,
-            })
-          }
-        >
-          {t('BASIC.LABEL_OK')}
-        </Button>
-        */}
       </DialogActions>
     </>
   )
