@@ -111,8 +111,8 @@ export default function MonthThreeParts(props) {
         yref: 'paper',
         orientation: 'h',
       },
-      paper_bgcolor: 'rgba(0,0,100,0)',
-      plot_bgcolor: 'rgba(0,0,100,0)',
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
       width: graphWidth.current,
       autosize: true,
       yaxis: {

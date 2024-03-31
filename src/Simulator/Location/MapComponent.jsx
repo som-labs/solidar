@@ -408,7 +408,12 @@ export default function MapComponent() {
     const lonLat = transform(center, 'EPSG:3857', 'EPSG:4326')
     const lon = lonLat[0]
     const lat = lonLat[1]
-    window.open('https://earth.google.com/web/search/' + lat + ',' + lon + '/', '_blank')
+    window.open(
+      window.open(
+        'https://earth.google.com/web/@' + lat + ',' + lon + ',0a,5000d,1y,-0h,0t,0r',
+        '_blank',
+      ),
+    )
   }
 
   function openShadowMap() {
