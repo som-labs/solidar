@@ -21,7 +21,7 @@ export default function PieCharts(props) {
     // Function to get the width of the element
     const getWidth = () => {
       if (graphElement.current) {
-        graphWidth.current = graphElement.current.offsetWidth * 0.9
+        graphWidth.current = graphElement.current.offsetWidth
       }
     }
 
