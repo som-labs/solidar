@@ -12,9 +12,9 @@
 </g>
 <g transform="matrix(0 -1.67 1.67 0 54.17 107.97)"  >
 <linearGradient id="SVGID_780" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"  x1="3.58960626" y1="19.14960576" x2="116.06393574" y2="40.69291224">
-<stop offset="0%" style="stop-color:rgba(82, 243, 32, 1);"/>
+<stop offset="0%" style="stop-color:rgb(175,190,63);"/>
 <stop offset="47.322%" style="stop-color:rgba(0, 0, 0, 0.64);"/>
-<stop offset="100%" style="stop-color:rgba(234, 59, 37, 1);"/>
+<stop offset="100%" style="stop-color:rgb(153,113,113);"/>
 </linearGradient>
 <path style="stroke: rgb(0,0,0); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 10; fill: url(#SVGID_780); fill-rule: evenodd; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-59.83, -29.92)" d="m 0 14.960629 l 89.732285 0 l 0 -14.960629 l 29.921257 29.921259 l -29.921257 29.921259 l 0 -14.9606285 l -89.732285 0 z" stroke-linecap="round" />
 </g>

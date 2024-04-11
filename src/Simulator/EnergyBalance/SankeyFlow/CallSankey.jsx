@@ -22,8 +22,7 @@ export default function CallSankey(props) {
   const [iconY, setIconY] = useState([])
   const [draw, setDraw] = useState(true)
 
-  const { consumo, produccion, deficit, autoconsumo, excedente, consumoDiurno } =
-    props.yearlyData
+  const { consumo, autoconsumo, excedente, consumoDiurno } = props.yearlyData
 
   const theme = useTheme()
   const { current } = useContext(ColorModeContext) //dark or light
@@ -66,8 +65,8 @@ export default function CallSankey(props) {
     theme.palette.balance.produccion, //Producción paneles
     theme.palette.balance.deficit, //Consumo de red
     theme.palette.balance.excedente, //Excedente
-    '#FFFF66', //Cosumo diurno
-    '#A0A0A0', //Consumo nocturno
+    theme.palette.balance.consumoDiurno, //Cosumo diurno
+    theme.palette.balance.consumoNocturno, //Consumo nocturno
     theme.palette.balance.excedente, //Excedente
     theme.palette.balance.consumo, //Consumo total
     '#af7aa1',
@@ -77,6 +76,7 @@ export default function CallSankey(props) {
   ]
 
   const setIconPosition = useCallback((values) => {
+    console.log('INCALLBACK', values)
     setIconY(values.map((element) => parseInt(element * boxHeight.current - 45) + 'px'))
     setDraw(false)
   }, [])
@@ -95,6 +95,7 @@ export default function CallSankey(props) {
   }, [bases])
 
   if (draw) {
+    console.log(iconY)
     SankeyFun(
       { links: data, svgRef, setIconPosition },
       {

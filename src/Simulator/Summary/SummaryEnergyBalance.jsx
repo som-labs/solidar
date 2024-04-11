@@ -1,20 +1,31 @@
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
+import { Typography, Container, Box, Grid } from '@mui/material'
 
 // REACT Solidar Components
 import GraphBoxAutoconsumo from '../EnergyBalance/GraphBoxAutoconsumo'
+import CallSankey from '../EnergyBalance/SankeyFlow/CallSankey'
 
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 export default function SummaryEnergyBalance() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
+  const [yearlyData, setYearlyData] = useState({})
+
+  useEffect(() => {
+    setYearlyData({
+      consumo: TCB.consumo.totalAnual,
+      produccion: TCB.produccion.totalAnual,
+      deficit: TCB.balance.deficitAnual,
+      autoconsumo: TCB.balance.autoconsumo,
+      excedente: TCB.balance.excedenteAnual,
+      consumoDiurno: TCB.balance.consumoDiurno,
+    })
+  }, [])
 
   return (
     <>
@@ -24,7 +35,10 @@ export default function SummaryEnergyBalance() {
         </Typography>
         <Typography variant="body">{t('SUMMARY.DESCRIPTION_ENERGY_BALANCE')}</Typography>
 
+        <CallSankey yearlyData={yearlyData}></CallSankey>
+
         <GraphBoxAutoconsumo></GraphBoxAutoconsumo>
+
         <Box
           component="form"
           sx={{
@@ -34,7 +48,7 @@ export default function SummaryEnergyBalance() {
             width: '100%',
           }}
         >
-          <Typography variant="h4" color={'green'} textAlign={'center'}>
+          <Typography variant="h4" color={'#4D4D4D'} textAlign={'center'}>
             {UTIL.formatoValor(
               'porciento',
               (TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100,

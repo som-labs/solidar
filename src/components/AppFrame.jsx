@@ -21,6 +21,8 @@ import InLineHelp from '../Simulator/InLineHelp/InLineHelp'
 import ProjectMenu from '../Simulator/Project/ProjectMenu'
 import { getParametrosEntrada } from '../Simulator/classes/Utiles'
 
+import TCB from '../Simulator/classes/TCB'
+
 export default function AppFrame({ children }) {
   const { t } = useTranslation()
 
@@ -101,7 +103,7 @@ export default function AppFrame({ children }) {
           <ParametersMenu />
           <ContactMenu />
           <ProjectMenu />
-          <InLineHelp />
+          {TCB.estiloActivo === 'CLARA' && <InLineHelp />}
         </Toolbar>
       </AppBar>
       <Box sx={{ minHeight: 'calc( 100vh - 7rem )' }}>{children}</Box>

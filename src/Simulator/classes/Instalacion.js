@@ -48,11 +48,11 @@ class Instalacion {
           // actualiza proporcionalemnte el precio si ya tenia un precio asignado
           if (this.#precioInstalacion !== 0)
             this.#precioInstalacion *= numero / this.#numeroPaneles
+          //En caso contrario calcula el precio para esa potencia
           else
             this.#precioInstalacion = Instalacion.getPrecioInstalacion(
-              numero / this.#numeroPaneles,
+              numero / this.potenciaUnitaria,
             )
-
           this.#numeroPaneles = numero
         },
         get() {
@@ -69,6 +69,7 @@ class Instalacion {
         },
       },
     })
+
     this._name = 'Instalacion'
     this.#potenciaUnitaria = inInst.potenciaUnitaria
     this.#numeroPaneles = inInst.paneles
@@ -102,7 +103,7 @@ class Instalacion {
         TCB.precioInstalacion.precios[i].precio *
         (1 + TCB.parametros.IVAinstalacion / 100)
     }
-    return precioInstalacion
+    return parseInt(precioInstalacion)
   }
 }
 export default Instalacion

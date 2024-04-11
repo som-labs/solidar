@@ -1,10 +1,8 @@
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
-import { Box, Grid } from '@mui/material'
-
+import { Box, Grid, Typography, Container } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 //React global components
 import { SLDRInfoBox, SLDRCollapsibleCard } from '../../components/SLDRComponents'
 
@@ -21,6 +19,7 @@ import GraphAlternatives from './GraphAlternatives'
 
 export default function EconomicBalanceStep() {
   const { t } = useTranslation()
+  const theme = useTheme()
 
   return (
     <Container>
@@ -75,14 +74,14 @@ export default function EconomicBalanceStep() {
             <AmortizationTime></AmortizationTime>
           </SLDRInfoBox>
         </Grid>
+
         <Grid item xs={12}>
-          <SLDRCollapsibleCard
-            expanded={true}
-            title={t('ECONOMIC_BALANCE.TITLE_MONTH_SAVINGS')}
-          >
-            <MonthSaving></MonthSaving>
-          </SLDRCollapsibleCard>
+          <Typography sx={theme.titles.level_1} textAlign={'center'}>
+            {t('ECONOMIC_BALANCE.TITLE_MONTH_SAVINGS')}
+          </Typography>
+          <MonthSaving></MonthSaving>
         </Grid>
+
         <Grid item xs={12}>
           <SLDRCollapsibleCard
             expanded={false}

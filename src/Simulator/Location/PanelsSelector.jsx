@@ -79,9 +79,7 @@ export default function PanelsSelector() {
         dangerouslySetInnerHTML={{
           __html: t('Instalacion.DESCRIPTION.paneles', {
             tecnologia: tipo.tecnologia,
-            potencia: UTIL.formatoValor('potencia', tipo.potencia),
-            largo: UTIL.formatoValor('longitud', tipo.largo),
-            ancho: UTIL.formatoValor('longitud', tipo.ancho),
+            potencia: UTIL.formatoValor('potenciaWp', tipo.potencia * 1000),
           }),
         }}
       ></Typography>
