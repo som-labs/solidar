@@ -128,7 +128,13 @@ function SLDRInputField({ unit, object, MUIType, toolTipPlacement, ...props }) {
         <>
           {object !== undefined ? (
             <SLDRTooltip
-              title={<Typography>{t(`${object}.TOOLTIP.${props.name}`)}</Typography>}
+              title={
+                <Typography
+                  dangerouslySetInnerHTML={{
+                    __html: t(`${object}.TOOLTIP.${props.name}`),
+                  }}
+                />
+              }
               placement={toolTipPlacement ?? 'top'}
             >
               <TextField {...field} {...sxFull} />

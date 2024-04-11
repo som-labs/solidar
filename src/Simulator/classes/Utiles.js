@@ -19,6 +19,7 @@ const campos = {
   // Genericos
   energia: { unidad: ' kWh', decimales: 0, salvar: true, mostrar: true },
   potencia: { unidad: ' kWp', decimales: 3, salvar: true, mostrar: true },
+  potenciaWp: { unidad: ' Wp', decimales: 0, salvar: true, mostrar: true },
   porciento: { unidad: '%', decimales: 2, salvar: true, mostrar: true },
   peso: { unidad: ' Kg', decimales: 2, salvar: true, mostrar: true },
   dinero: { unidad: ' €', decimales: 0, salvar: true, mostrar: true },

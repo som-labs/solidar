@@ -2,14 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import {
-  Typography,
-  Container,
-  MenuItem,
-  TextField,
-  Grid,
-  IconButton,
-} from '@mui/material'
+import { Typography, Container, Grid, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import HelpIcon from '@mui/icons-material/HelpOutlineRounded.js'
 import InfoIcon from '@mui/icons-material/Info'
@@ -31,6 +24,7 @@ import EnvironmentalImpact from './EnvironmentalImpact'
 import HourlyEnergyBalance from './HourlyEnergyBalance'
 import PieCharts from './PieCharts'
 import HelpEnergyBalance from './HelpEnergyBalance'
+import ValidateServerNameGrid from './ValidateServerNameGrid'
 
 //React global components
 import { useDialog } from '../../components/DialogProvider'
@@ -51,6 +45,7 @@ export default function EnergyBalanceStep() {
   const { setEcoData } = useContext(EconomicContext)
   const [mes, setMes] = useState(t('ENERGY_BALANCE.VALUE_FULL_YEAR'))
   const [openDialog, closeDialog] = useDialog()
+
   // El proceso de PreparaEnergyBalance ejecutado como exit del wizard ha hecho cambios sobre las bases que se crearon en location por lo que se deben actualizar
   // El optimizador ha asignado la instalacion
   // El rendimiento ha podido cambiar la inclinacion y por lo tanto el area, la configuracion de paneles y la potenciaMaxima
@@ -107,6 +102,7 @@ export default function EnergyBalanceStep() {
         </Grid>
         <Grid item xs={12}>
           <SLDRInfoBox sx={{ mt: '1rem' }}>
+            {/* <ValidateServerNameGrid></ValidateServerNameGrid> */}
             <InstallationSummary></InstallationSummary>
           </SLDRInfoBox>
         </Grid>
@@ -125,7 +121,7 @@ export default function EnergyBalanceStep() {
             onClick={() => help(1)}
             size="small"
             style={{
-              color: 'green',
+              color: theme.palette.infoIcon.main,
               fontSize: 'inherit',
               verticalAlign: 'text-center',
               transform: 'scale(0.8)',
@@ -152,7 +148,7 @@ export default function EnergyBalanceStep() {
             onClick={() => help(2)}
             size="small"
             style={{
-              color: 'green',
+              color: theme.palette.infoIcon.main,
               fontSize: 'inherit',
               verticalAlign: 'text-center',
               transform: 'scale(0.8)',
@@ -172,36 +168,37 @@ export default function EnergyBalanceStep() {
         )}
 
         <Grid item xs={12}>
+          <Typography sx={theme.titles.level_1} textAlign={'center'}>
+            {t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_FIVE_PARTS')}
+          </Typography>
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('ENERGY_BALANCE.DESCRIPTION_GRAPH_MONTH_FIVE_PARTS'),
+            }}
+          />
+          <SLDRInfoBox sx={{ mt: '1rem' }}>
+            {dataReady && <MonthFiveParts monthlyData={monthlyData}></MonthFiveParts>}
+          </SLDRInfoBox>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography sx={theme.titles.level_1} textAlign={'center'}>
+            {t('ENERGY_BALANCE.TITLE_HOURLY_ENERGY_BALANCE')}
+          </Typography>
+
+          <SLDRInfoBox>
+            <HourlyEnergyBalance></HourlyEnergyBalance>
+          </SLDRInfoBox>
+        </Grid>
+
+        <Grid item xs={12}>
           <SLDRCollapsibleCard
             expanded={false}
             title={t('ENERGY_BALANCE.FLOW_TITLE_OTHER_WAY')}
           >
             <SLDRInfoBox>
               <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
-            </SLDRInfoBox>
-          </SLDRCollapsibleCard>
-        </Grid>
-
-        <Grid item xs={12}>
-          <SLDRCollapsibleCard
-            expanded={false}
-            titleSX={theme.titles.level_1}
-            title={t('ENERGY_BALANCE.TITLE_HOURLY_ENERGY_BALANCE')}
-          >
-            <SLDRInfoBox>
-              <HourlyEnergyBalance></HourlyEnergyBalance>
-            </SLDRInfoBox>
-          </SLDRCollapsibleCard>
-        </Grid>
-
-        <Grid item xs={12}>
-          <SLDRCollapsibleCard
-            expanded={true}
-            titleSX={theme.titles.level_1}
-            title={t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_THREE_PARTS')}
-          >
-            <SLDRInfoBox>
-              {dataReady && <MonthFiveParts monthlyData={monthlyData}></MonthFiveParts>}
             </SLDRInfoBox>
           </SLDRCollapsibleCard>
         </Grid>
@@ -213,6 +210,7 @@ export default function EnergyBalanceStep() {
             </SLDRInfoBox>
           </Grid>
         )}
+
         <Grid item xs={12}>
           <SLDRCollapsibleCard
             expanded={false}
@@ -232,6 +230,7 @@ export default function EnergyBalanceStep() {
             </Grid>
           </SLDRCollapsibleCard>
         </Grid>
+
         <Grid item xs={12}>
           <SLDRCollapsibleCard
             expanded={false}

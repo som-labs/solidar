@@ -77,9 +77,8 @@ export default function HourlyEnergyBalance() {
         x: hHora,
         y: yConsumo,
         type: 'scatter',
-        line: { shape: 'spline', width: 5, color: '#4671ad' },
+        line: { shape: 'spline', width: 5, color: theme.palette.balance.consumo },
         fill: 'tozeroy',
-        fillcolor: '#a1bee5',
         name: t('ENERGY_BALANCE.LABEL_HOURLY_CONSUMPTION_YEAR'),
       }
 
@@ -87,10 +86,10 @@ export default function HourlyEnergyBalance() {
         x: hHora,
         y: yProduccion,
         type: 'scatter',
-        line: { shape: 'spline', width: 5, color: '#ff9700' },
+        line: { shape: 'spline', width: 5, color: theme.palette.balance.produccion },
         fill: 'tozeroy',
-        fillcolor: 'rgba(255,193,0,0.4)',
         name: t('ENERGY_BALANCE.LABEL_HOURLY_PRODUCTION_YEAR'),
+        range: [0, maxHour.current],
       }
       setTraces([consumoAnual, produccionAnual])
     }
@@ -100,7 +99,7 @@ export default function HourlyEnergyBalance() {
         x: hHora,
         y: yConsumo,
         type: 'scatter',
-        line: { shape: 'spline', width: 5, color: '#4671ad' },
+        line: { shape: 'spline', width: 5, color: theme.palette.balance.consumo },
         name: t('ENERGY_BALANCE.LABEL_HOURLY_CONSUMPTION_YEAR'),
       }
 
@@ -108,7 +107,7 @@ export default function HourlyEnergyBalance() {
         x: hHora,
         y: yProduccion,
         type: 'scatter',
-        line: { shape: 'spline', width: 5, color: '#ff9700' },
+        line: { shape: 'spline', width: 5, color: theme.palette.balance.produccion },
         name: t('ENERGY_BALANCE.LABEL_HOURLY_PRODUCTION_YEAR'),
       }
 
@@ -116,9 +115,8 @@ export default function HourlyEnergyBalance() {
         x: hHora,
         y: hConsumo,
         type: 'scatter',
-        line: { shape: 'spline', width: 1, color: '#4671ad' },
+        line: { shape: 'spline', width: 1, color: theme.palette.balance.consumo },
         fill: 'tozeroy',
-        fillcolor: 'rgba(102,178,255,0.4)', //'#a1bee5',
         name: t('ENERGY_BALANCE.LABEL_HOURLY_CONSUMPTION_MONTH'),
       }
 
@@ -126,9 +124,8 @@ export default function HourlyEnergyBalance() {
         x: hHora,
         y: hProduccion,
         type: 'scatter',
-        line: { shape: 'spline', width: 1, color: '#ff9700' },
+        line: { shape: 'spline', width: 1, color: theme.palette.balance.produccion },
         fill: 'tozeroy',
-        fillcolor: 'rgba(255,193,0,0.4)',
         name: t('ENERGY_BALANCE.LABEL_HOURLY_PRODUCTION_MONTH'),
       }
 

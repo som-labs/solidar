@@ -29,6 +29,12 @@ export default function SomEnergiaTheme(isDarkMode) {
           main: '#e6cc00', // From representa-ov highlight
           contrastText: 'white',
         },
+        helpIcon: {
+          main: '#810C04',
+        },
+        infoIcon: {
+          main: '#AFBE3F',
+        },
 
         //PENDIENTE: decidir colores de infobox
         infoBox: {
@@ -49,11 +55,13 @@ export default function SomEnergiaTheme(isDarkMode) {
         },
 
         balance: {
-          produccion: isDarkMode ? '#59A14F' : '#59A14F',
-          consumo: isDarkMode ? '#B6722F' : '#B6722F',
-          autoconsumo: isDarkMode ? '#86AC41' : '#B3C100',
-          deficit: isDarkMode ? '#F4CC70' : '#F4CC70',
-          excedente: isDarkMode ? '#E15759' : '#E15759',
+          produccion: isDarkMode ? '#AFBE3F' : '#AFBE3F',
+          consumo: isDarkMode ? '#446BC1' : '#446BC1',
+          consumoDiurno: '#C68C43',
+          consumoNocturno: '#222D4C',
+          autoconsumo: isDarkMode ? '#C7A6CF' : '#C7A6CF',
+          deficit: isDarkMode ? '#4D4D4D' : '#4D4D4D',
+          excedente: isDarkMode ? '#997171' : '#997171',
         },
       },
       informe: {

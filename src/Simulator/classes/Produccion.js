@@ -36,7 +36,6 @@ class Produccion extends DiaHora {
     } else {
       // Es la construccion de la produccion que sintetiza la produccion de todas las bases
       this.potenciaTotal = 0
-      this.precioInstalacion = 0
       this.CO2AnualRenovable = 0
       this.CO2AnualNoRenovable = 0
 

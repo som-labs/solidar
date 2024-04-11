@@ -27,6 +27,7 @@ export default function InstallationCost() {
   const { t, i18n } = useTranslation()
   const theme = useTheme()
   const [openDialog, closeDialog] = useDialog()
+
   const {
     ecoData,
     setEcoData,
@@ -37,12 +38,7 @@ export default function InstallationCost() {
   const [precioCorregido, setPrecioCorregido] = useState('')
   const [error, setError] = useState(false)
 
-  // useEffect(() => {
-  //   setPrecioCorregido('')
-  // }, [])
-
   const setPrecioInstalacion = () => {
-    console.log('CORREGIDO', precioCorregido)
     if (precioCorregido === '') {
       // If new cost field is empty will use app calculated cost
       setPrecioCorregido(TCB.economico.precioInstalacion)
@@ -51,20 +47,22 @@ export default function InstallationCost() {
     } else if (!UTIL.ValidateDecimal(i18n.language, precioCorregido)) {
       setError(true)
     } else {
-      console.log('CORREGIMOS A', parseInt(precioCorregido))
       if (precioCorregido > 0) {
-        TCB.economico.precioInstalacionCorregido = precioCorregido
-        setPrecioInstalacionCorregido(precioCorregido)
+        TCB.economico.precioInstalacionCorregido = parseInt(precioCorregido)
+        setPrecioInstalacionCorregido(parseInt(precioCorregido))
         TCB.economico.calculoFinanciero(100, 100)
-        console.log('TCB', TCB.economico)
         setEcoData(TCB.economico)
-        console.log('STATE', ecoData)
         setError(false)
       }
     }
   }
 
   function changePrecioInstalacion(event) {
+    if (event.target.value === '') {
+      setPrecioCorregido(TCB.economico.precioInstalacion)
+      setError(false)
+      return
+    }
     if (!UTIL.ValidateDecimal(i18n.language, event.target.value)) setError(true)
     else {
       setError(false)
@@ -107,7 +105,7 @@ export default function InstallationCost() {
               onClick={() => help(1)}
               size="small"
               style={{
-                color: 'green',
+                color: theme.palette.infoIcon.main,
                 fontSize: 'inherit',
                 verticalAlign: 'text-center',
                 transform: 'scale(0.8)',
@@ -144,9 +142,7 @@ export default function InstallationCost() {
               error={error}
               helperText={error ? 'Pon un número válido mayor que cero' : ''}
               value={
-                precioCorregido !== TCB.produccion.precioInstalacion
-                  ? precioCorregido
-                  : ''
+                precioCorregido !== TCB.economico.precioInstalacion ? precioCorregido : ''
               }
             />
           </FormControl>

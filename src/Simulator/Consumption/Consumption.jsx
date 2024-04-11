@@ -2,9 +2,10 @@ import { useContext } from 'react' //DEMO: Detalle
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-
 import { IconButton, Grid, Typography, Container } from '@mui/material'
 import HelpIcon from '@mui/icons-material/HelpOutlineRounded.js'
+import { useTheme } from '@mui/material/styles'
+
 // REACT Solidar Components
 import PreciosTarifa from './PreciosTarifa'
 import ConsumptionSummary from './ConsumptionSummary'
@@ -17,6 +18,7 @@ import { useDialog } from '../../components/DialogProvider'
 
 const ConsumptionStep = () => {
   const { t } = useTranslation()
+  const theme = useTheme()
   const { inLineHelp } = useContext(AlertContext)
   //REVISAR: como meter el icono en el medio del texto
   const [openDialog, closeDialog] = useDialog()
@@ -41,6 +43,7 @@ const ConsumptionStep = () => {
             onClick={() => help()}
             size="small"
             style={{
+              color: theme.palette.helpIcon.main,
               fontSize: 'inherit',
               verticalAlign: 'text-center',
               transform: 'scale(0.8)',

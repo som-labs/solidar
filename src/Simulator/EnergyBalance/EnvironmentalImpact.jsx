@@ -30,7 +30,7 @@ export default function EnvironmentalImpact() {
             mb: '1rem',
           }}
         >
-          <Typography sx={theme.titles.level_2} textAlign={'center'} color={'green'}>
+          <Typography sx={theme.titles.level_2} textAlign={'center'} color={'#4D4D4D'}>
             {t('ENERGY_BALANCE.TITLE_graficoCO2')}
           </Typography>
 

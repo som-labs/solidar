@@ -1,4 +1,4 @@
-import { useRef, useContext } from 'react'
+import { useRef, useContext, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -10,6 +10,7 @@ import { EconomicContext } from '../EconomicContext'
 import { BasesContext } from '../BasesContext'
 import { SLDRInfoBox } from '../../components/SLDRComponents'
 import GraphBoxAutoconsumo from '../EnergyBalance/GraphBoxAutoconsumo'
+import CallSankey from '../EnergyBalance/SankeyFlow/CallSankey'
 import GraphBoxSavings from '../EconomicBalance/GraphBoxSavings'
 import SummaryEconomicBalance from './SummaryEconomicBalance'
 import Reports from './Reports'
@@ -27,6 +28,7 @@ const SummarySOMStep = () => {
 
   const { bases } = useContext(BasesContext)
   const { IBI, valorSubvencion, ecoData } = useContext(EconomicContext)
+  const [yearlyData, setYearlyData] = useState({})
 
   let areasEscogidas = 0
   let paneles = 0
@@ -40,12 +42,21 @@ const SummarySOMStep = () => {
       paneles += base.paneles
     }
   }
+  useEffect(() => {
+    setYearlyData({
+      consumo: TCB.consumo.totalAnual,
+      produccion: TCB.produccion.totalAnual,
+      deficit: TCB.balance.deficitAnual,
+      autoconsumo: TCB.balance.autoconsumo,
+      excedente: TCB.balance.excedenteAnual,
+      consumoDiurno: TCB.balance.consumoDiurno,
+    })
+  }, [])
 
   return (
     <>
       <Paper elevation={10} style={{ padding: 16 }}>
         <Container ref={contentRef}>
-          <Typography variant="body">{t('SUMMARY.DESCRIPTION')}</Typography>
           <Grid container rowSpacing={6}>
             <Grid item xs={12}>
               <Box
@@ -135,7 +146,6 @@ const SummarySOMStep = () => {
                   gap: '10px',
                   alignContent: 'center',
                   flexDirection: 'column',
-                  bgcolor: '#96b63388',
                 }}
               >
                 <Typography
@@ -145,12 +155,19 @@ const SummarySOMStep = () => {
                 >
                   {t('SUMMARY.TITLE_ENERGY_BALANCE').toUpperCase()}
                 </Typography>
+
                 <Typography variant="body">
                   {t('SUMMARY.DESCRIPTION_ENERGY_BALANCE')}
                 </Typography>
                 <Box sx={{ width: '60%' }}>
                   <GraphBoxAutoconsumo></GraphBoxAutoconsumo>
                 </Box>
+                {/* <SLDRInfoBox>
+                    <Grid item xs={12}>
+                    <CallSankey yearlyData={yearlyData}></CallSankey> 
+                    </Grid>
+                  </SLDRInfoBox>*/}
+
                 <Typography variant="h4" color={'green'} textAlign={'center'}>
                   {UTIL.formatoValor(
                     'porciento',

@@ -176,16 +176,7 @@ export default function ConsumoGeneracion3D() {
           textAlign: 'center',
         }}
         justifyContent="center"
-      >
-        <Tooltip
-          title={t('ENERGY_BALANCE.TOOLTIP_GRAFICO_CONSUMOGENERACION3D')}
-          placement="top"
-        >
-          <Typography sx={theme.titles.level_1} textAlign={'center'}>
-            {t('ENERGY_BALANCE.TITLE_GRAFICO_CONSUMOGENERACION3D')}
-          </Typography>
-        </Tooltip>
-      </Box>
+      ></Box>
       <Box
         sx={{
           display: 'flex',

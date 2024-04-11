@@ -26,10 +26,10 @@ export default function DialogContact({ initialData, recoverFormData, onClose })
       return errors
     }
 
-    if (!values.email) {
+    if (!values.email && values.mantenerContacto) {
       errors.email = 'Requerido'
       return errors
-    } else {
+    } else if (values.mantenerContacto) {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
       if (!emailPattern.test(values.email)) {
         errors.email = 'Formato de email incorrecto'

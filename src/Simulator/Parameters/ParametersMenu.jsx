@@ -40,8 +40,8 @@ export default function ParametersMenu() {
     <>
       <IconButton
         color={'inherit'}
-        aria-label={t('APP_FRAME.TOGGLE_COLOR_MODE')}
-        title={t('APP_FRAME.TOGGLE_COLOR_MODE')}
+        aria-label={t('PARAMETROS.DIALOG_TITLE')}
+        title={t('PARAMETROS.DIALOG_TITLE')}
         onClick={openParameters}
       >
         <SettingsIcon />

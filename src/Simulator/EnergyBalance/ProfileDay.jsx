@@ -49,7 +49,7 @@ export default function ProfileDay(props) {
     type: 'scatter',
     showlegend: true,
     name: t('GRAPHICS.LABEL_CONSUMPTION'),
-    line: { shape: 'spline', width: 3, color: 'rgb(0,0,255)' },
+    line: { shape: 'spline', width: 3, color: theme.palette.balance.consumo },
     fill: 'tozeroy',
   }
 
@@ -58,7 +58,7 @@ export default function ProfileDay(props) {
     type: 'scatter',
     showlegend: true,
     name: t('GRAPHICS.LABEL_PRODUCTION'),
-    line: { shape: 'spline', width: 3, color: 'rgb(0,255,0' },
+    line: { shape: 'spline', width: 3, color: theme.palette.balance.produccion },
     fill: 'tozeroy',
   }
 
