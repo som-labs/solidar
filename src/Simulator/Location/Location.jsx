@@ -115,8 +115,8 @@ const LocationStep = () => {
               onClick={() => help(1)}
               size="small"
               style={{
-                color: 'red',
                 fontSize: 'inherit',
+                color: theme.palette.helpIcon.main,
                 padding: 0,
                 verticalAlign: 'text-center',
                 transform: 'scale(0.8)',
@@ -136,7 +136,7 @@ const LocationStep = () => {
               onClick={() => help(3)}
               size="small"
               style={{
-                color: 'green',
+                color: theme.palette.infoIcon.main,
                 fontSize: 'inherit',
                 padding: 0,
                 verticalAlign: 'text-center',
@@ -158,7 +158,7 @@ const LocationStep = () => {
               onClick={() => help(2)}
               size="small"
               style={{
-                color: 'red',
+                color: theme.palette.helpIcon.main,
                 fontSize: 'inherit',
                 verticalAlign: 'text-center',
                 transform: 'scale(0.8)',

@@ -10,7 +10,7 @@ APP_FRAME:
   PAGE_NOT_FOUND: No se ha encontrado la pàgina
   IMPORT_EXPORT: Importa / Exporta
 HOME:
-  IS_IT_WORTH_TITLE1: Quiero ponerme placas solares
+  IS_IT_WORTH_TITLE1: Quiero ponerme paneles solares
   IS_IT_WORTH_TITLE2: ¿cómo sé si me compensa?
   IS_IT_WORTH_PARAGRAPH1: |
     Solidar es una calculadora que determina
@@ -107,7 +107,7 @@ TipoConsumo:
     <ul>
     <li><u>Curvas  de uso de energía</u> a través de un fichero con información horaria de tu uso real.<br />
     <ul>
-    <li><strong>Si tu contrato está activo en Som Energia</strong> puedes descargar el <strong>fichero CSV</strong> a través de tu <a href='https://oficinavirtual.somenergia.coop/es/'>Oficina Virtual.</a> Tienes las instrucciones en el siguiente enlace: <a href='https://es.support.somenergia.coop/article/942--las-curvas-horarias-de-uso-de-energia'>Las curvas horarias de Som Energia</a></li>
+    <li><strong>Si tu contrato está activo en Som Energia</strong> puedes descargar el <strong>fichero CSV</strong> a través de tu <a href='https://oficinavirtual.somenergia.coop/es/' target='_blank'>Oficina Virtual.</a> Tienes las instrucciones en el siguiente enlace: <a href='https://es.support.somenergia.coop/article/942--las-curvas-horarias-de-uso-de-energia' target='_blank'>Las curvas horarias de Som Energia</a></li>
     <li><strong>Empresa de distribución eléctrica:</strong> <a href='./datos/Guias publicadas/Enlaces para descarga CSV individual.htm 'target='_blank'>En este enlace </a>puedes encontrar las instrucciones para descargar el <strong>fichero CSV</strong> de las siguientes compañías de distribución eléctrica:
     <strong>
     <ul>
@@ -169,9 +169,13 @@ Instalacion:
     tipoPanel: Potencia de paneles predefinidos
     potenciaTotal: Potencia pico total instalada en la base
     potencia: Potencia en kWp del panel utilizado en los cálculos
-    tecnologia: "Se pueden elegir tres tipos de paneles para realizar las estimaciones \n- los que tienen células de silicio cristalino\n- módulos de lámina delgada de seleniuro de cobre e indio (CuInSe) o seleniuro de cobre indio y galio (CuInGaSe)\n- módulos de lámina delgada de teluro de cadmio (CdTe)\n- Desconocido\nSi se elige alguna de las tres primeras opciones en el cálculo de la producción fotovoltaica se tendrá en cuenta el efecto de la temperatura. Si se elige la otra opción (desconocido) en el cálculo se asumirán unas pérdidas de potencia debido al efecto de la temperatura del 8% (valor genérico que se considera razonable para climas templados). El efecto de la distribución espectral de la irradiancia recibida sobre la producción sólo puede calcularse para las tecnologías de silicio cristalino y de CdTe."
-    largo: A efectos del cálculo del número de paneles admisible en el área
-    ancho: A efectos del cálculo del número de paneles admisible en el área
+    tecnologia_OLD: "Se pueden elegir tres tipos de paneles para realizar las estimaciones \n- los que tienen células de silicio cristalino\n- módulos de lámina delgada de seleniuro de cobre e indio (CuInSe) o seleniuro de cobre indio y galio (CuInGaSe)\n- módulos de lámina delgada de teluro de cadmio (CdTe)\n- Desconocido<br />Si se elige alguna de las tres primeras opciones en el cálculo de la producción fotovoltaica se tendrá en cuenta el efecto de la temperatura. Si se elige la otra opción (desconocido) en el cálculo se asumirán unas pérdidas de potencia debido al efecto de la temperatura del 8% (valor genérico que se considera razonable para climas templados). El efecto de la distribución espectral de la irradiancia recibida sobre la producción sólo puede calcularse para las tecnologías de silicio cristalino y de CdTe."
+    tecnologia: |
+      Paneles de Silicio cristalino y CdTe (làmina delgada de Teluro de Cadmio): el cálculo tiene en cuenta el efecto de la temperatura y el efecto de la distribución espectral de la irradiancia recibida.<br />
+      Paneles CIS (làmina delgada de CUInSe o CuInGaSe): el cálculo tiene en cuenta el efecto de la temperatura.<br />
+      Desconocido: se asumiran unas pérdidas de potencia debido al efecto de la temperatura de 8% (valor genérico para climas templados)"
+    largo: Largo del panel en metros
+    ancho: Ancho del panel en metros
 
   DESCRIPTION:
     precioInstalacion: |
@@ -194,12 +198,12 @@ Tarifa:
       P3: Periodo valle (P3)
     3.0TD:
       P0: Compensación Excedentes
-      P1: Tarifa P1
-      P2: Tarifa P2
-      P3: Tarifa P3
-      P4: Tarifa P4
-      P5: Tarifa P5
-      P6: Tarifa P6
+      P1: P1
+      P2: P2
+      P3: P3
+      P4: P4
+      P5: P5
+      P6: P6
 
 Rendimiento:
   NAME: Rendimiento según PVGIS
@@ -316,24 +320,24 @@ Economico:
 DIALOG_PANELS:
   TITLE: Características de los paneles solares
   DESCRIPTION: Puedes escoger entre diferentes paneles estándar con tecnología de silicio cristalino (los más habituales en el mercado).
-  OTHERS: Sin embargo, si por algún motivo deseas utilizar un panel que no esta en la lista, puedes definir sus caracteristicas en los siguientes campos.
+  OTHERS: Sin embargo, si deseas utilizar un panel que no esta en la lista, puedes definir sus caracteristicas en los siguientes campos.
 
 LOCATION:
   LABEL: Localización
   TITLE: Localización
   DESCRIPTION: |
-    En este apartado evaluamos la cubierta de tu edificio y las posibilidades que tiene para instalar paneles solares.<br />
-    A partir del área disponible se calcula el número de paneles solares máximo que se podrán instalar en tu cubierta.<br />
-    Su rendimiento se calculará a partir de la inclinación de la/s área/s y su orientación hacia el sur (acimut).<br />
+    ¿Es rentable instalar paneles/placas solares en la cubierta de tu edificio? Aquí descubrirás si es provechoso colocar paneles fotovoltaicos. <br />
+    A partir de la superficie disponible se prevé el número de paneles solares máximo que se podrán instalar en tu cubierta.<br />
+    Su rendimiento se calculará a partir de la inclinación del área/superficie y su orientación hacia el sur.<br />
 
-  DESCRIPTION_ADDRESS: <strong>PASO 1.</strong> Indica tu dirección a través del localizador o bien navega por el mapa para identificarla.
+  DESCRIPTION_ADDRESS: <strong>PASO 1.</strong> Apunta tu dirección en el localizador o navega por el mapa para encontrarla.
   PROMPT_ADDRESS: Buscar lugar o dirección
   PROMPT_CANDIDATE: Seleccione la dirección que corresponda de la lista
   TOOLTIP_ADDRESS: A medida que escribas tendrás candidatos para seleccionar
 
   PROMPT_DISPONIBLE: <strong>PASO 2.</strong> Dibuja en el mapa las áreas disponibles del edificio. En caso de alternativas, puedes dibujar tantas áreas como quieras. El sistema distribuirá los paneles de la forma mas eficiente.
   PROMPT_SOMBRAS: Es <strong>IMPORTANTE</strong> tener en cuenta que Solidar <strong>no incorpora el estudio de posibles sombras</strong> que puedan afectar al rendimiento de la instalación propuesta.
-  PROMPT_DRAW: Si tu cubierta es inclinada, <strong>los dos primeros puntos que marques serán considerados la parte alta del tejado.</strong>
+  PROMPT_DRAW: Si tu cubierta es inclinada, <strong>los dos primeros puntos que marques serán considerados la parte mas elevada del tejado.</strong>
   PROMPT_INICIO_CUMBRERA: Dibujaremos cumbrera
   PROMPT_CUMBRERA: Dibujando cumbrera
   PROMPT_ANCHO: Dibujando ancho
@@ -371,11 +375,11 @@ LOCATION:
   HELP:
     TITLE_1: ¿Cuáles son mis áreas disponibles?
     CUALES: |
-      Las áreas disponibles son aquellas en las que se pueden instalar placas solares. Hay que descontar del área disponible las chimeneas, antenas, salidas de humo o cualquier otro elemento que ocupe espacio en la cubierta.
+      Las áreas disponibles son aquellas en las que se pueden instalar paneles solares. Hay que descontar de la superficie disponible las chimeneas, antenas, salidas de humo o cualquier otro elemento que ocupe espacio en la cubierta.
     CUALES_1: 1. Área total de cubierta
     CUALES_2: 2. Áreas disponibles
     TITLE_2: ¿Mas de una orientación o inclinación?
-    DOS_AGUAS: Si tienes un tejado a dos o más aguas, deberás seleccionar cada parte del tejado como diferentes áreas. Tanto la inclinación como la posición respecto al sur puede ser distinta en cada area.
+    DOS_AGUAS: Si tienes mas de un tejado, deberás seleccionar cada parte del tejado como diferentes áreas. La inclinación puede ser distinta en cada parcela/superficie, como también su posición respecto al sur.
     TITLE_3: ¿Como afectan las sombras?
     SOMBRAS_1: |
       Las sombras pueden afectar de manera significativa a la zona donde se instalarán los paneles, afectando al rendimiento de la instalación. Puedes ver los efectos en el siguiente video capturado con la aplicación Shadowmap.
@@ -383,10 +387,10 @@ LOCATION:
       Las siguientes herramientas pueden ayudarte a evaluar su impacto.
       <ul>
       <li>
-      <a href='https://app.shadowmap.org/?lat={{lat}}&lng={{lon}}&zoom=16.31&azimuth=-0.07499&basemap=map&elevation=nextzen&f=29.0&polar=0.52360&vq=2 'target='_blank'>ShadowMap</a> para una visión 3D del territorio.
+      <a href='https://app.shadowmap.org/?lat={{lat}}&lng={{lon}}&zoom=16.31&azimuth=-0.07499&basemap=map&elevation=nextzen&f=29.0&polar=0.52360&vq=2' target='_blank'>ShadowMap</a> para una visión 3D del territorio.
       </li>
       <li>
-      <a href='http://shadowcalculator.eu/#/lat/{{lat}}/lng/{{lon}} 'target='_blank'>Shadow calculator</a> te permitirá dibujar formas y ver su proyección a distinats horas del dia y epoca del año.
+      <a href='http://shadowcalculator.eu/#/lat/{{lat}}/lng/{{lon}}' target='_blank'>Shadow calculator</a> te permitirá dibujar formas y ver su proyección a distinats horas del dia y epoca del año.
       </li>
       </ul>
 
@@ -413,7 +417,9 @@ CONSUMPTION:
   TITLE: Consumo
   TIPO_CONSUMO_DESCRIPTION: |
     <strong>PASO 4.</strong> A continuación necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.<br />
-    El documento de consumo CSV nos permitirá conocer tus hábitos de consumo saber en qué tramos horarios y en qué meses del año sueles consumir más energía.<br />
+    El documento de curvas horarias ( en formato .csv) nos permitirá conocer tus hábitos de uso eléctrico, saber en qué tramos horarios y en qué meses del año sueles consumir más energía.<br /> 
+    También puedes indicar el uso de energía anual que aparece en tu factura para hacer una estimación en base a un perfil estándar.
+    <br />
   TARIFA_DESCRIPTION_1: |
     Necesitamos conocer tu tarifa, los precios por tramos horarios de cada período y el precio de la compensación de excedentes de tu comercializadora si es otra diferente a Som Energia.
   TARIFA_DESCRIPTION_2: |
@@ -531,6 +537,12 @@ ENERGY_BALANCE:
     Producción versus consumo mensual <br />
     para {{potencia}} instalada
   TITLE_GRAPH_MONTH_THREE_PARTS: Autoconsumo, consumo de la red y excedentes
+  TITLE_GRAPH_MONTH_FIVE_PARTS: Balance energético mensual
+  DESCRIPTION_GRAPH_MONTH_FIVE_PARTS: |
+    La autoproducción es mayor en verano (más horas de luz) que en invierno.<br />
+    El uso eléctrico varía según los meses y la zona geográfica: en el norte de España el uso eléctrico más alto se produce en los meses de invierno mientras que en el sur los picos de uso eléctrico se producen en verano. En general los meses de primavera y otoño son los más estables en toda España.<br />
+    En el siguiente gráfico se ve la comparación entre tu uso eléctrico y tu autoproducción mes a mes.
+
   NOTE_DISCLAIMER_PRODUCCION: |
     Los datos para la estimación de la producción de los paneles solares se obtienen de PVGIS.
     <a href='https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en' target='_blank'>Ver documentación detallada aqui</a><br />Aqui un resumen.
@@ -544,7 +556,7 @@ ENERGY_BALANCE:
   TITLE_GRAPH_AUTOPRODUCIDA: Energia autoproducida
   TITLE_ENVIRONMENTAL_IMPACT: Impacto medioambiental
   DESCRIPTION_ENVIRONMENTAL_IMPACT: |
-    Las placas solares, al generar energia limpia, reducen la utilización de energías fosiles y de esta forma también reducen las emisiones de dióxido de carbono (CO2) causantes del efecto invernadero y calentamiento global. Contribuyen de esta forma al cuidado del ambiente.
+    Los paneles solares, al generar energia limpia, reducen la utilización de energías fosiles y de esta forma también reducen las emisiones de dióxido de carbono (CO2) causantes del efecto invernadero y calentamiento global. Contribuyen de esta forma al cuidado del ambiente.
   LABEL_fuenteInfoCO2: Datos de conversion para {{territorio}}
   TITLE_graficoCO2: Ahorro de CO2 anual
   LABEL_CO2AnualRenovable: Si la electricidad contratada proviene de <br /><strong>fuentes renovables</strong>
@@ -565,14 +577,14 @@ ECONOMIC_BALANCE:
 
   DESCRIPTION_Consumo%Produccion: Para poder optar a la subvención de los Fondos Next Generation el porcentaje del consumo respecto a la producción ha de ser siempre superior al 80%. En esta configuración este valor es de {{Consumo_Produccion}}
   TITLE_INSTALLATION_COST: Precio de la instalación
-  DESCRIPTION_INSTALLATION_COST: Este es un importe orientativo sin IVA que no tiene en cuenta todos los gastos que puedan aparecer.
+  DESCRIPTION_INSTALLATION_COST: Este es un importe orientativo, que puede variar dependiendo del precio del mercado. Además, no tiene en cuenta tasas y/o gastos adicionales que puedan aparecer.
 
   ADVICE_INSTALLATION_COST: |
     A pesar de procurar mantener los precios actualizados debe considerarse este importe como una orientación provisional sobre el proyecto que un instalador pueda formular.
   PROMPT_INSTALLATION_COST: Si tienes una oferta diferente, puedes cambiar el valor del importe en el sigiente campo.
   ADVICE_PRICE_TITLE: Tener en consideración
   ADVICE_PRICE_DESCRIPTION: |
-    Aquí no están repercutidos algunos gastos como obra civil (si fuera necesaria) sustitución de aislante o tejas viejas en la cubierta medios de elevación si fueran necesarios modificaciones que la distribuidora o la Administración pudieran exigir a la instalación y algunos impuestos y tasas que el ayuntamiento pudiera cobrar (ICIO o licencia de obras).
+    En el precio no está incluido el coste de las tasas administrativas necesarias (ICIO, licencia de obras y legalización de la instalación), así como gastos adicionales que puedan surgir como medios de elevación, actuaciones de adecuación de la vivienda (reparaciones de la cubierta, de la instalación eléctrica, etc) u otras intervenciones que la empresa de distribución eléctrica pueda exigir.
   TITLE_AMORTIZATION_TIME: Tiempo de amortización
   DESCRIPTION_AMORTIZATION_TIME: |
     Este es el número de años que tardarás en recuperar la inversión realizada
@@ -591,7 +603,7 @@ ECONOMIC_BALANCE:
     En el siguiente gráfico se compara el coste anual en electricidad con paneles y sin paneles, teniendo en cuenta todos los mecanismos de ahorro: uso de energía autoproducida, compensación simplificada de excedentes y descuentos por los excedentes no compensados.
 
   TITLE_MONTH_SAVINGS: Ahorro mensual en la factura
-  GRAPH_TITLE_MONTH_SAVINGS: Gasto de electricidad comparado con placas y sin placas por meses
+  GRAPH_TITLE_MONTH_SAVINGS: Gasto de electricidad comparado con paneles y sin paneles por meses
   TITLE_FINANCE_SUMMARY: Balance económico completo
   LABEL_ANO: Año
   TOOLTIP_ANO: Periodo de amortización
@@ -712,14 +724,14 @@ CONTACTO:
   DIALOG_DESCRIPTION: Envianos tus comentarios. Intentaremos atenderte lo antes posible
   PROP:
     nombre: Nombre
-    email: email
-    telefono: Teléfono
+    email: email (opcional)
+    telefono: Teléfono (opcional)
     tipoPropuesta: ¿Qué nos dices?
     comentario: Haces un comentario
     mejora: Propones una mejora
     error: Reportas un error
     advertencia: Los datos que nos aportes en este formulario serán utilizados única y exclusivamente para contestar a tu solicitud y no serán almacenados en ningún fichero ni utlizados para ningún otro fin
-    respuesta: Marca aquí si estás de acuerdo en recibir respuestas
+    respuesta: Marca si quieres recibir respuestas (email requerido)
     mensaje: Mensaje
 
   TOOLTIP:
@@ -912,7 +924,7 @@ REPORT:
   AUTOGENERACIO_LINK: Información general sobre autoproducción
   AUTOGENERACIO_LINK_PRIMER: ¿Qué es la autoproducción?
   AUTOGENERACIO_LINK_SEGON: ¿Cómo funciona la compensación simplificada de excedentes?
-  AUTOGENERACIO_LINK_TERCER: ¿Qué pasa si me cae el suministroeléctrico y tengo placas solares?
+  AUTOGENERACIO_LINK_TERCER: ¿Qué pasa si me cae el suministro eléctrico y tengo paneles solares?
   AUTOGENERACIO_LINK_CUART: Más artículos sobre la autoproducción
   INFORME_TITLE: ¿Cómo se han generado los cálculos de este informe?
   GENERACIO_TITLE: Datos de Generación

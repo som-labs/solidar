@@ -39,7 +39,7 @@ export default function AmortizationTime() {
             }}
           /> */}
           <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <Typography variant="h4" color={'green'} textAlign={'center'}>
+            <Typography variant="h4" color={'#4D4D4D'} textAlign={'center'}>
               {ecoData.periodoAmortizacion + ' ' + t('BASIC.LABEL_AÑOS')}
             </Typography>
             <Typography variant="body" textAlign={'center'}>

@@ -1,10 +1,10 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
 import { Typography, Grid, Tooltip } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid'
+import { DataGrid, GridActionsCellItem, GridCellEditStopReasons } from '@mui/x-data-grid'
 import InfoIcon from '@mui/icons-material/Info'
 import clsx from 'clsx'
 
@@ -27,6 +27,27 @@ export default function InstallationSummary() {
   const [openDialog, closeDialog] = useDialog()
   const { SLDRAlert } = useContext(AlertContext)
   const { bases, setBases, updateTCBBasesToState } = useContext(BasesContext)
+  const [updatedCells, setUpdatedCells] = useState({})
+
+  const handleEditCellChange = (params, event) => {
+    console.log('CHANGE', params, event)
+    const { id, field, value } = params
+    setUpdatedCells({ ...updatedCells, [id]: { ...updatedCells[id], [field]: value } })
+  }
+
+  const handleCellBlur = (params, event) => {
+    console.log('BLUR', params, event)
+    const { id, field } = params
+    // Revert cell value to original if changes were not saved
+    if (updatedCells[id]?.[field] !== undefined) {
+      // Retrieve original value and update the cell
+      const originalValue = bases.find((row) => row.id === id)?.[field]
+      setUpdatedCells({
+        ...updatedCells,
+        [id]: { ...updatedCells[id], [field]: originalValue },
+      })
+    }
+  }
 
   const getRowId = (row) => {
     return row.idBaseSolar
@@ -118,7 +139,7 @@ export default function InstallationSummary() {
           key={1}
           icon={
             <Tooltip title={t('RESULTS.TOOLTIP_botonInfoBase')}>
-              <InfoIcon />
+              <InfoIcon sx={{ color: theme.palette.infoIcon.main }} />
             </Tooltip>
           }
           label="Info"
@@ -169,8 +190,11 @@ export default function InstallationSummary() {
    */
 
   function nuevaInstalacion(params, event) {
-    console.log(params, event)
     let tmpPaneles = params.row.paneles
+    if (params.reason === GridCellEditStopReasons.cellFocusOut) {
+      event.defaultMuiPrevented = true
+      return
+    }
     if (params.field === 'paneles') {
       if (UTIL.ValidateEntero(event.target.value)) {
         tmpPaneles = parseInt(event.target.value)
@@ -233,16 +257,17 @@ export default function InstallationSummary() {
         // })
         // setBases(updateBases)
       } else {
-        SLDRAlert(
-          'VALIDACION',
-          'El número de paneles debe ser mayor o igual a cero e idealmente menor que los ' +
-            params.row.panelesMaximo +
-            ' paneles que estimamos se pueden instalar en el area definida',
-          'error',
-        )
+        // SLDRAlert(
+        //   'VALIDACION',
+        //   'El número de paneles debe ser mayor o igual a cero e idealmente menor que los ' +
+        //     params.row.panelesMaximo +
+        //     ' paneles que estimamos se pueden instalar en el area definida',
+        //   'error',
+        // )
       }
     }
   }
+
   return (
     <Grid
       container
@@ -275,9 +300,9 @@ export default function InstallationSummary() {
           rowHeight={30}
           autoHeight
           disableColumnMenu
-          onCellEditStop={(params, event) => {
-            nuevaInstalacion(params, event)
-          }}
+          editMode="cell"
+          onCellKeyDown={(params, event) => handleEditCellChange(params, event)}
+          onCellEditStop={(params, event) => nuevaInstalacion(params, event)}
           slots={{ footer: footerSummary }}
         />
       </Grid>

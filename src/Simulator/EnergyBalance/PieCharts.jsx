@@ -38,6 +38,7 @@ export default function PieCharts(props) {
         colors: [theme.palette.balance.deficit, theme.palette.balance.autoconsumo],
       },
       type: 'pie',
+      hole: 0.5,
       textinfo: 'percent+label',
       insidetextorientation: 'horizontal',
       textposition: 'outside',
@@ -54,6 +55,7 @@ export default function PieCharts(props) {
         colors: [theme.palette.balance.excedente, theme.palette.balance.autoconsumo],
       },
       type: 'pie',
+      hole: 0.5,
       textinfo: 'percent+label',
       insidetextorientation: 'horizontal',
       textposition: 'outside',
@@ -108,9 +110,6 @@ export default function PieCharts(props) {
 
   return (
     <Container>
-      {/* <Typography variant="h5" textAlign={'center'} sx={{ mt: '1rem' }}>
-        {t('ENERGY_BALANCE.TITLE_GRAPH_ENERGY_DEMAND')}
-      </Typography> */}
       <div ref={graphElement}>
         <Plot data={data1} layout={layout} config={config} />
       </div>

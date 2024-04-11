@@ -215,11 +215,11 @@ export default function ConsumptionSummary() {
 
   // showGraphsTC recibe una fila del datagrid y activa el objeto TipoConsumo de TCB que correponde
   function showGraphsTC(tc) {
-    setActivo(
-      TCB.TipoConsumo.find((t) => {
-        return t.idTipoConsumo === tc.idTipoConsumo
-      }),
-    )
+    let newActivo = TCB.TipoConsumo.find((t) => {
+      return t.idTipoConsumo === tc.idTipoConsumo
+    })
+    console.log('CAMBIANDO ACTIVO', newActivo)
+    setActivo(newActivo)
   }
 
   function deleteTipoConsumo(ev, tc) {

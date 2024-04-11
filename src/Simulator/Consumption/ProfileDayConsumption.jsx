@@ -82,7 +82,7 @@ export default function ProfileDayConsumption(props) {
       l: 50,
       r: 10,
       b: 65,
-      t: 20,
+      t: 25,
     },
     xaxis: {
       title: t('GRAPHICS.LABEL_HORA'),
@@ -94,6 +94,8 @@ export default function ProfileDayConsumption(props) {
       title: 'kWh',
       showticklabels: true,
       showgrid: true,
+      gridwidth: 1,
+      gridcolor: theme.palette.text.primary,
       showline: true,
       linecolor: 'primary.light',
       tickfont_color: 'primary.light',
@@ -104,7 +106,7 @@ export default function ProfileDayConsumption(props) {
     },
     annotations: [
       {
-        x: 0,
+        x: 10,
         y: consumo.maximoAnual,
         xref: 'x',
         yref: 'y',
@@ -115,7 +117,7 @@ export default function ProfileDayConsumption(props) {
         },
         xanchor: 'left',
         textangle: 0,
-        ax: 2,
+        ax: 20,
         ay: -15,
       },
     ],
