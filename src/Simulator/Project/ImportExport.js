@@ -224,7 +224,7 @@ async function importProject(fichero) {
   const datosImportar = await obtenerDatos(fichero)
 
   // Check solimp version to check if compatible
-  if (datosImportar.version !== '4') {
+  if (datosImportar.version[0] !== '4') {
     return { status: false, error: 'MSG_problemaVersion' }
   }
 
@@ -242,6 +242,13 @@ async function importProject(fichero) {
   TCB.areaTotal = datosImportar.areaTotal
   TCB.conversionCO2 = datosImportar.conversionCO2
 
+  // Import IBI and subvenciones
+  TCB.tiempoSubvencionIBI = datosImportar.tiempoSubvencionIBI
+  TCB.valorSubvencionIBI = datosImportar.valorSubvencionIBI
+  TCB.porcientoSubvencionIBI = datosImportar.porcientoSubvencionIBI
+  TCB.valorSubvencion = datosImportar.valorSubvencion
+  TCB.porcientoSubvencion = datosImportar.porcientoSubvencion
+
   // Import Tarifa
   TCB.nombreTarifaActiva = datosImportar.nombreTarifaActiva
   TCB.tipoTarifa = datosImportar.tipoTarifa
@@ -252,6 +259,11 @@ async function importProject(fichero) {
     TCB.parametros[param] = datosImportar.parametros[param]
   }
   TCB.tipoPanelActivo = datosImportar.tipoPanelActivo
+  if (datosImportar.version !== '4.1') {
+    TCB.tipoPanelActivo.potencia = datosImportar.tipoPanelActivo.potencia * 1000
+  } else {
+    TCB.tipoPanelActivo.potencia = datosImportar.tipoPanelActivo.potencia
+  }
 
   importLocalizacion(datosImportar)
   importTipoConsumo(datosImportar)

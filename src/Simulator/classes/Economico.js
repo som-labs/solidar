@@ -7,7 +7,7 @@ import Instalacion from './Instalacion'
  */
 
 //Numero maximo de años esperando cashflow positivo
-const maxNumberCashFlow = 20
+const maxNumberCashFlow = 50
 
 class Economico {
   constructor() {
@@ -101,7 +101,6 @@ class Economico {
             coefImpuesto
 
           // Store energia consumed by fee period
-
           TCB.consumo.periodo[idxPeriodo - 1] += TCB.consumo.diaHora[dia][hora]
           if (idxPeriodo > 6) console.log(dia, hora)
           // Determinamos el precio de esa hora (la tarifa) segun sea el balance es decir teniendo en cuanta los paneles. Si es negativo compensa
@@ -147,6 +146,7 @@ class Economico {
     this.precioInstalacionCorregido = this.precioInstalacion
 
     //Se debe corregir que si la comercializadora limita economicamente la compensacion al consumo o compensar mediante bateria virtual
+
     this.correccionExcedentes(TCB.coefHucha, TCB.cuotaHucha)
     this.calculoFinanciero(100, 100)
   }
@@ -219,7 +219,7 @@ class Economico {
   /**
    * Cálcula el resultado financiero del proyecto de instalación de los paneles
    * Tiene en cuenta las posibles bonificaciones de IBI
-   * Tiene en cuenta las posibles subvenciones de la UE
+   * Tiene en cuenta las posibles subvenciones de la UE o no
    * Cálcula la tabla de amortización de la inversion con un mínimo de 10 años o hasta el año siguiente al que se acaba la bonificación del IBI
    * @param {number} coefEnergia Porcentaje de la inversión total que correponde a la Finca
    * @param {number} coefInversion Porcentaje del la producción total de energia que corresponde a la Finca
@@ -309,10 +309,10 @@ class Economico {
     this.cashFlow.push(unFlow)
 
     // Se genera la tabla hasta alcanzar el retorno de la inversión o la finalización de la subvención de IBI
-    while (unFlow.ano < 10 || unFlow.pendiente < 0) {
+    while (unFlow.ano < maxNumberCashFlow) {
       //Puede ser que la cuota de la hucha haga que el ahorro sea negativo. En ese caso mostramos los resultados de 10 años
       if (unFlow.ano > 10 && unFlow.ahorro < 0) break
-      if (unFlow.ano > maxNumberCashFlow) break
+      if (unFlow.ano > parseInt(tiempoSubvencionIBI) + 1 && unFlow.pendiente > 0) break
 
       let lastPendiente = unFlow.pendiente
       unFlow = {}
@@ -357,11 +357,11 @@ class Economico {
       }
     } else {
       this.periodoAmortizacion = -maxNumberCashFlow
-      // alert(
-      //   'Probable número excesivo de paneles -> mucha inversión -> retorno > ' +
-      //     maxNumberCashFlow +
-      //     ' años',
-      // )
+      alert(
+        'Probable número excesivo de paneles en la simulación -> retorno > ' +
+          maxNumberCashFlow +
+          ' años',
+      )
     }
 
     if (coefInversion === 100) {

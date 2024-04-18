@@ -54,7 +54,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
   const validate = (values) => {
     const errors = {}
     if (!values.nombreTipoConsumo) {
-      errors.nombreTipoConsumo = 'Requerido'
+      errors.nombreTipoConsumo = t('BASIC.LABEL_REQUIRED')
       return errors
     } else {
       previous.forEach((tc) => {
@@ -62,15 +62,19 @@ export default function DialogConsumption({ data, previous, onClose }) {
           tc.nombreTipoConsumo === values.nombreTipoConsumo &&
           tc.idTipoConsumo != values.idTipoConsumo
         ) {
-          errors.nombreTipoConsumo = 'El nombre debe ser único'
+          errors.nombreTipoConsumo = t('CONSUMPTION.ERROR_NOMBRE_TIPO_CONSUMO_DUPLICADO')
           return errors
         }
       })
     }
 
+    if (values.fuente === '') {
+      errors.fuente = t('BASIC.LABEL_REQUIRED')
+    }
+
     if (values.fuente === 'REE') {
       if (values.consumoAnualREE === '' || values.consumoAnualREE === 0) {
-        errors.consumoAnualREE = 'Requerido'
+        errors.consumoAnualREE = t('BASIC.LABEL_REQUIRED')
       } else {
         if (!UTIL.ValidateEntero(values.consumoAnualREE) || values.consumoAnualREE < 0) {
           errors.consumoAnualREE = t('CONSUMPTION.ERROR_DEFINIR_CONSUMO_REE')
@@ -126,7 +130,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
                     select
                     value={values.fuente}
                     name="fuente"
-                    defaultValue="CSV"
+                    //defaultValue="CSV"
                     object="TipoConsumo"
                     onChange={(event) => handleFuente(event, values, setValues)}
                   >
@@ -147,7 +151,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
                   flexDirection: 'column',
                 }}
               >
-                {values.fuente !== 'REE' ? (
+                {values.fuente !== 'REE' && values.fuente !== '' && (
                   <>
                     <Field name="ficheroCSV">
                       {({ field }) => (
@@ -173,27 +177,30 @@ export default function DialogConsumption({ data, previous, onClose }) {
                       {(msg) => <div style={{ color: 'red' }}>{msg}</div>}
                     </ErrorMessage>
                   </>
-                ) : (
-                  <FormControl>
-                    <Grid
-                      container
-                      spacing={1}
-                      alignItems={'center'}
-                      justifyContent={'center'}
-                    >
-                      <Grid item>
-                        <FormLabel>{t('TipoConsumo.PROP.consumoAnualREE')}</FormLabel>
+                )}
+                {values.fuente === 'REE' && (
+                  <>
+                    <FormControl>
+                      <Grid
+                        container
+                        spacing={1}
+                        alignItems={'center'}
+                        justifyContent={'center'}
+                      >
+                        <Grid item>
+                          <FormLabel>{t('TipoConsumo.PROP.consumoAnualREE')}</FormLabel>
+                        </Grid>
+                        <Grid item>
+                          <SLDRInputField
+                            type="text"
+                            object="TipoConsumo"
+                            unit="kWh"
+                            name="consumoAnualREE"
+                          />
+                        </Grid>
                       </Grid>
-                      <Grid item>
-                        <SLDRInputField
-                          type="text"
-                          object="TipoConsumo"
-                          unit="kWh"
-                          name="consumoAnualREE"
-                        />
-                      </Grid>
-                    </Grid>
-                  </FormControl>
+                    </FormControl>
+                  </>
                 )}
               </Box>
             </Box>

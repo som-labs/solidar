@@ -20,7 +20,7 @@ export default function MonthSaving() {
   const { t } = useTranslation()
   const theme = useTheme()
 
-  const { ecoData, coefHucha } = useContext(EconomicContext)
+  const { ecoData } = useContext(EconomicContext)
   const graphElement = useRef()
   const graphWidth = useRef()
 
@@ -137,8 +137,7 @@ export default function MonthSaving() {
       }
 
       let data
-      if (coefHucha > 0) {
-        // this.opcion = 'ConHucha'
+      if (TCB.coefHucha > 0) {
         var trace_huchaSaldo = {
           x: mesMapa,
           y: ecoData.huchaSaldo,

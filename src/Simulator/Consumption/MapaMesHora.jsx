@@ -35,7 +35,6 @@ export default function MapaMesHora({ activo }) {
     }
     // Call the function to get the width after initial render
     getWidth()
-    console.log('EFFECT', graphWidth.current)
 
     if (activo === isEmpty) return
     const consumo = activo
@@ -238,7 +237,6 @@ export default function MapaMesHora({ activo }) {
     }
     setLayout(_layout)
 
-    console.log('LAYOUT', layout)
     const _config = {
       // Disable selection to prevent click events from being sent
       // This prevents the selection of data points on click
@@ -255,7 +253,7 @@ export default function MapaMesHora({ activo }) {
       })
     }
     setTitle(_title)
-  }, [])
+  }, [activo])
 
   return (
     <Container ref={graphElement}>

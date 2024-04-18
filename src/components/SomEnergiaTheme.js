@@ -36,7 +36,6 @@ export default function SomEnergiaTheme(isDarkMode) {
           main: '#AFBE3F',
         },
 
-        //PENDIENTE: decidir colores de infobox
         infoBox: {
           // main: isDarkMode ? '#F8F8FF' : '#FFF0F5',
           bgcolor: isDarkMode ? '#333333' : '#F8F8F8',

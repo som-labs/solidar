@@ -2,6 +2,11 @@ import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Button from '@mui/material/Button'
+
+//Solidar assets
+import houseImage from '../assets/house.png'
+import apartmentImage from '../assets/apartment.png'
+
 import HouseIcon from '@mui/icons-material/House'
 import ApartmentIcon from '@mui/icons-material/Apartment'
 import AppFrame from '../components/AppFrame'
@@ -12,6 +17,7 @@ import { Header, BrochureP as P } from '../components/StyledHtml'
 
 export default function Page() {
   const { t } = useTranslation()
+
   return (
     <AppFrame>
       <Container>
@@ -83,12 +89,14 @@ export default function Page() {
           >
             <ToolSelector
               icon={HouseIcon}
+              image={houseImage}
               route="/simulator"
               title={t('HOME.SIMULATION_TOOLS_INDIVIDUAL')}
               subtitle={t('HOME.SIMULATION_TOOLS_INDIVIDUAL_DESCRIPTION')}
-            />
+            ></ToolSelector>
             <ToolSelector
               icon={ApartmentIcon}
+              image={apartmentImage}
               title={t('HOME.SIMULATION_TOOLS_COLLECTIVE')}
               subtitle={t('HOME.SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION')}
             />

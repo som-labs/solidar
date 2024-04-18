@@ -17,31 +17,44 @@ import { EconomicContext } from '../EconomicContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'
+import * as UTIL from '../classes/Utiles'
 
 export default function VirtualBattery() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const theme = useTheme()
+  const [error, setError] = useState({ status: false, field: '' })
 
-  const { cuotaHucha, setCuotaHucha, coefHucha, setCoefHucha, setEcoData } =
-    useContext(EconomicContext)
+  const { ecoData, setEcoData } = useContext(EconomicContext)
 
-  const [cuota, setCuota] = useState(cuotaHucha)
-  const [coef, setCoef] = useState(coefHucha)
+  const [cuota, setCuota] = useState(TCB.cuotaHucha)
+  const [coef, setCoef] = useState(TCB.coefHucha)
 
-  const changeCuotaHucha = () => {
-    TCB.cuotaHucha = parseFloat(cuota)
-    setCuotaHucha(cuota)
-    TCB.economico.correccionExcedentes(coef, cuota)
-    TCB.economico.calculoFinanciero(100, 100)
-    setEcoData(TCB.economico)
+  const changeFlux = (event) => {
+    const { name, value } = event.target
+    if (!UTIL.ValidateDecimal(i18n.language, value)) {
+      setError({ status: true, field: name })
+    } else {
+      setError({ status: false, field: '' })
+      if (name === 'cuotaHucha') {
+        setCuota(value !== '' ? parseInt(value) : 0)
+      } else {
+        setCoef(value !== '' ? parseInt(value) : 0)
+      }
+    }
   }
 
-  const changeCoefHucha = () => {
-    TCB.coefHucha = parseFloat(coef)
-    setCoefHucha(coef)
-    TCB.economico.correccionExcedentes(coef, cuota)
-    TCB.economico.calculoFinanciero(100, 100)
-    setEcoData(TCB.economico)
+  const setFlux = (event) => {
+    const { name, value } = event.target
+    if (!UTIL.ValidateDecimal(i18n.language, value)) {
+      setError({ status: true, field: name })
+    } else {
+      setError({ status: false, field: '' })
+      TCB.cuotaHucha = cuota
+      TCB.coefHucha = coef
+      TCB.economico.correccionExcedentes(coef, cuota)
+      TCB.economico.calculoFinanciero(100, 100)
+      setEcoData({ ...ecoData, ...TCB.economico })
+    }
   }
 
   return (
@@ -71,10 +84,8 @@ export default function VirtualBattery() {
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <TextField
               type="text"
-              onBlur={changeCoefHucha}
-              onChange={(event) => {
-                setCoef(event.target.value)
-              }}
+              onBlur={setFlux}
+              onChange={changeFlux}
               label={t('ECONOMIC_BALANCE.LABEL_RECOGNITION_VIRTUAL_BATTERY')}
               name="coefHucha"
               InputProps={{
@@ -84,16 +95,20 @@ export default function VirtualBattery() {
                 },
               }}
               value={coef}
+              error={error.status && error.field === 'coefHucha'}
+              helperText={
+                error.status && error.field === 'coefHucha'
+                  ? 'Pon un número válido mayor que cero'
+                  : ''
+              }
             />
           </FormControl>
 
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <TextField
               type="text"
-              onBlur={changeCuotaHucha}
-              onChange={(event) => {
-                setCuota(event.target.value)
-              }}
+              onBlur={setFlux}
+              onChange={changeFlux}
               label={t('ECONOMIC_BALANCE.LABEL_FEE_VIRTUAL_BATTERY')}
               name="cuotaHucha"
               InputProps={{
@@ -103,6 +118,12 @@ export default function VirtualBattery() {
                 },
               }}
               value={cuota}
+              error={error.status && error.field === 'cuotaHucha'}
+              helperText={
+                error.status && error.field === 'cuotaHucha'
+                  ? 'Pon un número válido mayor que cero'
+                  : ''
+              }
             />
           </FormControl>
         </Box>

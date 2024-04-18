@@ -58,8 +58,6 @@ async function InicializaAplicacion() {
     const paneles = await fetch(ficheroTipoPaneles)
     if (paneles.status === 200) {
       TCB.tipoPaneles = await paneles.json()
-      //TCB.tipoPanelDefault entry used as default
-      TCB.tipoPanelActivo = TCB.tipoPaneles[TCB.tipoPanelDefault]
     }
   } catch (err) {
     UTIL.debugLog(

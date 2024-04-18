@@ -12,7 +12,7 @@ import { Typography, MenuItem, TextField, Container, Box } from '@mui/material'
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
 
-export default function HourlyEnergyBalance() {
+export default function HourlyEnergyBalance(props) {
   const { t } = useTranslation()
   const theme = useTheme()
   const graphElement = useRef()
@@ -21,7 +21,7 @@ export default function HourlyEnergyBalance() {
   const [traces, setTraces] = useState([])
   const [config, setConfig] = useState()
   const [mes, setMes] = useState(t('ENERGY_BALANCE.VALUE_FULL_YEAR'))
-
+  const { report } = props
   const maxHour = useRef()
   const minHour = useRef()
 
@@ -174,27 +174,31 @@ export default function HourlyEnergyBalance() {
 
   return (
     <Container>
-      <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-        <Typography sx={theme.titles.level_2} textAlign={'center'}>
-          {t('ENERGY_BALANCE.TITLE_HOURLY_PERIODO')}
-        </Typography>
-        <TextField
-          sx={{ width: 200, height: 50, mt: '1rem', mb: '1rem', ml: '1rem' }}
-          select
-          value={mes}
-          defaultValue={t('ENERGY_BALANCE.VALUE_FULL_YEAR')}
-          onChange={(event) => changeMes(event.target.value)}
-        >
-          <MenuItem key={-1} value={t('ENERGY_BALANCE.VALUE_FULL_YEAR')}>
-            {t('ENERGY_BALANCE.VALUE_FULL_YEAR')}
-          </MenuItem>
-          {UTIL.nombreMes.map((nombreMes, index) => (
-            <MenuItem key={index} value={index}>
-              {t(nombreMes)}
+      {!report ? (
+        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <Typography sx={theme.titles.level_2} textAlign={'center'}>
+            {t('ENERGY_BALANCE.TITLE_HOURLY_PERIODO')}
+          </Typography>
+          <TextField
+            sx={{ width: 200, height: 50, mt: '1rem', mb: '1rem', ml: '1rem' }}
+            select
+            value={mes}
+            defaultValue={t('ENERGY_BALANCE.VALUE_FULL_YEAR')}
+            onChange={(event) => changeMes(event.target.value)}
+          >
+            <MenuItem key={-1} value={t('ENERGY_BALANCE.VALUE_FULL_YEAR')}>
+              {t('ENERGY_BALANCE.VALUE_FULL_YEAR')}
             </MenuItem>
-          ))}
-        </TextField>
-      </Box>
+            {UTIL.nombreMes.map((nombreMes, index) => (
+              <MenuItem key={index} value={index}>
+                {t(nombreMes)}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Box>
+      ) : (
+        t('ENERGY_BALANCE.VALUE_FULL_YEAR')
+      )}
       <Box ref={graphElement}>
         <Plot data={traces} layout={layout} config={config} />
       </Box>
