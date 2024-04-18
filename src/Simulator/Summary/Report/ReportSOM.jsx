@@ -15,6 +15,7 @@ import euro from './images/euro.png'
 import { useTranslation } from 'react-i18next'
 
 import SummaryPreciosTarifa from '../SummaryPreciosTarifa'
+import SummaryConsumptionTarifa from '../SummaryConsumptionTarifa'
 import HourlyEnergyBalance from '../../EnergyBalance/HourlyEnergyBalance'
 import MonthSaving from '../../EconomicBalance/MonthSavings'
 import PieCharts from '../../EnergyBalance/PieCharts'
@@ -138,8 +139,8 @@ export default function ReportSOM({ onClose }) {
               </Typography>
 
               <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                <Typography>{t('REPORT.US_ANUAL')}</Typography>
-                <Box
+                {/* <Typography>{t('REPORT.US_ANUAL')}</Typography> */}
+                {/* <Box
                   style={{
                     marginLeft: 15,
                     display: 'inline-flex',
@@ -153,7 +154,8 @@ export default function ReportSOM({ onClose }) {
                       <strong>{UTIL.formatoValor('energia', value)}</strong>
                     </span>
                   ))}
-                </Box>
+                </Box> */}
+                <SummaryConsumptionTarifa></SummaryConsumptionTarifa>
               </Box>
 
               <Typography
