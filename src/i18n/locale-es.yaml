@@ -203,6 +203,8 @@ Tarifa:
       P4: P4
       P5: P5
       P6: P6
+  TOOLTIP:
+    tipoTarifa: Nombre del tipo de tarifa
 
 Rendimiento:
   NAME: Rendimiento según PVGIS
@@ -470,6 +472,7 @@ ENERGY_BALANCE:
   ADVISE_TITLE: Consejo
   ADVISE_DESCRIPTION: Para aprovechar al máximo tu instalación, haz uso de tus electrodomésticos en las horas centrales del día que son los momentos de máxima producción.
   SUMMARY_TITLE: Tabla bases asignadas
+  SUMMARY_TOOLTIP_INFO: Información detallada del área seleccionada
   SUMMARY_FOOTER: |
     Total de paneles propuestos: {{paneles}} paneles<br />
     Potencia total propuesta: {{potencia}}
@@ -592,14 +595,11 @@ ECONOMIC_BALANCE:
   MSG_NO_FINANCE: |
     Un número de paneles excesivo provoca que el retorno de la inversión no se obtenga antes de {{periodo}} años por lo que el resultado financiero no es significativo. Por favor reduzca el número de paneles, lo que reducirá la inversión, o aumente el consumo de energía, para incrementar el ahorro. De ese modo mejorará el cashflow.
 
-LIMITE_VERIFICADOS:
-
 SUMMARY:
   TITLE: Resumen
   DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
   TITLE_AUTOPRODUCCION: Autoproducción
   DESCRIPTION_AUTOPRODUCCION: ''
-
   LABEL_AREAS_ESCOGIDAS_zero: área escogida
   LABEL_AREAS_ESCOGIDAS_one: <strong>Un</strong> área escogida
   LABEL_AREAS_ESCOGIDAS_other: <strong>{{count}}</strong> áreas escogidas
@@ -622,17 +622,11 @@ SUMMARY:
   TITLE_ENERGY_BALANCE: Balance energético
   DESCRIPTION_ENERGY_BALANCE: ''
   LABEL_AUTOCONSUMO: del consumo será autoproducido
-
-  LABEL_disclaimer1: |
+  LABEL_DISCLAIMER_1: |
     Todas las estimaciones se han realizado con la mayor precisión posible con la mejor intención y sin ningún compromiso.<br /><br />
     Es importante tener en cuenta que los precios vinculados a la instalación son orientativos y que existe bastante volatilidad en este factor por lo que no podemos garantizar que refleje la realidad del mercado en cada momento y territorio.
-
-  LABEL_disclaimer2: |
+  LABEL_DISCLAIMER_2: |
     Som Energía pone a disposición pública esta herramienta con el fin de contribuir a una transición energética justa, descentralizada y limpia.
-
-  LABEL_disclaimer1_old: "<p>Todas las estimaciones dadas se han realizado con la mayor precisión posible con la mejor intención y sin ningún compromiso.</p><p class='text-danger fw-bold'>Especial mención debemos hacer en cuanto al precio estimado de la instalación. Existe una alta volatilidad en este factor y no podemos garantizar que refleje la realidad del mercado en cada momento y territorio por lo que hemos incluido un campo que te permite corregir ese precio según las recomendaciones de tu instalador.</p>"
-  LABEL_disclaimer2_old: SOM Energía no tiene ningún interés económico ni directo ni indirecto en este estudio salvo contribuir a una transición energética justa con los usuarios eficiente descentralizada y limpia.
-
   LABEL_PRINT: Imprime resumen
   LABEL_PDF_REPORT: Informe de cálculo
   LABEL_SOM_REPORT: Informe energético
@@ -645,6 +639,8 @@ BASIC:
   LABEL_NEXT: Siguiente
   LABEL_PREVIOUS: Anterior
   LABEL_CLOSE: Cerrar
+  LABEL_HORA: Hora
+  LABEL_DIA: Día
   LABEL_MES: Mes
   LABEL_AÑOS: Años
   LABEL_REQUIRED: Requerido
@@ -658,9 +654,6 @@ BASIC:
 GRAPHICS:
   LABEL_CONSUMPTION: Uso eléctrico
   LABEL_PRODUCTION: Producción
-  LABEL_DIA: Día
-  LABEL_HORA: Hora
-  LABEL_MES: Mes
 
 DIALOG_PROPERTIES:
   TITLE: Menu de Propiedades
@@ -669,23 +662,20 @@ PARAMETROS:
   DIALOG_TITLE: Parametros de la aplicación
   DIALOG_DESCRIPTION: |
     Los cambios en estos valores <strong>no implican un recálculo de todo el conjunto</strong>, es necesario volver a la pestaña Localización y calcular.
-  LABEL_impuestoElectrico: Impuesto eléctrico en %
-  TOOLTIP_impuestoElectrico: El impuesto especial sobre la electricidad
-  LABEL_IVAenergia: IVA aplicable a la energía en %
-  TOOLTIP_IVAenergia: El IVA que se repercute por el gasto en electricidad
-  LABEL_IVAinstalacion: IVA aplicable a la instalación en %
-  TOOLTIP_IVAinstalacion: El IVA que se repercute sobre el importe al que ascienda la instalación
-  LABEL_perdidasSistema: Pérdidas estimadas de la instalación en %
-  TOOLTIP_perdidasSistema: Las pérdidas estimas del sistema fotovoltaico debidas al deterioro de algunos componentes condiciones adversas inversores deficientes etc.
-  LABEL_interesVAN: Interés base (%) para calculo de VAN
-  TOOLTIP_interesVAN: Tasa de descuento a aplicar en el cálculo del valor actual neto
-  LABEL_margen: Margen de instalación en metros
-  TOOLTIP_margen: Distancia dejada alrededor de la instalación a efectos de mantenimiento
-
-  tarifasLocales_LBL: Fichero de tarifas local
-  ficheroTarifas_LBL: Fichero de tarifas local (ver ejemplo)
-  ficheroTarifas_TT: El usuario puede personalizar un fichero con los precios que desee mientras cumpla con el formato dado en el ejemplo
-  parametros_MSG_errorLecturaFicheroTarifas: Error leyendo fichero local de tarifas
+  PROP:
+    impuestoElectrico: Impuesto eléctrico en %
+    IVAenergia: IVA aplicable a la energía en %
+    IVAinstalacion: IVA aplicable a la instalación en %
+    perdidasSistema: Pérdidas estimadas de la instalación en %
+    interesVAN: Interés base (%) para calculo de VAN
+    margen: Margen de instalación en metros
+  TOOLTIP:
+    impuestoElectrico: El impuesto especial sobre la electricidad
+    IVAenergia: El IVA que se repercute por el gasto en electricidad
+    IVAinstalacion: El IVA que se repercute sobre el importe al que ascienda la instalación
+    perdidasSistema: Las pérdidas estimas del sistema fotovoltaico debidas al deterioro de algunos componentes condiciones adversas inversores deficientes etc.
+    interesVAN: Tasa de descuento a aplicar en el cálculo del valor actual neto
+    margen: Distancia dejada alrededor de la instalación a efectos de mantenimiento
 
 CONTACTO:
   DIALOG_TITLE: Formulario de contacto
@@ -707,25 +697,6 @@ CONTACTO:
     telefono: Teléfono (opcional)
     email: Indicanos un email para poder contestar a tu comentario
     mensaje: Mensaje lo mas descriptivo posible de la incidencia
-
-BOTONES:
-  botonExportar_TT: Salvar proyecto
-  botonContacto_TT: Formulario de contacto
-  botonInformePDF_TT: Salvar informe en PDF
-  botonParametros_TT: Parámetros
-  botonInstrucciones_TT: Instrucciones
-  botonAyuda_TT: Ayuda
-
-AYUDAS:
-  ayuda_TIT_localizacion: En esta pestaña se identifican datos de localización geográfica
-  ayuda_TIT_tipoConsumo: En esta pestaña se identifican datos de tarifas y consumos antes de la instalación
-  ayuda_TIT_fincas: En esta pestaña se identifican los partícipes del proyecto
-  ayuda_TIT_resultados: En esta pestaña se muestra el balance energético resultante de la instalación de los paneles
-  ayuda_TIT_reparto: En esta pestaña se muestra el reparto de energía e inversión del proyecto
-  ayuda_TIT_economico: En esta pestaña se muestra el balance economico-financiero
-  ayuda_TIT_graficos: En esta pestaña se muestran algunos gráficos de referencia
-  ayuda_TIT_panel: Panel de ayuda
-  ayuda_TIT_reporte: Resumen de datos
 
 Proyecto:
   DIALOG_TITLE: Datos del proyecto
@@ -752,27 +723,7 @@ Proyecto:
   MSG_success: Fichero importado satisfactoriamente
   MSG_problemaVersion: Lamentablemente no se puede importar un fichero Solimp de versiones anteriores a 4',
 
-MAPA:
-  botonPuntoConsumo_LBL: Punto Consumo
-  botonPuntoConsumo_TT: Boton para crear un nuevo punto de consumo
-  botonBaseSolar_LBL: Base solar
-  botonBaseSolar_TT: Boton para crear una nueva base para instalar paneles
-  botonDeshacer_LBL: Deshacer
-  botonDeshacer_TT: Permite anular el último vertice creado
-
-RESULTS:
-  TOOLTIP_botonInfoBase: Información detallada del área seleccionada
-  LABEL_ConsumoDiurno: Consumo realizado en horas solares
-  TOOLTIP_ConsumoDiurno: Consumo realizado en horas en que los paneles tienen alguna producción
-
-  LABEL_maxPaneles: Max. Paneles en base
-  TOOLTIP_maxPaneles: Número máximo de paneles que se pueden instalar en la base
-
-  LBL_graficoResumen: Gráfico resumen de consumos versus producción
-  LBL_pendienteCalculo: Pendiente
-
-  MSG_excesoPotencia: Hay un exceso de potencia en esta base en función del area dispoble
-  LBL_basePropiedades: Base {{id}}
+LIMITE_VERIFICADOS:
 
 GRAFICOS:
   LABEL_panelesActuales: Paneles actuales {{paneles}}

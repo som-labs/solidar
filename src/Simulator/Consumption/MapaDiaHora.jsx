@@ -90,7 +90,7 @@ export default function MapaDiaHora({ activo }) {
       font: {
         color: theme.palette.text.primary,
       },
-      xaxis: { title: t('GRAPHICS.LABEL_HORA'), dtick: 2 },
+      xaxis: { title: t('BASIC.LABEL_HORA'), dtick: 2 },
       yaxis: {
         tickvals: UTIL.indiceDia.map((e) => {
           return e[1]

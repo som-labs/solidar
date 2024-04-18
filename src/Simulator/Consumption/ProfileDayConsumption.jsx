@@ -85,7 +85,7 @@ export default function ProfileDayConsumption(props) {
       t: 25,
     },
     xaxis: {
-      title: t('GRAPHICS.LABEL_HORA'),
+      title: t('BASIC.LABEL_HORA'),
       dtick: 1,
       zeroline: false,
     },
