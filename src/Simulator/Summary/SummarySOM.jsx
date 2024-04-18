@@ -90,7 +90,7 @@ const SummarySOMStep = () => {
                   </Typography>
                   <Typography
                     variant="h5"
-                    color={'green'}
+                    color={theme.palette.text}
                     textAlign={'center'}
                     dangerouslySetInnerHTML={{
                       __html:
@@ -104,7 +104,7 @@ const SummarySOMStep = () => {
                   />
                   <Typography
                     variant="h5"
-                    color={'green'}
+                    color={theme.palette.text}
                     textAlign={'center'}
                     dangerouslySetInnerHTML={{
                       __html: t('SUMMARY.LABEL_PANELES_SUGERIDOS', { count: paneles }),
@@ -112,7 +112,7 @@ const SummarySOMStep = () => {
                   />
                   <Typography
                     variant="h5"
-                    color={'green'}
+                    color={theme.palette.text}
                     textAlign={'center'}
                     dangerouslySetInnerHTML={{
                       __html: t('SUMMARY.LABEL_PRODUCCION', {
@@ -122,11 +122,11 @@ const SummarySOMStep = () => {
                   />
                   <Typography
                     variant="h5"
-                    color={'green'}
+                    color={theme.palette.text}
                     textAlign={'center'}
                     dangerouslySetInnerHTML={{
                       __html: t('SUMMARY.LABEL_POTENCIA', {
-                        potencia: UTIL.formatoValor('potencia', potencia),
+                        potencia: UTIL.formatoValor('potenciaTotal', potencia),
                       }),
                     }}
                   />
@@ -168,7 +168,7 @@ const SummarySOMStep = () => {
                     </Grid>
                   </SLDRInfoBox>*/}
 
-                <Typography variant="h4" color={'green'} textAlign={'center'}>
+                <Typography variant="h4" color={theme.palette.text} textAlign={'center'}>
                   {UTIL.formatoValor(
                     'porciento',
                     (TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100,
@@ -208,7 +208,7 @@ const SummarySOMStep = () => {
 
                 <Typography
                   variant="h5"
-                  color={'green'}
+                  color={theme.palette.text}
                   textAlign={'center'}
                   dangerouslySetInnerHTML={{
                     __html: t('SUMMARY.LABEL_COSTE', {
@@ -221,7 +221,7 @@ const SummarySOMStep = () => {
                 />
                 <Typography
                   variant="h5"
-                  color={'green'}
+                  color={theme.palette.text}
                   textAlign={'center'}
                   dangerouslySetInnerHTML={{
                     __html: t('SUMMARY.LABEL_AMORTIZACION', {
@@ -232,13 +232,14 @@ const SummarySOMStep = () => {
 
                 <Typography
                   variant="h5"
-                  color={'green'}
+                  color={theme.palette.text}
                   textAlign={'center'}
                   dangerouslySetInnerHTML={{
                     __html: t('SUMMARY.LABEL_SUBVENCIONES', {
                       subvenciones: UTIL.formatoValor(
                         'dinero',
-                        parseFloat(IBI.valorSubvencionIBI) + parseFloat(valorSubvencion),
+                        parseFloat(ecoData.valorSubvencionIBI) +
+                          parseFloat(ecoData.valorSubvencion),
                       ),
                     }),
                   }}

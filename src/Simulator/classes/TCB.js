@@ -2,7 +2,7 @@
  * TCB
  * @namespace
  * @fileoverview Area de allmacenamiento de las variables globales de la aplicación
- * @version      Solidar.3.3
+ * @version      Solidar.4
  * @author       José Luis García (SOM Madrid)
  * @copyright
  *
@@ -45,7 +45,7 @@ const TCB = {
 
   importando: false, //Es verdadero durante el proceso de importacion
   //Donde se guardan los datos a exportar
-  datosProyecto: { version: '4' },
+  datosProyecto: { version: '4.1' },
 
   /**
    * @type {Array<TipoConsumo>}
@@ -220,8 +220,14 @@ const TCB = {
     margen: 0.5,
   },
 
-  tipoPanelDefault: 2, //Which panel from the list is used as deafult
-  tipoPanelActivo: {},
+  //Default panel type
+  tipoPanelActivo: {
+    nombre: '430 Wp',
+    tecnologia: 'crystSi',
+    potencia: 430,
+    ancho: 1.134,
+    largo: 1.762,
+  },
   // This data will be read from datos/tipoPaneles.json during InicailizaAplicacion
   tipoPaneles: [],
 

@@ -2,17 +2,9 @@ import { createContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // OpenLayers objects
-import { Map, View } from 'ol'
-import TileLayer from 'ol/layer/Tile'
-import Overlay from 'ol/Overlay.js'
-import { OSM, Vector as VectorSource, XYZ } from 'ol/source'
-import { Style, Fill, Stroke } from 'ol/style'
-import VectorLayer from 'ol/layer/Vector'
+
 import Feature from 'ol/Feature'
-import { Point, LineString, Polygon } from 'ol/geom'
-import { transform, fromLonLat } from 'ol/proj'
-import { Draw } from 'ol/interaction'
-import { getArea, getDistance } from 'ol/sphere.js'
+import { LineString } from 'ol/geom'
 
 // Solidar objects
 import TCB from './classes/TCB'
@@ -25,6 +17,7 @@ const BasesContextProvider = ({ children }) => {
   const { t } = useTranslation()
   const [map, setMap] = useState()
   const [bases, setBases] = useState([])
+  const [tipoPanelActivo, setTipoPanelActivo] = useState({})
 
   //TCB fields to be reflected in state
   const hdrBase = {
@@ -251,6 +244,8 @@ const BasesContextProvider = ({ children }) => {
     validaBases,
     addTCBBaseToState,
     updateTCBBasesToState,
+    tipoPanelActivo,
+    setTipoPanelActivo,
   }
   return <BasesContext.Provider value={contextValue}>{children}</BasesContext.Provider>
 }

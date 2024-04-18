@@ -28,17 +28,17 @@ export default function InstallationCost() {
   const theme = useTheme()
   const [openDialog, closeDialog] = useDialog()
 
-  const {
-    ecoData,
-    setEcoData,
-    precioInstalacionCorregido,
-    setPrecioInstalacionCorregido,
-  } = useContext(EconomicContext)
+  const { ecoData, setEcoData } = useContext(EconomicContext)
 
-  const [precioCorregido, setPrecioCorregido] = useState('')
+  const [precioCorregido, setPrecioCorregido] = useState(
+    ecoData.precioInstalacionCorregido,
+  )
   const [error, setError] = useState(false)
 
-  const setPrecioInstalacion = () => {
+  const setPrecioInstalacion = (event) => {
+    //REVISAR: trying to avoid jumping to next field
+    event.preventDefault()
+
     if (precioCorregido === '') {
       // If new cost field is empty will use app calculated cost
       setPrecioCorregido(TCB.economico.precioInstalacion)
@@ -49,10 +49,15 @@ export default function InstallationCost() {
     } else {
       if (precioCorregido > 0) {
         TCB.economico.precioInstalacionCorregido = parseInt(precioCorregido)
-        setPrecioInstalacionCorregido(parseInt(precioCorregido))
         TCB.economico.calculoFinanciero(100, 100)
-        setEcoData(TCB.economico)
+        if (TCB.economico.periodoAmortizacion > 20) {
+          alert(t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
+        }
+        setEcoData({ ...ecoData, ...TCB.economico })
         setError(false)
+        if (TCB.porcientoSubvencion !== 0) {
+          alert('Es posible que tenga que verificar el valor de la subvención recibida')
+        }
       }
     }
   }
@@ -129,7 +134,7 @@ export default function InstallationCost() {
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <TextField
               type="text"
-              onBlur={setPrecioInstalacion}
+              onBlur={(event) => setPrecioInstalacion(event)}
               onChange={changePrecioInstalacion}
               label={t('ECONOMIC_BALANCE.LABEL_INSTALLATION_COST')}
               name="precioInstalacionCorregido"
@@ -146,12 +151,6 @@ export default function InstallationCost() {
               }
             />
           </FormControl>
-          <Typography
-            variant="body"
-            dangerouslySetInnerHTML={{
-              __html: t('ECONOMIC_BALANCE.ADVICE_INSTALLATION_COST'),
-            }}
-          />
         </Box>
       </Container>
     </>

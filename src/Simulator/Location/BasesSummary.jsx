@@ -102,6 +102,7 @@ export default function BasesSummary() {
     {
       field: 'actions',
       type: 'actions',
+      headerName: t('BASIC.LABEL_ACCIONES'),
       sortable: false,
       getActions: (params) => [
         <GridActionsCellItem
@@ -150,6 +151,7 @@ export default function BasesSummary() {
       children: (
         <DialogBaseSolar
           data={_base}
+          previous={bases}
           onClose={(reason, formData) => endDialog(reason, formData)}
         />
       ),
@@ -177,9 +179,7 @@ export default function BasesSummary() {
                   ),
                   potenciaMaxima: UTIL.formatoValor(
                     'potenciaMaxima',
-                    Math.trunc(
-                      bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0),
-                    ),
+                    bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0),
                   ),
                 }),
               }}
@@ -190,8 +190,8 @@ export default function BasesSummary() {
     )
   }
   return (
-    <>
-      <SLDRInfoBox sx={{ mt: '1rem' }}>
+    <Grid container justifyContent={'center'} sx={{ mt: '1rem' }}>
+      <Grid item xs={11}>
         {bases && (
           <DataGrid
             sx={theme.tables.headerWrap}
@@ -206,7 +206,7 @@ export default function BasesSummary() {
             slots={{ footer: footerSummary }}
           />
         )}
-      </SLDRInfoBox>
-    </>
+      </Grid>
+    </Grid>
   )
 }

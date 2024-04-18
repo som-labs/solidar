@@ -76,7 +76,7 @@ export default function CallSankey(props) {
   ]
 
   const setIconPosition = useCallback((values) => {
-    console.log('INCALLBACK', values)
+    //console.log('INCALLBACK', values)
     setIconY(values.map((element) => parseInt(element * boxHeight.current - 45) + 'px'))
     setDraw(false)
   }, [])
@@ -95,7 +95,7 @@ export default function CallSankey(props) {
   }, [bases])
 
   if (draw) {
-    console.log(iconY)
+    //console.log(iconY)
     SankeyFun(
       { links: data, svgRef, setIconPosition },
       {

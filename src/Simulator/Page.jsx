@@ -25,7 +25,7 @@ import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
 import InicializaAplicacion from './classes/InicializaAplicacion'
 
-InicializaAplicacion()
+//InicializaAplicacion()
 
 export default function Page() {
   const { t } = useTranslation()
@@ -35,6 +35,7 @@ export default function Page() {
   const { ecoData, setEcoData } = useContext(EconomicContext)
 
   let results
+  InicializaAplicacion()
 
   function validaEnergyBalanceStep() {
     for (let base of TCB.BaseSolar) {
@@ -89,6 +90,7 @@ export default function Page() {
     return results.status
   }
 
+  console.log('PAGE TCB', TCB)
   return (
     <>
       <AppFrame>

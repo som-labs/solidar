@@ -8,7 +8,7 @@ import TCB from './TCB'
  *
  * @param {Base[]} bases Conjunto de objetos Base disponibles
  * @param {Consumo} consumo Un objeto Consumo a cubrir
- * @param {Float} potenciaPanelInicio Potencia unitaria de cada panel
+ * @param {Float} potenciaPanelInicio Potencia unitaria de cada panel en Wp
  * @returns {Float} energiaPendiente Es el valor de la energía que no ha podiodo ser asignada
  */
 function optimizador(bases, consumo, potenciaPanelInicio) {
@@ -27,14 +27,14 @@ function optimizador(bases, consumo, potenciaPanelInicio) {
     energiaAsignada =
       energiaAsignada > energiaPendiente ? energiaPendiente : energiaAsignada
     tmpPaneles = Math.round(
-      energiaAsignada / bases[i].rendimiento.unitarioTotal / potenciaPanelInicio,
+      energiaAsignada / bases[i].rendimiento.unitarioTotal / (potenciaPanelInicio / 1000),
     )
     UTIL.debugLog(
-      '_initInstalacion con' +
+      'Creada Instalacion con ' +
         tmpPaneles +
         ' paneles de ' +
         potenciaPanelInicio +
-        'kWp en la base ',
+        ' Wp en la base ',
       bases[i].id,
     )
 
@@ -72,7 +72,10 @@ function nuevoTotalPaneles(panelesNuevo) {
     })
 
   for (let base of TCB.BaseSolar) {
-    maxPanelesBase = Math.trunc(base.potenciaMaxima / base.instalacion.potenciaUnitaria)
+    maxPanelesBase = Math.trunc(
+      base.potenciaMaxima / (base.instalacion.potenciaUnitaria / 1000),
+    )
+
     tmpPaneles = maxPanelesBase > panelesPendientes ? panelesPendientes : maxPanelesBase
     UTIL.debugLog('asignados ' + tmpPaneles + ' a base ' + base.idBaseSolar)
     base.instalacion.paneles = tmpPaneles

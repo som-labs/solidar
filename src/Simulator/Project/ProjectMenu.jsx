@@ -33,7 +33,8 @@ export default function ProjectMenu() {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
   const { SLDRAlert } = useContext(AlertContext)
-  const { map, bases, setBases, addTCBBaseToState } = useContext(BasesContext)
+  const { map, bases, setBases, addTCBBaseToState, setTipoPanelActivo } =
+    useContext(BasesContext)
   const { setTipoConsumo, addTCBTipoToState } = useContext(ConsumptionContext)
   const { setEcoData } = useContext(EconomicContext)
 
@@ -77,6 +78,8 @@ export default function ProjectMenu() {
         for (let base of TCB.BaseSolar) {
           addTCBBaseToState(base)
         }
+        setTipoPanelActivo({ ...TCB.tipoPanelActivo })
+
         // State cleaning done here because importProject is not React
         setTipoConsumo([])
         //Add imported tipoconsumo to consumption context

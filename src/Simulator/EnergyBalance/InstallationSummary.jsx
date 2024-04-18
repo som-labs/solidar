@@ -30,7 +30,6 @@ export default function InstallationSummary() {
   const [updatedCells, setUpdatedCells] = useState({})
 
   const handleEditCellChange = (params, event) => {
-    console.log('CHANGE', params, event)
     const { id, field, value } = params
     setUpdatedCells({ ...updatedCells, [id]: { ...updatedCells[id], [field]: value } })
   }
@@ -134,6 +133,7 @@ export default function InstallationSummary() {
       field: 'actions',
       type: 'actions',
       sortable: false,
+      headerName: t('BASIC.LABEL_ACCIONES'),
       getActions: (params) => [
         <GridActionsCellItem
           key={1}
@@ -172,7 +172,7 @@ export default function InstallationSummary() {
                     bases.reduce((sum, tBase) => sum + tBase.paneles, 0),
                   ),
                   potencia: UTIL.formatoValor(
-                    'potencia',
+                    'potenciaTotal',
                     bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
                   ),
                 }),
@@ -228,6 +228,9 @@ export default function InstallationSummary() {
 
         //Update context with new TCB data
         calculaResultados()
+        if (TCB.economico.periodoAmortizacion > 20) {
+          alert(t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
+        }
         updateTCBBasesToState()
         //Update total number of panels in TCB
         TCB.totalPaneles = TCB.BaseSolar.reduce((a, b) => {
@@ -269,43 +272,44 @@ export default function InstallationSummary() {
   }
 
   return (
-    <Grid
-      container
-      rowSpacing={1}
-      sx={{
-        '& .super-app.negative': {
-          backgroundColor: '#ff0000',
-          color: '#1a3e72',
-          fontWeight: '400',
-        },
-        '& .super-app.positive': {
-          backgroundColor: 'rgba(157, 255, 118, 0.49)',
-          color: '#1a3e72',
-          fontWeight: '400',
-        },
-      }}
-    >
-      <Grid item xs={12}>
-        <Typography sx={theme.titles.level_2} textAlign="center">
-          {t('ENERGY_BALANCE.SUMMARY_TITLE')}
-        </Typography>
+    <>
+      <Typography sx={theme.titles.level_2} textAlign="center">
+        {t('ENERGY_BALANCE.SUMMARY_TITLE')}
+      </Typography>
+      <Grid
+        container
+        justifyContent={'center'}
+        rowSpacing={1}
+        sx={{
+          '& .super-app.negative': {
+            backgroundColor: '#ff0000',
+            color: '#1a3e72',
+            fontWeight: '400',
+          },
+          '& .super-app.positive': {
+            backgroundColor: 'rgba(157, 255, 118, 0.49)',
+            color: '#1a3e72',
+            fontWeight: '400',
+          },
+        }}
+      >
+        <Grid item xs={11}>
+          <DataGrid
+            sx={theme.tables.headerWrap}
+            getRowId={getRowId}
+            rows={bases}
+            columns={columns}
+            hideFooter={false}
+            rowHeight={30}
+            autoHeight
+            disableColumnMenu
+            editMode="cell"
+            onCellKeyDown={(params, event) => handleEditCellChange(params, event)}
+            onCellEditStop={(params, event) => nuevaInstalacion(params, event)}
+            slots={{ footer: footerSummary }}
+          />
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        <DataGrid
-          sx={theme.tables.headerWrap}
-          getRowId={getRowId}
-          rows={bases}
-          columns={columns}
-          hideFooter={false}
-          rowHeight={30}
-          autoHeight
-          disableColumnMenu
-          editMode="cell"
-          onCellKeyDown={(params, event) => handleEditCellChange(params, event)}
-          onCellEditStop={(params, event) => nuevaInstalacion(params, event)}
-          slots={{ footer: footerSummary }}
-        />
-      </Grid>
-    </Grid>
+    </>
   )
 }
