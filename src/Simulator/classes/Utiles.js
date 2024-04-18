@@ -18,9 +18,9 @@ const campos = {
   ahorroFincaAnual: { unidad: ' €', decimales: 2, salvar: true, mostrar: true },
   // Genericos
   energia: { unidad: ' kWh', decimales: 0, salvar: true, mostrar: true },
-  potencia: { unidad: ' kWp', decimales: 3, salvar: true, mostrar: true },
+  potencia: { unidad: ' kWp', decimales: 0, salvar: true, mostrar: true },
   potenciaWp: { unidad: ' Wp', decimales: 0, salvar: true, mostrar: true },
-  porciento: { unidad: '%', decimales: 2, salvar: true, mostrar: true },
+  porciento: { unidad: '%', decimales: 0, salvar: true, mostrar: true },
   peso: { unidad: ' Kg', decimales: 2, salvar: true, mostrar: true },
   dinero: { unidad: ' €', decimales: 0, salvar: true, mostrar: true },
   superficie: { unidad: 'm²', decimales: 2, salvar: true, mostrar: true },
@@ -69,7 +69,7 @@ const campos = {
   },
   potenciaMaxima: {
     unidad: ' kWp',
-    decimales: 1,
+    decimales: 2,
     salvar: true,
     mostrar: true,
     order: 16,
@@ -80,8 +80,8 @@ const campos = {
 
   /* instalacion */
   potenciaUnitaria: {
-    unidad: ' kWp',
-    decimales: 3,
+    unidad: ' Wp',
+    decimales: 0,
     salvar: true,
     mostrar: true,
     order: 1,
@@ -92,8 +92,8 @@ const campos = {
   /* produccion */
   produccionCreada: { unidad: '', salvar: false, mostrar: false },
   cnumeroDias: { unidad: '', salvar: true, mostrar: false },
-  CO2AnualRenovable: { unidad: 'kg', decimales: 0, salvar: true, mostrar: true },
-  CO2AnualNoRenovable: { unidad: 'kg', decimales: 0, salvar: true, mostrar: true },
+  CO2AnualRenovable: { unidad: ' kg', decimales: 0, salvar: true, mostrar: true },
+  CO2AnualNoRenovable: { unidad: ' kg', decimales: 0, salvar: true, mostrar: true },
   /* rendimiento */
   unitarioTotal: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true, order: 1 },
   produccionTotal: {
@@ -103,7 +103,7 @@ const campos = {
     mostrar: true,
     order: 2,
   },
-  system_loss: { unidad: '%', decimales: 2, salvar: false, mostrar: true, order: 3 },
+  system_loss: { unidad: '%', decimales: 0, salvar: false, mostrar: true, order: 3 },
   technology: { unidad: '', salvar: false, mostrar: true, order: 4 },
   inclinacionOptimal: { unidad: '', salvar: false, mostrar: true, order: 5 },
   acimutOptimal: { unidad: '', salvar: false, mostrar: true, order: 6 },
@@ -153,23 +153,23 @@ const campos = {
 
   /* Economico */
   ahorroAnual: { unidad: ' €', decimales: 0, salvar: false, mostrar: true },
-  TIRProyecto: { unidad: '%', decimales: 0, salvar: false, mostrar: true },
+  TIRProyecto: { unidad: '%', decimales: 1, salvar: false, mostrar: true },
   VANProyecto: { unidad: ' €', decimales: 0, salvar: false, mostrar: true },
   interesVAN: { unidad: '%', decimales: 0, salvar: false, mostrar: false },
   economicoCreado: { unidad: '', salvar: false, mostrar: false },
   tiempoSubvencionIBI: { unidad: '', decimales: 0, salvar: true, mostrar: true },
   valorSubvencionIBI: { unidad: ' €', decimales: 0, salvar: true, mostrar: true },
-  porcientoSubvencionIBI: { unidad: '%', decimales: 2, salvar: true, mostrar: true },
+  porcientoSubvencionIBI: { unidad: '%', decimales: 0, salvar: true, mostrar: true },
   //tipoSubvencionEU: { unidad: '', salvar: true, mostrar: true },
-  valorSubvencion: { unidad: '', salvar: false, mostrar: true },
+  valorSubvencion: { unidad: ' €', decimales: 0, salvar: false, mostrar: true },
   previo: { unidad: ' €', decimales: 2, salvar: false, mostrar: true },
   inversion: { unidad: ' €', decimales: 2, salvar: false, mostrar: true },
   ahorro: { unidad: ' €', decimales: 2, salvar: false, mostrar: true },
   IBI: { unidad: ' €', decimales: 2, salvar: false, mostrar: true },
   subvencion: { unidad: ' €', decimales: 2, salvar: false, mostrar: true },
   pendiente: { unidad: ' €', decimales: 2, salvar: false, mostrar: true },
-  VAN: { unidad: ' €', decimales: 2, salvar: false, mostrar: true },
-  TIR: { unidad: '%', decimales: 2, salvar: false, mostrar: true },
+  VAN: { unidad: ' €', decimales: 0, salvar: false, mostrar: true },
+  TIR: { unidad: '%', decimales: 1, salvar: false, mostrar: true },
   precioInstalacion: { unidad: ' €', decimales: 0, salvar: true, mostrar: true },
   precioInstalacionCorregido: { unidad: ' €', decimales: 0, salvar: true, mostrar: true },
 

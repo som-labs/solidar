@@ -16,7 +16,6 @@ export default function AmortizationTime() {
   const theme = useTheme()
 
   const { ecoData } = useContext(EconomicContext)
-
   return (
     <>
       <Container>

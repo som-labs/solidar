@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -20,6 +20,10 @@ export default function PanelsSelector() {
   const [openDialog, closeDialog] = useDialog()
   const [tipo, setTipo] = useState(TCB.tipoPanelActivo)
   const { bases, setBases, updateTCBBasesToState } = useContext(BasesContext)
+
+  useEffect(() => {
+    setTipo({ ...tipo, ...TCB.tipoPanelActivo })
+  }, [])
 
   function changePanelsType() {
     openDialog({
@@ -72,14 +76,14 @@ export default function PanelsSelector() {
     closeDialog()
   }
 
+  console.log('PANELS TCB-tipo', TCB, tipo)
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', padding: 1 }}>
       <Typography
         variant="body"
         dangerouslySetInnerHTML={{
           __html: t('Instalacion.DESCRIPTION.paneles', {
-            tecnologia: tipo.tecnologia,
-            potencia: UTIL.formatoValor('potenciaWp', tipo.potencia * 1000),
+            potencia: UTIL.formatoValor('potenciaWp', tipo.potencia),
           }),
         }}
       ></Typography>

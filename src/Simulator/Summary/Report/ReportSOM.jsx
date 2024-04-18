@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import styles from './pdfStyle'
 import { useTheme } from '@mui/material/styles'
 
@@ -17,7 +17,8 @@ import { useTranslation } from 'react-i18next'
 import SummaryPreciosTarifa from '../SummaryPreciosTarifa'
 import HourlyEnergyBalance from '../../EnergyBalance/HourlyEnergyBalance'
 import MonthSaving from '../../EconomicBalance/MonthSavings'
-import PieChart from './PieChart'
+import PieCharts from '../../EnergyBalance/PieCharts'
+//import PieChart from './PieChart'
 import InstallationSummary from './InstallationSummary'
 
 import * as UTIL from '../../classes/Utiles'
@@ -30,9 +31,22 @@ export default function ReportSOM({ onClose }) {
 
   const componentRef = useRef()
 
+  const [yearlyData, setYearlyData] = useState({})
+
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   })
+
+  useEffect(() => {
+    setYearlyData({
+      consumo: TCB.consumo.totalAnual,
+      produccion: TCB.produccion.totalAnual,
+      deficit: TCB.balance.deficitAnual,
+      autoconsumo: TCB.balance.autoconsumo,
+      excedente: TCB.balance.excedenteAnual,
+      consumoDiurno: TCB.balance.consumoDiurno,
+    })
+  }, [])
 
   return (
     <Container>
@@ -197,15 +211,15 @@ export default function ReportSOM({ onClose }) {
             <Typography>
               {t('REPORT.INSTALACIO_POTENCIA_UNITARIA')}:{' '}
               <strong>
-                {UTIL.formatoValor('potencia', TCB.tipoPanelActivo.potencia)}
+                {UTIL.formatoValor('potenciaWp', TCB.tipoPanelActivo.potencia)}
               </strong>
             </Typography>
             <Typography>
               {t('REPORT.INSTALACIO_POTENCIA')}:{' '}
               <strong>
                 {UTIL.formatoValor(
-                  'potencia',
-                  TCB.totalPaneles * TCB.tipoPanelActivo.potencia,
+                  'potenciaTotal',
+                  TCB.totalPaneles * (TCB.tipoPanelActivo.potencia / 1000),
                 )}
               </strong>
             </Typography>
@@ -232,7 +246,7 @@ export default function ReportSOM({ onClose }) {
             spacing={0}
             sx={{ alignItems: 'center', justifyContent: 'center' }}
           >
-            <Grid item xs={6}>
+            <Grid item xs={5}>
               <Grid container>
                 <Grid
                   xs={5}
@@ -244,7 +258,7 @@ export default function ReportSOM({ onClose }) {
                     border: '1px solid #ccc',
                   }}
                 >
-                  {t('REPORT.ESTUDI_AUTOGENERACIO')}
+                  {t('ENERGY_BALANCE.LABEL_AUTOCONSUMO')}
                 </Grid>
                 <Grid
                   xs={3}
@@ -256,7 +270,7 @@ export default function ReportSOM({ onClose }) {
                     fontWeight: 'bold',
                   }}
                 >
-                  {UTIL.formatoValor('energia', TCB.produccion.totalAnual)}
+                  {UTIL.formatoValor('energia', TCB.balance.autoconsumo)}
                 </Grid>
                 <Grid
                   xs={3}
@@ -311,8 +325,34 @@ export default function ReportSOM({ onClose }) {
                 >
                   {UTIL.formatoValor(
                     'dinero',
-                    UTIL.suma(TCB.economico.consumoConPlacasMensualCorregido),
+                    -UTIL.suma(TCB.economico.compensadoMensual),
                   )}
+                </Grid>
+              </Grid>
+              <Grid container>
+                <Grid
+                  xs={5}
+                  item
+                  sx={{
+                    backgroundColor: '#3f2c20',
+                    color: 'white',
+                    padding: 1,
+                    border: '1px solid #ccc',
+                  }}
+                >
+                  <strong>{t('REPORT.ESTUDI_ESTALVI')}</strong>
+                </Grid>
+                <Grid
+                  xs={6}
+                  item
+                  sx={{
+                    padding: 1,
+                    border: '1px solid #ccc',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {UTIL.formatoValor('dinero', TCB.economico.ahorroAnual)}
                 </Grid>
               </Grid>
               <Grid container>
@@ -352,34 +392,8 @@ export default function ReportSOM({ onClose }) {
                 >
                   {UTIL.formatoValor(
                     'dinero',
-                    -UTIL.suma(TCB.economico.compensadoMensualCorregido),
+                    UTIL.suma(TCB.economico.consumoConPlacasMensual),
                   )}
-                </Grid>
-              </Grid>
-              <Grid container>
-                <Grid
-                  xs={5}
-                  item
-                  sx={{
-                    backgroundColor: '#3f2c20',
-                    color: 'white',
-                    padding: 1,
-                    border: '1px solid #ccc',
-                  }}
-                >
-                  <strong>{t('REPORT.ESTUDI_ESTALVI')}</strong>
-                </Grid>
-                <Grid
-                  xs={6}
-                  item
-                  sx={{
-                    padding: 1,
-                    border: '1px solid #ccc',
-                    textAlign: 'center',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {UTIL.formatoValor('dinero', TCB.economico.ahorroAnual)}
                 </Grid>
               </Grid>
 
@@ -406,11 +420,14 @@ export default function ReportSOM({ onClose }) {
                     fontWeight: 'bold',
                   }}
                 >
-                  {TCB.economico.periodoAmortizacion}
+                  {TCB.economico.periodoAmortizacion + ' ' + t('BASIC.LABEL_AÑOS')}
                 </Grid>
               </Grid>
             </Grid>
-
+            <Grid item xs={7}>
+              <PieCharts yearlyData={yearlyData}></PieCharts>
+            </Grid>
+            {/* 
             <Grid item xs={3}>
               <PieChart
                 percentage={(TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100}
@@ -426,12 +443,12 @@ export default function ReportSOM({ onClose }) {
                 label={t('REPORT.PIE_CONSUMO_HORAS_SOL_TITLE')}
                 description={t('REPORT.PIE_CONSUMO_HORAS_SOL_DESCRIPTION')}
               />
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
         <Box>
           <h3>{t('REPORT.PERFIL_TITLE')}</h3>
-          <HourlyEnergyBalance></HourlyEnergyBalance>
+          <HourlyEnergyBalance report={true}></HourlyEnergyBalance>
         </Box>
         <Box sx={{ mb: 1 }}>
           <MonthSaving></MonthSaving>
@@ -441,65 +458,22 @@ export default function ReportSOM({ onClose }) {
             <strong>{t('REPORT.PROPERESPASES_TITLE')}</strong>
           </Typography>
         </Box>
+        <Box sx={{ mt: '1rem', mb: '1rem' }}>
+          <Typography variant="body">{t('REPORT.ADVISE')}</Typography>
+        </Box>
+        <Box>
+          <h3 style={styles.primerpas}>
+            <img style={styles.primerpasImage} src={dona} />
+            {t('REPORT.PROPERESPASES_DESCRIPTION')}{' '}
+          </h3>
 
-        <div style={styles.container}>
-          <div style={styles.properespasesContainer}>
-            <h3 style={styles.primerpas}>
-              <img style={styles.primerpasImage} src={dona} />
-              {t('REPORT.PROPERESPASES_DESCRIPTION')}{' '}
-              <strong style={styles.primerpasBold}>
-                {t('REPORT.PROPERESPASES_DESCRIPTION_STRONG')}
-              </strong>{' '}
-              {t('REPORT.PROPERESPASES_DESCRIPTION_FINAL')}
-            </h3>
-            <p style={styles.properespasesAmbImage}>
-              <a
-                href={
-                  'https://www.somenergia.coop/' +
-                  i18n.language +
-                  '/produeix-energia-renovable/autoproduccio/'
-                }
-                target="_blank"
-                rel="noreferrer"
-              >
-                {t('REPORT.PROPERESPASES_TEXT')}
-              </a>
-            </p>
-
-            <p style={styles.properespasesText}>
-              <a
-                href={
-                  'https://ca.support.somenergia.coop/article/781-com-funcionen-les-compres-col-lectives-d-autoproduccio-de-som-energia'
-                }
-                target="_blank"
-                rel="noreferrer"
-              >
-                {t('REPORT.PROPERESPASES_LINK')}{' '}
-              </a>
-            </p>
-          </div>
-
-          <div style={styles.properespasesContainer}>
-            <h3 style={styles.segonpas}>
-              {t('REPORT.PROPERESPASES_TITLE_SEGON')}{' '}
-              <strong style={styles.segonpasBold}>
-                {t('REPORT.PROPERESPASES_TITLE_SEGON_STRONG')}{' '}
-              </strong>
-            </h3>
-            <p style={styles.properespasesText}>
-              <a href="https://docs.google.com/document/d/1b2J3-gZeJlrv6DkWiYRhpqvflW_ACQZcsOL3if8IyF0/edit">
-                {t('REPORT.PROPERESPASES_TEXT_SEGON')}{' '}
-              </a>
-              .
-            </p>
-            <p style={styles.properespasesText}>
-              <a href="https://www.idae.es/companies/energetic-services">
-                {t('REPORT.PROPERESPASES_TEXT_TERCER')}{' '}
-              </a>
-              .
-            </p>
-          </div>
-        </div>
+          <Typography
+            style={styles.properespasesAmbImage}
+            dangerouslySetInnerHTML={{
+              __html: t('REPORT.PROPERESPASES_TEXT'),
+            }}
+          />
+        </Box>
 
         <Box sx={theme.informe.titleBox}>
           <Typography variant="h5">
@@ -520,22 +494,38 @@ export default function ReportSOM({ onClose }) {
           <div style={styles.listContainer}>
             <ul style={styles.list}>
               <li style={styles.listitem}>
-                <a href="https://ca.support.somenergia.coop/article/778-que-es-l-autoproduccio">
+                <a
+                  href="https://ca.support.somenergia.coop/article/778-que-es-l-autoproduccio"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   {t('REPORT.AUTOGENERACIO_LINK_PRIMER')}{' '}
                 </a>
               </li>
               <li style={styles.listitem}>
-                <a href="https://ca.support.somenergia.coop/article/783-com-funciona-la-compensacio-simplificada-dexcedents">
-                  {t('REPORT.AUTOGENERACIO_LINK_SEGON')}{' '}
+                <a
+                  href="https://ca.support.somenergia.coop/article/783-com-funciona-la-compensacio-simplificada-dexcedents"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {t('REPORT.AUTOGENERACIO_LINK_SEGON')}
                 </a>
               </li>
               <li style={styles.listitem}>
-                <a href="https://ca.support.somenergia.coop/article/929-autoproduccio-que-passa-si-marxa-la-llum">
+                <a
+                  href="https://ca.support.somenergia.coop/article/929-autoproduccio-que-passa-si-marxa-la-llum"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   {t('REPORT.AUTOGENERACIO_LINK_TERCER')}{' '}
                 </a>
               </li>
               <li style={styles.listitem}>
-                <a href="https://ca.support.somenergia.coop/category/777-autoproduccio">
+                <a
+                  href="https://ca.support.somenergia.coop/category/777-autoproduccio"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   {t('REPORT.AUTOGENERACIO_LINK_CUART')}{' '}
                 </a>
               </li>
@@ -590,7 +580,7 @@ export default function ReportSOM({ onClose }) {
                   margin: 0,
                 }}
               >
-                {t('REPORT.ECONOMIQUES_TITLE')}{' '}
+                {t('REPORT.TITLE')}{' '}
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', flex: 1, backgroundColor: '#b3b0b0' }}>
@@ -630,9 +620,7 @@ export default function ReportSOM({ onClose }) {
             <Box
               sx={{ display: 'flex', flex: 1, backgroundColor: '#d9d9d9', padding: 1 }}
             >
-              <a href="https://www.somenergia.coop/ca/tarifes-d-electricitat/">
-                {t('REPORT.ECONOMIQUES_DESCRIPTION')}{' '}
-              </a>{' '}
+              {t('REPORT.ECONOMIQUES_DESCRIPTION')}
             </Box>
           </Box>
 

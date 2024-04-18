@@ -28,7 +28,7 @@ class BaseSolar {
         enumerable: true,
         set(valor) {}, //Esta aqui para evitar error al intentar set desde update
         get() {
-          return this.columnas * this.filas * TCB.tipoPanelActivo.potencia
+          return (this.columnas * this.filas * TCB.tipoPanelActivo.potencia) / 1000
         },
       },
       anchoReal: {

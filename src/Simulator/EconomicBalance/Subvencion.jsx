@@ -15,50 +15,52 @@ import { useTheme } from '@mui/material/styles'
 // REACT Solidar Components
 import { EconomicContext } from '../EconomicContext'
 // REACT Solidar Components
-//import { ConsumptionContext } from '../ConsumptionContext'
 import { SLDRTooltip } from '../../components/SLDRComponents'
 
 // Solidar objects
 import TCB from '../classes/TCB'
+import * as UTIL from '../classes/Utiles'
 
 export default function Subvencion() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const theme = useTheme()
-
+  const [error, setError] = useState({ status: false, field: '' })
   const [valor, setValor] = useState(TCB.valorSubvencion)
   const [porciento, setPorciento] = useState(TCB.porcientoSubvencion)
 
-  const { setValorSubvencion, setPorcientoSubvencion, ecoData, setEcoData } =
-    useContext(EconomicContext)
+  const { ecoData, setEcoData } = useContext(EconomicContext)
 
-  const setNewSubvencion = () => {
-    if (porciento !== 0) {
-      TCB.valorSubvencion = (ecoData.precioInstalacionCorregido * porciento) / 100
+  const setNewSubvencion = (event) => {
+    const { name, value } = event.target
+    if (!UTIL.ValidateDecimal(i18n.language, value)) {
+      setError({ status: true, field: name })
+    } else {
+      setError({ status: false, field: '' })
       TCB.porcientoSubvencion = porciento
-    }
-    if (valor !== 0) {
       TCB.valorSubvencion = valor
-      TCB.porcientoSubvencion = (valor / ecoData.precioInstalacionCorregido) * 100
+      TCB.economico.calculoFinanciero(100, 100)
+      setEcoData({ ...ecoData, ...TCB.economico })
     }
-    setValorSubvencion(TCB.valorSubvencion)
-    setPorcientoSubvencion(TCB.porcientoSubvencion)
-
-    TCB.economico.calculoFinanciero(100, 100)
-    setEcoData(TCB.economico)
   }
 
   const onChangeSubvencion = (event) => {
     const { name, value } = event.target
-    if (name === 'valorSubvencion') {
-      setValor(value)
-      setPorciento(
-        ((parseFloat(value) / ecoData.precioInstalacionCorregido) * 100).toFixed(2),
-      )
+    if (!UTIL.ValidateDecimal(i18n.language, value)) {
+      setError({ status: true, field: name })
     } else {
-      setPorciento(value) //porcientoSubvencion
-      setValor(
-        ((ecoData.precioInstalacionCorregido * parseFloat(value)) / 100).toFixed(0),
-      )
+      setError({ status: false, field: '' })
+      if (value === '') {
+        setValor(0)
+        setPorciento(0)
+      } else {
+        if (name === 'valorSubvencion') {
+          setValor(parseInt(value))
+          setPorciento(parseInt((value / ecoData.precioInstalacionCorregido) * 100))
+        } else {
+          setPorciento(parseInt(value))
+          setValor(parseInt((ecoData.precioInstalacionCorregido * value) / 100))
+        }
+      }
     }
   }
 
@@ -99,6 +101,12 @@ export default function Subvencion() {
                   style: { textAlign: 'right' },
                 },
               }}
+              error={error.status && error.field === 'valorSubvencion'}
+              helperText={
+                error.status && error.field === 'valorSubvencion'
+                  ? t('BASIC.LABEL_NUMBER')
+                  : ''
+              }
             />
           </FormControl>
         </SLDRTooltip>
@@ -116,6 +124,12 @@ export default function Subvencion() {
                 style: { textAlign: 'right' },
               },
             }}
+            error={error.status && error.field === 'porcientoSubvencion'}
+            helperText={
+              error.status && error.field === 'porcientoSubvencion'
+                ? t('BASIC.LABEL_NUMBER')
+                : ''
+            }
           />
         </FormControl>
       </Box>

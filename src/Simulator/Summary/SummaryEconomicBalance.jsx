@@ -113,7 +113,8 @@ export default function SummaryEconomicBalance() {
               <Typography variant="h4" color={'green'}>
                 {UTIL.formatoValor(
                   'dinero',
-                  parseFloat(IBI.valorSubvencionIBI) + parseFloat(valorSubvencion),
+                  parseFloat(ecoData.valorSubvencionIBI) +
+                    parseFloat(ecoData.valorSubvencion),
                 )}
               </Typography>
               <Typography

@@ -2,28 +2,28 @@
   {
     "nombre": "505 Wp",
     "tecnologia": "crystSi",
-    "potencia": 0.505,
+    "potencia": 505,
     "ancho": 1.134,
     "largo": 2.094
   },
   {
     "nombre": "455 Wp",
     "tecnologia": "crystSi",
-    "potencia": 0.455,
+    "potencia": 455,
     "ancho": 1.039,
     "largo": 2.096
   },
   {
     "nombre": "430 Wp",
     "tecnologia": "crystSi",
-    "potencia": 0.43,
+    "potencia": 430,
     "ancho": 1.134,
     "largo": 1.762
   },
   {
     "nombre": "320 Wp",
     "tecnologia": "crystSi",
-    "potencia": 0.32,
+    "potencia": 320,
     "ancho": 0.992,
     "largo": 1.658
   },

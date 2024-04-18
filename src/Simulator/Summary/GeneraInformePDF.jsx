@@ -271,7 +271,7 @@ async function GeneraInformePDF() {
     nuevaLinea(
       'Dato',
       i++,
-      'Tarifa.PROP.P' + k,
+      'Tarifa.PROP.' + TCB.tipoTarifa + '.P' + k,
       UTIL.formatoValor('precioEnergia', TCB.tarifaActiva.precios[k]),
     )
   }

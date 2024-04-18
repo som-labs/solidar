@@ -23,53 +23,102 @@ export default function InstallationSummary() {
 
   const columns = [
     {
-      field: 'nombreBaseSolar',
-      headerName: t('BaseSolar.PROP.nombreBaseSolar'),
-      flex: 5,
-      description: t('BaseSolar.TOOLTIP.nombreBaseSolar'),
-      sortable: false,
-    },
-    {
-      field: 'paneles',
-      editable: true,
-      headerName: t('Instalacion.PROP.paneles'),
-      flex: 2,
+      field: 'areaReal',
+      headerName: t('BaseSolar.PROP.areaReal'),
+      headerAlign: 'center',
+      flex: 1,
       align: 'center',
-      description: t('Instalacion.TOOLTIP.paneles'),
       sortable: false,
-    },
-    {
-      field: 'potenciaTotal',
-      headerName: t('Instalacion.PROP.potenciaTotal'),
-      flex: 3,
-      align: 'right',
-      description: t('Instalacion.TOOLTIP.potenciaTotal'),
-      sortable: false,
+      description: t('BaseSolar.TOOLTIP.areaReal'),
       renderCell: (params) => {
-        return UTIL.formatoValor('potenciaTotal', params.value)
+        return UTIL.formatoValor('areaReal', params.value)
       },
     },
+    {
+      field: 'inclinacion',
+      headerName: t('BaseSolar.PROP.inclinacion'),
+      headerAlign: 'center',
+      flex: 1,
+      align: 'center',
+      sortable: false,
+      description: t('BaseSolar.TOOLTIP.inclinacion'),
+      renderCell: (params) => {
+        if (params.row.roofType === 'Optimos') return 'Optima'
+        if (params.row.roofType === 'Horizontal' && params.row.inclinacionOptima)
+          return 'Optima'
+        return UTIL.formatoValor('inclinacionPaneles', params.value)
+      },
+    },
+    {
+      field: 'inAcimut',
+      headerName: t('BaseSolar.PROP.inAcimut'),
+      headerAlign: 'center',
+      flex: 1,
+      align: 'center',
+      sortable: false,
+      description: t('BaseSolar.TOOLTIP.inAcimut'),
+      renderCell: (params) => {
+        if (params.row.roofType === 'Optimos') return 'Optimo'
+        else return UTIL.formatoValor('inAcimut', params.value)
+      },
+    },
+    // {
+    //   field: 'paneles',
+    //   editable: true,
+    //   headerName: t('Instalacion.PROP.paneles'),
+    //   flex: 1,
+    //   align: 'center',
+    //   description: t('Instalacion.TOOLTIP.paneles'),
+    //   sortable: false,
+    // },
+    // {
+    //   field: 'potenciaTotal',
+    //   headerName: t('Instalacion.PROP.potenciaTotal'),
+    //   flex: 1,
+    //   align: 'right',
+    //   description: t('Instalacion.TOOLTIP.potenciaTotal'),
+    //   sortable: false,
+    //   renderCell: (params) => {
+    //     return UTIL.formatoValor('potenciaTotal', params.value)
+    //   },
+    // },
   ]
 
   function footerSummary() {
     return (
-      <SLDRFooterBox sx={{ flexDirection: 'row' }}>
-        <div style={{ flex: '6' }} /> {/* Placeholder for ID column */}
-        <div style={{ flex: '2', textAlign: 'center' }}>
-          <strong>
-            {bases.reduce((sum, tBase) => sum + parseInt(tBase.paneles), 0)}
-          </strong>
-        </div>
-        <div style={{ flex: '3', textAlign: 'right' }}>
-          <strong>
-            {UTIL.formatoValor(
-              'potenciaTotal',
-              bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
-            )}
-          </strong>
-        </div>
-        <div style={{ flex: '0.6', textAlign: 'center' }}></div>
-      </SLDRFooterBox>
+      <>
+        <Typography
+          variant="body"
+          textAlign={'center'}
+          dangerouslySetInnerHTML={{
+            __html: t('REPORT.FOOTER_BASES_INSTALADAS', {
+              paneles: bases.reduce((sum, tBase) => sum + parseInt(tBase.paneles), 0),
+              potencia: UTIL.formatoValor(
+                'potenciaTotal',
+                bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
+              ),
+            }),
+          }}
+        />
+      </>
+      // <SLDRFooterBox sx={{ flexDirection: 'row' }}>
+
+      //   <div style={{ flex: '6' }} /> {/* Placeholder for ID column */}
+      //   <div style={{ flex: '2', textAlign: 'center' }}>
+      //     <strong>
+      //       {bases.reduce((sum, tBase) => sum + parseInt(tBase.paneles), 0)}
+      //     </strong>
+      //   </div>
+      //   <div style={{ flex: '3', textAlign: 'right' }}>
+      //     <strong>
+      //       {UTIL.formatoValor(
+      //         'potenciaTotal',
+      //         bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
+      //       )}
+      //     </strong>
+      //   </div>
+      //   <div style={{ flex: '0.6', textAlign: 'center' }}></div>
+      // </SLDRFooterBox>
     )
   }
   /**

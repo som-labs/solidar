@@ -145,7 +145,7 @@ export default function MapaDiaHora({ activo }) {
       displayModeBar: false,
     }
     setConfig(_config)
-  }, [])
+  }, [activo])
 
   const handleClick = (evt) => {
     var posicion = divGraph.current.children[0].getBoundingClientRect()

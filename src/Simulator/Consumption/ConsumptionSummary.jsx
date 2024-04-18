@@ -78,6 +78,7 @@ export default function ConsumptionSummary() {
     {
       field: 'actions',
       type: 'actions',
+      headerName: t('BASIC.LABEL_ACCIONES'),
       sortable: false,
       getActions: (params) => [
         <GridActionsCellItem
@@ -139,7 +140,7 @@ export default function ConsumptionSummary() {
     editing.current = false
     const initialValues = {
       nombreTipoConsumo: 'Vivienda ' + TCB.featIdUnico,
-      fuente: 'CSV',
+      fuente: '',
       ficheroCSV: null,
       consumoAnualREE: '',
     }
@@ -218,7 +219,6 @@ export default function ConsumptionSummary() {
     let newActivo = TCB.TipoConsumo.find((t) => {
       return t.idTipoConsumo === tc.idTipoConsumo
     })
-    console.log('CAMBIANDO ACTIVO', newActivo)
     setActivo(newActivo)
   }
 
@@ -307,9 +307,9 @@ export default function ConsumptionSummary() {
   }
 
   return (
-    <Grid container rowSpacing={4}>
+    <Grid container justifyContent={'center'} rowSpacing={4}>
       {preciosValidos && (
-        <Grid item xs={12}>
+        <Grid item xs={11}>
           <SLDRInfoBox>
             <DataGrid
               sx={theme.tables.headerWrap}

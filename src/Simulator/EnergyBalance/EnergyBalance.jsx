@@ -51,7 +51,6 @@ export default function EnergyBalanceStep() {
   // El rendimiento ha podido cambiar la inclinacion y por lo tanto el area, la configuracion de paneles y la potenciaMaxima
   // Si se usaron angulos optimos tambien ha cambiado el acimut.
   useEffect(() => {
-    console.log('USEEFFECT de ENERGYBALANCE sin condiciones')
     updateTCBBasesToState()
   }, [])
 
@@ -101,10 +100,10 @@ export default function EnergyBalanceStep() {
           />
         </Grid>
         <Grid item xs={12}>
-          <SLDRInfoBox sx={{ mt: '1rem' }}>
-            {/* <ValidateServerNameGrid></ValidateServerNameGrid> */}
-            <InstallationSummary></InstallationSummary>
-          </SLDRInfoBox>
+          {/* <SLDRInfoBox sx={{ mt: '1rem' }}> */}
+          {/* <ValidateServerNameGrid></ValidateServerNameGrid> */}
+          <InstallationSummary></InstallationSummary>
+          {/* </SLDRInfoBox> */}
         </Grid>
 
         <Grid item xs={12}>
@@ -188,7 +187,7 @@ export default function EnergyBalanceStep() {
           </Typography>
 
           <SLDRInfoBox>
-            <HourlyEnergyBalance></HourlyEnergyBalance>
+            <HourlyEnergyBalance report={false}></HourlyEnergyBalance>
           </SLDRInfoBox>
         </Grid>
 

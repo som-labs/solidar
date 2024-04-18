@@ -54,6 +54,7 @@ const LocationStep = () => {
     })
   }
 
+  console.log('LOCATION TCB', TCB)
   return (
     <Container>
       <Grid container rowSpacing={2}>

@@ -25,7 +25,7 @@ import { SLDRInputField } from '../../components/SLDRComponents'
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
-export default function DialogBaseSolar({ data, onClose }) {
+export default function DialogPanelsType({ data, onClose }) {
   const { t, i18n } = useTranslation()
   const theme = useTheme()
 
@@ -109,7 +109,6 @@ export default function DialogBaseSolar({ data, onClose }) {
                     select
                     value={ndxPanel.current}
                     name="tipoPanel"
-                    //defaultValue={2}
                     object="Instalacion"
                     onChange={(event) =>
                       cambiaTipoPanel(event.target.value, values, setValues)
@@ -191,8 +190,8 @@ export default function DialogBaseSolar({ data, onClose }) {
                   id="potencia"
                   name="potencia"
                   object="Instalacion"
-                  unit=" kWp"
-                  value={UTIL.formatoValor('potencia', values.potencia, '')}
+                  unit=" Wp"
+                  value={UTIL.formatoValor('potenciaWp', values.potencia, '')}
                   sx={{ textAlign: 'right', width: '100%' }}
                 ></SLDRInputField>
 

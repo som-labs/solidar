@@ -16,7 +16,6 @@ export default function EnvironmentalImpact() {
     (radiusNoRenovable * TCB.produccion.CO2AnualRenovable) /
       TCB.produccion.CO2AnualNoRenovable,
   )
-  //PENDIENTE: que color poner para que con fondo oscuro los circulos se vean bien. Revisar la cuestion del theme
   return (
     <>
       <Container>
@@ -67,7 +66,10 @@ export default function EnvironmentalImpact() {
                 }}
               >
                 <Typography variant="h6" textAlign={'center'} color={'white'}>
-                  {UTIL.formatoValor('peso', TCB.produccion.CO2AnualRenovable)}
+                  {UTIL.formatoValor(
+                    'CO2AnualRenovable',
+                    TCB.produccion.CO2AnualRenovable,
+                  )}
                 </Typography>
               </Box>
               <Typography
@@ -101,7 +103,10 @@ export default function EnvironmentalImpact() {
                 }}
               >
                 <Typography variant="h6" textAlign={'center'} color={'white'}>
-                  {UTIL.formatoValor('peso', TCB.produccion.CO2AnualNoRenovable)}
+                  {UTIL.formatoValor(
+                    'CO2AnualNoRenovable',
+                    TCB.produccion.CO2AnualNoRenovable,
+                  )}
                 </Typography>
               </Box>
 

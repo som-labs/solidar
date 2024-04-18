@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 //Formik objects
@@ -15,6 +15,7 @@ import horizontalSvgFile from '../assets/horizontal.png'
 
 //React global components
 import { SLDRInputField } from '../../components/SLDRComponents'
+import { BasesContext } from '../BasesContext'
 
 // Solidar global modules
 import * as UTIL from '../classes/Utiles'
@@ -40,6 +41,7 @@ import * as UTIL from '../classes/Utiles'
 export default function DialogBaseSolar({ data, onClose }) {
   const { t } = useTranslation()
   const theme = useTheme()
+  const { bases } = useContext(BasesContext)
   /*
   roofType state is needed for UseEffect that is needed to recover canvas each time the user 
   goes through the Optimos option where canvas is not rendered.
@@ -218,23 +220,33 @@ export default function DialogBaseSolar({ data, onClose }) {
     let value
 
     if (values.nombreBaseSolar === '') {
-      errors.nombre = 'Requerido'
+      errors.nombre = t('BASIC.LABEL_REQUIRED')
+      return errors
+    } else {
+      bases.forEach((base) => {
+        if (
+          base.nombreBaseSolar === values.nombreBaseSolar &&
+          base.idBaseSolar != values.idBaseSolar
+        ) {
+          errors.nombreBaseSolar = t('LOCATION.ERROR_NOMBRE_BASE_SOLAR_DUPLICADO')
+          return errors
+        }
+      })
     }
 
     if (values.roofType === 'Inclinado') {
       if (values.inclinacion === '') {
-        errors.inclinacion = 'Requerido'
+        errors.inclinacion = t('BASIC.LABEL_REQUIRED')
       }
       if (parseInt(values.inclinacion) === 0) {
         errors.inclinacion = t('LOCATION.ERROR_INCLINADO_NOANGLE')
       }
       if (!UTIL.ValidateEntero(values.inclinacion)) {
-        errors.inclinacion =
-          'Debe ser un número entero mayor que 0 y menor o igual que 80'
+        errors.inclinacion = t('LOCATION.ERROR_INCLINACION')
       } else {
         value = parseInt(values.inclinacion)
         if (value < 0 || value > 80) {
-          errors.inclinacion = 'El valor de la inclinación debe estar entre 0º y 80º'
+          errors.inclinacion = t('LOCATION.ERROR_INCLINACION')
         }
       }
     }
@@ -242,11 +254,11 @@ export default function DialogBaseSolar({ data, onClose }) {
     if (values.roofType === 'Horizontal') {
       if (!values.inclinacionOptima) {
         if (!UTIL.ValidateEntero(values.inclinacion)) {
-          errors.inclinacion = 'Debe ser un número entero entre 0 y 90'
+          errors.inclinacion = t('LOCATION.ERROR_INCLINACION')
         } else {
           value = parseInt(values.inclinacion)
           if (values.inclinacion < 0 || values.inclinacion > 90) {
-            errors.inclinacion = 'El valor de la inclinación debe estar entre 0º y 90º'
+            errors.inclinacion = t('LOCATION.ERROR_INCLINACION')
           }
         }
       }

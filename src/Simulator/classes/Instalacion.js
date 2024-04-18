@@ -15,7 +15,7 @@ class Instalacion {
    * @constructor
    * @param {Object} inInst objeto con las características de la instalación a crear
    * @param {number} inInst.paneles número de paneles
-   * @param {number} inInst.potenciaUnitaria kWp de cada uno de los paneles
+   * @param {number} inInst.potenciaUnitaria Wp de cada uno de los paneles
    */
   constructor(inInst) {
     Object.defineProperties(this, {
@@ -30,13 +30,14 @@ class Instalacion {
       },
       potenciaUnitaria: {
         enumerable: true,
-        set(potencia) {
+        set(newPotencia) {
+          const prevPotencia = this.#potenciaUnitaria
+          this.#potenciaUnitaria = newPotencia
           // actualiza proporcionalmente el precio si ya tenia un precio asignado
           if (this.#precioInstalacion !== 0)
-            this.#precioInstalacion *= potencia / this.#potenciaUnitaria
-          else this.#precioInstalacion = Instalacion.getPrecioInstalacion(potencia)
-
-          this.#potenciaUnitaria = potencia
+            this.#precioInstalacion *= newPotencia / prevPotencia
+          else
+            this.#precioInstalacion = Instalacion.getPrecioInstalacion(this.potenciaTotal)
         },
         get() {
           return this.#potenciaUnitaria
@@ -44,16 +45,15 @@ class Instalacion {
       },
       paneles: {
         enumerable: true,
-        set(numero) {
-          // actualiza proporcionalemnte el precio si ya tenia un precio asignado
+        set(newPanels) {
+          const oldPanels = this.#numeroPaneles
+          this.#numeroPaneles = newPanels
+          // actualiza proporcionalmente el precio si ya tenia un precio asignado
           if (this.#precioInstalacion !== 0)
-            this.#precioInstalacion *= numero / this.#numeroPaneles
+            this.#precioInstalacion *= newPanels / oldPanels
           //En caso contrario calcula el precio para esa potencia
           else
-            this.#precioInstalacion = Instalacion.getPrecioInstalacion(
-              numero / this.potenciaUnitaria,
-            )
-          this.#numeroPaneles = numero
+            this.#precioInstalacion = Instalacion.getPrecioInstalacion(this.potenciaTotal)
         },
         get() {
           return this.#numeroPaneles
@@ -65,7 +65,7 @@ class Instalacion {
       potenciaTotal: {
         enumerable: true,
         get() {
-          return this.potenciaUnitaria * this.#numeroPaneles
+          return (this.potenciaUnitaria / 1000) * this.#numeroPaneles
         },
       },
     })
@@ -74,7 +74,7 @@ class Instalacion {
     this.#potenciaUnitaria = inInst.potenciaUnitaria
     this.#numeroPaneles = inInst.paneles
     this.#precioInstalacion = Instalacion.getPrecioInstalacion(
-      inInst.potenciaUnitaria * inInst.paneles,
+      (inInst.potenciaUnitaria * inInst.paneles) / 1000,
     )
     UTIL.debugLog('Nueva instalacion creada', this)
   }
@@ -86,7 +86,7 @@ class Instalacion {
       precioInstalacion: this.#precioInstalacion,
     }
   }
-  /** Devuelve el precio teórico de la instalación en base a su potencia según nuestra estimación
+  /** Devuelve el precio teórico de la instalación en base a su potencia (kWp) según nuestra estimación
    * @see TCB.precioInstalacion
    *  return {number} Precio teorico de la instalación
    */

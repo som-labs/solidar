@@ -85,6 +85,9 @@ export default async function PreparaEnergyBalance() {
 
     UTIL.debugLog('PreparaEnergyBalance - pasa a calculaResultados')
     await calculaResultados()
+    if (TCB.economico.periodoAmortizacion > 20) {
+      alert(TCB.i18next.t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
+    }
   }
   document.body.style.cursor = cursorOriginal
   return { status: true }

@@ -98,7 +98,6 @@ class Rendimiento extends DiaHora {
       if (respuesta.status === 200) {
         var PVGISdata = await respuesta.json()
         if (PVGISdata.status !== undefined) {
-          //REVISAR: como usar i18n desde aqui
           this.PVGISresults = {
             status: false,
             error: TCB.i18next.t('Rendimiento.MSG_ERROR_PVGIS_FETCH', {
