@@ -281,13 +281,13 @@ const SummarySOMStep = () => {
                 <Typography
                   variant="body"
                   dangerouslySetInnerHTML={{
-                    __html: t('SUMMARY.LABEL_disclaimer1'),
+                    __html: t('SUMMARY.LABEL_DISCLAIMER_1'),
                   }}
                 />
                 <Typography
                   variant="body"
                   dangerouslySetInnerHTML={{
-                    __html: t('SUMMARY.LABEL_disclaimer2'),
+                    __html: t('SUMMARY.LABEL_DISCLAIMER_2'),
                   }}
                 />
               </Box>

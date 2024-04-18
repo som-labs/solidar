@@ -199,7 +199,7 @@ export default function MapaMesHora({ activo }) {
       },
 
       xaxis: {
-        title: t('GRAPHICS.LABEL_HORA'),
+        title: t('BASIC.LABEL_HORA'),
         showgrid: false,
         showline: true,
         linecolor: 'rgb(102, 102, 102)',

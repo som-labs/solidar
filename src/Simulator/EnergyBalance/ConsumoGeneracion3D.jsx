@@ -52,9 +52,9 @@ export default function ConsumoGeneracion3D() {
       },
     },
     hovertemplate:
-      t('GRAPHICS.LABEL_DIA') +
+      t('BASIC.LABEL_DIA') +
       ': %{y}<br>' +
-      t('GRAPHICS.LABEL_HORA') +
+      t('BASIC.LABEL_HORA') +
       ': %{x}<br>' +
       t('GRAPHICS.LABEL_PRODUCTION') +
       ': %{z:.2f} kWh',
@@ -73,9 +73,9 @@ export default function ConsumoGeneracion3D() {
     showlegend: true,
     showscale: false,
     hovertemplate:
-      t('GRAPHICS.LABEL_DIA') +
+      t('BASIC.LABEL_DIA') +
       ': %{y}<br>' +
-      t('GRAPHICS.LABEL_HORA') +
+      t('BASIC.LABEL_HORA') +
       ': %{x}<br>' +
       t('GRAPHICS.LABEL_CONSUMPTION') +
       ': %{z:.2f} kWh',
@@ -106,11 +106,11 @@ export default function ConsumoGeneracion3D() {
       zaxis: { title: 'kWh' },
       camera: { eye: { x: -2.5, y: -2.5, z: 1 } },
       clickmode: 'event+select',
-      xaxis: { title: t('GRAPHICS.LABEL_HORA'), dtick: 2 },
+      xaxis: { title: t('BASIC.LABEL_HORA'), dtick: 2 },
       yaxis: {
         title_standoff: 1,
         title_position: 'left',
-        title: t('GRAPHICS.LABEL_MES'),
+        title: t('BASIC.LABEL_MES'),
         tickvals: UTIL.indiceDia.map((e) => {
           return e[1]
         }),
