@@ -138,7 +138,7 @@ export default function InstallationSummary() {
         <GridActionsCellItem
           key={1}
           icon={
-            <Tooltip title={t('RESULTS.TOOLTIP_botonInfoBase')}>
+            <Tooltip title={t('ENERGY_BALANCE.SUMMARY_TOOLTIP_INFO')}>
               <InfoIcon sx={{ color: theme.palette.infoIcon.main }} />
             </Tooltip>
           }

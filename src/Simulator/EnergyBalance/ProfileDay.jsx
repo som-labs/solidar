@@ -83,7 +83,7 @@ export default function ProfileDay(props) {
       t: 20,
     },
     xaxis: {
-      title: t('GRAPHICS.LABEL_HORA'),
+      title: t('BASIC.LABEL_HORA'),
       dtick: 2,
       zeroline: false,
       range: [0, 23],

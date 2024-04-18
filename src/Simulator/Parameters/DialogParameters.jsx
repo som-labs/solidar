@@ -84,35 +84,12 @@ export default function DialogParameters({ parameters, onClose }) {
                 {parametersVector.map((key) => (
                   <Fragment key={key}>
                     <Grid item xs={5}>
-                      {key === 'tecnologia' ? (
-                        <SLDRInputField
-                          sx={{
-                            width: 200,
-                            height: 50,
-                            textAlign: 'center',
-                            mb: '1rem',
-                          }}
-                          select
-                          object="PARAMETROS"
-                          label={t('PARAMETROS.LABEL_' + key)}
-                          name="tecnologia"
-                          value={values.tecnologia}
-                        >
-                          <MenuItem value="crystSi">Crystaline silicon</MenuItem>
-                          <MenuItem value="CIS">CIS</MenuItem>
-                          <MenuItem value="Cadmium Telluride">cdTe</MenuItem>
-                          <MenuItem value="Unknown">
-                            {t('PARAMETROS.LABEL_tecnologiaDesconocida')}
-                          </MenuItem>
-                        </SLDRInputField>
-                      ) : (
-                        <SLDRInputField
-                          value={values[key].toLocaleString(i18n.language)}
-                          object="PARAMETROS"
-                          label={t('PARAMETROS.LABEL_' + key)}
-                          name={key}
-                        ></SLDRInputField>
-                      )}
+                      <SLDRInputField
+                        value={values[key].toLocaleString(i18n.language)}
+                        object="PARAMETROS"
+                        label={t('PARAMETROS.PROP.' + key)}
+                        name={key}
+                      ></SLDRInputField>
                     </Grid>
                   </Fragment>
                 ))}
