@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import Container from '@mui/material/Container'
@@ -90,7 +90,6 @@ export default function Page() {
     return results.status
   }
 
-  console.log('PAGE TCB', TCB)
   return (
     <>
       <AppFrame>

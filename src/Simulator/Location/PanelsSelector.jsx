@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -18,12 +18,9 @@ import BaseSolar from '../classes/BaseSolar'
 export default function PanelsSelector() {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
-  const [tipo, setTipo] = useState(TCB.tipoPanelActivo)
-  const { bases, setBases, updateTCBBasesToState } = useContext(BasesContext)
-
-  useEffect(() => {
-    setTipo({ ...tipo, ...TCB.tipoPanelActivo })
-  }, [])
+  //const [tipo, setTipo] = useState(TCB.tipoPanelActivo)
+  const { tipoPanelActivo, setTipoPanelActivo, updateTCBBasesToState } =
+    useContext(BasesContext)
 
   function changePanelsType() {
     openDialog({
@@ -38,7 +35,8 @@ export default function PanelsSelector() {
 
   function endDialog(reason, formData) {
     if (reason === 'save') {
-      setTipo(formData)
+      //setTipo(formData)
+      setTipoPanelActivo(formData)
       //If we are changing panel technology need to update PVGIS data for existing bases
       if (TCB.tipoPanelActivo.tecnologia !== formData.tecnologia) {
         TCB.tipoPanelActivo.tecnologia = formData.tecnologia
@@ -76,14 +74,13 @@ export default function PanelsSelector() {
     closeDialog()
   }
 
-  console.log('PANELS TCB-tipo', TCB, tipo)
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', padding: 1 }}>
       <Typography
         variant="body"
         dangerouslySetInnerHTML={{
           __html: t('Instalacion.DESCRIPTION.paneles', {
-            potencia: UTIL.formatoValor('potenciaWp', tipo.potencia),
+            potencia: UTIL.formatoValor('potenciaWp', tipoPanelActivo.potencia),
           }),
         }}
       ></Typography>
