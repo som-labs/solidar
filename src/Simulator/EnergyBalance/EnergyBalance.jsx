@@ -32,7 +32,6 @@ import { useDialog } from '../../components/DialogProvider'
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import calculaResultados from '../classes/calculaResultados'
 
 export default function EnergyBalanceStep() {
   const { t } = useTranslation()

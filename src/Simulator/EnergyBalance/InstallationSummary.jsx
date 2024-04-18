@@ -17,6 +17,7 @@ import { useDialog } from '../../components/DialogProvider'
 import DialogProperties from '../components/DialogProperties'
 
 // Solidar objects
+import Economico from '../classes/Economico'
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
@@ -228,6 +229,8 @@ export default function InstallationSummary() {
 
         //Update context with new TCB data
         calculaResultados()
+        TCB.economico = new Economico()
+        UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
         if (TCB.economico.periodoAmortizacion > 20) {
           alert(t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
         }

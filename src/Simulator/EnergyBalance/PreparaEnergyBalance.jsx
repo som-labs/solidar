@@ -9,6 +9,7 @@ import calculaResultados from '../classes/calculaResultados'
 // Solidar objects
 import Consumo from '../classes/Consumo'
 import BaseSolar from '../classes/BaseSolar'
+import Economico from '../classes/Economico'
 
 export default async function PreparaEnergyBalance() {
   let cursorOriginal = document.body.style.cursor
@@ -85,9 +86,12 @@ export default async function PreparaEnergyBalance() {
 
     UTIL.debugLog('PreparaEnergyBalance - pasa a calculaResultados')
     await calculaResultados()
-    if (TCB.economico.periodoAmortizacion > 20) {
-      alert(TCB.i18next.t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
-    }
+  }
+  TCB.economico = new Economico()
+  UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
+
+  if (TCB.economico.periodoAmortizacion > 20) {
+    alert(TCB.i18next.t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
   }
   document.body.style.cursor = cursorOriginal
   return { status: true }

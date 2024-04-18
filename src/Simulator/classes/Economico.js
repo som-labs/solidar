@@ -90,7 +90,7 @@ class Economico {
                 TCB.tarifaActiva.precios[
                   [TCB.tarifaActiva.horas[this.idxTable[dia].mes][hora]]
                 ]
-              idxPeriodo = TCB.tarifaActiva.horas[hora]
+              idxPeriodo = TCB.tarifaActiva.horas[this.idxTable[dia].mes][hora]
             }
           }
 

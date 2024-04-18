@@ -13,8 +13,10 @@ import { EconomicContext } from '../EconomicContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'
+import * as UTIL from '../classes/Utiles'
 import { nuevoTotalPaneles } from '../classes/optimizador'
 import calculaResultados from '../classes/calculaResultados'
+import Economico from '../classes/Economico'
 
 export default function GraphAlternatives() {
   const { t } = useTranslation()
@@ -81,6 +83,9 @@ export default function GraphAlternatives() {
 
         // Se realizan todos los calculos
         calculaResultados()
+
+        TCB.economico = new Economico()
+        UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
 
         if (TCB.economico.periodoAmortizacion > 0) {
           // Se extraen los valores de las variables que forman parte del grafico
