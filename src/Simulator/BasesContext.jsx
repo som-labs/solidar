@@ -17,7 +17,15 @@ const BasesContextProvider = ({ children }) => {
   const { t } = useTranslation()
   const [map, setMap] = useState()
   const [bases, setBases] = useState([])
-  const [tipoPanelActivo, setTipoPanelActivo] = useState({})
+
+  //REVISAR: No se puede copiar de la TCB por falta de sincronismo en solidarenergia
+  const [tipoPanelActivo, setTipoPanelActivo] = useState({
+    nombre: '430 Wp',
+    tecnologia: 'crystSi',
+    potencia: 430,
+    ancho: 1.134,
+    largo: 1.762,
+  })
 
   //TCB fields to be reflected in state
   const hdrBase = {
