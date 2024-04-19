@@ -186,7 +186,7 @@ export default function MapaDiaHora({ activo }) {
 
         <Typography
           variant="body"
-          textAlign={'left'}
+          textAlign={'center'}
           dangerouslySetInnerHTML={{
             __html: t('CONSUMPTION.DESC_MAP_MONTH_DAY'),
           }}
