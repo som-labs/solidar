@@ -134,10 +134,10 @@ export default function DialogConsumption({ data, previous, onClose }) {
                     object="TipoConsumo"
                     onChange={(event) => handleFuente(event, values, setValues)}
                   >
-                    <MenuItem value={'SOM'}>SOM Oficina Virtual</MenuItem>
-                    <MenuItem value={'CSV'}>CSV</MenuItem>
+                    <MenuItem value={'SOM'}>Som Energía</MenuItem>
+                    <MenuItem value={'CSV'}>Empresa distribuidora</MenuItem>
                     <MenuItem value={'DATADIS'}>DATADIS</MenuItem>
-                    <MenuItem value={'REE'}>REE</MenuItem>
+                    <MenuItem value={'REE'}>Perfil estándar (REE)</MenuItem>
                   </SLDRInputField>
                 }
                 label={t('TipoConsumo.PROP.fuente')}

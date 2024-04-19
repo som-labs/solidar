@@ -56,7 +56,7 @@ BaseSolar:
     inclinacionTejado: Inclinación del tejado
     inclinacionPaneles: Inclinación de los paneles
     inclinacionOptima: Inclinación óptima
-    inAcimut: Orientación
+    inAcimut: Orientación  al sur
     areaReal: Superficie disponible
     panelesMaximo: Número de paneles máximo
     potenciaMaxima: Potencia máxima
@@ -107,7 +107,7 @@ TipoConsumo:
     <ul>
     <li><u>Curvas  de uso de energía</u> a través de un fichero con información horaria de tu uso real.<br />
     <ul>
-    <li><strong>Si tu contrato está activo en Som Energía</strong> puedes descargar el <strong>fichero CSV</strong> a través de tu <a href='https://oficinavirtual.somenergia.coop/es/' target='_blank'>Oficina Virtual.</a> Tienes las instrucciones en el siguiente enlace: <a href='https://es.support.somenergia.coop/article/942--las-curvas-horarias-de-uso-de-energia' target='_blank'>Las curvas horarias de Som Energía</a></li>
+    <li><strong>Som Energía:</strong>Si tienes contrato activo con Som Energía puedes descargar el fichero de curvas horarias a través de tu <a href='https://oficinavirtual.somenergia.coop/es/' target='_blank'>Oficina Virtual.</a> Tienes las instrucciones en el siguiente enlace: <a href='https://es.support.somenergia.coop/article/942--las-curvas-horarias-de-uso-de-energia' target='_blank'>Las curvas horarias de Som Energía</a></li>
     <li><strong>Empresa de distribución eléctrica:</strong> <a href='./datos/Guias publicadas/Enlaces para descarga CSV individual.htm 'target='_blank'>En este enlace </a>puedes encontrar las instrucciones para descargar el <strong>fichero CSV</strong> de las siguientes compañías de distribución eléctrica:
     <strong>
     <ul>
@@ -127,7 +127,7 @@ TipoConsumo:
     <u>Consumo anual informado mediante tu factura eléctrica</u>
     <ul>
     <li>
-    <strong>REE:</strong> Mediante tu uso de energía anual Red Eléctrica Española tiene definido un perfil de usuario estandarizado que se usará como modelo.
+    <strong>Perfil estándar (REE):</strong> Mediante tu uso de energía anual Red Eléctrica Española tiene definido un perfil de usuario estandarizado que se usará como modelo.
     </li>
     </ul>
     </li>
@@ -371,7 +371,7 @@ LOCATION:
     CUALES_1: 1. Área total de cubierta
     CUALES_2: 2. Áreas disponibles
     TITLE_2: ¿Mas de una orientación o inclinación?
-    DOS_AGUAS: Si tienes mas de un tejado, deberás seleccionar cada parte del tejado como diferentes áreas. La inclinación puede ser distinta en cada parcela/superficie, como también su posición respecto al sur.
+    DOS_AGUAS: Si tienes mas de un tejado, o un tejado con varias aguas, deberás seleccionar cada parte como diferentes áreas. La inclinación puede ser distinta en cada parcela/superficie, como también su posición respecto al sur.
     TITLE_3: ¿Como afectan las sombras?
     SOMBRAS_1: |
       Las sombras pueden afectar de manera significativa la zona donde se instalarán los paneles, influyendo directamente en el rendimiento de la instalación.  Consulta el efecto de las sombras sobre los paneles solares con Shadowmap.
@@ -407,7 +407,7 @@ CONSUMPTION:
   TITLE: Consumo
   TIPO_CONSUMO_DESCRIPTION: |
     <strong>PASO 4.</strong> A continuación necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.<br />
-    El documento de curvas horarias ( en formato .csv) nos permitirá conocer tus hábitos de uso eléctrico, saber en qué tramos horarios y en qué meses del año sueles consumir más energía.<br /> 
+    El documento de curvas horarias (en formato .csv) nos permitirá conocer tus hábitos de uso eléctrico, saber en qué tramos horarios y en qué meses del año sueles consumir más energía.<br /> 
     También puedes indicar el uso de energía anual que aparece en tu factura para hacer una estimación en base a un perfil estándar.
     <br />
   TARIFA_DESCRIPTION_1: |
@@ -434,8 +434,8 @@ CONSUMPTION:
   TITLE_MAP_MONTH_DAY: Valores diarios de consumo
   TOOLTIP_MAP_MONTH_DAY: Gráfico interactivo. Clica en un punto y verás el perfil horario de consumo de ese dia.
   DESC_MAP_MONTH_DAY: |
-    El uso eléctrico por horas varia en función de si se trata de un día festivo o laborable. En los días laborables suele haber un uso mínimo durante las horas de trabajo, a no ser que teletrabajes.<br />
-    También varía según las estaciones del año y la zona geográfica. En el norte de España en invierno, el mayor uso eléctrico se concentra en las horas del amanecer y del anochecer debido al uso de la calefacción, mientras que en el sur de España en verano, el mayor uso eléctrico se encuentra al mediodía, debido al uso del aire acondicionado.<br />
+    El uso eléctrico por horas varia en función de si se trata de un día festivo o laborable. En los días laborables suele haber un uso mínimo durante las horas de trabajo, a no ser que teletrabajes.<br /><br />
+    También varía según las estaciones del año y la zona geográfica. Durante el invierno en el norte de España, el mayor uso eléctrico se concentra en las horas del amanecer y del anochecer debido al uso de la calefacción, mientras que durante el verano en el sur de España, el mayor uso eléctrico se encuentra al mediodía, debido al uso del aire acondicionado.<br /><br />
     El siguiente gráfico es interactivo. Pulsa en un punto y podrás ver el perfil de uso horario de ese día.
 
   LABEL_TITLE_MAP_MONTH_DAY: Mapa de uso horario en kWh
@@ -514,7 +514,7 @@ ENERGY_BALANCE:
   DESCRIPTION_GRAPH_MONTH_FIVE_PARTS: |
     La autoproducción es mayor en verano (más horas de luz) que en invierno.<br />
     El uso eléctrico varía según los meses y la zona geográfica: en el norte de España el uso eléctrico más alto se produce en los meses de invierno mientras que en el sur los picos de uso eléctrico se producen en verano. En general los meses de primavera y otoño son los más estables en toda España.<br />
-    En el siguiente gráfico se ve la comparación entre tu uso eléctrico y tu autoproducción mes a mes.
+    En el siguiente gráfico verás la comparación entre tu uso eléctrico y tu autoproducción mes a mes.
 
   NOTE_DISCLAIMER_PRODUCCION: |
     Los datos para la estimación de la producción de los paneles solares se obtienen de PVGIS.
