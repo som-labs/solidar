@@ -16,7 +16,7 @@ import { EconomicContext } from '../EconomicContext'
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
 
-export default function MonthSaving() {
+export default function MonthSavingStack() {
   const { t } = useTranslation()
   const theme = useTheme()
 
@@ -56,56 +56,65 @@ export default function MonthSaving() {
         x: mesMapa,
         y: ecoData.consumoConPlacasMensualCorregido,
         name: t('GRAFICOS.LABEL_graficasGastoConPaneles'),
-        type: 'scatter',
-        line: { shape: 'spline', width: 3, color: '#819368' },
-      }
-
-      var trace_consumo = {
-        x: mesMapa,
-        y: ecoData.consumoOriginalMensual,
-        name: t('GRAFICOS.LABEL_graficasGastoSinPaneles'),
-        type: 'scatter',
-        line: { shape: 'spline', width: 3, color: '#810C04' },
-      }
-
-      var trace_base = {
-        x: mesMapa,
-        y: ecoData.consumoConPlacasMensualCorregido,
-        name: 'base',
+        width: 0.8,
+        marker: { color: '#819368' },
         type: 'bar',
-        hoverinfo: 'none',
-        showlegend: false,
-        marker: {
-          color: 'rgba(1,1,1,0.0)',
-        },
+        text: ecoData.consumoConPlacasMensualCorregido.map((p) =>
+          UTIL.formatoValor('dinero', p),
+        ),
+        textposition: 'auto',
       }
+
+      //   var trace_consumo = {
+      //     x: mesMapa,
+      //     y: ecoData.consumoOriginalMensual,
+      //     name: t('GRAFICOS.LABEL_graficasGastoSinPaneles'),
+      //     type: 'scatter',
+      //     line: { shape: 'spline', width: 3, color: '#810C04' },
+      //   }
+
+      //   var trace_base = {
+      //     x: mesMapa,
+      //     y: ecoData.consumoConPlacasMensualCorregido,
+      //     name: 'base',
+      //     type: 'bar',
+      //     hoverinfo: 'none',
+      //     showlegend: false,
+      //     marker: {
+      //       color: 'rgba(1,1,1,0.0)',
+      //     },
+      //   }
 
       var trace_compensa = {
         x: mesMapa,
         y: _compensado,
-        width: 0.3,
+        width: 0.8,
         marker: { color: '#997171' },
         name: t('GRAFICOS.LABEL_graficasCompensacion'),
         type: 'bar',
+        text: _compensado.map((p) => UTIL.formatoValor('dinero', p)),
+        textposition: 'auto',
       }
 
       var trace_ahorro = {
         x: mesMapa,
         y: ecoData.ahorradoAutoconsumoMes,
-        width: 0.3,
+        width: 0.8,
         marker: { color: '#C7A6CF' },
         name: t('GRAFICOS.LABEL_graficasAutoconsumo'),
         type: 'bar',
+        text: ecoData.ahorradoAutoconsumoMes.map((p) => UTIL.formatoValor('dinero', p)),
+        textposition: 'auto',
       }
 
-      var trace_perdida = {
-        x: mesMapa,
-        y: _perdidas,
-        width: 0.5,
-        name: t('GRAFICOS.LABEL_graficasNoCompensado'),
-        base: 0,
-        type: 'bar',
-      }
+      //   var trace_perdida = {
+      //     x: mesMapa,
+      //     y: _perdidas,
+      //     width: 0.5,
+      //     name: t('GRAFICOS.LABEL_graficasNoCompensado'),
+      //     base: 0,
+      //     type: 'bar',
+      //   }
 
       var layout = {
         font: {
@@ -120,6 +129,7 @@ export default function MonthSaving() {
           b: 0,
           t: 20,
         },
+        height: 300,
         barmode: 'relative',
         yaxis: {
           title: 'Euros',
@@ -137,43 +147,9 @@ export default function MonthSaving() {
       }
 
       let data
-      if (TCB.coefHucha > 0) {
-        var trace_huchaSaldo = {
-          x: mesMapa,
-          y: ecoData.huchaSaldo,
-          name: t('GRAFICOS.LABEL_SALDO_VIRTUAL_BATTERY'),
-          type: 'scatter',
-          line: { shape: 'spline', width: 3, color: '#F99F00' },
-        }
 
-        var trace_extraccionHucha = {
-          x: mesMapa,
-          y: ecoData.extraccionHucha,
-          width: 0.3,
-          marker: { color: '#4F1F5B' },
-          name: t('GRAFICOS.LABEL_EXTRACCION_VIRTUAL_BATTERY'),
-          type: 'bar',
-        }
-        data = [
-          trace_consumo,
-          trace_pagado,
-          trace_huchaSaldo,
-          trace_base,
-          trace_compensa,
-          trace_ahorro,
-          trace_extraccionHucha,
-        ]
-      } else {
-        // this.opcion = 'SinHucha'
-        data = [
-          trace_consumo,
-          trace_pagado,
-          trace_base,
-          trace_compensa,
-          trace_ahorro,
-          trace_perdida,
-        ]
-      }
+      // this.opcion = 'SinHucha'
+      data = [trace_pagado, trace_compensa, trace_ahorro]
 
       const config = {
         displayModeBar: false,

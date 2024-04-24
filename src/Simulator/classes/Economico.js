@@ -33,7 +33,7 @@ class Economico {
     this.diaHoraPrecioConPaneles = Array.from(Array(365), () => new Array(24).fill(0))
     this.diaHoraTarifaOriginal = Array.from(Array(365), () => new Array(24).fill(0))
     this.diaHoraTarifaConPaneles = Array.from(Array(365), () => new Array(24).fill(0))
-    this.impuestoTotal = TCB.parametros.IVAenergia + TCB.parametros.impuestoElectrico
+    this.impuestoTotal = TCB.parametros.IVAEnergia + TCB.parametros.impuestoElectrico
     const coefImpuesto = (100 + this.impuestoTotal) / 100
     this.gastoSinPlacasAnual = 0
     this.gastoConPlacasAnual = 0
@@ -103,6 +103,7 @@ class Economico {
           // Store energia consumed by fee period
           TCB.consumo.periodo[idxPeriodo - 1] += TCB.consumo.diaHora[dia][hora]
           if (idxPeriodo > 6) console.log(dia, hora)
+
           // Determinamos el precio de esa hora (la tarifa) segun sea el balance es decir teniendo en cuanta los paneles. Si es negativo compensa
           if (TCB.balance.diaHora[dia][hora] < 0) {
             //Aportamos energia a la red de distribución
@@ -114,6 +115,7 @@ class Economico {
               TCB.balance.diaHora[dia][hora] *
               this.diaHoraTarifaConPaneles[dia][hora] *
               coefImpuesto
+
             this.idxTable[dia].compensado += this.diaHoraPrecioConPaneles[dia][hora]
           } else {
             //Demandamos energia de la red de distribucion
@@ -140,7 +142,7 @@ class Economico {
     this.ahorradoAutoconsumoMes = this.resumenMensual('ahorradoAutoconsumo')
 
     //calculate installation cost
-    this.precioInstalacion = Instalacion.getPrecioInstalacion(
+    this.precioInstalacion = Instalacion.getInstallationPrice(
       TCB.produccion.potenciaTotalInstalada,
     )
     this.precioInstalacionCorregido = this.precioInstalacion
@@ -157,7 +159,7 @@ class Economico {
    * @param {*} cuotaHucha Cuota mensual sin IVA que cobra la comercializadora por la gestión de la hucha.
    */
   correccionExcedentes(coefHucha, cuotaHucha) {
-    const _cuotaHucha = (cuotaHucha * (100 + TCB.parametros.IVAinstalacion)) / 100
+    const _cuotaHucha = (cuotaHucha * (100 + TCB.parametros.IVAInstalacion)) / 100
 
     for (let i = 0; i < 12; i++) {
       const consumoConCuota = this.consumoConPlacasMensual[i] + _cuotaHucha
@@ -290,10 +292,7 @@ class Economico {
     let i = 1
     let unFlow = {}
     //InversionReal includes IVA
-    const inversionReal =
-      -this.precioInstalacionCorregido *
-      (coefInversion / 100) *
-      (1 + TCB.parametros.IVAinstalacion / 100)
+    const inversionReal = -this.precioInstalacionCorregido * (coefInversion / 100)
 
     unFlow = {
       ano: i,

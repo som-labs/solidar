@@ -286,15 +286,15 @@ async function GeneraInformePDF() {
   nuevaLinea(
     'Dato',
     i++,
-    'PARAMETROS.LABEL_IVAenergia',
-    UTIL.formatoValor('porciento', TCB.parametros.IVAenergia),
+    'PARAMETROS.PROP.IVAEnergia',
+    UTIL.formatoValor('porciento', TCB.parametros.IVAEnergia),
   )
 
   nuevaLinea(
     'Dato',
     i++,
-    'PARAMETROS.LABEL_IVAinstalacion',
-    UTIL.formatoValor('porciento', TCB.parametros.IVAinstalacion),
+    'PARAMETROS.PROP.IVAInstalacion',
+    UTIL.formatoValor('porciento', TCB.parametros.IVAInstalacion),
   )
   nuevaLinea(
     'Dato',

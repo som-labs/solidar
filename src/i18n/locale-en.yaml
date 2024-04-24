@@ -372,10 +372,10 @@ PARAMETROS:
   DIALOG_DESCRIPTION: Application parameters configuration. Changes in these values ​​do not imply a recalculation of the entire set it is necessary to return to the Location tab and recalculate.
   LABEL_impuestoElectrico: Electrical tax in %
   TOOLTIP_impuestoElectrico: The Special Electricity Tax
-  LABEL_IVAenergia: VAT applicable to energy in %
-  TOOLTIP_IVAenergia: The VAT that is impact on electricity spending
-  LABEL_IVAinstalacion: VAT applicable to installation in %
-  TOOLTIP_IVAinstalacion: The VAT that is impact on the amount to which the installation ascends
+  LABEL_IVAEnergia: VAT applicable to energy in %
+  TOOLTIP_IVAEnergia: The VAT that is impact on electricity spending
+  LABEL_IVAInstalacion: VAT applicable to installation in %
+  TOOLTIP_IVAInstalacion: The VAT that is impact on the amount to which the installation ascends
   LABEL_perdidasSistema: Estimated installation losses in %
   TOOLTIP_perdidasSistema: The losses of the photovoltaic system due to the deterioration of some components adverse conditions poor investors etc.
   LABEL_interesVAN: Base interest (%) for Van Calculation

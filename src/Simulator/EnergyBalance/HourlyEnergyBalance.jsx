@@ -197,7 +197,7 @@ export default function HourlyEnergyBalance(props) {
           </TextField>
         </Box>
       ) : (
-        t('ENERGY_BALANCE.VALUE_FULL_YEAR')
+        ' '
       )}
       <Box ref={graphElement}>
         <Plot data={traces} layout={layout} config={config} />

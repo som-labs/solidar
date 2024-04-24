@@ -213,8 +213,8 @@ const TCB = {
   // Parametros por defecto
   parametros: {
     impuestoElectrico: 5.113,
-    IVAenergia: 10.0,
-    IVAinstalacion: 21.0,
+    IVAEnergia: 10.0,
+    IVAInstalacion: 21.0,
     perdidasSistema: 20,
     interesVAN: 3,
     margen: 0.5,

@@ -8,12 +8,12 @@ import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 
 // REACT Solidar Components
-import { EconomicContext } from '../EconomicContext'
-import GraphBoxSavings from '../EconomicBalance/GraphBoxSavings'
+import { EconomicContext } from '../../EconomicContext'
+import GraphBoxSavings from '../../EconomicBalance/GraphBoxSavings'
 
 // Solidar objects
-import * as UTIL from '../classes/Utiles'
-import TCB from '../classes/TCB'
+import * as UTIL from '../../classes/Utiles'
+import TCB from '../../classes/TCB'
 
 export default function SummaryEconomicBalance() {
   const { t } = useTranslation()

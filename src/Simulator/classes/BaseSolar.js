@@ -120,9 +120,10 @@ class BaseSolar {
     let config = {}
 
     const { roofType, cumbrera, anchoReal, inclinacion, lonlatBaseSolar } = area
-
+    //console.log('configura paneles para el area', area)
     if (roofType === 'Inclinado') {
       // Opcion largo panel paralelo a cumbrera
+
       hColumnas = Math.trunc(
         (cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
       )
@@ -153,7 +154,7 @@ class BaseSolar {
       //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
       hFilas = hFilas === 0 ? 1 : hFilas
 
-      //console.log(hGap, hColumnas, hFilas)
+      //console.log('HORIZONTAL', hGap, hColumnas, hFilas)
       // Opcion largo panel perpendicular a cumpbrera
       vGap =
         TCB.tipoPanelActivo.largo * Math.cos((inclinacion * Math.PI) / 180) +
@@ -165,6 +166,8 @@ class BaseSolar {
       vFilas = Math.trunc((anchoReal - 2 * TCB.parametros.margen) / vGap)
       //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
       vFilas = vFilas === 0 ? 1 : vFilas
+
+      //console.log('VERTICAL', vGap, vColumnas, vFilas)
     }
 
     if (hColumnas * hFilas > vColumnas * vFilas) {
@@ -172,7 +175,7 @@ class BaseSolar {
     } else {
       config = { columnas: vColumnas, filas: vFilas, modoInstalacion: 'Vertical' }
     }
-    UTIL.debugLog('Configuración', config)
+    //console.log('Configura paneles retorna', config)
     return config
   }
 

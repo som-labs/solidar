@@ -65,7 +65,11 @@ export default function EnvironmentalImpact() {
                   verticalAlign: 'center',
                 }}
               >
-                <Typography variant="h6" textAlign={'center'} color={'white'}>
+                <Typography
+                  variant="h6"
+                  textAlign={'center'}
+                  color={theme.palette.circulo.text}
+                >
                   {UTIL.formatoValor(
                     'CO2AnualRenovable',
                     TCB.produccion.CO2AnualRenovable,

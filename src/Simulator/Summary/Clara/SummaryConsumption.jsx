@@ -7,11 +7,11 @@ import Container from '@mui/material/Container'
 import { DataGrid } from '@mui/x-data-grid'
 
 // REACT Solidar Components
-import { ConsumptionContext } from '../ConsumptionContext'
-import SummaryPreciosTarifa from './SummaryPreciosTarifa'
+import { ConsumptionContext } from '../../ConsumptionContext'
+import SummaryPreciosTarifa from '../SummaryPreciosTarifa'
 
 // Solidar objects
-import * as UTIL from '../classes/Utiles'
+import * as UTIL from '../../classes/Utiles'
 
 export default function SummaryConsumption() {
   const { t } = useTranslation()

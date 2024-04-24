@@ -30,57 +30,47 @@ export default function SummaryPreciosTarifa() {
   }, [])
 
   return (
-    <>
-      <Grid
-        container
-        spacing={1}
-        sx={{ mb: '1rem' }}
-        alignItems="center"
-        justifyContent="space-evenly"
-      >
-        <Grid item xs={6}>
-          {t('Tarifa.PROP.tipoTarifa')}
-        </Grid>
-        <Grid item xs={6} sx={{ fontWeight: 'bold' }}>
-          {TCB.nombreTarifaActiva}
-        </Grid>
-        <Grid item xs={6}>
-          {t('Tarifa.PROP.P0')}
-        </Grid>
-        <Grid item xs={6} sx={{ fontWeight: 'bold' }}>
-          {TCB.tarifas[TCB.nombreTarifaActiva].precios[0] + ' €/kWh'}
-        </Grid>
-      </Grid>
+    <Grid container spacing={1} alignItems="center" justifyContent="space-evenly">
+      {TCB.tarifaActiva.precios.map((precio, index) => {
+        if (index !== 0 && index < nPrecios) {
+          return (
+            <Fragment key={index}>
+              <Grid item xs={1} sx={{ border: 0, textAlign: 'right', padding: 1 }}>
+                {'P' + index}
+              </Grid>
+              <Grid
+                item
+                xs={3}
+                sx={{
+                  fontWeight: 'bold',
+                  border: 1,
+                  borderRadius: 3,
+                  textAlign: 'center',
+                  padding: 0.5,
+                  borderColor: 'primary.light',
+                }}
+              >
+                {precio + ' €/kWh'}
+              </Grid>
+            </Fragment>
+          )
+        } else {
+          return null
+        }
+      })}
 
-      <Grid container spacing={1} alignItems="center" justifyContent="space-evenly">
-        {TCB.tarifaActiva.precios.map((precio, index) => {
-          if (index !== 0 && index < nPrecios) {
-            return (
-              <Fragment key={index}>
-                <Grid item xs={1} sx={{ border: 0, textAlign: 'right', padding: 1 }}>
-                  {'P' + index}
-                </Grid>
-                <Grid
-                  item
-                  xs={3}
-                  sx={{
-                    fontWeight: 'bold',
-                    border: 1,
-                    borderRadius: 3,
-                    textAlign: 'center',
-                    padding: 0.5,
-                    borderColor: 'primary.light',
-                  }}
-                >
-                  {precio + ' €/kWh'}
-                </Grid>
-              </Fragment>
-            )
-          } else {
-            return null
-          }
-        })}
+      <Grid item xs={6}>
+        {t('Tarifa.PROP.tipoTarifa')}
       </Grid>
-    </>
+      <Grid item xs={6} sx={{ fontWeight: 'bold' }}>
+        {TCB.nombreTarifaActiva}
+      </Grid>
+      <Grid item xs={6}>
+        {t('Tarifa.PROP.P0')}
+      </Grid>
+      <Grid item xs={6} sx={{ fontWeight: 'bold' }}>
+        {TCB.tarifas[TCB.nombreTarifaActiva].precios[0] + ' €/kWh'}
+      </Grid>
+    </Grid>
   )
 }

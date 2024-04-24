@@ -374,10 +374,10 @@ PARAMETROS:
   DIALOG_DESCRIPTION: Configuración dos parámetros da aplicación. Os cambios nestes valores non implican un recálculo de todo o conxunto cómpre volver á pestana Localización e calcular.
   LABEL_impuestoElectrico: Imposto eléctrico en %
   TOOLTIP_impuestoElectrico: O imposto especial sobre a electricidade
-  LABEL_IVAenergia: IVE aplicable á enerxía en %
-  TOOLTIP_IVAenergia: O IVE que ten un impacto no gasto en electricidade
-  LABEL_IVAinstalacion: IVE aplicable á instalación en %
-  TOOLTIP_IVAinstalacion: O IVE que ten un impacto na cantidade á que ascende a instalación
+  LABEL_IVAEnergia: IVE aplicable á enerxía en %
+  TOOLTIP_IVAEnergia: O IVE que ten un impacto no gasto en electricidade
+  LABEL_IVAInstalacion: IVE aplicable á instalación en %
+  TOOLTIP_IVAInstalacion: O IVE que ten un impacto na cantidade á que ascende a instalación
   LABEL_perdidasSistema: Perdas estimadas de instalación en %
   TOOLTIP_perdidasSistema: As perdas do sistema fotovoltaico debido á deterioración dalgúns compoñentes condicións adversas investidores pobres etc.
   LABEL_interesVAN: Interese base (%) para o cálculo da furgoneta

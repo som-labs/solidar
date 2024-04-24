@@ -1,11 +1,18 @@
-{"precios":[
-    {"desde":0, "hasta":2, "precio":2200},
-    {"desde":2, "hasta":5, "precio":1700},
-    {"desde":5, "hasta":10, "precio":1400},
-    {"desde":10, "hasta":15, "precio":1150},
-    {"desde":15, "hasta":20, "precio":1050},
-    {"desde":20, "hasta":25, "precio":1000},
-    {"desde":25, "hasta":100, "precio": 950},
-    {"desde":100, "hasta":1000, "precio": 900}
-]}
-    
+{
+  "precios": [
+    { "desde": 0, "hasta": 2, "precio": 1510 },
+    { "desde": 2, "hasta": 3, "precio": 1240 },
+    { "desde": 3, "hasta": 4, "precio": 1100 },
+    { "desde": 4, "hasta": 5, "precio": 1020 },
+    { "desde": 5, "hasta": 7, "precio": 990 },
+    { "desde": 7, "hasta": 8, "precio": 950 },
+    { "desde": 8, "hasta": 9, "precio": 920 },
+    { "desde": 9, "hasta": 10, "precio": 900 },
+    { "desde": 10, "hasta": 15, "precio": 830 },
+    { "desde": 15, "hasta": 20, "precio": 790 },
+    { "desde": 20, "hasta": 25, "precio": 770 },
+    { "desde": 25, "hasta": 50, "precio": 730 },
+    { "desde": 50, "hasta": 100, "precio": 710 },
+    { "desde": 100, "hasta": 1000, "precio": 650 }
+  ]
+}

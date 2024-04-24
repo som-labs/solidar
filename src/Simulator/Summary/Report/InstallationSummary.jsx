@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 // MUI objects
 import { Typography, Grid, Box } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
+import { useTheme } from '@mui/material/styles'
 
 //React global components
 import { BasesContext } from '../../BasesContext'
@@ -16,6 +17,7 @@ import * as UTIL from '../../classes/Utiles'
 export default function InstallationSummary() {
   const { t } = useTranslation()
   const { bases } = useContext(BasesContext)
+  const theme = useTheme()
 
   const getRowId = (row) => {
     return row.idBaseSolar
@@ -128,13 +130,30 @@ export default function InstallationSummary() {
    */
 
   return (
-    <Grid container>
-      <Grid item xs={12} sx={{ mt: '-0.5rem' }}>
-        <Typography variant="h5" sx={{ textAlign: 'center' }}>
-          <strong>{t('Tabla bases asignadas')}</strong>
+    <Box
+      id="C1F1C2"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
+      }}
+    >
+      <Box
+        id="C1F1C2F1"
+        sx={{ backgroundColor: theme.informe.dataBox.title.backgroundColor }}
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            textAlign: 'center',
+            padding: 1,
+            color: theme.informe.dataBox.title.text,
+          }}
+        >
+          <strong>{t('ENERGY_BALANCE.SUMMARY_TITLE')}</strong>
         </Typography>
-      </Grid>
-      <Grid item xs={12}>
+      </Box>
+      <Box id="C1F1C2F2">
         <DataGrid
           getRowId={getRowId}
           rows={bases}
@@ -145,7 +164,7 @@ export default function InstallationSummary() {
           disableColumnMenu
           slots={{ footer: footerSummary }}
         />
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   )
 }

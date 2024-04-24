@@ -37,7 +37,7 @@ class Instalacion {
           if (this.#precioInstalacion !== 0)
             this.#precioInstalacion *= newPotencia / prevPotencia
           else
-            this.#precioInstalacion = Instalacion.getPrecioInstalacion(this.potenciaTotal)
+            this.#precioInstalacion = Instalacion.getInstallationPrice(this.potenciaTotal)
         },
         get() {
           return this.#potenciaUnitaria
@@ -53,7 +53,7 @@ class Instalacion {
             this.#precioInstalacion *= newPanels / oldPanels
           //En caso contrario calcula el precio para esa potencia
           else
-            this.#precioInstalacion = Instalacion.getPrecioInstalacion(this.potenciaTotal)
+            this.#precioInstalacion = Instalacion.getInstallationPrice(this.potenciaTotal)
         },
         get() {
           return this.#numeroPaneles
@@ -73,7 +73,7 @@ class Instalacion {
     this._name = 'Instalacion'
     this.#potenciaUnitaria = inInst.potenciaUnitaria
     this.#numeroPaneles = inInst.paneles
-    this.#precioInstalacion = Instalacion.getPrecioInstalacion(
+    this.#precioInstalacion = Instalacion.getInstallationPrice(
       (inInst.potenciaUnitaria * inInst.paneles) / 1000,
     )
     UTIL.debugLog('Nueva instalacion creada', this)
@@ -90,20 +90,18 @@ class Instalacion {
    * @see TCB.precioInstalacion
    *  return {number} Precio teorico de la instalación
    */
-  static getPrecioInstalacion(potenciaTotal) {
+  static getInstallationPrice(potenciaTotal) {
     let precioInstalacion = 0
     if (potenciaTotal > 0) {
       let potenciaBase = potenciaTotal
       let i = TCB.precioInstalacion.precios.findIndex(
         (rango) => rango.desde <= potenciaBase && rango.hasta >= potenciaBase,
       )
-
-      precioInstalacion =
-        potenciaTotal *
-        TCB.precioInstalacion.precios[i].precio *
-        (1 + TCB.parametros.IVAinstalacion / 100)
+      precioInstalacion = potenciaTotal * TCB.precioInstalacion.precios[i].precio
+    } else {
+      precioInstalacion = 0
     }
-    return parseInt(precioInstalacion)
+    return parseInt(precioInstalacion * ((100 + TCB.parametros.IVAInstalacion) / 100))
   }
 }
 export default Instalacion
