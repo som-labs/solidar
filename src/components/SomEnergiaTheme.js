@@ -35,6 +35,9 @@ export default function SomEnergiaTheme(isDarkMode) {
         infoIcon: {
           main: '#AFBE3F',
         },
+        dataBox: {
+          main: '#d9d9d9',
+        },
 
         infoBox: {
           // main: isDarkMode ? '#F8F8FF' : '#FFF0F5',
@@ -50,7 +53,7 @@ export default function SomEnergiaTheme(isDarkMode) {
 
         circulo: {
           main: isDarkMode ? '#e6cc00' : '#000',
-          contrastText: 'white',
+          text: isDarkMode ? 'white' : 'white',
         },
 
         balance: {
@@ -69,13 +72,31 @@ export default function SomEnergiaTheme(isDarkMode) {
           padding: 10,
         },
         dataBox: {
-          display: 'flex',
-          flexDirection: 'column',
-          flex: '1',
-          backgroundColor: isDarkMode ? '#333333' : '#beaf17',
-          padding: 2,
-          gap: 1,
+          title: {
+            backgroundColor: isDarkMode ? '#333333' : 'grey',
+            text: isDarkMode ? 'white' : 'white',
+          },
+          data: {
+            backgroundColor: isDarkMode ? 'grey' : 'white',
+            text: isDarkMode ? 'white' : 'white',
+          },
         },
+        sectionBox: {
+          title: {
+            backgroundColor: isDarkMode ? '#666666' : '#96b633',
+            text: isDarkMode ? 'white' : 'white',
+          },
+          data: {
+            backgroundColor: isDarkMode ? 'grey' : 'white',
+            text: isDarkMode ? 'white' : 'white',
+          },
+        },
+        energyTable: {
+          title: {
+            backgroundColor: isDarkMode ? '#666666' : 'grey',
+          },
+        },
+
         titleBox: {
           display: 'flex',
           flexDirection: 'column',

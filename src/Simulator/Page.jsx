@@ -11,8 +11,8 @@ import LocationStep from './Location/Location'
 import ConsumptionStep from './Consumption/Consumption'
 import EnergyBalanceStep from './EnergyBalance/EnergyBalance'
 import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
-import SummaryStep from './Summary/Summary'
-import SummarySOMStep from './Summary/SummarySOM'
+import SummaryClaraStep from './Summary/Clara/Summary'
+import SummarySOMStep from './Summary/SOM/Summary'
 
 import { ConsumptionContext } from './ConsumptionContext'
 import { BasesContext } from './BasesContext'
@@ -119,7 +119,7 @@ export default function Page() {
               title={t('ECONOMIC_BALANCE.TITLE')}
             />
             {TCB.estiloActivo !== 'SOM' ? (
-              <SummaryStep label="summary" title={t('SUMMARY.TITLE')} />
+              <SummaryClaraStep label="summary" title={t('SUMMARY.TITLE')} />
             ) : (
               <SummarySOMStep label="summary" title={t('SUMMARY.TITLE')} />
             )}

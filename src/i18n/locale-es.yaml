@@ -471,7 +471,7 @@ ENERGY_BALANCE:
   PROMPT: A continuación, puedes cambiar la cantidad de paneles asignados a cada una de las áreas.
   ADVISE_TITLE: Consejo
   ADVISE_DESCRIPTION: Para aprovechar al máximo tu instalación, haz uso de tus electrodomésticos en las horas centrales del día que son los momentos de máxima producción.
-  SUMMARY_TITLE: Tabla bases asignadas
+  SUMMARY_TITLE: Datos de la cubierta
   SUMMARY_TOOLTIP_INFO: Información detallada del área seleccionada
   SUMMARY_FOOTER: |
     Total de paneles propuestos: {{paneles}} paneles<br />
@@ -559,7 +559,7 @@ ECONOMIC_BALANCE:
     Este es el número de años que tardarás en recuperar la inversión realizada
   PROMPT_AMORTIZATION_TIME: Los paneles tienen una vida útil de 20 a 30 años (si se mantienen correctamente)
   WARNING_AMORTIZATION_TIME: Esta configuración recupera la inversión en un tiempo superior a 20 años.
-  LABEL_INSTALLATION_COST: Coste previsto de la instalación (€ sin IVA)
+  LABEL_INSTALLATION_COST: Coste previsto de la instalación (€ con IVA)
   TITLE_VIRTUAL_BATTERY: Excedentes no compensados
   DESCRIPTION_VIRTUAL_BATTERY: |
     La forma de aplicar los descuentos depende de la comercializadora: los descuentos pueden ser un porcentaje del total de excedentes no compensados, como en el caso del <a href='https://es.support.somenergia.coop/article/1372-que-es-el-flux-solar' target='_blank'>Flux Solar</a> o una cuota mensual fija por ofrecer el servicio.
@@ -664,15 +664,15 @@ PARAMETROS:
     Los cambios en estos valores <strong>no implican un recálculo de todo el conjunto</strong>, es necesario volver a la pestaña Localización y calcular.
   PROP:
     impuestoElectrico: Impuesto eléctrico en %
-    IVAenergia: IVA aplicable a la energía en %
-    IVAinstalacion: IVA aplicable a la instalación en %
+    IVAEnergia: IVA aplicable a la energía en %
+    IVAInstalacion: IVA aplicable a la instalación en %
     perdidasSistema: Pérdidas estimadas de la instalación en %
     interesVAN: Interés base (%) para calculo de VAN
     margen: Margen de instalación en metros
   TOOLTIP:
     impuestoElectrico: El impuesto especial sobre la electricidad
-    IVAenergia: El IVA que se repercute por el gasto en electricidad
-    IVAinstalacion: El IVA que se repercute sobre el importe al que ascienda la instalación
+    IVAEnergia: El IVA que se repercute por el gasto en electricidad
+    IVAInstalacion: El IVA que se repercute sobre el importe al que ascienda la instalación
     perdidasSistema: Las pérdidas estimas del sistema fotovoltaico debidas al deterioro de algunos componentes condiciones adversas inversores deficientes etc.
     interesVAN: Tasa de descuento a aplicar en el cálculo del valor actual neto
     margen: Distancia dejada alrededor de la instalación a efectos de mantenimiento
@@ -723,8 +723,6 @@ Proyecto:
   MSG_success: Fichero importado satisfactoriamente
   MSG_problemaVersion: Lamentablemente no se puede importar un fichero Solimp de versiones anteriores a 4',
 
-LIMITE_VERIFICADOS:
-
 GRAFICOS:
   LABEL_panelesActuales: Paneles actuales {{paneles}}
   LABEL_limiteSubvencionEU: Limite subvención EU
@@ -732,8 +730,6 @@ GRAFICOS:
   LABEL_graficasNoCompensado: No compensado
   LABEL_graficasGastoConPaneles: Gasto con paneles
   LABEL_graficasGastoSinPaneles: Gasto sin paneles
-  LABEL_graficasReduccionCompensacion: Reducción por compensación
-  LABEL_graficasReduccionAutoconsumo: Reducción por autoconsumo
   LABEL_graficasExcedente: Excedente
   LABEL_graficasDeficit: Energía de la red
   LABEL_graficasAutoconsumo: Autoconsumo
@@ -741,48 +737,18 @@ GRAFICOS:
   LABEL_SALDO_VIRTUAL_BATTERY: Descuentos disponibles
   LABEL_EXTRACCION_VIRTUAL_BATTERY: Descuento aplicado
 
-  graficos_LBL_balanceConsumo: Balance mensual de consumo con {{potencia}} instalados
-  graficos_LBL_balanceProduccion: Balance mensual de producción con {{potencia}} instalados
-  graficos_LBL_tituloBalanceEconomico: Balance económico mensual con {{potencia}} instalados
-  graficos_LBL_alternativasPotencia: Alternativas con paneles de {{potencia}} instalados
-  graficos_LBL_produccionMediaMensual: Producción media mensual con {{potencia}} instalados / consumo medio mensual
-
-  graficos_LBL_graficasInversion: Inversión
-  graficos_LBL_graficasAhorro: Ahorro
-  graficos_LBL_graficasAutosuficiencia: Autosuficiencia
-  graficos_LBL_graficasprodvscons: Prod. vs Cons.
-  graficos_LBL_cambiaPaneles: Click cambia a {{paneles}} paneles
-  graficos_LBL_paneles: Paneles
-  graficos_LBL_segunFuente: Distribución de energía segun fuente
-  graficos_LBL_deRed: Red electrica
-  graficos_LBL_dePaneles: '{{paneles}} Paneles'
-  graficos_LBL_extraccionHucha: Extracción de la hucha
-  graficos_LBL_huchaSaldo: Saldo en la hucha
-  graficos_LBL_tituloBalanceEconomicoFinca: Balance económico mensual con {{potencia}} asignados.<br>Equivalente {{paneles}} paneles.
-  graficos_LBL_tituloBalanceEconomicoGlobal: Balance económico mensual con {{potencia}} asignados.
+LIMITE_VERIFICADOS:
 
 REPORT:
   FOOTER_BASES_INSTALADAS: Total de <strong>{{paneles}} paneles</strong> con <strong>{{potencia}}</strong> instalados
   titulo: Solidar Energía
-  datosDeConsumoGlobal: Consumo Global
   produccionTotal: Producción total
   produccionMediaEsperada: Producción media esperada
-  datosInstalacionAnalizada: Datos de instalación analizada
-  datosPVGISObtenidos: Datos PVGIS obtenidos
-  datosLocalizacionAportados: Datos de localización aportados
   datosDeConsumo: Datos de consumo
   tarifas: Tarifas utilizadas
-  fichero: Fichero ->
-  paraPotenciaAnual: para potencia anual de
-  registros: Registros-> {{registros}}
-  numeroRegistros: Registros
-  desde: Desde
-  hasta: Hasta
   disclaimer1pdf: 'Todas las estimaciones dadas se han realizado con la mayor precisión posible con la mejor intención y sin ningún compromiso. Especial mención debemos hacer en cuanto al precio estimado de la instalación. Existe una alta volatilidad en este factor y no podemos garantizar que refleje la realidad del mercado en cada momento y territorio por lo que hemos incluido un campo que te permite corregir ese precio según las recomendaciones de tu instalador.Som Energía no tiene ningún interés económico ni directo ni indirecto en este estudio salvo contribuir a una transición energética justa con los usuarios eficiente descentralizada y limpia.'
-  formatoPDF: Genera en formato PDF
-  balanceEnergía: Balance energía
-  localizacion: Localización
-  reparto: Coeficientes de reparto
+
+  balanceEnergia: Balance energía
   balanceEconomico: Balance económico
   balanceFinanciero: Balance financiero (Euros)
   informe_MSG_procesarPrimero: Debe obtener el balance de energía antes de poder generar el informe
@@ -794,45 +760,34 @@ REPORT:
   DADES_TITLE: Datos principales
   DADES_NOM: Nombre
   DADES_DIRECCIO: Dirección
-  DADES_CONTRACTE: Contrato
-  COBERTA_TITLE: Datos cubierta
-  COBERTA_ORIENTACIO: Orientación
-  COBERTA_INCLINACIO: Inclinación
-  COBERTA_SUPERFICIE: Superficie útil
   US_TITLE: Uso de la energía
-  US_POTENCIA: Potencia contratada
-  US_TARIFA: Tarifa
   US_ANUAL: 'Uso de la energía anual: '
-  US_HORAS_SOL: 'Uso de la energía en horas solares: <strong>{{consumo}}</strong>'
+  US_HORAS_SOL: Uso de la energía en horas solares
+  FEE_TITLE: Precios aplicados
   INSTALACIO_TITLE: Características instalación propuesta
   INSTALACIO_NOMBRE: Número de paneles
   INSTALACIO_POTENCIA: Potencia total instalada
   INSTALACIO_POTENCIA_UNITARIA: Potencia unitaria por panel
-  INSTALACIO_TOTAL: Potencia total
   INSTALACIO_ANUAL: Generación anual
   INSTALACIO_COST: Coste aproximado
   ESTUDI_TITLE: Estudio energético - económico
-  ESTUDI_AUTOGENERACIO: Autogeneración directa anual
   ESTUDI_EXCEDENT: Excedente
   ESTUDI_XARXA: Energía de red
   ESTUDI_ESTALVI: Ahorro total anual
   ESTUDI_RETORN: Retorno inversión
+
   PIE_AUTOCONSUM_TITLE: '% Autoconsumo directo'
   PIE_AUTOCONSUM_DESCRIPTION: (Energía autoconsumida / energía total producida)
   PIE_AUTOSUFICIENCIA_TITLE: '% Autosuficiencia'
   PIE_AUTOSUFICIENCIA_DESCRIPTION: (Energía autoconsumida / energía total consumida)
   PIE_CONSUMO_HORAS_SOL_TITLE: Consumo horas sol
   PIE_CONSUMO_HORAS_SOL_DESCRIPTION: '% del consumo total realizado en horas con sol'
+
   PERFIL_TITLE: Tu perfil diario de energía
-  PERFIL_ELECTRIC: Eléctrica
-  PERFIL_AUTOPRODUCCIO: Autoproducción
   CONSUM_TITLE: Consumo por meses
   ADVISE: Para sacar el máximo rendimiento a tu intalación deberías desplazar el uso eléctrico a las horas de mayor producción fotovoltaica y recuerda que la energía más sostenible es aquella que no se utiliza.
-
   PROPERESPASES_TITLE: Próximos pasos
-
   PROPERESPASES_DESCRIPTION: ¿Qué ofrecemos a través de Som Energía?
-
   PROPERESPASES_TEXT: |
     Consulta nuestros servicios a través del apartado produce energía de nuestra página web:
     <ul>
@@ -840,7 +795,6 @@ REPORT:
     <li> Generation kWh</li>
     <li> GURB</li>
     </ul>
-
   AUTOGENERACIO_TITLE: Información general sobre autogeneración
   AUTOGENERACIO_TEXT: Puedes encontrar información general sobre
   AUTOGENERACIO_TEXT_STRONG: qué es y cómo funciona el autoconsumo en los siguientes artículos de nuestro centro de ayuda
@@ -859,7 +813,6 @@ REPORT:
   TEXT: Hay que tener en cuenta que si se modifican los horarios de uso de energía y/o el total de energía utilizada los resultados pueden variar significativamente.
   ECONOMIQUES_TITLE: Datos económicos
   ECONOMIQUES_DESCRIPTION: En el precio no está incluido el coste de las tasas administrativas necesarias (ICIO, licencia de obras y legalización de la instalación), así como gastos adicionales que puedan surgir como medios de elevación, actuaciones de adecuación de la vivienda (reparaciones de la cubierta, de la instalación eléctrica, etc) u otras intervenciones que la empresa de distribución eléctrica pueda exigir.
-
   PEU: Para cualquier duda puedes escribir a auto@somenergia.coop
   ANY: año
   ANYS: años

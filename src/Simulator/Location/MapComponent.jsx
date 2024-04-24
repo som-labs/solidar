@@ -227,7 +227,7 @@ export default function MapComponent() {
         }),
       })
       OpenS.set('name', 'OSM')
-
+      OpenS.setVisible(false)
       // SAT is satellite layer provided by ESRI via arcgisonline
       // const SAT = new TileLayer({
       //   source: new XYZ({
@@ -243,7 +243,6 @@ export default function MapComponent() {
         }),
       })
       SAT.set('name', 'SAT')
-      SAT.setVisible(false)
 
       // Vector is the layers where new features (bases o puntosConsumo) are shown from vectorSource
       basesLayer.current = new VectorLayer({
@@ -370,7 +369,7 @@ export default function MapComponent() {
     nuevaBaseSolar.inclinacionOptima = false
     nuevaBaseSolar.roofType = 'Inclinado'
     nuevaBaseSolar.inAcimut = undefined
-    nuevaBaseSolar.angulosOptimos = true
+    nuevaBaseSolar.angulosOptimos = false
     nuevaBaseSolar.requierePVGIS = true
     nuevaBaseSolar.lonlatBaseSolar =
       puntoAplicacion_4326[0].toFixed(4) + ',' + puntoAplicacion_4326[1].toFixed(4)
