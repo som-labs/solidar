@@ -74,11 +74,16 @@ const BasesContextProvider = ({ children }) => {
   }
 
   function computeAcimut(formData, center, area) {
-    let acimut
+    let inAcimut
+    let cumbrera
+    let anchoReal
+
     const puntos = area.getCoordinates()[0]
 
     if (formData.roofType === 'Inclinado') {
-      acimut = parseInt(
+      cumbrera = formData.cumbrera
+      anchoReal = formData.anchoReal
+      inAcimut = parseInt(
         (Math.atan2(puntos[1][0] - puntos[2][0], puntos[1][1] - puntos[2][1]) * 180) /
           Math.PI,
       )
@@ -88,7 +93,7 @@ const BasesContextProvider = ({ children }) => {
         Math.PI
       let acimutAncho = acimutCumbrera < 90 ? acimutCumbrera + 90 : acimutCumbrera - 90
 
-      console.log('REAL ACIMUTS', acimutCumbrera, acimutAncho)
+      //console.log('REAL ACIMUTS', acimutCumbrera, acimutAncho)
 
       let finalAcimutCumbrera
       if (Math.abs(acimutCumbrera) >= 90) {
@@ -105,29 +110,60 @@ const BasesContextProvider = ({ children }) => {
         finalAcimutAncho = acimutAncho
       }
 
-      console.log('FINAL ACIMUTS', finalAcimutCumbrera, finalAcimutAncho)
+      //console.log('FINAL ACIMUTS', finalAcimutCumbrera, finalAcimutAncho)
 
-      const A = BaseSolar.configuraPaneles(formData)
-      console.log('OPTION ANCHO', A, finalAcimutAncho, getPVGIS(finalAcimutAncho))
+      //Option using cumbrera as cumbrera then acimut is acimut defined by ancho
+      let opcCumbrera = {
+        ...formData,
+      }
+      const A = BaseSolar.configuraPaneles(opcCumbrera)
+      // console.log(
+      //   'OPTION Cumbrera como Cumbrera',
+      //   A,
+      //   finalAcimutAncho,
+      //   getPVGIS(finalAcimutAncho),
+      // )
 
-      const B = BaseSolar.configuraPaneles(formData)
-      console.log(
-        'OPTION CUMBRERA',
-        B,
-        finalAcimutCumbrera,
-        getPVGIS(finalAcimutCumbrera),
-      )
+      //Option using ancho as cumbrera then acimut is acimut defined by cumbrera
+      let opcAncho = {
+        ...formData,
+        anchoReal: formData.cumbrera,
+        cumbrera: formData.anchoReal,
+      }
+      const B = BaseSolar.configuraPaneles(opcAncho)
+      // console.log(
+      //   'OPTION Ancho como cumbrera',
+      //   B,
+      //   finalAcimutCumbrera,
+      //   getPVGIS(finalAcimutCumbrera),
+      // )
 
       if (
         A.filas * A.columnas * getPVGIS(finalAcimutAncho) >
         B.filas * B.columnas * getPVGIS(finalAcimutCumbrera)
       ) {
-        acimut = finalAcimutAncho
+        // console.log(
+        //   'MEJOR opcion cumbrera como cumbrera => acimut ' +
+        //     finalAcimutAncho +
+        //     ' configuracion ',
+        //   A,
+        // )
+        inAcimut = finalAcimutAncho
+        anchoReal = formData.anchoReal
+        cumbrera = formData.cumbrera
       } else {
-        acimut = finalAcimutCumbrera
+        // console.log(
+        //   'MEJOR opcion ancho como cumbrera => acimut ' +
+        //     finalAcimutCumbrera +
+        //     ' configuración ',
+        //   B,
+        // )
+        inAcimut = finalAcimutCumbrera
+        anchoReal = formData.cumbrera
+        cumbrera = formData.anchoReal
       }
     }
-    return acimut
+    return { inAcimut: inAcimut, anchoReal: anchoReal, cumbrera: cumbrera }
   }
 
   function getPVGIS(acimut) {
@@ -181,11 +217,15 @@ const BasesContextProvider = ({ children }) => {
     const centerPoint = labelFeature.getGeometry()
     const areaComponent = 'BaseSolar.area.' + formData.idBaseSolar
     const areaShape = TCB.origenDatosSolidar.getFeatureById(areaComponent).getGeometry()
+
+    //console.log('ProcessFromData 1', formData)
+    //console.log('Compute', computeAcimut(formData, centerPoint, areaShape))
     if (reason === 'save') {
-      formData.inAcimut = computeAcimut(formData, centerPoint, areaShape)
+      formData = { ...formData, ...computeAcimut(formData, centerPoint, areaShape) }
     } else {
       //console.log('estamos editando por ahora no hay cambio de acimut desde dialogo')
     }
+    //console.log('ProcessFromData 2', formData)
     formData = Object.assign({}, formData, BaseSolar.configuraPaneles(formData))
 
     //Will draw acimut line

@@ -350,10 +350,10 @@ PARAMETROS:
   DIALOG_DESCRIPTION: Configuració de paràmetres de l'aplicació. Els canvis en aquests valors no impliquen un recàlcul de tot el conjunt cal tornar a la pestanya Ubicació i calcular
   LABEL_impuestoElectrico: Impost elèctric en %
   TOOLTIP_impuestoElectrico: 'L’impost especial sobre l’electricitat'
-  LABEL_IVAenergia: IVA aplicable a l’energia en %
-  TOOLTIP_IVAenergia: L'IVA que es repercuteix per la despesa en electricitat
-  LABEL_IVAinstalacion: IVA aplicable a la instal·lació en %
-  TOOLTIP_IVAinstalacion: L'IVA que es repercuteix sobre l'import a què ascendeixi la instal·lació
+  LABEL_IVAEnergia: IVA aplicable a l’energia en %
+  TOOLTIP_IVAEnergia: L'IVA que es repercuteix per la despesa en electricitat
+  LABEL_IVAInstalacion: IVA aplicable a la instal·lació en %
+  TOOLTIP_IVAInstalacion: L'IVA que es repercuteix sobre l'import a què ascendeixi la instal·lació
   LABEL_perdidasSistema: Pèrdues de l’instal·lació estimades en %
   TOOLTIP_perdidasSistema: Les pèrdues estimades del sistema fotovoltaic degudes al deteriorament d'alguns components condicions adverses inversors deficients etc.
   LABEL_interesVAN: Interès base (%) per al càlcul de VAN

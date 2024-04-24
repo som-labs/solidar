@@ -5,12 +5,12 @@ import { useTranslation } from 'react-i18next'
 import { Typography, Container, Box, Grid } from '@mui/material'
 
 // REACT Solidar Components
-import GraphBoxAutoconsumo from '../EnergyBalance/GraphBoxAutoconsumo'
-import CallSankey from '../EnergyBalance/SankeyFlow/CallSankey'
+import GraphBoxAutoconsumo from '../../EnergyBalance/GraphBoxAutoconsumo'
+import CallSankey from '../../EnergyBalance/SankeyFlow/CallSankey'
 
 // Solidar objects
-import TCB from '../classes/TCB'
-import * as UTIL from '../classes/Utiles'
+import TCB from '../../classes/TCB'
+import * as UTIL from '../../classes/Utiles'
 
 export default function SummaryEnergyBalance() {
   const { t } = useTranslation()

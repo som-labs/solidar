@@ -4,15 +4,15 @@ import { useTranslation } from 'react-i18next'
 // MUI objects
 import { Typography, Container, Box, Paper, Grid } from '@mui/material'
 
-import { SLDRInfoBox } from '../../components/SLDRComponents'
-import MicroMap from '../Location/MicroMap'
+import { SLDRInfoBox } from '../../../components/SLDRComponents'
+import MicroMap from '../../Location/MicroMap'
 import SummaryAutoproduccion from './SummaryAutoproduccion'
 import SummaryConsumption from './SummaryConsumption'
 import SummaryEconomicBalance from './SummaryEconomicBalance'
 import SummaryEnergyBalance from './SummaryEnergyBalance'
-import Reports from './Reports'
+import Reports from '../Reports'
 
-const SummaryStep = () => {
+export default function SummaryClaraStep() {
   const { t } = useTranslation()
   const contentRef = useRef(null)
 
@@ -29,9 +29,9 @@ const SummaryStep = () => {
               <SLDRInfoBox>
                 <SummaryConsumption></SummaryConsumption>
               </SLDRInfoBox>
-              {/* <SLDRInfoBox>
+              <SLDRInfoBox>
                 <MicroMap></MicroMap>
-              </SLDRInfoBox> */}
+              </SLDRInfoBox>
             </Box>
           </Grid>
           <Grid item xs={12}>
@@ -76,5 +76,3 @@ const SummaryStep = () => {
     </Paper>
   )
 }
-
-export default SummaryStep

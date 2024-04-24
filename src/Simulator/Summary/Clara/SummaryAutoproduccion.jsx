@@ -7,11 +7,11 @@ import { useTheme } from '@mui/material/styles'
 import { DataGrid } from '@mui/x-data-grid'
 
 // REACT Solidar Components
-import { BasesContext } from '../BasesContext'
+import { BasesContext } from '../../BasesContext'
 
 // Solidar objects
-import TCB from '../classes/TCB'
-import * as UTIL from '../classes/Utiles'
+import TCB from '../../classes/TCB'
+import * as UTIL from '../../classes/Utiles'
 
 export default function SummaryAutoproduccion() {
   const { t } = useTranslation()

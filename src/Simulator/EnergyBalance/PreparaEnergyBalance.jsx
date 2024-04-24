@@ -73,7 +73,7 @@ export default async function PreparaEnergyBalance() {
     let pendiente = optimizador(TCB.BaseSolar, TCB.consumo, TCB.tipoPanelActivo.potencia)
     if (pendiente > 0) {
       UTIL.debugLog(
-        'PreparaEnergyBalance - No hay suiperficie suficiente. Falta: ' + pendiente,
+        'PreparaEnergyBalance - No hay superficie suficiente. Falta: ' + pendiente,
       )
       //PENDIENTE: ver como procesamos este aviso
       alert(
