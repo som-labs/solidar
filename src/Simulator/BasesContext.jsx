@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useState, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // OpenLayers objects
@@ -10,6 +10,7 @@ import { LineString } from 'ol/geom'
 import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
 import BaseSolar from './classes/BaseSolar'
+import { AlertContext } from './components/Alert'
 
 const BasesContext = createContext()
 
@@ -227,6 +228,17 @@ const BasesContextProvider = ({ children }) => {
     }
     //console.log('ProcessFromData 2', formData)
     formData = Object.assign({}, formData, BaseSolar.configuraPaneles(formData))
+    if (formData.filas * formData.columnas === 0) {
+      alert(
+        t('LOCATION.NOT_ENOUGH_AREA', {
+          largo: UTIL.formatoValor('longitud', TCB.tipoPanelActivo.largo),
+          ancho: UTIL.formatoValor('longitud', TCB.tipoPanelActivo.ancho),
+          margen: UTIL.formatoValor('longitud', TCB.parametros.margen),
+        }),
+      )
+      UTIL.deleteBaseGeometries(formData.idBaseSolar)
+      return false
+    }
 
     //Will draw acimut line
     const puntoAplicacion = centerPoint.getCoordinates()

@@ -10,6 +10,7 @@ import calculaResultados from '../classes/calculaResultados'
 import Consumo from '../classes/Consumo'
 import BaseSolar from '../classes/BaseSolar'
 import Economico from '../classes/Economico'
+import Produccion from '../classes/Produccion'
 
 export default async function PreparaEnergyBalance() {
   let cursorOriginal = document.body.style.cursor
@@ -31,10 +32,7 @@ export default async function PreparaEnergyBalance() {
     'PreparaEnergyBalance - Necesario optimizador? ' + TCB.requiereOptimizador,
   )
 
-  //Si estamos importando un solimp que solo tiene bases y tipoConsumo no existe produccion por lo que hay que hacer el ciclo de cálculo
-  const notExistProduccion = Object.keys(TCB.produccion).length === 0
-
-  if (TCB.requiereOptimizador || notExistProduccion) {
+  if (TCB.requiereOptimizador) {
     // Comprobamos que estan cargados todos los rendimientos. Es el flag base.rendimiento.PVGISresults.status. True si todo OK, undefined si pendiente, False si error en PVGIS
     let waitLoop = 0
     for (let base of TCB.BaseSolar) {
@@ -68,6 +66,7 @@ export default async function PreparaEnergyBalance() {
         BaseSolar.configuraPaneles(base)
       }
     }
+
     UTIL.debugLog('PreparaEnergyBalance - Todas las bases listas llama optimizador')
     // Se ejecuta el optimizador para determinar la configuración inicial propuesta
     let pendiente = optimizador(TCB.BaseSolar, TCB.consumo, TCB.tipoPanelActivo.potencia)
@@ -83,13 +82,12 @@ export default async function PreparaEnergyBalance() {
       )
     }
     TCB.requiereOptimizador = false
-
     UTIL.debugLog('PreparaEnergyBalance - pasa a calculaResultados')
     await calculaResultados()
   }
+
   TCB.economico = new Economico()
   UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
-
   if (TCB.economico.periodoAmortizacion > 20) {
     alert(TCB.i18next.t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
   }

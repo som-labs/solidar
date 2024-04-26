@@ -371,7 +371,7 @@ LOCATION:
     CUALES_1: 1. Área total de cubierta
     CUALES_2: 2. Áreas disponibles
     TITLE_2: ¿Mas de una orientación o inclinación?
-    DOS_AGUAS: Si tienes mas de un tejado, o un tejado con varias aguas, deberás seleccionar cada parte como diferentes áreas. La inclinación puede ser distinta en cada parcela/superficie, como también su posición respecto al sur.
+    DOS_AGUAS: Si tienes más de un tejado, o un tejado con varias aguas, deberás seleccionar cada parte como diferentes áreas. La inclinación puede ser distinta en cada parcela/superficie, como también su posición respecto al sur.
     TITLE_3: ¿Como afectan las sombras?
     SOMBRAS_1: |
       Las sombras pueden afectar de manera significativa la zona donde se instalarán los paneles, influyendo directamente en el rendimiento de la instalación.  Consulta el efecto de las sombras sobre los paneles solares con Shadowmap.
@@ -394,6 +394,7 @@ LOCATION:
   LABEL_BASES_SUMMARY: Resumen
   PROMPT_BASES_SUMMARY: Recuerda que puedes indicar diferentes áreas disponibles y que cada una de ellas puede tener una orientación respecto al sur distinta. Revisa que los datos del resumen son correctos.
   ERROR_DEFINE_BASE: Debe definir las bases solares antes de continuar
+  NOT_ENOUGH_AREA: No es posible poner paneles de {{largo}} por {{ancho}} con margen lateral de {{margen}} en este area. Redefine el área disponible, el tipo de panel a utilizar o el margen lateral en los parametros de la aplicación.
   MSG_AREA_TOTAL: |
     Area total disponible en esta configuración: {{areaTotal}} <br />
     Potencia máxima a instalar: {{potenciaMaxima}}
@@ -486,7 +487,7 @@ ENERGY_BALANCE:
   FLOW_TITLE_OTHER_WAY: Esquema del flujo de energía
   LABEL_EXCEDENTE_ANUAL: Electricidad sobrante
   TOOLTIP_EXCEDENTE_ANUAL: Electricidad sobrante volcada a la red
-  LABEL_AUTOCONSUMO: Autoconsumo
+  LABEL_AUTOCONSUMO: Uso directo energía
   LABEL_ENERGIA_RED: Energía obtenida de la red
   LABEL_ENERGIA_PANELES: Energía obtenida de los paneles
   TITLE_HOURLY_ENERGY_BALANCE: Balance horario
@@ -526,6 +527,9 @@ ENERGY_BALANCE:
     No son tenidos en cuenta: <ul><li>el efecto de las nevadas</li><li>la acumulación de polvo y suciedad en los paneles</li><li>las pérdidas por sombras próximas</li></ul><br>
 
   TITLE_GRAPH_DEMAND: Demanda energética
+  LABEL_USO_DIRECTO: 'Uso directo de energía'
+  LABEL_USO_RED: 'Energía de la red'
+  LABEL_VERTIDO_RED: 'Vertido a la red'
   TITLE_GRAPH_AUTOPRODUCIDA: Energía autoproducida
   TITLE_ENVIRONMENTAL_IMPACT: Impacto medioambiental
   DESCRIPTION_ENVIRONMENTAL_IMPACT: |
@@ -550,7 +554,7 @@ ECONOMIC_BALANCE:
   TITLE_INSTALLATION_COST: Precio de la instalación
   DESCRIPTION_INSTALLATION_COST: Este es un importe orientativo que puede variar dependiendo del precio del mercado. Además, no tiene en cuenta tasas y/o gastos adicionales que puedan aparecer.
 
-  PROMPT_INSTALLATION_COST: Si tienes una oferta diferente, puedes cambiar el valor del importe en el sigiente campo.
+  PROMPT_INSTALLATION_COST: Si tienes una oferta diferente, puedes cambiar el valor del importe en el siguiente campo.
   ADVICE_PRICE_TITLE: Tener en consideración
   ADVICE_PRICE_DESCRIPTION: |
     En el precio no está incluido el coste de las tasas administrativas necesarias (ICIO, licencia de obras y legalización de la instalación), así como gastos adicionales que puedan surgir como medios de elevación, actuaciones de adecuación de la vivienda (reparaciones de la cubierta, de la instalación eléctrica, etc) u otras intervenciones que la empresa de distribución eléctrica pueda exigir.
@@ -722,6 +726,7 @@ Proyecto:
   MSG_importando: Importando
   MSG_success: Fichero importado satisfactoriamente
   MSG_problemaVersion: Lamentablemente no se puede importar un fichero Solimp de versiones anteriores a 4',
+  NO_EXPORT_AVAILABLE: EL proyecto solo de puede exportar despues del paso Balance de energia
 
 GRAFICOS:
   LABEL_panelesActuales: Paneles actuales {{paneles}}
@@ -763,7 +768,7 @@ REPORT:
   US_TITLE: Uso de la energía
   US_ANUAL: 'Uso de la energía anual: '
   US_HORAS_SOL: Uso de la energía en horas solares
-  FEE_TITLE: Precios aplicados
+  FEE_TITLE: Precios aplicados (€/kWh)
   INSTALACIO_TITLE: Características instalación propuesta
   INSTALACIO_NOMBRE: Número de paneles
   INSTALACIO_POTENCIA: Potencia total instalada
@@ -774,16 +779,17 @@ REPORT:
   ESTUDI_EXCEDENT: Excedente
   ESTUDI_XARXA: Energía de red
   ESTUDI_ESTALVI: Ahorro total anual
+  SOLS_DISPONIBLES: Sols disponibles
   ESTUDI_RETORN: Retorno inversión
 
-  PIE_AUTOCONSUM_TITLE: '% Autoconsumo directo'
+  PIE_AUTOCONSUM_TITLE: 'Autoconsumo directo'
   PIE_AUTOCONSUM_DESCRIPTION: (Energía autoconsumida / energía total producida)
   PIE_AUTOSUFICIENCIA_TITLE: '% Autosuficiencia'
   PIE_AUTOSUFICIENCIA_DESCRIPTION: (Energía autoconsumida / energía total consumida)
-  PIE_CONSUMO_HORAS_SOL_TITLE: Consumo horas sol
+  PIE_CONSUMO_HORAS_SOL_TITLE: Uso en horas solares
   PIE_CONSUMO_HORAS_SOL_DESCRIPTION: '% del consumo total realizado en horas con sol'
 
-  PERFIL_TITLE: Tu perfil diario de energía
+  PERFIL_TITLE: Tu perfil diario de uso de energía
   CONSUM_TITLE: Consumo por meses
   ADVISE: Para sacar el máximo rendimiento a tu intalación deberías desplazar el uso eléctrico a las horas de mayor producción fotovoltaica y recuerda que la energía más sostenible es aquella que no se utiliza.
   PROPERESPASES_TITLE: Próximos pasos
@@ -793,7 +799,6 @@ REPORT:
     <ul>
     <li> Instalaciones individuales </li>
     <li> Generation kWh</li>
-    <li> GURB</li>
     </ul>
   AUTOGENERACIO_TITLE: Información general sobre autogeneración
   AUTOGENERACIO_TEXT: Puedes encontrar información general sobre

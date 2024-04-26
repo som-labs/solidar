@@ -73,9 +73,14 @@ class Instalacion {
     this._name = 'Instalacion'
     this.#potenciaUnitaria = inInst.potenciaUnitaria
     this.#numeroPaneles = inInst.paneles
-    this.#precioInstalacion = Instalacion.getInstallationPrice(
-      (inInst.potenciaUnitaria * inInst.paneles) / 1000,
-    )
+    //Cuando importamos el precio de la instalación viene definido
+    if (inInst.precioInstalacion === undefined) {
+      this.#precioInstalacion = Instalacion.getInstallationPrice(
+        (inInst.potenciaUnitaria * inInst.paneles) / 1000,
+      )
+    } else {
+      this.#precioInstalacion = inInst.precioInstalacion
+    }
     UTIL.debugLog('Nueva instalacion creada', this)
   }
 

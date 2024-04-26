@@ -23,7 +23,7 @@ const routes = [
   },
   {
     path: '/',
-    element: <HomePage />,
+    element: <SimulatorPage />,
   },
   {
     path: '/simulator',
