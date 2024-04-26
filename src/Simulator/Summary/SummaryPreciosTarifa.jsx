@@ -50,7 +50,7 @@ export default function SummaryPreciosTarifa() {
                   borderColor: 'primary.light',
                 }}
               >
-                {precio + ' €/kWh'}
+                {precio}
               </Grid>
             </Fragment>
           )

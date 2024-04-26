@@ -22,7 +22,7 @@ import MonthFiveParts from './MonthFiveParts'
 import MonthEnergyBalance from './MonthEnergyBalance'
 import EnvironmentalImpact from './EnvironmentalImpact'
 import HourlyEnergyBalance from './HourlyEnergyBalance'
-import PieCharts from './PieCharts'
+import PieChart from './PieChart'
 import HelpEnergyBalance from './HelpEnergyBalance'
 import ValidateServerNameGrid from './ValidateServerNameGrid'
 
@@ -160,7 +160,39 @@ export default function EnergyBalanceStep() {
         {dataReady && (
           <Grid item xs={12}>
             <SLDRInfoBox sx={{ alignItems: 'center' }}>
-              <PieCharts yearlyData={yearlyData}></PieCharts>
+              <Grid item xs={6}>
+                <Typography variant={'h6'} sx={{ textAlign: 'center', mt: '1rem' }}>
+                  {t('ENERGY_BALANCE.TITLE_GRAPH_DEMAND')}
+                </Typography>
+                <PieChart
+                  labels={[
+                    t('ENERGY_BALANCE.LABEL_AUTOCONSUMO'),
+                    t('ENERGY_BALANCE.LABEL_ENERGIA_RED'),
+                  ]}
+                  values={[TCB.balance.autoconsumo, TCB.balance.deficitAnual]}
+                  colors={[
+                    theme.palette.balance.autoconsumo,
+                    theme.palette.balance.deficit,
+                  ]}
+                ></PieChart>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant={'h6'} sx={{ textAlign: 'center', mt: '1rem' }}>
+                  {t('ENERGY_BALANCE.TITLE_GRAPH_AUTOPRODUCIDA')}
+                </Typography>
+                <PieChart
+                  labels={[
+                    t('ENERGY_BALANCE.LABEL_AUTOCONSUMO'),
+                    t('ENERGY_BALANCE.LABEL_VERTIDO_RED'),
+                  ]}
+                  values={[TCB.balance.autoconsumo, TCB.balance.excedenteAnual]}
+                  colors={[
+                    theme.palette.balance.autoconsumo,
+                    theme.palette.balance.excedente,
+                  ]}
+                ></PieChart>
+              </Grid>
+              {/* <PieCharts yearlyData={yearlyData}></PieCharts> */}
             </SLDRInfoBox>
           </Grid>
         )}

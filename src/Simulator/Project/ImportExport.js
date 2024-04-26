@@ -8,6 +8,8 @@ import BaseSolar from '../classes/BaseSolar.js'
 import Instalacion from '../classes/Instalacion.js'
 import Rendimiento from '../classes/Rendimiento.js'
 import TipoConsumo from '../classes/TipoConsumo.js'
+import Consumo from '../classes/Consumo.js'
+import calculaResultados from '../classes/calculaResultados.js'
 
 /**
  * Utilizada en exporta para salvar los datos del mapa usando OpenLayers GeoJSON
@@ -65,8 +67,8 @@ function export2txt(originalData) {
  */
 async function exportProject() {
   //At least one BaseSolar should exist to export
-  if (TCB.BaseSolar.length === 0) {
-    alert(TCB.i18next.t('Debe existir al menos una base para exportar'))
+  if (!TCB.readyToExport) {
+    alert(TCB.i18next.t('Proyecto.NO_EXPORT_AVAILABLE'))
     return false
   }
   // Proyecto hdr info
@@ -166,10 +168,22 @@ async function importLocalizacion(datosImportar) {
     UTIL.debugLog('importLocalizacion - nueva base creada', tbase)
 
     //Creamos el objeto instalacion de la base
-    tbase.instalacion = new Instalacion({
-      paneles: base.instalacion.paneles,
-      potenciaUnitaria: base.instalacion.potenciaUnitaria,
-    })
+    // En versiones anteriores a la 4.1 la potencia unitaria estaba en kWp, ahora esta en Wp
+    if (datosImportar.version === '4') {
+      base.instalacion.potenciaUnitaria *= 1000
+      tbase.instalacion = new Instalacion(base.instalacion)
+      //   {paneles: base.instalacion.paneles,
+      //   potenciaUnitaria: base.instalacion.potenciaUnitaria * 1000,
+      //   precioInstalacion: base.instalacion.precio
+      // })
+    } else {
+      tbase.instalacion = new Instalacion(base.instalacion)
+      //   {
+      //   paneles: base.instalacion.paneles,
+      //   potenciaUnitaria: base.instalacion.potenciaUnitaria,
+      // })
+    }
+
     UTIL.debugLog('importLocalizacion - nueva instalacion creada', tbase.instalacion)
 
     //Creamos el rendimiento.
@@ -256,17 +270,32 @@ async function importProject(fichero) {
 
   // Import parameters
   for (let param in datosImportar.parametros) {
-    TCB.parametros[param] = datosImportar.parametros[param]
+    if (datosImportar.version === '4') {
+      if (param === 'IVAinstalacion') {
+        TCB.parametros.IVAInstalacion = datosImportar.parametros[param]
+      } else if (param === 'IVAenergia') {
+        TCB.parametros.IVAEnergia = datosImportar.parametros[param]
+      } else {
+        TCB.parametros[param] = datosImportar.parametros[param]
+      }
+    } else {
+      TCB.parametros[param] = datosImportar.parametros[param]
+    }
   }
   TCB.tipoPanelActivo = datosImportar.tipoPanelActivo
-  if (datosImportar.version !== '4.1') {
+  // En versiones anteriores a la 4.1 la potencia unitaria estaba en kWp, ahora esta en Wp
+  if (datosImportar.version === '4') {
     TCB.tipoPanelActivo.potencia = datosImportar.tipoPanelActivo.potencia * 1000
   } else {
     TCB.tipoPanelActivo.potencia = datosImportar.tipoPanelActivo.potencia
+    TCB.version = datosImportar.version
   }
 
   importLocalizacion(datosImportar)
   importTipoConsumo(datosImportar)
+  TCB.consumo = new Consumo()
+  TCB.cambioTipoConsumo = false
+  await calculaResultados(true)
 
   return { status: true, error: '' }
 }

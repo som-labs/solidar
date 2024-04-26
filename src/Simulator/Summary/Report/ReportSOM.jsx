@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import styles from './pdfStyle'
 import { useTheme } from '@mui/material/styles'
 
-import { Grid, Container, Button, Box, Typography, Paper } from '@mui/material'
+import { Grid, Container, Button, Box, Typography } from '@mui/material'
 import { useReactToPrint } from 'react-to-print'
 import Print from '@mui/icons-material/Print'
 import logo from './images/logo_som_energia.png'
@@ -18,8 +18,8 @@ import SummaryPreciosTarifa from '../SummaryPreciosTarifa'
 import SummaryConsumptionTarifa from '../SummaryConsumptionTarifa'
 import HourlyEnergyBalance from '../../EnergyBalance/HourlyEnergyBalance'
 import MonthSavingStack from '../../EconomicBalance/MonthSavingsStack'
-import PieCharts from '../../EnergyBalance/PieCharts'
-import PieChart from './PieChart'
+//import PieCharts from './PieCharts'
+import PieChart from '../../EnergyBalance/PieChart'
 import InstallationSummary from './InstallationSummary'
 
 import * as UTIL from '../../classes/Utiles'
@@ -33,6 +33,90 @@ export default function ReportSOM({ onClose }) {
   const componentRef = useRef()
 
   const [yearlyData, setYearlyData] = useState({})
+
+  function getLink(number) {
+    let link
+    switch (number) {
+      case 1:
+        switch (i18n.language.substring(0, 2)) {
+          case 'ca':
+            link =
+              'https://ca.support.somenergia.coop/article/778-que-es-l-autoproduccio?utm_source=linkidiomes&utm_medium=cda&utm_campaign=catal%C3%A0'
+            break
+          case 'gl':
+            link =
+              'https://gl.support.somenergia.coop/article/836-que-e-a-autoproducion?utm_source=linkidiomes&utm_medium=cda&utm_campaign=galego'
+            break
+          case 'eu':
+            link =
+              'https://eu.support.somenergia.coop/article/838-zer-da-autoprodukzioa?utm_source=linkidiomes&utm_medium=cda&utm_campaign=euskara'
+            break
+          default:
+            link =
+              'https://es.support.somenergia.coop/article/780-que-es-la-autoproduccion?utm_source=linkidiomes&utm_medium=cda&utm_campaign=castellano'
+            break
+        }
+        break
+      case 2:
+        switch (i18n.language.substring(0, 2)) {
+          case 'ca':
+            link =
+              'https://ca.support.somenergia.coop/article/783-com-funciona-la-compensacio-simplificada-dexcedents?utm_source=linkidiomes&utm_medium=cda&utm_campaign=catal%C3%A0'
+            break
+          case 'gl':
+            link =
+              'https://gl.support.somenergia.coop/article/981-a-compensacion-simplificada-de-excedentes-en-autoproducion?utm_source=linkidiomes&utm_medium=cda&utm_campaign=galego'
+            break
+          case 'eu':
+            link =
+              'https://eu.support.somenergia.coop/article/980-autoprodukzioko-soberakinen-konpentsazio-sinplifikatua?utm_source=linkidiomes&utm_medium=cda&utm_campaign=euskara'
+            break
+          default:
+            link =
+              'https://es.support.somenergia.coop/article/784-como-funciona-la-compensacion-simplificada-de-excedentes?utm_source=linkidiomes&utm_medium=cda&utm_campaign=castellano'
+            break
+        }
+        break
+      case 3:
+        switch (i18n.language.substring(0, 2)) {
+          case 'ca':
+            link =
+              'https://ca.support.somenergia.coop/article/929-autoproduccio-que-passa-si-marxa-la-llum?utm_source=linkidiomes&utm_medium=cda&utm_campaign=catal%C3%A0'
+            break
+          case 'gl':
+            link =
+              'https://gl.support.somenergia.coop/article/931-autoproducion-que-pasa-se-marcha-a-luz?utm_source=linkidiomes&utm_medium=cda&utm_campaign=galego'
+            break
+          case 'eu':
+            link =
+              'https://eu.support.somenergia.coop/article/932-autoprodukzioa-zer-gertatuko-da-argirik-gabe-gelditzen-bagara?utm_source=linkidiomes&utm_medium=cda&utm_campaign=euskara'
+            break
+          default:
+            link =
+              'https://es.support.somenergia.coop/article/930-autoproduccion-que-pasa-si-se-va-la-luz?utm_source=linkidiomes&utm_medium=cda&utm_campaign=castellano'
+            break
+        }
+        break
+      case 4:
+        switch (i18n.language.substring(0, 2)) {
+          case 'ca':
+            link = 'https://ca.support.somenergia.coop/category/777-autoproduccio'
+            break
+          case 'gl':
+            link = 'https://gl.support.somenergia.coop/category/835-autoproducion'
+            break
+          case 'eu':
+            link = 'https://eu.support.somenergia.coop/category/837-autoprodukzioa'
+            break
+          default:
+            link = 'https://es.support.somenergia.coop/category/779-autoproduccion'
+            break
+        }
+        break
+    }
+
+    return link
+  }
 
   const customPageStyle = `
     @media print {
@@ -52,6 +136,20 @@ export default function ReportSOM({ onClose }) {
     }
   `
 
+  // const AUTO = UTIL.suma(TCB.economico.ahorradoAutoconsumoMes)
+  // const COMPENSA = -UTIL.suma(TCB.economico.compensadoMensual)
+  // const HUCHA = UTIL.suma(TCB.economico.extraccionHucha)
+  // const GASTOCP = UTIL.suma(TCB.economico.consumoConPlacasMensualCorregido)
+  // const GASTOSP = UTIL.suma(TCB.economico.consumoOriginalMensual)
+  // console.log('SALDO', TCB.economico.huchaSaldo)
+
+  // console.log('AUTO', AUTO, TCB.economico.ahorradoAutoconsumoMes)
+  // console.log('COMPENSA', COMPENSA, TCB.economico.compensadoMensual)
+  // console.log('HUCHA', HUCHA, TCB.economico.extraccionHucha)
+  // console.log('AHORRO', AUTO + COMPENSA + HUCHA)
+  // console.log('GASTO CPLACAS', GASTOCP, TCB.economico.consumoConPlacasMensualCorregido)
+  // console.log('GASTO SPLACAS', GASTOSP, TCB.economico.consumoOriginalMensual)
+
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     //pageStyle: customPageStyle,
@@ -61,25 +159,32 @@ export default function ReportSOM({ onClose }) {
     return (
       <Box
         sx={{
-          padding: 3,
+          padding: 2,
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          gap: 10,
+          gap: 5,
         }}
       >
-        <img src={logo} width="150" />
-        <Typography
-          variant="h4"
-          sx={{ textAlign: 'right', textTransform: 'uppercase', margin: 0, padding: 3 }}
-        >
-          {t('REPORT.TITLE_PRIMER')}
-          <br />
-          <strong style={{ color: theme.palette.primary.main }}>
-            {t('REPORT.TITLE_STRONG')}
-          </strong>{' '}
-          {t('REPORT.TITLE_SEGON')}
-        </Typography>
+        <Box padding={1}>
+          <img src={logo} width="170" />
+        </Box>
+        <Box sx={{ display: 'flex', flex: 1, justifyContent: 'right' }}>
+          <Typography
+            variant="h4"
+            sx={{
+              textAlign: 'right',
+              textTransform: 'uppercase',
+              margin: 0,
+              padding: 3,
+            }}
+          >
+            {t('REPORT.TITLE_PRIMER')}
+            <br />
+            <strong style={{ color: theme.palette.primary.main }}>
+              {t('REPORT.TITLE_STRONG')}
+            </strong>{' '}
+            {t('REPORT.TITLE_SEGON')}
+          </Typography>
+        </Box>
       </Box>
     )
   }
@@ -139,6 +244,7 @@ export default function ReportSOM({ onClose }) {
                   minHeight: 200,
                 }}
               >
+                {/* Datos principales */}
                 <Box
                   id="F1C1"
                   sx={{
@@ -150,16 +256,14 @@ export default function ReportSOM({ onClose }) {
                 >
                   <Box
                     id="F1C1Title"
-                    sx={{ backgroundColor: theme.informe.dataBox.title.backgroundColor }}
+                    sx={{
+                      backgroundColor: 'databox.main',
+                      color: 'databox.contrastText',
+                      textAlign: 'center',
+                      padding: 1,
+                    }}
                   >
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        textAlign: 'center',
-                        padding: 1,
-                        color: theme.informe.dataBox.title.text,
-                      }}
-                    >
+                    <Typography variant="h6">
                       <strong>{t('REPORT.DADES_TITLE')}</strong>
                     </Typography>
                   </Box>
@@ -176,10 +280,12 @@ export default function ReportSOM({ onClose }) {
                   </Box>
                 </Box>
 
+                {/* Datos de cubierta */}
                 <Box id="F1C2" sx={{ flex: 1, display: 'flex' }}>
                   <InstallationSummary></InstallationSummary>
                 </Box>
 
+                {/* El mapa */}
                 <Box id="F1C3" sx={{ display: 'flex', flex: 1 }}>
                   <MicroMap></MicroMap>
                 </Box>
@@ -193,6 +299,7 @@ export default function ReportSOM({ onClose }) {
                   gap: 2,
                 }}
               >
+                {/* Uso de la energia */}
                 <Box
                   id="F2C1"
                   sx={{
@@ -206,17 +313,13 @@ export default function ReportSOM({ onClose }) {
                   <Box
                     id="F2C1Title"
                     sx={{
-                      backgroundColor: theme.informe.sectionBox.title.backgroundColor,
+                      backgroundColor: 'primary.main',
+                      color: 'primary.contrastText',
+                      textAlign: 'center',
+                      padding: 1,
                     }}
                   >
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        textAlign: 'center',
-                        padding: 1,
-                        color: theme.informe.sectionBox.title.text,
-                      }}
-                    >
+                    <Typography variant="h6">
                       <strong>{t('REPORT.US_TITLE')}</strong>
                     </Typography>
                   </Box>
@@ -226,6 +329,7 @@ export default function ReportSOM({ onClose }) {
                   </Box>
                 </Box>
 
+                {/* Precios aplicados */}
                 <Box
                   id="F2C2"
                   sx={{
@@ -239,17 +343,13 @@ export default function ReportSOM({ onClose }) {
                   <Box
                     id="F2C2Title"
                     sx={{
-                      backgroundColor: theme.informe.sectionBox.title.backgroundColor,
+                      backgroundColor: 'primary.main',
+                      color: 'primary.contrastText',
+                      textAlign: 'center',
+                      padding: 1,
                     }}
                   >
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        textAlign: 'center',
-                        padding: 1,
-                        color: theme.informe.sectionBox.title.text,
-                      }}
-                    >
+                    <Typography variant="h6">
                       <strong>{t('REPORT.FEE_TITLE')}</strong>
                     </Typography>
                   </Box>
@@ -260,6 +360,7 @@ export default function ReportSOM({ onClose }) {
               </Box>
             </Box>
 
+            {/* Caracteristicas de la instalacion propuesta */}
             <Box
               sx={{
                 display: 'flex',
@@ -290,16 +391,14 @@ export default function ReportSOM({ onClose }) {
                 }}
               >
                 <Box
-                  sx={{ backgroundColor: theme.informe.sectionBox.title.backgroundColor }}
+                  sx={{
+                    backgroundColor: 'primary.main',
+                    color: 'primary.contrastText',
+                    textAlign: 'center',
+                    padding: 1,
+                  }}
                 >
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      textAlign: 'center',
-                      padding: 1,
-                      color: theme.informe.sectionBox.title.text,
-                    }}
-                  >
+                  <Typography variant="h6">
                     <strong>{t('REPORT.INSTALACIO_TITLE')}</strong>
                   </Typography>
                 </Box>
@@ -340,18 +439,21 @@ export default function ReportSOM({ onClose }) {
                 </Box>
               </Box>
             </Box>
-            <Box sx={{ backgroundColor: theme.informe.sectionBox.title.backgroundColor }}>
-              <Typography
-                variant="h6"
-                sx={{
-                  textAlign: 'center',
-                  padding: 1,
-                  color: theme.informe.sectionBox.title.text,
-                }}
-              >
+            {/* Estudio energetico - economico */}
+            <Box
+              sx={{
+                textTransform: 'uppercase',
+                backgroundColor: 'primary.main',
+                color: 'primary.contrastText',
+                textAlign: 'center',
+                padding: 1,
+              }}
+            >
+              <Typography variant="h6">
                 <strong>{t('REPORT.ESTUDI_TITLE')}</strong>
               </Typography>
             </Box>
+
             <Box>
               <Grid
                 container
@@ -361,57 +463,65 @@ export default function ReportSOM({ onClose }) {
                 <Grid item xs={6}>
                   <Grid container>
                     <Grid
-                      xs={5}
+                      xs={6}
                       item
                       sx={{
                         backgroundColor: theme.informe.energyTable.title.backgroundColor,
                         color: theme.palette.text,
-                        padding: 1,
+                        padding: 0.5,
                         border: '1px solid #ccc',
+                        height: 30,
+                        alignContent: 'center',
                       }}
                     >
-                      {t('ENERGY_BALANCE.LABEL_AUTOCONSUMO')}
+                      <h4>{t('ENERGY_BALANCE.LABEL_AUTOCONSUMO')}</h4>
                     </Grid>
                     <Grid
                       xs={3}
                       item
                       sx={{
-                        padding: 1,
                         border: '1px solid #ccc',
                         textAlign: 'center',
                         fontWeight: 'bold',
+                        height: 30,
+                        alignContent: 'center',
                       }}
                     >
-                      {UTIL.formatoValor('energia', TCB.balance.autoconsumo)}
+                      <h5>{UTIL.formatoValor('energia', TCB.balance.autoconsumo)}</h5>
                     </Grid>
                     <Grid
                       xs={3}
                       item
                       sx={{
-                        padding: 1,
                         border: '1px solid #ccc',
                         textAlign: 'center',
                         fontWeight: 'bold',
+                        height: 30,
+                        alignContent: 'center',
                       }}
                     >
-                      {UTIL.formatoValor(
-                        'dinero',
-                        UTIL.suma(TCB.economico.ahorradoAutoconsumoMes),
-                      )}
+                      <h5>
+                        {UTIL.formatoValor(
+                          'dinero',
+                          UTIL.suma(TCB.economico.ahorradoAutoconsumoMes),
+                        )}
+                      </h5>
                     </Grid>
                   </Grid>
                   <Grid container>
                     <Grid
                       item
-                      xs={5}
+                      xs={6}
                       sx={{
                         backgroundColor: theme.informe.energyTable.title.backgroundColor,
                         color: theme.palette.text,
-                        padding: 1,
+                        padding: 0.5,
                         border: '1px solid #ccc',
+                        height: 30,
+                        alignContent: 'center',
                       }}
                     >
-                      {t('REPORT.ESTUDI_EXCEDENT')}
+                      <h4>{t('REPORT.ESTUDI_EXCEDENT')} </h4>
                     </Grid>
                     <Grid
                       xs={3}
@@ -421,9 +531,11 @@ export default function ReportSOM({ onClose }) {
                         border: '1px solid #ccc',
                         textAlign: 'center',
                         fontWeight: 'bold',
+                        height: 30,
+                        alignContent: 'center',
                       }}
                     >
-                      {UTIL.formatoValor('energia', TCB.balance.excedenteAnual)}
+                      <h5>{UTIL.formatoValor('energia', TCB.balance.excedenteAnual)} </h5>
                     </Grid>
                     <Grid
                       xs={3}
@@ -433,26 +545,34 @@ export default function ReportSOM({ onClose }) {
                         border: '1px solid #ccc',
                         textAlign: 'center',
                         fontWeight: 'bold',
+                        height: 30,
+                        alignContent: 'center',
                       }}
                     >
-                      {UTIL.formatoValor(
-                        'dinero',
-                        -UTIL.suma(TCB.economico.compensadoMensual),
-                      )}
+                      <h5>
+                        {UTIL.formatoValor(
+                          'dinero',
+                          -UTIL.suma(TCB.economico.compensadoMensual),
+                        )}
+                      </h5>
                     </Grid>
                   </Grid>
                   <Grid container>
                     <Grid
-                      xs={5}
+                      xs={6}
                       item
                       sx={{
                         backgroundColor: theme.informe.energyTable.title.backgroundColor,
                         color: theme.palette.text,
-                        padding: 1,
+                        padding: 0.5,
                         border: '1px solid #ccc',
+                        height: 30,
+                        alignContent: 'center',
                       }}
                     >
-                      <strong>{t('REPORT.ESTUDI_ESTALVI')}</strong>
+                      <h4>
+                        <strong>{t('REPORT.ESTUDI_ESTALVI')}</strong>
+                      </h4>
                     </Grid>
                     <Grid
                       xs={6}
@@ -462,65 +582,29 @@ export default function ReportSOM({ onClose }) {
                         border: '1px solid #ccc',
                         textAlign: 'center',
                         fontWeight: 'bold',
+                        height: 30,
+                        alignContent: 'center',
                       }}
                     >
-                      {UTIL.formatoValor('dinero', TCB.economico.ahorroAnual)}
+                      <h5>{UTIL.formatoValor('dinero', TCB.economico.ahorroAnual)}</h5>
                     </Grid>
                   </Grid>
                   <Grid container>
                     <Grid
-                      xs={5}
+                      xs={6}
                       item
                       sx={{
                         backgroundColor: theme.informe.energyTable.title.backgroundColor,
                         color: theme.palette.text,
-                        padding: 1,
+                        padding: 0.5,
                         border: '1px solid #ccc',
+                        height: 30,
+                        alignContent: 'center',
                       }}
                     >
-                      {t('REPORT.ESTUDI_XARXA')}
-                    </Grid>
-                    <Grid
-                      xs={3}
-                      item
-                      sx={{
-                        padding: 1,
-                        border: '1px solid #ccc',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {UTIL.formatoValor('energia', TCB.balance.deficitAnual)}
-                    </Grid>
-                    <Grid
-                      xs={3}
-                      item
-                      sx={{
-                        padding: 1,
-                        border: '1px solid #ccc',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {UTIL.formatoValor(
-                        'dinero',
-                        UTIL.suma(TCB.economico.consumoConPlacasMensualCorregido),
-                      )}
-                    </Grid>
-                  </Grid>
-
-                  <Grid container>
-                    <Grid
-                      xs={5}
-                      item
-                      sx={{
-                        backgroundColor: theme.informe.energyTable.title.backgroundColor,
-                        color: theme.palette.text,
-                        padding: 1,
-                        border: '1px solid #ccc',
-                      }}
-                    >
-                      <strong>{t('REPORT.ESTUDI_RETORN')}</strong>
+                      <h4>
+                        <strong>{t('REPORT.SOLS_DISPONIBLES')}</strong>
+                      </h4>
                     </Grid>
                     <Grid
                       xs={6}
@@ -530,35 +614,130 @@ export default function ReportSOM({ onClose }) {
                         border: '1px solid #ccc',
                         textAlign: 'center',
                         fontWeight: 'bold',
+                        height: 30,
+                        alignContent: 'center',
                       }}
                     >
-                      {TCB.economico.periodoAmortizacion + ' ' + t('BASIC.LABEL_AÑOS')}
+                      <h5>{UTIL.formatoValor('dinero', TCB.economico.huchaSaldo[11])}</h5>
+                    </Grid>
+                  </Grid>
+                  <Grid container>
+                    <Grid
+                      xs={6}
+                      item
+                      sx={{
+                        backgroundColor: theme.informe.energyTable.title.backgroundColor,
+                        color: theme.palette.text,
+                        padding: 0.5,
+                        border: '1px solid #ccc',
+                        height: 30,
+                        alignContent: 'center',
+                      }}
+                    >
+                      <h4>{t('REPORT.ESTUDI_XARXA')} </h4>
+                    </Grid>
+                    <Grid
+                      xs={3}
+                      item
+                      sx={{
+                        padding: 1,
+                        border: '1px solid #ccc',
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        height: 30,
+                        alignContent: 'center',
+                      }}
+                    >
+                      <h5>{UTIL.formatoValor('energia', TCB.balance.deficitAnual)}</h5>
+                    </Grid>
+                    <Grid
+                      xs={3}
+                      item
+                      sx={{
+                        padding: 1,
+                        border: '1px solid #ccc',
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        height: 30,
+                        alignContent: 'center',
+                      }}
+                    >
+                      <h5>
+                        {UTIL.formatoValor(
+                          'dinero',
+                          UTIL.suma(TCB.economico.consumoConPlacasMensualCorregido),
+                        )}
+                      </h5>
+                    </Grid>
+                  </Grid>
+
+                  <Grid container>
+                    <Grid
+                      xs={6}
+                      item
+                      sx={{
+                        backgroundColor: theme.informe.energyTable.title.backgroundColor,
+                        color: theme.palette.text,
+                        padding: 0.5,
+                        border: '1px solid #ccc',
+                        height: 30,
+                        alignContent: 'center',
+                      }}
+                    >
+                      <h4>
+                        <strong>{t('REPORT.ESTUDI_RETORN')}</strong>
+                      </h4>
+                    </Grid>
+                    <Grid
+                      xs={6}
+                      item
+                      sx={{
+                        padding: 1,
+                        border: '1px solid #ccc',
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                        height: 30,
+                        alignContent: 'center',
+                      }}
+                    >
+                      <h5>
+                        {TCB.economico.periodoAmortizacion + ' ' + t('BASIC.LABEL_AÑOS')}
+                      </h5>
                     </Grid>
                   </Grid>
                 </Grid>
-                {/* <Grid item xs={8} justifyContent={'right'}>
-              <PieCharts yearlyData={yearlyData}></PieCharts>
-            </Grid> */}
 
                 <Grid item xs={3}>
+                  <Typography variant={'h6'} sx={{ textAlign: 'center', mt: '1rem' }}>
+                    {t('REPORT.PIE_CONSUMO_HORAS_SOL_TITLE')}
+                  </Typography>
                   <PieChart
-                    percentage={
-                      (TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100
-                    }
-                    color="#b9db42"
-                    label={t('REPORT.PIE_AUTOCONSUM_TITLE')}
-                    description={t('REPORT.PIE_AUTOCONSUM_DESCRIPTION')}
-                  />
+                    labels={['Consumo horas con sol', 'Resto consumo']}
+                    values={[
+                      TCB.balance.consumoDiurno,
+                      TCB.consumo.totalAnual - TCB.balance.consumoDiurno,
+                    ]}
+                    colors={[
+                      theme.palette.balance.consumoDiurno,
+                      theme.palette.balance.consumo,
+                    ]}
+                  ></PieChart>
                 </Grid>
                 <Grid item xs={3}>
+                  <Typography variant={'h6'} sx={{ textAlign: 'center', mt: '1rem' }}>
+                    {t('ENERGY_BALANCE.TITLE_GRAPH_DEMAND')}
+                  </Typography>
                   <PieChart
-                    percentage={
-                      (TCB.balance.consumoDiurno / TCB.consumo.totalAnual) * 100
-                    }
-                    color="#b9db42"
-                    label={t('REPORT.PIE_CONSUMO_HORAS_SOL_TITLE')}
-                    description={t('REPORT.PIE_CONSUMO_HORAS_SOL_DESCRIPTION')}
-                  />
+                    labels={[
+                      t('ENERGY_BALANCE.LABEL_AUTOCONSUMO'),
+                      t('ENERGY_BALANCE.LABEL_EXCEDENTE_ANUAL'),
+                    ]}
+                    values={[TCB.balance.autoconsumo, TCB.balance.excedenteAnual]}
+                    colors={[
+                      theme.palette.balance.autoconsumo,
+                      theme.palette.balance.excedente,
+                    ]}
+                  ></PieChart>
                 </Grid>
               </Grid>
             </Box>
@@ -589,6 +768,7 @@ export default function ReportSOM({ onClose }) {
               <Typography
                 variant="h6"
                 sx={{
+                  textTransform: 'uppercase',
                   textAlign: 'center',
                   padding: 1,
                   mb: '0.5rem',
@@ -615,9 +795,10 @@ export default function ReportSOM({ onClose }) {
                   />
                   <Typography
                     sx={{
+                      textTransform: 'uppercase',
                       padding: 1,
                       fontSize: 18,
-                      fontWeight: 'normal',
+                      fontWeight: 'bold',
                       margin: 0,
                     }}
                   >
@@ -637,9 +818,10 @@ export default function ReportSOM({ onClose }) {
                   />
                   <Typography
                     sx={{
+                      textTransform: 'uppercase',
                       padding: 1,
                       fontSize: 18,
-                      fontWeight: 'normal',
+                      fontWeight: 'bold',
                       margin: 0,
                     }}
                   >
@@ -659,9 +841,10 @@ export default function ReportSOM({ onClose }) {
                   />
                   <Typography
                     sx={{
+                      textTransform: 'uppercase',
                       padding: 1,
                       fontSize: 18,
-                      fontWeight: 'normal',
+                      fontWeight: 'bold',
                       margin: 0,
                     }}
                   >
@@ -723,16 +906,15 @@ export default function ReportSOM({ onClose }) {
           >
             <Header></Header>
             {/* BOX Titulo Proximos pasos */}
-            <Box sx={{ backgroundColor: theme.informe.sectionBox.title.backgroundColor }}>
-              <Typography
-                variant="h6"
-                sx={{
-                  textAlign: 'center',
-                  padding: 1,
-                  color: theme.informe.sectionBox.title.text,
-                  mt: '1rem',
-                }}
-              >
+            <Box
+              sx={{
+                backgroundColor: 'primary.main',
+                color: 'primary.contrastText',
+                textAlign: 'center',
+                padding: 1,
+              }}
+            >
+              <Typography variant="h6" sx={{ textTransform: 'uppercase' }}>
                 <strong>{t('REPORT.PROPERESPASES_TITLE')}</strong>
               </Typography>
             </Box>
@@ -753,62 +935,59 @@ export default function ReportSOM({ onClose }) {
                 }}
               />
             </Box>
-            <Box sx={theme.informe.titleBox}>
-              <Typography variant="h5">
+
+            {/*Informacion general sobre autogeneracion */}
+            <Box
+              sx={{
+                backgroundColor: 'primary.main',
+                color: 'primary.contrastText',
+                textAlign: 'center',
+                padding: 1,
+              }}
+            >
+              <Typography variant="h6" sx={{ textTransform: 'uppercase' }}>
                 <strong>{t('REPORT.AUTOGENERACIO_TITLE')}</strong>
               </Typography>
             </Box>
-            <div style={styles.container}>
-              <div>
-                <h3 style={styles.autogeneracioTitle}>
+
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              <Box sx={{ display: 'flex', flex: 1, alignItems: 'center', padding: 2 }}>
+                <Typography>
                   {t('REPORT.AUTOGENERACIO_TEXT')}{' '}
                   <strong style={styles.autogeneracioBold}>
                     {t('REPORT.AUTOGENERACIO_TEXT_STRONG')}{' '}
                   </strong>
                   {t('REPORT.AUTOGENERACIO_TEXT_FINAL')}{' '}
-                </h3>
-              </div>
-              <div style={styles.listContainer}>
-                <ul style={styles.list}>
-                  <li style={styles.listitem}>
-                    <a
-                      href="https://ca.support.somenergia.coop/article/778-que-es-l-autoproduccio"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {t('REPORT.AUTOGENERACIO_LINK_PRIMER')}{' '}
-                    </a>
-                  </li>
-                  <li style={styles.listitem}>
-                    <a
-                      href="https://ca.support.somenergia.coop/article/783-com-funciona-la-compensacio-simplificada-dexcedents"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {t('REPORT.AUTOGENERACIO_LINK_SEGON')}
-                    </a>
-                  </li>
-                  <li style={styles.listitem}>
-                    <a
-                      href="https://ca.support.somenergia.coop/article/929-autoproduccio-que-passa-si-marxa-la-llum"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {t('REPORT.AUTOGENERACIO_LINK_TERCER')}{' '}
-                    </a>
-                  </li>
-                  <li style={styles.listitem}>
-                    <a
-                      href="https://ca.support.somenergia.coop/category/777-autoproduccio"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {t('REPORT.AUTOGENERACIO_LINK_CUART')}{' '}
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+                </Typography>
+              </Box>
+              <Box sx={{ display: 'flex', flex: 1 }}>
+                <div style={styles.listContainer}>
+                  <ul style={styles.list}>
+                    <li style={styles.listitem}>
+                      <a href={getLink(1)} target="_blank" rel="noreferrer">
+                        {t('REPORT.AUTOGENERACIO_LINK_PRIMER')}
+                      </a>
+                    </li>
+                    <li style={styles.listitem}>
+                      <a href={getLink(2)} target="_blank" rel="noreferrer">
+                        {t('REPORT.AUTOGENERACIO_LINK_SEGON')}
+                      </a>
+                    </li>
+                    <li style={styles.listitem}>
+                      <a href={getLink(3)} target="_blank" rel="noreferrer">
+                        {t('REPORT.AUTOGENERACIO_LINK_TERCER')}
+                      </a>
+                    </li>
+                    <li style={styles.listitem}>
+                      <a href={getLink(3)} target="_blank" rel="noreferrer">
+                        {t('REPORT.AUTOGENERACIO_LINK_CUART')}{' '}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </Box>
+            </Box>
+
             <div style={styles.peu}>
               <p style={styles.peuText}>{t('REPORT.PEU')} </p>
               <img src={logo} width="120" />

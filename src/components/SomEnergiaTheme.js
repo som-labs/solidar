@@ -29,6 +29,10 @@ export default function SomEnergiaTheme(isDarkMode) {
           main: '#e6cc00', // From representa-ov highlight
           contrastText: 'white',
         },
+        databox: {
+          main: isDarkMode ? '#333333' : 'grey',
+          contrastText: isDarkMode ? 'white' : 'white',
+        },
         helpIcon: {
           main: '#810C04',
         },
