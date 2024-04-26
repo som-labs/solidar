@@ -83,6 +83,7 @@ export default function Page() {
     results = await PreparaEnergyBalance()
     if (results.status) {
       setEcoData(TCB.economico)
+      TCB.readyToExport = true
     } else {
       console.log(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error)
       SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')

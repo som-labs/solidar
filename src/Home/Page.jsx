@@ -74,7 +74,7 @@ export default function Page() {
           sx={{ display: 'flex', flexFlow: 'column', my: '2rem' }}
           style={{ alignItems: 'center' }}
         >
-          <Header>
+          {/* <Header>
             <a name="tools" />
             {t('HOME.SIMULATION_TOOLS_TITLE')}
           </Header>
@@ -100,7 +100,7 @@ export default function Page() {
               title={t('HOME.SIMULATION_TOOLS_COLLECTIVE')}
               subtitle={t('HOME.SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION')}
             />
-          </Box>
+          </Box> */}
         </Box>
         <Box>
           <Container

@@ -155,9 +155,9 @@ export default function MapaMesHora({ activo }) {
         type: 'scatter',
         name:
           '<' +
-          UTIL.formatoValor('energia', (i - 1) * delta) +
+          UTIL.formatoValor('maximoAnual', (i - 1) * delta) +
           ' - ' +
-          UTIL.formatoValor('energia', i * delta),
+          UTIL.formatoValor('maximoAnual', i * delta),
         x: horas[i],
         y: meses[i],
         text: text[i],

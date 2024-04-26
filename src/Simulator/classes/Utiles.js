@@ -13,7 +13,6 @@ import TCB from './TCB'
 import { Style, Fill, Text } from 'ol/style'
 import Papa from 'papaparse'
 
-/*global bootstrap, ol*/
 const campos = {
   ahorroFincaAnual: { unidad: ' €', decimales: 2, salvar: true, mostrar: true },
   // Genericos
@@ -44,7 +43,7 @@ const campos = {
 
   // BaseSolar:
   idBaseSolar: { unidad: '', decimales: 0, salvar: true, mostrar: false, order: 1 },
-  nombreBaseSolar: { unidad: '', decimales: 0, salvar: true, mostrar: true, order: 2 },
+  nombreBaseSolar: { unidad: '', decimales: 0, salvar: true, mostrar: false, order: 2 },
   lonlatBaseSolar: { unidad: '', salvar: true, mostrar: true, order: 3 },
   roofType: { unidad: '', salvar: true, mostrar: true, order: 4 },
   cumbrera: { unidad: 'm', decimales: 1, salvar: true, mostrar: true, order: 5 },
@@ -58,8 +57,8 @@ const campos = {
   area: { unidad: ' m²', decimales: 0, salvar: true, mostrar: false },
   acimut: { unidad: 'º', decimales: 2, salvar: true, mostrar: true, order: 11 },
   inAcimut: { unidad: 'º', decimales: 2, salvar: true, mostrar: true, order: 12 },
-  inclinacionOptima: { unidad: '', salvar: true, mostrar: true, order: 13 },
-  angulosOptimos: { unidad: '', salvar: true, mostrar: true, order: 14 },
+  inclinacionOptima: { unidad: '', salvar: true, mostrar: false, order: 13 },
+  angulosOptimos: { unidad: '', salvar: true, mostrar: false, order: 14 },
   inclinacion: {
     unidad: 'º',
     decimales: 2,

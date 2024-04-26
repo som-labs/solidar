@@ -20,9 +20,9 @@ const Reports = forwardRef((props, ref) => {
 
   const [openDialog, closeDialog] = useDialog()
 
-  const printSummary = useReactToPrint({
-    content: () => ref.current,
-  })
+  // const printSummary = useReactToPrint({
+  //   content: () => ref.current,
+  // })
 
   //window.print()
 
@@ -38,7 +38,7 @@ const Reports = forwardRef((props, ref) => {
 
   return (
     <Container sx={{ display: 'flex', justifyContent: 'space-between' }}>
-      <Button
+      {/* <Button
         sx={{ mr: '1rem' }}
         variant="contained"
         startIcon={<Print />}
@@ -46,7 +46,7 @@ const Reports = forwardRef((props, ref) => {
         onClick={printSummary}
       >
         {t('SUMMARY.LABEL_PRINT')}
-      </Button>
+      </Button> */}
       <Button
         sx={{ mr: '1rem' }}
         variant="contained"
