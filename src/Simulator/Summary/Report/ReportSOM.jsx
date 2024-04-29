@@ -9,7 +9,7 @@ import logo from './images/logo_som_energia.png'
 import bombeta from './images/bombeta.png'
 import dona from './images/dona.png'
 import placa from './images/placa.png'
-import casa from './images/casa.png'
+import casa from './images/casa.jpg'
 import euro from './images/euro.png'
 
 import { useTranslation } from 'react-i18next'
@@ -17,7 +17,8 @@ import { useTranslation } from 'react-i18next'
 import SummaryPreciosTarifa from '../SummaryPreciosTarifa'
 import SummaryConsumptionTarifa from '../SummaryConsumptionTarifa'
 import HourlyEnergyBalance from '../../EnergyBalance/HourlyEnergyBalance'
-import MonthSavingStack from '../../EconomicBalance/MonthSavingsStack'
+//import MonthSavingStack from '../../EconomicBalance/MonthSavingsStack'
+import MonthSaving from '../../EconomicBalance/MonthSavings'
 import PieChart from '../../EnergyBalance/PieChart'
 import InstallationSummary from './InstallationSummary'
 
@@ -368,8 +369,8 @@ export default function ReportSOM({ onClose }) {
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
-                mt: 2,
-                mb: 2,
+
+                mb: 1,
                 gap: 2,
               }}
             >
@@ -450,7 +451,6 @@ export default function ReportSOM({ onClose }) {
                 color: 'primary.contrastText',
                 textAlign: 'center',
                 padding: 1,
-                mb: 3,
               }}
             >
               <Typography variant="h6">
@@ -757,167 +757,173 @@ export default function ReportSOM({ onClose }) {
             }}
           >
             <Header></Header>
-
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Typography variant="h5" sx={{ textDecoration: 'underline' }}>
-                {t('REPORT.PERFIL_TITLE')}
-              </Typography>
-              <HourlyEnergyBalance report={true}></HourlyEnergyBalance>
-            </Box>
-
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                mb: 1,
-              }}
-            >
-              <Typography variant="h5" sx={{ textDecoration: 'underline' }}>
-                {t('REPORT.CONSUM_TITLE')}
-              </Typography>
-              <MonthSavingStack></MonthSavingStack>
-            </Box>
-
-            {/* BOX: Como se han generado los datos de este informe */}
-            <Box sx={{ backgroundColor: theme.informe.dataBox.title.backgroundColor }}>
-              <Typography
-                variant="h6"
+            <Box SX={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+              {/* BOX: Perfil de uso de energia */}
+              <Box
                 sx={{
-                  textTransform: 'uppercase',
-                  textAlign: 'center',
-                  padding: 1,
-                  mb: '0.5rem',
-                  mt: '1rem',
-                  color: theme.informe.dataBox.title.text,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: 400,
+                  mb: 2,
                 }}
               >
-                <strong>{t('REPORT.INFORME_TITLE')}</strong>
-              </Typography>
-            </Box>
-
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-                {/* BOX: Titulo Datos de generacion */}
-                <Box sx={{ display: 'flex', flex: 1, backgroundColor: '#b3b0b0' }}>
-                  <img
-                    src={placa}
-                    style={{
-                      position: 'relative',
-                      right: 0,
-                      height: 40,
-                      width: 40,
-                    }}
-                  />
-                  <Typography
-                    sx={{
-                      textTransform: 'uppercase',
-                      padding: 1,
-                      fontSize: 18,
-                      fontWeight: 'bold',
-                      margin: 0,
-                    }}
-                  >
-                    {t('REPORT.GENERACIO_TITLE')}
-                  </Typography>
-                </Box>
-                {/* BOX: Titulo Datos de uso de energia */}
-                <Box sx={{ display: 'flex', flex: 1, backgroundColor: '#b3b0b0' }}>
-                  <img
-                    src={bombeta}
-                    style={{
-                      position: 'relative',
-                      right: 0,
-                      height: 40,
-                      width: 40,
-                    }}
-                  />
-                  <Typography
-                    sx={{
-                      textTransform: 'uppercase',
-                      padding: 1,
-                      fontSize: 18,
-                      fontWeight: 'bold',
-                      margin: 0,
-                    }}
-                  >
-                    {t('REPORT.TITLE')}{' '}
-                  </Typography>
-                </Box>
-                {/* BOX: Titulo Datos economicos */}
-                <Box sx={{ display: 'flex', flex: 1, backgroundColor: '#b3b0b0' }}>
-                  <img
-                    src={euro}
-                    style={{
-                      position: 'relative',
-                      right: 0,
-                      height: 40,
-                      width: 40,
-                    }}
-                  />
-                  <Typography
-                    sx={{
-                      textTransform: 'uppercase',
-                      padding: 1,
-                      fontSize: 18,
-                      fontWeight: 'bold',
-                      margin: 0,
-                    }}
-                  >
-                    {t('REPORT.ECONOMIQUES_TITLE')}{' '}
-                  </Typography>
-                </Box>
+                <Typography variant="h5" sx={{ textDecoration: 'underline' }}>
+                  {t('REPORT.PERFIL_TITLE')}
+                </Typography>
+                <HourlyEnergyBalance report={true}></HourlyEnergyBalance>
               </Box>
 
-              <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-                {/* BOX: Descripcion Datos de generacion */}
-                <Box
+              {/* BOX: Ahorro mensual  */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: 500,
+                  mb: 1,
+                }}
+              >
+                <Typography variant="h5" sx={{ textDecoration: 'underline' }}>
+                  {t('ECONOMIC_BALANCE.TITLE_MONTH_SAVINGS')}
+                </Typography>
+                <MonthSaving></MonthSaving>
+              </Box>
+
+              {/* BOX: Como se han generado los datos de este informe */}
+              <Box sx={{ backgroundColor: theme.informe.dataBox.title.backgroundColor }}>
+                <Typography
+                  variant="h6"
                   sx={{
-                    display: 'flex',
-                    flex: 1,
-                    backgroundColor: '#d9d9d9',
+                    textTransform: 'uppercase',
+                    textAlign: 'center',
                     padding: 1,
-                    flexDirection: 'column',
+                    mb: '0.5rem',
+                    mt: '1rem',
+                    color: theme.informe.dataBox.title.text,
                   }}
                 >
-                  <Typography>{t('REPORT.GENERACIO_DESCRIPTION')}</Typography>
-                  <Typography>{t('REPORT.GENERACIO_TEXT')}</Typography>
+                  <strong>{t('REPORT.INFORME_TITLE')}</strong>
+                </Typography>
+              </Box>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+                  {/* BOX: Titulo Datos de generacion */}
+                  <Box sx={{ display: 'flex', flex: 1, backgroundColor: '#b3b0b0' }}>
+                    <img
+                      src={placa}
+                      style={{
+                        position: 'relative',
+                        right: 0,
+                        height: 40,
+                        width: 40,
+                      }}
+                    />
+                    <Typography
+                      sx={{
+                        textTransform: 'uppercase',
+                        padding: 1,
+                        fontSize: 18,
+                        fontWeight: 'bold',
+                        margin: 0,
+                      }}
+                    >
+                      {t('REPORT.GENERACIO_TITLE')}
+                    </Typography>
+                  </Box>
+                  {/* BOX: Titulo Datos de uso de energia */}
+                  <Box sx={{ display: 'flex', flex: 1, backgroundColor: '#b3b0b0' }}>
+                    <img
+                      src={bombeta}
+                      style={{
+                        position: 'relative',
+                        right: 0,
+                        height: 40,
+                        width: 40,
+                      }}
+                    />
+                    <Typography
+                      sx={{
+                        textTransform: 'uppercase',
+                        padding: 1,
+                        fontSize: 18,
+                        fontWeight: 'bold',
+                        margin: 0,
+                      }}
+                    >
+                      {t('REPORT.TITLE')}{' '}
+                    </Typography>
+                  </Box>
+                  {/* BOX: Titulo Datos economicos */}
+                  <Box sx={{ display: 'flex', flex: 1, backgroundColor: '#b3b0b0' }}>
+                    <img
+                      src={euro}
+                      style={{
+                        position: 'relative',
+                        right: 0,
+                        height: 40,
+                        width: 40,
+                      }}
+                    />
+                    <Typography
+                      sx={{
+                        textTransform: 'uppercase',
+                        padding: 1,
+                        fontSize: 18,
+                        fontWeight: 'bold',
+                        margin: 0,
+                      }}
+                    >
+                      {t('REPORT.ECONOMIQUES_TITLE')}{' '}
+                    </Typography>
+                  </Box>
                 </Box>
-                {/* BOX: Descripcion Datos de uso de energia */}
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flex: 1,
-                    backgroundColor: '#d9d9d9',
-                    padding: 1,
-                    flexDirection: 'column',
-                  }}
-                >
-                  <Typography>{t('REPORT.DESCRIPTION')}</Typography>
-                  <Typography>{t('REPORT.TEXT')}</Typography>
-                </Box>
-                {/* BOX: Descripcion Datos economicos */}
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flex: 1,
-                    backgroundColor: '#d9d9d9',
-                    padding: 1,
-                  }}
-                >
-                  {t('REPORT.ECONOMIQUES_DESCRIPTION')}
+
+                <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+                  {/* BOX: Descripcion Datos de generacion */}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flex: 1,
+                      backgroundColor: '#d9d9d9',
+                      padding: 1,
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <Typography>{t('REPORT.GENERACIO_DESCRIPTION')}</Typography>
+                    <Typography>{t('REPORT.GENERACIO_TEXT')}</Typography>
+                  </Box>
+                  {/* BOX: Descripcion Datos de uso de energia */}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flex: 1,
+                      backgroundColor: '#d9d9d9',
+                      padding: 1,
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <Typography>{t('REPORT.DESCRIPTION')}</Typography>
+                    <Typography>{t('REPORT.TEXT')}</Typography>
+                  </Box>
+                  {/* BOX: Descripcion Datos economicos */}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flex: 1,
+                      backgroundColor: '#d9d9d9',
+                      padding: 1,
+                    }}
+                  >
+                    {t('REPORT.ECONOMIQUES_DESCRIPTION')}
+                  </Box>
                 </Box>
               </Box>
             </Box>
           </Box>
+
           <div className="page-break"></div>
           <Box
             sx={{
@@ -943,21 +949,40 @@ export default function ReportSOM({ onClose }) {
               </Typography>
             </Box>
 
-            <Box sx={{ mt: '1rem', mb: '1rem' }}>
+            <Box sx={{ padding: 2 }}>
               <Typography variant="body">{t('REPORT.ADVISE')}</Typography>
             </Box>
-            <Box>
-              <h3 style={styles.primerpas}>
-                <img style={styles.primerpasImage} src={dona} />
-                {t('REPORT.PROPERESPASES_DESCRIPTION')}{' '}
-              </h3>
 
-              <Typography
-                style={styles.properespasesAmbImage}
-                dangerouslySetInnerHTML={{
-                  __html: t('REPORT.PROPERESPASES_TEXT'),
-                }}
-              />
+            <Box
+              sx={{
+                backgroundColor: 'primary.main',
+                color: 'primary.contrastText',
+                textAlign: 'center',
+                justifyContent: 'center',
+                padding: 1,
+                display: 'flex',
+              }}
+            >
+              <Typography variant="h6" sx={{ textTransform: 'uppercase' }}>
+                <strong>{t('REPORT.PROPERESPASES_DESCRIPTION')}</strong>
+              </Typography>
+            </Box>
+
+            {/* Que ofrecemos a traves de SOM ENERGIA */}
+            <Box sx={{ display: 'flex' }}>
+              <Box sx={{ display: 'flex', flex: 11, padding: 2 }}>
+                <Typography
+                  dangerouslySetInnerHTML={{
+                    __html: t('REPORT.PROPERESPASES_TEXT'),
+                  }}
+                />
+              </Box>
+              <Box sx={{ display: 'flex', flex: 2, height: 150 }}>
+                <img
+                  style={{ position: 'relative', right: 0, top: -50, height: 190 }}
+                  src={dona}
+                />
+              </Box>
             </Box>
 
             {/*Informacion general sobre autogeneracion */}
@@ -975,47 +1000,77 @@ export default function ReportSOM({ onClose }) {
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-              <Box sx={{ display: 'flex', flex: 1, alignItems: 'center', padding: 2 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flex: 1,
+                  alignItems: 'center',
+                  padding: 2,
+                  backgroundColor: '#b0b0b0',
+                }}
+              >
                 <Typography>
                   {t('REPORT.AUTOGENERACIO_TEXT')}{' '}
-                  <strong style={styles.autogeneracioBold}>
+                  <strong
+                    style={{
+                      color: '#b9db42',
+                    }}
+                  >
                     {t('REPORT.AUTOGENERACIO_TEXT_STRONG')}{' '}
                   </strong>
                   {t('REPORT.AUTOGENERACIO_TEXT_FINAL')}{' '}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', flex: 1 }}>
-                <div style={styles.listContainer}>
-                  <ul style={styles.list}>
-                    <li style={styles.listitem}>
-                      <a href={getLink(1)} target="_blank" rel="noreferrer">
-                        {t('REPORT.AUTOGENERACIO_LINK_PRIMER')}
-                      </a>
-                    </li>
-                    <li style={styles.listitem}>
-                      <a href={getLink(2)} target="_blank" rel="noreferrer">
-                        {t('REPORT.AUTOGENERACIO_LINK_SEGON')}
-                      </a>
-                    </li>
-                    <li style={styles.listitem}>
-                      <a href={getLink(3)} target="_blank" rel="noreferrer">
-                        {t('REPORT.AUTOGENERACIO_LINK_TERCER')}
-                      </a>
-                    </li>
-                    <li style={styles.listitem}>
-                      <a href={getLink(3)} target="_blank" rel="noreferrer">
-                        {t('REPORT.AUTOGENERACIO_LINK_CUART')}{' '}
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+                <ul>
+                  <li>
+                    <a href={getLink(1)} target="_blank" rel="noreferrer">
+                      {t('REPORT.AUTOGENERACIO_LINK_PRIMER')}
+                    </a>
+                  </li>
+                  <li>
+                    <a href={getLink(2)} target="_blank" rel="noreferrer">
+                      {t('REPORT.AUTOGENERACIO_LINK_SEGON')}
+                    </a>
+                  </li>
+                  <li>
+                    <a href={getLink(3)} target="_blank" rel="noreferrer">
+                      {t('REPORT.AUTOGENERACIO_LINK_TERCER')}
+                    </a>
+                  </li>
+                  <li>
+                    <a href={getLink(3)} target="_blank" rel="noreferrer">
+                      {t('REPORT.AUTOGENERACIO_LINK_CUART')}{' '}
+                    </a>
+                  </li>
+                </ul>
               </Box>
             </Box>
 
-            <div style={styles.peu}>
-              <p style={styles.peuText}>{t('REPORT.PEU')} </p>
-              <img src={logo} width="120" />
-            </div>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flex: 11,
+                  gap: 1,
+                  padding: 2,
+                  backgroundColor: 'primary.main',
+                  color: 'primary.contrastText',
+                }}
+              >
+                <Typography>{t('REPORT.PEU')}</Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flex: 2,
+                }}
+              >
+                <img src={logo} width="120" />
+              </Box>
+            </Box>
           </Box>
         </div>
 
