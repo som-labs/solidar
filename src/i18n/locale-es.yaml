@@ -761,7 +761,7 @@ REPORT:
   TITLE_PRIMER: INFORME PROVISIONAL
   TITLE_STRONG: AUTOGENERACIÓN
   TITLE_SEGON: FOTOVOLTAICA
-  ATENCIO: 'Atención: Este informe intenta dar una información orientativa a partir de los datos reales de consumo y estimaciones aproximadas del rendimiento de la instalación, así como de su coste. Hemos intentado que las fuentes sean lo más fiables y próximas a la realidad, pero en ningún caso garantizamos desde Som Energía, que estos valores sean los reales en el transcurso de los 25 años de vida útiles estimados.'
+  ATENCIO: 'Atención: Este informe intenta dar una información orientativa a partir de los datos de uso eléctrico indicados y estimaciones aproximadas del rendimiento de la instalación, así como de su coste. Hemos intentado que las fuentes sean lo más fiables y próximas a la realidad, pero en ningún caso garantizamos desde Som Energía, que estos valores sean los reales en el transcurso de los 25 años de vida útiles estimados.'
   DADES_TITLE: Datos principales
   DADES_NOM: Nombre
   DADES_DIRECCIO: Dirección
