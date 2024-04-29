@@ -25,21 +25,30 @@ export default function Subvencion() {
   const { t, i18n } = useTranslation()
   const theme = useTheme()
   const [error, setError] = useState({ status: false, field: '' })
-  const [valor, setValor] = useState(TCB.valorSubvencion)
-  const [porciento, setPorciento] = useState(TCB.porcientoSubvencion)
 
   const { ecoData, setEcoData } = useContext(EconomicContext)
+  const [valor, setValor] = useState(TCB.valorSubvencion)
+  const [porciento, setPorciento] = useState(TCB.porcientoSubvencion)
 
   const setNewSubvencion = (event) => {
     const { name, value } = event.target
     if (!UTIL.ValidateDecimal(i18n.language, value)) {
       setError({ status: true, field: name })
     } else {
-      setError({ status: false, field: '' })
-      TCB.porcientoSubvencion = porciento
-      TCB.valorSubvencion = valor
-      TCB.economico.calculoFinanciero(100, 100)
-      setEcoData({ ...ecoData, ...TCB.economico })
+      if (valor > ecoData.precioInstalacionCorregido) {
+        //alert(t('ECONOMIC_BALANCE.SUBVENCION_SURPLUS'))
+        // setValor(ecoData.precioInstalacionCorregido)
+        // setPorciento(100)
+
+        setError({ status: true, field: name })
+        event.target.focus()
+      } else {
+        setError({ status: false, field: '' })
+        TCB.porcientoSubvencion = porciento
+        TCB.valorSubvencion = valor
+        TCB.economico.calculoFinanciero(100, 100)
+        setEcoData({ ...ecoData, ...TCB.economico })
+      }
     }
   }
 
@@ -86,30 +95,30 @@ export default function Subvencion() {
             __html: t('ECONOMIC_BALANCE.SUBVENCION_DESCRIPTION'),
           }}
         />
-        <SLDRTooltip title={<Typography>{t('ayuda mutua')}</Typography>}>
-          <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <TextField
-              type="text"
-              onChange={onChangeSubvencion}
-              onBlur={setNewSubvencion}
-              label={t('Economico.PROP.valorSubvencion')}
-              name="valorSubvencion"
-              value={valor}
-              InputProps={{
-                endAdornment: <InputAdornment position="start">&nbsp;€</InputAdornment>,
-                inputProps: {
-                  style: { textAlign: 'right' },
-                },
-              }}
-              error={error.status && error.field === 'valorSubvencion'}
-              helperText={
-                error.status && error.field === 'valorSubvencion'
-                  ? t('BASIC.LABEL_NUMBER')
-                  : ''
-              }
-            />
-          </FormControl>
-        </SLDRTooltip>
+
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <TextField
+            type="text"
+            onChange={onChangeSubvencion}
+            onBlur={setNewSubvencion}
+            label={t('Economico.PROP.valorSubvencion')}
+            name="valorSubvencion"
+            value={valor}
+            InputProps={{
+              endAdornment: <InputAdornment position="start">&nbsp;€</InputAdornment>,
+              inputProps: {
+                style: { textAlign: 'right' },
+              },
+            }}
+            error={error.status && error.field === 'valorSubvencion'}
+            helperText={
+              error.status && error.field === 'valorSubvencion'
+                ? t('ECONOMIC_BALANCE.SUBVENCION_SURPLUS')
+                : ''
+            }
+          />
+        </FormControl>
+
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <TextField
             type="text"
@@ -127,7 +136,7 @@ export default function Subvencion() {
             error={error.status && error.field === 'porcientoSubvencion'}
             helperText={
               error.status && error.field === 'porcientoSubvencion'
-                ? t('BASIC.LABEL_NUMBER')
+                ? t('ECONOMIC_BALANCE.SUBVENCION_SURPLUS')
                 : ''
             }
           />

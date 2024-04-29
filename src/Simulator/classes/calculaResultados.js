@@ -2,7 +2,7 @@ import TCB from './TCB'
 import * as UTIL from './Utiles'
 import Produccion from './Produccion'
 import Balance from './Balance'
-import Economico from './Economico'
+
 /**
  * Esta funcion realiza los calculos del balance de energia para la configuracion de bases y consumos existentes.
  * Construye la produccion de cada base

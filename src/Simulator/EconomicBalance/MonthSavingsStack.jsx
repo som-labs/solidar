@@ -52,10 +52,10 @@ export default function MonthSavingStack() {
         _compensado[i] = -ecoData.compensadoMensualCorregido[i]
       }
 
-      var trace_pagado = {
+      const trace_pagado = {
         x: mesMapa,
         y: ecoData.consumoConPlacasMensualCorregido,
-        name: t('GRAFICOS.LABEL_graficasGastoConPaneles'),
+        name: t('REPORT.PAGADO_COMERCIALIZADORA'),
         width: 0.8,
         marker: { color: '#819368' },
         type: 'bar',
@@ -65,58 +65,29 @@ export default function MonthSavingStack() {
         textposition: 'auto',
       }
 
-      //   var trace_consumo = {
-      //     x: mesMapa,
-      //     y: ecoData.consumoOriginalMensual,
-      //     name: t('GRAFICOS.LABEL_graficasGastoSinPaneles'),
-      //     type: 'scatter',
-      //     line: { shape: 'spline', width: 3, color: '#810C04' },
-      //   }
-
-      //   var trace_base = {
-      //     x: mesMapa,
-      //     y: ecoData.consumoConPlacasMensualCorregido,
-      //     name: 'base',
-      //     type: 'bar',
-      //     hoverinfo: 'none',
-      //     showlegend: false,
-      //     marker: {
-      //       color: 'rgba(1,1,1,0.0)',
-      //     },
-      //   }
-
-      var trace_compensa = {
+      const trace_compensa = {
         x: mesMapa,
         y: _compensado,
         width: 0.8,
         marker: { color: '#997171' },
-        name: t('GRAFICOS.LABEL_graficasCompensacion'),
+        name: t('REPORT.COMPENSADO'),
         type: 'bar',
         text: _compensado.map((p) => UTIL.formatoValor('dinero', p)),
         textposition: 'auto',
       }
 
-      var trace_ahorro = {
+      const trace_ahorro = {
         x: mesMapa,
         y: ecoData.ahorradoAutoconsumoMes,
         width: 0.8,
         marker: { color: '#C7A6CF' },
-        name: t('GRAFICOS.LABEL_graficasAutoconsumo'),
+        name: t('REPORT.AUTOCONSUMO'),
         type: 'bar',
         text: ecoData.ahorradoAutoconsumoMes.map((p) => UTIL.formatoValor('dinero', p)),
         textposition: 'auto',
       }
 
-      //   var trace_perdida = {
-      //     x: mesMapa,
-      //     y: _perdidas,
-      //     width: 0.5,
-      //     name: t('GRAFICOS.LABEL_graficasNoCompensado'),
-      //     base: 0,
-      //     type: 'bar',
-      //   }
-
-      var layout = {
+      const layout = {
         font: {
           color: theme.palette.text.primary,
         },
@@ -129,15 +100,13 @@ export default function MonthSavingStack() {
           b: 0,
           t: 20,
         },
-        height: 300,
+        height: 400,
         barmode: 'relative',
         yaxis: {
           title: 'Euros',
           gridcolor: 'grey',
         },
-        xaxis: {
-          gridcolor: 'grey',
-        },
+
         legend: {
           x: 0.1,
           y: -0.1,

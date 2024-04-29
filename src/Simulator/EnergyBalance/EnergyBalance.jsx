@@ -192,7 +192,6 @@ export default function EnergyBalanceStep() {
                   ]}
                 ></PieChart>
               </Grid>
-              {/* <PieCharts yearlyData={yearlyData}></PieCharts> */}
             </SLDRInfoBox>
           </Grid>
         )}

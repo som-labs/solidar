@@ -10,7 +10,6 @@ import calculaResultados from '../classes/calculaResultados'
 import Consumo from '../classes/Consumo'
 import BaseSolar from '../classes/BaseSolar'
 import Economico from '../classes/Economico'
-import Produccion from '../classes/Produccion'
 
 export default async function PreparaEnergyBalance() {
   let cursorOriginal = document.body.style.cursor
@@ -86,7 +85,11 @@ export default async function PreparaEnergyBalance() {
     await calculaResultados()
   }
 
-  TCB.economico = new Economico()
+  //When importing first time will not compute Economico next yes
+  if (!TCB.importando) {
+    TCB.economico = new Economico()
+  }
+
   UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
   if (TCB.economico.periodoAmortizacion > 20) {
     alert(TCB.i18next.t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
