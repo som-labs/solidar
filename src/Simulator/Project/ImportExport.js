@@ -9,6 +9,7 @@ import Instalacion from '../classes/Instalacion.js'
 import Rendimiento from '../classes/Rendimiento.js'
 import TipoConsumo from '../classes/TipoConsumo.js'
 import Consumo from '../classes/Consumo.js'
+import Economico from '../classes/Economico.js'
 import calculaResultados from '../classes/calculaResultados.js'
 
 /**
@@ -111,6 +112,11 @@ async function exportProject() {
   TCB.datosProyecto.porcientoSubvencionIBI = TCB.porcientoSubvencionIBI
   TCB.datosProyecto.valorSubvencion = TCB.valorSubvencion
   TCB.datosProyecto.porcientoSubvencion = TCB.porcientoSubvencion
+  TCB.datosProyecto.coefHucha = TCB.coefHucha
+  TCB.datosProyecto.cuotaHucha = TCB.cuotaHucha
+
+  //Guardamos precio de la instalacion modificado
+  TCB.datosProyecto.precioInstalacionCorregido = TCB.economico.precioInstalacionCorregido
 
   //Generamos el fichero solimp
   const rFile = export2txt(TCB.datosProyecto)
@@ -260,8 +266,6 @@ async function importProject(fichero) {
   TCB.tiempoSubvencionIBI = datosImportar.tiempoSubvencionIBI
   TCB.valorSubvencionIBI = datosImportar.valorSubvencionIBI
   TCB.porcientoSubvencionIBI = datosImportar.porcientoSubvencionIBI
-  TCB.valorSubvencion = datosImportar.valorSubvencion
-  TCB.porcientoSubvencion = datosImportar.porcientoSubvencion
 
   // Import Tarifa
   TCB.nombreTarifaActiva = datosImportar.nombreTarifaActiva
@@ -286,8 +290,17 @@ async function importProject(fichero) {
   // En versiones anteriores a la 4.1 la potencia unitaria estaba en kWp, ahora esta en Wp
   if (datosImportar.version === '4') {
     TCB.tipoPanelActivo.potencia = datosImportar.tipoPanelActivo.potencia * 1000
+    TCB.valorSubvencion = 0
+    TCB.porcientoSubvencion = 0
+    //Import virtual battery
+    TCB.coefHucha = 80
+    TCB.cuotaHucha = 0
   } else {
     TCB.tipoPanelActivo.potencia = datosImportar.tipoPanelActivo.potencia
+    TCB.valorSubvencion = datosImportar.valorSubvencion
+    TCB.porcientoSubvencion = datosImportar.porcientoSubvencion
+    TCB.coefHucha = datosImportar.coefHucha
+    TCB.cuotaHucha = datosImportar.cuotaHucha
     TCB.version = datosImportar.version
   }
 
@@ -297,6 +310,10 @@ async function importProject(fichero) {
   TCB.cambioTipoConsumo = false
   await calculaResultados(true)
 
+  TCB.importando = true //This is a flag for PreparaEnergyBalance not to compute Economico again
+  TCB.economico = new Economico()
+  if (datosImportar.precioInstalacionCorregido !== undefined)
+    TCB.economico.precioInstalacionCorregido = datosImportar.precioInstalacionCorregido
   return { status: true, error: '' }
 }
 

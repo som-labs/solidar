@@ -23,7 +23,6 @@ export default function HourlyEnergyBalance(props) {
   const [mes, setMes] = useState(t('ENERGY_BALANCE.VALUE_FULL_YEAR'))
   const { report } = props
   const maxHour = useRef()
-  const minHour = useRef()
 
   useEffect(() => {
     // Function to get the width of the element
@@ -49,9 +48,6 @@ export default function HourlyEnergyBalance(props) {
     let yProduccion = []
     let yConsumo = []
 
-    maxHour.current = Math.max(Math.max(...hConsumo), Math.max(...hProduccion))
-    minHour.current = Math.min(Math.min(...hConsumo), Math.min(...hProduccion))
-
     for (let hora = 0; hora < 24; hora++) {
       hHora.push(hora)
       if (mes !== t('ENERGY_BALANCE.VALUE_FULL_YEAR')) {
@@ -67,10 +63,10 @@ export default function HourlyEnergyBalance(props) {
       yProduccion.push(UTIL.promedio(TCB.produccion.getHora(hora)))
       yConsumo.push(UTIL.promedio(TCB.consumo.getHora(hora)))
     }
-
-    maxHour.current = Math.max(Math.max(...yConsumo), Math.max(...yProduccion))
-    minHour.current = Math.min(Math.min(...yConsumo), Math.min(...yProduccion))
-    const delta = (maxHour.current - minHour.current) / 7
+    const maxHourMonth = Math.max(Math.max(...hConsumo), Math.max(...hProduccion))
+    const maxHourYear = Math.max(Math.max(...yConsumo), Math.max(...yProduccion))
+    maxHour.current = Math.max(maxHourMonth, maxHourYear)
+    const delta = maxHour.current / 10 // - minHour.current) / 7
 
     if (mes === t('ENERGY_BALANCE.VALUE_FULL_YEAR')) {
       const consumoAnual = {
@@ -101,6 +97,7 @@ export default function HourlyEnergyBalance(props) {
         type: 'scatter',
         line: { shape: 'spline', width: 5, color: theme.palette.balance.consumo },
         name: t('ENERGY_BALANCE.LABEL_HOURLY_CONSUMPTION_YEAR'),
+        range: [0, maxHour.current],
       }
 
       const produccionAnual = {
@@ -109,6 +106,7 @@ export default function HourlyEnergyBalance(props) {
         type: 'scatter',
         line: { shape: 'spline', width: 5, color: theme.palette.balance.produccion },
         name: t('ENERGY_BALANCE.LABEL_HOURLY_PRODUCTION_YEAR'),
+        range: [0, maxHour.current],
       }
 
       const consumoMes = {
@@ -118,6 +116,7 @@ export default function HourlyEnergyBalance(props) {
         line: { shape: 'spline', width: 1, color: theme.palette.balance.consumo },
         fill: 'tozeroy',
         name: t('ENERGY_BALANCE.LABEL_HOURLY_CONSUMPTION_MONTH'),
+        range: [0, maxHour.current],
       }
 
       const produccionMes = {
@@ -127,6 +126,7 @@ export default function HourlyEnergyBalance(props) {
         line: { shape: 'spline', width: 1, color: theme.palette.balance.produccion },
         fill: 'tozeroy',
         name: t('ENERGY_BALANCE.LABEL_HOURLY_PRODUCTION_MONTH'),
+        range: [0, maxHour.current],
       }
 
       setTraces([consumoAnual, produccionAnual, consumoMes, produccionMes])
@@ -150,6 +150,7 @@ export default function HourlyEnergyBalance(props) {
       autosize: true,
       xaxis: {
         dtick: 1,
+        gridcolor: 'black',
       },
       yaxis: {
         zeroline: true,

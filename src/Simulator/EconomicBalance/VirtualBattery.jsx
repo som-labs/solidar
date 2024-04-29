@@ -39,11 +39,18 @@ export default function VirtualBattery() {
         setCuota(value !== '' ? parseInt(value) : 0)
       } else {
         setCoef(value !== '' ? parseInt(value) : 0)
+        if (parseInt(value) > 100 || coef < 0) {
+          setError({ status: true, field: 'coefHucha' })
+        }
       }
     }
   }
 
   const setFlux = (event) => {
+    if (error.status) {
+      setCoef(0)
+      event.target.focus()
+    }
     const { name, value } = event.target
     if (!UTIL.ValidateDecimal(i18n.language, value)) {
       setError({ status: true, field: name })
@@ -98,7 +105,7 @@ export default function VirtualBattery() {
               error={error.status && error.field === 'coefHucha'}
               helperText={
                 error.status && error.field === 'coefHucha'
-                  ? 'Pon un número válido mayor que cero'
+                  ? 'Pon un número válido entre 0 y 100'
                   : ''
               }
             />

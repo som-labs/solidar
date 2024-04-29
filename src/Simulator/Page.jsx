@@ -82,7 +82,7 @@ export default function Page() {
     // PENDIENTE: podria haber un warning de falta de espacio enviado desde Prepara...
     results = await PreparaEnergyBalance()
     if (results.status) {
-      setEcoData(TCB.economico)
+      setEcoData((prev) => ({ ...prev, ...TCB.economico }))
       TCB.readyToExport = true
     } else {
       console.log(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error)
