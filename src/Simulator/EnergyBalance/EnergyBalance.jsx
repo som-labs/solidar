@@ -223,26 +223,7 @@ export default function EnergyBalanceStep() {
 
         <Grid item xs={12}>
           <SLDRCollapsibleCard
-            expanded={false}
-            title={t('ENERGY_BALANCE.FLOW_TITLE_OTHER_WAY')}
-          >
-            <SLDRInfoBox>
-              <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
-            </SLDRInfoBox>
-          </SLDRCollapsibleCard>
-        </Grid>
-
-        {TCB.estiloActivo === 'CLARA' && (
-          <Grid item xs={12}>
-            <SLDRInfoBox>
-              {dataReady && <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>}
-            </SLDRInfoBox>
-          </Grid>
-        )}
-
-        <Grid item xs={12}>
-          <SLDRCollapsibleCard
-            expanded={false}
+            expanded={true}
             titleSX={theme.titles.level_1}
             title={t('ENERGY_BALANCE.TITLE_ENVIRONMENTAL_IMPACT')}
           >
@@ -259,6 +240,25 @@ export default function EnergyBalanceStep() {
             </Grid>
           </SLDRCollapsibleCard>
         </Grid>
+
+        <Grid item xs={12}>
+          <SLDRCollapsibleCard
+            expanded={false}
+            title={t('ENERGY_BALANCE.FLOW_TITLE_OTHER_WAY')}
+          >
+            <SLDRInfoBox>
+              <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
+            </SLDRInfoBox>
+          </SLDRCollapsibleCard>
+        </Grid>
+
+        {TCB.estiloActivo === 'CLARA' && (
+          <Grid item xs={12}>
+            <SLDRInfoBox>
+              {dataReady && <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>}
+            </SLDRInfoBox>
+          </Grid>
+        )}
 
         <Grid item xs={12}>
           <SLDRCollapsibleCard
