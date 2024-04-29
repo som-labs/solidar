@@ -18,7 +18,6 @@ import SummaryPreciosTarifa from '../SummaryPreciosTarifa'
 import SummaryConsumptionTarifa from '../SummaryConsumptionTarifa'
 import HourlyEnergyBalance from '../../EnergyBalance/HourlyEnergyBalance'
 import MonthSavingStack from '../../EconomicBalance/MonthSavingsStack'
-//import PieCharts from './PieCharts'
 import PieChart from '../../EnergyBalance/PieChart'
 import InstallationSummary from './InstallationSummary'
 
@@ -165,16 +164,17 @@ export default function ReportSOM({ onClose }) {
         }}
       >
         <Box padding={1}>
-          <img src={logo} width="170" />
+          <img src={logo} width="200" />
         </Box>
         <Box sx={{ display: 'flex', flex: 1, justifyContent: 'right' }}>
           <Typography
-            variant="h4"
             sx={{
               textAlign: 'right',
               textTransform: 'uppercase',
               margin: 0,
               padding: 3,
+              fontSize: 35,
+              fontWeight: 'bold',
             }}
           >
             {t('REPORT.TITLE_PRIMER')}
@@ -223,7 +223,7 @@ export default function ReportSOM({ onClose }) {
             }}
           >
             <Header></Header>
-            <Box>
+            <Box sx={{ mb: 3 }}>
               <Typography>{t('REPORT.ATENCIO')}</Typography>
             </Box>
 
@@ -242,6 +242,7 @@ export default function ReportSOM({ onClose }) {
                   flex: 2,
                   gap: 2,
                   minHeight: 200,
+                  mb: 3,
                 }}
               >
                 {/* Datos principales */}
@@ -296,7 +297,7 @@ export default function ReportSOM({ onClose }) {
                 sx={{
                   display: 'flex',
                   flexDirection: 'row',
-                  gap: 2,
+                  gap: 1,
                 }}
               >
                 {/* Uso de la energia */}
@@ -317,6 +318,7 @@ export default function ReportSOM({ onClose }) {
                       color: 'primary.contrastText',
                       textAlign: 'center',
                       padding: 1,
+                      mb: 2,
                     }}
                   >
                     <Typography variant="h6">
@@ -347,6 +349,7 @@ export default function ReportSOM({ onClose }) {
                       color: 'primary.contrastText',
                       textAlign: 'center',
                       padding: 1,
+                      mb: 2,
                     }}
                   >
                     <Typography variant="h6">
@@ -447,6 +450,7 @@ export default function ReportSOM({ onClose }) {
                 color: 'primary.contrastText',
                 textAlign: 'center',
                 padding: 1,
+                mb: 3,
               }}
             >
               <Typography variant="h6">
@@ -753,13 +757,33 @@ export default function ReportSOM({ onClose }) {
             }}
           >
             <Header></Header>
-            <Box>
+
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               <Typography variant="h5" sx={{ textDecoration: 'underline' }}>
                 {t('REPORT.PERFIL_TITLE')}
               </Typography>
               <HourlyEnergyBalance report={true}></HourlyEnergyBalance>
             </Box>
-            <Box sx={{ mb: 1 }}>
+
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                mb: 1,
+              }}
+            >
+              <Typography variant="h5" sx={{ textDecoration: 'underline' }}>
+                {t('REPORT.CONSUM_TITLE')}
+              </Typography>
               <MonthSavingStack></MonthSavingStack>
             </Box>
 

@@ -305,7 +305,7 @@ Economico:
     valorSubvencionIBI: Rellénese si el municipio donde se realice la instalación bonifica el impuesto de bienes inmuebles.\nLa Fundación Renovables facilita una lista de municipios con bonificaciones en el IBI y reducciones en ICIO.
     porcientoSubvencionIBI: El porcentaje con el ayuntamiento bonifica el importe del IBI
     tiempoSubvencionIBI: El número de años durante los que se puede aplicar la bonificación en el IBI
-    valorSubvencion: Valor de la subvención
+    valorSubvencion: Indicar el valor de las posibles subvenciones de las que pudieras beneficiarte
     porcientoSubvencion: Porcentaje de subvención
     VANProyecto: El rendimiento de la inversión en la instalación fotovoltaica transcurridos los años que se muestran en la tabla
     TIRProyecto: Indicador de la rentabilidad del proyecto fotovoltaico transcurridos los años que se muestran en la tabla
@@ -550,7 +550,7 @@ ECONOMIC_BALANCE:
   SUBVENCION_TITLE: Subvenciones
   SUBVENCION_DESCRIPTION: |
     Es probable que existan subvenciones para la instalación de paneles solares y que ésto suponga un ahorro. Si es así, indica el % o el importe subvencionado.
-
+  SUBVENCION_SURPLUS: El valor de la subvencion debe ser un número mayor o igual a 0 y menor que el precio de la instalación.
   TITLE_INSTALLATION_COST: Precio de la instalación
   DESCRIPTION_INSTALLATION_COST: Este es un importe orientativo que puede variar dependiendo del precio del mercado. Además, no tiene en cuenta tasas y/o gastos adicionales que puedan aparecer.
 
@@ -761,7 +761,7 @@ REPORT:
   TITLE_PRIMER: INFORME PROVISIONAL
   TITLE_STRONG: AUTOGENERACIÓN
   TITLE_SEGON: FOTOVOLTAICA
-  ATENCIO: 'Atención: Este informe intenta dar una información orientativa a partir de los datos reales de consumo, del período dd-mm-aaaa al dd-mm-aaaa y estimaciones aproximadas del rendimiento de la instalación, así como de su coste. Hemos intentado que las fuentes sean lo más fiables y próximas a la realidad, pero en ningún caso garantizamos desde Som Energía, que estos valores sean los reales en el transcurso de los 25 años de vida útiles estimados.'
+  ATENCIO: 'Atención: Este informe intenta dar una información orientativa a partir de los datos reales de consumo y estimaciones aproximadas del rendimiento de la instalación, así como de su coste. Hemos intentado que las fuentes sean lo más fiables y próximas a la realidad, pero en ningún caso garantizamos desde Som Energía, que estos valores sean los reales en el transcurso de los 25 años de vida útiles estimados.'
   DADES_TITLE: Datos principales
   DADES_NOM: Nombre
   DADES_DIRECCIO: Dirección
@@ -790,7 +790,12 @@ REPORT:
   PIE_CONSUMO_HORAS_SOL_DESCRIPTION: '% del consumo total realizado en horas con sol'
 
   PERFIL_TITLE: Tu perfil diario de uso de energía
-  CONSUM_TITLE: Consumo por meses
+
+  CONSUM_TITLE: Conceptos económicos por mes
+  PAGADO_COMERCIALIZADORA: Pagado a la comercializadora
+  COMPENSADO: Recuperado por compensación simplificada
+  AUTOCONSUMO: Ahorrado por autoconsumo
+
   ADVISE: Para sacar el máximo rendimiento a tu intalación deberías desplazar el uso eléctrico a las horas de mayor producción fotovoltaica y recuerda que la energía más sostenible es aquella que no se utiliza.
   PROPERESPASES_TITLE: Próximos pasos
   PROPERESPASES_DESCRIPTION: ¿Qué ofrecemos a través de Som Energía?
