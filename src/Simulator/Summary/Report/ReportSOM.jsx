@@ -505,293 +505,316 @@ export default function ReportSOM({ onClose }) {
                 display: 'flex',
               }}
             >
-              <Grid
-                container
-                xs={12}
-                spacing={0}
-                sx={{ alignItems: 'center', justifyContent: 'center', display: 'flex' }}
+              <Box sx={{ display: 'flex', flex: 1.5 }}>
+                <Grid
+                  container
+                  spacing={0}
+                  sx={{ alignItems: 'center', justifyContent: 'center', display: 'flex' }}
+                >
+                  <Grid item xs={10}>
+                    <Grid container>
+                      <Grid
+                        xs={6}
+                        item
+                        sx={{
+                          backgroundColor:
+                            theme.informe.energyTable.title.backgroundColor,
+                          color: theme.palette.text,
+                          padding: 0.5,
+                          border: '1px solid #ccc',
+                          height: 30,
+                          alignContent: 'center',
+                        }}
+                      >
+                        <h4>{t('ENERGY_BALANCE.LABEL_AUTOCONSUMO')}</h4>
+                      </Grid>
+                      <Grid
+                        xs={3}
+                        item
+                        sx={{
+                          border: '1px solid #ccc',
+                          textAlign: 'center',
+                          fontWeight: 'bold',
+                          height: 30,
+                          alignContent: 'center',
+                        }}
+                      >
+                        <h5>{UTIL.formatoValor('energia', TCB.balance.autoconsumo)}</h5>
+                      </Grid>
+                      <Grid
+                        xs={3}
+                        item
+                        sx={{
+                          border: '1px solid #ccc',
+                          textAlign: 'center',
+                          fontWeight: 'bold',
+                          height: 30,
+                          alignContent: 'center',
+                        }}
+                      >
+                        <h5>
+                          {UTIL.formatoValor(
+                            'dinero',
+                            UTIL.suma(TCB.economico.ahorradoAutoconsumoMes),
+                          )}
+                        </h5>
+                      </Grid>
+                    </Grid>
+                    <Grid container>
+                      <Grid
+                        item
+                        xs={6}
+                        sx={{
+                          backgroundColor:
+                            theme.informe.energyTable.title.backgroundColor,
+                          color: theme.palette.text,
+                          padding: 0.5,
+                          border: '1px solid #ccc',
+                          height: 30,
+                          alignContent: 'center',
+                        }}
+                      >
+                        <h4>{t('REPORT.ESTUDI_EXCEDENT')} </h4>
+                      </Grid>
+                      <Grid
+                        xs={3}
+                        item
+                        sx={{
+                          padding: 1,
+                          border: '1px solid #ccc',
+                          textAlign: 'center',
+                          fontWeight: 'bold',
+                          height: 30,
+                          alignContent: 'center',
+                        }}
+                      >
+                        <h5>
+                          {UTIL.formatoValor('energia', TCB.balance.excedenteAnual)}{' '}
+                        </h5>
+                      </Grid>
+                      <Grid
+                        xs={3}
+                        item
+                        sx={{
+                          padding: 1,
+                          border: '1px solid #ccc',
+                          textAlign: 'center',
+                          fontWeight: 'bold',
+                          height: 30,
+                          alignContent: 'center',
+                        }}
+                      >
+                        <h5>
+                          {UTIL.formatoValor(
+                            'dinero',
+                            -UTIL.suma(TCB.economico.compensadoMensual),
+                          )}
+                        </h5>
+                      </Grid>
+                    </Grid>
+                    <Grid container>
+                      <Grid
+                        xs={6}
+                        item
+                        sx={{
+                          backgroundColor:
+                            theme.informe.energyTable.title.backgroundColor,
+                          color: theme.palette.text,
+                          padding: 0.5,
+                          border: '1px solid #ccc',
+                          height: 30,
+                          alignContent: 'center',
+                        }}
+                      >
+                        <h4>
+                          <strong>{t('REPORT.ESTUDI_ESTALVI')}</strong>
+                        </h4>
+                      </Grid>
+                      <Grid
+                        xs={6}
+                        item
+                        sx={{
+                          padding: 1,
+                          border: '1px solid #ccc',
+                          textAlign: 'center',
+                          fontWeight: 'bold',
+                          height: 30,
+                          alignContent: 'center',
+                        }}
+                      >
+                        <h5>{UTIL.formatoValor('dinero', TCB.economico.ahorroAnual)}</h5>
+                      </Grid>
+                    </Grid>
+                    <Grid container>
+                      <Grid
+                        xs={6}
+                        item
+                        sx={{
+                          backgroundColor:
+                            theme.informe.energyTable.title.backgroundColor,
+                          color: theme.palette.text,
+                          padding: 0.5,
+                          border: '1px solid #ccc',
+                          height: 30,
+                          alignContent: 'center',
+                        }}
+                      >
+                        <h4>
+                          <strong>{t('REPORT.SOLS_DISPONIBLES')}</strong>
+                        </h4>
+                      </Grid>
+                      <Grid
+                        xs={6}
+                        item
+                        sx={{
+                          padding: 1,
+                          border: '1px solid #ccc',
+                          textAlign: 'center',
+                          fontWeight: 'bold',
+                          height: 30,
+                          alignContent: 'center',
+                        }}
+                      >
+                        <h5>
+                          {UTIL.formatoValor('dinero', TCB.economico.huchaSaldo[11])}
+                        </h5>
+                      </Grid>
+                    </Grid>
+                    <Grid container>
+                      <Grid
+                        xs={6}
+                        item
+                        sx={{
+                          backgroundColor:
+                            theme.informe.energyTable.title.backgroundColor,
+                          color: theme.palette.text,
+                          padding: 0.5,
+                          border: '1px solid #ccc',
+                          height: 30,
+                          alignContent: 'center',
+                        }}
+                      >
+                        <h4>{t('REPORT.ESTUDI_XARXA')} </h4>
+                      </Grid>
+                      <Grid
+                        xs={3}
+                        item
+                        sx={{
+                          padding: 1,
+                          border: '1px solid #ccc',
+                          textAlign: 'center',
+                          fontWeight: 'bold',
+                          height: 30,
+                          alignContent: 'center',
+                        }}
+                      >
+                        <h5>{UTIL.formatoValor('energia', TCB.balance.deficitAnual)}</h5>
+                      </Grid>
+                      <Grid
+                        xs={3}
+                        item
+                        sx={{
+                          padding: 1,
+                          border: '1px solid #ccc',
+                          textAlign: 'center',
+                          fontWeight: 'bold',
+                          height: 30,
+                          alignContent: 'center',
+                        }}
+                      >
+                        <h5>
+                          {UTIL.formatoValor(
+                            'dinero',
+                            UTIL.suma(TCB.economico.consumoConPlacasMensualCorregido),
+                          )}
+                        </h5>
+                      </Grid>
+                    </Grid>
+
+                    <Grid container>
+                      <Grid
+                        xs={6}
+                        item
+                        sx={{
+                          backgroundColor:
+                            theme.informe.energyTable.title.backgroundColor,
+                          color: theme.palette.text,
+                          padding: 0.5,
+                          border: '1px solid #ccc',
+                          height: 30,
+                          alignContent: 'center',
+                        }}
+                      >
+                        <h4>
+                          <strong>{t('REPORT.ESTUDI_RETORN')}</strong>
+                        </h4>
+                      </Grid>
+                      <Grid
+                        xs={6}
+                        item
+                        sx={{
+                          padding: 1,
+                          border: '1px solid #ccc',
+                          textAlign: 'center',
+                          fontWeight: 'bold',
+                          height: 30,
+                          alignContent: 'center',
+                        }}
+                      >
+                        <h5>
+                          {TCB.economico.periodoAmortizacion +
+                            ' ' +
+                            t('BASIC.LABEL_AÑOS')}
+                        </h5>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Box>
+
+              <Box
+                sx={{
+                  display: 'flex',
+                  flex: 1,
+                  flexDirection: 'column',
+
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  alignContent: 'center',
+                }}
               >
-                <Grid item xs={5}>
-                  <Grid container>
-                    <Grid
-                      xs={6}
-                      item
-                      sx={{
-                        backgroundColor: theme.informe.energyTable.title.backgroundColor,
-                        color: theme.palette.text,
-                        padding: 0.5,
-                        border: '1px solid #ccc',
-                        height: 30,
-                        alignContent: 'center',
-                      }}
-                    >
-                      <h4>{t('ENERGY_BALANCE.LABEL_AUTOCONSUMO')}</h4>
-                    </Grid>
-                    <Grid
-                      xs={3}
-                      item
-                      sx={{
-                        border: '1px solid #ccc',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        height: 30,
-                        alignContent: 'center',
-                      }}
-                    >
-                      <h5>{UTIL.formatoValor('energia', TCB.balance.autoconsumo)}</h5>
-                    </Grid>
-                    <Grid
-                      xs={3}
-                      item
-                      sx={{
-                        border: '1px solid #ccc',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        height: 30,
-                        alignContent: 'center',
-                      }}
-                    >
-                      <h5>
-                        {UTIL.formatoValor(
-                          'dinero',
-                          UTIL.suma(TCB.economico.ahorradoAutoconsumoMes),
-                        )}
-                      </h5>
-                    </Grid>
-                  </Grid>
-                  <Grid container>
-                    <Grid
-                      item
-                      xs={6}
-                      sx={{
-                        backgroundColor: theme.informe.energyTable.title.backgroundColor,
-                        color: theme.palette.text,
-                        padding: 0.5,
-                        border: '1px solid #ccc',
-                        height: 30,
-                        alignContent: 'center',
-                      }}
-                    >
-                      <h4>{t('REPORT.ESTUDI_EXCEDENT')} </h4>
-                    </Grid>
-                    <Grid
-                      xs={3}
-                      item
-                      sx={{
-                        padding: 1,
-                        border: '1px solid #ccc',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        height: 30,
-                        alignContent: 'center',
-                      }}
-                    >
-                      <h5>{UTIL.formatoValor('energia', TCB.balance.excedenteAnual)} </h5>
-                    </Grid>
-                    <Grid
-                      xs={3}
-                      item
-                      sx={{
-                        padding: 1,
-                        border: '1px solid #ccc',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        height: 30,
-                        alignContent: 'center',
-                      }}
-                    >
-                      <h5>
-                        {UTIL.formatoValor(
-                          'dinero',
-                          -UTIL.suma(TCB.economico.compensadoMensual),
-                        )}
-                      </h5>
-                    </Grid>
-                  </Grid>
-                  <Grid container>
-                    <Grid
-                      xs={6}
-                      item
-                      sx={{
-                        backgroundColor: theme.informe.energyTable.title.backgroundColor,
-                        color: theme.palette.text,
-                        padding: 0.5,
-                        border: '1px solid #ccc',
-                        height: 30,
-                        alignContent: 'center',
-                      }}
-                    >
-                      <h4>
-                        <strong>{t('REPORT.ESTUDI_ESTALVI')}</strong>
-                      </h4>
-                    </Grid>
-                    <Grid
-                      xs={6}
-                      item
-                      sx={{
-                        padding: 1,
-                        border: '1px solid #ccc',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        height: 30,
-                        alignContent: 'center',
-                      }}
-                    >
-                      <h5>{UTIL.formatoValor('dinero', TCB.economico.ahorroAnual)}</h5>
-                    </Grid>
-                  </Grid>
-                  <Grid container>
-                    <Grid
-                      xs={6}
-                      item
-                      sx={{
-                        backgroundColor: theme.informe.energyTable.title.backgroundColor,
-                        color: theme.palette.text,
-                        padding: 0.5,
-                        border: '1px solid #ccc',
-                        height: 30,
-                        alignContent: 'center',
-                      }}
-                    >
-                      <h4>
-                        <strong>{t('REPORT.SOLS_DISPONIBLES')}</strong>
-                      </h4>
-                    </Grid>
-                    <Grid
-                      xs={6}
-                      item
-                      sx={{
-                        padding: 1,
-                        border: '1px solid #ccc',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        height: 30,
-                        alignContent: 'center',
-                      }}
-                    >
-                      <h5>{UTIL.formatoValor('dinero', TCB.economico.huchaSaldo[11])}</h5>
-                    </Grid>
-                  </Grid>
-                  <Grid container>
-                    <Grid
-                      xs={6}
-                      item
-                      sx={{
-                        backgroundColor: theme.informe.energyTable.title.backgroundColor,
-                        color: theme.palette.text,
-                        padding: 0.5,
-                        border: '1px solid #ccc',
-                        height: 30,
-                        alignContent: 'center',
-                      }}
-                    >
-                      <h4>{t('REPORT.ESTUDI_XARXA')} </h4>
-                    </Grid>
-                    <Grid
-                      xs={3}
-                      item
-                      sx={{
-                        padding: 1,
-                        border: '1px solid #ccc',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        height: 30,
-                        alignContent: 'center',
-                      }}
-                    >
-                      <h5>{UTIL.formatoValor('energia', TCB.balance.deficitAnual)}</h5>
-                    </Grid>
-                    <Grid
-                      xs={3}
-                      item
-                      sx={{
-                        padding: 1,
-                        border: '1px solid #ccc',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        height: 30,
-                        alignContent: 'center',
-                      }}
-                    >
-                      <h5>
-                        {UTIL.formatoValor(
-                          'dinero',
-                          UTIL.suma(TCB.economico.consumoConPlacasMensualCorregido),
-                        )}
-                      </h5>
-                    </Grid>
-                  </Grid>
+                <Typography variant={'h6'} sx={{ textAlign: 'center', mt: '1rem' }}>
+                  {t('REPORT.PIE_CONSUMO_HORAS_SOL_TITLE')}
+                </Typography>
+                <PieChart
+                  labels={['Consumo horas con sol', 'Resto consumo']}
+                  values={[
+                    TCB.balance.consumoDiurno,
+                    TCB.consumo.totalAnual - TCB.balance.consumoDiurno,
+                  ]}
+                  colors={[
+                    theme.palette.balance.consumoDiurno,
+                    theme.palette.balance.consumo,
+                  ]}
+                ></PieChart>
+              </Box>
 
-                  <Grid container>
-                    <Grid
-                      xs={6}
-                      item
-                      sx={{
-                        backgroundColor: theme.informe.energyTable.title.backgroundColor,
-                        color: theme.palette.text,
-                        padding: 0.5,
-                        border: '1px solid #ccc',
-                        height: 30,
-                        alignContent: 'center',
-                      }}
-                    >
-                      <h4>
-                        <strong>{t('REPORT.ESTUDI_RETORN')}</strong>
-                      </h4>
-                    </Grid>
-                    <Grid
-                      xs={6}
-                      item
-                      sx={{
-                        padding: 1,
-                        border: '1px solid #ccc',
-                        textAlign: 'center',
-                        fontWeight: 'bold',
-                        height: 30,
-                        alignContent: 'center',
-                      }}
-                    >
-                      <h5>
-                        {TCB.economico.periodoAmortizacion + ' ' + t('BASIC.LABEL_AÑOS')}
-                      </h5>
-                    </Grid>
-                  </Grid>
-                </Grid>
-
-                <Grid item xs={3}>
-                  <Typography variant={'h6'} sx={{ textAlign: 'center', mt: '2rem' }}>
-                    {t('REPORT.PIE_CONSUMO_HORAS_SOL_TITLE')}
-                  </Typography>
-                  <PieChart
-                    labels={['Consumo horas con sol', 'Resto consumo']}
-                    values={[
-                      TCB.balance.consumoDiurno,
-                      TCB.consumo.totalAnual - TCB.balance.consumoDiurno,
-                    ]}
-                    colors={[
-                      theme.palette.balance.consumoDiurno,
-                      theme.palette.balance.consumo,
-                    ]}
-                  ></PieChart>
-                </Grid>
-
-                <Grid item xs={3}>
-                  <Typography variant={'h6'} sx={{ textAlign: 'center', mt: '2rem' }}>
-                    {t('ENERGY_BALANCE.TITLE_GRAPH_DEMAND')}
-                  </Typography>
-                  <PieChart
-                    labels={[
-                      t('ENERGY_BALANCE.LABEL_AUTOCONSUMO'),
-                      t('ENERGY_BALANCE.LABEL_EXCEDENTE_ANUAL'),
-                    ]}
-                    values={[TCB.balance.autoconsumo, TCB.balance.excedenteAnual]}
-                    colors={[
-                      theme.palette.balance.autoconsumo,
-                      theme.palette.balance.excedente,
-                    ]}
-                  ></PieChart>
-                </Grid>
-              </Grid>
+              <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
+                <Typography variant={'h6'} sx={{ textAlign: 'center', mt: '1rem' }}>
+                  {t('ENERGY_BALANCE.TITLE_GRAPH_DEMAND')}
+                </Typography>
+                <PieChart
+                  labels={[
+                    t('ENERGY_BALANCE.LABEL_AUTOCONSUMO'),
+                    t('ENERGY_BALANCE.LABEL_EXCEDENTE_ANUAL'),
+                  ]}
+                  values={[TCB.balance.autoconsumo, TCB.balance.excedenteAnual]}
+                  colors={[
+                    theme.palette.balance.autoconsumo,
+                    theme.palette.balance.excedente,
+                  ]}
+                ></PieChart>
+              </Box>
             </Box>
 
             {shortFormat && (
