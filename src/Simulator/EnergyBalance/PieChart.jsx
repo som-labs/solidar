@@ -47,7 +47,7 @@ export default function PieChart(props) {
       color: theme.palette.text.primary,
     },
     width: graphWidth.current,
-    height: 250,
+    height: 200,
     showlegend: true,
     autosize: true,
     paper_bgcolor: 'rgba(0,0,0,0)',
