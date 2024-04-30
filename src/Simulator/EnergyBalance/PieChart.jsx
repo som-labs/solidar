@@ -55,7 +55,7 @@ export default function PieChart(props) {
     legend: {
       x: -0.1,
       xref: 'paper',
-      y: 1.2,
+      y: 1.4,
       yref: 'paper',
       orientation: 'v',
     },
@@ -63,7 +63,7 @@ export default function PieChart(props) {
       l: 30,
       r: 30,
       b: 10,
-      t: 40,
+      t: 10,
     },
   }
 
