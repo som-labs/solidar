@@ -125,7 +125,9 @@ export default function InstallationCost() {
             color={theme.palette.primary.main}
             textAlign={'center'}
           >
-            {UTIL.formatoValor('precioInstalacion', TCB.economico.precioInstalacion)}
+            {UTIL.formatoValor('precioInstalacion', TCB.economico.precioInstalacion) +
+              ' ' +
+              t('ECONOMIC_BALANCE.IVA_INCLUDED')}
           </Typography>
           <Typography variant="body">
             {t('ECONOMIC_BALANCE.PROMPT_INSTALLATION_COST')}
