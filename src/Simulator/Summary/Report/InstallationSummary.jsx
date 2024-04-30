@@ -12,7 +12,7 @@ import { BasesContext } from '../../BasesContext'
 //import TCB from '../classes/TCB'
 import * as UTIL from '../../classes/Utiles'
 
-export default function InstallationSummary() {
+export default function InstallationSummary(props) {
   const { t } = useTranslation()
   const { bases } = useContext(BasesContext)
 
@@ -20,10 +20,25 @@ export default function InstallationSummary() {
     return row.idBaseSolar
   }
 
-  const columns = [
+  const { shortFormat, usedBases } = props
+
+  let columns = []
+  columns = [
+    {
+      field: 'nombreBaseSolar',
+      headerName: shortFormat
+        ? t('BaseSolar.SHORT.nombreBaseSolar')
+        : t('BaseSolar.PROP.nombreBaseSolar'),
+      //headerAlign: 'center',
+      width: shortFormat ? 80 : 250,
+      sortable: false,
+      description: t('BaseSolar.TOOLTIP.nombreBaseSolar'),
+    },
     {
       field: 'areaReal',
-      headerName: t('BaseSolar.PROP.areaReal'),
+      headerName: shortFormat
+        ? t('BaseSolar.SHORT.areaReal')
+        : t('BaseSolar.PROP.areaReal'),
       headerAlign: 'center',
       flex: 1,
       align: 'center',
@@ -35,9 +50,11 @@ export default function InstallationSummary() {
     },
     {
       field: 'inclinacion',
-      headerName: t('BaseSolar.PROP.inclinacion'),
+      headerName: shortFormat
+        ? t('BaseSolar.SHORT.inclinacion')
+        : t('BaseSolar.PROP.inclinacion'),
       headerAlign: 'center',
-      flex: 1,
+      flex: 0.9,
       align: 'center',
       sortable: false,
       description: t('BaseSolar.TOOLTIP.inclinacion'),
@@ -50,9 +67,11 @@ export default function InstallationSummary() {
     },
     {
       field: 'inAcimut',
-      headerName: t('BaseSolar.PROP.inAcimut'),
+      headerName: shortFormat
+        ? t('BaseSolar.SHORT.inAcimut')
+        : t('BaseSolar.PROP.inAcimut'),
       headerAlign: 'center',
-      flex: 1,
+      flex: 0.9,
       align: 'center',
       sortable: false,
       description: t('BaseSolar.TOOLTIP.inAcimut'),
@@ -60,6 +79,17 @@ export default function InstallationSummary() {
         if (params.row.roofType === 'Optimos') return 'Optimo'
         else return UTIL.formatoValor('inAcimut', params.value)
       },
+    },
+    {
+      field: 'paneles',
+      headerName: shortFormat
+        ? t('Instalacion.SHORT.paneles')
+        : t('Instalacion.PROP.paneles'),
+      type: 'number',
+      editable: true,
+      headerAlign: 'center',
+      flex: 0.9,
+      align: 'center',
     },
   ]
 
@@ -108,7 +138,7 @@ export default function InstallationSummary() {
       <Box id="F1C2F2">
         <DataGrid
           getRowId={getRowId}
-          rows={bases}
+          rows={usedBases}
           columns={columns}
           hideFooter={false}
           rowHeight={30}
