@@ -36,7 +36,7 @@ export default function ReportSOM({ onClose }) {
   const componentRef = useRef()
   const { bases } = useContext(BasesContext)
 
-  const [yearlyData, setYearlyData] = useState({})
+  //const [yearlyData, setYearlyData] = useState({})
 
   const usedBases = bases.filter((b) => b.paneles > 0)
   const shortFormat = usedBases.length < 5 ? true : false
@@ -125,23 +125,23 @@ export default function ReportSOM({ onClose }) {
     return link
   }
 
-  const customPageStyle = `
-    @media print {
-      @page {
-        size: auto;
-        margin: 0;
-      }
+  // const customPageStyle = `
+  //   @media print {
+  //     @page {
+  //       size: auto;
+  //       margin: 0;
+  //     }
 
-      body {
-        margin: 0;
-      }
+  //     body {
+  //       margin: 0;
+  //     }
 
-      header,
-      footer {
-        display: none !important;
-      }
-    }
-  `
+  //     header,
+  //     footer {
+  //       display: none !important;
+  //     }
+  //   }
+  // `
 
   // const AUTO = UTIL.suma(TCB.economico.ahorradoAutoconsumoMes)
   // const COMPENSA = -UTIL.suma(TCB.economico.compensadoMensual)
@@ -149,7 +149,6 @@ export default function ReportSOM({ onClose }) {
   // const GASTOCP = UTIL.suma(TCB.economico.consumoConPlacasMensualCorregido)
   // const GASTOSP = UTIL.suma(TCB.economico.consumoOriginalMensual)
   // console.log('SALDO', TCB.economico.huchaSaldo)
-
   // console.log('AUTO', AUTO, TCB.economico.ahorradoAutoconsumoMes)
   // console.log('COMPENSA', COMPENSA, TCB.economico.compensadoMensual)
   // console.log('HUCHA', HUCHA, TCB.economico.extraccionHucha)
@@ -197,16 +196,47 @@ export default function ReportSOM({ onClose }) {
     )
   }
 
-  useEffect(() => {
-    setYearlyData({
-      consumo: TCB.consumo.totalAnual,
-      produccion: TCB.produccion.totalAnual,
-      deficit: TCB.balance.deficitAnual,
-      autoconsumo: TCB.balance.autoconsumo,
-      excedente: TCB.balance.excedenteAnual,
-      consumoDiurno: TCB.balance.consumoDiurno,
-    })
-  }, [])
+  // useEffect(() => {
+  //   setYearlyData({
+  //     consumo: TCB.consumo.totalAnual,
+  //     produccion: TCB.produccion.totalAnual,
+  //     deficit: TCB.balance.deficitAnual,
+  //     autoconsumo: TCB.balance.autoconsumo,
+  //     excedente: TCB.balance.excedenteAnual,
+  //     consumoDiurno: TCB.balance.consumoDiurno,
+  //   })
+  // }, [])
+
+  const MainData = () => {
+    return (
+      <>
+        <Box
+          id="Title"
+          sx={{
+            backgroundColor: 'databox.main',
+            color: 'databox.contrastText',
+            textAlign: 'center',
+            padding: 1,
+          }}
+        >
+          <Typography variant="h6">
+            <strong>{t('REPORT.DADES_TITLE')}</strong>
+          </Typography>
+        </Box>
+        <Box id="Content">
+          <Typography
+            sx={{
+              textAlign: 'left',
+              padding: 1,
+              color: theme.palette.text,
+            }}
+          >
+            {t('REPORT.DADES_DIRECCIO')}: <strong>{TCB.direccion}</strong>
+          </Typography>
+        </Box>
+      </>
+    )
+  }
 
   return (
     <div>
@@ -219,7 +249,7 @@ export default function ReportSOM({ onClose }) {
           }
         `}
       </style>
-      <Container sx={{ backgroundColor: 'grey' }}>
+      <Container>
         <div ref={componentRef}>
           <Box
             sx={{
@@ -231,159 +261,136 @@ export default function ReportSOM({ onClose }) {
             }}
           >
             <Header></Header>
+            {/* Texto de atencion */}
             <Box sx={{ mb: 3 }}>
               <Typography>{t('REPORT.ATENCIO')}</Typography>
             </Box>
-
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 2,
-              }}
-            >
+            {shortFormat ? (
               <Box
-                id="F1"
                 sx={{
                   display: 'flex',
-                  flexDirection: 'row',
-                  flex: 2,
+                  flexDirection: 'column',
                   gap: 2,
-                  minHeight: 200,
-                  mb: 1,
                 }}
               >
                 {/* Datos principales */}
-                <Box
-                  id="F1C1"
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flex: 1,
-                    gap: 2,
-                  }}
-                >
-                  <Box
-                    id="F1C1Title"
-                    sx={{
-                      backgroundColor: 'databox.main',
-                      color: 'databox.contrastText',
-                      textAlign: 'center',
-                      padding: 1,
-                    }}
-                  >
-                    <Typography variant="h6">
-                      <strong>{t('REPORT.DADES_TITLE')}</strong>
-                    </Typography>
-                  </Box>
-                  <Box id="F1C1Content">
-                    <Typography
-                      sx={{
-                        textAlign: 'left',
-                        padding: 1,
-                        color: theme.palette.text,
-                      }}
-                    >
-                      {t('REPORT.DADES_DIRECCIO')}: <strong>{TCB.direccion}</strong>
-                    </Typography>
-                  </Box>
+                <Box id="F1Short" sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <MainData />
                 </Box>
 
-                {shortFormat && (
-                  <>
-                    {/* Datos de cubierta */}
-                    <Box id="F1C2" sx={{ flex: 1, display: 'flex' }}>
-                      <InstallationSummary
-                        shortFormat={shortFormat}
-                        usedBases={usedBases}
-                      ></InstallationSummary>
-                    </Box>
-                  </>
-                )}
-
-                {/* El mapa */}
-                <Box id="F1C3" sx={{ display: 'flex', flex: 1 }}>
-                  <MicroMap></MicroMap>
+                <Box id="F2Short" sx={{ display: 'flex', flexDirection: 'row' }}>
+                  {/* Datos de cubierta */}
+                  <Box id="F2C1Short" sx={{ flex: 1, display: 'flex', minHeight: 250 }}>
+                    <InstallationSummary
+                      shortFormat={shortFormat}
+                      usedBases={usedBases}
+                    ></InstallationSummary>
+                  </Box>
+                  {/* Mapa */}
+                  <Box id="F2C2Short" sx={{ display: 'flex', flex: 1 }}>
+                    <MicroMap></MicroMap>
+                  </Box>
                 </Box>
               </Box>
+            ) : (
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 2,
+                }}
+              >
+                <Box id="F1Long" sx={{ display: 'flex', flexDirection: 'row' }}>
+                  <Box
+                    id="F1C1Long"
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      minHeight: 250,
+                      flex: 1,
+                      gap: 2,
+                    }}
+                  >
+                    <MainData></MainData>
+                  </Box>
 
-              {/* Datos de cubierta */}
-              {!shortFormat && (
-                <Box id="F1C2" sx={{ flex: 1, display: 'flex' }}>
+                  <Box id="F1C2Long" sx={{ display: 'flex', flex: 1, border: 1 }}>
+                    <MicroMap></MicroMap>
+                  </Box>
+                </Box>
+                <Box id="F2Long" sx={{ flex: 1, display: 'flex' }}>
                   <InstallationSummary
                     shortFormat={shortFormat}
                     usedBases={usedBases}
                   ></InstallationSummary>
                 </Box>
-              )}
-
+              </Box>
+            )}
+            <Box
+              id="F2"
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 1,
+              }}
+            >
+              {/* Uso de la energia */}
               <Box
-                id="F2"
+                id="F2C1"
                 sx={{
                   display: 'flex',
-                  flexDirection: 'row',
-                  gap: 1,
+                  flexDirection: 'column',
+                  flex: 1,
+                  gap: 2,
+                  padding: 1,
                 }}
               >
-                {/* Uso de la energia */}
                 <Box
-                  id="F2C1"
+                  id="F2C1Title"
                   sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flex: 1,
-                    gap: 2,
+                    backgroundColor: 'primary.main',
+                    color: 'primary.contrastText',
+                    textAlign: 'center',
                     padding: 1,
+                    mb: 2,
                   }}
                 >
-                  <Box
-                    id="F2C1Title"
-                    sx={{
-                      backgroundColor: 'primary.main',
-                      color: 'primary.contrastText',
-                      textAlign: 'center',
-                      padding: 1,
-                      mb: 2,
-                    }}
-                  >
-                    <Typography variant="h6">
-                      <strong>{t('REPORT.US_TITLE')}</strong>
-                    </Typography>
-                  </Box>
-
-                  <Box id="F2C1Content" sx={{ display: 'flex' }}>
-                    <SummaryConsumptionTarifa></SummaryConsumptionTarifa>
-                  </Box>
+                  <Typography variant="h6">
+                    <strong>{t('REPORT.US_TITLE')}</strong>
+                  </Typography>
                 </Box>
 
-                {/* Precios aplicados */}
+                <Box id="F2C1Content" sx={{ display: 'flex' }}>
+                  <SummaryConsumptionTarifa></SummaryConsumptionTarifa>
+                </Box>
+              </Box>
+              {/* Precios aplicados */}
+              <Box
+                id="F2C2"
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  flex: 1,
+                  gap: 2,
+                  padding: 1,
+                }}
+              >
                 <Box
-                  id="F2C2"
+                  id="F2C2Title"
                   sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flex: 1,
-                    gap: 2,
+                    backgroundColor: 'primary.main',
+                    color: 'primary.contrastText',
+                    textAlign: 'center',
                     padding: 1,
+                    mb: 2,
                   }}
                 >
-                  <Box
-                    id="F2C2Title"
-                    sx={{
-                      backgroundColor: 'primary.main',
-                      color: 'primary.contrastText',
-                      textAlign: 'center',
-                      padding: 1,
-                      mb: 2,
-                    }}
-                  >
-                    <Typography variant="h6">
-                      <strong>{t('REPORT.FEE_TITLE')}</strong>
-                    </Typography>
-                  </Box>
-                  <Box id="F2C2Content">
-                    <SummaryPreciosTarifa></SummaryPreciosTarifa>
-                  </Box>
+                  <Typography variant="h6">
+                    <strong>{t('REPORT.FEE_TITLE')}</strong>
+                  </Typography>
+                </Box>
+                <Box id="F2C2Content">
+                  <SummaryPreciosTarifa></SummaryPreciosTarifa>
                 </Box>
               </Box>
             </Box>
@@ -467,6 +474,14 @@ export default function ReportSOM({ onClose }) {
                 </Box>
               </Box>
             </Box>
+
+            {!shortFormat && (
+              <div className="page-break">
+                <hr></hr>
+                <Header></Header>
+              </div>
+            )}
+
             {/* Estudio energetico - economico */}
             <Box
               sx={{
@@ -769,18 +784,14 @@ export default function ReportSOM({ onClose }) {
                 </Grid>
               </Grid>
             </Box>
-          </Box>
-          <div className="page-break"></div>
-          <Box
-            sx={{
-              backgroundColor: 'white',
-              border: 2,
-              borderRadius: 3,
-              padding: 2,
-              mb: '1rem',
-            }}
-          >
-            <Header></Header>
+
+            {shortFormat && (
+              <div className="page-break">
+                <hr></hr>
+                <Header></Header>
+              </div>
+            )}
+
             <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
               {/* BOX: Perfil de uso de energia */}
               <Box
@@ -798,7 +809,6 @@ export default function ReportSOM({ onClose }) {
                 </Typography>
                 <HourlyEnergyBalance report={true}></HourlyEnergyBalance>
               </Box>
-
               {/* BOX: Ahorro mensual  */}
               <Box
                 sx={{
@@ -816,6 +826,13 @@ export default function ReportSOM({ onClose }) {
                 <MonthSaving></MonthSaving>
               </Box>
 
+              {!shortFormat && (
+                <div className="page-break">
+                  <hr></hr>
+                  <Header></Header>
+                </div>
+              )}
+
               {/* BOX: Como se han generado los datos de este informe */}
               <Box sx={{ backgroundColor: theme.informe.dataBox.title.backgroundColor }}>
                 <Typography
@@ -832,6 +849,7 @@ export default function ReportSOM({ onClose }) {
                   <strong>{t('REPORT.INFORME_TITLE')}</strong>
                 </Typography>
               </Box>
+
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                 <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
                   {/* BOX: Titulo Datos de generacion */}
@@ -946,19 +964,14 @@ export default function ReportSOM({ onClose }) {
                 </Box>
               </Box>
             </Box>
-          </Box>
 
-          <div className="page-break"></div>
-          <Box
-            sx={{
-              backgroundColor: 'white',
-              border: 2,
-              borderRadius: 3,
-              padding: 2,
-              mb: '1rem',
-            }}
-          >
-            <Header></Header>
+            {shortFormat && (
+              <div className="page-break">
+                <hr></hr>
+                <Header></Header>
+              </div>
+            )}
+
             {/* BOX Titulo Proximos pasos */}
             <Box
               sx={{
@@ -976,7 +989,6 @@ export default function ReportSOM({ onClose }) {
             <Box sx={{ padding: 2 }}>
               <Typography variant="body">{t('REPORT.ADVISE')}</Typography>
             </Box>
-
             <Box
               sx={{
                 backgroundColor: 'primary.main',
@@ -991,7 +1003,6 @@ export default function ReportSOM({ onClose }) {
                 <strong>{t('REPORT.PROPERESPASES_DESCRIPTION')}</strong>
               </Typography>
             </Box>
-
             {/* Que ofrecemos a traves de SOM ENERGIA */}
             <Box sx={{ display: 'flex' }}>
               <Box sx={{ display: 'flex', flex: 11, padding: 2 }}>
@@ -1070,7 +1081,6 @@ export default function ReportSOM({ onClose }) {
                 </ul>
               </Box>
             </Box>
-
             <Box sx={{ display: 'flex', gap: 2 }}>
               <Box
                 sx={{
@@ -1098,6 +1108,7 @@ export default function ReportSOM({ onClose }) {
           </Box>
         </div>
 
+        {/* Botones */}
         <Button
           variant="contained"
           sx={{ mr: '2rem' }}
