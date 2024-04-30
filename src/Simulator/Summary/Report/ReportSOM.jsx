@@ -1,10 +1,13 @@
-import { useRef, useState, useEffect } from 'react'
-import styles from './pdfStyle'
+import { useRef, useState, useEffect, useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useTheme } from '@mui/material/styles'
 
+// MUI objects
 import { Grid, Container, Button, Box, Typography } from '@mui/material'
 import { useReactToPrint } from 'react-to-print'
 import Print from '@mui/icons-material/Print'
+
+// Local images
 import logo from './images/logo_som_energia.png'
 import bombeta from './images/bombeta.png'
 import dona from './images/dona.png'
@@ -12,27 +15,31 @@ import placa from './images/placa.png'
 import casa from './images/casa.jpg'
 import euro from './images/euro.png'
 
-import { useTranslation } from 'react-i18next'
-
+//React global components
+import { BasesContext } from '../../BasesContext'
 import SummaryPreciosTarifa from '../SummaryPreciosTarifa'
 import SummaryConsumptionTarifa from '../SummaryConsumptionTarifa'
 import HourlyEnergyBalance from '../../EnergyBalance/HourlyEnergyBalance'
-//import MonthSavingStack from '../../EconomicBalance/MonthSavingsStack'
 import MonthSaving from '../../EconomicBalance/MonthSavings'
 import PieChart from '../../EnergyBalance/PieChart'
 import InstallationSummary from './InstallationSummary'
+import MicroMap from '../../Location/MicroMap'
 
+// Solidar objects
 import * as UTIL from '../../classes/Utiles'
 import TCB from '../../classes/TCB'
-import MicroMap from '../../Location/MicroMap'
 
 export default function ReportSOM({ onClose }) {
   const { t, i18n } = useTranslation()
   const theme = useTheme()
 
   const componentRef = useRef()
+  const { bases } = useContext(BasesContext)
 
   const [yearlyData, setYearlyData] = useState({})
+
+  const usedBases = bases.filter((b) => b.paneles > 0)
+  const shortFormat = usedBases.length < 5 ? true : false
 
   function getLink(number) {
     let link
@@ -243,7 +250,7 @@ export default function ReportSOM({ onClose }) {
                   flex: 2,
                   gap: 2,
                   minHeight: 200,
-                  mb: 3,
+                  mb: 1,
                 }}
               >
                 {/* Datos principales */}
@@ -282,16 +289,33 @@ export default function ReportSOM({ onClose }) {
                   </Box>
                 </Box>
 
-                {/* Datos de cubierta */}
-                <Box id="F1C2" sx={{ flex: 1, display: 'flex' }}>
-                  <InstallationSummary></InstallationSummary>
-                </Box>
+                {shortFormat && (
+                  <>
+                    {/* Datos de cubierta */}
+                    <Box id="F1C2" sx={{ flex: 1, display: 'flex' }}>
+                      <InstallationSummary
+                        shortFormat={shortFormat}
+                        usedBases={usedBases}
+                      ></InstallationSummary>
+                    </Box>
+                  </>
+                )}
 
                 {/* El mapa */}
                 <Box id="F1C3" sx={{ display: 'flex', flex: 1 }}>
                   <MicroMap></MicroMap>
                 </Box>
               </Box>
+
+              {/* Datos de cubierta */}
+              {!shortFormat && (
+                <Box id="F1C2" sx={{ flex: 1, display: 'flex' }}>
+                  <InstallationSummary
+                    shortFormat={shortFormat}
+                    usedBases={usedBases}
+                  ></InstallationSummary>
+                </Box>
+              )}
 
               <Box
                 id="F2"
@@ -757,7 +781,7 @@ export default function ReportSOM({ onClose }) {
             }}
           >
             <Header></Header>
-            <Box SX={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
               {/* BOX: Perfil de uso de energia */}
               <Box
                 sx={{
