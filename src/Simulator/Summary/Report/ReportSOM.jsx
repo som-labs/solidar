@@ -458,13 +458,21 @@ export default function ReportSOM({ onClose }) {
               </Typography>
             </Box>
 
-            <Box>
+            <Box
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                alignContent: 'center',
+                display: 'flex',
+              }}
+            >
               <Grid
                 container
+                xs={12}
                 spacing={0}
-                sx={{ alignItems: 'center', justifyContent: 'center' }}
+                sx={{ alignItems: 'center', justifyContent: 'center', display: 'flex' }}
               >
-                <Grid item xs={6}>
+                <Grid item xs={5}>
                   <Grid container>
                     <Grid
                       xs={6}
@@ -712,7 +720,7 @@ export default function ReportSOM({ onClose }) {
                 </Grid>
 
                 <Grid item xs={3}>
-                  <Typography variant={'h6'} sx={{ textAlign: 'center', mt: '1rem' }}>
+                  <Typography variant={'h6'} sx={{ textAlign: 'center', mt: '2rem' }}>
                     {t('REPORT.PIE_CONSUMO_HORAS_SOL_TITLE')}
                   </Typography>
                   <PieChart
@@ -727,8 +735,9 @@ export default function ReportSOM({ onClose }) {
                     ]}
                   ></PieChart>
                 </Grid>
+
                 <Grid item xs={3}>
-                  <Typography variant={'h6'} sx={{ textAlign: 'center', mt: '1rem' }}>
+                  <Typography variant={'h6'} sx={{ textAlign: 'center', mt: '2rem' }}>
                     {t('ENERGY_BALANCE.TITLE_GRAPH_DEMAND')}
                   </Typography>
                   <PieChart
