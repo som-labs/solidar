@@ -48,6 +48,11 @@ dic: diciembre
 
 BaseSolar:
   NAME: Base solar
+  SHORT:
+    nombreBaseSolar: Nombre
+    areaReal: Area
+    inclinacion: Incl.
+    inAcimut: Orient. Sur
   PROP:
     roofType: Tipo de cubierta
     nombreBaseSolar: Nombre del área
@@ -150,6 +155,8 @@ Consumo:
 
 Instalacion:
   NAME: Instalación
+  SHORT:
+    paneles: Paneles
   PROP:
     precioInstalacion: Precio de la instalación
     precioInstalacionCorregido: Precio de la instalación corregido
@@ -553,6 +560,7 @@ ECONOMIC_BALANCE:
   SUBVENCION_SURPLUS: El valor de la subvencion debe ser un número mayor o igual a 0 y menor que el precio de la instalación.
   TITLE_INSTALLATION_COST: Precio de la instalación
   DESCRIPTION_INSTALLATION_COST: Este es un importe orientativo que puede variar dependiendo del precio del mercado. Además, no tiene en cuenta tasas y/o gastos adicionales que puedan aparecer.
+  IVA_INCLUDED: (IVA incluido)
 
   PROMPT_INSTALLATION_COST: Si tienes una oferta diferente, puedes cambiar el valor del importe en el siguiente campo.
   ADVICE_PRICE_TITLE: Tener en consideración
@@ -774,7 +782,7 @@ REPORT:
   INSTALACIO_POTENCIA: Potencia total instalada
   INSTALACIO_POTENCIA_UNITARIA: Potencia unitaria por panel
   INSTALACIO_ANUAL: Generación anual
-  INSTALACIO_COST: Coste aproximado
+  INSTALACIO_COST: Coste aproximado (IVA incluido)
   ESTUDI_TITLE: Estudio energético - económico
   ESTUDI_EXCEDENT: Excedente
   ESTUDI_XARXA: Energía de red
