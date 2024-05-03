@@ -8,7 +8,7 @@ APP_FRAME:
   GO_HOME: Ir a la pagina principal
   GO_SIMULATOR: Ir al simulador
   PAGE_NOT_FOUND: No se ha encontrado la pàgina
-  IMPORT_EXPORT: Importa / Exporta
+  IMPORT_EXPORT: Gestion de exportación / recuperación de un proyecto de simulación
 HOME:
   IS_IT_WORTH_TITLE1: Quiero ponerme paneles solares
   IS_IT_WORTH_TITLE2: ¿cómo sé si me compensa?
