@@ -306,14 +306,26 @@ class Economico {
     cuota = unFlow.inversion + unFlow.ahorro
     cuotaPeriodo.push(cuota)
     this.cashFlow.push(unFlow)
-
+    this.periodoAmortizacion = null
     // Se genera la tabla hasta alcanzar el retorno de la inversión o la finalización de la subvención de IBI
     while (unFlow.ano < maxNumberCashFlow) {
       //Puede ser que la cuota de la hucha haga que el ahorro sea negativo. En ese caso mostramos los resultados de 10 años
-      if (unFlow.ano > 10 && unFlow.ahorro < 0) break
-      if (unFlow.ano > parseInt(tiempoSubvencionIBI) + 1 && unFlow.pendiente > 0) break
+      let exitCondition = true
 
+      if (unFlow.pendiente < 0) {
+        exitCondition = false
+      } else {
+        if (unFlow.ano < this.periodoAmortizacion + 4) {
+          //Incluimos hasta 4 años despues del breakeven para el calculo financiero
+          exitCondition = false
+        } else {
+          exitCondition = unFlow.ano < parseInt(tiempoSubvencionIBI) + 1 ? false : true
+        }
+      }
+
+      if (exitCondition) break
       let lastPendiente = unFlow.pendiente
+
       unFlow = {}
       unFlow.ano = ++i
       unFlow.ahorro = this.ahorroAnual
@@ -339,11 +351,12 @@ class Economico {
       cuotaPeriodo.push(cuota)
       unFlow.pendiente = unFlow.previo + cuota
       this.cashFlow.push(unFlow)
-    }
 
-    this.periodoAmortizacion = this.cashFlow.findIndex((c) => {
-      return c.pendiente > 0
-    })
+      this.periodoAmortizacion =
+        unFlow.pendiente > 0 && !this.periodoAmortizacion
+          ? unFlow.ano
+          : this.periodoAmortizacion
+    }
 
     if (this.periodoAmortizacion > 0) {
       if (cuotaPeriodo[0] < 0) {
