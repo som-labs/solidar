@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, useContext, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useTheme } from '@mui/material/styles'
 
 // MUI objects
@@ -15,6 +16,7 @@ import SankeyFun from './SankeyFun'
 import { ColorModeContext } from '../../../components/GlobalTheme'
 
 export default function CallSankey(props) {
+  const { t } = useTranslation()
   var svgRef = useRef(null)
   const boxRef = useRef(null)
   const boxHeight = useRef(null)
@@ -28,35 +30,43 @@ export default function CallSankey(props) {
   const { current } = useContext(ColorModeContext) //dark or light
 
   const data = [
-    { source: 'Producción paneles', target: 'Excedentes', value: excedente },
     {
-      source: 'Producción paneles',
-      target: 'Uso eléctrico diurno',
+      source: t('ENERGY_BALANCE.SANKEY.PRODUCCION_PANELES'),
+      target: t('ENERGY_BALANCE.SANKEY.EXCEDENTES'),
+      value: excedente,
+    },
+    {
+      source: t('ENERGY_BALANCE.SANKEY.PRODUCCION_PANELES'),
+      target: t('ENERGY_BALANCE.SANKEY.USO_DIURNO'),
       value: autoconsumo,
     },
 
     {
-      source: 'Energía de la red',
-      target: 'Uso eléctrico nocturno',
+      source: t('ENERGY_BALANCE.SANKEY.ENERGIA_RED'),
+      target: t('ENERGY_BALANCE.SANKEY.USO_NOCTURNO'),
       value: consumo - consumoDiurno,
     },
 
     {
-      source: 'Energía de la red',
-      target: 'Uso eléctrico diurno',
+      source: t('ENERGY_BALANCE.SANKEY.ENERGIA_RED'),
+      target: t('ENERGY_BALANCE.SANKEY.USO_DIURNO'),
       value: consumoDiurno - autoconsumo,
     },
 
-    { source: 'Excedentes', target: 'Vertido a red', value: excedente },
+    {
+      source: t('ENERGY_BALANCE.SANKEY.EXCEDENTES'),
+      target: t('ENERGY_BALANCE.SANKEY.VERTIDO_RED'),
+      value: excedente,
+    },
 
     {
-      source: 'Uso eléctrico diurno',
-      target: 'Uso de la energía total',
+      source: t('ENERGY_BALANCE.SANKEY.USO_DIURNO'),
+      target: t('ENERGY_BALANCE.SANKEY.USO_TOTAL'),
       value: consumoDiurno,
     },
     {
-      source: 'Uso eléctrico nocturno',
-      target: 'Uso de la energía total',
+      source: t('ENERGY_BALANCE.SANKEY.USO_NOCTURNO'),
+      target: t('ENERGY_BALANCE.SANKEY.USO_TOTAL'),
       value: consumo - consumoDiurno,
     },
   ]

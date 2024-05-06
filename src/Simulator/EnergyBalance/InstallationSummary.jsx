@@ -2,7 +2,7 @@ import { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import { Typography, Grid, Tooltip } from '@mui/material'
+import { Typography, Grid, Tooltip, Button } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { DataGrid, GridActionsCellItem, GridCellEditStopReasons } from '@mui/x-data-grid'
 import InfoIcon from '@mui/icons-material/Info'
@@ -18,6 +18,7 @@ import DialogProperties from '../components/DialogProperties'
 
 // Solidar objects
 import Economico from '../classes/Economico'
+import { optimizador } from '../classes/optimizador'
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
@@ -134,7 +135,7 @@ export default function InstallationSummary() {
       field: 'actions',
       type: 'actions',
       sortable: false,
-      headerName: t('BASIC.LABEL_ACCIONES'),
+      headerName: t('BASIC.LABEL_INFO'),
       getActions: (params) => [
         <GridActionsCellItem
           key={1}
@@ -163,26 +164,78 @@ export default function InstallationSummary() {
     return (
       <SLDRFooterBox>
         <Grid container alignItems="center" justifyContent="center" spacing={2}>
-          <Grid item sx={{ mt: '1rem' }}>
+          <Grid item xs={12} sx={{ mt: '1rem' }}>
             <Typography
               sx={theme.titles.level_2}
               textAlign={'center'}
               dangerouslySetInnerHTML={{
-                __html: t('ENERGY_BALANCE.SUMMARY_FOOTER', {
-                  paneles: Math.round(
-                    bases.reduce((sum, tBase) => sum + tBase.paneles, 0),
-                  ),
-                  potencia: UTIL.formatoValor(
+                __html:
+                  t('ENERGY_BALANCE.SUMMARY_FOOTER', {
+                    paneles: Math.round(
+                      bases.reduce((sum, tBase) => sum + tBase.paneles, 0),
+                    ),
+                    potencia: UTIL.formatoValor(
+                      'potenciaTotal',
+                      bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
+                    ),
+                  }) +
+                  ' de ' +
+                  UTIL.formatoValor(
                     'potenciaTotal',
-                    bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
-                  ),
-                }),
+                    bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0),
+                  ) +
+                  ' posibles',
               }}
             />
           </Grid>
+          {TCB.user === 'Fernando' && (
+            <Grid item xs={12} sx={{ gap: 2, mt: '1rem' }}>
+              <Button onClick={maxConfiguration} variant="contained" color="primary">
+                Máximo{' '}
+                {Math.round(bases.reduce((sum, tBase) => sum + tBase.panelesMaximo, 0))}
+              </Button>
+              <Button onClick={recoverOptimos} variant="contained" color="primary">
+                Óptimos
+              </Button>
+            </Grid>
+          )}
         </Grid>
       </SLDRFooterBox>
     )
+  }
+
+  function setNewPaneles() {
+    //Update context with new TCB data
+    calculaResultados()
+    TCB.economico = new Economico()
+    UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
+    if (TCB.economico.periodoAmortizacion > 20) {
+      alert(t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
+    }
+    updateTCBBasesToState()
+    //Update total number of panels in TCB
+    TCB.totalPaneles = TCB.BaseSolar.reduce((a, b) => {
+      return a + b.instalacion.paneles
+    }, 0)
+  }
+
+  function maxConfiguration() {
+    //Update all BaseSolar panels in TCB
+    TCB.BaseSolar.forEach((base) => {
+      base.instalacion.paneles = base.panelesMaximo
+    })
+    setNewPaneles()
+  }
+
+  function recoverOptimos() {
+    // console.log('RECIVER', TCB.panelesOptimos)
+    // TCB.panelesOptimos.forEach((optBase) => {
+    //   const base = TCB.BaseSolar.find((b) => b.idBaseSolar === optBase.idBaseSolar)
+    //   base.instalacion.paneles = optBase.paneles
+    // })
+    // Se ejecuta el optimizador para determinar la configuración inicial propuesta
+    let pendiente = optimizador(TCB.BaseSolar, TCB.consumo, TCB.tipoPanelActivo.potencia)
+    setNewPaneles()
   }
   /**
    * Funcion para gestionar el evento generado por cambio de paneles en la tabla de bases
@@ -226,50 +279,7 @@ export default function InstallationSummary() {
         })
         //baseActiva.instalacion.potenciaUnitaria = tmpPotenciaUnitaria
         baseActiva.instalacion.paneles = tmpPaneles
-
-        //Update context with new TCB data
-        calculaResultados()
-        TCB.economico = new Economico()
-        UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
-        if (TCB.economico.periodoAmortizacion > 20) {
-          alert(t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
-        }
-        updateTCBBasesToState()
-        //Update total number of panels in TCB
-        TCB.totalPaneles = TCB.BaseSolar.reduce((a, b) => {
-          return a + b.instalacion.paneles
-        }, 0)
-
-        // //Update this BaseSolar panels and potenciaUnitaria in context
-        // let newBases = bases.map((b) => {
-        //   if (b.idBaseSolar === params.id) {
-        //     b.paneles = tmpPaneles
-        //   }
-        //   return b
-        // })
-        // setBases(newBases)
-
-        // //Update bases in BasesContext
-        // const updateBases = bases.map((row) => {
-        //   if (row.idBaseSolar === params.id) {
-        //     return {
-        //       ...row,
-        //       [params.field]: event.target.value,
-        //       ['potenciaTotal']: tmpPaneles * tmpPotenciaUnitaria,
-        //     }
-        //   } else {
-        //     return row
-        //   }
-        // })
-        // setBases(updateBases)
-      } else {
-        // SLDRAlert(
-        //   'VALIDACION',
-        //   'El número de paneles debe ser mayor o igual a cero e idealmente menor que los ' +
-        //     params.row.panelesMaximo +
-        //     ' paneles que estimamos se pueden instalar en el area definida',
-        //   'error',
-        // )
+        setNewPaneles()
       }
     }
   }

@@ -161,9 +161,6 @@ export default function EnergyBalanceStep() {
           <Grid item xs={12}>
             <SLDRInfoBox sx={{ alignItems: 'center' }}>
               <Grid item xs={6}>
-                <Typography variant={'h6'} sx={{ textAlign: 'center', mt: '1rem' }}>
-                  {t('ENERGY_BALANCE.TITLE_GRAPH_DEMAND')}
-                </Typography>
                 <PieChart
                   labels={[
                     t('ENERGY_BALANCE.LABEL_AUTOCONSUMO'),
@@ -174,12 +171,10 @@ export default function EnergyBalanceStep() {
                     theme.palette.balance.autoconsumo,
                     theme.palette.balance.deficit,
                   ]}
+                  title={t('ENERGY_BALANCE.TITLE_GRAPH_DEMAND')}
                 ></PieChart>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant={'h6'} sx={{ textAlign: 'center', mt: '1rem' }}>
-                  {t('ENERGY_BALANCE.TITLE_GRAPH_AUTOPRODUCIDA')}
-                </Typography>
                 <PieChart
                   labels={[
                     t('ENERGY_BALANCE.LABEL_AUTOCONSUMO'),
@@ -190,6 +185,7 @@ export default function EnergyBalanceStep() {
                     theme.palette.balance.autoconsumo,
                     theme.palette.balance.excedente,
                   ]}
+                  title={t('ENERGY_BALANCE.TITLE_GRAPH_AUTOPRODUCIDA')}
                 ></PieChart>
               </Grid>
             </SLDRInfoBox>

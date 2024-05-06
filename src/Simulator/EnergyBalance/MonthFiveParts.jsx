@@ -68,6 +68,7 @@ export default function MonthThreeParts(props) {
       type: 'bar',
       base: 0,
       marker: { color: theme.palette.balance.autoconsumo },
+      hovertemplate: autoconsumo.map((e) => UTIL.formatoValor('energia', e)),
     }
 
     const trace_excedente = {
@@ -79,6 +80,7 @@ export default function MonthThreeParts(props) {
       base: trace_autoconsumo.y,
       offset: -traceWidth * 0.5,
       marker: { color: theme.palette.balance.excedente },
+      hovertemplate: excedente.map((e) => UTIL.formatoValor('energia', e)),
     }
 
     const trace_deficit = {
@@ -90,6 +92,7 @@ export default function MonthThreeParts(props) {
       base: trace_autoconsumo.y,
       offset: traceWidth * 0.05,
       marker: { color: theme.palette.balance.deficit },
+      hovertemplate: deficit.map((e) => UTIL.formatoValor('energia', e)),
     }
 
     const data = [

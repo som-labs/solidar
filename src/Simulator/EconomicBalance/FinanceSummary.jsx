@@ -2,13 +2,18 @@ import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import { Box, Typography, Container } from '@mui/material'
+import { Box, Typography, IconButton, Grid } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { DataGrid } from '@mui/x-data-grid'
+import InfoIcon from '@mui/icons-material/Info'
 import clsx from 'clsx'
+
+//React global components
+import { useDialog } from '../../components/DialogProvider'
 
 // REACT Solidar Components
 import { EconomicContext } from '../EconomicContext'
+import HelpEconomicBalance from './HelpEconomicBalance'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
@@ -17,6 +22,7 @@ import { SLDRFooterBox } from '../../components/SLDRComponents'
 export default function FinanceSummary() {
   const { t } = useTranslation()
   const theme = useTheme()
+  const [openDialog, closeDialog] = useDialog()
 
   const { ecoData } = useContext(EconomicContext)
   if (ecoData.cashFlow === undefined) return
@@ -25,19 +31,71 @@ export default function FinanceSummary() {
     return row.ano
   }
 
+  function help(level) {
+    openDialog({
+      children: <HelpEconomicBalance level={level} onClose={() => closeDialog()} />,
+    })
+  }
+
   function footerSummary() {
     return (
       <SLDRFooterBox>
-        <Typography sx={theme.titles.level_2} marginTop="1rem">
-          {t('ECONOMIC_BALANCE.LABEL_FOOTER_VAN', {
-            VANProyecto: UTIL.formatoValor('dinero', ecoData.VANProyecto),
-          })}
-        </Typography>
-        <Typography sx={theme.titles.level_2} marginBottom="1rem">
-          {t('ECONOMIC_BALANCE.LABEL_FOOTER_TIR', {
-            TIRProyecto: UTIL.formatoValor('porciento', ecoData.TIRProyecto),
-          })}
-        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            alignContent: 'center',
+            justifyContent: 'center',
+            mt: '1rem',
+          }}
+        >
+          <Typography sx={theme.titles.level_2}>
+            {t('ECONOMIC_BALANCE.LABEL_FOOTER_VAN', {
+              VANProyecto: UTIL.formatoValor('dinero', ecoData.VANProyecto),
+            })}
+          </Typography>
+          <IconButton
+            onClick={() => help(2)}
+            size="small"
+            style={{
+              color: theme.palette.infoIcon.main,
+              fontSize: 'inherit',
+              verticalAlign: 'text-center',
+              transform: 'scale(0.8)',
+              padding: 2,
+            }}
+          >
+            <InfoIcon />
+          </IconButton>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            alignContent: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography sx={theme.titles.level_2}>
+            {t('ECONOMIC_BALANCE.LABEL_FOOTER_TIR', {
+              TIRProyecto: UTIL.formatoValor('porciento', ecoData.TIRProyecto),
+            })}
+          </Typography>
+
+          <IconButton
+            onClick={() => help(3)}
+            size="small"
+            style={{
+              color: theme.palette.infoIcon.main,
+              fontSize: 'inherit',
+              verticalAlign: 'text-center',
+              transform: 'scale(0.8)',
+              padding: 2,
+            }}
+          >
+            <InfoIcon />
+          </IconButton>
+        </Box>
       </SLDRFooterBox>
     )
   }
@@ -130,42 +188,52 @@ export default function FinanceSummary() {
   ]
 
   return (
-    <Box
-      component="form"
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        flexWrap: 'wrap',
-        width: '100%',
-        '& .super-app.positive': {
-          backgroundColor: theme.palette.primary.main, //'rgba(157, 255, 118, 0.49)',
-          color: '#1a3e72',
-          fontWeight: '700',
-        },
-        '& .super-app.negative': {
-          backgroundColor: '#ffff99',
-          color: '#1a3e72',
-          fontWeight: '400',
-        },
-      }}
-    >
-      <DataGrid
-        sx={theme.tables.headerWrap}
-        getRowId={getRowId}
-        rows={ecoData.cashFlow}
-        columns={columns}
-        hideFooter={false}
-        rowHeight={30}
-        autoHeight
-        disableColumnMenu
-        getRowClassName={(params) =>
-          clsx('super-app', {
-            negative: params.row.pendiente < 0,
-            positive: params.row.pendiente > 0,
-          })
-        }
-        slots={{ footer: footerSummary }}
+    <>
+      <Typography
+        sx={{ mt: '-1rem' }}
+        variant="body"
+        dangerouslySetInnerHTML={{
+          __html: t('ECONOMIC_BALANCE.DESCRIPTION_FINANCE_SUMMARY'),
+        }}
       />
-    </Box>
+
+      <Box
+        component="form"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          flexWrap: 'wrap',
+          width: '100%',
+          '& .super-app.positive': {
+            backgroundColor: theme.palette.primary.main, //'rgba(157, 255, 118, 0.49)',
+            color: '#1a3e72',
+            fontWeight: '700',
+          },
+          '& .super-app.negative': {
+            backgroundColor: '#ffff99',
+            color: '#1a3e72',
+            fontWeight: '400',
+          },
+        }}
+      >
+        <DataGrid
+          sx={theme.tables.headerWrap}
+          getRowId={getRowId}
+          rows={ecoData.cashFlow}
+          columns={columns}
+          hideFooter={false}
+          rowHeight={30}
+          autoHeight
+          disableColumnMenu
+          getRowClassName={(params) =>
+            clsx('super-app', {
+              negative: params.row.pendiente < 0,
+              positive: params.row.pendiente > 0,
+            })
+          }
+          slots={{ footer: footerSummary }}
+        />
+      </Box>
+    </>
   )
 }
