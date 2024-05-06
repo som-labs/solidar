@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useSearchParams, useLocation } from 'react-router-dom'
 
 import Container from '@mui/material/Container'
 
@@ -33,6 +34,12 @@ export default function Page() {
   const { validaBases } = useContext(BasesContext)
   const { validaTipoConsumo } = useContext(ConsumptionContext)
   const { ecoData, setEcoData } = useContext(EconomicContext)
+
+  // const location = useLocation()
+  // console.log(location)
+
+  const [a] = useSearchParams()
+  TCB.URLParameters = a
 
   let results
   InicializaAplicacion()

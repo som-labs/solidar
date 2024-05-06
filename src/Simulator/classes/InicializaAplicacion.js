@@ -25,6 +25,9 @@ async function InicializaAplicacion() {
   }
   UTIL.debugLog('_initEvents estilo de aplicacion: ' + TCB.estiloActivo)
 
+  //Definimos si es un usuario especial
+  TCB.user = UTIL.getParametrosEntrada('user')
+
   // Define la url base de la aplicación
   if (TCB.modoActivo === 'DESARROLLO') {
     TCB.basePath = 'http://localhost/SOM/REACT/solidar/'

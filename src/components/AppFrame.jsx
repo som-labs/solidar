@@ -32,7 +32,7 @@ export default function AppFrame({ children }) {
     //DEMO: Detalle
     const a = getParametrosEntrada('inLineHelp')
 
-    if (a.length >= 0) setInLineHelp(true)
+    if (a) setInLineHelp(true)
     else setInLineHelp(false)
   }, [])
 
