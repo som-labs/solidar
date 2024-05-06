@@ -278,13 +278,6 @@ const ValidateDecimal = (language, inputValue) => {
   const number = 1.1
   const decimalSeparator = number.toLocaleString(language).substring(1, 2)
   const decimalRegex = new RegExp(`^\\d*\\${decimalSeparator}?\\d*$`)
-  // console.log(
-  //   language,
-  //   decimalSeparator,
-  //   inputValue,
-  //   decimalRegex,
-  //   decimalRegex.test(inputValue),
-  // )
   return decimalRegex.test(inputValue)
 }
 
@@ -300,15 +293,9 @@ const ValidateEntero = (inputValue) => {
  * @returns {Boolean|String}  false si la variable no está en la entrada o el valor de la misma si está
  */
 function getParametrosEntrada(variable) {
-  const argumentos = window.location.search
-  const urlParametros = new URLSearchParams(argumentos)
-
-  if (urlParametros.has(variable)) {
-    return urlParametros.get(variable)
-  } else {
-    return false
-  }
+  return TCB.URLParameters.get(variable) ?? false
 }
+
 /** Envia mensaje a la consola del desarrollador si se ha activado el debug en la url de llamada con el argumento debug=1.
  * Si el argumento objeto no es nulo se vuelca su contenido en la consola
  * @param {String} mensaje

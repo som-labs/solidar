@@ -18,8 +18,10 @@ const DESARROLLO = 'DESARROLLO'
 
 /*global INDIVIDUAL, COLECTIVO, COMUNIDAD, DESARROLLO, ol*/
 const TCB = {
+  URLParameters: null, //Argumentos de la llamada.
   //Variables globales de funcionamiento
   debug: false,
+  user: null,
   basePath: '',
   idSesion: '', //Identificador unico de sesión
 
@@ -231,6 +233,7 @@ const TCB = {
   },
   // This data will be read from datos/tipoPaneles.json during InicailizaAplicacion
   tipoPaneles: [],
+  panelesOptimos: [],
 
   /** Constante donde se define el precio estimado de la instalación en base a la potencia instalada
    * @typedef {object} precioInstalacion
@@ -238,14 +241,21 @@ const TCB = {
    * @property {number} precioInstalacion.hasta rango superior de kWp para este precio
    * @property {number} precioInstalacion.precio precio en Euros / kWp a aplicar a la instalación en este rango de kWp
    */
-  precioInstalacion: [
-    { desde: 0, hasta: 2, precio: 2200 },
-    { desde: 2, hasta: 5, precio: 1700 },
-    { desde: 5, hasta: 10, precio: 1400 },
-    { desde: 10, hasta: 15, precio: 1150 },
-    { desde: 15, hasta: 20, precio: 1050 },
-    { desde: 20, hasta: 25, precio: 1000 },
-    { desde: 25, hasta: 100, precio: 950 },
+  preciosInstalacion: [
+    { desde: 0, hasta: 2, precio: 1510 },
+    { desde: 2, hasta: 3, precio: 1240 },
+    { desde: 3, hasta: 4, precio: 1100 },
+    { desde: 4, hasta: 5, precio: 1020 },
+    { desde: 5, hasta: 7, precio: 990 },
+    { desde: 7, hasta: 8, precio: 950 },
+    { desde: 8, hasta: 9, precio: 920 },
+    { desde: 9, hasta: 10, precio: 900 },
+    { desde: 10, hasta: 15, precio: 830 },
+    { desde: 15, hasta: 20, precio: 790 },
+    { desde: 20, hasta: 25, precio: 770 },
+    { desde: 25, hasta: 50, precio: 730 },
+    { desde: 50, hasta: 100, precio: 710 },
+    { desde: 100, hasta: 1000, precio: 650 },
   ],
 
   tiempoSubvencionIBI: 0,
