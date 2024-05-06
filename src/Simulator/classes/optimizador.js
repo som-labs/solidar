@@ -82,6 +82,14 @@ function nuevoTotalPaneles(panelesNuevo) {
     panelesPendientes -= tmpPaneles
   }
 
+  // TCB.panelesOptimos = []
+  // TCB.BaseSolar.forEach((base) => {
+  //   TCB.panelesOptimos.push({
+  //     idBaseSolar: base.idBaseSolar,
+  //     paneles: base.instalacion.paneles,
+  //   })
+  // })
+
   if (panelesPendientes > 0)
     console.log('no hay suficiente superficie para instalar ' + panelesNuevo + ' paneles')
   return panelesPendientes
