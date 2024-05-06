@@ -113,17 +113,8 @@ TipoConsumo:
     <li><u>Curvas  de uso de energía</u> a través de un fichero con información horaria de tu uso real.<br />
     <ul>
     <li><strong>Som Energía:</strong>Si tienes contrato activo con Som Energía puedes descargar el fichero de curvas horarias a través de tu <a href='https://oficinavirtual.somenergia.coop/es/' target='_blank'>Oficina Virtual.</a> Tienes las instrucciones en el siguiente enlace: <a href='https://es.support.somenergia.coop/article/942--las-curvas-horarias-de-uso-de-energia' target='_blank'>Las curvas horarias de Som Energía</a></li>
-    <li><strong>Empresa de distribución eléctrica:</strong> <a href='./datos/Guias publicadas/Enlaces para descarga CSV individual.htm 'target='_blank'>En este enlace </a>puedes encontrar las instrucciones para descargar el <strong>fichero CSV</strong> de las siguientes compañías de distribución eléctrica:
-    <strong>
-    <ul>
-    <li>E-Distribución Redes Digitales- Endesa distribución</li>
-    <li>I-DE Redes Eléctricas Inteligentes- Iberdrola distribución</li>
-    <li>Unión Fenosa Distribución- Grupo Naturgy</li>
-    <li>E-Redes Distribución Eléctrica- Empresa distribuidora del grupo EDP</li>
-    <li>Viesgo Distribución- Cantábrico</li>
-    </ul>
-    </li>
-    </strong>
+    <li><strong>Empresa de distribución eléctrica:</strong> <a href='./datos/Guias publicadas/Enlaces para descarga CSV individual.htm 'target='_blank'>
+    En el siguiente enlace </a>puedes encontrar las instrucciones para descargar un fichero de curvas horarias de las principales empresas de distribución eléctrica.
     <li>
     <strong>DATADIS:</strong> Se trata de una plataforma creada por las empresas de distribución eléctrica para simplificar el acceso a los datos. <a href: 'https: //datadis.es/home' target='_blank'>Tienes las instrucciones aquí.</a></li>
     </ul>
@@ -545,6 +536,14 @@ ENERGY_BALANCE:
   TITLE_graficoCO2: 'Ahorro de CO2 anual:'
   LABEL_CO2AnualRenovable: Si la electricidad contratada proviene de <br /><strong>fuentes renovables</strong>
   LABEL_CO2AnualNoRenovable: Si la electricidad contratada proviene de <br /><strong>fuentes no renovables</strong>
+  SANKEY:
+    PRODUCCION_PANELES: Autoproducción
+    EXCEDENTES: Excedentes
+    VERTIDO_RED: Vertido a red
+    USO_DIURNO: Uso eléctrico diurno
+    ENERGIA_RED: Energía de la red
+    USO_NOCTURNO: Uso eléctrico nocturno
+    USO_TOTAL: Uso de la energía total
 
 ECONOMIC_BALANCE:
   TITLE: Balance Económico
@@ -586,6 +585,9 @@ ECONOMIC_BALANCE:
 
   TITLE_MONTH_SAVINGS: Ahorro mensual en la factura
   TITLE_FINANCE_SUMMARY: Balance económico completo
+  DESCRIPTION_FINANCE_SUMMARY: |
+    La tabla siguiente muestra cómo se va recuperando la inversión realizada en el generador fotovoltaico a lo largo de varios años y el efecto del ahorro energético, la bonificación en el IBI y las subvenciones definidas.<br />
+    Las filas amarillas son los años en los que no has recuperado la inversión original mientras que las filas verdes son beneficios netos que obtienes luego de recuperar la inversión original.
   LABEL_ANO: Año
   TOOLTIP_ANO: Periodo de amortización
   LABEL_PREVIO: Previo
@@ -607,6 +609,16 @@ ECONOMIC_BALANCE:
   MSG_NO_FINANCE: |
     Un número de paneles excesivo provoca que el retorno de la inversión no se obtenga antes de {{periodo}} años por lo que el resultado financiero no es significativo. Por favor reduzca el número de paneles, lo que reducirá la inversión, o aumente el consumo de energía, para incrementar el ahorro. De ese modo mejorará el cashflow.
 
+  HELP_TITLE_TIR: Tasa interna de retorno
+  HELP_TIR: |
+    La Tasa Interna de Retorno (TIR) es la tasa de descuento que iguala el VAN de un proyecto de inversión a cero. En otras palabras, es la tasa de rendimiento que hace que el valor presente de los flujos de efectivo futuros sea igual a la inversión inicial.<br />
+    La TIR es una medida de rentabilidad que indica la eficiencia de un proyecto en generar rendimientos.<br />
+    <strong>Se considera que un proyecto es rentable si su TIR es mayor que la tasa de descuento utilizada para descontar los flujos de efectivo futuros.</strong>
+  HELP_TITLE_VAN: Valor actual neto
+  HELP_VAN: |
+    El Valor Actual Neto (VAN) es una medida del valor presente de los flujos de efectivo futuros generados por un proyecto de inversión, descontados a una tasa de interés apropiada.<br />
+    En otras palabras, el VAN representa la diferencia entre el valor presente de los beneficios (ingresos) y los costos (egresos) de un proyecto.<br />
+    <strong>Un proyecto se considera rentable si su VAN es mayor que cero. </strong> Un VAN positivo indica que el proyecto generará más ingresos de los que cuesta realizarlo, lo que lo convierte en una inversión atractiva.
 SUMMARY:
   TITLE: Resumen
   DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
@@ -658,6 +670,7 @@ BASIC:
   LABEL_REQUIRED: Requerido
   LABEL_NUMBER: Pon un número mayor o igual que cero
   LABEL_ACCIONES: Acciones
+  LABEL_INFO: Info
   main_TAB_noMostrarMas: No volver a mostrar este mensaje
   valor_true: Verdadero
   valor_false: Falso
