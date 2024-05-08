@@ -469,6 +469,7 @@ export default function ReportSOM({ onClose }) {
             </div>
 
             {/* Estudio energetico - economico */}
+
             <Box
               sx={{
                 textTransform: 'uppercase',
@@ -482,7 +483,7 @@ export default function ReportSOM({ onClose }) {
                 <strong>{t('REPORT.ESTUDI_TITLE')}</strong>
               </Typography>
             </Box>
-
+            {/* REVISAR: Se desarma en Firefox */}
             <Box
               sx={{
                 display: 'flex',
@@ -509,14 +510,13 @@ export default function ReportSOM({ onClose }) {
                     sx={{
                       backgroundColor: theme.informe.energyTable.title.backgroundColor,
                       color: theme.palette.text,
-                      padding: 0.5,
                       border: '1px solid #ccc',
                       height: 30,
                       alignContent: 'center',
                       textAlign: 'center',
                     }}
                   >
-                    <h4>{t('ENERGY_BALANCE.LABEL_AUTOCONSUMO')}</h4>
+                    {t('ENERGY_BALANCE.LABEL_AUTOCONSUMO')}
                   </Grid>
                   <Grid
                     xs={3}
@@ -529,7 +529,7 @@ export default function ReportSOM({ onClose }) {
                       alignContent: 'center',
                     }}
                   >
-                    <h5>{UTIL.formatoValor('energia', TCB.balance.autoconsumo)}</h5>
+                    {UTIL.formatoValor('energia', TCB.balance.autoconsumo)}
                   </Grid>
                   <Grid
                     xs={3}
@@ -542,12 +542,10 @@ export default function ReportSOM({ onClose }) {
                       alignContent: 'center',
                     }}
                   >
-                    <h5>
-                      {UTIL.formatoValor(
-                        'dinero',
-                        UTIL.suma(TCB.economico.ahorradoAutoconsumoMes),
-                      )}
-                    </h5>
+                    {UTIL.formatoValor(
+                      'dinero',
+                      UTIL.suma(TCB.economico.ahorradoAutoconsumoMes),
+                    )}
                   </Grid>
                 </Grid>
                 <Grid container>
@@ -557,20 +555,18 @@ export default function ReportSOM({ onClose }) {
                     sx={{
                       backgroundColor: theme.informe.energyTable.title.backgroundColor,
                       color: theme.palette.text,
-                      padding: 0.5,
                       border: '1px solid #ccc',
                       height: 30,
                       alignContent: 'center',
                       textAlign: 'center',
                     }}
                   >
-                    <h4>{t('REPORT.ESTUDI_EXCEDENT')} </h4>
+                    {t('REPORT.ESTUDI_EXCEDENT')}
                   </Grid>
                   <Grid
                     xs={3}
                     item
                     sx={{
-                      padding: 1,
                       border: '1px solid #ccc',
                       textAlign: 'center',
                       fontWeight: 'bold',
@@ -578,13 +574,12 @@ export default function ReportSOM({ onClose }) {
                       alignContent: 'center',
                     }}
                   >
-                    <h5>{UTIL.formatoValor('energia', TCB.balance.excedenteAnual)} </h5>
+                    {UTIL.formatoValor('energia', TCB.balance.excedenteAnual)}
                   </Grid>
                   <Grid
                     xs={3}
                     item
                     sx={{
-                      padding: 1,
                       border: '1px solid #ccc',
                       textAlign: 'center',
                       fontWeight: 'bold',
@@ -592,12 +587,10 @@ export default function ReportSOM({ onClose }) {
                       alignContent: 'center',
                     }}
                   >
-                    <h5>
-                      {UTIL.formatoValor(
-                        'dinero',
-                        -UTIL.suma(TCB.economico.compensadoMensual),
-                      )}
-                    </h5>
+                    {UTIL.formatoValor(
+                      'dinero',
+                      -UTIL.suma(TCB.economico.compensadoMensual),
+                    )}
                   </Grid>
                 </Grid>
 
@@ -608,22 +601,18 @@ export default function ReportSOM({ onClose }) {
                     sx={{
                       backgroundColor: theme.informe.energyTable.title.backgroundColor,
                       color: theme.palette.text,
-                      padding: 0.5,
                       border: '1px solid #ccc',
                       height: 30,
                       alignContent: 'center',
                       textAlign: 'center',
                     }}
                   >
-                    <h4>
-                      <strong>{t('REPORT.ESTUDI_ESTALVI')}</strong>
-                    </h4>
+                    <strong>{t('REPORT.ESTUDI_ESTALVI')}</strong>
                   </Grid>
                   <Grid
                     xs={6}
                     item
                     sx={{
-                      padding: 1,
                       border: '1px solid #ccc',
                       textAlign: 'center',
                       fontWeight: 'bold',
@@ -631,7 +620,7 @@ export default function ReportSOM({ onClose }) {
                       alignContent: 'center',
                     }}
                   >
-                    <h5>{UTIL.formatoValor('dinero', TCB.economico.ahorroAnual)}</h5>
+                    {UTIL.formatoValor('dinero', TCB.economico.ahorroAnual)}
                   </Grid>
                 </Grid>
                 <Grid container>
@@ -641,22 +630,18 @@ export default function ReportSOM({ onClose }) {
                     sx={{
                       backgroundColor: theme.informe.energyTable.title.backgroundColor,
                       color: theme.palette.text,
-                      padding: 0.5,
                       border: '1px solid #ccc',
                       height: 30,
                       alignContent: 'center',
                       textAlign: 'center',
                     }}
                   >
-                    <h4>
-                      <strong>{t('REPORT.SOLS_DISPONIBLES')}</strong>
-                    </h4>
+                    <strong>{t('REPORT.SOLS_DISPONIBLES')}</strong>
                   </Grid>
                   <Grid
                     xs={6}
                     item
                     sx={{
-                      padding: 1,
                       border: '1px solid #ccc',
                       textAlign: 'center',
                       fontWeight: 'bold',
@@ -664,7 +649,7 @@ export default function ReportSOM({ onClose }) {
                       alignContent: 'center',
                     }}
                   >
-                    <h5>{UTIL.formatoValor('dinero', TCB.economico.huchaSaldo[11])}</h5>
+                    {UTIL.formatoValor('dinero', TCB.economico.huchaSaldo[11])}
                   </Grid>
                 </Grid>
                 <Grid container>
@@ -674,20 +659,18 @@ export default function ReportSOM({ onClose }) {
                     sx={{
                       backgroundColor: theme.informe.energyTable.title.backgroundColor,
                       color: theme.palette.text,
-                      padding: 0.5,
                       border: '1px solid #ccc',
                       height: 30,
                       alignContent: 'center',
                       textAlign: 'center',
                     }}
                   >
-                    <h4>{t('REPORT.ESTUDI_XARXA')} </h4>
+                    {t('REPORT.ESTUDI_XARXA')}
                   </Grid>
                   <Grid
                     xs={3}
                     item
                     sx={{
-                      padding: 1,
                       border: '1px solid #ccc',
                       textAlign: 'center',
                       fontWeight: 'bold',
@@ -695,13 +678,12 @@ export default function ReportSOM({ onClose }) {
                       alignContent: 'center',
                     }}
                   >
-                    <h5>{UTIL.formatoValor('energia', TCB.balance.deficitAnual)}</h5>
+                    {UTIL.formatoValor('energia', TCB.balance.deficitAnual)}
                   </Grid>
                   <Grid
                     xs={3}
                     item
                     sx={{
-                      padding: 1,
                       border: '1px solid #ccc',
                       textAlign: 'center',
                       fontWeight: 'bold',
@@ -709,12 +691,10 @@ export default function ReportSOM({ onClose }) {
                       alignContent: 'center',
                     }}
                   >
-                    <h5>
-                      {UTIL.formatoValor(
-                        'dinero',
-                        UTIL.suma(TCB.economico.consumoConPlacasMensualCorregido),
-                      )}
-                    </h5>
+                    {UTIL.formatoValor(
+                      'dinero',
+                      UTIL.suma(TCB.economico.consumoConPlacasMensualCorregido),
+                    )}
                   </Grid>
                 </Grid>
 
@@ -725,22 +705,18 @@ export default function ReportSOM({ onClose }) {
                     sx={{
                       backgroundColor: theme.informe.energyTable.title.backgroundColor,
                       color: theme.palette.text,
-                      padding: 0.5,
                       border: '1px solid #ccc',
                       height: 30,
                       alignContent: 'center',
                       textAlign: 'center',
                     }}
                   >
-                    <h4>
-                      <strong>{t('REPORT.ESTUDI_RETORN')}</strong>
-                    </h4>
+                    <strong>{t('REPORT.ESTUDI_RETORN')}</strong>
                   </Grid>
                   <Grid
                     xs={6}
                     item
                     sx={{
-                      padding: 1,
                       border: '1px solid #ccc',
                       textAlign: 'center',
                       fontWeight: 'bold',
@@ -748,14 +724,12 @@ export default function ReportSOM({ onClose }) {
                       alignContent: 'center',
                     }}
                   >
-                    <h5>
-                      {TCB.economico.periodoAmortizacion + ' ' + t('BASIC.LABEL_AÑOS')}
-                    </h5>
+                    {TCB.economico.periodoAmortizacion + ' ' + t('BASIC.LABEL_AÑOS')}
                   </Grid>
                 </Grid>
               </Grid>
             </Box>
-
+            {/* Si no pongo el siguiente container se desarma el area de los piecharts */}
             <Container>
               <Box
                 sx={{
