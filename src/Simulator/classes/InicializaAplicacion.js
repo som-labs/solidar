@@ -29,17 +29,12 @@ async function InicializaAplicacion() {
   TCB.user = UTIL.getParametrosEntrada('user')
 
   // Define la url base de la aplicación
-  if (TCB.modoActivo === 'DESARROLLO') {
-    TCB.basePath = 'http://localhost/SOM/REACT/solidar/'
-  } else {
-    let fullPath = window.location.href
-    let ipos = fullPath.lastIndexOf('/')
-    TCB.basePath = fullPath.slice(0, ipos + 1)
-  }
+  TCB.basePath =
+    window.location.hostname === '127.0.0.1' ? 'http://localhost/SOM/REACT/solidar/' : '/'
   UTIL.debugLog('_initEvents ejecutando desde ' + TCB.basePath)
 
-  // lectura del fichero de precios de instalación del servidor. Si falla se usan las de la TCB
-  const ficheroPreciosInstalacion = './datos/precios instalacion.json'
+  //lectura del fichero de precios de instalación del servidor. Si falla se usan las de la TCB
+  const ficheroPreciosInstalacion = '/datos/precios instalacion.json'
   UTIL.debugLog('Precios instalación leidos desde servidor:' + ficheroPreciosInstalacion)
   try {
     const precios = await fetch(ficheroPreciosInstalacion)
@@ -55,7 +50,7 @@ async function InicializaAplicacion() {
   }
 
   // lectura del fichero de tipos de paneles.
-  const ficheroTipoPaneles = './datos/tipoPaneles.json'
+  const ficheroTipoPaneles = '/datos/tipoPaneles.json'
   UTIL.debugLog('Tipos de paneles leidos desde servidor:' + ficheroTipoPaneles)
   try {
     const paneles = await fetch(ficheroTipoPaneles)
@@ -73,7 +68,7 @@ async function InicializaAplicacion() {
   // lectura del fichero de tarifas del servidor. Si falla se usan las de la TCB
   if (!UTIL.cargaTarifasDesdeSOM()) {
     //Dejamos esta llamada hasta que el tiempo de respuesta de SOM sea aceptable
-    const ficheroTarifa = './datos/tarifas.json'
+    const ficheroTarifa = '/datos/tarifas.json'
     try {
       const respuesta = await fetch(ficheroTarifa)
       if (respuesta.status === 200) {

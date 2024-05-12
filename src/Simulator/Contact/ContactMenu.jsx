@@ -32,9 +32,6 @@ export default function ContactMenu() {
       .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(message[key])}`)
       .join('&')
 
-    if (TCB.modoActivo === 'DESARROLLO')
-      TCB.basePath = 'http://localhost/SOM/REACT/solidar/src/Simulator/'
-
     //URL of the PHP file including the query string
     const phpFileURL = TCB.basePath + `contacto.php?${queryString}`
     console.log(phpFileURL)

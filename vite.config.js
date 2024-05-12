@@ -12,4 +12,5 @@ export default defineConfig({
     testMatch: ['./src/**/*.test.jsx'],
     globals: true,
   },
+  //base: 'Solidar.4.1',
 })
