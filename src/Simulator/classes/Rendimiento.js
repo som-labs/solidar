@@ -76,9 +76,6 @@ class Rendimiento extends DiaHora {
     addurl += '&pvtechchoice=' + TCB.tipoPanelActivo.tecnologia
     let [lon, lat] = base.lonlatBaseSolar.split(',')
 
-    if (TCB.modoActivo === 'DESARROLLO')
-      TCB.basePath = 'http://localhost/SOM/REACT/solidar/src/Simulator/'
-
     let url =
       TCB.basePath +
       'proxy PVGIS.php?' +
@@ -107,10 +104,12 @@ class Rendimiento extends DiaHora {
           }
           return
         }
-        var unDia = { fecha: '', valores: Array(24).fill(0) }
+        let unDia = { fecha: '', valores: Array(24).fill(0) }
         let i = 0
-        var hora
-        var lastFecha = new Date(1970, 1, 1)
+        let hora
+        let lastFecha = new Date(1970, 1, 1)
+        let _dia
+        let _mes
 
         this.system_loss = PVGISdata.inputs.pv_module.system_loss
         this.technology = PVGISdata.inputs.pv_module.technology
@@ -125,18 +124,33 @@ class Rendimiento extends DiaHora {
 
         PVGISdata.outputs.hourly.forEach((element) => {
           //Para gestionar fechas en formato dd/mm/aaaa como vienen en el CSV debamos invertir a aaaa/mm/dd en javascript
-          let _dia = parseInt(element['time'].substr(6, 2))
-          let _mes = parseInt(element['time'].substr(4, 2)) - 1 //_mes es el indice interno gestionado por JS
-          let _ano = parseInt(element['time'].substr(0, 4))
-          hora = parseInt(element['time'].substr(9, 2)) //hora es el indice en la tabla 0-23 y coincide con datos PVGIS
+          // let _dia = parseInt(element['time'].substr(6, 2))
+          // let _mes = parseInt(element['time'].substr(4, 2)) - 1 //_mes es el indice interno gestionado por JS
+          // let _ano = parseInt(element['time'].substr(0, 4))
+          // hora = parseInt(element['time'].substr(9, 2)) //hora es el indice en la tabla 0-23 y coincide con datos PVGIS
 
-          let currFecha = new Date(_ano, _mes, _dia, 0, 0)
+          //En PVGIS la fecha viene un UTC. Date la convertira a local para homogeneizar con las horas de los CSV de consumo
+          const UTCDate =
+            element['time'].substr(0, 4) +
+            '-' +
+            element['time'].substr(4, 2) +
+            '-' +
+            element['time'].substr(6, 2) +
+            'T' +
+            element['time'].substr(9, 2) +
+            ':00:00Z'
+
+          let currFecha = new Date(UTCDate)
+          hora = currFecha.getHours()
+          _dia = currFecha.getDay()
+          _mes = currFecha.getMonth()
+
           if (i == 0) {
             this.PVGISfechaInicio = currFecha
           }
 
           if (_mes == 1 && _dia == 29) return //Ignoramos el 29/2 de los años bisiestos
-          if (currFecha.getTime() == lastFecha.getTime()) {
+          if (currFecha.getDay() == lastFecha.getDay()) {
             unDia.valores[hora] = parseFloat(element['P'])
           } else {
             if (i == 0) {
@@ -157,7 +171,6 @@ class Rendimiento extends DiaHora {
           }
           i++
         })
-
         this.mete(unDia, 'PROMEDIO')
         for (let i = 0; i < 365; i++) this.unitarioTotal += this.idxTable[i].suma / 1000
 
