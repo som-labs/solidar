@@ -293,6 +293,7 @@ const ValidateEntero = (inputValue) => {
  * @returns {Boolean|String}  false si la variable no está en la entrada o el valor de la misma si está
  */
 function getParametrosEntrada(variable) {
+  if (TCB.URLParameters === null) return false
   return TCB.URLParameters.get(variable) ?? false
 }
 
@@ -1130,11 +1131,7 @@ function selectTCB(tabla, campo, valor) {
 }
 
 async function cargaTarifasDesdeSOM() {
-  if (TCB.modoActivo === 'DESARROLLO')
-    TCB.basePath = 'http://localhost/SOM/REACT/solidar/src/Simulator/'
-
   const urlSOMTarifas = TCB.basePath + 'proxy SOM.php?nombre='
-
   let _url
   let respuesta
   let txtTarifas
