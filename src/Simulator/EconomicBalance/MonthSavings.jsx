@@ -58,6 +58,11 @@ export default function MonthSaving() {
         name: t('GRAFICOS.LABEL_graficasGastoConPaneles'),
         type: 'scatter',
         line: { shape: 'spline', width: 3, color: '#819368' },
+        hovertemplate:
+          '%{xaxis.title.text}: %{x}<br>' +
+          t('GRAFICOS.LABEL_graficasGastoConPaneles') +
+          ' %{y:.0f} €<br>' +
+          '<extra></extra>',
       }
 
       var trace_consumo = {
@@ -66,6 +71,11 @@ export default function MonthSaving() {
         name: t('GRAFICOS.LABEL_graficasGastoSinPaneles'),
         type: 'scatter',
         line: { shape: 'spline', width: 3, color: '#810C04' },
+        hovertemplate:
+          '%{xaxis.title.text}: %{x}<br>' +
+          t('GRAFICOS.LABEL_graficasGastoSinPaneles') +
+          ' %{y:.0f} €<br>' +
+          '<extra></extra>',
       }
 
       var trace_base = {
@@ -87,6 +97,11 @@ export default function MonthSaving() {
         marker: { color: '#997171' },
         name: t('GRAFICOS.LABEL_graficasCompensacion'),
         type: 'bar',
+        hovertemplate:
+          '%{xaxis.title.text}: %{x}<br>' +
+          t('GRAFICOS.LABEL_graficasCompensacion') +
+          ' %{y:.0f} €<br>' +
+          '<extra></extra>',
       }
 
       var trace_ahorro = {
@@ -96,6 +111,11 @@ export default function MonthSaving() {
         marker: { color: '#C7A6CF' },
         name: t('GRAFICOS.LABEL_graficasAutoconsumo'),
         type: 'bar',
+        hovertemplate:
+          '%{xaxis.title.text}: %{x}<br>' +
+          t('GRAFICOS.LABEL_graficasAutoconsumo') +
+          ' %{y:.0f} €<br>' +
+          '<extra></extra>',
       }
 
       var trace_perdida = {
@@ -105,6 +125,11 @@ export default function MonthSaving() {
         name: t('GRAFICOS.LABEL_graficasNoCompensado'),
         base: 0,
         type: 'bar',
+        hovertemplate:
+          '%{xaxis.title.text}: %{x}<br>' +
+          t('GRAFICOS.LABEL_graficasNoCompensado') +
+          ' %{y:.0f} €<br>' +
+          '<extra></extra>',
       }
 
       var layout = {
@@ -117,7 +142,7 @@ export default function MonthSaving() {
         margin: {
           l: 40,
           r: 60,
-          b: 0,
+          b: 10,
           t: 20,
         },
         barmode: 'relative',
@@ -126,11 +151,12 @@ export default function MonthSaving() {
           gridcolor: 'grey',
         },
         xaxis: {
+          title: t('BASIC.LABEL_MES'),
           gridcolor: 'grey',
         },
         legend: {
           x: 0.1,
-          y: -0.1,
+          y: -0.15,
           xref: 'paper',
           orientation: 'h',
         },
@@ -144,6 +170,11 @@ export default function MonthSaving() {
           name: t('GRAFICOS.LABEL_SALDO_VIRTUAL_BATTERY'),
           type: 'scatter',
           line: { shape: 'spline', width: 3, color: '#F99F00' },
+          hovertemplate:
+            '%{xaxis.title.text}: %{x}<br>' +
+            t('GRAFICOS.LABEL_SALDO_VIRTUAL_BATTERY') +
+            ' %{y:.0f} €<br>' +
+            '<extra></extra>',
         }
 
         var trace_extraccionHucha = {
@@ -153,6 +184,11 @@ export default function MonthSaving() {
           marker: { color: '#4F1F5B' },
           name: t('GRAFICOS.LABEL_EXTRACCION_VIRTUAL_BATTERY'),
           type: 'bar',
+          hovertemplate:
+            '%{xaxis.title.text}: %{x}<br>' +
+            t('GRAFICOS.LABEL_EXTRACCION_VIRTUAL_BATTERY') +
+            ' %{y:.0f} €<br>' +
+            '<extra></extra>',
         }
         data = [
           trace_consumo,
