@@ -76,6 +76,11 @@ export default function HourlyEnergyBalance(props) {
         line: { shape: 'spline', width: 5, color: theme.palette.balance.consumo },
         fill: 'tozeroy',
         name: t('ENERGY_BALANCE.LABEL_HOURLY_CONSUMPTION_YEAR'),
+        hovertemplate:
+          '%{xaxis.title.text}: %{x}<br>' +
+          t('ENERGY_BALANCE.LABEL_HOURLY_CONSUMPTION_YEAR') +
+          ' %{y}<br>' +
+          '<extra></extra>',
       }
 
       const produccionAnual = {
@@ -86,6 +91,11 @@ export default function HourlyEnergyBalance(props) {
         fill: 'tozeroy',
         name: t('ENERGY_BALANCE.LABEL_HOURLY_PRODUCTION_YEAR'),
         range: [0, maxHour.current],
+        hovertemplate:
+          '%{xaxis.title.text}: %{x}<br>' +
+          t('ENERGY_BALANCE.LABEL_HOURLY_PRODUCTION_YEAR') +
+          ' %{y}<br>' +
+          '<extra></extra>',
       }
       setTraces([consumoAnual, produccionAnual])
     }
@@ -98,6 +108,11 @@ export default function HourlyEnergyBalance(props) {
         line: { shape: 'spline', width: 5, color: theme.palette.balance.consumo },
         name: t('ENERGY_BALANCE.LABEL_HOURLY_CONSUMPTION_YEAR'),
         range: [0, maxHour.current],
+        hovertemplate:
+          '%{xaxis.title.text}: %{x}<br>' +
+          t('ENERGY_BALANCE.LABEL_HOURLY_CONSUMPTION_YEAR') +
+          ' %{y}<br>' +
+          '<extra></extra>',
       }
 
       const produccionAnual = {
@@ -107,6 +122,11 @@ export default function HourlyEnergyBalance(props) {
         line: { shape: 'spline', width: 5, color: theme.palette.balance.produccion },
         name: t('ENERGY_BALANCE.LABEL_HOURLY_PRODUCTION_YEAR'),
         range: [0, maxHour.current],
+        hovertemplate:
+          '%{xaxis.title.text}: %{x}<br>' +
+          t('ENERGY_BALANCE.LABEL_HOURLY_PRODUCTION_YEAR') +
+          ' %{y}<br>' +
+          '<extra></extra>',
       }
 
       const consumoMes = {
@@ -117,6 +137,11 @@ export default function HourlyEnergyBalance(props) {
         fill: 'tozeroy',
         name: t('ENERGY_BALANCE.LABEL_HOURLY_CONSUMPTION_MONTH'),
         range: [0, maxHour.current],
+        hovertemplate:
+          '%{xaxis.title.text}: %{x}<br>' +
+          t('ENERGY_BALANCE.LABEL_HOURLY_CONSUMPTION_MONTH') +
+          ' %{y}<br>' +
+          '<extra></extra>',
       }
 
       const produccionMes = {
@@ -127,6 +152,11 @@ export default function HourlyEnergyBalance(props) {
         fill: 'tozeroy',
         name: t('ENERGY_BALANCE.LABEL_HOURLY_PRODUCTION_MONTH'),
         range: [0, maxHour.current],
+        hovertemplate:
+          '%{xaxis.title.text}: %{x}<br>' +
+          t('ENERGY_BALANCE.LABEL_HOURLY_PRODUCTION_MONTH') +
+          ' %{y}<br>' +
+          '<extra></extra>',
       }
 
       setTraces([consumoAnual, produccionAnual, consumoMes, produccionMes])
@@ -149,6 +179,7 @@ export default function HourlyEnergyBalance(props) {
       width: graphWidth.current,
       autosize: true,
       xaxis: {
+        title: t('BASIC.LABEL_HORA'),
         dtick: 1,
         gridcolor: 'black',
       },

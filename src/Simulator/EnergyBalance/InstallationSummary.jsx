@@ -188,17 +188,19 @@ export default function InstallationSummary() {
               }}
             />
           </Grid>
-          {TCB.user === 'Fernando' && (
-            <Grid item xs={12} sx={{ gap: 2, mt: '1rem' }}>
-              <Button onClick={maxConfiguration} variant="contained" color="primary">
-                Máximo{' '}
-                {Math.round(bases.reduce((sum, tBase) => sum + tBase.panelesMaximo, 0))}
-              </Button>
-              <Button onClick={recoverOptimos} variant="contained" color="primary">
-                Óptimos
-              </Button>
-            </Grid>
-          )}
+
+          <Grid container sx={{ mt: '1rem', justifyContent: 'center', gap: 4 }}>
+            <Button onClick={maxConfiguration} variant="contained" color="primary">
+              {t('ENERGY_BALANCE.FOOTER_BUTON_MAXIMO', {
+                paneles: Math.round(
+                  bases.reduce((sum, tBase) => sum + tBase.panelesMaximo, 0),
+                ),
+              })}
+            </Button>
+            <Button onClick={recoverOptimos} variant="contained" color="primary">
+              {t('ENERGY_BALANCE.FOOTER_BUTON_OPTIMO')}
+            </Button>
+          </Grid>
         </Grid>
       </SLDRFooterBox>
     )

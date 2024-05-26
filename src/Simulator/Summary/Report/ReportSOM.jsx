@@ -143,6 +143,10 @@ export default function ReportSOM({ onClose }) {
   //   }
   // `
 
+  let ahorroAutoconsumo = Math.round(UTIL.suma(TCB.economico.ahorradoAutoconsumoMes))
+  let ahorroCompensado = -Math.round(UTIL.suma(TCB.economico.compensadoMensualCorregido))
+  let ahorroHucha = Math.round(UTIL.suma(TCB.economico.extraccionHucha))
+
   // const AUTO = UTIL.suma(TCB.economico.ahorradoAutoconsumoMes)
   // const COMPENSA = -UTIL.suma(TCB.economico.compensadoMensual)
   // const HUCHA = UTIL.suma(TCB.economico.extraccionHucha)
@@ -483,7 +487,6 @@ export default function ReportSOM({ onClose }) {
                 <strong>{t('REPORT.ESTUDI_TITLE')}</strong>
               </Typography>
             </Box>
-            {/* REVISAR: Se desarma en Firefox */}
             <Box
               sx={{
                 display: 'flex',
@@ -542,10 +545,7 @@ export default function ReportSOM({ onClose }) {
                       alignContent: 'center',
                     }}
                   >
-                    {UTIL.formatoValor(
-                      'dinero',
-                      UTIL.suma(TCB.economico.ahorradoAutoconsumoMes),
-                    )}
+                    {UTIL.formatoValor('dinero', ahorroAutoconsumo)}
                   </Grid>
                 </Grid>
                 <Grid container>
@@ -587,13 +587,41 @@ export default function ReportSOM({ onClose }) {
                       alignContent: 'center',
                     }}
                   >
-                    {UTIL.formatoValor(
-                      'dinero',
-                      -UTIL.suma(TCB.economico.compensadoMensual),
-                    )}
+                    {UTIL.formatoValor('dinero', ahorroCompensado)}
                   </Grid>
                 </Grid>
-
+                <Grid container>
+                  <Grid
+                    xs={4}
+                    item
+                    sx={{
+                      backgroundColor: theme.informe.energyTable.title.backgroundColor,
+                      color: theme.palette.text,
+                      border: '1px solid #ccc',
+                      height: 30,
+                      alignContent: 'center',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <strong>
+                      {t('REPORT.ESTUDI_DESCUENTO')}
+                      <sup>(1)</sup>
+                    </strong>
+                  </Grid>
+                  <Grid
+                    xs={6}
+                    item
+                    sx={{
+                      border: '1px solid #ccc',
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      height: 30,
+                      alignContent: 'center',
+                    }}
+                  >
+                    {UTIL.formatoValor('dinero', ahorroHucha)}
+                  </Grid>
+                </Grid>
                 <Grid container>
                   <Grid
                     xs={4}
@@ -620,7 +648,10 @@ export default function ReportSOM({ onClose }) {
                       alignContent: 'center',
                     }}
                   >
-                    {UTIL.formatoValor('dinero', TCB.economico.ahorroAnual)}
+                    {UTIL.formatoValor(
+                      'dinero',
+                      ahorroAutoconsumo + ahorroCompensado + ahorroHucha,
+                    )}
                   </Grid>
                 </Grid>
                 <Grid container>
@@ -636,7 +667,10 @@ export default function ReportSOM({ onClose }) {
                       textAlign: 'center',
                     }}
                   >
-                    <strong>{t('REPORT.SOLS_DISPONIBLES')}</strong>
+                    <strong>
+                      {t('REPORT.SOLS_DISPONIBLES')}
+                      <sup>(2)</sup>
+                    </strong>
                   </Grid>
                   <Grid
                     xs={6}
@@ -725,6 +759,17 @@ export default function ReportSOM({ onClose }) {
                     }}
                   >
                     {TCB.economico.periodoAmortizacion + ' ' + t('BASIC.LABEL_AÑOS')}
+                  </Grid>
+                </Grid>
+
+                <Grid container>
+                  <Grid xs={12} sx={{ justifyContent: 'left', fontSize: 12 }}>
+                    <Typography
+                      variant="h7"
+                      dangerouslySetInnerHTML={{
+                        __html: t('REPORT.DESCUENTO_EXPLANATION'),
+                      }}
+                    ></Typography>
                   </Grid>
                 </Grid>
               </Grid>
