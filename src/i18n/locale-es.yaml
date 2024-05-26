@@ -473,8 +473,10 @@ ENERGY_BALANCE:
   SUMMARY_TITLE: Datos de la cubierta
   SUMMARY_TOOLTIP_INFO: Información detallada del área seleccionada
   SUMMARY_FOOTER: |
-    Total de paneles propuestos: {{paneles}} paneles<br />
-    Potencia total propuesta: {{potencia}}
+    Configuración total: {{paneles}} paneles<br />
+    Potencia total: {{potencia}}
+  FOOTER_BUTON_MAXIMO: Configuración máxima ({{paneles}})
+  FOOTER_BUTON_OPTIMO: Recupera optimizador
   TITLE_GRAFICO_CONSUMOGENERACION3D: Gráfico detallado de uso eléctrico y producción
   TOOLTIP_GRAFICO_CONSUMOGENERACION3D: Gráfico interactivo. Clica en un punto y verás el perfil horario de producción y consumo de ese dia.
   TITLE_GRAFICO_PROFILE: 'Perfil diario de consumo y produccion  {{dia}} / {{mes}}'
@@ -629,9 +631,9 @@ SUMMARY:
   LABEL_AREAS_ESCOGIDAS_other: <strong>{{count}}</strong> áreas escogidas
   LABEL_AREAS_DISPONIBLES_one: ' de <strong>un</strong> área disponible'
   LABEL_AREAS_DISPONIBLES_other: ' de <strong>{{count}}</strong> áreas disponibles'
-  LABEL_PANELES_SUGERIDOS_zero: paneles solares sugeridos
-  LABEL_PANELES_SUGERIDOS_one: '<strong>Un</strong> panel solar sugerido'
-  LABEL_PANELES_SUGERIDOS_other: '<strong>{{count}}</strong> paneles solares sugeridos'
+  LABEL_PANELES_SUGERIDOS_zero: paneles solares
+  LABEL_PANELES_SUGERIDOS_one: '<strong>Un</strong> panel solar'
+  LABEL_PANELES_SUGERIDOS_other: '<strong>{{count}}</strong> paneles solares'
   LABEL_PRODUCCION_ANUAL: kwh <br />produccion anual
   LABEL_PRODUCCION: <strong>{{produccion}}</strong> producción anual
   LABEL_POTENCIA: <strong>{{potencia}}</strong> potencia total instalada
@@ -766,7 +768,7 @@ GRAFICOS:
 LIMITE_VERIFICADOS:
 
 REPORT:
-  FOOTER_BASES_INSTALADAS: Total de <strong>{{paneles}} paneles</strong> con <strong>{{potencia}}</strong> instalados
+  FOOTER_BASES_INSTALADAS: Configuración total <strong>{{paneles}} paneles</strong> con <strong>{{potencia}}</strong> instalados
   titulo: Solidar Energía
   produccionTotal: Producción total
   produccionMediaEsperada: Producción media esperada
@@ -798,11 +800,13 @@ REPORT:
   INSTALACIO_COST: Coste aproximado (IVA incluido)
   ESTUDI_TITLE: Estudio energético - económico
   ESTUDI_EXCEDENT: Excedente
+  ESTUDI_DESCUENTO: Descuento aplicado
   ESTUDI_XARXA: Energía de red
   ESTUDI_ESTALVI: Ahorro total anual
-  SOLS_DISPONIBLES: Sols disponibles
+  SOLS_DISPONIBLES: Descuento no aplicado
   ESTUDI_RETORN: Retorno inversión
-
+  DESCUENTO_EXPLANATION: |
+    (1) Son los Euros que has recuperado a lo largo del año del metodo de ahorro que te ofrece tu comercializadora.<br />(2) Son los Euros que han quedado en la hucha a fin de año
   PIE_AUTOCONSUM_TITLE: 'Autoconsumo directo'
   PIE_AUTOCONSUM_DESCRIPTION: (Energía autoconsumida / energía total producida)
   PIE_AUTOSUFICIENCIA_TITLE: '% Autosuficiencia'
