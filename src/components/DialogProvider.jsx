@@ -93,12 +93,15 @@ export default function DialogProvider({ children }) {
     setDialogs((dialogs) => [...dialogs, dialog])
   }
 
-  const closeDialog = (args) => {
+  const closeDialog = () => {
     setDialogs((dialogs) => {
       const latestDialog = dialogs.pop()
       if (!latestDialog) return dialogs
-      if (latestDialog.children.props.onClose) latestDialog.children.props.onClose(args)
-      return [...dialogs].concat({ ...latestDialog, open: false })
+
+      //Removed line to avoid closing all dialogs when stacked.
+      //if (latestDialog.children.props.onClose) latestDialog.children.props.onClose(args)
+      const t = [...dialogs].concat({ ...latestDialog, open: false })
+      return t
     })
   }
 
