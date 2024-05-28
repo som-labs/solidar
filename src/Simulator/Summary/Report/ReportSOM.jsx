@@ -763,7 +763,7 @@ export default function ReportSOM({ onClose }) {
                 </Grid>
 
                 <Grid container>
-                  <Grid xs={12} sx={{ justifyContent: 'left', fontSize: 12 }}>
+                  <Grid xs={12} item sx={{ justifyContent: 'left', fontSize: 12 }}>
                     <Typography
                       variant="h7"
                       dangerouslySetInnerHTML={{
@@ -1126,7 +1126,7 @@ export default function ReportSOM({ onClose }) {
                     </a>
                   </li>
                   <li>
-                    <a href={getLink(3)} target="_blank" rel="noreferrer">
+                    <a href={getLink(4)} target="_blank" rel="noreferrer">
                       {t('REPORT.AUTOGENERACIO_LINK_CUART')}{' '}
                     </a>
                   </li>

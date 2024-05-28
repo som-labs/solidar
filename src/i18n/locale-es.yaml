@@ -33,6 +33,21 @@ HOME:
   SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION: (En desarrollo)
   FURTHER_INFORMATION_TITLE: Información de interés
 
+ABOUT:
+  TITLE: ¿Qué es Solidar Energía?
+  TEXT: |
+    En el año 2019, entró en vigor en España una nueva normativa para favorecer el impulso de la implantación de las energías renovables, eliminando así las trabas establecidas en años anteriores conocida bajo el término de “impuesto al sol”.
+    En este marco favorable, un grupo de personas voluntarias del Grupo Local de Madrid, quiso contribuir al objetivo desarrollando una herramienta de cálculo que facilitara la información necesaria para poder valorar las condiciones técnico-económicas a cualquiera que se planteara realizar una instalación fotovoltaica.
+    <br /><br />
+    Así fue como nació el simulador SolidarEnergia: al principio mediante hojas de cálculo y datos estadísticos obtenidos del sistema de información geográfica PVGIS (Photovoltaic Geographical Information System) para ir evolucionando en sucesivas versiones hasta llegar a una aplicación web al alcance de todas las personas interesadas.
+    A medida que hacíamos demostraciones de la aplicación a los grupos locales, al equipo técnico y a personas interesadas en general, nos pareció oportuno, tanto al grupo local de Madrid como al equipo técnico, promover una versión del simulador que pudiera difundirse ampliamente al público en general desde los propios servicios de la cooperativa de la forma más abierta posible.
+    <br /><br />
+    Con ese objetivo y con la ayuda del equipo técnico, hemos ido perfeccionando durante meses muchos aspectos del simulador: desde los diversos algoritmos que se aplican en los cálculos hasta los gráficos, textos, esquemas y todo lo relacionado con el aspecto y la presentación de la herramienta.
+    <br /><br />
+    Fruto de todo este empeño es SolidarEnergia: una herramienta para calcular con la mayor fiabilidad posible la capacidad fotovoltaica de una o varias cubiertas y el impacto energético y económico del correspondiente proyecto de instalación a partir del precio de la energía eléctrica suministrada y del consumo de uno o varios inmuebles.
+    <br /><br />
+    Esperamos que contribuya a democratizar el acceso a la energía renovable y reducir los riesgos que afronta nuestro planeta con el cambio climático.
+    <br /><br />
 ene: enero
 feb: febrero
 mar: marzo
@@ -107,28 +122,19 @@ TipoConsumo:
     consumoAnualREE: En caso de optar por el perfil tipo REE debe indicar el consumo anual estimado en kWh
     totalAnual: Consumo eléctrico anual
 
-  DESCRIPTION_fuente: |
-    Existen diferentes formas de obtener la información referente al uso eléctrico anual:<br />
-    <ul>
-    <li><u>Curvas  de uso de energía</u> a través de un fichero con información horaria de tu uso real.<br />
-    <ul>
-    <li><strong>Som Energía:</strong>Si tienes contrato activo con Som Energía puedes descargar el fichero de curvas horarias a través de tu <a href='https://oficinavirtual.somenergia.coop/es/' target='_blank'>Oficina Virtual.</a> Tienes las instrucciones en el siguiente enlace: <a href='https://es.support.somenergia.coop/article/942--las-curvas-horarias-de-uso-de-energia' target='_blank'>Las curvas horarias de Som Energía</a></li>
-    <li><strong>Empresa de distribución eléctrica:</strong> <a href='./datos/Guias publicadas/Enlaces para descarga CSV individual.htm 'target='_blank'>
-    En el siguiente enlace </a>puedes encontrar las instrucciones para descargar un fichero de curvas horarias de las principales empresas de distribución eléctrica.
-    <li>
-    <strong>DATADIS:</strong> Se trata de una plataforma creada por las empresas de distribución eléctrica para simplificar el acceso a los datos. <a href: 'https: //datadis.es/home' target='_blank'>Tienes las instrucciones aquí.</a></li>
-    </ul>
-    </li>
-    <li>
+  DESCRIPTION_FUENTE_1: Existen diferentes formas de obtener la información referente al uso eléctrico anual
+  DESCRIPTION_FUENTE_2: <u>Curvas  de uso de energía</u> a través de un fichero con información horaria de tu uso real.
+  DESCRIPTION_FUENTE_SOM: |
+    <strong>Som Energía:</strong>Si tienes contrato activo con Som Energía puedes descargar el fichero de curvas horarias a través de tu <a href='https://oficinavirtual.somenergia.coop/es/' target='_blank'>Oficina Virtual.</a> Tienes las instrucciones en el siguiente enlace: <a href='https://es.support.somenergia.coop/article/942--las-curvas-horarias-de-uso-de-energia' target='_blank'>Las curvas horarias de Som Energía</a>
+  DESCRIPTION_FUENTE_DISTRIBUIDORA: |
+    <strong>Empresa de distribución eléctrica:</strong> Puedes encontrar las instrucciones para descargar un fichero de curvas horarias de las principales empresas de distribución eléctrica
+  LINK_FUENTE_DISTRIBUIDORA: en este enlace.
+  DESCRIPTION_FUENTE_DATADIS: |
+    <strong>DATADIS:</strong> Se trata de una plataforma creada por las empresas de distribución eléctrica para simplificar el acceso a los datos. <a href='datos/Guias publicadas/[{{lng}}] Datadis.pdf' target='_blank'>Tienes las instrucciones aquí.</a>
+  DESCRIPTION_FUENTE_3: |
     <u>Consumo anual informado mediante tu factura eléctrica</u>
-    <ul>
-    <li>
+  DESCRIPTION_FUENTE_REE: |
     <strong>Perfil estándar (REE):</strong> Mediante tu uso de energía anual Red Eléctrica Española tiene definido un perfil de usuario estandarizado que se usará como modelo.
-    </li>
-    </ul>
-    </li>
-    </ul>
-    Elige una u otra opción según la información que dispongas.
 
 Consumo:
   NAME: Consumo
@@ -152,9 +158,9 @@ Instalacion:
     precioInstalacion: Precio de la instalación
     precioInstalacionCorregido: Precio de la instalación corregido
     potenciaUnitaria: Potencia del panel
-    paneles: Paneles propuestos
+    paneles: Paneles
     tipoPanel: Tipo de panel
-    potenciaTotal: Potencia propuesta
+    potenciaTotal: Potencia pico
     potencia: Potencia unitaria
     tecnologia: Tecnología de los paneles
     largo: Largo del panel propuesto
@@ -404,10 +410,9 @@ LOCATION:
 
 CONSUMPTION:
   TITLE: Consumo
-  TIPO_CONSUMO_DESCRIPTION: |
-    <strong>PASO 4.</strong> A continuación necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo.<br />
-    El documento de curvas horarias (en formato .csv) nos permitirá conocer tus hábitos de uso eléctrico, saber en qué tramos horarios y en qué meses del año sueles consumir más energía.<br /> 
-    También puedes indicar el uso de energía anual que aparece en tu factura para hacer una estimación en base a un perfil estándar.
+  TIPO_CONSUMO_DESCRIPTION_1: |
+    <strong>PASO 4.</strong> A continuación necesitamos información sobre tu consumo eléctrico para calcular el número de paneles necesario para cubrirlo. El documento de curvas horarias (en formato .csv) nos permitirá conocer tus hábitos de uso eléctrico, saber en qué tramos horarios y en qué meses del año sueles consumir más energía.<br />
+    Si no dispones de fichero de uso horario podrás indicar el uso de energía anual que aparece en tu factura para hacer una estimación en base a un perfil estándar.
     <br />
   TARIFA_DESCRIPTION_1: |
     Necesitamos conocer tu tarifa, los precios por tramos horarios de cada período y el precio de la compensación de excedentes de tu comercializadora si es otra diferente a Som Energía.
@@ -449,6 +454,8 @@ CONSUMPTION:
   TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Boton para crear un nuevo tipo de consumo
 
   TITLE_DIALOG_NEW_CONSUMPTION: Formulario para crear un nuevo tipo de consumo
+  TITLE_USO_DISTRIBUIDORA: Ficheros CSV de uso horario
+  DESCRIPTION_USO_DISTRIBUIDORA: Selecciona la distribuidora eléctrica de tu zona para acceder a las instrucciones de como realizar la descarga del fichero de uso horario
   TOOLTIP_botonBorraTipoConsumo: Borra el perfil de uso eléctrico
   TOOLTIP_botonEditaTipoConsumo: Modifica la información de uso eléctrico
   TOOLTIP_botonMuestraMapaTipoConsumo: Gráfico del perfil eléctrico
@@ -473,8 +480,8 @@ ENERGY_BALANCE:
   SUMMARY_TITLE: Datos de la cubierta
   SUMMARY_TOOLTIP_INFO: Información detallada del área seleccionada
   SUMMARY_FOOTER: |
-    Configuración total: {{paneles}} paneles<br />
-    Potencia total: {{potencia}}
+    {{paneles}} paneles<br />
+    Potencia instalada: {{potencia}}
   FOOTER_BUTON_MAXIMO: Configuración máxima ({{paneles}})
   FOOTER_BUTON_OPTIMO: Recupera optimizador
   TITLE_GRAFICO_CONSUMOGENERACION3D: Gráfico detallado de uso eléctrico y producción

@@ -1,4 +1,4 @@
-import { useContext } from 'react' //DEMO: Detalle
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -12,6 +12,7 @@ import ConsumptionSummary from './ConsumptionSummary'
 import { SLDRInfoBox, SLDRDetalle } from '../../components/SLDRComponents'
 import { AlertContext } from '../components/Alert'
 import HelpConsumption from './HelpConsumption'
+import HelpDistribuidora from './HelpDistribuidora'
 
 //React global components
 import { useDialog } from '../../components/DialogProvider'
@@ -23,15 +24,16 @@ const ConsumptionStep = () => {
   //REVISAR: como meter el icono en el medio del texto
   const [openDialog, closeDialog] = useDialog()
 
-  function help() {
-    openDialog({
-      children: <HelpConsumption onClose={() => closeDialog()} />,
-    })
+  function help(level) {
+    if (level === 1)
+      openDialog({
+        children: <HelpConsumption onClose={() => closeDialog()} />,
+      })
   }
 
   return (
     <Container>
-      <Grid container rowSpacing={4}>
+      <Grid container rowSpacing={3}>
         <Grid item xs={12}>
           <Typography
             variant="body"
@@ -40,7 +42,7 @@ const ConsumptionStep = () => {
             }}
           />
           <IconButton
-            onClick={() => help()}
+            onClick={() => help(1)}
             size="small"
             style={{
               color: theme.palette.helpIcon.main,
@@ -53,6 +55,7 @@ const ConsumptionStep = () => {
             <HelpIcon />
           </IconButton>
         </Grid>
+
         <Grid item xs={12}>
           <Typography
             variant="body"
@@ -66,11 +69,12 @@ const ConsumptionStep = () => {
             <PreciosTarifa></PreciosTarifa>
           </SLDRInfoBox>
         </Grid>
+
         <Grid item xs={12}>
           <Typography
             variant="body"
             dangerouslySetInnerHTML={{
-              __html: t('CONSUMPTION.TIPO_CONSUMO_DESCRIPTION'),
+              __html: t('CONSUMPTION.TIPO_CONSUMO_DESCRIPTION_1'),
             }}
           />
         </Grid>
