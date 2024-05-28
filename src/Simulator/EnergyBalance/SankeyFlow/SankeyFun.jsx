@@ -199,12 +199,13 @@ export default function SankeyFun(
   Object.assign(svg.node(), { scales: { color } })
 
   //Return coordinates where the icons will be drawn
-  // console.log(
-  //   'SETING',
-  //   nodes.map((ns) => {
-  //     return (ns.y0 + ns.y1) / 2 / height
-  //   }),
-  // )
+  console.log(
+    'SETING NODES',
+    nodes.map((ns) => {
+      return (ns.y0 + ns.y1) / 2 / height
+    }),
+  )
+
   setIconPosition(
     nodes.map((ns) => {
       return (ns.y0 + ns.y1) / 2 / height

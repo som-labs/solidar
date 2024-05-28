@@ -98,6 +98,7 @@ export default function EnergyBalanceStep() {
             }}
           />
         </Grid>
+
         <Grid item xs={12}>
           {/* <SLDRInfoBox sx={{ mt: '1rem' }}> */}
           {/* <ValidateServerNameGrid></ValidateServerNameGrid> */}
@@ -129,6 +130,7 @@ export default function EnergyBalanceStep() {
             <InfoIcon />
           </IconButton>
         </Grid>
+
         <Grid item xs={12}>
           <SLDRInfoBox>
             <CallSankey yearlyData={yearlyData}></CallSankey>

@@ -107,6 +107,7 @@ export default function GraphAlternatives() {
     }
 
     calculaResultados()
+    TCB.economico = new Economico()
 
     //Buscamos punto en el que la produccion represente el 80% del consumo anual total para definir el limite subvencion EU
     let i = 0

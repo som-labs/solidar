@@ -330,8 +330,8 @@ async function GeneraInformePDF() {
     },
     { header: TCB.i18next.t('ECONOMIC_BALANCE.LABEL_PENDIENTE'), dataKey: 'pendiente' },
   ]
+
   let trows = TCB.economico.cashFlow.map((row) => {
-    //AA
     var tt = {}
     for (let objProp in row) {
       tt[objProp] = UTIL.formatoValor(objProp, row[objProp])

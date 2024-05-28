@@ -85,11 +85,16 @@ export default function CallSankey(props) {
     '#bab0ab',
   ]
 
-  const setIconPosition = useCallback((values) => {
-    //console.log('INCALLBACK', values)
+  // const setIconPosition = useCallback((values) => {
+  //   console.log('INCALLBACK', values)
+  //   setIconY(values.map((element) => parseInt(element * boxHeight.current - 45) + 'px'))
+  //   setDraw(false)
+  // }, [])
+  function setIconPosition(values) {
+    console.log('INCALLBACK', values)
     setIconY(values.map((element) => parseInt(element * boxHeight.current - 45) + 'px'))
     setDraw(false)
-  }, [])
+  }
 
   useEffect(() => {
     // Function to get the height of the svg element
@@ -105,7 +110,6 @@ export default function CallSankey(props) {
   }, [bases])
 
   if (draw) {
-    //console.log(iconY)
     SankeyFun(
       { links: data, svgRef, setIconPosition },
       {
@@ -117,10 +121,8 @@ export default function CallSankey(props) {
         nodeGroup: (d) => d.id, //.split(/\W/)[0], // take first word for color
       },
     )
+    console.log('ICONY after SankeyFun', iconY)
   }
-
-  //   if (iconPosition.length !== 0) setLoop(true)
-  // }
 
   return (
     <>
