@@ -23,7 +23,6 @@ export default function YearSaving() {
     <>
       <Container>
         <Box
-          component="form"
           sx={{
             display: 'flex',
             flexDirection: 'column',

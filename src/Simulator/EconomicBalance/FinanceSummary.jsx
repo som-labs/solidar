@@ -198,7 +198,6 @@ export default function FinanceSummary() {
       />
 
       <Box
-        component="form"
         sx={{
           display: 'flex',
           flexDirection: 'column',

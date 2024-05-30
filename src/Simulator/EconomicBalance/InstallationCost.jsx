@@ -36,7 +36,6 @@ export default function InstallationCost() {
   const [error, setError] = useState(false)
 
   const setPrecioInstalacion = (event) => {
-    //REVISAR: trying to avoid jumping to next field
     event.preventDefault()
 
     if (precioCorregido === '') {
@@ -85,7 +84,6 @@ export default function InstallationCost() {
     <>
       <Container>
         <Box
-          component="form"
           sx={{
             display: 'flex',
             flexDirection: 'column',
@@ -136,7 +134,7 @@ export default function InstallationCost() {
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <TextField
               type="text"
-              onBlur={(event) => setPrecioInstalacion(event)}
+              onBlur={setPrecioInstalacion}
               onChange={changePrecioInstalacion}
               label={t('ECONOMIC_BALANCE.LABEL_INSTALLATION_COST')}
               name="precioInstalacionCorregido"

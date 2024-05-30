@@ -21,7 +21,7 @@ const ConsumptionStep = () => {
   const { t } = useTranslation()
   const theme = useTheme()
   const { inLineHelp } = useContext(AlertContext)
-  //REVISAR: como meter el icono en el medio del texto
+
   const [openDialog, closeDialog] = useDialog()
 
   function help(level) {

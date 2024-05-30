@@ -19,7 +19,7 @@ export default function CallSankey(props) {
   const { t } = useTranslation()
   var svgRef = useRef(null)
   const boxRef = useRef(null)
-  const boxHeight = useRef(null)
+  const [boxHeight, setBoxHeight] = useState(null)
   const { bases } = useContext(BasesContext)
   const [iconY, setIconY] = useState([])
   const [draw, setDraw] = useState(true)
@@ -92,7 +92,11 @@ export default function CallSankey(props) {
   // }, [])
   function setIconPosition(values) {
     console.log('INCALLBACK', values)
-    setIconY(values.map((element) => parseInt(element * boxHeight.current - 45) + 'px'))
+    setIconY(values.map((element) => parseInt(element * boxHeight - 45) + 'px'))
+    console.log(
+      'ANCALLBACK',
+      values.map((element) => parseInt(element * boxHeight - 45) + 'px'),
+    )
     setDraw(false)
   }
 
@@ -100,7 +104,7 @@ export default function CallSankey(props) {
     // Function to get the height of the svg element
     const getWidth = () => {
       if (boxRef.current) {
-        boxHeight.current = boxRef.current.offsetHeight
+        setBoxHeight(boxRef.current.offsetHeight)
       }
     }
 
@@ -123,6 +127,8 @@ export default function CallSankey(props) {
     )
     console.log('ICONY after SankeyFun', iconY)
   }
+
+  console.log('OUT ICONY after SankeyFun', { iconY, draw })
 
   return (
     <>
