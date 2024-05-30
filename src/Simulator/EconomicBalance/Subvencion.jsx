@@ -76,7 +76,6 @@ export default function Subvencion() {
   return (
     <Container>
       <Box
-        component="form"
         sx={{
           display: 'flex',
           flexDirection: 'column',

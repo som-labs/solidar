@@ -20,7 +20,6 @@ export default function AmortizationTime() {
     <>
       <Container>
         <Box
-          component="form"
           sx={{
             display: 'flex',
             flexDirection: 'column',
