@@ -73,7 +73,6 @@ export default function ReduccionIBI() {
     <>
       <Container>
         <Box
-          component="form"
           sx={{
             display: 'flex',
             flexDirection: 'column',

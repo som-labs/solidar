@@ -40,7 +40,6 @@ export default function SummaryEnergyBalance() {
         <GraphBoxAutoconsumo></GraphBoxAutoconsumo>
 
         <Box
-          component="form"
           sx={{
             display: 'flex',
             flexDirection: 'column',

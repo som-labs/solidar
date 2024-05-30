@@ -47,11 +47,11 @@ export default function SummarySOMStep() {
           <EnergyBalance></EnergyBalance>
         </Grid>
 
-        {/* <Grid item xs={12}>
+        <Grid item xs={12}>
           <SLDRInfoBox>
             <CallSankey yearlyData={yearlyData}></CallSankey>
           </SLDRInfoBox>
-        </Grid> */}
+        </Grid>
 
         <Grid item xs={12}>
           <EconomicBalance></EconomicBalance>
