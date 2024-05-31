@@ -41,108 +41,6 @@ export default function ReportSOM({ onClose }) {
   const usedBases = bases.filter((b) => b.paneles > 0)
   const shortFormat = usedBases.length < 5 ? true : false
 
-  function getLink(number) {
-    let link
-    switch (number) {
-      case 1:
-        switch (i18n.language.substring(0, 2)) {
-          case 'ca':
-            link =
-              'https://ca.support.somenergia.coop/article/778-que-es-l-autoproduccio?utm_source=linkidiomes&utm_medium=cda&utm_campaign=catal%C3%A0'
-            break
-          case 'gl':
-            link =
-              'https://gl.support.somenergia.coop/article/836-que-e-a-autoproducion?utm_source=linkidiomes&utm_medium=cda&utm_campaign=galego'
-            break
-          case 'eu':
-            link =
-              'https://eu.support.somenergia.coop/article/838-zer-da-autoprodukzioa?utm_source=linkidiomes&utm_medium=cda&utm_campaign=euskara'
-            break
-          default:
-            link =
-              'https://es.support.somenergia.coop/article/780-que-es-la-autoproduccion?utm_source=linkidiomes&utm_medium=cda&utm_campaign=castellano'
-            break
-        }
-        break
-      case 2:
-        switch (i18n.language.substring(0, 2)) {
-          case 'ca':
-            link =
-              'https://ca.support.somenergia.coop/article/783-com-funciona-la-compensacio-simplificada-dexcedents?utm_source=linkidiomes&utm_medium=cda&utm_campaign=catal%C3%A0'
-            break
-          case 'gl':
-            link =
-              'https://gl.support.somenergia.coop/article/981-a-compensacion-simplificada-de-excedentes-en-autoproducion?utm_source=linkidiomes&utm_medium=cda&utm_campaign=galego'
-            break
-          case 'eu':
-            link =
-              'https://eu.support.somenergia.coop/article/980-autoprodukzioko-soberakinen-konpentsazio-sinplifikatua?utm_source=linkidiomes&utm_medium=cda&utm_campaign=euskara'
-            break
-          default:
-            link =
-              'https://es.support.somenergia.coop/article/784-como-funciona-la-compensacion-simplificada-de-excedentes?utm_source=linkidiomes&utm_medium=cda&utm_campaign=castellano'
-            break
-        }
-        break
-      case 3:
-        switch (i18n.language.substring(0, 2)) {
-          case 'ca':
-            link =
-              'https://ca.support.somenergia.coop/article/929-autoproduccio-que-passa-si-marxa-la-llum?utm_source=linkidiomes&utm_medium=cda&utm_campaign=catal%C3%A0'
-            break
-          case 'gl':
-            link =
-              'https://gl.support.somenergia.coop/article/931-autoproducion-que-pasa-se-marcha-a-luz?utm_source=linkidiomes&utm_medium=cda&utm_campaign=galego'
-            break
-          case 'eu':
-            link =
-              'https://eu.support.somenergia.coop/article/932-autoprodukzioa-zer-gertatuko-da-argirik-gabe-gelditzen-bagara?utm_source=linkidiomes&utm_medium=cda&utm_campaign=euskara'
-            break
-          default:
-            link =
-              'https://es.support.somenergia.coop/article/930-autoproduccion-que-pasa-si-se-va-la-luz?utm_source=linkidiomes&utm_medium=cda&utm_campaign=castellano'
-            break
-        }
-        break
-      case 4:
-        switch (i18n.language.substring(0, 2)) {
-          case 'ca':
-            link = 'https://ca.support.somenergia.coop/category/777-autoproduccio'
-            break
-          case 'gl':
-            link = 'https://gl.support.somenergia.coop/category/835-autoproducion'
-            break
-          case 'eu':
-            link = 'https://eu.support.somenergia.coop/category/837-autoprodukzioa'
-            break
-          default:
-            link = 'https://es.support.somenergia.coop/category/779-autoproduccion'
-            break
-        }
-        break
-    }
-
-    return link
-  }
-
-  // const customPageStyle = `
-  //   @media print {
-  //     @page {
-  //       size: auto;
-  //       margin: 0;
-  //     }
-
-  //     body {
-  //       margin: 0;
-  //     }
-
-  //     header,
-  //     footer {
-  //       display: none !important;
-  //     }
-  //   }
-  // `
-
   let ahorroAutoconsumo = Math.round(UTIL.suma(TCB.economico.ahorradoAutoconsumoMes))
   let ahorroCompensado = -Math.round(UTIL.suma(TCB.economico.compensadoMensualCorregido))
   let ahorroHucha = Math.round(UTIL.suma(TCB.economico.extraccionHucha))
@@ -1111,23 +1009,39 @@ export default function ReportSOM({ onClose }) {
               <Box sx={{ display: 'flex', flex: 1 }}>
                 <ul>
                   <li>
-                    <a href={getLink(1)} target="_blank" rel="noreferrer">
-                      {t('REPORT.AUTOGENERACIO_LINK_PRIMER')}
+                    <a
+                      href={t('REPORT.AUTOGENERACIO_LINK_PRIMER')}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('REPORT.AUTOGENERACIO_TEXT_PRIMER')}
                     </a>
                   </li>
                   <li>
-                    <a href={getLink(2)} target="_blank" rel="noreferrer">
-                      {t('REPORT.AUTOGENERACIO_LINK_SEGON')}
+                    <a
+                      href={t('REPORT.AUTOGENERACIO_LINK_SEGON')}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('REPORT.AUTOGENERACIO_TEXT_SEGON')}
                     </a>
                   </li>
                   <li>
-                    <a href={getLink(3)} target="_blank" rel="noreferrer">
-                      {t('REPORT.AUTOGENERACIO_LINK_TERCER')}
+                    <a
+                      href={t('REPORT.AUTOGENERACIO_LINK_TERCER')}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('REPORT.AUTOGENERACIO_TEXT_TERCER')}
                     </a>
                   </li>
                   <li>
-                    <a href={getLink(4)} target="_blank" rel="noreferrer">
-                      {t('REPORT.AUTOGENERACIO_LINK_CUART')}{' '}
+                    <a
+                      href={t('REPORT.AUTOGENERACIO_LINK_CUART')}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {t('REPORT.AUTOGENERACIO_TEXT_CUART')}{' '}
                     </a>
                   </li>
                 </ul>

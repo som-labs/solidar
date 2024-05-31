@@ -264,7 +264,14 @@ CONSUMPTION:
   ERROR_FALTA_FICHERO_CONSUMO: Cal definir el fitxer de consum abans de continuar
   LABEL_BUTTON_NUEVO_TIPOCONSUMO: Nou tipus consum
   TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Botó per crear un nou tipus de consum
-  TITLE_DIALOG_NEW_CONSUMPTION: (T)Formulario para crear un nuevo tipo do consumo
+  TITLE_DIALOG_NEW_CONSUMPTION: Formulari per crear un nou tipus de consum
+
+  INSTRUCTIONS_IDE_LINK: '/datos/Guias publicadas/[CA] IDE.pdf'
+  INSTRUCTIONS_EDIST_LINK: '/datos/Guias publicadas/[CA] E-distribucion.pdf'
+
+  DESCRIPTION_FUENTE_DATADIS: |
+    <strong>DATADIS:</strong> És una plataforma creada per les empreses de distribució elèctrica per simplificar l'accés a les dades. <a href='datos/Guias publicadas/[CA] Datadis.pdf' target='_blank'>Tens les instruccions aquí.</a>
+
   nombreTipoConsumoDuplicado_MSG: El nombre del tipo de consumo no puede estar duplicado
   tipoConsumoDefault_MSG: Defina tipo de fichero a utilizar y tarifa aplicable
   fuenteTipoConsumoErronea_MSG: Posible error definiendo DATADIS cuando debería ser CSV o viceversa
@@ -547,10 +554,16 @@ REPORT:
   AUTOGENERACIO_TEXT_STRONG: què és i com funciona lautoconsum en els següents articles del nostre centre d'ajuda
   AUTOGENERACIO_TEXT_FINAL: en els següents articles del nostre centre d'ajuda
   AUTOGENERACIO_LINK: Informació general sobre autogeneració
-  AUTOGENERACIO_LINK_PRIMER: Què és lautoproducció?
-  AUTOGENERACIO_LINK_SEGON: Com funciona la compensació simplificada dexcedents?
-  AUTOGENERACIO_LINK_TERCER: Què passa si marxa la llum i tinc plaques solars?
-  AUTOGENERACIO_LINK_CUART: Mes artícles sobre lautogeneració
+
+  AUTOGENERACIO_TEXT_PRIMER: Què és lautoproducció?
+  AUTOGENERACIO_LINK_PRIMER: 'https://ca.support.somenergia.coop/article/778-que-es-l-autoproduccio?utm_source=linkidiomes&utm_medium=cda&utm_campaign=catal%C3%A0'
+  AUTOGENERACIO_TEXT_SEGON: Com funciona la compensació simplificada dexcedents?
+  AUTOGENERACIO_LINK_SEGON: 'https://ca.support.somenergia.coop/article/783-com-funciona-la-compensacio-simplificada-dexcedents?utm_source=linkidiomes&utm_medium=cda&utm_campaign=catal%C3%A0'
+  AUTOGENERACIO_TEXT_TERCER: Què passa si marxa la llum i tinc plaques solars?
+  AUTOGENERACIO_LINK_TERCER: 'https://ca.support.somenergia.coop/article/929-autoproduccio-que-passa-si-marxa-la-llum?utm_source=linkidiomes&utm_medium=cda&utm_campaign=catal%C3%A0'
+  AUTOGENERACIO_TEXT_CUART: Mes artícles sobre lautogeneració
+  AUTOGENERACIO_LINK_CUART: 'https://ca.support.somenergia.coop/category/777-autoproduccio'
+
   INFORME_TITLE: Com shan generat els càlculs daquest informe?
   GENERACIO_TITLE: Dades de Generació
   GENERACIO_DESCRIPTION: Font PVGis Ubicació de referencia Generació estimada segons ubicació Afectació de la inclinació Afectació de la orientació

@@ -21,9 +21,6 @@ export default function CallSankey(props) {
   const boxRef = useRef(null)
   const [boxHeight, setBoxHeight] = useState(null)
   const { bases } = useContext(BasesContext)
-  const [iconY, setIconY] = useState([])
-  const [draw, setDraw] = useState(true)
-
   const { consumo, autoconsumo, excedente, consumoDiurno } = props.yearlyData
 
   const theme = useTheme()
@@ -85,121 +82,33 @@ export default function CallSankey(props) {
     '#bab0ab',
   ]
 
-  // const setIconPosition = useCallback((values) => {
-  //   console.log('INCALLBACK', values)
-  //   setIconY(values.map((element) => parseInt(element * boxHeight.current - 45) + 'px'))
-  //   setDraw(false)
-  // }, [])
-  function setIconPosition(values) {
-    console.log('INCALLBACK', values)
-    setIconY(values.map((element) => parseInt(element * boxHeight - 45) + 'px'))
-    console.log(
-      'ANCALLBACK',
-      values.map((element) => parseInt(element * boxHeight - 45) + 'px'),
-    )
-    setDraw(false)
-  }
-
   useEffect(() => {
     // Function to get the height of the svg element
-    const getWidth = () => {
+    const getHeight = () => {
       if (boxRef.current) {
-        setBoxHeight(boxRef.current.offsetHeight)
+        setBoxHeight(boxRef.current.offsetWidth)
       }
     }
 
     // Call the function to get the width after initial render
-    getWidth()
-    setDraw(true)
+    getHeight()
   }, [bases])
 
-  if (draw) {
-    SankeyFun(
-      { links: data, svgRef, setIconPosition },
-      {
-        textColor: theme.palette.text.primary,
-        colors: colors,
-        linkMixBlendMode: current === 'light' ? 'multiply' : 'screen',
-        height: 1200,
-        width: 2000,
-        nodeGroup: (d) => d.id, //.split(/\W/)[0], // take first word for color
-      },
-    )
-    console.log('ICONY after SankeyFun', iconY)
-  }
-
-  console.log('OUT ICONY after SankeyFun', { iconY, draw })
+  SankeyFun(
+    { links: data, svgRef },
+    {
+      textColor: theme.palette.text.primary,
+      colors: colors,
+      linkMixBlendMode: current === 'light' ? 'multiply' : 'screen',
+      height: 900,
+      width: 2000,
+      nodeGroup: (d) => d.id, //.split(/\W/)[0], // take first word for color
+    },
+  )
 
   return (
-    <>
-      <Box ref={boxRef} sx={{ display: 'flex', flexDirection: 'row' }}>
-        <Box
-          sx={{
-            position: 'relative',
-            display: 'flex',
-            flex: 1,
-            flexDirection: 'column',
-          }}
-        >
-          <CardMedia
-            component="img"
-            src={imgPaneles}
-            sx={{
-              height: 80,
-              width: 80,
-              position: 'absolute',
-              top: iconY[0],
-            }}
-            alt="Producción en paneles"
-            title="Producción en paneles"
-          />
-
-          <CardMedia
-            component="img"
-            src={imgRed}
-            sx={{
-              position: 'absolute',
-              height: 80,
-              width: 80,
-              top: iconY[1],
-            }}
-            alt="Energia recibida de la red"
-            title="Energia recibida de la red"
-          />
-        </Box>
-
-        <Box sx={{ display: 'flex', flex: 9 }}>
-          <svg ref={svgRef} />
-        </Box>
-
-        <Box display="flex" sx={{ flex: 1, position: 'relative' }} flexDirection="column">
-          <CardMedia
-            component="img"
-            src={imgRed}
-            sx={{
-              height: 90,
-              width: 90,
-              position: 'absolute',
-              top: iconY[5],
-            }}
-            alt="Energía vertida a la red"
-            title="Energía vertida a la red"
-          />
-
-          <CardMedia
-            component="img"
-            src={imgConsumo}
-            alt="Consumos Totales"
-            title="Consumos totales"
-            sx={{
-              height: 90,
-              width: 90,
-              position: 'absolute',
-              top: iconY[6],
-            }}
-          />
-        </Box>
-      </Box>
-    </>
+    <Box ref={boxRef} sx={{ display: 'flex' }}>
+      <svg ref={svgRef} />
+    </Box>
   )
 }

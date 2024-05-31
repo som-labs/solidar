@@ -1,9 +1,7 @@
-//import { useContext } from 'react'
-
 //Formik
 import { Formik, Field, Form, ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
-import HelpIcon from '@mui/icons-material/HelpOutlineRounded.js'
+
 // MUI objects
 import {
   Box,
@@ -18,28 +16,26 @@ import {
   DialogTitle,
   Grid,
   Tooltip,
-  IconButton,
 } from '@mui/material'
+
 import { MuiFileInput } from 'mui-file-input'
 import { useTheme } from '@mui/material/styles'
+
 // REACT Solidar Components
-//import { ConsumptionContext } from '../ConsumptionContext'
-import { SLDRInputField, SLDRTooltip } from '../../components/SLDRComponents'
+import { SLDRInputField } from '../../components/SLDRComponents'
+import HelpDistribuidora from './HelpDistribuidora'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
-
-import HelpDistribuidora from './HelpDistribuidora'
 
 //React global components
 import { useDialog } from '../../components/DialogProvider'
 
 export default function DialogConsumption({ data, previous, onClose }) {
-  const { t, i18n } = useTranslation()
-  const theme = useTheme()
+  const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
 
-  function help() {
+  function showDistribuidoras() {
     openDialog({
       children: <HelpDistribuidora onClose={() => closeDialog()} />,
     })
@@ -134,13 +130,13 @@ export default function DialogConsumption({ data, previous, onClose }) {
               <Typography
                 variant="body"
                 dangerouslySetInnerHTML={{
-                  __html: t('TipoConsumo.DESCRIPTION_FUENTE_1'),
+                  __html: t('CONSUMPTION.DESCRIPTION_FUENTE_1'),
                 }}
               />
               <Typography
                 variant="body"
                 dangerouslySetInnerHTML={{
-                  __html: t('TipoConsumo.DESCRIPTION_FUENTE_2'),
+                  __html: t('CONSUMPTION.DESCRIPTION_FUENTE_2'),
                 }}
               />
 
@@ -149,7 +145,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
                   <Typography
                     variant="body"
                     dangerouslySetInnerHTML={{
-                      __html: t('TipoConsumo.DESCRIPTION_FUENTE_SOM'),
+                      __html: t('CONSUMPTION.DESCRIPTION_FUENTE_SOM'),
                     }}
                   />
                 </Grid>
@@ -157,53 +153,27 @@ export default function DialogConsumption({ data, previous, onClose }) {
                   <Typography
                     variant="body"
                     dangerouslySetInnerHTML={{
-                      __html: t('TipoConsumo.DESCRIPTION_FUENTE_DISTRIBUIDORA'),
+                      __html: t('CONSUMPTION.DESCRIPTION_FUENTE_DISTRIBUIDORA'),
                     }}
                   />
-                  <a href="#" onClick={() => help()}>
-                    {t('TipoConsumo.LINK_FUENTE_DISTRIBUIDORA')}
+                  <a href="#" onClick={() => showDistribuidoras()}>
+                    {t('CONSUMPTION.LINK_FUENTE_DISTRIBUIDORA')}
                   </a>
-                  {/* <IconButton
-                    onClick={() => help()}
-                    size="small"
-                    style={{
-                      color: theme.palette.helpIcon.main,
-                      fontSize: 'inherit',
-                      verticalAlign: 'text-center',
-                      transform: 'scale(0.8)',
-                      padding: 0,
-                    }}
-                  >
-                    <HelpIcon />
-                  </IconButton> */}
                 </Grid>
 
                 <Grid item>
-                  {i18n.language.substring(0, 2) === 'ca' ? (
-                    <Typography
-                      variant="body"
-                      dangerouslySetInnerHTML={{
-                        __html: t('TipoConsumo.DESCRIPTION_FUENTE_DATADIS', {
-                          lng: 'CAT',
-                        }),
-                      }}
-                    />
-                  ) : (
-                    <Typography
-                      variant="body"
-                      dangerouslySetInnerHTML={{
-                        __html: t('TipoConsumo.DESCRIPTION_FUENTE_DATADIS', {
-                          lng: 'ES',
-                        }),
-                      }}
-                    />
-                  )}
+                  <Typography
+                    variant="body"
+                    dangerouslySetInnerHTML={{
+                      __html: t('CONSUMPTION.DESCRIPTION_FUENTE_DATADIS'),
+                    }}
+                  />
                 </Grid>
               </Grid>
               <Typography
                 variant="body"
                 dangerouslySetInnerHTML={{
-                  __html: t('TipoConsumo.DESCRIPTION_FUENTE_3'),
+                  __html: t('CONSUMPTION.DESCRIPTION_FUENTE_3'),
                 }}
               />
 
@@ -211,7 +181,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
                 variant="body"
                 sx={{ ml: 2 }}
                 dangerouslySetInnerHTML={{
-                  __html: t('TipoConsumo.DESCRIPTION_FUENTE_REE'),
+                  __html: t('CONSUMPTION.DESCRIPTION_FUENTE_REE'),
                 }}
               />
 

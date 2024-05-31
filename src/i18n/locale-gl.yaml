@@ -497,5 +497,9 @@ REPORT:
   balanceEconomico: Equilibrio económico
   balanceFinanciero: Balance financeiro (euros)
   informe_MSG_procesarPrimero: Debe obter o equilibrio enerxético antes de poder xerar o informe
-
   resultados_LBL_participacion: Participación
+  AUTOGENERACIO_TEXT_PRIMER: Que é a autoprodución?
+  AUTOGENERACIO_LINK_PRIMER: 'https://gl.support.somenergia.coop/article/836-que-e-a-autoproducion?utm_source=linkidiomes&utm_medium=cda&utm_campaign=galego'
+  AUTOGENERACIO_LINK_SEGON: 'https://gl.support.somenergia.coop/article/981-a-compensacion-simplificada-de-excedentes-en-autoproducion?utm_source=linkidiomes&utm_medium=cda&utm_campaign=galego'
+  AUTOGENERACIO_LINK_TERCER: 'https://gl.support.somenergia.coop/article/931-autoproducion-que-pasa-se-marcha-a-luz?utm_source=linkidiomes&utm_medium=cda&utm_campaign=galego'
+  AUTOGENERACIO_LINK_CUART: 'https://gl.support.somenergia.coop/category/835-autoproducion'
