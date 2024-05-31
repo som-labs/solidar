@@ -122,20 +122,6 @@ TipoConsumo:
     consumoAnualREE: En caso de optar por el perfil tipo REE debe indicar el consumo anual estimado en kWh
     totalAnual: Consumo eléctrico anual
 
-  DESCRIPTION_FUENTE_1: Existen diferentes formas de obtener la información referente al uso eléctrico anual
-  DESCRIPTION_FUENTE_2: <u>Curvas  de uso de energía</u> a través de un fichero con información horaria de tu uso real.
-  DESCRIPTION_FUENTE_SOM: |
-    <strong>Som Energía:</strong>Si tienes contrato activo con Som Energía puedes descargar el fichero de curvas horarias a través de tu <a href='https://oficinavirtual.somenergia.coop/es/' target='_blank'>Oficina Virtual.</a> Tienes las instrucciones en el siguiente enlace: <a href='https://es.support.somenergia.coop/article/942--las-curvas-horarias-de-uso-de-energia' target='_blank'>Las curvas horarias de Som Energía</a>
-  DESCRIPTION_FUENTE_DISTRIBUIDORA: |
-    <strong>Empresa de distribución eléctrica:</strong> Puedes encontrar las instrucciones para descargar un fichero de curvas horarias de las principales empresas de distribución eléctrica
-  LINK_FUENTE_DISTRIBUIDORA: en este enlace.
-  DESCRIPTION_FUENTE_DATADIS: |
-    <strong>DATADIS:</strong> Se trata de una plataforma creada por las empresas de distribución eléctrica para simplificar el acceso a los datos. <a href='datos/Guias publicadas/[{{lng}}] Datadis.pdf' target='_blank'>Tienes las instrucciones aquí.</a>
-  DESCRIPTION_FUENTE_3: |
-    <u>Consumo anual informado mediante tu factura eléctrica</u>
-  DESCRIPTION_FUENTE_REE: |
-    <strong>Perfil estándar (REE):</strong> Mediante tu uso de energía anual Red Eléctrica Española tiene definido un perfil de usuario estandarizado que se usará como modelo.
-
 Consumo:
   NAME: Consumo
   PROP:
@@ -454,8 +440,27 @@ CONSUMPTION:
   TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Boton para crear un nuevo tipo de consumo
 
   TITLE_DIALOG_NEW_CONSUMPTION: Formulario para crear un nuevo tipo de consumo
+  DESCRIPTION_FUENTE_1: Existen diferentes formas de obtener la información referente al uso eléctrico anual
+  DESCRIPTION_FUENTE_2: <u>Curvas  de uso de energía</u> a través de un fichero con información horaria de tu uso real.
+  DESCRIPTION_FUENTE_SOM: |
+    <strong>Som Energía:</strong>Si tienes contrato activo con Som Energía puedes descargar el fichero de curvas horarias a través de tu <a href='https://oficinavirtual.somenergia.coop/es/' target='_blank'>Oficina Virtual.</a> Tienes las instrucciones en el siguiente enlace: <a href='https://es.support.somenergia.coop/article/942--las-curvas-horarias-de-uso-de-energia' target='_blank'>Las curvas horarias de Som Energía</a>
+  DESCRIPTION_FUENTE_DISTRIBUIDORA: |
+    <strong>Empresa de distribución eléctrica:</strong> Puedes encontrar las instrucciones para descargar un fichero de curvas horarias de las principales empresas de distribución eléctrica
+  LINK_FUENTE_DISTRIBUIDORA: en este enlace.
+  DESCRIPTION_FUENTE_DATADIS: |
+    <strong>DATADIS:</strong> Se trata de una plataforma creada por las empresas de distribución eléctrica para simplificar el acceso a los datos. <a href='datos/Guias publicadas/[ES] Datadis.pdf' target='_blank'>Tienes las instrucciones aquí.</a>
+  DESCRIPTION_FUENTE_3: |
+    <u>Consumo anual informado mediante tu factura eléctrica</u>
+  DESCRIPTION_FUENTE_REE: |
+    <strong>Perfil estándar (REE):</strong> Mediante tu uso de energía anual Red Eléctrica Española tiene definido un perfil de usuario estandarizado que se usará como modelo.
+
   TITLE_USO_DISTRIBUIDORA: Ficheros CSV de uso horario
   DESCRIPTION_USO_DISTRIBUIDORA: Selecciona la distribuidora eléctrica de tu zona para acceder a las instrucciones de como realizar la descarga del fichero de uso horario
+  INSTRUCTIONS_IDE_LINK: '/datos/Guias publicadas/[ES] IDE.pdf'
+  INSTRUCTIONS_EDIST_LINK: '/datos/Guias publicadas/[ES] E-distribucion.pdf'
+  INSTRUCTIONS_UFD_LINK: '/datos/Guias publicadas/[ES] UFD.pdf'
+  INSTRUCTIONS_EREDES_LINK: '/datos/Guias publicadas/[ES] E-REDES.pdf'
+  INSTRUCTIONS_VIESGO_LINK: '/datos/Guias publicadas/[ES] Viesgo.pdf'
   TOOLTIP_botonBorraTipoConsumo: Borra el perfil de uso eléctrico
   TOOLTIP_botonEditaTipoConsumo: Modifica la información de uso eléctrico
   TOOLTIP_botonMuestraMapaTipoConsumo: Gráfico del perfil eléctrico
@@ -842,10 +847,14 @@ REPORT:
   AUTOGENERACIO_TEXT_STRONG: qué es y cómo funciona el autoconsumo en los siguientes artículos de nuestro centro de ayuda
   AUTOGENERACIO_TEXT_FINAL: en los siguientes artículos de nuestro centro de ayuda
   AUTOGENERACIO_LINK: Información general sobre autoproducción
-  AUTOGENERACIO_LINK_PRIMER: ¿Qué es la autoproducción?
-  AUTOGENERACIO_LINK_SEGON: ¿Cómo funciona la compensación simplificada de excedentes?
-  AUTOGENERACIO_LINK_TERCER: ¿Qué pasa si me cae el suministro eléctrico y tengo paneles solares?
-  AUTOGENERACIO_LINK_CUART: Más artículos sobre la autoproducción
+  AUTOGENERACIO_TEXT_PRIMER: ¿Qué es la autoproducción?
+  AUTOGENERACIO_LINK_PRIMER: 'https://es.support.somenergia.coop/article/780-que-es-la-autoproduccion?utm_source=linkidiomes&utm_medium=cda&utm_campaign=castellano'
+  AUTOGENERACIO_TEXT_SEGON: ¿Cómo funciona la compensación simplificada de excedentes?
+  AUTOGENERACIO_LINK_SEGON: 'https://es.support.somenergia.coop/article/784-como-funciona-la-compensacion-simplificada-de-excedentes?utm_source=linkidiomes&utm_medium=cda&utm_campaign=castellano'
+  AUTOGENERACIO_TEXT_TERCER: ¿Qué pasa si me cae el suministro eléctrico y tengo paneles solares?
+  AUTOGENERACIO_LINK_TERCER: 'https://es.support.somenergia.coop/article/930-autoproduccion-que-pasa-si-se-va-la-luz?utm_source=linkidiomes&utm_medium=cda&utm_campaign=castellano'
+  AUTOGENERACIO_TEXT_CUART: Más artículos sobre la autoproducción
+  AUTOGENERACIO_LINK_CUART: 'https://es.support.somenergia.coop/category/779-autoproduccion'
   INFORME_TITLE: ¿Cómo se han generado los cálculos de este informe?
   GENERACIO_TITLE: Datos de Generación
   GENERACIO_DESCRIPTION: Con la información facilitada referentes a la ubicación, orientación e inclinación se ha realizado una estimación de producción mediante la fuente de datos PVGIS

@@ -1,5 +1,9 @@
 import * as d3 from 'd3'
 import * as d3Sankey from 'd3-sankey'
+//Solidar assets
+import imgConsumo from '../../assets/consumo.svg'
+import imgRed from '../../assets/red.svg'
+import imgPaneles from '../../assets/paneles.svg'
 
 import * as UTIL from '../../classes/Utiles'
 // Copyright 2021 Observable, Inc.
@@ -7,7 +11,7 @@ import * as UTIL from '../../classes/Utiles'
 // https://observablehq.com/@d3/sankey-diagram
 
 export default function SankeyFun(
-  { links, svgRef, setIconPosition },
+  { links, svgRef },
   {
     textColor,
     colors,
@@ -41,14 +45,13 @@ export default function SankeyFun(
     width = 540, // outer width, in pixels
     height = 400, // outer height, in pixels
     marginTop = 15, // top margin, in pixels
-    marginRight = 10, // right margin, in pixels
+    marginRight = 200, // right margin, in pixels
     marginBottom = 15, // bottom margin, in pixels
-    marginLeft = 10, // left margin, in pixels
+    marginLeft = 200, // left margin, in pixels
   } = {},
 ) {
   // Convert nodeAlign from a name to a function (since d3-sankey is not part of core d3).
   if (svgRef.current === null) return
-
   if (typeof nodeAlign !== 'function')
     nodeAlign =
       {
@@ -180,7 +183,7 @@ export default function SankeyFun(
     svg
       .append('g')
       .attr('font-family', 'sans-serif')
-      .attr('font-size', 40)
+      .attr('font-size', 30)
       .attr('fill', textColor)
       .selectAll('text')
       .data(nodes)
@@ -193,22 +196,43 @@ export default function SankeyFun(
       .attr('text-anchor', (d) => (d.x0 < width / 2 ? 'start' : 'end'))
       .text(({ index: i }) => Tt[i])
 
+  // Append images to the SVG
+  const iconSize = 150
+  svg
+    .append('image')
+    .attr('x', 0)
+    .attr('y', parseInt((nodes[0].y0 + nodes[0].y1) / 2) - iconSize / 2 + 'px')
+    .attr('width', iconSize)
+    .attr('height', iconSize)
+    .attr('href', imgPaneles)
+
+  svg
+    .append('image')
+    .attr('x', 0)
+    .attr('y', parseInt((nodes[1].y0 + nodes[1].y1) / 2) - iconSize / 2 + 'px')
+    .attr('width', iconSize)
+    .attr('height', iconSize)
+    .attr('href', imgRed)
+
+  const rightIcon = width - marginRight + marginLeft - iconSize
+  svg
+    .append('image')
+    .attr('x', rightIcon)
+    .attr('y', parseInt((nodes[5].y0 + nodes[5].y1) / 2) - iconSize / 2 + 'px')
+    .attr('width', iconSize)
+    .attr('height', iconSize)
+    .attr('href', imgRed)
+
+  svg
+    .append('image')
+    .attr('x', rightIcon)
+    .attr('y', parseInt((nodes[6].y0 + nodes[6].y1) / 2) - iconSize / 2 + 'px')
+    .attr('width', iconSize)
+    .attr('height', iconSize)
+    .attr('href', imgConsumo)
+
   function intern(value) {
     return value !== null && typeof value === 'object' ? value.valueOf() : value
   }
   Object.assign(svg.node(), { scales: { color } })
-
-  //Return coordinates where the icons will be drawn
-  console.log(
-    'SETING NODES',
-    nodes.map((ns) => {
-      return (ns.y0 + ns.y1) / 2 / height
-    }),
-  )
-
-  setIconPosition(
-    nodes.map((ns) => {
-      return (ns.y0 + ns.y1) / 2 / height
-    }),
-  )
 }

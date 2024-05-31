@@ -2,3 +2,10 @@ APP_FRAME:
   PAGE_HOME: Hasiera
   PAGE_SIMULATORS: Simulagailuak
   PAGE_ABOUT: Solidari buruz
+
+REPORT:
+  AUTOGENERACIO_TEXT_PRIMER: Zer da autoprodukzioa?
+  AUTOGENERACIO_LINK_PRIMER: 'https://eu.support.somenergia.coop/article/838-zer-da-autoprodukzioa?utm_source=linkidiomes&utm_medium=cda&utm_campaign=euskara'
+  AUTOGENERACIO_LINK_SEGON: 'https://eu.support.somenergia.coop/article/980-autoprodukzioko-soberakinen-konpentsazio-sinplifikatua?utm_source=linkidiomes&utm_medium=cda&utm_campaign=euskara'
+  AUTOGENERACIO_LINK_TERCER: 'https://eu.support.somenergia.coop/article/932-autoprodukzioa-zer-gertatuko-da-argirik-gabe-gelditzen-bagara?utm_source=linkidiomes&utm_medium=cda&utm_campaign=euskara'
+  AUTOGENERACIO_LINK_CUART: 'https://eu.support.somenergia.coop/category/837-autoprodukzioa'
