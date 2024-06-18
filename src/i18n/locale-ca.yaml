@@ -2,8 +2,8 @@ APP_FRAME:
   PAGE_HOME: Inici
   PAGE_SIMULATORS: Simuladors
   PAGE_ABOUT: Quant a Solidar
-  TOGGLE_COLOR_MODE: Cambia el tema de color
-  CHANGE_LANGUAGE: Cambia el idioma
+  TOGGLE_COLOR_MODE: Canvia el tema de color
+  CHANGE_LANGUAGE: Canviar l'idioma
   CONTRIBUTE_TRANSLATIONS: Ayúdanos a traducir
   GO_HOME: Ir a la pagina principal
   GO_SIMULATOR: Ir al simulador
@@ -72,12 +72,19 @@ BaseSolar:
     lonlatBaseSolar: Long-Lat
   TOOLTIP:
     nombreBaseSolar: Identifica el nom d'aquesta base per a referències futures
-    angulosOptimos: Marca aquest camp si vols que el sistema calculi el valor òptim d’inclinació i azimut
-    inclinacion: Inclinació mesurada en grados (entre 0º y 90º) respecte a l'horitzontal del terreny sobre el qual es muntaran els panells
-    inclinacionOptima: Marca aquest camp si vols que el sistema calculi el valor òptim de la inclinació dels panells
-    inAcimut: L'angle entre el sud amb la projecció horitzontal del sol. Si els panells estiguessin orientats al sud l'azimut serà 0º cap a l'est -90º i cap a l'oest 90º. Aquest camp s'emplena indicant al mapa l'orientació que tindran els panells. Si no es completa s'assumeix que és 0
+    angulosOptimos: Marca aquest camp si vols que el sistema calculi el valor òptim
+      d’inclinació i azimut
+    inclinacion: Inclinació mesurada en grados (entre 0º y 90º) respecte a l'horitzontal
+      del terreny sobre el qual es muntaran els panells
+    inclinacionOptima: Marca aquest camp si vols que el sistema calculi el valor òptim
+      de la inclinació dels panells
+    inAcimut: L'angle entre el sud amb la projecció horitzontal del sol. Si els panells
+      estiguessin orientats al sud l'azimut serà 0º cap a l'est -90º i cap a l'oest
+      90º. Aquest camp s'emplena indicant al mapa l'orientació que tindran els panells.
+      Si no es completa s'assumeix que és 0
     areaReal: Àrea real disponible corregida per la inclinació de la teulada
-    potenciaMaxima: Potència màxima pic a instal·lar en aquesta àrea (Veure paràmetre de conversió)
+    potenciaMaxima: Potència màxima pic a instal·lar en aquesta àrea (Veure paràmetre
+      de conversió)
     lonlatBaseSolar: Coordenadas geográficas de la base
 
 TipoConsumo:
@@ -93,8 +100,10 @@ TipoConsumo:
   TOOLTIP:
     nombreTipoConsumo: Identifica el nom d’aquest consum per a referències futures
     fuente: Seleccioneu el tipus de font des d'on es carregarà el perfil de consum
-    nombreFicheroCSV: Identifica el fitxer de consum horari descarregat des de la teva distribuïdora
-    consumoAnualREE: En cas d’optar pel perfil de tipus REE cal indicar el consum estimat anual en kWh
+    nombreFicheroCSV: Identifica el fitxer de consum horari descarregat des de la
+      teva distribuïdora
+    consumoAnualREE: En cas d’optar pel perfil de tipus REE cal indicar el consum
+      estimat anual en kWh
     totalAnual: Consum elèctric anual
 
 Consumo:
@@ -126,7 +135,16 @@ Instalacion:
     paneles: Nombre recomanat de panells a instal·lar en aquesta base. Es pot modificar
     potenciaTotal: Potència màxima disponible
     potencia: Potència kWp del panell inicial utilitzat en els càlculs
-    tecnologia: "Pots triar tres tipus de panells per realitzar les estimacions:  \n- Els que tenen cèl·lules de silici cristal·lí \n- mòduls de làmina prima de seleniur de coure i indi (CulnSe) o seleniur de coure indi i gal·li (CuInGaSe) \n - Mòduls de làmina prima de teluro de cadmi (CdTe) \n- Desconegut \n Si es tria una de les tres primeres opcions en el càlcul de la producció fotovoltaica es tindrà en compte l'efecte de la temperatura. Si es tria l’altra opció (desconegut) en el càlcul s’assumiran unes pèrdues d’energia a causa de l’efecte de temperatura del 8% (valor genèric que es considera raonable pels climes temperats). L’efecte de la distribució espectral de la irradiància rebuda en la producció només es pot calcular per a les tecnologies de silici cristal·lí i de CdTe."
+    tecnologia: "Pots triar tres tipus de panells per realitzar les estimacions: \
+      \ \n- Els que tenen cèl·lules de silici cristal·lí \n- mòduls de làmina prima\
+      \ de seleniur de coure i indi (CulnSe) o seleniur de coure indi i gal·li (CuInGaSe)\
+      \ \n - Mòduls de làmina prima de teluro de cadmi (CdTe) \n- Desconegut \n Si\
+      \ es tria una de les tres primeres opcions en el càlcul de la producció fotovoltaica\
+      \ es tindrà en compte l'efecte de la temperatura. Si es tria l’altra opció (desconegut)\
+      \ en el càlcul s’assumiran unes pèrdues d’energia a causa de l’efecte de temperatura\
+      \ del 8% (valor genèric que es considera raonable pels climes temperats). L’efecte\
+      \ de la distribució espectral de la irradiància rebuda en la producció només\
+      \ es pot calcular per a les tecnologies de silici cristal·lí i de CdTe."
 
   DESCRIPTION:
     precioInstalacion: |
@@ -148,7 +166,8 @@ Tarifa:
     P6: Tarifa P6
   TOOLTIP:
     tipoTarifa: El tipus de tarifa contractada amb l'empresa comercialitzadora
-    0: Indica el preu en euros sense IVA amb què la comercialitzadora paga l'electricitat no consumida
+    0: Indica el preu en euros sense IVA amb què la comercialitzadora paga l'electricitat
+      no consumida
     1: Tarifa P1 o punta (la més cara en 2.0TD)
     2: Tarifa P2 o vall (la intermèdia en 2.0TD)
     3: Tarifa P3 o llano (la més barata en 2.0TD)
@@ -180,7 +199,8 @@ Rendimiento:
     acimut: Acimut de la base
     unitarioTotal: kWh anual per kWp instal·lat
   TOOLTIP:
-    unitarioTotal: Són els kWh anuals que es poden obtenir per cada kWp instal·lat en aquesta base
+    unitarioTotal: Són els kWh anuals que es poden obtenir per cada kWp instal·lat
+      en aquesta base
   ERROR_PVGIS_FETCH: Error executant fecth en PVGIS.\n{{err}} \n {{url}}
 
 Balance:
@@ -193,11 +213,18 @@ Balance:
     autosuficienciaMaxima: Autosuficiència màxima
 
   TOOLTIP:
-    Consumo%Produccion: Percentatge de consum respecte a la producció. Per poder optar a la subvenció dels fons Next Generation aquest percentatge sempre ha de superar el 80%
-    Produccion%Consumo: Percentatge d’energia fotovoltaica produïda respecte a la consumida
-    autoconsumoMedioAnual: El percentatge mitjà d’energia fotovoltaica consumida a l’any (no sempre es consumeix tota).
-    autosuficienciaMediaAnual: Percentatge mitjà d’energia consumida procedent dels panells solars. És una mesura d’independència respecte a la xarxa elèctrica
-    autosuficienciaMaxima: La màxima auto-suficiència que es podria aconseguir si es pogués consumir tot el excedent fotovoltaic (ja sigui amb bateries i/o canviant els hàbits de consum).
+    Consumo%Produccion: Percentatge de consum respecte a la producció. Per poder optar
+      a la subvenció dels fons Next Generation aquest percentatge sempre ha de superar
+      el 80%
+    Produccion%Consumo: Percentatge d’energia fotovoltaica produïda respecte a la
+      consumida
+    autoconsumoMedioAnual: El percentatge mitjà d’energia fotovoltaica consumida a
+      l’any (no sempre es consumeix tota).
+    autosuficienciaMediaAnual: Percentatge mitjà d’energia consumida procedent dels
+      panells solars. És una mesura d’independència respecte a la xarxa elèctrica
+    autosuficienciaMaxima: La màxima auto-suficiència que es podria aconseguir si
+      es pogués consumir tot el excedent fotovoltaic (ja sigui amb bateries i/o canviant
+      els hàbits de consum).
 
 Produccion:
   NAME: Producció
@@ -227,15 +254,30 @@ Economico:
     VANProyecto: 'Valor actual net (VAN): {{VAN}}'
     TIRProyecto: 'Taxa interna de retorn (TIR): {{TIR}}'
   TOOLTIP:
-    gastoSinPlacasAnual: Despesa elèctrica anual sense panaells solars. Només es té en compte la part variable de la factura
-    gastoConPlacasAnual: La despesa anual estimada en electricitat amb panells solars. Només es té en compte la part variable de la factura
+    gastoSinPlacasAnual: Despesa elèctrica anual sense panaells solars. Només es té
+      en compte la part variable de la factura
+    gastoConPlacasAnual: La despesa anual estimada en electricitat amb panells solars.
+      Només es té en compte la part variable de la factura
     ahorroAnualPorciento: Estalvi anual en relació amb la despesa original
     ahorroAnual: Diferència de despesa anual en electricitat amb i sense panells solars
-    noCompensadoAnual: L'import de l'energia excedentària que la comercialitzadora no compensarà.\n La llei (RD 244/2019) no permet que al consumidor se li aboni cap import quan el balanç entre el cost de l'energia sobrant i el consumit de qualsevol dia resultés favorable al consumidor.\n Sol succeir quan s'instal·len més panells dels aconsellables quan es consumeix molt per sota del que és habitual (en vacances) o quan el preu de compensació de la comercialitzadora fos alt (molt improbable).
-    tipoSubvencionEU: Si s'anessin a sol·licitar la subvenció dels fons Next Generation indiqui's si la instal·lació fos col·lectiva (una comunitat de propietaris per exemple) o individual. La subvenció no es concedirà si lenergia generada al any fos superior al 80% de lenergia consumida anualment
-    valorSubvencionIBI: Empleneu-ho si el municipi on es realitza la instal·lació bonifica l'impost de béns immobles.\nLa Fundación Renovables facilita una llista de municipis amb bonificacions a l'IBI i reduccions a ICIO.
-    porcientoSubvencionIBI: El percentatge que l’Ajuntament bonifica de l’import de l’IBI
-    tiempoSubvencionIBI: El nombre d’anys durant els quals es pot aplicar la bonificació a l’IBI
+    noCompensadoAnual: L'import de l'energia excedentària que la comercialitzadora
+      no compensarà.\n La llei (RD 244/2019) no permet que al consumidor se li aboni
+      cap import quan el balanç entre el cost de l'energia sobrant i el consumit de
+      qualsevol dia resultés favorable al consumidor.\n Sol succeir quan s'instal·len
+      més panells dels aconsellables quan es consumeix molt per sota del que és habitual
+      (en vacances) o quan el preu de compensació de la comercialitzadora fos alt
+      (molt improbable).
+    tipoSubvencionEU: Si s'anessin a sol·licitar la subvenció dels fons Next Generation
+      indiqui's si la instal·lació fos col·lectiva (una comunitat de propietaris per
+      exemple) o individual. La subvenció no es concedirà si lenergia generada al
+      any fos superior al 80% de lenergia consumida anualment
+    valorSubvencionIBI: Empleneu-ho si el municipi on es realitza la instal·lació
+      bonifica l'impost de béns immobles.\nLa Fundación Renovables facilita una llista
+      de municipis amb bonificacions a l'IBI i reduccions a ICIO.
+    porcientoSubvencionIBI: El percentatge que l’Ajuntament bonifica de l’import de
+      l’IBI
+    tiempoSubvencionIBI: El nombre d’anys durant els quals es pot aplicar la bonificació
+      a l’IBI
     VANProyecto: Valor actual net (VAN)
     TIRProyecto: Taxa interna de retorn (TIR)
 
@@ -246,13 +288,15 @@ LOCATION:
   LABEL_VECTOR: Vista del mapa
   TOOLTIP_MAP_TYPE: Permet intercanviar entre satèl·lit o mapa
   LABEL_BASES_SUMMARY: Resumen
-  PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar al siguiente paso
+  PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar
+    al siguiente paso
   ERROR_DEFINE_BASE: Cal definir las bases solares abans de seguir
   ERROR_tryError: Error en executar fecth a Nominatim. \n {{err}}
   ERROR_countryFailure: L’aplicació només és vàlida per a Espanya
   TOOLTIP_BORRA_BASE: Suprimeix la base seleccionada
   posicionLonLat_LBL: Long-Lat
-  posicionLonLat_TT: No cal omplir aquest camp només es fa servir per centrar el mapa en aquestes coordenades
+  posicionLonLat_TT: No cal omplir aquest camp només es fa servir per centrar el mapa
+    en aquestes coordenades
 
 CONSUMPTION:
   TITLE: Consum
@@ -264,7 +308,8 @@ CONSUMPTION:
   LABEL_MAPA_CONSUMO_MES_HORA: 'Màxim valor: {{maxConsumoMes}} kWh'
   TITLE_MAPA_CONSUMO_MES_HORA: Consumeixo mig horari per mes relatius al màxim,
   LABEL_TITLE_MAP_MONTH_DAY: Mapa de consum horari en kWh
-  ERROR_DEFINIR_CONSUMO_REE: S'ha de definir un consum de base anual superior a 0 per al perfil REE
+  ERROR_DEFINIR_CONSUMO_REE: S'ha de definir un consum de base anual superior a 0
+    per al perfil REE
   ERROR_AL_MENOS_UN_TIPOCONSUMO: Cal definir almenys un tipus de consum
   ERROR_FALTA_FICHERO_CONSUMO: Cal definir el fitxer de consum abans de continuar
   LABEL_BUTTON_NUEVO_TIPOCONSUMO: Nou tipus consum
@@ -279,7 +324,8 @@ CONSUMPTION:
 
   nombreTipoConsumoDuplicado_MSG: El nombre del tipo de consumo no puede estar duplicado
   tipoConsumoDefault_MSG: Defina tipo de fichero a utilizar y tarifa aplicable
-  fuenteTipoConsumoErronea_MSG: Posible error definiendo DATADIS cuando debería ser CSV o viceversa
+  fuenteTipoConsumoErronea_MSG: Posible error definiendo DATADIS cuando debería ser
+    CSV o viceversa
 
   maximoAnual_LBL: Màxim consum horari anual
   numeroDias_LBL: Dies processats
@@ -288,12 +334,25 @@ CONSUMPTION:
   botonMuestraTarifa_TT: Mostra preus de tarifa
   botonSeleccionFichero_TT: Seleccioneu el fitxer de consum
   consumo_MSG_ayudaTipoConsumoHdr: Ayuda definición tipo de consumo
-  consumo_MSG_hayFincasAsociadas: No se puede borrar un tipo de consumo que tiene fincas asociadas
-  consumo_MSG_descripcionFuentes: "Hi ha tres maneres de proveir la informació del perfil de consum <li>CSV:  un fitxer amb valors separats per punt i coma obtingut des del web de la teva empresa distribuïdora.<a href='./dades/Enllaços per a descàrrega CSV individual. htm 'target='_blank'> Veure instruccions aquí </a></li><li>REE:  utilitzant el perfil estàndard de REE segons <a href='https: //www.ree.es/es/clientes/ generador/gestion-mesures-elèctriques/consulta-perfils-de-consum' target='_blank'> perfils finals de consum a partir dels perfils inicials en funció de la demanda real del sistema</a> i el consum anual estimat de la instal·lació</li><li>DATADIS:  un fitxer obtingut de la plataforma de les empreses distribuïdores anomenada <a href: 'https: //datadis.es/home' 'target='_blank'>DATADIS</a>< /li><p>Has de triar una o altra segons la informació que disposis.</p>"
+  consumo_MSG_hayFincasAsociadas: No se puede borrar un tipo de consumo que tiene
+    fincas asociadas
+  consumo_MSG_descripcionFuentes: "Hi ha tres maneres de proveir la informació del\
+    \ perfil de consum <li>CSV:  un fitxer amb valors separats per punt i coma obtingut\
+    \ des del web de la teva empresa distribuïdora.<a href='./dades/Enllaços per a\
+    \ descàrrega CSV individual. htm 'target='_blank'> Veure instruccions aquí </a></li><li>REE:\
+    \  utilitzant el perfil estàndard de REE segons <a href='https: //www.ree.es/es/clientes/\
+    \ generador/gestion-mesures-elèctriques/consulta-perfils-de-consum' target='_blank'>\
+    \ perfils finals de consum a partir dels perfils inicials en funció de la demanda\
+    \ real del sistema</a> i el consum anual estimat de la instal·lació</li><li>DATADIS:\
+    \  un fitxer obtingut de la plataforma de les empreses distribuïdores anomenada\
+    \ <a href: 'https: //datadis.es/home' 'target='_blank'>DATADIS</a>< /li><p>Has\
+    \ de triar una o altra segons la informació que disposis.</p>"
   consumo_MSG_errorLecturaFicheroConsumo: Error de lectura fitxer de consums CSV
   consumo_MSG_errorCabeceras: Error de format CSV falta capçalera {{cabeceras}}
-  consumo_MSG_resumen: '{{registros}} Registres de consum carregats des de {{desde}} fins a {{hasta}}'
-  consumo_MSG_numeroLimitadoRegistros: "Avís:  només existeixen {{registros}} registres que no completen un any d'estadístiques"
+  consumo_MSG_resumen: '{{registros}} Registres de consum carregats des de {{desde}}
+    fins a {{hasta}}'
+  consumo_MSG_numeroLimitadoRegistros: "Avís:  només existeixen {{registros}} registres\
+    \ que no completen un any d'estadístiques"
   consumo_MSG_nombreCSVPorDefinir: Por definir
   tipoConsumo_LBL_fichero: Selecciona fitxer
 
@@ -304,7 +363,8 @@ ENERGY_BALANCE:
   LABEL_AUTOCONSUMO: Autoconsum
   LABEL_ENERGIA_RED: Energia obtinguda de la xarxa
   LABEL_ENERGIA_PANELES: Energia obtinguda dels panells
-  TITLE_GRAPH_MONTH_ENERGY_BALANCE: Producció mitjana mensual amb {{potencia}} instal·lada / consum mitjà mensual
+  TITLE_GRAPH_MONTH_ENERGY_BALANCE: Producció mitjana mensual amb {{potencia}} instal·lada
+    / consum mitjà mensual
 
   MSG_disclaimerProduccion: |
     Notificació-> Les dades per estimar la producció de panells solars s'obtenen de PVGIS. <a href:"https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en">Ver documentación aqui</a>
@@ -314,9 +374,11 @@ ENERGY_BALANCE:
 
   LABEL_fuenteInfoCO2: Dades de conversió per  {{territorio}}
 
-  TOOLTIP_CO2AnualRenovable: CO2 (kg) no expulsats a l’atmosfera si l’origen de l’energia fos peninsular i renovable. Es pot modificar a la finestra de Paràmetres.
+  TOOLTIP_CO2AnualRenovable: CO2 (kg) no expulsats a l’atmosfera si l’origen de l’energia
+    fos peninsular i renovable. Es pot modificar a la finestra de Paràmetres.
 
-  TOOLTIP_CO2AnualNoRenovable: CO2 (kg) no expulsats a l’atmosfera si l’origen de l’energia fos peninsular i no renovable. Es pot modificar a la finestra de Paràmetres.
+  TOOLTIP_CO2AnualNoRenovable: CO2 (kg) no expulsats a l’atmosfera si l’origen de
+    l’energia fos peninsular i no renovable. Es pot modificar a la finestra de Paràmetres.
 
 ECONOMIC_BALANCE:
   TITLE: Balanç econòmic
@@ -340,7 +402,9 @@ ECONOMIC_BALANCE:
 
 SUMMARY:
   TITLE: Resum
-  DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación. Podrás comprobar la relación entre la autoproducción y el consumo (balance energético) y la relación entre la inversión y el ahorro (balance económico)
+  DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación.
+    Podrás comprobar la relación entre la autoproducción y el consumo (balance energético)
+    y la relación entre la inversión y el ahorro (balance económico)
 
 BASIC:
   LABEL_CLOSE: Tanca
@@ -359,26 +423,32 @@ DIALOG_PROPERTIES:
 
 PARAMETROS:
   DIALOG_TITLE: Paràmetres de l'aplicació
-  DIALOG_DESCRIPTION: Configuració de paràmetres de l'aplicació. Els canvis en aquests valors no impliquen un recàlcul de tot el conjunt cal tornar a la pestanya Ubicació i calcular
+  DIALOG_DESCRIPTION: Configuració de paràmetres de l'aplicació. Els canvis en aquests
+    valors no impliquen un recàlcul de tot el conjunt cal tornar a la pestanya Ubicació
+    i calcular
   LABEL_impuestoElectrico: Impost elèctric en %
   TOOLTIP_impuestoElectrico: 'L’impost especial sobre l’electricitat'
   LABEL_IVAEnergia: IVA aplicable a l’energia en %
   TOOLTIP_IVAEnergia: L'IVA que es repercuteix per la despesa en electricitat
   LABEL_IVAInstalacion: IVA aplicable a la instal·lació en %
-  TOOLTIP_IVAInstalacion: L'IVA que es repercuteix sobre l'import a què ascendeixi la instal·lació
+  TOOLTIP_IVAInstalacion: L'IVA que es repercuteix sobre l'import a què ascendeixi
+    la instal·lació
   LABEL_perdidasSistema: Pèrdues de l’instal·lació estimades en %
-  TOOLTIP_perdidasSistema: Les pèrdues estimades del sistema fotovoltaic degudes al deteriorament d'alguns components condicions adverses inversors deficients etc.
+  TOOLTIP_perdidasSistema: Les pèrdues estimades del sistema fotovoltaic degudes al
+    deteriorament d'alguns components condicions adverses inversors deficients etc.
   LABEL_interesVAN: Interès base (%) per al càlcul de VAN
   TOOLTIP_interesVAN: Taxa de descompte a aplicar en el càlcul del valor actual net
 
   tarifasLocales_LBL: Fitxer de tarifes locals
   ficheroTarifas_LBL: Fitxer de tarifes local (veu l'exemple)
-  ficheroTarifas_TT: L'usuari pot personalitzar un fitxer amb els preus que vulgui tot complint el format indicat a l'exemple
+  ficheroTarifas_TT: L'usuari pot personalitzar un fitxer amb els preus que vulgui
+    tot complint el format indicat a l'exemple
   parametros_MSG_errorLecturaFicheroTarifas: Error llegint fitxer local de tarifes
 
 CONTACTO:
   DIALOG_TITLE: Contacte
-  DIALOG_DESCRIPTION: Envia'ns els teus comentaris. Intentarem atendre't el més aviat possible
+  DIALOG_DESCRIPTION: Envia'ns els teus comentaris. Intentarem atendre't el més aviat
+    possible
   PROP:
     nombre: Nom
     email: correu electrònic
@@ -387,7 +457,9 @@ CONTACTO:
     comentario: Fes un comentari
     mejora: Proposa una millora
     error: Informa d’un error
-    advertencia: Les dades que ens aportis en aquest formulari seran utilitzades únicament i exclusivament per contestar la teva sol·licitud i no seran emmagatzemades en cap fitxer ni utilitzades per a cap altre fi
+    advertencia: Les dades que ens aportis en aquest formulari seran utilitzades únicament
+      i exclusivament per contestar la teva sol·licitud i no seran emmagatzemades
+      en cap fitxer ni utilitzades per a cap altre fi
     respuesta: Marca aquí si estàs d'acord en rebre respostes
     mensaje: Missatge
 
@@ -407,9 +479,12 @@ BOTONES:
   botonAyuda_LBL:
 
 AYUDAS:
-  ayuda_TIT_localizacion: En aquesta pestanye s'identifiquen dades de localització geogràfica
-  ayuda_TIT_consumos: En aquesta pestanya s'identifiquen les dades de tarifes i consums abans de la instal·lació
-  ayuda_TIT_resultados: En aquesta pestanya es mostra el balanç energètic resultant de la instal·lació dels panells
+  ayuda_TIT_localizacion: En aquesta pestanye s'identifiquen dades de localització
+    geogràfica
+  ayuda_TIT_consumos: En aquesta pestanya s'identifiquen les dades de tarifes i consums
+    abans de la instal·lació
+  ayuda_TIT_resultados: En aquesta pestanya es mostra el balanç energètic resultant
+    de la instal·lació dels panells
   ayuda_TIT_precios: En aquesta pestanya es mostra el balanç econòmic-financer
   ayuda_TIT_graficos: En aquesta pestanya es mostren alguns gràfics de referència
   ayuda_TIT_panel: Panell d'ajuda
@@ -417,10 +492,12 @@ AYUDAS:
 
 PROYECTO:
   nombreProyecto_LBL: Nom projecte
-  nombreProyecto_TT: "Nom que l'usuari dona a aquesta simulació (p. ex.:  pis01 lumescala01 garatge00 ...)"
+  nombreProyecto_TT: "Nom que l'usuari dona a aquesta simulació (p. ex.:  pis01 lumescala01\
+    \ garatge00 ...)"
   importarProyecto_LBL: Importar projecte
   importarProyecto_TT: Selecciona el fitxer .solimp exportat prèviament per Solidar
-  importarProyecto_MSG_confirmaReemplazo: El projecte existent serà substituït per l'importat
+  importarProyecto_MSG_confirmaReemplazo: El projecte existent serà substituït per
+    l'importat
   importarProyecto_MSG_importando: Important
   importarProyecto_MSG_success: Projecte importat
 
@@ -439,19 +516,23 @@ RESULTS:
   TOOLTIP_botonInfoBase: Informació detallada de la base seleccionada
 
   deficitAnual_LBL: Electricitat comprada
-  deficitAnual_TT: Electricitat que encara és necessàri comprar a la comercialitzadora després de la instal·lació fotovoltaica
+  deficitAnual_TT: Electricitat que encara és necessàri comprar a la comercialitzadora
+    després de la instal·lació fotovoltaica
 
   energiaFaltante%Consumo_LBL: Percentatge d'electricitat comprada
-  energiaFaltante%Consumo_TT: El percentatge de l’electricitat comprada respecte al consum total
+  energiaFaltante%Consumo_TT: El percentatge de l’electricitat comprada respecte al
+    consum total
   energiaSobrante%Produccion_LBL: Percentatge d'electricitat sobrant
-  energiaSobrante%Produccion_TT: El percentatge de l'electricitat sobrant respecte de la produïda
+  energiaSobrante%Produccion_TT: El percentatge de l'electricitat sobrant respecte
+    de la produïda
 
   limiteSubvencionEU_LBL: Limite subvenció EU
   resultados_LBL_graficoResumen: Gràfic resum de consums versus producció
   resultados_LBL_pendienteCalculo: Pendent
   graficos_LBL_numeroMaximoPaneles: Límit de panells per àrea disponible
 
-  resultados_MSG_excesoPotencia: Hi ha un excés de potència en aquesta base en funció a l'àrea disponible
+  resultados_MSG_excesoPotencia: Hi ha un excés de potència en aquesta base en funció
+    a l'àrea disponible
   resultados_LBL_basePropiedades: 'Base:  {{id}}'
 
 GRAFICOS:
@@ -497,20 +578,40 @@ REPORT:
   numeroRegistros: Registres
   desde: Des de
   hasta: Fins
-  disclaimer1: <p> Totes les estimacions donades s’han realitzar amb la màxima precisió possible  amb la millor intenció i sense cap compromís.</p><p class='text-danger fw-bold'>Especial menció hem de fer quant el preu estimat de la instal·lació. Hi ha una gran volatilitat en aquest factor i no podem garantir que reflecteixi la realitat del mercat en cada moment i territori de manera que hem inclòs un camp que et permet corregir aquest preu segons les recomanacions del teu instal·lador.
-  disclaimer1pdf: Totes les estimacions donades s’han realitzar amb la màxima precisió possible  amb la millor intenció i sense cap compromís. Especial menció hem de fer quant el preu estimat de la instal·lació. Hi ha una gran volatilitat en aquest factor i no podem garantir que reflecteixi la realitat del mercat en cada moment i territori de manera que hem inclòs un camp que et permet corregir aquest preu segons les recomanacions del teu instal·lador. Som Energia no té cap interès econòmic ni directe ni indirecte en aquest estudi excepte contribuir a una transició energètica justa amb els usuaris eficient descentralitzada i neta.
-  disclaimer2: Som Energia no té cap interès econòmic ni directe ni indirecte en aquest estudi excepte contribuir a una transició energètica justa amb els usuaris eficient descentralitzada i neta.
+  disclaimer1: <p> Totes les estimacions donades s’han realitzar amb la màxima precisió
+    possible  amb la millor intenció i sense cap compromís.</p><p class='text-danger
+    fw-bold'>Especial menció hem de fer quant el preu estimat de la instal·lació.
+    Hi ha una gran volatilitat en aquest factor i no podem garantir que reflecteixi
+    la realitat del mercat en cada moment i territori de manera que hem inclòs un
+    camp que et permet corregir aquest preu segons les recomanacions del teu instal·lador.
+  disclaimer1pdf: Totes les estimacions donades s’han realitzar amb la màxima precisió
+    possible  amb la millor intenció i sense cap compromís. Especial menció hem de
+    fer quant el preu estimat de la instal·lació. Hi ha una gran volatilitat en aquest
+    factor i no podem garantir que reflecteixi la realitat del mercat en cada moment
+    i territori de manera que hem inclòs un camp que et permet corregir aquest preu
+    segons les recomanacions del teu instal·lador. Som Energia no té cap interès econòmic
+    ni directe ni indirecte en aquest estudi excepte contribuir a una transició energètica
+    justa amb els usuaris eficient descentralitzada i neta.
+  disclaimer2: Som Energia no té cap interès econòmic ni directe ni indirecte en aquest
+    estudi excepte contribuir a una transició energètica justa amb els usuaris eficient
+    descentralitzada i neta.
   formatoPDF: Genera en format PDF
   balanceEnergia: Balanç energia
   localizacion: Ubicació
   balanceEconomico: Balanç econòmic
   balanceFinanciero: Balanç financer (Euros)
-  informe_MSG_procesarPrimero: Has d’obtenir el balanç d'energia abans de poder generar l’informe
+  informe_MSG_procesarPrimero: Has d’obtenir el balanç d'energia abans de poder generar
+    l’informe
 
   TITLE_PRIMER: INFORME PROVISIONAL
   TITLE_STRONG: AUTOGENERACIÓ
   TITLE_SEGON: FOTOVOLTAICA
-  ATENCIO: 'Atenció: Aquest informe procura donar una informació orientativa a partir de les dades reals de consum del període dd-mm-aaaa al dd-mm-aaaa i estimacions aproximades del rendiment de la instal·lació així com del seu cost Hem procurat que les fonts siguin el màxim fiables i pròximes a la realitat però en cap cas garantim des de Som Energia el seu acompliment en el transcurs dels 25 anys de vida utils estimats.'
+  ATENCIO: 'Atenció: Aquest informe procura donar una informació orientativa a partir
+    de les dades reals de consum del període dd-mm-aaaa al dd-mm-aaaa i estimacions
+    aproximades del rendiment de la instal·lació així com del seu cost Hem procurat
+    que les fonts siguin el màxim fiables i pròximes a la realitat però en cap cas
+    garantim des de Som Energia el seu acompliment en el transcurs dels 25 anys de
+    vida utils estimats.'
   DADES_TITLE: Dades principals
   DADES_NOM: Nom
   DADES_DIRECCIO: Direcció
@@ -548,15 +649,21 @@ REPORT:
   PROPERESPASES_DESCRIPTION: Apuntat a una
   PROPERESPASES_DESCRIPTION_STRONG: compra col·lectiva
   PROPERESPASES_DESCRIPTION_FINAL: de Som Energia
-  PROPERESPASES_TEXT: Accedeix a lapartat de comprescol·lectives de la web deSom Energia i mira si hi ha alguna iniciativa oberta a la teva zona.
+  PROPERESPASES_TEXT: Accedeix a lapartat de comprescol·lectives de la web deSom Energia
+    i mira si hi ha alguna iniciativa oberta a la teva zona.
   PROPERESPASES_LINK: Com funcionen les compres col·lectives de Som Energia?
   PROPERESPASES_TITLE_SEGON: Contacta amb una
   PROPERESPASES_TITLE_SEGON_STRONG: empresa instal·ladora especialitzada i de confiança
-  PROPERESPASES_TEXT_SEGON: Com no pot ser duna altra manera, et recomanem contactar empreses cooperatives de leconomia solidària com ara les que trobaràs en aquest enllaç.
-  PROPERESPASES_TEXT_TERCER: També pots buscar entre les empreses que han tirat endavant les diferents compres col·lectives de lSom Energia o també altres empreses expertes del sector que pots trobaraquí.
+  PROPERESPASES_TEXT_SEGON: Com no pot ser duna altra manera, et recomanem contactar
+    empreses cooperatives de leconomia solidària com ara les que trobaràs en aquest
+    enllaç.
+  PROPERESPASES_TEXT_TERCER: També pots buscar entre les empreses que han tirat endavant
+    les diferents compres col·lectives de lSom Energia o també altres empreses expertes
+    del sector que pots trobaraquí.
   AUTOGENERACIO_TITLE: Informació general sobre autogeneració
   AUTOGENERACIO_TEXT: Pots trobar informació general sobre
-  AUTOGENERACIO_TEXT_STRONG: què és i com funciona lautoconsum en els següents articles del nostre centre d'ajuda
+  AUTOGENERACIO_TEXT_STRONG: què és i com funciona lautoconsum en els següents articles
+    del nostre centre d'ajuda
   AUTOGENERACIO_TEXT_FINAL: en els següents articles del nostre centre d'ajuda
   AUTOGENERACIO_LINK: Informació general sobre autogeneració
 
@@ -571,13 +678,23 @@ REPORT:
 
   INFORME_TITLE: Com shan generat els càlculs daquest informe?
   GENERACIO_TITLE: Dades de Generació
-  GENERACIO_DESCRIPTION: Font PVGis Ubicació de referencia Generació estimada segons ubicació Afectació de la inclinació Afectació de la orientació
-  GENERACIO_TEXT: Cal tenir en compte que, tot i estar extretes de fons oficials, aquestes son dades estimades teòriques i per tant no sajustaran 100% a la realitat. També cal tenir en compte possibles ombres que en aquest estudi no shan tingut en compte i poden afectar de forma molt important els resultats.
+  GENERACIO_DESCRIPTION: Font PVGis Ubicació de referencia Generació estimada segons
+    ubicació Afectació de la inclinació Afectació de la orientació
+  GENERACIO_TEXT: Cal tenir en compte que, tot i estar extretes de fons oficials,
+    aquestes son dades estimades teòriques i per tant no sajustaran 100% a la realitat.
+    També cal tenir en compte possibles ombres que en aquest estudi no shan tingut
+    en compte i poden afectar de forma molt important els resultats.
   TITLE: Dades de consum
-  DESCRIPTION: Corbes de consum extretes dels comptadors gestionats per lempresa de distribució elèctrica de la teva zona.
-  TEXT: Cal tenir en compte que si es modifiquen aquests usos denergia es pot millorar o empitjorar els resultats daquest informe. Lobjectiu de tota persona autogeneradora és incrementar al màxim lautogeneració directa, es a dir, utilitzar lenergia en hores solars.
+  DESCRIPTION: Corbes de consum extretes dels comptadors gestionats per lempresa de
+    distribució elèctrica de la teva zona.
+  TEXT: Cal tenir en compte que si es modifiquen aquests usos denergia es pot millorar
+    o empitjorar els resultats daquest informe. Lobjectiu de tota persona autogeneradora
+    és incrementar al màxim lautogeneració directa, es a dir, utilitzar lenergia en
+    hores solars.
   ECONOMIQUES_TITLE: Dades de economiques
-  ECONOMIQUES_DESCRIPTION: 'Tarifes d’ús de l’energia de referència: P1: 0,245 €/kWh P2: 0,146 €/kWh P3: 0,101 €/kWh Tarifa de compensació d’excedents 0,066 €/kWh (impostos apart)'
+  ECONOMIQUES_DESCRIPTION: 'Tarifes d’ús de l’energia de referència: P1: 0,245 €/kWh
+    P2: 0,146 €/kWh P3: 0,101 €/kWh Tarifa de compensació d’excedents 0,066 €/kWh
+    (impostos apart)'
   PEU: Per a qualsevol dubte pots escriure a auto@somenergia.coop
   ANY: any
   ANYS: anys
