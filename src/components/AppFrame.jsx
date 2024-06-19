@@ -103,7 +103,7 @@ export default function AppFrame({ children }) {
           <ParametersMenu />
           <ContactMenu />
           <ProjectMenu />
-          {TCB.estiloActivo === 'CLARA' && <InLineHelp />}
+          {InLineHelp && <InLineHelp />}
         </Toolbar>
       </AppBar>
       <Box sx={{ minHeight: 'calc( 100vh - 7rem )' }}>{children}</Box>
