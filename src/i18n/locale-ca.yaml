@@ -3,26 +3,20 @@ APP_FRAME:
   PAGE_SIMULATORS: Simuladors
   PAGE_ABOUT: Quant a Solidar
   TOGGLE_COLOR_MODE: Canvia el tema de color
-  CHANGE_LANGUAGE: Canviar l'idioma
-  CONTRIBUTE_TRANSLATIONS: Ayúdanos a traducir
-  GO_HOME: Ir a la pagina principal
-  GO_SIMULATOR: Ir al simulador
-  PAGE_NOT_FOUND: No se ha encontrado la pàgina
+  CHANGE_LANGUAGE: Canvia l'idioma
+  CONTRIBUTE_TRANSLATIONS: Ajuda'ns a traduir
+  GO_HOME: Anar a la pàgina principal
+  GO_SIMULATOR: Anar al simulador
+  PAGE_NOT_FOUND: No s'ha trobat la pàgina
+  IMPORT_EXPORT: Gestió d'exportació/recuperació d'un projecte de simulació
 HOME:
-  IS_IT_WORTH_TITLE1: Quiero ponerme placas solares
-  IS_IT_WORTH_TITLE2: ¿cómo sé si me compensa?
+  IS_IT_WORTH_TITLE1: Vull posar-me panells solars
+  IS_IT_WORTH_TITLE2: Com se si em compensa?
   IS_IT_WORTH_PARAGRAPH1: |
-    Solidar es una calculadora que determina
-    la cantidad óptima de paneles a instalar
-    según las condiciones de la cubierta
-    y del consumo eléctrico de las personas participantes.
+    Solidar és una calculadora que determina la quantiat òptima de panells a instal·lar segons les condicions de la coberta i del consum elèctric de les persones participants.
 
   IS_IT_WORTH_PARAGRAPH2: |
-    Toma datos como el tamaño de la cubierta
-    su inclinación y orientación
-    el consumo eléctrico y la tarifa
-    y genera un informe con el número de paneles
-    el coste de la instalación y el ahorro potencial.
+    Agafa dades com la mida de la coberta, la seva inclinació i orientació, el consum elèctric i la tarifa i genera un informe amb el nombre de panells, el cost de la instal·lació i l'estalvi potencial.
 
   IS_IT_WORTH_BUTTON: Ir a las herramientas de simulación
   SIMULATION_TOOLS_TITLE: Herramientas de simulación
