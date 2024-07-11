@@ -76,7 +76,7 @@ BaseSolar:
     inclinacionTejado: Inclinación del tejado
     inclinacionPaneles: Inclinación de los paneles
     inclinacionOptima: Inclinación óptima
-    inAcimut: Orientación  al sur
+    inAcimut: Orientación al sur
     areaReal: Superficie disponible
     panelesMaximo: Número de paneles máximo
     potenciaMaxima: Potencia máxima
@@ -107,8 +107,8 @@ BaseSolar:
   DESCRIPTION:
     roofType: Indica qué tipo de cubierta tienes
     nombreBaseSolar: Ponle un nombre a tu área disponible
-    angulosOptimos: En este caso la aplicación te propondrá la mejor  inclinación
-      de los paneles de modo que se obtenga el máximo rendimiento de la instalación.
+    angulosOptimos: En este caso la aplicación te propondrá la mejor inclinación de
+      los paneles de modo que se obtenga el máximo rendimiento de la instalación.
     inclinacionTejado: Indícanos la inclinación del tejado donde se instalarán los
       paneles con respecto a la horizontal del terreno.
     inclinacionPaneles: Indicanos la inclinación de los paneles medida con respecto
