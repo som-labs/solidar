@@ -13,12 +13,15 @@ HOME:
   IS_IT_WORTH_TITLE1: Vull posar-me panells solars
   IS_IT_WORTH_TITLE2: Com se si em compensa?
   IS_IT_WORTH_PARAGRAPH1: |
-    Solidar és una calculadora que determina la quantiat òptima de panells a instal·lar segons les condicions de la coberta i del consum elèctric de les persones participants.
+    Solidar és una calculadora que determina
+    la quantiat òptima de panells a instal·lar
+    segons les condicions de la coberta
+    i del consum elèctric de les persones participants.
 
   IS_IT_WORTH_PARAGRAPH2: |
     Agafa dades com la mida de la coberta, la seva inclinació i orientació, el consum elèctric i la tarifa i genera un informe amb el nombre de panells, el cost de la instal·lació i l'estalvi potencial.
 
-  IS_IT_WORTH_BUTTON: Ir a las herramientas de simulación
+  IS_IT_WORTH_BUTTON: Anar a les eines de simulació
   SIMULATION_TOOLS_TITLE: Herramientas de simulación
   SIMULATION_TOOLS_INDIVIDUAL: Simulador para Consumo Individual
   SIMULATION_TOOLS_INDIVIDUAL_DESCRIPTION: (Nueva versión disponible)
@@ -693,3 +696,5 @@ REPORT:
   ANY: any
   ANYS: anys
 
+ABOUT:
+  TEXT: "\n"
