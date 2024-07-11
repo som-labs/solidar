@@ -105,6 +105,16 @@ BaseSolar:
   DESCRIPTION:
     roofType: Indica quin tipus de coberta tens
     nombreBaseSolar: Posa un nom a la teva àrea disponible
+    angulosOptimos: En aquest cas, l'aplicació et proposarà la millor inclinació dels
+      panells de manera que s'obtingui el màxim rendiment de la instal·lació.
+    inAcimut: Has d'indicar l'orientació que tindran els panells respecte al sud geogràfic.
+      La primera proposta la fa l'aplicació en base a l'àrea que has dibuixat, però
+      la pots canviar en aquest camp.
+    inclinacionTejado: Indica'ns la inclinació de la teulada on s'instal·laran els
+      panells pel que fa a l'horitzontal del terreny.
+    inclinacionPaneles: Indica'ns la inclinació dels panells mesurada respecte a la
+      coberta.
+    inclinacionOptima: Marca aquest camp si vols que el sistema calculi el valor òptim.
 TipoConsumo:
   NAME: Tipus de consum
   PROP:
@@ -128,28 +138,33 @@ Consumo:
   NAME: Consum
   PROP:
     maximoAnual: Consum horari màxim
-    consumoDiario: Consum diari
-    consumoMensual: Consum mensual
-    totalAnual: Consum anual
+    consumoDiario: Ús elèctric diari
+    consumoMensual: Ús elèctric mensual
+    totalAnual: Ús elèctric anual
+    consumoHorario: Ús elèctric horari mitjà
   TOOLTIP:
-    maximoAnual: Consum elèctric màxim en una hora
-    consumoDiario: Consum mitjà diari d'electricitat
-    consumoMensual: Consum mitjà mensual d'electricitat
-    totalAnual: Consum elèctric anual
+    maximoAnual: Màxim ús delectricitat en una hora
+    consumoDiario: Ús elèctric mitjà diari d'electricitat
+    consumoMensual: Ús elèctric mitjà mensual d'electricitat
+    totalAnual: Ús elèctric anual
 
 Instalacion:
   NAME: Instal·lació
   PROP:
-    precioInstalacion: Cost d’instal·lació
-    potenciaUnitaria: Potència per panell a kWp
+    precioInstalacion: Preu de la instal·lació
+    potenciaUnitaria: Potència del panell
     paneles: Panells
-    potenciaTotal: Potència disponible
-    potencia: Potència unitària (kWp) panell inici
+    potenciaTotal: Potència pic
+    potencia: Potència unitària
     tecnologia: Tecnologia dels panells
 
+    precioInstalacionCorregido: Preu de la instal·lació corregit
+    tipoPanel: Tipus de panell
+    largo: Llarg del panell proposat
+    ancho: Ample del panell proposat
   TOOLTIP:
-    precioInstalacion: Cost d’instal·lació estimat
-    potenciaUnitaria: Potència unitària en kWp dels panells instal·lats
+    precioInstalacion: Preu de la instal·lació
+    potenciaUnitaria: Potència unitària dels panells instal·lats a la base
     paneles: Nombre recomanat de panells a instal·lar en aquesta base. Es pot modificar
     potenciaTotal: Potència màxima disponible
     potencia: Potència kWp del panell inicial utilitzat en els càlculs
@@ -169,6 +184,8 @@ Instalacion:
       Tot i intentar mantenir els preus actualitzats aquesta quantitat s’hauria de considerar com una orientació provisional del projecte que un instal·lador pot formular (sobretot si té més informació sobre el lloc final). \n Aquí no estan repercutides algunes despeses: obra civil (si fos necessària) substitució de l’aïllament o les teules antigues de la coberta mitjans d'elevació si calguessin modificacions que la distribuïdora o l'Administració poguessin requerir per a la instal·lació i alguns impostos i taxes que l'ajuntament podria cobrar (ICIO o llicència d'obres)
   LABEL_tecnologiaDesconocida: Desconeguda
 
+  SHORT:
+    paneles: Panells
 Tarifa:
   NAME: Tarifa
   PROP:
