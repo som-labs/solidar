@@ -11,7 +11,7 @@ APP_FRAME:
   IMPORT_EXPORT: Gestió d'exportació/recuperació d'un projecte de simulació
 HOME:
   IS_IT_WORTH_TITLE1: Vull posar-me panells solars
-  IS_IT_WORTH_TITLE2: Com se si em compensa?
+  IS_IT_WORTH_TITLE2: com se si em compensa?
   IS_IT_WORTH_PARAGRAPH1: |
     Solidar és una calculadora que determina
     la quantiat òptima de panells a instal·lar
@@ -19,28 +19,32 @@ HOME:
     i del consum elèctric de les persones participants.
 
   IS_IT_WORTH_PARAGRAPH2: |
-    Agafa dades com la mida de la coberta, la seva inclinació i orientació, el consum elèctric i la tarifa i genera un informe amb el nombre de panells, el cost de la instal·lació i l'estalvi potencial.
+    Agafa dades com la mida de la coberta,
+    la seva inclinació i orientació,
+    el consum elèctric i la tarifa
+    i genera un informe amb el nombre de panells,
+    el cost de la instal·lació i l'estalvi potencial.
 
   IS_IT_WORTH_BUTTON: Anar a les eines de simulació
-  SIMULATION_TOOLS_TITLE: Herramientas de simulación
-  SIMULATION_TOOLS_INDIVIDUAL: Simulador para Consumo Individual
-  SIMULATION_TOOLS_INDIVIDUAL_DESCRIPTION: (Nueva versión disponible)
-  SIMULATION_TOOLS_COLLECTIVE: Simulador para Consumo Colectivo
-  SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION: (En desarrollo)
-  FURTHER_INFORMATION_TITLE: Información de interés
+  SIMULATION_TOOLS_TITLE: Eines de simulació
+  SIMULATION_TOOLS_INDIVIDUAL: Simulador per Consum Individual
+  SIMULATION_TOOLS_INDIVIDUAL_DESCRIPTION: (Nova versió disponible)
+  SIMULATION_TOOLS_COLLECTIVE: Simulador per Consum Col·lectiu
+  SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION: (En desenvolupament)
+  FURTHER_INFORMATION_TITLE: Informació d'interès
 
-ene: gen
-feb: feb
-mar: mar
-abr: abr
-may: mai
-jun: jun
-jul: jul
-ago: ago
-sep: set
-oct: oct
-nov: nov
-dic: des
+ene: gener
+feb: febrer
+mar: març
+abr: abril
+may: maig
+jun: juny
+jul: juliol
+ago: agost
+sep: setembre
+oct: octubre
+nov: novembre
+dic: desembre
 enero: gener
 febrero: febrer
 marzo: març
@@ -57,16 +61,24 @@ diciembre: desembre
 BaseSolar:
   NAME: Base solar
   PROP:
-    nombreBaseSolar: Nom base
+    nombreBaseSolar: Nom de l'àrea
     angulosOptimos: Angles òptims
     inclinacion: Inclinació
-    inclinacionPaneles: Inclinació del panell
+    inclinacionPaneles: Inclinació dels panells
     inclinacionOptima: Inclinació òptima
-    inAcimut: Orientació (Azimut)
-    areaReal: Àrea corregida
-    potenciaMaxima: Màxim kWp
-    idBaseSolar: ID
-    lonlatBaseSolar: Long-Lat
+    inAcimut: Orientació al Sud
+    areaReal: Superfície disponible
+    potenciaMaxima: Potència màxima
+    idBaseSolar: id
+    lonlatBaseSolar: Coordenades Geogràfiques
+    inclinacionTejado: Inclinació de la coberta
+    roofType: Tipus de coberta
+    panelesMaximo: Nombre de panells màxim
+    anchoReal: Longitud transversal
+    cumbrera: Longitud carener
+    columnas: Màx.panells columna
+    filas: Màx.panells filera
+    modoInstalacion: Disposició dels panells
   TOOLTIP:
     nombreBaseSolar: Identifica el nom d'aquesta base per a referències futures
     angulosOptimos: Marca aquest camp si vols que el sistema calculi el valor òptim
@@ -82,8 +94,17 @@ BaseSolar:
     areaReal: Àrea real disponible corregida per la inclinació de la teulada
     potenciaMaxima: Potència màxima pic a instal·lar en aquesta àrea (Veure paràmetre
       de conversió)
-    lonlatBaseSolar: Coordenadas geográficas de la base
+    lonlatBaseSolar: Coordenadas geogràfiques de la base
 
+    panelesMaximo: Nombre màxim de panells que es poden instal·lar en aquesta àrea
+  SHORT:
+    nombreBaseSolar: Nom
+    areaReal: Àrea
+    inclinacion: Incl.
+    inAcimut: Orient.Sud
+  DESCRIPTION:
+    roofType: Indica quin tipus de coberta tens
+    nombreBaseSolar: Posa un nom a la teva àrea disponible
 TipoConsumo:
   NAME: Tipus de consum
   PROP:
@@ -697,4 +718,30 @@ REPORT:
   ANYS: anys
 
 ABOUT:
-  TEXT: "\n"
+  TEXT: "L'any 2019, va entrar en vigor a Espanya una nova normativa per afavorir\
+    \ l'impuls de la implantació de les energies renovables, eliminant així les traves\
+    \ establertes en anys anteriors coneguda sota el terme “impost al sol”.\nEn aquest\
+    \ marc favorable, un grup de persones voluntàries del Grup Local de Madrid va\
+    \ voler contribuir a l'objectiu desenvolupant una eina de càlcul que facilités\
+    \ la informació necessària per poder valorar les condicions tecnicoeconòmiques\
+    \ a qualsevol que es plantegés realitzar una instal·lació fotovoltaica.\n<br /><br\
+    \ />\nAixí va néixer el simulador SolidarEnergia: al principi mitjançant fulls\
+    \ de càlcul i dades estadístiques obtingudes del sistema d'informació geogràfica\
+    \ PVGIS (Photovoltaic Geographical Information System) per anar evolucionant en\
+    \ successives versions fins a arribar a una aplicació web a l'abast de totes les\
+    \ persones interessades.\nA mesura que fèiem demostracions de l'aplicació als\
+    \ grups locals, a l'equip tècnic i a persones interessades en general, ens va\
+    \ semblar oportú, tant al grup local de Madrid com a l'equip tècnic, promoure\
+    \ una versió del simulador que es pogués difondre àmpliament al públic en general\
+    \ des dels propis serveis de la cooperativa de la manera més oberta possible.\n\
+    <br /><br />\nAmb aquest objectiu i amb l'ajuda de l'equip tècnic, hem anat perfeccionant\
+    \ durant mesos molts aspectes del simulador: des dels diversos algoritmes que\
+    \ s'apliquen als càlculs fins als gràfics, textos, esquemes i tot allò relacionat\
+    \ amb l'aspecte i la presentació de la eina.\n<br /><br />\nFruit de tot aquest\
+    \ afany és SolidarEnergia: una eina per calcular amb la màxima fiabilitat possible\
+    \ la capacitat fotovoltaica d'una o diverses cobertes i l'impacte energètic i\
+    \ econòmic del projecte d'instal·lació corresponent a partir del preu de l'energia\
+    \ elèctrica subministrada i del consum d'un o diversos immobles.\n<br /><br />\n\
+    Esperem que contribueixi a democratitzar l'accés a l'energia renovable i reduir\
+    \ els riscos que afronta el nostre planeta amb el canvi climàtic.\n<br /><br />\n"
+  TITLE: Què és Solidar Energia?
