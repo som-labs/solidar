@@ -91,8 +91,8 @@ BaseSolar:
     nombreBaseSolar: Identifica el nombre de esta base para futuras referencias
     angulosOptimos: Marque este campo si desea que el sistema calcule el valor óptimo
       de inclinación y acimut
-    inclinacion: Inclinación en grados (entre 0º y 90º)  medida con respecto a la
-      horizontal del terreno sobre el que se montarán los paneles
+    inclinacion: Inclinación en grados (entre 0º y 90º) medida con respecto a la horizontal
+      del terreno sobre el que se montarán los paneles
     inclinacionOptima: Marque este campo si desea que el sistema calcule el valor
       óptimo de la inclinación de los paneles
     inAcimut: El ángulo entre el sur con la proyección horizontal del sol. Si los
