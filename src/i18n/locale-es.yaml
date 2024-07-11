@@ -148,7 +148,7 @@ Consumo:
     maximoAnual: Máximo uso de electricidad en una hora
     consumoDiario: Uso eléctrico medio diario de electricidad
     consumoMensual: Uso eléctrico medio mensual de electricidad
-    totalAnual: Uso eléctrico eléctrico anual
+    totalAnual: Uso eléctrico anual
 
 Instalacion:
   NAME: Instalación
