@@ -179,6 +179,18 @@ Instalacion:
       \ de la distribució espectral de la irradiància rebuda en la producció només\
       \ es pot calcular per a les tecnologies de silici cristal·lí i de CdTe."
 
+    tecnologia_OLD: "Es poden triar tres tipus de panells per fer les estimacions\n\
+      - els que tenen cèl·lules de silici cristal·lí\n- mòduls de làmina prima de\
+      \ seleniur de coure i indi (CuInSe) o seleniur de coure indi i gal·li (CuInGaSe)\n\
+      - mòduls de làmina prima de tel·lur de cadmi (CdTe)\n- Desconegut<br />Si s'escull\
+      \ alguna de les tres primeres opcions en el càlcul de la producció fotovoltaica\
+      \ es tindrà en compte l'efecte de la temperatura. Si s'escull l'altra opció\
+      \ (desconegut) en el càlcul s'assumiran unes pèrdues de potència a causa de\
+      \ l'efecte de la temperatura del 8% (valor genèric que es considera raonable\
+      \ per a climes temperats). L'efecte de la distribució espectral de la irradiància\
+      \ rebuda sobre la producció només es pot calcular per a les tecnologies de silici\
+      \ cristal·lí i de CdTe."
+    tipoPanel: Potència de panells predefinits
   DESCRIPTION:
     precioInstalacion: |
       Tot i intentar mantenir els preus actualitzats aquesta quantitat s’hauria de considerar com una orientació provisional del projecte que un instal·lador pot formular (sobretot si té més informació sobre el lloc final). \n Aquí no estan repercutides algunes despeses: obra civil (si fos necessària) substitució de l’aïllament o les teules antigues de la coberta mitjans d'elevació si calguessin modificacions que la distribuïdora o l'Administració poguessin requerir per a la instal·lació i alguns impostos i taxes que l'ajuntament podria cobrar (ICIO o llicència d'obres)
