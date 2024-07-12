@@ -168,16 +168,12 @@ Instalacion:
     paneles: Nombre recomanat de panells a instal·lar en aquesta base. Es pot modificar
     potenciaTotal: Potència màxima disponible
     potencia: Potència kWp del panell inicial utilitzat en els càlculs
-    tecnologia: "Pots triar tres tipus de panells per realitzar les estimacions: \
-      \ \n- Els que tenen cèl·lules de silici cristal·lí \n- mòduls de làmina prima\
-      \ de seleniur de coure i indi (CulnSe) o seleniur de coure indi i gal·li (CuInGaSe)\
-      \ \n - Mòduls de làmina prima de teluro de cadmi (CdTe) \n- Desconegut \n Si\
-      \ es tria una de les tres primeres opcions en el càlcul de la producció fotovoltaica\
-      \ es tindrà en compte l'efecte de la temperatura. Si es tria l’altra opció (desconegut)\
-      \ en el càlcul s’assumiran unes pèrdues d’energia a causa de l’efecte de temperatura\
-      \ del 8% (valor genèric que es considera raonable pels climes temperats). L’efecte\
-      \ de la distribució espectral de la irradiància rebuda en la producció només\
-      \ es pot calcular per a les tecnologies de silici cristal·lí i de CdTe."
+    tecnologia: "Panells de Silici cristal·lí i CdTe (làmina prima de Telur de Cadmi):\
+      \ el càlcul té en compte l'efecte de la temperatura i l'efecte de la distribució\
+      \ espectral de la irradiància rebuda.<br />\nPanells CIS (làmina prima de CUInSe\
+      \ o CuInGaSe): el càlcul té en compte l'efecte de la temperatura.<br />\nDesconegut:\
+      \ s'assumiran unes pèrdues de potència a causa de l'efecte de la temperatura\
+      \ de 8% (valor genèric per a climes temperats)\"\n"
 
     tecnologia_OLD: "Es poden triar tres tipus de panells per fer les estimacions\n\
       - els que tenen cèl·lules de silici cristal·lí\n- mòduls de làmina prima de\
@@ -191,28 +187,46 @@ Instalacion:
       \ rebuda sobre la producció només es pot calcular per a les tecnologies de silici\
       \ cristal·lí i de CdTe."
     tipoPanel: Potència de panells predefinits
+    largo: Llarg del panell en metres
+    ancho: Ample del panell en metres
   DESCRIPTION:
     precioInstalacion: |
       Tot i intentar mantenir els preus actualitzats aquesta quantitat s’hauria de considerar com una orientació provisional del projecte que un instal·lador pot formular (sobretot si té més informació sobre el lloc final). \n Aquí no estan repercutides algunes despeses: obra civil (si fos necessària) substitució de l’aïllament o les teules antigues de la coberta mitjans d'elevació si calguessin modificacions que la distribuïdora o l'Administració poguessin requerir per a la instal·lació i alguns impostos i taxes que l'ajuntament podria cobrar (ICIO o llicència d'obres)
+    paneles: "La simulació es realitzarà amb un panell estàndard de {{potència}}.\
+      \ Si vols, pots modificar la potència i la tecnologia utilitzada.\n"
   LABEL_tecnologiaDesconocida: Desconeguda
 
   SHORT:
     paneles: Panells
+  LABEL_tipoPanel: Selecciona la potència del panell
 Tarifa:
   NAME: Tarifa
   PROP:
     territorio: Territori
     tipoTarifa: Tipus tarifa
     nombreTarifa: El tipus de tarifa contractada amb l'empresa comercialitzadora
-    P0: Preu compensació excedents
+    P0: Compensació Excedents
     P1: Tarifa P1
     P2: Tarifa P2
     P3: Tarifa P3
     P4: Tarifa P4
     P5: Tarifa P5
     P6: Tarifa P6
+    2.0TD:
+      P0: Compensació Excedents
+      P1: Període punta (P1)
+      P2: Període pla (P2)
+      P3: Període vall (P3)
+    3.0TD:
+      P0: Compensació Excedents
+      P1: P1
+      P2: P2
+      P3: P3
+      P4: P4
+      P5: P5
+      P6: P6
   TOOLTIP:
-    tipoTarifa: El tipus de tarifa contractada amb l'empresa comercialitzadora
+    tipoTarifa: Nom del tipus de tarifa
     0: Indica el preu en euros sense IVA amb què la comercialitzadora paga l'electricitat
       no consumida
     1: Tarifa P1 o punta (la més cara en 2.0TD)
@@ -227,31 +241,33 @@ Rendimiento:
   PROP:
     fechaInicio: Data inici dades
     fechaFin: Data final dades
-    horaInicio: Hora inicial datos
-    horaFin: Hora final datos
+    horaInicio: Hora inicial dades
+    horaFin: Hora final dades
     rendimientoCreado: Rendiment creat
     system_loss: Pèdues tècniques del sistema
     technology: Tecnologia
     inclinacionOptimal: Inclinació òptima
     acimutOptimal: Azimut òptim
     radiation_db: Base de dades de radiació
-    meteo_db: Base de dades de Meteo
+    meteo_db: Base de dades de meteo
     year_min: Any inicial estadístiques
     year_max: Any inicial estadístiques
     numeroRegistros: Registres llegits
     valorOptimo: Òptim
-    PVGISfechaInicio: Inicio datos PVGIS
-    PVGISfechaFin: Fin datos PVGIS
+    PVGISfechaInicio: Inici dades PVGIS
+    PVGISfechaFin: Fi dades PVGIS
     inclinacion: Inclinació panells
     acimut: Acimut de la base
-    unitarioTotal: kWh anual per kWp instal·lat
+    unitarioTotal: Energia anual / kWp instal·lat
   TOOLTIP:
-    unitarioTotal: Són els kWh anuals que es poden obtenir per cada kWp instal·lat
-      en aquesta base
+    unitarioTotal: Energia anual produïda per cada kWp instal·lat
   ERROR_PVGIS_FETCH: Error executant fecth en PVGIS.\n{{err}} \n {{url}}
 
+  MSG_ERROR_PVGIS_FETCH: Error executant fecth en PVGIS.({{err}}) -- ({{url}})
+  MSG_BASE_SIN_RENDIMIENTO: Hi ha hagut un problema obtenint dades de PVGIS. No es
+    pot continuar.
 Balance:
-  NAME: Balance
+  NAME: Balanç
   PROP:
     Consumo%Produccion: Percentatge de consum respecte a la producció
     Produccion%Consumo: Percentatge de producció respecte el consum
