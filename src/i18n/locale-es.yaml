@@ -173,8 +173,8 @@ Instalacion:
     tipoPanel: Potencia de paneles predefinidos
     potenciaTotal: Potencia pico total instalada en la base
     potencia: Potencia en kWp del panel utilizado en los cálculos
-    tecnologia_OLD: "Se pueden elegir tres tipos de paneles para realizar las estimaciones\
-      \ \n- los que tienen células de silicio cristalino\n- módulos de lámina delgada\
+    tecnologia_OLD: "Se pueden elegir tres tipos de paneles para realizar las estimaciones\n\
+      - los que tienen células de silicio cristalino\n- módulos de lámina delgada\
       \ de seleniuro de cobre e indio (CuInSe) o seleniuro de cobre indio y galio\
       \ (CuInGaSe)\n- módulos de lámina delgada de teluro de cadmio (CdTe)\n- Desconocido<br\
       \ />Si se elige alguna de las tres primeras opciones en el cálculo de la producción\
