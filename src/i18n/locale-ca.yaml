@@ -275,6 +275,10 @@ Balance:
     autosuficienciaMediaAnual: Autosuficiència mitjana anual
     autosuficienciaMaxima: Autosuficiència màxima
 
+    excedenteAnual: Excedent
+    deficitAnual: Electricitat comprada
+    energiaFaltante%Consumo: Percentatge d'electricitat comprada
+    energiaSobrante%Produccion: Percentatge d'electricitat sobrant
   TOOLTIP:
     Consumo%Produccion: Percentatge de consum respecte a la producció. Per poder optar
       a la subvenció dels fons Next Generation aquest percentatge sempre ha de superar
