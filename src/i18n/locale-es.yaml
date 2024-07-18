@@ -451,7 +451,7 @@ LOCATION:
   PROMPT_BASES_SUMMARY: Recuerda que puedes indicar diferentes áreas disponibles y
     que cada una de ellas puede tener una orientación respecto al sur distinta. Revisa
     que los datos del resumen son correctos.
-  ERROR_DEFINE_BASE: Debe definir las bases solares antes de continuar
+  ERROR_DEFINE_BASE: Debes definir las bases solares antes de continuar
   NOT_ENOUGH_AREA: No es posible poner paneles de {{largo}} por {{ancho}} con margen
     lateral de {{margen}} en este area. Redefine el área disponible, el tipo de panel
     a utilizar o el margen lateral en los parametros de la aplicación.
