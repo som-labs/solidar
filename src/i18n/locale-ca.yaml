@@ -469,18 +469,18 @@ LOCATION:
     de la instal·lació proposada.
   PROMPT_DRAW: Si la teva coberta és inclinada, <strong>els dos primers punts que
     marquis seran considerats la part més elevada de la teulada.</strong>
-  TOOLTIP_CUMBRERA: 'Carener: {{carener}}'
-  TOOLTIP_MEASURES: 'Carener: {{carener}}<br />Amplada: {{amplada}}<br />Area: {{area}}'
+  TOOLTIP_CUMBRERA: 'Carener: {{cumbrera}}'
+  TOOLTIP_MEASURES: 'Carener: {{cumbrera}}<br />Amplada: {{ancho}}<br />Area: {{area}}'
   LABEL_FITMAP: Ajustar mapa
   LABEL_GOOGLE_EARTH: Veure a Google Earth
   TITLE_DIALOG_NEW_BASE: Nova base solar
   ERROR_INCLINADO_NOANGLE: Definir la teulada horitzontal
   ERROR_NOMBRE_BASE_SOLAR_DUPLICADO: El nom de la base no pot estar duplicat
-  NOT_ENOUGH_AREA: No és possible posar panells de {{llarg}} per {{amplada}} amb marge
-    lateral de {{marge}} en aquesta àrea. Redefiniu l'àrea disponible, el tipus de
+  NOT_ENOUGH_AREA: No és possible posar panells de {{largo}} per {{ancho}} amb marge
+    lateral de {{margen}} en aquesta àrea. Redefiniu l'àrea disponible, el tipus de
     tauler a utilitzar o el marge lateral als paràmetres de l'aplicació.
-  MSG_AREA_TOTAL: "Àrea total disponible en aquesta configuració: {{àreaTotal}} <br\
-    \ />\nPotència màxima a instal·lar: {{potènciaMaxima}}\n"
+  MSG_AREA_TOTAL: "Àrea total disponible en aquesta configuració: {{areaTotal}} <br\
+    \ />\nPotència màxima a instal·lar: {{potenciaMaxima}}\n"
   ERROR_noSameTerritory: Totes les bases han d'estar al mateix territori.
   TOOLTIP_EDITA_BASE: Modifica l'àrea seleccionada
 CONSUMPTION:
@@ -488,8 +488,8 @@ CONSUMPTION:
   COMPENSACION_TITLE: Compensació simplificada d'excedents
   COMPENSACION_DESCRIPTION: |
     La <strong>energia excedentària</strong> és aquella que ha estat generada pels panells solars fotovoltaiques i que, com que no s'utilitza de forma instantània, circula a través del comptador i s'aboca a la xarxa elèctrica de distribució.<br / ><br />
-    Aquesta energia excedentària es comptabilitza al comptador en trams duna hora. A partir dels valors registrats, s'apliquen dos mecanismes de manera consecutiva: primer s'aplica el <strong>balanç net horari</strong> i després en el moment de facturar s'aplica <strong>la compensació simplificada d'excedents.</strong><br /><br />
-    <a href='https://ca.support.somenergia.coop/article/783-com-funciona-la-compensacio-simplificada-dexcedents?utm_source=linkidiomes&utm_medium=cda&utm_campaign=catal%C3%A0' target='_blank'>Com funciona la compensació simplificada d'excedents?</a>
+    Aquesta energia excedentària es comptabilitza al comptador en trams d'una hora. A partir dels valors registrats, s'apliquen dos mecanismes de manera consecutiva: primer s'aplica el <strong>balanç net horari</strong> i després en el moment de facturar s'aplica <strong>la compensació simplificada d'excedents.</strong><br /><br />
+    <a href='https://ca.support.somenergia.coop/article/783-com-funciona-la-compensacio-simplificada-dexcedents' target='_blank'>Com funciona la compensació simplificada d'excedents?</a>
   LABEL_MAPA_CONSUMO_MES_HORA: 'Màxim valor: {{maxConsumoMes}} kWh'
   TITLE_MAPA_CONSUMO_MES_HORA: Consumeixo mig horari per mes relatius al màxim,
   LABEL_TITLE_MAP_MONTH_DAY: Mapa de consum horari en kWh
