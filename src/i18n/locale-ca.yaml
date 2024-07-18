@@ -345,7 +345,7 @@ Economico:
     noCompensadoAnual: L'import de l'energia excedentària que la comercialitzadora
       no compensarà.\n La llei (RD 244/2019) no permet que al consumidor se li aboni
       cap import quan el balanç entre el cost de l'energia sobrant i el consumit de
-      qualsevol dia resultés favorable al consumidor.\n Sol succeir quan s'instal·len
+      qualsevol dia resultés favorable al consumidor.\n Sol passar quan s'instal·len
       més panells dels aconsellables quan es consumeix molt per sota del que és habitual
       (en vacances) o quan el preu de compensació de la comercialitzadora fos alt
       (molt improbable).
@@ -356,13 +356,23 @@ Economico:
     valorSubvencionIBI: Empleneu-ho si el municipi on es realitza la instal·lació
       bonifica l'impost de béns immobles.\nLa Fundación Renovables facilita una llista
       de municipis amb bonificacions a l'IBI i reduccions a ICIO.
-    porcientoSubvencionIBI: El percentatge que l’Ajuntament bonifica de l’import de
-      l’IBI
+    porcientoSubvencionIBI: El percentatge amb que l’Ajuntament bonifica l’import
+      de l’IBI
     tiempoSubvencionIBI: El nombre d’anys durant els quals es pot aplicar la bonificació
       a l’IBI
-    VANProyecto: Valor actual net (VAN)
-    TIRProyecto: Taxa interna de retorn (TIR)
+    VANProyecto: El rendiment de la inversió a la instal·lació fotovoltaica transcorreguts
+      els anys que es mostren a la taula
+    TIRProyecto: Indicador de la rendibilitat del projecte fotovoltaic transcorreguts
+      els anys que es mostren a la taula
 
+    ahorroAnual_TT: Diferència despesa anual en electricitat amb i sense panells solars
+    valorSubvencion: Indicar el valor de les possibles subvencions de les que poguessis
+      beneficiar-te
+    porcientoSubvencion: Percentatge de subvenció
+  LABEL_GASTO_AHORRO: Dades despesa i estalvi anuals
+  MSG_disclaimerAhorro: Les estimacions d'estalvis produïts per autoconsum i ingressos
+    per energia excedent s'han calculat assumint que tant el preu de l'energia adquirida
+    com el dels excedents es mantenen constants durant els anys de càlcul.
 LOCATION:
   LABEL: Ubicació
   TITLE: Ubicació
@@ -380,6 +390,15 @@ LOCATION:
   posicionLonLat_TT: No cal omplir aquest camp només es fa servir per centrar el mapa
     en aquestes coordenades
 
+  DESCRIPTION: "És rendible instal·lar panells solars a la coberta del teu edifici?\
+    \ Aquí descobriràs si és profitós col·locar panells fotovoltaics. <br />\nA partir\
+    \ de la superfície disponible es preveu el nombre de panells solars màxim que\
+    \ es podran instal·lar a la teva coberta.<br />\nEl seu rendiment es calcula a\
+    \ partir de la inclinació de la superfície i la seva orientació cap al sud.<br\
+    \ />\n"
+  DESCRIPTION_ADDRESS: <strong>PAS 1.</strong> Apunta la teva adreça al localitzador
+    o navega pel mapa per trobar-la.
+  PROMPT_ADDRESS: Buscar lloc o adreça
 CONSUMPTION:
   TITLE: Consum
   COMPENSACION_TITLE: Compensació simplificada d'excedents
@@ -809,3 +828,9 @@ ABOUT:
     Esperem que contribueixi a democratitzar l'accés a l'energia renovable i reduir\
     \ els riscos que afronta el nostre planeta amb el canvi climàtic.\n<br /><br />\n"
   TITLE: Què és Solidar Energia?
+DIALOG_PANELS:
+  TITLE: Característiques dels panells solars
+  DESCRIPTION: Pots triar entre diferents panells estàndard amb tecnologia de silici
+    cristal·lí (els més habituals al mercat).
+  OTHERS: No obstant això, si vols utilitzar un panell que no és a la llista, pots
+    definir les seves característiques en els camps següents.
