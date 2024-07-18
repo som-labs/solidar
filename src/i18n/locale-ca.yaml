@@ -376,16 +376,17 @@ Economico:
 LOCATION:
   LABEL: Ubicació
   TITLE: Ubicació
-  LABEL_SATELITE: Vista de satèl·lit
-  LABEL_VECTOR: Vista del mapa
+  LABEL_SATELITE: Vista satèl·lit
+  LABEL_VECTOR: Vista mapa
   TOOLTIP_MAP_TYPE: Permet intercanviar entre satèl·lit o mapa
-  LABEL_BASES_SUMMARY: Resumen
-  PROMPT_BASES_SUMMARY: Revisa que los datos de tus áreas son correctos para pasar
-    al siguiente paso
-  ERROR_DEFINE_BASE: Cal definir las bases solares abans de seguir
+  LABEL_BASES_SUMMARY: Resum
+  PROMPT_BASES_SUMMARY: Recorda que pots indicar diferents àrees disponibles i que
+    cadascuna pot tenir una orientació respecte al sud diferent. Revisa que les dades
+    del resum són correctes.
+  ERROR_DEFINE_BASE: Cal definir las bases solares abans de continuar
   ERROR_tryError: Error en executar fecth a Nominatim. \n {{err}}
-  ERROR_countryFailure: L’aplicació només és vàlida per a Espanya
-  TOOLTIP_BORRA_BASE: Suprimeix la base seleccionada
+  ERROR_countryFailure: L'aplicació només és vàlida per a Espanya. Detectat {{message}}
+  TOOLTIP_BORRA_BASE: Esborra l'àrea seleccionada
   posicionLonLat_LBL: Long-Lat
   posicionLonLat_TT: No cal omplir aquest camp només es fa servir per centrar el mapa
     en aquestes coordenades
@@ -399,6 +400,89 @@ LOCATION:
   DESCRIPTION_ADDRESS: <strong>PAS 1.</strong> Apunta la teva adreça al localitzador
     o navega pel mapa per trobar-la.
   PROMPT_ADDRESS: Buscar lloc o adreça
+  IN_LINE_HELP:
+    PRE_ADDRESS: "Atès que la producció esperada d'una instal·lació fotovoltaica depèn\
+      \ de la irradiació solar rebuda pels panells, necessitem que ens donis algunes\
+      \ dades necessàries per al càlcul.\n<p>Pots navegar al mapa per trobar la zona\
+      \ on es realitzarà la instal·lació o utilitzar el camp <b><span style='background:rgb(0,\
+      \ 255, 204)'>Localitzador</span></b> on pots escriure el nom de la zona o carrer\
+      \ i número. És important que incloguis la ciutat per evitar una llarga llista\
+      \ de candidats que es desplegarà sota el camp a mesura que vagis escrivint.</p>\n"
+    PRE_MAPA: "Quan estiguis ubicat a l'àrea de treball pots ajudar-te amb la visualització\
+      \ satèl·lit per identificar la teulada o terrat on tens planejada la instal·lació.\
+      \ Ara has de dibuixar almenys una àrea que representi la zona on pots instal·lar\
+      \ panells.\nEls dos primers punts defineixen el carener o la part alta dels\
+      \ panells, el tercer punt defineix la dimensió perpendicular al carener. Amb\
+      \ aquests tres punts l'aplicació generarà una rectangle i assumirà que l'orientació\
+      \ dels panells serà des del carener cap a l'últim punt donat. Més tard podreu\
+      \ canviar aquest valor (acimut) des del formulari d'edició de la base que s'activa\
+      \ des de la taula.<p>\n<p>En el cas que tinguis teulada amb múltiples orientacions\
+      \ pots dibuixar una àrea per a cadascuna.</p>\n"
+    PRE_TABLA: "Un cop finalitzada la definició de les àrees on s'instal·laran els\
+      \ panells veuràs a continuació una taula <strong>Resum</strong> on veus el detall\
+      \ de la vostra configuració.\n\n<p>Són importants dues dades que defineixen\
+      \ els angles d'incidència de la radiació solar sobre el panell:</p>\n\n<b><span>Inclinació:\
+      \ </b>És l'angle del panell respecte a l'horitzontal del terreny. Depenent de\
+      \ la configuració seleccionada aquest angle pot ser:</span>\n\n<ul><b>Inclinat:\
+      \ </b>és la inclinació de la teulada.</ul>\n<ul><b>Horizontal: </b>és l'angle\
+      \ que tenen els panells respecte a la teulada o terrat.</ul>\n<ul><b>Inclinació\
+      \ òptima</span></b> Deixarem que el sistema ho calculi.</ul>\n\n<p><b><span>Orientació\
+      \ (Acimut)</span></b>: és l'angle amb què els panells s'orienten respecte al\
+      \ sud (0º). Aquest angle és -90 º en una orientació pura a l'est i 90 º en orientació\
+      \ oest. Per ajudar-te a calcular-lo pots posicionar-te al camp <i class='fa\
+      \ fa-compass'></i> i ajudar-te amb el rumb al mapa indicant l'orientació dels\
+      \ panells. Si no ho saps utilitza l'opció <b>Angules òptims</b>.\n<p>En el cas\
+      \ de múltiples bases candidates per instal·lar panells és important definir\
+      \ l'acimut de cadascuna per separat ja que el sistema utilitzarà les bases amb\
+      \ més rendiment per assignar els panells</p>\n"
+    POST_TABLA: <p>Amb aquestes dades el sistema es connectarà amb el servidor PVGIS
+      per obtenir les dades concretes de cada base i passarem a la finestra que ens
+      permetrà definir els consums
+  HELP:
+    CUALES: "Les àrees disponibles són aquelles en què es poden instal·lar panells\
+      \ solars. Cal descomptar de la superfície disponible les xemeneies, antenes,\
+      \ sortides de fum o qualsevol altre element que ocupi espai a la coberta.\n"
+    SOMBRAS_1: "Les ombres poden afectar significativament la zona on s'instal·laran\
+      \ els panells, influint directament en el rendiment de la instal·lació. Consulta\
+      \ l'efecte de les ombres sobre els panells solars amb el Shadowmap.\n"
+    TITLE_1: Quines són les meves àrees disponibles?
+    CUALES_1: 1. Àrea total de coberta
+    CUALES_2: 2. Àrees disponibles
+    TITLE_2: Més d'una orientació o una inclinació?
+    DOS_AGUAS: Si tens més d'una teulada o una teulada amb diverses aigües, hauràs
+      de seleccionar cada part com a diferents àrees. La inclinació pot ser diferent
+      a cada parcel·la/superfície, com també la seva posició respecte al sud.
+    TITLE_3: Com afecten les ombres?
+    SOMBRAS_2: "Les eines següents poden ajudar-te a avaluar-ne l'impacte.\n<ul>\n\
+      <li>\n<a href='https://app.shadowmap.org/?lat={{lat}}&lng={{lon}}&zoom=16.31&azimuth=-0.07499&basemap=map&elevation=nextzen&f=29.0&polar=0.52360&vq=2\
+      \ ' target='_blank'>ShadowMap</a> per a una visió 3D del territori.\n</li>\n\
+      <li>\n<a href='http://shadowcalculator.eu/#/lat/{{lat}}/lng/{{lon}}' target='_blank'>Shadow\
+      \ calculator</a> per dibuixar formes i veure la seva projecció a diferents hores\
+      \ del dia i època de l'any.\n</li>\n</ul>\n"
+  ERROR_INCLINACION: Ha de ser un nombre enter més gran que 0 i menor o igual que
+    80
+  PROMPT_DISPONIBLE: <strong>PAS 2.</strong> Dibuixa al mapa les àrees disponibles
+    de l'edifici. En cas d'alternatives, pots dibuixar tantes àrees com vulguis. El
+    sistema distribuirà els panells de la manera més eficient.
+  PROMPT_SOMBRAS: És <strong>IMPORTANT</strong> tenir en compte que Solidar <strong>no
+    incorpora l'estudi de possibles ombres</strong> que puguin afectar al rendiment
+    de la instal·lació proposada.
+  PROMPT_DRAW: Si la teva coberta és inclinada, <strong>els dos primers punts que
+    marquis seran considerats la part més elevada de la teulada.</strong>
+  TOOLTIP_CUMBRERA: 'Carener: {{carener}}'
+  TOOLTIP_MEASURES: 'Carener: {{carener}}<br />Amplada: {{amplada}}<br />Area: {{area}}'
+  LABEL_FITMAP: Ajustar mapa
+  LABEL_GOOGLE_EARTH: Veure a Google Earth
+  TITLE_DIALOG_NEW_BASE: Nova base solar
+  ERROR_INCLINADO_NOANGLE: Definir la teulada horitzontal
+  ERROR_NOMBRE_BASE_SOLAR_DUPLICADO: El nom de la base no pot estar duplicat
+  NOT_ENOUGH_AREA: No és possible posar panells de {{llarg}} per {{amplada}} amb marge
+    lateral de {{marge}} en aquesta àrea. Redefiniu l'àrea disponible, el tipus de
+    tauler a utilitzar o el marge lateral als paràmetres de l'aplicació.
+  MSG_AREA_TOTAL: "Àrea total disponible en aquesta configuració: {{àreaTotal}} <br\
+    \ />\nPotència màxima a instal·lar: {{potènciaMaxima}}\n"
+  ERROR_noSameTerritory: Totes les bases han d'estar al mateix territori.
+  TOOLTIP_EDITA_BASE: Modifica l'àrea seleccionada
 CONSUMPTION:
   TITLE: Consum
   COMPENSACION_TITLE: Compensació simplificada d'excedents
@@ -457,6 +541,25 @@ CONSUMPTION:
   consumo_MSG_nombreCSVPorDefinir: Por definir
   tipoConsumo_LBL_fichero: Selecciona fitxer
 
+  TIPO_CONSUMO_DESCRIPTION_1: "<strong>PAS 4.</strong> A continuació necessitem informació\
+    \ sobre el teu consum elèctric per calcular el nombre de panells necessari per\
+    \ cobrir-lo. El document de corbes horàries (en format .csv) ens permetrà conèixer\
+    \ els vostres hàbits d'ús elèctric, saber en quins trams horaris i en quins mesos\
+    \ de l'any sols consumir més energia.<br />\nSi no disposes de fitxer d'ús horari\
+    \ pots indicar l'ús d'energia anual que apareix a la teva factura per fer una\
+    \ estimació en base a un perfil estàndard.\n<br />\n"
+  TARIFA_DESCRIPTION_2: "<strong>PAS 3.</strong> Indica els preus sense impostos.<br\
+    \ />\nEn cas de tenir una <a href='https://ca.support.somenergia.coop/article/1323-la-tarifa-2-0td-indexada?utm_source=linkidiomes&utm_medium=cda&utm_campaign=catal%C3%A0'\
+    \ target='_blank'>tarifa indexada</a>, Som Energia mostra a les seves factures\
+    \ el preu mitjà ponderat per a cada període. T'ho expliquem <a href='https://ca.support.somenergia.coop/article/1367-per-que-veig-periodes-a-la-factura-dindexada?utm_source=linkidiomes&utm_medium=cda&utm_campaign=catal%C3%A0'\
+    \ target='_blank'>aquí. </a><br />\nSi el teu contracte està amb una altra comercialitzadora\
+    \ hauràs de consultar la mitjana dels preus als diferents períodes. Tingues en\
+    \ compte que la tarifa indexada no ofereix preus fixos a la part d'ús ni a la\
+    \ compensació d'excedents, per la qual cosa el càlcul serà basat en una informació\
+    \ que pot ser molt variable.\n"
+  TARIFA_DESCRIPTION_1: "Necessitem conèixer la teva tarifa, els preus per trams horaris\
+    \ de cada període i el preu de la compensació d'excedents de la teva comercialitzadora\
+    \ si és una altra diferent a Som Energia.\n"
 ENERGY_BALANCE:
   TITLE: Balanç energètic
   LABEL_EXCEDENTE_ANUAL: Electricitat sobrant
