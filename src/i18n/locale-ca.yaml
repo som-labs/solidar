@@ -289,10 +289,16 @@ Balance:
       l’any (no sempre es consumeix tota).
     autosuficienciaMediaAnual: Percentatge mitjà d’energia consumida procedent dels
       panells solars. És una mesura d’independència respecte a la xarxa elèctrica
-    autosuficienciaMaxima: La màxima auto-suficiència que es podria aconseguir si
-      es pogués consumir tot el excedent fotovoltaic (ja sigui amb bateries i/o canviant
-      els hàbits de consum).
+    autosuficienciaMaxima: L'autosuficiència màxima que es podria assolir si tot l'excedent
+      fotovoltaic es pogués consumir (bé amb bateries i/o canviant els hàbits de consum).\nS'assoleix
+      el nombre màxim teòric de panells en arribar en aquesta variable al 100%.
 
+    deficitAnual: Electricitat que encara cal comprar a la comercialitzadora després
+      de la instal·lació fotovoltaica
+    energiaFaltante%Consumo: El percentatge de lelectricitat comprada respecte al
+      consum total
+    energiaSobrante%Produccion: El percentatge de lelectricitat sobrant respecte a
+      la produïda
 Produccion:
   NAME: Producció
   PROP:
@@ -301,6 +307,10 @@ Produccion:
     totalAnual: Producció anual
 
     maximoAnual: Producció diària màxima
+    produccionHoraria: Producció horària mitjana
+    potenciaTotal: Potència total instal·lada
+    CO2AnualRenovable: Estalvi CO2 si font renovable
+    CO2AnualNoRenovable: Estalvi CO2 si font no renovable
   TOOLTIP:
     produccionDiaria: Producció fotovoltaica mitjana diària estimada
     produccionMensual: Producció fotovoltaica mitjana mensula estimada
@@ -309,17 +319,22 @@ Produccion:
 Economico:
   NAME: Econòmic
   PROP:
-    gastoSinPlacasAnual: Despesa anual sense panells
-    gastoConPlacasAnual: Despesa anual amb panells
+    gastoSinPlacasAnual: Sense panells
+    gastoConPlacasAnual: Amb panells
     ahorroAnualPorciento: Estalvi anual / despesa original
     ahorroAnual: Estalvi anual
-    noCompensadoAnual: Cost energia no compensada
+    noCompensadoAnual: No compensada
     valorSubvencionEU: Valor de subvenció UE
     tipoSubvencionEU: Tipus subvenció fons UE
     porcientoSubvencionIBI: Bonificació %
-    tiempoSubvencionIBI: Durada (anys)
-    VANProyecto: 'Valor actual net (VAN): {{VAN}}'
-    TIRProyecto: 'Taxa interna de retorn (TIR): {{TIR}}'
+    tiempoSubvencionIBI: Durada bonificació (anys)
+    VANProyecto: 'Valor actual net (VAN)'
+    TIRProyecto: 'Taxa interna de retorn (TIR)'
+    precioInstalacionCorregido: Preu de la instal·lació corregit
+    valorSubvencion: Valor de la subvenció
+    porcientoSubvencion: Percentatge de subvenció
+    valorSubvencionIBI: IBI (€)
+    precioInstalacion: Preu de la instal·lació
   TOOLTIP:
     gastoSinPlacasAnual: Despesa elèctrica anual sense panaells solars. Només es té
       en compte la part variable de la factura
