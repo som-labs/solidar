@@ -339,7 +339,7 @@ Economico:
     valorSubvencionIBI: Rellénese si el municipio donde se realice la instalación
       bonifica el impuesto de bienes inmuebles.\nLa Fundación Renovables facilita
       una lista de municipios con bonificaciones en el IBI y reducciones en ICIO.
-    porcientoSubvencionIBI: El porcentaje con el ayuntamiento bonifica el importe
+    porcientoSubvencionIBI: El porcentaje con que el ayuntamiento bonifica el importe
       del IBI
     tiempoSubvencionIBI: El número de años durante los que se puede aplicar la bonificación
       en el IBI
