@@ -471,7 +471,7 @@ CONSUMPTION:
     Si no dispones de fichero de uso horario podrás indicar el uso de energía anual que aparece en tu factura para hacer una estimación en base a un perfil estándar.
     <br />
   TARIFA_DESCRIPTION_1: |
-    Necesitamos conocer tu tarifa, los precios por tramos horarios de cada período y el precio de la compensación de excedentes de tu comercializadora si es otra diferente a Som Energía.
+    Necesitamos conocer tu tarifa, los precios por tramos horarios de cada período y el precio de la compensación de excedentes de tu comercializadora si es otra diferente a Som Energia.
   TARIFA_DESCRIPTION_2: |
     <strong>PASO 3.</strong> Indica los precios sin impuestos.<br />
     En caso de tener una <a href='https://es.support.somenergia.coop/article/1325-la-tarifa-2-0td-indexada' target='_blank'>tarifa indexada</a>, Som Energía muestra en sus facturas el precio medio ponderado para cada período. Te lo explicamos <a href='https://es.support.somenergia.coop/article/1368-por-que-veo-periodos-en-la-factura-de-indexada' target='_blank'>aquí.</a><br />
