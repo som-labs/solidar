@@ -492,12 +492,12 @@ CONSUMPTION:
     <a href='https://ca.support.somenergia.coop/article/783-com-funciona-la-compensacio-simplificada-dexcedents' target='_blank'>Com funciona la compensació simplificada d'excedents?</a>
   LABEL_MAPA_CONSUMO_MES_HORA: 'Màxim valor: {{maxConsumoMes}} kWh'
   TITLE_MAPA_CONSUMO_MES_HORA: Consumeixo mig horari per mes relatius al màxim,
-  LABEL_TITLE_MAP_MONTH_DAY: Mapa de consum horari en kWh
-  ERROR_DEFINIR_CONSUMO_REE: S'ha de definir un consum de base anual superior a 0
-    per al perfil REE
+  LABEL_TITLE_MAP_MONTH_DAY: Mapa d'ús horari en kWh
+  ERROR_DEFINIR_CONSUMO_REE: S'ha de definir un consum anual base superior a 0 per
+    al perfil REE
   ERROR_AL_MENOS_UN_TIPOCONSUMO: Cal definir almenys un tipus de consum
   ERROR_FALTA_FICHERO_CONSUMO: Cal definir el fitxer de consum abans de continuar
-  LABEL_BUTTON_NUEVO_TIPOCONSUMO: Nou tipus consum
+  LABEL_BUTTON_NUEVO_TIPOCONSUMO: Afegeix el teu ús elèctric
   TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Botó per crear un nou tipus de consum
   TITLE_DIALOG_NEW_CONSUMPTION: Formulari per crear un nou tipus de consum
 
@@ -536,7 +536,7 @@ CONSUMPTION:
   consumo_MSG_errorCabeceras: Error de format CSV falta capçalera {{cabeceras}}
   consumo_MSG_resumen: '{{registros}} Registres de consum carregats des de {{desde}}
     fins a {{hasta}}'
-  consumo_MSG_numeroLimitadoRegistros: "Avís:  només existeixen {{registros}} registres\
+  consumo_MSG_numeroLimitadoRegistros: "Avís-> només existeixen {{registros}} registres\
     \ que no completen un any d'estadístiques"
   consumo_MSG_nombreCSVPorDefinir: Por definir
   tipoConsumo_LBL_fichero: Selecciona fitxer
@@ -571,15 +571,61 @@ CONSUMPTION:
   TITLE_MAP_MONTH_DAY: Valors diaris de consum
   TOOLTIP_MAP_MONTH_DAY: Gràfic interactiu. Clica en un punt i veuràs el perfil horari
     de consum d'aquell dia.
+  DESC_MAP_MONTH_DAY: "L'ús elèctric per hores varia segons si es tracta d'un dia\
+    \ festiu o laborable. En els dies laborables sol haver-hi un ús mínim durant les\
+    \ hores de treball, tret que teletreballis.<br /><br />\nTambé varia segons les\
+    \ estacions de l'any i la zona geogràfica. Durant l'hivern al nord d'Espanya,\
+    \ el major ús elèctric es concentra en les hores de clarejar i de vespre a causa\
+    \ de l'ús de la calefacció, mentre que durant l'estiu al sud d'Espanya, el major\
+    \ ús elèctric es troba al migdia, degut a l'ús de l'aire condicionat.<br /><br\
+    \ />\nEl gràfic següent és interactiu. Fes clic en un punt i podràs veure el perfil\
+    \ d'ús horari d'aquell dia.\n"
+  HOOVER_MAPA_CONSUMO_MONTH_DAY: Consum horari
+  XAXIS_MAPA_CONSUMO_MONTH_DAY_HOUR: Hora
+  YAXIS_MAPA_CONSUMO_MONTH_DAY_DAY: Dia
+  LABEL_TITLE_PROFILE_DAY: Perfil diari consum del {{dia}} de {{mes}}
+  DESCRIPTION_FUENTE_1: Hi ha diferents maneres d'obtenir la informació referent a
+    l'ús elèctric anual
+  DESCRIPTION_FUENTE_2: <u>Corbes d'ús d'energia</u> mitjançant un fitxer amb informació
+    horària del teu ús real.
+  DESCRIPTION_FUENTE_SOM: "<strong>Som Energia:</strong>Si tens contracte actiu amb\
+    \ Som Energia pots descarregar el fitxer de corbes horàries a través de la teva\
+    \ <a href='https://oficinavirtual.somenergia.coop/ca/' target='_blank '>Oficina\
+    \ Virtual.</a> Tens les instruccions al següent enllaç: <a href='https://ca.support.somenergia.coop/article/941--les-corbes-dus-horari-denergia'\
+    \ target='_blank'>Les corbes horàries de Som Energia</a>\n"
+  DESCRIPTION_FUENTE_DISTRIBUIDORA: "<strong>Empresa de distribució elèctrica:</strong>\
+    \ Pots trobar les instruccions per descarregar un fitxer de corbes horàries de\
+    \ les principals empreses de distribució elèctrica\n"
+  LINK_FUENTE_DISTRIBUIDORA: en aquest enllaç.
+  DESCRIPTION_FUENTE_3: "<u>Consum anual informat mitjançant la factura elèctrica</u>\n"
+  DESCRIPTION_FUENTE_REE: "<strong>Perfil estàndard (REE):</strong> Mitjançant el\
+    \ vostre ús d'energia anual Red Eléctrica Española té definit un perfil d'usuari\
+    \ estandarditzat que s'usarà com a model.\n"
+  TITLE_USO_DISTRIBUIDORA: Fitxers CSV d'ús horari
+  DESCRIPTION_USO_DISTRIBUIDORA: Selecciona la distribuïdora elèctrica de la teva
+    zona per accedir a les instruccions de com fer la descàrrega del fitxer d'ús horari
+  TOOLTIP_botonBorraTipoConsumo: Esborra el perfil d'ús elèctric
+  TOOLTIP_botonEditaTipoConsumo: Modifica la informació d'ús elèctric
+  TOOLTIP_botonMuestraMapaTipoConsumo: Gràfic del perfil elèctric
+  TOOLTIP_botonMuestraTodosTipoConsumo: Gràfic del total dels usos elèctrics
+  ERROR_CABECERAS_CSV: Error format CSV falta capçalera {{cabeceras}}
+  ERROR_fuenteTipoErroneo_CSV: Possible error llegint fitxer amb format SOM per a
+    font CSV distribuïdora
+  ERROR_fuenteTipoErroneo_DATADIS: Possible error llegint fitxer amb format DATADIS
+    per a font tipus CSV distribuïdora o viceversa
+  ERROR_fuenteTipoErroneo_SOM: Possible error llegint fitxer amb format DATADIS o
+    CSV distribuïdora per a font tipus SOM
+  ERROR_FALTAN_DATOS: Manquen dades de {{faltan}} dies. Vols continuar?
+  ERROR_NOMBRE_TIPO_CONSUMO_DUPLICADO: El nom del tipus de consum no pot estar duplicat
 ENERGY_BALANCE:
-  TITLE: Balanç energètic
+  TITLE: Balanç d'Energia
   LABEL_EXCEDENTE_ANUAL: Electricitat sobrant
   TOOLTIP_EXCEDENTE_ANUAL: Electricitat sobrant bolcada a la xarxa
-  LABEL_AUTOCONSUMO: Autoconsum
+  LABEL_AUTOCONSUMO: Ús directe d'energia
   LABEL_ENERGIA_RED: Energia obtinguda de la xarxa
   LABEL_ENERGIA_PANELES: Energia obtinguda dels panells
-  TITLE_GRAPH_MONTH_ENERGY_BALANCE: Producció mitjana mensual amb {{potencia}} instal·lada
-    / consum mitjà mensual
+  TITLE_GRAPH_MONTH_ENERGY_BALANCE: "Producció versus consum mensual <br />\nper {{potencia}}\
+    \ instal·lada\n"
 
   MSG_disclaimerProduccion: |
     Notificació-> Les dades per estimar la producció de panells solars s'obtenen de PVGIS. <a href:"https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en">Ver documentación aqui</a>
@@ -595,6 +641,60 @@ ENERGY_BALANCE:
   TOOLTIP_CO2AnualNoRenovable: CO2 (kg) no expulsats a l’atmosfera si l’origen de
     l’energia fos peninsular i no renovable. Es pot modificar a la finestra de Paràmetres.
 
+  DESCRIPTION: "A partir de les dades d'ús elèctric facilitades, et mostrem el nombre\
+    \ de panells que necessites per cobrir-lo.<br /><br />\nL'assignació dels panells\
+    \ es determina tenint en compte les àrees més eficients des del punt de vista\
+    \ de rendiment energètic segons la inclinació i l'orientació proporcionades. Recorda,\
+    \ no s'han tingut en compte les possibles ombres que aquestes superfícies poden\
+    \ tenir.<br /><br />\n"
+  TOOLTIP_GRAFICO_CONSUMOGENERACION3D: Gràfic interactiu. Fes clic en un punt i veuràs
+    el perfil horari de producció i consum d'aquell dia.
+  FLOW_DESCRIPTION: "Part de l'electricitat produïda a la teva instal·lació fotovoltaica\
+    \ s'utilitza de manera instantània, la que no s'utilitza al mateix moment (per\
+    \ exemple, perquè no hi ha ningú a l'habitatge a les hores centrals del dia, que\
+    \ és quan més electricitat es produeix) s'aboca a la xarxa (excedents).<br />Al\
+    \ contrari, durant les hores en què no hi hagi producció necessitaràs obtenir\
+    \ l'energia de la xarxa. En cas d'instal·lar bateries podràs disminuir de manera\
+    \ considerable l'ús elèctric de la xarxa.\n"
+  PROMPT: A continuació, pots canviar la quantitat de panells assignats a cadascuna
+    de les àrees.
+  ADVISE_TITLE: Consell
+  ADVISE_DESCRIPTION: Per aprofitar al màxim la teva instal·lació, fes ús dels teus
+    electrodomèstics a les hores centrals del dia que són els moments de màxima producció.
+  SUMMARY_TITLE: Dades de la coberta
+  SUMMARY_TOOLTIP_INFO: Informació detallada de l'àrea seleccionada
+  SUMMARY_FOOTER: "{{paneles}} panells<br />\nPotència instal·lada: {{potencia}}\n"
+  FOOTER_BUTON_MAXIMO: Configuració màxima ({{paneles}})
+  FOOTER_BUTON_OPTIMO: Recupera optimitzador
+  TITLE_GRAFICO_CONSUMOGENERACION3D: Gràfic detallat d'ús elèctric i producció
+  TITLE_GRAFICO_PROFILE: Perfil diari de consum i producció {{dia}} / {{mes}}
+  FLOW_TITLE: On va l'electricitat produïda pels panells?
+  FLOW_TITLE_OTHER_WAY: Esquema del flux d'energia
+  TITLE_HOURLY_ENERGY_BALANCE: Balanç horari
+  TITLE_HOURLY_PERIODO: Període
+  LABEL_HOURLY_PRODUCTION_YEAR: Producció horària mitjana anual
+  LABEL_HOURLY_CONSUMPTION_YEAR: Ús horari mitjà anual
+  LABEL_HOURLY_PRODUCTION_MONTH: Producció horària mitjana del mes
+  LABEL_HOURLY_CONSUMPTION_MONTH: Ús horari mitjà del mes
+  VALUE_FULL_YEAR: Mitjana anual
+  TITLE_YEAR_ENERGY_BALANCE: Balanç energètic anual
+  DESCRIPTION_YEAR_ENERGY_BALANCE: "Amb aquest nombre de panells podràs cobrir el\
+    \ {{porcientoAutoconsumo}} de la teva demanda total d'energia ({{consumoTotal}}).\
+    \ La resta d'electricitat ({{percientoDemanda}}), l'hauràs de comprar de la xarxa.<br\
+    \ />\nDe l'energia autoproduïda ({{produccionTotal}}), consumiràs el {{porcientoAutoproduccion}},\
+    \ i el {{porcientoVertido}} s'abocarà a la xarxa, ja que es produirà en hores\
+    \ en què no serà utilitzada.\n"
+  TITLE_MONTH_ENERGY_BALANCE: Balanç energètic mensual
+  DESCRIPTION_MONTH_ENERGY_BALANCE: "La <strong>autoproduccinó</strong> és més gran\
+    \ a l'estiu (més hores de llum) que a l'hivern.<br />\nL' <strong>ús elèctric</strong>\
+    \ varia segons els mesos i la zona geogràfica: al nord d'Espanya l'ús elèctric\
+    \ més alt es produeix als mesos d'hivern i mentre que al sud els pics d'ús elèctric\
+    \ es produeixen a l'estiu . En general els mesos de primavera i tardor són les\
+    \ més estables a tot Espanya.<br />\nAl següent gràfic veuràs la comparació entre\
+    \ el teu ús elèctric i la teva autoproducció mes a mes.\n"
+  TITLE_GRAPH_MONTH_CONSUMO_PRODUCCION: Autoproducció i consum
+  TITLE_GRAPH_MONTH_THREE_PARTS: Autoconsum, consum de la xarxa i excedents
+  TITLE_GRAPH_MONTH_FIVE_PARTS: Balanç energètic mensual
 ECONOMIC_BALANCE:
   TITLE: Balanç econòmic
   DESCRIPTION: |
