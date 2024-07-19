@@ -119,17 +119,17 @@ TipoConsumo:
   NAME: Tipus de consum
   PROP:
     idTipoConsumo: Id
-    nombreTipoConsumo: Identificació del tipus consum
+    nombreTipoConsumo: Tipus d'ús elèctric
     fuente: Font tipus
-    nombreFicheroCSV: Fitxer consum horari (només CSV)
-    consumoAnualREE: Consum anual en kWh
+    nombreFicheroCSV: Nom del fitxer
+    consumoAnualREE: Ús de l'energia elèctrica anual
     ttotalAnual: Consum anual
 
+    totalAnual: Ús anual elèctric
   TOOLTIP:
     nombreTipoConsumo: Identifica el nom d’aquest consum per a referències futures
-    fuente: Seleccioneu el tipus de font des d'on es carregarà el perfil de consum
-    nombreFicheroCSV: Identifica el fitxer de consum horari descarregat des de la
-      teva distribuïdora
+    fuente: Selecciona el tipus de font des d'on es carregarà el perfil de consum
+    nombreFicheroCSV: Nom del fitxer seleccionat
     consumoAnualREE: En cas d’optar pel perfil de tipus REE cal indicar el consum
       estimat anual en kWh
     totalAnual: Consum elèctric anual
@@ -137,13 +137,13 @@ TipoConsumo:
 Consumo:
   NAME: Consum
   PROP:
-    maximoAnual: Consum horari màxim
+    maximoAnual: Ús elèctric horari màxim
     consumoDiario: Ús elèctric diari
     consumoMensual: Ús elèctric mensual
     totalAnual: Ús elèctric anual
     consumoHorario: Ús elèctric horari mitjà
   TOOLTIP:
-    maximoAnual: Màxim ús delectricitat en una hora
+    maximoAnual: Màxim ús d'electricitat en una hora
     consumoDiario: Ús elèctric mitjà diari d'electricitat
     consumoMensual: Ús elèctric mitjà mensual d'electricitat
     totalAnual: Ús elèctric anual
@@ -166,7 +166,7 @@ Instalacion:
     precioInstalacion: Preu de la instal·lació
     potenciaUnitaria: Potència unitària dels panells instal·lats a la base
     paneles: Nombre recomanat de panells a instal·lar en aquesta base. Es pot modificar
-    potenciaTotal: Potència màxima disponible
+    potenciaTotal: Potència pic total instal·lada a la base
     potencia: Potència kWp del panell inicial utilitzat en els càlculs
     tecnologia: "Panells de Silici cristal·lí i CdTe (làmina prima de Telur de Cadmi):\
       \ el càlcul té en compte l'efecte de la temperatura i l'efecte de la distribució\
