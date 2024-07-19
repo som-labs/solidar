@@ -560,6 +560,17 @@ CONSUMPTION:
   TARIFA_DESCRIPTION_1: "Necessitem conèixer la teva tarifa, els preus per trams horaris\
     \ de cada període i el preu de la compensació d'excedents de la teva comercialitzadora\
     \ si és una altra diferent a Som Energia.\n"
+  TITLE_MAP_MONTH_HOUR: Gràfic d'ús anual per a {{nombreTipoConsumo}}
+  TITLE_MAP_MONTH_HOUR_TOTAL: Gràfic del total dels usos elèctrics
+  DESC_MAP_MONTH_HOUR: El gràfic següent mostra la distribució del teu ús elèctric
+    durant l'any per mesos i hores. Pots visualitzar en quins moments i hores de l'any
+    el teu ús és més gran o més petit.
+  TOTAL_DEMMAND: Demanda total d'energia anual {{consumoTotal}}
+  HOOVER_MAPA_CONSUMO_MES_HORA: Consum mitjà <br>horari per mes
+  YAXIS_MAPA_CONSUMO_MES_HORA: Mes
+  TITLE_MAP_MONTH_DAY: Valors diaris de consum
+  TOOLTIP_MAP_MONTH_DAY: Gràfic interactiu. Clica en un punt i veuràs el perfil horari
+    de consum d'aquell dia.
 ENERGY_BALANCE:
   TITLE: Balanç energètic
   LABEL_EXCEDENTE_ANUAL: Electricitat sobrant
