@@ -203,7 +203,7 @@ Tarifa:
   NAME: Tarifa
   PROP:
     territorio: Territori
-    tipoTarifa: Tipus tarifa
+    tipoTarifa: Tipus de tarifa
     nombreTarifa: El tipus de tarifa contractada amb l'empresa comercialitzadora
     P0: Compensació Excedents
     P1: Tarifa P1
@@ -257,7 +257,7 @@ Rendimiento:
     PVGISfechaInicio: Inici dades PVGIS
     PVGISfechaFin: Fi dades PVGIS
     inclinacion: Inclinació panells
-    acimut: Acimut de la base
+    acimut: Azimut de la base
     unitarioTotal: Energia anual / kWp instal·lat
   TOOLTIP:
     unitarioTotal: Energia anual produïda per cada kWp instal·lat
