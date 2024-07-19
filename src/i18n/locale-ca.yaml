@@ -633,7 +633,7 @@ ENERGY_BALANCE:
     Es tenen en compte: <ul> <li> La temperatura de l'aire a 2 metres i la velocitat del vent a 10 metres </li> <li> L'efecte de la temperatura sobre el rendiment </li> <li> La variació de l’espectre electromagnètic durant tot el dia </li> <li> Els aerosols mitjans de l’entorn (no canvis sobtats) </li> </ul> 
     "resultados_MSG_disclaimerProduccionNo":"No són tinguts en compte:<ul><li>l'efecte de les nevades</li><li>l'acumulació de pols i brutícia als panells</li><li>les pèrdues per ombres properes</li> </ul><br>
 
-  LABEL_fuenteInfoCO2: Dades de conversió per  {{territorio}}
+  LABEL_fuenteInfoCO2: Dades de conversió per {{territorio}}
 
   TOOLTIP_CO2AnualRenovable: CO2 (kg) no expulsats a l’atmosfera si l’origen de l’energia
     fos peninsular i renovable. Es pot modificar a la finestra de Paràmetres.
@@ -695,6 +695,42 @@ ENERGY_BALANCE:
   TITLE_GRAPH_MONTH_CONSUMO_PRODUCCION: Autoproducció i consum
   TITLE_GRAPH_MONTH_THREE_PARTS: Autoconsum, consum de la xarxa i excedents
   TITLE_GRAPH_MONTH_FIVE_PARTS: Balanç energètic mensual
+  DESCRIPTION_GRAPH_MONTH_FIVE_PARTS: "L'autoproducció és més gran a l'estiu (més\
+    \ hores de llum) que a l'hivern.<br />\nL'ús elèctric varia segons els mesos i\
+    \ la zona geogràfica: al nord d'Espanya l'ús elèctric més alt es produeix als\
+    \ mesos d'hivern, mentre que al sud els pics d'ús elèctric es produeixen a l'estiu.\
+    \ En general els mesos de primavera i tardor són els més estables a tot Espanya.<br\
+    \ />\nAl següent gràfic veuràs la comparació entre el teu ús elèctric i la teva\
+    \ autoproducció mes a mes.\n"
+  NOTE_DISCLAIMER_PRODUCCION: "Les dades per estimar la producció dels panells solars\
+    \ s'obtenen de PVGIS.\n<a href='https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en'\
+    \ target='_blank'>Veure documentació detallada aquí</a><br />Aqui un resum.\n"
+  TITLE_DISCLAIMER_PRODUCCION: Resum de condicions PVGIS
+  DESCRIPTION_DISCLAIMER_PRODUCCION_SI: "Són tinguts en compte: <ul><li>la temperatura\
+    \ de l'aire a 2 metres i la velocitat del vent a 10 metres</li><li>l'efecte de\
+    \ la temperatura en el rendiment</li><li>la variació de l'espectre electromagnètic\
+    \ al llarg del dia</li><li>la mitjana d'aerosols a l'ambient (no els canvis bruscos)</li></ul>\n"
+  DESCRIPTION_DISCLAIMER_PRODUCCION_NO: "No són tinguts en compte: <ul><li>l'efecte\
+    \ de les nevades</li><li>l'acumulació de pols i brutícia als panells</li><li>les\
+    \ pèrdues per ombres properes</li>< /ul><br>\n"
+  TITLE_GRAPH_DEMAND: Demanda energètica
+  LABEL_USO_DIRECTO: Ús directe d'energia
+  LABEL_USO_RED: Energia de la xarxa
+  LABEL_VERTIDO_RED: Abocament a la xarxa
+  TITLE_GRAPH_AUTOPRODUCIDA: Energia autoproduïda
+  TITLE_ENVIRONMENTAL_IMPACT: Impacte mediambiental
+  DESCRIPTION_ENVIRONMENTAL_IMPACT: "Els panells solars, en generar energia neta,\
+    \ redueixen la utilització d'energies fòssils i, en conseqüència, disminueixen\
+    \ les emissions de diòxid de carboni (CO2) causants de l'efecte hivernacle i l'escalfament\
+    \ global. Així doncs, instal·lar panells solars, contribueix a la cura del medi\
+    \ ambient fomentant la transició energètica.\n"
+  TITLE_graficoCO2: 'Estalvi de CO2 anual:'
+  LABEL_CO2AnualRenovable: Si l'electricitat contractada prové de <br /><strong>fonts
+    renovables</strong>
+  LABEL_CO2AnualNoRenovable: Si l'electricitat contractada prové de <br /><strong>fonts
+    no renovables</strong>
+  SANKEY:
+    PRODUCCION_PANELES: Autoproducció
 ECONOMIC_BALANCE:
   TITLE: Balanç econòmic
   DESCRIPTION: |
