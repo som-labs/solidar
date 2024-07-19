@@ -504,7 +504,7 @@ CONSUMPTION:
   LABEL_TITLE_MAP_MONTH_DAY: Mapa de uso horario en kWh
   HOOVER_MAPA_CONSUMO_MONTH_DAY: Consumo horario
   XAXIS_MAPA_CONSUMO_MONTH_DAY_HOUR: Hora
-  YAXIS_MAPA_CONSUMO_MONTH_DAY_DAY: Dia
+  YAXIS_MAPA_CONSUMO_MONTH_DAY_DAY: Día
   LABEL_TITLE_PROFILE_DAY: 'Perfil diario consumo del {{dia}} de {{mes}}'
   ERROR_DEFINIR_CONSUMO_REE: Debe definir un consumo anual base mayor que 0 para el
     perfil de REE
@@ -550,7 +550,7 @@ CONSUMPTION:
     para fuente tipo CSV distribuidora o viceversa
   ERROR_fuenteTipoErroneo_SOM: Posible error leyendo fichero con formato DATADIS o
     CSV distribuidora para fuente tipo SOM
-  ERROR_FALTAN_DATOS: 'Faltan datos de {{faltan}} dias. ¿Desea continuar?'
+  ERROR_FALTAN_DATOS: 'Faltan datos de {{faltan}} dias. ¿Quieres continuar?'
   ERROR_NOMBRE_TIPO_CONSUMO_DUPLICADO: El nombre del tipo de consumo no puede estar
     duplicado
   consumo_MSG_resumen: '{{registros}} registros de consumo cargados desde {{desde}}
@@ -578,7 +578,7 @@ ENERGY_BALANCE:
   TITLE_GRAFICO_CONSUMOGENERACION3D: Gráfico detallado de uso eléctrico y producción
   TOOLTIP_GRAFICO_CONSUMOGENERACION3D: Gráfico interactivo. Clica en un punto y verás
     el perfil horario de producción y consumo de ese dia.
-  TITLE_GRAFICO_PROFILE: 'Perfil diario de consumo y produccion  {{dia}} / {{mes}}'
+  TITLE_GRAFICO_PROFILE: 'Perfil diario de consumo y produccion {{dia}} / {{mes}}'
 
   FLOW_TITLE: ¿A dónde va la electricidad producida por los paneles?
   FLOW_DESCRIPTION: |
