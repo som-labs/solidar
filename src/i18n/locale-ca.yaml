@@ -743,19 +743,19 @@ ECONOMIC_BALANCE:
     A continuació coneixeràs quant et costarà la instal·lació, quant t'estalviaràs anualment a la factura i en quant de temps recuperaràs la inversió. Has de tenir en compte les possibles subvencions que puguis demanar en el moment de la instal·lació, les bonificacions d'IBI (si l'ajuntament les ofereix) i les eines per obtenir descomptes pels <a href='https://ca.support.somenergia.coop/article/1397-que-son-els-excedents-no-compensats' target='_blank'>excedents no compensats</a> com el <a href='https://ca.support.somenergia.coop/article/1371-que-es-el-flux-solar' target='_blank'>Flux Solar</a>, bateries virtuals o guardiola solar en cas que la teva comercialitzadora ho ofereixi.
 
   LABEL_ANO: Any
-  TOOLTIP_ANO: Periode d'amortització
+  TOOLTIP_ANO: Període d'amortització
   LABEL_PREVIO: Previ
-  TOOLTIP_PREVIO: L'import pendent d'amortitzar a l'inici del periode
+  TOOLTIP_PREVIO: L'import pendent d'amortitzar a l'inici del període
   LABEL_INVERSION: Inversió
-  TOOLTIP_INVERSION: La quantitat invertida durant el període
+  TOOLTIP_INVERSION: L'import invertit durant el període
   LABEL_AHORRO: Estalvi
   TOOLTIP_AHORRO: Estalvi obtingut en el període
   LABEL_IBI: Bonificació IBI
   TOOLTIP_IBI: Descompte obtingut a l’IBI
-  LABEL_SUBVENCION: Subvenció UE
-  TOOLTIP_SUBVENCION: Subvenció obtenida de la UE
+  LABEL_SUBVENCION: Subvenció
+  TOOLTIP_SUBVENCION: Subvenció obtinguda
   LABEL_PENDIENTE: Pendent
-  TOOLTIP_PENDIENTE: Pendent d’amortització al final del període
+  TOOLTIP_PENDIENTE: Pendent d’amortitzar al final del període
 
   TITLE_IBI: Reducció de l'IBI
   DESCRIPTION_IBI: "Si instal·leu panells solars és possible que pugueu optar a una\
@@ -764,12 +764,96 @@ ECONOMIC_BALANCE:
     \ / >\n"
   ERROR_IBI_SURPLUS: Aquesta subvenció d'IBI és superior al cost previst de la instal·lació.
     El limitarem a {{años}} anys.
+  SUBVENCION_DESCRIPTION: "És probable que hi hagi subvencions per a la instal·lació\
+    \ de panells solars i que això suposi un estalvi. Si és així, indica el % o l'import\
+    \ subvencionat.\n"
+  DESCRIPTION_INSTALLATION_COST: Aquest és un import orientatiu que pot variar depenent
+    del preu del mercat. A més, no té en compte taxes i/o despeses addicionals que
+    puguin aparèixer.
+  ADVICE_PRICE_DESCRIPTION: "En el preu no està inclòs el cost de les taxes administratives\
+    \ necessàries (ICIO, llicència d'obres i legalització de la instal·lació), així\
+    \ com despeses addicionals que puguin sorgir com a mitjans d'elevació, actuacions\
+    \ d'adequació de l'habitatge (reparacions de la coberta, de la instal·lació elèctrica,\
+    \ etc) o altres intervencions que l'empresa de distribució elèctrica pugui exigir.\n"
+  DESCRIPTION_VIRTUAL_BATTERY: "La forma d'aplicar els descomptes depèn de la comercialitzadora:\
+    \ els descomptes poden ser un percentatge del total d'excedents no compensats,\
+    \ com en el cas de <a href='https://ca.support.somenergia.coop/article/1371-que-es-el-flux-solar'\
+    \ target='_blank'>Flux Solar</a> o una quota mensual fixa per oferir el servei.\n"
+  DESCRIPTION_YEAR_SAVINGS: "Amb la instal·lació proposada i els paràmetres indicats\
+    \ us estalviareu</strong> el {{porcientoAhorro}} de l'import anual del terme d'energia.<br\
+    \ />\nEn el gràfic següent es compara el cost anual en electricitat amb panells\
+    \ i sense panells, tenint en compte tots els mecanismes d'estalvi: ús d'energia\
+    \ autoproduïda, compensació simplificada d'excedents i descomptes pels excedents\
+    \ no compensats.\n"
+  DESCRIPTION_FINANCE_SUMMARY: "La taula següent mostra com es va recuperant la inversió\
+    \ realitzada al generador fotovoltaic al llarg de diversos anys i l'efecte de\
+    \ l'estalvi energètic, la bonificació a l'IBI i les subvencions definides.<br\
+    \ />\nLes files grogues són els anys en què no has recuperat la inversió original\
+    \ mentre que les files verdes són beneficis nets que obtens després de recuperar\
+    \ la inversió original.\n"
+  HELP_TIR: "La taxa interna de retorn (TIR) és la taxa de descompte que iguala el\
+    \ VAN d'un projecte d'inversió a zero. En altres paraules, és la taxa de rendiment\
+    \ que fa que el valor present dels fluxos d'efectiu futurs sigui igual a la inversió\
+    \ inicial.<br />\nLa TIR és una mesura de rendibilitat que indica l'eficiència\
+    \ d'un projecte per generar rendiments.<br />\n<strong>Es considera que un projecte\
+    \ és rendible si el seu TIR és més gran que la taxa de descompte utilitzada per\
+    \ descomptar els fluxos d'efectiu futurs.</strong>\n"
+  SUBVENCION_TITLE: Subvencions
+  SUBVENCION_SURPLUS: El valor de la subvenció ha de ser un nombre més gran o igual
+    a 0 i menor que el preu de la instal·lació.
+  TITLE_INSTALLATION_COST: Preu de la instal·lació
+  IVA_INCLUDED: (IVA inclòs)
+  PROMPT_INSTALLATION_COST: Si tens una oferta diferent, pota canviar el valor de
+    l'import al camp següent.
+  ADVICE_PRICE_TITLE: Tenir en consideració
+  TITLE_AMORTIZATION_TIME: Temps d'amortització
+  DESCRIPTION_AMORTIZATION_TIME: "Aquest és el nombre d'anys que trigaràs a recuperar\
+    \ la inversió realitzada\n"
+  PROMPT_AMORTIZATION_TIME: Els panells tenen una vida útil de 20 a 30 anys (si es
+    mantenen correctament)
+  WARNING_AMORTIZATION_TIME: Aquesta configuració recupera la inversió en un temps
+    superior a 20 anys.
+  LABEL_INSTALLATION_COST: Cost previst de la instal·lació (€ amb IVA)
+  TITLE_VIRTUAL_BATTERY: Excedents no compensats
+  LABEL_RECOGNITION_VIRTUAL_BATTERY: Percentatge corresponent
+  TOOLTIP_RECOGNITION_VIRTUAL_BATTERY: Percentatge del saldo no compensat que passa
+    a la guardiola
+  LABEL_FEE_VIRTUAL_BATTERY: Quota mensual sense IVA
+  TOOLTIP_FEE_VIRTUAL_BATTERY: Quota fixa mensual a Euros sense IVA que l'empresa
+    comercialitzadora cobra per la gestió de la guardiola
+  TITLE_YEAR_SAVINGS: Estalvi anual a la factura
+  TITLE_MONTH_SAVINGS: Estalvi mensual a la factura
+  TITLE_FINANCE_SUMMARY: Balanç econòmic complet
+  DESCRIPTION_DATA_AS_PANELS: "Al següent gràfic pots observar la relació existent\
+    \ entre les variables: Inversió necessària, Estalvi obtingut, percentatges d'autoconsum\
+    \ i autosuficiència, així com la taxa interna de retorn en funció del nombre de\
+    \ panells instal·lats."
+  TITLE_DATA_AS_PANELS: Informació segons nombre de panells
+  LABEL_FOOTER_VAN: 'Valor actual net (VAN): {{VANProyecto}}'
+  LABEL_FOOTER_TIR: 'Taxa interna de retorn (TIR): {{TIRProyecto}}'
+  MSG_NO_FINANCE: "Un nombre de panells excessiu provoca que el retorn de la inversió\
+    \ no s'obtingui abans de {{periodo}} anys, per la qual cosa el resultat financer\
+    \ no és significatiu. Si us plau redueixi el nombre de panells, cosa que reduirà\
+    \ la inversió, o augmenti el consum d'energia, per incrementar l'estalvi. D'aquesta\
+    \ manera, millorarà el cashflow.\n"
+  HELP_TITLE_TIR: Taxa interna de retorn
+  HELP_TITLE_VAN: Valor actual net
+  HELP_VAN: "El valor actual net (VAN) és una mesura del valor present dels fluxos\
+    \ d'efectiu futurs generats per un projecte d'inversió, descomptats a una taxa\
+    \ d'interès apropiada.<br />\nEn altres paraules, el VAN representa la diferència\
+    \ entre el valor present dels beneficis (ingressos) i els costos (egressos) d'un\
+    \ projecte.<br />\n<strong>Un projecte es considera rendible si el seu VAN és\
+    \ més gran que zero. </strong> Un VAN positiu indica que el projecte generarà\
+    \ més ingressos dels que costa fer-ho, cosa que el converteix en una inversió\
+    \ atractiva.\n"
 SUMMARY:
   TITLE: Resum
-  DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación.
-    Podrás comprobar la relación entre la autoproducción y el consumo (balance energético)
-    y la relación entre la inversión y el ahorro (balance económico)
+  DESCRIPTION: En aquesta pantalla podràs veure les dades més importants de la simulació.
+    Podràs comprovar la relació entre l'autoproducció i el consum (balanç energètic)
+    i la relació entre la inversió i l'estalvi (balanç econòmic)
 
+  TITLE_AUTOPRODUCCION: Autoproducció
+  LABEL_AREAS_ESCOGIDAS_zero: àrea triada
 BASIC:
   LABEL_CLOSE: Tanca
   main_TAB_noMostrarMas: No torneu a mostrar aquest missatge
