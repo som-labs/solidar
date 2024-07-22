@@ -618,7 +618,7 @@ ENERGY_BALANCE:
 
   NOTE_DISCLAIMER_PRODUCCION: |
     Los datos para la estimación de la producción de los paneles solares se obtienen de PVGIS.
-    <a href='https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en' target='_blank'>Ver documentación detallada aqui</a><br />Aqui un resumen.
+    <a href='https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en' target='_blank'>Ver documentación detallada aqui</a><br />Aquí un resumen.
   TITLE_DISCLAIMER_PRODUCCION: Resumen de condiciones PVGIS
   DESCRIPTION_DISCLAIMER_PRODUCCION_SI: |
     Son tenidos en cuenta: <ul><li>la temperatura del aire a 2 metros y la velocidad del viento a 10 metros</li><li>el efecto de la temperatura en el rendimiento</li><li>la variación del espectro electromagnético a lo largo del día</li><li>el promedio de aerosoles en el ambiente (no los cambios bruscos)</li></ul>
@@ -633,7 +633,7 @@ ENERGY_BALANCE:
   TITLE_ENVIRONMENTAL_IMPACT: Impacto medioambiental
   DESCRIPTION_ENVIRONMENTAL_IMPACT: |
     Los paneles solares, al generar energía limpia, reducen la utilización de energías fósiles y en consecuencia disminuyen las emisiones de dióxido de carbono (CO2) causantes del efecto invernadero y calentamiento global. Asi pues, instalar paneles solares, contribuye al cuidado del medioambiente fomentando la transición energética.
-  LABEL_fuenteInfoCO2: Datos de conversion para {{territorio}}
+  LABEL_fuenteInfoCO2: Datos de conversión para {{territorio}}
   TITLE_graficoCO2: 'Ahorro de CO2 anual:'
   LABEL_CO2AnualRenovable: Si la electricidad contratada proviene de <br /><strong>fuentes
     renovables</strong>
