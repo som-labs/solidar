@@ -685,7 +685,7 @@ ENERGY_BALANCE:
     \ i el {{porcientoVertido}} s'abocarà a la xarxa, ja que es produirà en hores\
     \ en què no serà utilitzada.\n"
   TITLE_MONTH_ENERGY_BALANCE: Balanç energètic mensual
-  DESCRIPTION_MONTH_ENERGY_BALANCE: "La <strong>autoproduccinó</strong> és més gran\
+  DESCRIPTION_MONTH_ENERGY_BALANCE: "La <strong>autoproducció</strong> és més gran\
     \ a l'estiu (més hores de llum) que a l'hivern.<br />\nL' <strong>ús elèctric</strong>\
     \ varia segons els mesos i la zona geogràfica: al nord d'Espanya l'ús elèctric\
     \ més alt es produeix als mesos d'hivern i mentre que al sud els pics d'ús elèctric\
@@ -704,7 +704,7 @@ ENERGY_BALANCE:
     \ autoproducció mes a mes.\n"
   NOTE_DISCLAIMER_PRODUCCION: "Les dades per estimar la producció dels panells solars\
     \ s'obtenen de PVGIS.\n<a href='https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/pvgis-user-manual_en'\
-    \ target='_blank'>Veure documentació detallada aquí</a><br />Aqui un resum.\n"
+    \ target='_blank'>Veure documentació detallada aquí</a><br />Aquí un resum.\n"
   TITLE_DISCLAIMER_PRODUCCION: Resum de condicions PVGIS
   DESCRIPTION_DISCLAIMER_PRODUCCION_SI: "Són tinguts en compte: <ul><li>la temperatura\
     \ de l'aire a 2 metres i la velocitat del vent a 10 metres</li><li>l'efecte de\
@@ -731,10 +731,16 @@ ENERGY_BALANCE:
     no renovables</strong>
   SANKEY:
     PRODUCCION_PANELES: Autoproducció
+    EXCEDENTES: Excedents
+    VERTIDO_RED: Abocament a  xarxa
+    USO_DIURNO: Ús elèctric diürn
+    ENERGIA_RED: Energia de la xarxa
+    USO_NOCTURNO: Ús elèctric nocturn
+    USO_TOTAL: Ús de l'energia total
 ECONOMIC_BALANCE:
-  TITLE: Balanç econòmic
+  TITLE: Balanç Econòmic
   DESCRIPTION: |
-    En esta pantalla conocerás cuánto tendrás que invertir en la instalación (teniendo en cuenta las subvenciones) cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión.
+    A continuació coneixeràs quant et costarà la instal·lació, quant t'estalviaràs anualment a la factura i en quant de temps recuperaràs la inversió. Has de tenir en compte les possibles subvencions que puguis demanar en el moment de la instal·lació, les bonificacions d'IBI (si l'ajuntament les ofereix) i les eines per obtenir descomptes pels <a href='https://ca.support.somenergia.coop/article/1397-que-son-els-excedents-no-compensats' target='_blank'>excedents no compensats</a> com el <a href='https://ca.support.somenergia.coop/article/1371-que-es-el-flux-solar' target='_blank'>Flux Solar</a>, bateries virtuals o guardiola solar en cas que la teva comercialitzadora ho ofereixi.
 
   LABEL_ANO: Any
   TOOLTIP_ANO: Periode d'amortització
@@ -751,6 +757,13 @@ ECONOMIC_BALANCE:
   LABEL_PENDIENTE: Pendent
   TOOLTIP_PENDIENTE: Pendent d’amortització al final del període
 
+  TITLE_IBI: Reducció de l'IBI
+  DESCRIPTION_IBI: "Si instal·leu panells solars és possible que pugueu optar a una\
+    \ bonificació sobre l'IBI. <a href='https://fundacionrenovables.org/averigua-municipio-bonifica-ibi-icio-autoconsumo/'\
+    \ target='_blank'>On trobo la bonificació que em correspon per municipi?</a><br\
+    \ / >\n"
+  ERROR_IBI_SURPLUS: Aquesta subvenció d'IBI és superior al cost previst de la instal·lació.
+    El limitarem a {{años}} anys.
 SUMMARY:
   TITLE: Resum
   DESCRIPTION: Es esta pantalla podrás ver los datos mas importantes de la simulación.
