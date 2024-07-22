@@ -687,7 +687,7 @@ ECONOMIC_BALANCE:
   LABEL_RECOGNITION_VIRTUAL_BATTERY: Porcentaje correspondiente
   TOOLTIP_RECOGNITION_VIRTUAL_BATTERY: Porcentaje del saldo no compensado que pasa
     a la hucha
-  LABEL_FEE_VIRTUAL_BATTERY: Cuota  mensual sin IVA
+  LABEL_FEE_VIRTUAL_BATTERY: Cuota mensual sin IVA
   TOOLTIP_FEE_VIRTUAL_BATTERY: Cuota fija mensual en Euros sin IVA que la empresa
     comercializadora cobra por la gestión de la hucha
   TITLE_YEAR_SAVINGS: Ahorro anual en la factura
