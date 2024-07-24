@@ -927,7 +927,7 @@ REPORT:
   DADES_NOM: Nombre
   DADES_DIRECCIO: Dirección
   US_TITLE: Uso de la energía
-  US_ANUAL: 'Uso de la energía anual: '
+  US_ANUAL: 'Uso de la energía anual:'
   US_HORAS_SOL: Uso de la energía en horas solares
   FEE_TITLE: Precios aplicados (€/kWh)
   INSTALACIO_TITLE: Características instalación propuesta
