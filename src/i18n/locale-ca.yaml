@@ -1048,12 +1048,12 @@ RESULTS:
 GRAFICOS:
   LABEL_panelesActuales: Panells actuals {{paneles}}
   LABEL_graficasNoCompensado: No compensat
-  LABEL_graficasGastoConPaneles: Despesa amb paneles
+  LABEL_graficasGastoConPaneles: Despesa amb panells
   LABEL_graficasGastoSinPaneles: Despesa sense panells
-  LABEL_graficasCompensacion: Reducció per compensació
+  LABEL_graficasCompensacion: Compensació simplificada
 
   LABEL_graficasExcedente: Excedent
-  LABEL_graficasDeficit: Dèficit
+  LABEL_graficasDeficit: Energia de la xarxa
 
   graficos_LBL_descripcion: Àrea de gràfics disponibles
   graficos_LBL_balanceConsumo: Balanç mensual de consum amb {{potencia}} instal·lada
@@ -1073,8 +1073,13 @@ GRAFICOS:
   graficos_LBL_cambiaPaneles: Clic canvia a {{paneles}} panells
   graficos_LBL_paneles: Panells
 
+  LABEL_limiteSubvencionEU: Límit subvenció EU
+  LABEL_numeroMaximoPaneles: Límit panells per àrea disponible
+  LABEL_graficasAutoconsumo: Autoconsum
+  LABEL_SALDO_VIRTUAL_BATTERY: Descomptes disponibles
+  LABEL_EXTRACCION_VIRTUAL_BATTERY: Descompte aplicat
 REPORT:
-  titulo: Solidar Energía
+  titulo: Solidar Energia
   datosDeConsumoGlobal: Consum Global
   produccionTotal: Producció total
   produccionMediaEsperada: Producció mitjana esperada
@@ -1209,6 +1214,9 @@ REPORT:
   ANY: any
   ANYS: anys
 
+  FOOTER_BASES_INSTALADAS: Configuració total <strong>{{paneles}} panells</strong>
+    amb <strong>{{potencia}}</strong> instal·lats
+  tarifas: Tarifes utilitzades
 ABOUT:
   TEXT: "L'any 2019, va entrar en vigor a Espanya una nova normativa per afavorir\
     \ l'impuls de la implantació de les energies renovables, eliminant així les traves\
@@ -1248,3 +1256,27 @@ Proyecto:
   DIALOG_DESCRIPTION: En aquest formulari pots definir certs valors per documentar
     el projecte per quan l'exportis. El botó Importar et premitirà recuperar un projecte
     més tard amb les mateixes condicions amb què l'haguessis exportat.
+  PROP:
+    nombreProyecto: Nom del projecte
+    fechaCreacion: Data de creació
+    telefonoContacto: Telèfon de contacte
+    emailContacto: Adreça electrònica
+    descripcion: Descripció
+  TOOLTIP:
+    nombreProyecto: Nom que l'usuari doni a aquesta simulació (p. ex. pis01 llumescala01
+      garatge00…)
+    emailContacto: Adreça de correu
+    telefonoContacto: Telèfon de contacte
+    fechaCreacion: Data de creació
+    descripcion: Descripció
+    importarProyecto: Seleccioneu fitxer .solimp prèviament exportat per Solidar
+    exportarProyecto: Permet exportar les dades del projecte actiu per a futures importacions
+  LABEL:
+    importarProyecto: Importar projecte
+    exportarProyecto: Exportar projecte
+  MSG_confirmaReemplazo: El projecte existent serà reemplaçat per l'importat
+  MSG_importando: Important
+  MSG_success: Fitxer importat satisfactòriament
+  MSG_problemaVersion: Malauradament no es pot importar un fitxer Solimp de versions
+    anteriors a 4',
+  NO_EXPORT_AVAILABLE: El projecte només es pot exportar després del pas Balanç d'energia
