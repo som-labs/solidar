@@ -872,7 +872,7 @@ Proyecto:
   MSG_success: Fichero importado satisfactoriamente
   MSG_problemaVersion: Lamentablemente no se puede importar un fichero Solimp de versiones
     anteriores a 4',
-  NO_EXPORT_AVAILABLE: EL proyecto solo de puede exportar despues del paso Balance
+  NO_EXPORT_AVAILABLE: El proyecto solo de puede exportar despues del paso Balance
     de energia
 
 GRAFICOS:
