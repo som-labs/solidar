@@ -744,8 +744,8 @@ SUMMARY:
   LABEL_AREAS_ESCOGIDAS_zero: área escogida
   LABEL_AREAS_ESCOGIDAS_one: <strong>Un</strong> área escogida
   LABEL_AREAS_ESCOGIDAS_other: <strong>{{count}}</strong> áreas escogidas
-  LABEL_AREAS_DISPONIBLES_one: ' de <strong>un</strong> área disponible'
-  LABEL_AREAS_DISPONIBLES_other: ' de <strong>{{count}}</strong> áreas disponibles'
+  LABEL_AREAS_DISPONIBLES_one: 'de <strong>un</strong> área disponible'
+  LABEL_AREAS_DISPONIBLES_other: 'de <strong>{{count}}</strong> áreas disponibles'
   LABEL_PANELES_SUGERIDOS_zero: paneles solares
   LABEL_PANELES_SUGERIDOS_one: '<strong>Un</strong> panel solar'
   LABEL_PANELES_SUGERIDOS_other: '<strong>{{count}}</strong> paneles solares'
@@ -764,10 +764,10 @@ SUMMARY:
   DESCRIPTION_ENERGY_BALANCE: ''
   LABEL_AUTOCONSUMO: del consumo será autoproducido
   LABEL_DISCLAIMER_1: |
-    Todas las estimaciones se han realizado con la mayor precisión posible con la mejor intención y sin ningún compromiso.<br /><br />
+    Todas las estimaciones se han realizado con la mayor precisión posible y sin ningún compromiso.<br /><br />
     Es importante tener en cuenta que los precios vinculados a la instalación son orientativos y que existe bastante volatilidad en este factor por lo que no podemos garantizar que refleje la realidad del mercado en cada momento y territorio.
   LABEL_DISCLAIMER_2: |
-    Som Energía pone a disposición pública esta herramienta con el fin de contribuir a una transición energética justa, descentralizada y limpia.
+    Som Energia pone a disposición pública esta herramienta con el fin de contribuir a una transición energética justa, descentralizada y limpia.
   LABEL_PRINT: Imprime resumen
   LABEL_PDF_REPORT: Informe de cálculo
   LABEL_SOM_REPORT: Informe energético
@@ -815,10 +815,10 @@ PARAMETROS:
     impuestoElectrico: El impuesto especial sobre la electricidad
     IVAEnergia: El IVA que se repercute por el gasto en electricidad
     IVAInstalacion: El IVA que se repercute sobre el importe al que ascienda la instalación
-    perdidasSistema: Las pérdidas estimas del sistema fotovoltaico debidas al deterioro
-      de algunos componentes condiciones adversas inversores deficientes etc.
+    perdidasSistema: Las pérdidas estimadas del sistema fotovoltaico debidas al deterioro
+      de algunos componentes, condiciones adversas, inversores deficientes, etc.
     interesVAN: Tasa de descuento a aplicar en el cálculo del valor actual neto
-    margen: Distancia dejada alrededor de la instalación a efectos de mantenimiento
+    margen: Distancia mantenida alrededor de la instalación a efectos de mantenimiento
 
 CONTACTO:
   DIALOG_TITLE: Formulario de contacto
@@ -828,9 +828,9 @@ CONTACTO:
     email: email (opcional)
     telefono: Teléfono (opcional)
     tipoPropuesta: ¿Qué nos dices?
-    comentario: Haces un comentario
-    mejora: Propones una mejora
-    error: Reportas un error
+    comentario: Haz un comentario
+    mejora: Propón una mejora
+    error: Informar de un error
     advertencia: Los datos que nos aportes en este formulario serán utilizados única
       y exclusivamente para contestar a tu solicitud y no serán almacenados en ningún
       fichero ni utlizados para ningún otro fin
@@ -841,7 +841,7 @@ CONTACTO:
     nombre: Tu nombre
     telefono: Teléfono (opcional)
     email: Indicanos un email para poder contestar a tu comentario
-    mensaje: Mensaje lo mas descriptivo posible de la incidencia
+    mensaje: Dinos de la forma más descriptiva posible la incidencia
 
 Proyecto:
   DIALOG_TITLE: Datos del proyecto
