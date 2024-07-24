@@ -569,8 +569,8 @@ CONSUMPTION:
   HOOVER_MAPA_CONSUMO_MES_HORA: Consum mitjà <br>horari per mes
   YAXIS_MAPA_CONSUMO_MES_HORA: Mes
   TITLE_MAP_MONTH_DAY: Valors diaris de consum
-  TOOLTIP_MAP_MONTH_DAY: Gràfic interactiu. Clica en un punt i veuràs el perfil horari
-    de consum d'aquell dia.
+  TOOLTIP_MAP_MONTH_DAY: Gràfic interactiu. Fes clic en un punt i veuràs el perfil
+    horari de consum d'aquell dia.
   DESC_MAP_MONTH_DAY: "L'ús elèctric per hores varia segons si es tracta d'un dia\
     \ festiu o laborable. En els dies laborables sol haver-hi un ús mínim durant les\
     \ hores de treball, tret que teletreballis.<br /><br />\nTambé varia segons les\
@@ -854,26 +854,68 @@ SUMMARY:
 
   TITLE_AUTOPRODUCCION: Autoproducció
   LABEL_AREAS_ESCOGIDAS_zero: àrea triada
+  LABEL_AREAS_ESCOGIDAS_one: <strong>Un</strong> àrea triada
+  LABEL_AREAS_ESCOGIDAS_other: <strong>{{count}}</strong> àrees triades
+  LABEL_AREAS_DISPONIBLES_one: de <strong>un</strong> àrea disponible
+  LABEL_AREAS_DISPONIBLES_other: de <strong>{{count}}</strong> àrees disponibles
+  LABEL_PANELES_SUGERIDOS_zero: panells solars
+  LABEL_PANELES_SUGERIDOS_one: <strong>Un</strong> panell solar
+  LABEL_PANELES_SUGERIDOS_other: <strong>{{count}}</strong> panells solars
+  LABEL_PRODUCCION_ANUAL: kwh <br />producció anual
+  LABEL_PRODUCCION: <strong>{{produccion}}</strong> producció anual
+  LABEL_POTENCIA: <strong>{{potencia}}</strong> potència total instal·lada
+  LABEL_COSTE: <strong>{{coste}}</strong> cost de la instal·lació
+  TITLE_CONSUMO: Consum
+  TITLE_ECONOMIC_BALANCE: Balanç econòmic
+  LABEL_COSTE_INSTALACION: cost de la instal·lació
+  LABEL_AMORTIZACION: <strong>{{amortizacion}}</strong> Anys d'amortització
+  LABEL_SUBVENCIONES: <strong>{{subvenciones}}</strong> d'ajuts i subvencions
+  TITLE_ENERGY_BALANCE: Balanç energètic
+  LABEL_AUTOCONSUMO: del consum serà autoproduït
+  LABEL_DISCLAIMER_1: "Totes les estimacions s'han realitzat amb la màxima precisió\
+    \ possible i sense cap compromís.<br /><br />\nÉs important tenir en compte que\
+    \ els preus vinculats a la instal·lació són orientatius i que hi ha força volatilitat\
+    \ en aquest factor, per la qual cosa no podem garantir que reflecteixi la realitat\
+    \ del mercat en cada moment i territori.\n"
+  LABEL_DISCLAIMER_2: "Som Energia posa a disposició pública aquesta eina amb la finalitat\
+    \ de contribuir a una transició energètica justa, descentralitzada i neta.\n"
+  LABEL_PRINT: Imprimeix resum
+  LABEL_PDF_REPORT: Informe de càlcul
+  LABEL_SOM_REPORT: Informe energètic
 BASIC:
-  LABEL_CLOSE: Tanca
-  main_TAB_noMostrarMas: No torneu a mostrar aquest missatge
-  valor_true: Verdadero
-  valor_false: Falso
+  LABEL_CLOSE: Tancar
+  main_TAB_noMostrarMas: No tornar a mostrar aquest missatge
+  valor_true: Veritable
+  valor_false: Fals
 
+  LABEL_OK: Desar
+  LABEL_CANCEL: Cancel·lar
+  LABEL_SEND: Enviar
+  LABEL_AVISO: Avís
+  LABEL_NEXT: Següent
+  LABEL_PREVIOUS: Anterior
+  LABEL_HORA: Hora
+  LABEL_DIA: Dia
+  LABEL_MES: Mes
+  LABEL_AÑOS: Anys
+  LABEL_REQUIRED: Requerit
+  LABEL_NUMBER: Posa un nombre major o igual que zero
+  LABEL_ACCIONES: Accions
+  LABEL_INFO: Info
+  LABEL_NO_ROWS: Sense dades
 GRAPHICS:
-  LABEL_CONSUMPTION: Consum
-  LABEL_PRODUCTION: Producción
+  LABEL_CONSUMPTION: Ús elèctric
+  LABEL_PRODUCTION: Producció
   LABEL_DIA: Día
   LABEL_HORA: Hora
 
 DIALOG_PROPERTIES:
-  TITLE: Propietats
+  TITLE: Menú de Propietats
 
 PARAMETROS:
   DIALOG_TITLE: Paràmetres de l'aplicació
-  DIALOG_DESCRIPTION: Configuració de paràmetres de l'aplicació. Els canvis en aquests
-    valors no impliquen un recàlcul de tot el conjunt cal tornar a la pestanya Ubicació
-    i calcular
+  DIALOG_DESCRIPTION: "Els canvis en aquests valors <strong>no impliquen un recàlcul\
+    \ de tot el conjunt</strong>, cal tornar a la pestanya Localització i calcular.\n"
   LABEL_impuestoElectrico: Impost elèctric en %
   TOOLTIP_impuestoElectrico: 'L’impost especial sobre l’electricitat'
   LABEL_IVAEnergia: IVA aplicable a l’energia en %
@@ -893,24 +935,44 @@ PARAMETROS:
     tot complint el format indicat a l'exemple
   parametros_MSG_errorLecturaFicheroTarifas: Error llegint fitxer local de tarifes
 
+  TOOLTIP:
+    perdidasSistema: Les pèrdues estimades del sistema fotovoltaic degudes al deteriorament
+      d'alguns components, condicions adverses, inversors deficients, etc.
+    impuestoElectrico: L'impost especial sobre l'electricitat
+    IVAEnergia: L'IVA que es repercuteix per la despesa en electricitat
+    IVAInstalacion: L'IVA que es repercuteix sobre l'import a què ascendeixi la instal·lació
+    interesVAN: Taxa de descompte a aplicar al càlcul del valor actual net
+    margen: Distància mantinguda al voltant de la instal·lació a efectes de manteniment
+  PROP:
+    impuestoElectrico: Impost elèctric en %
+    IVAEnergia: IVA aplicable a l'energia a %
+    IVAInstalacion: IVA aplicable a la instal·lació en %
+    perdidasSistema: Pèrdues estimades de la instal·lació en %
+    interesVAN: Interès base (%) per a càlcul de VAN
+    margen: Marge d'instal·lació en metres
 CONTACTO:
-  DIALOG_TITLE: Contacte
+  DIALOG_TITLE: Formulari de contacte
   DIALOG_DESCRIPTION: Envia'ns els teus comentaris. Intentarem atendre't el més aviat
     possible
   PROP:
     nombre: Nom
-    email: correu electrònic
-    telefono: Telèfon
+    email: email (opcional)
+    telefono: Telèfon (opcional)
     tipoPropuesta: Què ens dius?
     comentario: Fes un comentari
     mejora: Proposa una millora
-    error: Informa d’un error
+    error: Informar d’un error
     advertencia: Les dades que ens aportis en aquest formulari seran utilitzades únicament
       i exclusivament per contestar la teva sol·licitud i no seran emmagatzemades
       en cap fitxer ni utilitzades per a cap altre fi
-    respuesta: Marca aquí si estàs d'acord en rebre respostes
+    respuesta: Marca si vols rebre respostes (email requerit)
     mensaje: Missatge
 
+  TOOLTIP:
+    nombre: El teu nom
+    telefono: Telèfon (opcional)
+    email: Indica'ns un email per poder contestar el teu comentari
+    mensaje: Digue'ns de la manera més descriptiva possible la incidència
 BOTONES:
   botonExportar_TT: Guardar el projecte
   botonContacto_TT: Contacte / Suggeriments
@@ -1181,3 +1243,8 @@ DIALOG_PANELS:
     cristal·lí (els més habituals al mercat).
   OTHERS: No obstant això, si vols utilitzar un panell que no és a la llista, pots
     definir les seves característiques en els camps següents.
+Proyecto:
+  DIALOG_TITLE: Dades del projecte
+  DIALOG_DESCRIPTION: En aquest formulari pots definir certs valors per documentar
+    el projecte per quan l'exportis. El botó Importar et premitirà recuperar un projecte
+    més tard amb les mateixes condicions amb què l'haguessis exportat.
