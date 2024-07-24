@@ -1099,14 +1099,14 @@ REPORT:
     Hi ha una gran volatilitat en aquest factor i no podem garantir que reflecteixi
     la realitat del mercat en cada moment i territori de manera que hem inclòs un
     camp que et permet corregir aquest preu segons les recomanacions del teu instal·lador.
-  disclaimer1pdf: Totes les estimacions donades s’han realitzar amb la màxima precisió
-    possible  amb la millor intenció i sense cap compromís. Especial menció hem de
-    fer quant el preu estimat de la instal·lació. Hi ha una gran volatilitat en aquest
-    factor i no podem garantir que reflecteixi la realitat del mercat en cada moment
-    i territori de manera que hem inclòs un camp que et permet corregir aquest preu
-    segons les recomanacions del teu instal·lador. Som Energia no té cap interès econòmic
-    ni directe ni indirecte en aquest estudi excepte contribuir a una transició energètica
-    justa amb els usuaris eficient descentralitzada i neta.
+  disclaimer1pdf: Totes les estimacions donades s'han realitzat amb la màxima precisió
+    possible amb la millor intenció i sense cap compromís. Especial menció hem de
+    fer quant al preu estimat de la instal·lació. Hi ha una alta volatilitat en aquest
+    factor i no podem garantir que reflecteixi la realitat del mercat a cada moment
+    i territori pel que hem inclòs un camp que et permet corregir aquest preu segons
+    les recomanacions del teu instal·lador. Som Energia no té cap interès econòmic
+    ni directe ni indirecte en aquest estudi llevat de contribuir a una transició
+    energètica justa amb els usuaris eficient descentralitzada i neta.
   disclaimer2: Som Energia no té cap interès econòmic ni directe ni indirecte en aquest
     estudi excepte contribuir a una transició energètica justa amb els usuaris eficient
     descentralitzada i neta.
@@ -1121,12 +1121,12 @@ REPORT:
   TITLE_PRIMER: INFORME PROVISIONAL
   TITLE_STRONG: AUTOGENERACIÓ
   TITLE_SEGON: FOTOVOLTAICA
-  ATENCIO: 'Atenció: Aquest informe procura donar una informació orientativa a partir
-    de les dades reals de consum del període dd-mm-aaaa al dd-mm-aaaa i estimacions
-    aproximades del rendiment de la instal·lació així com del seu cost Hem procurat
-    que les fonts siguin el màxim fiables i pròximes a la realitat però en cap cas
-    garantim des de Som Energia el seu acompliment en el transcurs dels 25 anys de
-    vida utils estimats.'
+  ATENCIO: 'Atenció: Aquest informe intenta donar una informació orientativa a partir
+    de les dades d''ús elèctric indicades i estimacions aproximades del rendiment
+    de la instal·lació, així com del cost. Hem intentat que les fonts siguin el més
+    fiables i properes a la realitat, però en cap cas no garantim des de Som Energia,
+    que aquests valors siguin els reals en el transcurs dels 25 anys de vida útils
+    estimats.'
   DADES_TITLE: Dades principals
   DADES_NOM: Nom
   DADES_DIRECCIO: Direcció
