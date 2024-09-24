@@ -487,7 +487,7 @@ CONSUMPTION:
   TITLE: Consum
   COMPENSACION_TITLE: Compensació simplificada d'excedents
   COMPENSACION_DESCRIPTION: |
-    La <strong>energia excedentària</strong> és aquella que ha estat generada pels panells solars fotovoltaiques i que, com que no s'utilitza de forma instantània, circula a través del comptador i s'aboca a la xarxa elèctrica de distribució.<br / ><br />
+    La <strong>energia excedentària</strong> és aquella que ha estat generada pels panells solars fotovoltaiques i que, com que no s'utilitza de forma instantània, circula a través del comptador i s'aboca a la xarxa elèctrica de distribució.<br /><br />
     Aquesta energia excedentària es comptabilitza al comptador en trams d'una hora. A partir dels valors registrats, s'apliquen dos mecanismes de manera consecutiva: primer s'aplica el <strong>balanç net horari</strong> i després en el moment de facturar s'aplica <strong>la compensació simplificada d'excedents.</strong><br /><br />
     <a href='https://ca.support.somenergia.coop/article/783-com-funciona-la-compensacio-simplificada-dexcedents' target='_blank'>Com funciona la compensació simplificada d'excedents?</a>
   LABEL_MAPA_CONSUMO_MES_HORA: 'Màxim valor: {{maxConsumoMes}} kWh'
@@ -617,6 +617,9 @@ CONSUMPTION:
     CSV distribuïdora per a font tipus SOM
   ERROR_FALTAN_DATOS: Manquen dades de {{faltan}} dies. Vols continuar?
   ERROR_NOMBRE_TIPO_CONSUMO_DUPLICADO: El nom del tipus de consum no pot estar duplicat
+  INSTRUCTIONS_UFD_LINK: /datos/Guias publicadas/[ES] UFD.pdf
+  INSTRUCTIONS_EREDES_LINK: /datos/Guias publicadas/[ES] E-REDES.pdf
+  INSTRUCTIONS_VIESGO_LINK: /datos/Guias publicadas/[ES] Viesgo.pdf
 ENERGY_BALANCE:
   TITLE: Balanç d'Energia
   LABEL_EXCEDENTE_ANUAL: Electricitat sobrant
@@ -732,7 +735,7 @@ ENERGY_BALANCE:
   SANKEY:
     PRODUCCION_PANELES: Autoproducció
     EXCEDENTES: Excedents
-    VERTIDO_RED: Abocament a  xarxa
+    VERTIDO_RED: Abocament a xarxa
     USO_DIURNO: Ús elèctric diürn
     ENERGIA_RED: Energia de la xarxa
     USO_NOCTURNO: Ús elèctric nocturn
@@ -761,7 +764,7 @@ ECONOMIC_BALANCE:
   DESCRIPTION_IBI: "Si instal·leu panells solars és possible que pugueu optar a una\
     \ bonificació sobre l'IBI. <a href='https://fundacionrenovables.org/averigua-municipio-bonifica-ibi-icio-autoconsumo/'\
     \ target='_blank'>On trobo la bonificació que em correspon per municipi?</a><br\
-    \ / >\n"
+    \ />\n"
   ERROR_IBI_SURPLUS: Aquesta subvenció d'IBI és superior al cost previst de la instal·lació.
     El limitarem a {{años}} anys.
   SUBVENCION_DESCRIPTION: "És probable que hi hagi subvencions per a la instal·lació\
@@ -780,11 +783,11 @@ ECONOMIC_BALANCE:
     \ com en el cas de <a href='https://ca.support.somenergia.coop/article/1371-que-es-el-flux-solar'\
     \ target='_blank'>Flux Solar</a> o una quota mensual fixa per oferir el servei.\n"
   DESCRIPTION_YEAR_SAVINGS: "Amb la instal·lació proposada i els paràmetres indicats\
-    \ us estalviareu</strong> el {{porcientoAhorro}} de l'import anual del terme d'energia.<br\
-    \ />\nEn el gràfic següent es compara el cost anual en electricitat amb panells\
-    \ i sense panells, tenint en compte tots els mecanismes d'estalvi: ús d'energia\
-    \ autoproduïda, compensació simplificada d'excedents i descomptes pels excedents\
-    \ no compensats.\n"
+    \ us <strong>estalviareu</strong> el {{porcientoAhorro}} de l'import anual del\
+    \ terme d'energia.<br />\nEn el gràfic següent es compara el cost anual en electricitat\
+    \ amb panells i sense panells, tenint en compte tots els mecanismes d'estalvi:\
+    \ ús d'energia autoproduïda, compensació simplificada d'excedents i descomptes\
+    \ pels excedents no compensats.\n"
   DESCRIPTION_FINANCE_SUMMARY: "La taula següent mostra com es va recuperant la inversió\
     \ realitzada al generador fotovoltaic al llarg de diversos anys i l'efecte de\
     \ l'estalvi energètic, la bonificació a l'IBI i les subvencions definides.<br\
@@ -1138,7 +1141,7 @@ REPORT:
   US_TITLE: Ús del l'energia
   US_POTENCIA: Potencia contractada
   US_TARIFA: Tarifa
-  US_ANUAL: Ús anual de l'energia
+  US_ANUAL: "Ús anual de l'energia:"
   INSTALACIO_TITLE: Característiques instal·lació proposada
   INSTALACIO_NOMBRE: Nombre de panells
   INSTALACIO_POTENCIA: Potència total instal·lada
