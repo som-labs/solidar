@@ -91,7 +91,8 @@ BaseSolar:
     nombreBaseSolar: Identifica el nombre de esta base para futuras referencias
     angulosOptimos: Marque este campo si desea que el sistema calcule el valor óptimo
       de inclinación y acimut
-    inclinacion: Inclinación en grados (entre 0º y 90º) medida con respecto a la horizontal
+    inclinacion:
+      Inclinación en grados (entre 0º y 90º) medida con respecto a la horizontal
       del terreno sobre el que se montarán los paneles
     inclinacionOptima: Marca este campo si deseas que el sistema calcule el valor
       óptimo de la inclinación de los paneles
@@ -173,7 +174,8 @@ Instalacion:
     tipoPanel: Potencia de paneles predefinidos
     potenciaTotal: Potencia pico total instalada en la base
     potencia: Potencia en kWp del panel utilizado en los cálculos
-    tecnologia_OLD: "Se pueden elegir tres tipos de paneles para realizar las estimaciones\n\
+    tecnologia_OLD:
+      "Se pueden elegir tres tipos de paneles para realizar las estimaciones\n\
       - los que tienen células de silicio cristalino\n- módulos de lámina delgada\
       \ de seleniuro de cobre e indio (CuInSe) o seleniuro de cobre indio y galio\
       \ (CuInGaSe)\n- módulos de lámina delgada de teluro de cadmio (CdTe)\n- Desconocido<br\
@@ -341,12 +343,14 @@ Economico:
       una lista de municipios con bonificaciones en el IBI y reducciones en ICIO.
     porcientoSubvencionIBI: El porcentaje con que el ayuntamiento bonifica el importe
       del IBI
-    tiempoSubvencionIBI: El número de años durante los que se puede aplicar la bonificación
+    tiempoSubvencionIBI:
+      El número de años durante los que se puede aplicar la bonificación
       en el IBI
     valorSubvencion: Indicar el valor de las posibles subvenciones de las que pudieras
       beneficiarte
     porcientoSubvencion: Porcentaje de subvención
-    VANProyecto: El rendimiento de la inversión en la instalación fotovoltaica transcurridos
+    VANProyecto:
+      El rendimiento de la inversión en la instalación fotovoltaica transcurridos
       los años que se muestran en la tabla
     TIRProyecto: Indicador de la rentabilidad del proyecto fotovoltaico transcurridos
       los años que se muestran en la tabla
@@ -425,7 +429,8 @@ LOCATION:
     CUALES_1: 1. Área total de cubierta
     CUALES_2: 2. Áreas disponibles
     TITLE_2: ¿Mas de una orientación o inclinación?
-    DOS_AGUAS: Si tienes más de un tejado, o un tejado con varias aguas, deberás seleccionar
+    DOS_AGUAS:
+      Si tienes más de un tejado, o un tejado con varias aguas, deberás seleccionar
       cada parte como diferentes áreas. La inclinación puede ser distinta en cada
       parcela/superficie, como también su posición respecto al sur.
     TITLE_3: ¿Como afectan las sombras?
@@ -566,7 +571,8 @@ ENERGY_BALANCE:
   PROMPT: A continuación, puedes cambiar la cantidad de paneles asignados a cada una
     de las áreas.
   ADVISE_TITLE: Consejo
-  ADVISE_DESCRIPTION: Para aprovechar al máximo tu instalación, haz uso de tus electrodomésticos
+  ADVISE_DESCRIPTION:
+    Para aprovechar al máximo tu instalación, haz uso de tus electrodomésticos
     en las horas centrales del día que son los momentos de máxima producción.
   SUMMARY_TITLE: Datos de la cubierta
   SUMMARY_TOOLTIP_INFO: Información detallada del área seleccionada
@@ -637,7 +643,8 @@ ENERGY_BALANCE:
   TITLE_graficoCO2: 'Ahorro de CO2 anual:'
   LABEL_CO2AnualRenovable: Si la electricidad contratada proviene de <br /><strong>fuentes
     renovables</strong>
-  LABEL_CO2AnualNoRenovable: Si la electricidad contratada proviene de <br /><strong>fuentes
+  LABEL_CO2AnualNoRenovable:
+    Si la electricidad contratada proviene de <br /><strong>fuentes
     no renovables</strong>
   SANKEY:
     PRODUCCION_PANELES: Autoproducción
@@ -655,15 +662,14 @@ ECONOMIC_BALANCE:
   TITLE_IBI: Reducción del IBI
   DESCRIPTION_IBI: |
     Si instalas paneles solares es posible que puedas optar a una bonificación sobre el IBI. <a href='https://fundacionrenovables.org/averigua-municipio-bonifica-ibi-icio-autoconsumo/' target='_blank'>¿Dónde encuentro la bonificación que me corresponde por municipio?</a><br />
-  ERROR_IBI_SURPLUS: Esta subvención de IBI es superior al coste previsto d ela instalación.
-    Lo limitaremos a {{años}} años.
+  ERROR_IBI_SURPLUS: Esta subvención de IBI es superior al coste previsto de la instalación. Lo limitaremos a {{años}} años.
   SUBVENCION_TITLE: Subvenciones
   SUBVENCION_DESCRIPTION: |
     Es probable que existan subvenciones para la instalación de paneles solares y que ésto suponga un ahorro. Si es así, indica el % o el importe subvencionado.
-  SUBVENCION_SURPLUS: El valor de la subvencion debe ser un número mayor o igual a
-    0 y menor que el precio de la instalación.
+  SUBVENCION_SURPLUS: El valor de la subvención debe ser un número mayor o igual a 0 y menor que el precio de la instalación.
   TITLE_INSTALLATION_COST: Precio de la instalación
-  DESCRIPTION_INSTALLATION_COST: Este es un importe orientativo que puede variar dependiendo
+  DESCRIPTION_INSTALLATION_COST:
+    Este es un importe orientativo que puede variar dependiendo
     del precio del mercado. Además, no tiene en cuenta tasas y/o gastos adicionales
     que puedan aparecer.
   IVA_INCLUDED: (IVA incluido)
@@ -855,7 +861,8 @@ Proyecto:
     emailContacto: Dirección de correo
     descripcion: Descripción
   TOOLTIP:
-    nombreProyecto: Nombre que el usuario dé a esta simulación (p. ej. piso01 luzescalera01
+    nombreProyecto:
+      Nombre que el usuario dé a esta simulación (p. ej. piso01 luzescalera01
       garaje00…)
     emailContacto: Dirección de correo
     telefonoContacto: Teléfono de contacto
@@ -999,7 +1006,8 @@ REPORT:
   TEXT: Hay que tener en cuenta que si se modifican los horarios de uso de energía
     y/o el total de energía utilizada los resultados pueden variar significativamente.
   ECONOMIQUES_TITLE: Datos económicos
-  ECONOMIQUES_DESCRIPTION: En el precio no está incluido el coste de las tasas administrativas
+  ECONOMIQUES_DESCRIPTION:
+    En el precio no está incluido el coste de las tasas administrativas
     necesarias (ICIO, licencia de obras y legalización de la instalación), así como
     gastos adicionales que puedan surgir como medios de elevación, actuaciones de
     adecuación de la vivienda (reparaciones de la cubierta, de la instalación eléctrica,
