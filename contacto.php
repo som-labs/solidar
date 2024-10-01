@@ -46,7 +46,7 @@ $headers = 'From: '.$email_from."\r\n".
 if (mail($email_to, $email_subject, $email_message, $headers)) {
     echo "¡El formulario se ha enviado con éxito!";
 } else {
-    $errorMessage = "Error enviando mensaje" . "<br>" .error_get_last()['message']
+    $errorMessage = "Error enviando mensaje" . "<br>" .error_get_last()['message'];
     echo $errorMessage;
 }
 ?>
