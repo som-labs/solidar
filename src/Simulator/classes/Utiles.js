@@ -1135,10 +1135,22 @@ async function cargaTarifasDesdeSOM() {
   let _url
   let respuesta
   let txtTarifas
+
+  // Add_1: Adding non response status from apienergia
+  const controller = new AbortController()
+  const signal = controller.signal
+  const timeoutId = setTimeout(() => controller.abort(), 5000)
+  const options = {}
+  //
+
   try {
     _url = urlSOMTarifas + '2.0TD'
-    debugLog('Tarifas leidas desde SOM:' + _url)
-    respuesta = await fetch(_url)
+    debugLog('Intentando tarifas desde SOM:' + _url)
+    // Modify_1: , { ...options, signal }
+    respuesta = await fetch(_url, { ...options, signal })
+    clearTimeout(timeoutId)
+    //
+
     if (respuesta.status === 200) {
       txtTarifas = await respuesta.text()
       if (txtTarifas.includes('error')) throw new Error(txtTarifas)
@@ -1147,7 +1159,7 @@ async function cargaTarifasDesdeSOM() {
           return parseFloat(t)
         })
     }
-    debugLog('Tarifas 2.0TD desde SOM', { txtTarifas })
+    debugLog('Success Tarifas 2.0TD desde SOM', { txtTarifas })
 
     _url = urlSOMTarifas + '3.0TD'
     respuesta = await fetch(_url)
@@ -1172,11 +1184,15 @@ async function cargaTarifasDesdeSOM() {
         })
       }
     }
-    debugLog('Tarifas 3.0TD desde SOM', { txtTarifas })
+    debugLog('Success Tarifas 3.0TD desde SOM', { txtTarifas })
     return true
   } catch (err) {
-    alert(
+    //Add_1
+    clearTimeout(timeoutId)
+    debugLog(
       'Error leyendo tarifas desde SOM Energia\n' +
+        err.name +
+        '-' +
         err.message +
         '\nSeguimos con fichero de solidarenergia.es',
     )

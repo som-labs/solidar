@@ -66,13 +66,17 @@ async function InicializaAplicacion() {
   }
 
   // lectura del fichero de tarifas del servidor. Si falla se usan las de la TCB
-  if (!UTIL.cargaTarifasDesdeSOM()) {
+  if (!(await UTIL.cargaTarifasDesdeSOM())) {
     //Dejamos esta llamada hasta que el tiempo de respuesta de SOM sea aceptable
+    UTIL.debugLog('Fallo lectura desde apitarifas')
     const ficheroTarifa = '/datos/tarifas.json'
     try {
+      UTIL.debugLog(
+        'Intentando leer tarifas desde servidor solidarenergia:' + ficheroTarifa,
+      )
       const respuesta = await fetch(ficheroTarifa)
       if (respuesta.status === 200) {
-        UTIL.debugLog('Tarifas leidas desde solidarenergia.es:' + ficheroTarifa)
+        UTIL.debugLog('Success Tarifas leidas desde solidarenergia:' + ficheroTarifa)
         TCB.tarifas = await respuesta.json()
       }
     } catch (err) {
