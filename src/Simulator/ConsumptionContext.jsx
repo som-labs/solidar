@@ -8,6 +8,9 @@ const ConsumptionContext = createContext({})
 const ConsumptionContextProvider = ({ children }) => {
   const { t } = useTranslation()
   const [tipoConsumo, setTipoConsumo] = useState([])
+  const [fincas, setFincas] = useState([])
+  const [zonasComunes, setZonasComunes] = useState([])
+  const [fincasCargadas, setFincasCargadas] = useState(false)
   const [preciosValidos, setPreciosValidos] = useState(true)
 
   //TCB fields to be reflected in state
@@ -46,17 +49,18 @@ const ConsumptionContextProvider = ({ children }) => {
   }
 
   function validaTipoConsumo() {
-    if (TCB.TipoConsumo.length === 0) {
-      return { status: false, error: t('CONSUMPTION.ERROR_AL_MENOS_UN_TIPOCONSUMO') }
-    }
-
     if (!preciosValidos) {
       return {
         status: false,
         error: 'Debe definir los precios correctos de las tarifas antes de continuar',
       }
     }
-    return { status: true, error: '' }
+
+    if (TCB.TipoConsumo.length === 0) {
+      return { status: false, error: t('CONSUMPTION.ERROR_AL_MENOS_UN_TIPOCONSUMO') }
+    } else {
+      return { status: true, error: '' }
+    }
   }
 
   const contextValue = {
@@ -66,6 +70,11 @@ const ConsumptionContextProvider = ({ children }) => {
     preciosValidos,
     setPreciosValidos,
     addTCBTipoToState,
+    fincas,
+    setFincas,
+    fincasCargadas,
+    zonasComunes,
+    setZonasComunes,
   }
 
   return (

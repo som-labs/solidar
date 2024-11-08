@@ -19,14 +19,18 @@ import { Button, Tooltip, Box, Grid } from '@mui/material'
 
 //React global components
 import { BasesContext } from '../BasesContext'
+import { ConsumptionContext } from '../ConsumptionContext'
+
 import DialogBaseSolar from './DialogBaseSolar'
+
 import { useDialog } from '../../components/DialogProvider'
 import { AlertContext } from '../components/Alert'
 
 // Local Location module
-import verificaTerritorio from './Nominatim.js'
+import { verificaTerritorio, getParcelaXY } from './Nominatim.js'
 
 // Solidar global modules
+import Finca from '../classes/Finca.js'
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
@@ -41,7 +45,7 @@ import * as UTIL from '../classes/Utiles'
 
 export default function MapComponent() {
   const { t } = useTranslation()
-
+  const { fincas, setFincas, setFincasCargadas } = useContext(ConsumptionContext)
   // Map state
   const [mapType, setMapType] = useState('LOCATION.LABEL_SATELITE')
   const [selectedCoord] = useState([-3.7, 40.45])
@@ -353,6 +357,18 @@ export default function MapComponent() {
       SLDRAlert('NOMINATIM error 2', error, 'ERROR')
       TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
       return false
+    }
+
+    if (TCB.modoActivo !== 'INDIVIDUAL') {
+      const alfa = await getParcelaXY(puntoAplicacion_4326)
+      console.log('GETPARCELAXY', alfa)
+      if (alfa.status) {
+        setFincas(alfa.units)
+        TCB.Finca = alfa.units.slice()
+      } else {
+        alert('Error from fecth parcela' + alfa.error)
+        setFincas([])
+      }
     }
 
     //Preparamos los datos default para constuir un objeto BaseSolar
