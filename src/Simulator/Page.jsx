@@ -10,9 +10,9 @@ import Wizard from '../components/Wizard'
 
 import LocationStep from './Location/Location'
 import ConsumptionStep from './Consumption/Consumption'
+import UnitsStep from './Units/Units'
 import EnergyBalanceStep from './EnergyBalance/EnergyBalance'
 import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
-import SummaryClaraStep from './Summary/Clara/Summary'
 import SummarySOMStep from './Summary/SOM/Summary'
 
 import { ConsumptionContext } from './ConsumptionContext'
@@ -34,9 +34,6 @@ export default function Page() {
   const { validaBases } = useContext(BasesContext)
   const { validaTipoConsumo } = useContext(ConsumptionContext)
   const { ecoData, setEcoData } = useContext(EconomicContext)
-
-  // const location = useLocation()
-  // console.log(location)
 
   const [a] = useSearchParams()
   TCB.URLParameters = a
@@ -84,18 +81,98 @@ export default function Page() {
       SLDRAlert('VALIDACION', results.error, 'error')
       return false
     }
-
     // Se crearan los objetos produccion, balance y economico
     // PENDIENTE: podria haber un warning de falta de espacio enviado desde Prepara...
-    results = await PreparaEnergyBalance()
-    if (results.status) {
-      setEcoData((prev) => ({ ...prev, ...TCB.economico }))
-      TCB.readyToExport = true
-    } else {
-      console.log(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error)
-      SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
+    if (TCB.modoActivo === 'INDIVIDUAL') {
+      results = await PreparaEnergyBalance()
+      if (results.status) {
+        setEcoData((prev) => ({ ...prev, ...TCB.economico }))
+        TCB.readyToExport = true
+      } else {
+        console.log(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error)
+        SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
+      }
     }
     return results.status
+  }
+
+  async function validaUnitsStep() {
+    //Verifica que al menos una unidad o una zona común tengan uso electrico asignado
+    console.dir(TCB.Finca)
+
+    let chk = false
+    for (let _fnc of TCB.Finca) {
+      if (_fnc.nombreTipoConsumo !== undefined) chk = true
+      //return { status: true, error: '' }
+    }
+    console.dir(TCB.ZonaComun)
+    for (let _zc of TCB.ZonaComun) {
+      if (_zc.nombreTipoConsumo !== undefined) chk = true
+      //return { status: true, error: '' }
+    }
+
+    console.log('VERIFICA UNITS ' + chk)
+    if (chk) {
+      results = await PreparaEnergyBalance()
+      if (results.status) {
+        setEcoData((prev) => ({ ...prev, ...TCB.economico }))
+        TCB.readyToExport = true
+      } else {
+        console.log(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error)
+        SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
+      }
+      return results.status
+    } else {
+      SLDRAlert(t('CONSUMPTION.ERROR_AL_MENOS_UN_USOELECTRICO'), results.error, 'Error')
+      return false
+    }
+  }
+
+  const getSections = (modo) => {
+    let sections = [
+      <LocationStep
+        key={'loc_sec'}
+        label="location"
+        title={t('LOCATION.TITLE')}
+        next={validaLocationStep}
+      />,
+      <ConsumptionStep
+        key={'con_sec'}
+        label="consumption"
+        title={t('CONSUMPTION.TITLE')}
+        next={validaConsumptionStep}
+      />,
+    ]
+
+    if (modo !== 'INDIVIDUAL') {
+      sections.push(
+        <UnitsStep
+          key={'un_sec'}
+          label="units"
+          title={t('UNITS.TITLE')}
+          next={validaUnitsStep}
+        />,
+      )
+    }
+
+    sections.push(
+      ...[
+        <EnergyBalanceStep
+          key={'en_sec'}
+          label="energybalance"
+          title={t('ENERGY_BALANCE.TITLE')}
+          next={validaEnergyBalanceStep}
+        />,
+        <EconomicBalanceStep
+          key={'eb_sec'}
+          label="economicbalance"
+          title={t('ECONOMIC_BALANCE.TITLE')}
+        />,
+        <SummarySOMStep key={'sum_sec'} label="summary" title={t('SUMMARY.TITLE')} />,
+      ],
+    )
+
+    return sections
   }
 
   return (
@@ -107,30 +184,7 @@ export default function Page() {
             nextLabel={t('BASIC.LABEL_NEXT')}
             prevLabel={t('BASIC.LABEL_PREVIOUS')}
           >
-            <LocationStep
-              label="location"
-              title={t('LOCATION.TITLE')}
-              next={validaLocationStep}
-            />
-            <ConsumptionStep
-              label="consumption"
-              title={t('CONSUMPTION.TITLE')}
-              next={validaConsumptionStep}
-            />
-            <EnergyBalanceStep
-              label="energybalance"
-              title={t('ENERGY_BALANCE.TITLE')}
-              next={validaEnergyBalanceStep}
-            />
-            <EconomicBalanceStep
-              label="economicbalance"
-              title={t('ECONOMIC_BALANCE.TITLE')}
-            />
-            {TCB.estiloActivo !== 'SOM' ? (
-              <SummaryClaraStep label="summary" title={t('SUMMARY.TITLE')} />
-            ) : (
-              <SummarySOMStep label="summary" title={t('SUMMARY.TITLE')} />
-            )}
+            {getSections(TCB.modoActivo)}
           </Wizard>
         </Container>
       </AppFrame>

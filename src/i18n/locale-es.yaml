@@ -1016,3 +1016,58 @@ REPORT:
   ANY: año
   ANYS: años
   RETURN: Volver a la simulación
+UNITS:
+  TITLE: Unidades
+  DESCRIPTION_2: A continuación el uso de energía asignado a cada una de las unidades catastrales identificadas en esta finca
+  DESCRIPTION_3: Definición de los usos electricos de las zonas comunes del inmueble.
+  LABEL_TIPO_USO: Define tipo de uso eléctrico
+  TOOLTIP_TIPO_USO: Selecciona el tipo de uso eléctrico asignado a estas unidades
+  LABEL_VER_DETALLES: Ver detalles
+Finca:
+  PROP:
+    nombreFinca: Nombre de la finca
+    refcat: 'Referencia catastral'
+    bloque: Bloque
+    idFinca: Id. Finca
+    escalera: Escalera
+    planta: Planta
+    puerta: Puerta
+    uso: Uso
+    superficie: Superficie
+    participacion: Participación
+
+  TOOLTIP:
+    nombreFinca: Nombre interno que le damos a la finca
+    refcat: 'Ident. catastral'
+    bloque: Bloque según DGC
+    idFinca: Identificación única de la finca en el proceso de reparto
+    escalera: Escalera según DGC
+    planta: Planta segñun DGC
+    puerta: Puerta según DGC
+    uso: Uso según DGC
+    superficie: Superficie según DGC
+    participacion: Coeficiente de participación en la propiedad según DGC
+
+  coefConsumo_LBL: Coeficiente de Consumo
+  coefConsumo_TT: Coeficiente de participación en el consumo
+  coefInversion_LBL: Coeficiente de Inversión
+  coefInversion_TT: Coeficiente de participación en la inversión
+  coefEnergia_LBL: Coeficiente de Energia
+  coefEnergia_TT: Coeficiente de participacion en la producción de energia
+  botonNuevaFinca_LBL: Crear finca
+  botonNuevaFinca_TT: Puede crear nuevas fincas para representar el consumo de zonas que no son participes
+  botonDescargaFincas_LBL: Descarga CSV
+  botonDescargaFincas_TT: Descarga la tabla actual a un fichero CSV
+  botonSubeFincas_LBL: Sube CSV
+  botonSubeFincas_TT: Puede aportar los datos de fincas desde un fichero CSV,
+  finca_MSG_accionFincas:
+    Asignar tipo de consumo a las fincas que participan del proyecto o crear nuevas fincas. Si no dispone de datos Catastrales puede crear un fichero nuevo a partir <a href='./datos/fincas ejemplo.csv'>de este template</a>,
+    finca_MSG_noTipoConsumoAsignado:Ninguna finca tiene tipo de consumo asignado,
+  catastro_MSG_errorFetch: Error ejecutando fecth en Catastro.\n {{err}} \n {{url}},
+  nominatim_MSG_errorFetch: Error ejecutando fecth en Nominatim.\n {{err}} \n {{url}},
+  nominatim_MSG_errorBuscandoTerritorio: Nominatim Error buscando territorio status-> {{resp}},
+  produccionTotal_LBL: Producción asignada,
+  ahorroFincaAnual_LBL: Ahorro,
+  ahorroFincaAnual_TT: Ahorro obtenido en esta finca con este reparto de energía,
+  botonValidaResultados_LBL: Validación,
+  botonValidaResultados_TT: Realiza los cálculos de la asignación,

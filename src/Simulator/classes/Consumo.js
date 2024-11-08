@@ -17,8 +17,32 @@ class Consumo extends DiaHora {
 
     if (consumo === undefined) {
       //Creacion del consumo global
-      for (let _tc of TCB.TipoConsumo) {
-        this.suma(_tc)
+      //Dependiendo del modo debemos calcular el consumo total
+      //En modo INDIVIDUAL el consumo total es la suma de todos los tipos de consumo
+      if (TCB.modoActivo === 'INDIVIDUAL') {
+        for (let _tc of TCB.TipoConsumo) {
+          this.suma(_tc)
+        }
+        //En otro modo el consumo total es:
+        //la suma de los consumos de cada finca
+      } else {
+        for (let _fnc of TCB.Finca) {
+          if (_fnc.nombreTipoConsumo !== undefined) {
+            let _tc = TCB.TipoConsumo.find((_tcn) => {
+              return _tcn.nombreTipoConsumo === _fnc.nombreTipoConsumo
+            })
+            this.suma(_tc)
+          }
+        }
+        //la suma de los consumos de cada zona comun
+        for (let _zc of TCB.ZonaComun) {
+          if (_zc.nombreTipoConsumo !== undefined) {
+            let _tc = TCB.TipoConsumo.find((_tcn) => {
+              return _tcn.nombreTipoConsumo === _zc.nombreTipoConsumo
+            })
+            this.suma(_tc)
+          }
+        }
       }
     } else {
       //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto

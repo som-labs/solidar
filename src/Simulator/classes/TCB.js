@@ -60,6 +60,16 @@ const TCB = {
    */
   BaseSolar: [],
 
+  /**
+   *  @type {Array<Fincas>}
+   */
+  Finca: [],
+
+  /**
+   * @type {Array<ZonaComun>}
+   */
+  ZonaComun: [],
+
   // Variables de totalización
   consumo: {}, // Este campo contiene la suma de todos las consumos[]
   consumoCreado: false,
