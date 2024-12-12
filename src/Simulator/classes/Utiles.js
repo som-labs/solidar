@@ -759,7 +759,7 @@ function fechaDesdeIndice(indice) {
 
 function dumpData(nombre, idxTable, dataTable) {
   // Loop the array of objects
-  var csv
+  var csv = ''
   for (let row = 0; row < idxTable.length; row++) {
     let keysAmount = Object.keys(idxTable[row]).length
     let keysCounter = 0
@@ -770,11 +770,14 @@ function dumpData(nombre, idxTable, dataTable) {
       for (let key in idxTable[row]) {
         // This is to not add a comma at the last cell
         // The '\n' adds a new line
+
         csv += key + (keysCounter + 1 < keysAmount ? ';' : '')
         keysCounter++
       }
-      for (let i = 0; i < 24; i++) {
-        csv += ';' + i
+      if (dataTable) {
+        for (let i = 0; i < 24; i++) {
+          csv += ';' + i
+        }
       }
       csv += '\r\n'
     }
@@ -783,8 +786,11 @@ function dumpData(nombre, idxTable, dataTable) {
       csv += idxTable[row][key] + (keysCounter + 1 < keysAmount ? ';' : '')
       keysCounter++
     }
-    for (let i = 0; i < 24; i++) {
-      csv += ';' + dataTable[row][i]
+
+    if (dataTable) {
+      for (let i = 0; i < 24; i++) {
+        csv += ';' + dataTable[row][i]
+      }
     }
     csv += '\r\n'
   }
@@ -1136,10 +1142,10 @@ async function cargaTarifasDesdeSOM() {
   let respuesta
   let txtTarifas
 
-  // Add_1: Adding non response status from apienergia
+  // Add_1: Adding non response status from apienergia after waiting 20 secs
   const controller = new AbortController()
   const signal = controller.signal
-  const timeoutId = setTimeout(() => controller.abort(), 5000)
+  const timeoutId = setTimeout(() => controller.abort(), TCB.tiempoEsperaTarifas * 1000)
   const options = {}
   //
 
