@@ -116,6 +116,7 @@ async function verificaTerritorioNominatim(point) {
  *  'refcat' => referencia catastral mas cercana a las coordenadas dadas,
  *  'direccion' => dirección de la parcela;
  *  'descripcion' => solo en caso de codigo <0
+ *  'units' => array de Fincas
  */
 async function getParcelaXY(punto) {
   let url = TCB.basePath + 'proxy-Catastro-refcat x lonlat.php?'
@@ -153,12 +154,18 @@ async function getParcelaXY(punto) {
     if (responseFincas.status === 200) {
       let jsonFincas = await responseFincas.json()
 
+      TCB.participacionTotal = 0
       for (let unaFinca of jsonFincas) {
         //unaFinca.idPuntoConsumo = this.idPuntoConsumo
         unaFinca.idFinca = TCB.idFinca++
         unaFinca.grupo = Finca.mapaUsoGrupo[unaFinca.uso]
-        template.units.push(new Finca(unaFinca))
+        const _len = template.units.push(new Finca(unaFinca))
+        TCB.participacionTotal += template.units[_len - 1].participacion
       }
+      console.log(
+        'Participacion total según DGC: ' + UTIL.round2Decimales(TCB.participacionTotal),
+      )
+      UTIL.debugLog('Participacion total según DGC: ' + TCB.participacionTotal)
       template.status = true
       template.error = ''
       return template

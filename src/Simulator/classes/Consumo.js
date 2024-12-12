@@ -27,7 +27,7 @@ class Consumo extends DiaHora {
         //la suma de los consumos de cada finca
       } else {
         for (let _fnc of TCB.Finca) {
-          if (_fnc.nombreTipoConsumo !== undefined) {
+          if (_fnc.nombreTipoConsumo !== '' && _fnc.participa) {
             let _tc = TCB.TipoConsumo.find((_tcn) => {
               return _tcn.nombreTipoConsumo === _fnc.nombreTipoConsumo
             })
@@ -36,7 +36,7 @@ class Consumo extends DiaHora {
         }
         //la suma de los consumos de cada zona comun
         for (let _zc of TCB.ZonaComun) {
-          if (_zc.nombreTipoConsumo !== undefined) {
+          if (_zc.nombreTipoConsumo !== '') {
             let _tc = TCB.TipoConsumo.find((_tcn) => {
               return _tcn.nombreTipoConsumo === _zc.nombreTipoConsumo
             })

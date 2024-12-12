@@ -1018,11 +1018,15 @@ REPORT:
   RETURN: Volver a la simulación
 UNITS:
   TITLE: Unidades
-  DESCRIPTION_2: A continuación el uso de energía asignado a cada una de las unidades catastrales identificadas en esta finca
+  DESCRIPTION_2: A continuación se definirá el uso de energía asignado a cada una de las unidades catastrales y zonas comunes identificadas en esta finca
   DESCRIPTION_3: Definición de los usos electricos de las zonas comunes del inmueble.
-  LABEL_TIPO_USO: Define tipo de uso eléctrico
+  LABEL_TIPO_USO: Define tipo de uso eléctrico para todas las unidades
   TOOLTIP_TIPO_USO: Selecciona el tipo de uso eléctrico asignado a estas unidades
   LABEL_VER_DETALLES: Ver detalles
+
+ALLOCATION:
+  TITLE: Reparto
+  DESCRIPTION_2: A continuación se definirá la cuota de energía producida por la instalación fotovoltaica a cada una de las unidades que participan en el proyecto.
 Finca:
   PROP:
     nombreFinca: Nombre de la finca
@@ -1035,9 +1039,10 @@ Finca:
     uso: Uso
     superficie: Superficie
     participacion: Participación
+    participa: ¿Participa?
 
   TOOLTIP:
-    nombreFinca: Nombre interno que le damos a la finca
+    nombreFinca: Nombre interno que le damos a la finca (editable)
     refcat: 'Ident. catastral'
     bloque: Bloque según DGC
     idFinca: Identificación única de la finca en el proceso de reparto
@@ -1047,6 +1052,7 @@ Finca:
     uso: Uso según DGC
     superficie: Superficie según DGC
     participacion: Coeficiente de participación en la propiedad según DGC
+    participa: Define si esta unidad participa del proyecto o no
 
   coefConsumo_LBL: Coeficiente de Consumo
   coefConsumo_TT: Coeficiente de participación en el consumo

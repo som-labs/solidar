@@ -16,7 +16,7 @@ const ConsumptionContextProvider = ({ children }) => {
   //TCB fields to be reflected in state
   const hdrTipo = {
     idTipoConsumo: undefined,
-    nombreTipoConsumo: undefined,
+    nombreTipoConsumo: '',
     fuente: undefined,
     consumoAnualREE: undefined,
     ficheroCSV: undefined,
