@@ -18,6 +18,7 @@ import { ConsumptionContext } from '../ConsumptionContext'
 
 //Solidar objects
 import TCB from '../classes/TCB'
+import * as UTIL from '../classes/Utiles'
 import Finca from '../classes/Finca'
 
 //React global components
@@ -29,6 +30,7 @@ export default function UnitsStep() {
   const { inLineHelp } = useContext(AlertContext)
   const { fincas, setFincas, zonasComunes, setZonasComunes } =
     useContext(ConsumptionContext)
+
   const [openDialog, closeDialog] = useDialog()
 
   function help(level) {
@@ -49,10 +51,12 @@ export default function UnitsStep() {
 
   function creaZonaComun() {
     const _zonaComun = {
-      nombreTipoConsumo: undefined,
+      nombreTipoConsumo: '',
       idZonaComun: (++TCB.idFinca).toFixed(0),
       nombre: 'Zona Comun ' + TCB.idFinca,
+      coefEnergia: 0,
       coefHucha: 0,
+      cuotaHucha: 0,
     }
 
     TCB.ZonaComun.push(_zonaComun)
@@ -100,6 +104,8 @@ export default function UnitsStep() {
               display: 'flex',
               flexDirection: 'row',
               flexWrap: 'wrap',
+              padding: 2,
+              gap: '15px',
             }}
           >
             {Object.entries(uniqueTypes).map((key, value) => (
@@ -136,7 +142,13 @@ export default function UnitsStep() {
 
         <Grid item xs={12}>
           <Box
-            sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', padding: 2 }}
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              padding: 2,
+              gap: '15px',
+            }}
           >
             {TCB.ZonaComun.map((key, value) => (
               <Fragment key={key}>
@@ -149,7 +161,7 @@ export default function UnitsStep() {
         </Grid>
       </Grid>
 
-      <Button>Exportar</Button>
+      <Button onClick={() => UTIL.dumpData('Fincas.csv', TCB.Finca)}>Exportar</Button>
       <Button>Importar</Button>
     </Container>
   )

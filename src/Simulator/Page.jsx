@@ -11,6 +11,7 @@ import Wizard from '../components/Wizard'
 import LocationStep from './Location/Location'
 import ConsumptionStep from './Consumption/Consumption'
 import UnitsStep from './Units/Units'
+import EnergyAllocationStep from './EnergyAllocation/EnergyAllocattion'
 import EnergyBalanceStep from './EnergyBalance/EnergyBalance'
 import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
 import SummarySOMStep from './Summary/SOM/Summary'
@@ -102,16 +103,15 @@ export default function Page() {
 
     let chk = false
     for (let _fnc of TCB.Finca) {
-      if (_fnc.nombreTipoConsumo !== undefined) chk = true
-      //return { status: true, error: '' }
-    }
-    console.dir(TCB.ZonaComun)
-    for (let _zc of TCB.ZonaComun) {
-      if (_zc.nombreTipoConsumo !== undefined) chk = true
+      if (_fnc.nombreTipoConsumo !== '') chk = true
       //return { status: true, error: '' }
     }
 
-    console.log('VERIFICA UNITS ' + chk)
+    for (let _zc of TCB.ZonaComun) {
+      if (_zc.nombreTipoConsumo !== '') chk = true
+      //return { status: true, error: '' }
+    }
+
     if (chk) {
       results = await PreparaEnergyBalance()
       if (results.status) {
@@ -163,6 +163,22 @@ export default function Page() {
           title={t('ENERGY_BALANCE.TITLE')}
           next={validaEnergyBalanceStep}
         />,
+      ],
+    )
+
+    if (modo !== 'INDIVIDUAL') {
+      sections.push(
+        <EnergyAllocationStep
+          key={'un_sec'}
+          label="units"
+          title={t('ALLOCATION.TITLE')}
+          //next={validaUnitsStep}
+        />,
+      )
+    }
+
+    sections.push(
+      ...[
         <EconomicBalanceStep
           key={'eb_sec'}
           label="economicbalance"

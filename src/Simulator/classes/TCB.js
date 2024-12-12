@@ -64,6 +64,9 @@ const TCB = {
    *  @type {Array<Fincas>}
    */
   Finca: [],
+  UnitType: [], //Array con los tipos unicos de fincas obtenidos de DGC + las zonas comunes {nombre, consumo, allocation, zonaComun}
+  //Es la suma de las participaciones devueltas por DGC. Se untilizará para normalizar los coeficientes
+  participacionTotal: 0,
 
   /**
    * @type {Array<ZonaComun>}
@@ -87,6 +90,7 @@ const TCB = {
   _tablaReparto: null,
   listaZonasComunes: [], //Lista de los nombres de las zonas comunes generadas en los modos colectivo y comunidad
   tiempoEsperaPVGIS: 100,
+  tiempoEsperaTarifas: 20, //Tiempo en segundos que espera los precios de Som
 
   //Por ver
   pdfDoc: '',

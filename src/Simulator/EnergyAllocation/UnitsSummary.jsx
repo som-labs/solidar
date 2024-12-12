@@ -54,26 +54,18 @@ export default function UnitsSummary(props) {
   const { grupo, units, setTotalConsumption } = props
 
   const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
-  const [tipoConsumoAsignado, setTipoConsumoAsignado] = useState('')
+  const [tipoConsumoAsignado, setTipoConsumoAsignado] = useState()
 
   const editing = useRef()
-
-  let tiposActivos = [{ label: 'Indefinido', value: '' }].concat(
-    tipoConsumo.map((tc) => ({
-      label: tc.nombreTipoConsumo,
-      value: tc.nombreTipoConsumo,
-    })),
-  )
 
   const columns = [
     {
       field: 'nombreFinca',
       headerName: t('Finca.PROP.nombreFinca'),
       headerAlign: 'center',
-      flex: 0.6,
+      flex: 1,
       description: t('Finca.TOOLTIP.nombreFinca'),
       sortable: false,
-      editable: true,
     },
     {
       field: 'refcat',
@@ -81,7 +73,7 @@ export default function UnitsSummary(props) {
       headerAlign: 'center',
       align: 'center',
       type: 'text',
-      flex: 0.9,
+      flex: 1,
       description: t('Finca.TOOLTIP.refcat'),
       sortable: false,
     },
@@ -140,21 +132,9 @@ export default function UnitsSummary(props) {
       headerName: t('TipoConsumo.PROP.nombreTipoConsumo'),
       headerAlign: 'center',
       align: 'center',
-      type: 'singleSelect',
-      valueOptions: tiposActivos,
-      editable: true,
+      type: 'text',
       flex: 1,
       description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
-      sortable: false,
-    },
-
-    {
-      field: 'participa',
-      headerName: t('Finca.PROP.participa'),
-      description: t('Finca.TOOLTIP.participa'),
-      type: 'boolean',
-      editable: true,
-      flex: 0.5,
       sortable: false,
     },
 
@@ -287,19 +267,19 @@ export default function UnitsSummary(props) {
   //   closeDialog()
   // }
 
-  function deleteTipoConsumo(ev, tc) {
-    ev.stopPropagation()
-    let prevTipoConsumo = [...tipoConsumo]
-    const nIndex = prevTipoConsumo.findIndex((t) => {
-      return t.idTipoConsumo === tc.idTipoConsumo
-    })
-    TCB.requiereOptimizador = true
-    TCB.cambioTipoConsumo = true
-    prevTipoConsumo.splice(nIndex, 1)
-    TCB.TipoConsumo.splice(nIndex, 1)
-    setTipoConsumo(prevTipoConsumo)
-    setActivo(undefined)
-  }
+  // function deleteTipoConsumo(ev, tc) {
+  //   ev.stopPropagation()
+  //   let prevTipoConsumo = [...tipoConsumo]
+  //   const nIndex = prevTipoConsumo.findIndex((t) => {
+  //     return t.idTipoConsumo === tc.idTipoConsumo
+  //   })
+  //   TCB.requiereOptimizador = true
+  //   TCB.cambioTipoConsumo = true
+  //   prevTipoConsumo.splice(nIndex, 1)
+  //   TCB.TipoConsumo.splice(nIndex, 1)
+  //   setTipoConsumo(prevTipoConsumo)
+  //   setActivo(undefined)
+  // }
 
   function handleTipoConsumo(event) {
     setTipoConsumoAsignado(event.target.value)
@@ -314,7 +294,7 @@ export default function UnitsSummary(props) {
     TCB.requiereOptimizador = true
   }
 
-  function newConsumptionAll() {
+  function newConsumption() {
     return (
       <GridToolbarContainer>
         {/* <SLDRTooltip
@@ -332,15 +312,10 @@ export default function UnitsSummary(props) {
               object="TipoConsumo"
               onChange={(event) => handleTipoConsumo(event)}
             >
-              {/* <MenuItem value={''}>Indefinido</MenuItem>
+              <MenuItem value={''}>Indefinido</MenuItem>
               {tipoConsumo.map((e, index) => (
                 <MenuItem key={index} value={e.nombreTipoConsumo}>
                   {e.nombreTipoConsumo}
-                </MenuItem>
-              ))} */}
-              {tiposActivos.map((e, index) => (
-                <MenuItem key={index} value={e.value}>
-                  {e.label}
                 </MenuItem>
               ))}
             </Select>
@@ -356,7 +331,7 @@ export default function UnitsSummary(props) {
     let total = 0
 
     units.forEach((e) => {
-      if (e.nombreTipoConsumo !== '' && e.participa) {
+      if (e.nombreTipoConsumo !== '') {
         const tc = tipoConsumo.find((t) => {
           return t.nombreTipoConsumo === e.nombreTipoConsumo
         })
@@ -364,76 +339,53 @@ export default function UnitsSummary(props) {
         setTotalConsumption(total)
       }
     })
+    console.log('CONSUMO TOTAL', { grupo, total })
     return total
   }
 
-  function footerSummary() {
-    return (
-      <SLDRFooterBox>
-        <Grid
-          container
-          alignItems="center"
-          justifyContent="center"
-          spacing={2}
-          sx={{ mt: '2rem' }}
-        >
-          <Grid item>
-            <Typography
-              sx={theme.titles.level_2}
-              textAlign={'center'}
-              dangerouslySetInnerHTML={{
-                __html: t('CONSUMPTION.TOTAL_DEMMAND', {
-                  consumoTotal: formatoValor('energia', totalConsumption()),
-                }),
-              }}
-            />
-          </Grid>
-          <Grid item>
-            <Tooltip title={t('CONSUMPTION.TOOLTIP_botonMuestraTodosTipoConsumo')}>
-              <IconButton onClick={showGraphTotales}>
-                <AnalyticsIcon />
-              </IconButton>
-            </Tooltip>
-          </Grid>
-        </Grid>
-      </SLDRFooterBox>
-    )
-  }
+  // function footerSummary() {
+  //   return (
+  //     <SLDRFooterBox>
+  //       <Grid
+  //         container
+  //         alignItems="center"
+  //         justifyContent="center"
+  //         spacing={2}
+  //         sx={{ mt: '2rem' }}
+  //       >
+  //         <Grid item>
+  //           <Typography
+  //             sx={theme.titles.level_2}
+  //             textAlign={'center'}
+  //             dangerouslySetInnerHTML={{
+  //               __html: t('CONSUMPTION.TOTAL_DEMMAND', {
+  //                 consumoTotal: formatoValor('energia', totalConsumption()),
+  //               }),
+  //             }}
+  //           />
+  //         </Grid>
+  //         <Grid item>
+  //           <Tooltip title={t('CONSUMPTION.TOOLTIP_botonMuestraTodosTipoConsumo')}>
+  //             <IconButton onClick={showGraphTotales}>
+  //               <AnalyticsIcon />
+  //             </IconButton>
+  //           </Tooltip>
+  //         </Grid>
+  //       </Grid>
+  //     </SLDRFooterBox>
+  //   )
+  // }
 
-  function showGraphTotales() {
-    if (tipoConsumo.length > 0) {
-      const dummyType = new TipoConsumo({ nombreTipoConsumo: 'Totales' })
-      for (let tc of TCB.TipoConsumo) {
-        dummyType.suma(tc)
-      }
-      dummyType.fechaInicio = new Date(2023, 1, 1)
-      setActivo(dummyType)
-    }
-  }
-
-  function changeUnit(newUnitRow) {
-    console.log('Cambiando:', newUnitRow)
-
-    const newFincas = fincas.map((f) => {
-      if (f.idFinca === newUnitRow.idFinca) {
-        f.nombreTipoConsumo = newUnitRow.nombreTipoConsumo
-        f.participa = newUnitRow.participa
-        f.nombreFinca = newUnitRow.nombreFinca
-      }
-      return f
-    })
-    setFincas(newFincas)
-    TCB.cambioTipoConsumo = true
-    TCB.requiereOptimizador = true
-    return newUnitRow
-    // console.log('Row ID:', params.id) // ID of the edited row
-    // console.log('Column:', params.field) // Column name
-    // console.log('New Value:', params.value) // The new value
-  }
-
-  function handleProcessRowUpdateError(params) {
-    console.log('Error:', params)
-  }
+  // function showGraphTotales() {
+  //   if (tipoConsumo.length > 0) {
+  //     const dummyType = new TipoConsumo({ nombreTipoConsumo: 'Totales' })
+  //     for (let tc of TCB.TipoConsumo) {
+  //       dummyType.suma(tc)
+  //     }
+  //     dummyType.fechaInicio = new Date(2023, 1, 1)
+  //     setActivo(dummyType)
+  //   }
+  // }
 
   return (
     <Dialog
@@ -453,21 +405,33 @@ export default function UnitsSummary(props) {
               <DataGrid
                 sx={theme.tables.headerWrap}
                 getRowId={getRowId}
-                rows={units}
+                rows={units.filter((f) => {
+                  return f.participa
+                })}
                 columns={columns}
                 hideFooter={false}
                 rowHeight={30}
                 autoHeight
                 disableColumnMenu
                 localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
-                slots={{ toolbar: newConsumptionAll, footer: footerSummary }}
-                processRowUpdate={(updatedRow, originalRow) => changeUnit(updatedRow)}
-                // onCellEditCommit={changeUnit}
-                onProcessRowUpdateError={handleProcessRowUpdateError}
-                editMode="cell"
+                // slots={{ toolbar: newConsumption, footer: footerSummary }}
               />
             </Grid>
           )}
+          {/* {activo && preciosValidos && (
+        <>
+          <Grid item xs={12}>
+            <SLDRInfoBox>
+              <MapaMesHora activo={activo}></MapaMesHora>
+            </SLDRInfoBox>
+          </Grid>
+          <Grid item xs={12}>
+            <SLDRInfoBox>
+              <MapaDiaHora activo={activo}></MapaDiaHora>
+            </SLDRInfoBox>
+          </Grid>
+        </>
+      )} */}
         </Grid>
       </DialogContent>
       <DialogActions>

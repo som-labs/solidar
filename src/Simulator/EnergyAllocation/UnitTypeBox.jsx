@@ -11,6 +11,7 @@ import { useDialog } from '../../components/DialogProvider'
 import UnitsSummary from './UnitsSummary'
 
 // Solidar objects
+import TCB from '../classes/TCB.js'
 import * as UTIL from '../classes/Utiles'
 
 export default function UnitTypeBox(props) {
@@ -35,9 +36,9 @@ export default function UnitTypeBox(props) {
           return t.nombreTipoConsumo === unit.nombreTipoConsumo
         })
         total += tc.totalAnual
-        setTotalConsumption(total)
       }
     })
+    setTotalConsumption(total)
   }, [])
 
   function showDetails() {
@@ -84,9 +85,20 @@ export default function UnitTypeBox(props) {
                 '<br />Participación: ' +
                 UTIL.formatoValor('porciento', participacionTotal) +
                 '<br />Uso de energía: ' +
-                UTIL.formatoValor('energia', totalConsumption),
+                UTIL.formatoValor('energia', totalConsumption) +
+                '<br />% uso de energía total: ' +
+                UTIL.formatoValor(
+                  'porciento',
+                  (totalConsumption / TCB.consumo.totalAnual) * 100,
+                ) +
+                '<br />Energia Total asignada: ' +
+                UTIL.formatoValor(
+                  'energia',
+                  (TCB.produccion.totalAnual * totalConsumption) / TCB.consumo.totalAnual,
+                ),
             }}
           />
+
           <Button onClick={showDetails}>{t('UNITS.LABEL_VER_DETALLES')}</Button>
         </Box>
       </Container>
