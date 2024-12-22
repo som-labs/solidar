@@ -8,7 +8,6 @@ import AddBoxIcon from '@mui/icons-material/AddBox'
 import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
-import PreciosTarifa from '../Consumption/PreciosTarifa'
 import UnitTypeBox from './UnitTypeBox'
 import ZonaComunTypeBox from './ZonaComunTypeBox'
 import { AlertContext } from '../components/Alert'
@@ -53,6 +52,7 @@ export default function UnitsStep() {
     const _zonaComun = {
       nombreTipoConsumo: '',
       idZonaComun: (++TCB.idFinca).toFixed(0),
+      CUPS: 'CUPS de ' + TCB.idFinca.toFixed(0),
       nombre: 'Zona Comun ' + TCB.idFinca,
       coefEnergia: 0,
       coefHucha: 0,

@@ -20,6 +20,7 @@ const campos = {
   potencia: { unidad: ' kWp', decimales: 0, salvar: true, mostrar: true },
   potenciaWp: { unidad: ' Wp', decimales: 0, salvar: true, mostrar: true },
   porciento: { unidad: '%', decimales: 0, salvar: true, mostrar: true },
+  porciento2: { unidad: '%', decimales: 2, salvar: true, mostrar: true },
   peso: { unidad: ' Kg', decimales: 2, salvar: true, mostrar: true },
   dinero: { unidad: ' €', decimales: 0, salvar: true, mostrar: true },
   superficie: { unidad: 'm²', decimales: 2, salvar: true, mostrar: true },
@@ -1079,6 +1080,9 @@ function obtenerPropiedades(objeto, nivel) {
 function round2Decimales(numero) {
   return +(Math.round(numero + 'e+2') + 'e-2')
 }
+function roundDecimales(numero, decimales) {
+  return +(Math.round(numero + 'e+' + decimales) + 'e-' + decimales)
+}
 
 /** Nuestra el texto en el campo cuyo id es campo
  *
@@ -1235,6 +1239,7 @@ export {
   promedio,
   returnFloat,
   round2Decimales,
+  roundDecimales,
   selectTCB,
   setActivo,
   setLabel,

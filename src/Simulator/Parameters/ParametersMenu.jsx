@@ -25,10 +25,14 @@ export default function ParametersMenu() {
     if (reason === undefined) return
     if (reason === 'save') {
       for (const objProp in values) {
-        TCB.parametros[objProp] =
-          typeof values[objProp] === 'string'
-            ? parseFloat(values[objProp].replace(',', '.'))
-            : values[objProp]
+        if (objProp !== 'CAU') {
+          TCB.parametros[objProp] =
+            typeof values[objProp] === 'string'
+              ? parseFloat(values[objProp].replace(',', '.'))
+              : values[objProp]
+        } else {
+          TCB.parametros.CAU = values[objProp]
+        }
       }
       closeDialog()
     } else {

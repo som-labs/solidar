@@ -51,7 +51,7 @@ export default function UnitsSummary(props) {
     setFincas,
   } = useContext(ConsumptionContext)
 
-  const { grupo, units, setTotalConsumption } = props
+  const { grupo, units, setTotalConsumption, totalConsumption } = props
 
   const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
   const [tipoConsumoAsignado, setTipoConsumoAsignado] = useState('')
@@ -192,115 +192,6 @@ export default function UnitsSummary(props) {
     return row.idFinca
   }
 
-  // function editTipoConsumo(row) {
-  //   editing.current = true
-  //   console.log(row.nombreFicheroCSV)
-  //   //console.log('EDITING EDIT', editing)
-  //   openDialog({
-  //     children: (
-  //       <DialogConsumption
-  //         data={row}
-  //         previous={tipoConsumo}
-  //         maxWidth={'lg'}
-  //         fullWidth={true}
-  //         onClose={(cause, formData) => endDialog(cause, formData)}
-  //       ></DialogConsumption>
-  //     ),
-  //   })
-  // }
-
-  // function createTipoConsumo() {
-  //   editing.current = false
-  //   const initialValues = {
-  //     nombreTipoConsumo: 'Vivienda ' + TCB.featIdUnico,
-  //     fuente: '',
-  //     ficheroCSV: null,
-  //     consumoAnualREE: '',
-  //   }
-  //   openDialog({
-  //     children: (
-  //       <DialogConsumption
-  //         data={initialValues}
-  //         maxWidth={'lg'}
-  //         fullWidth={true}
-  //         previous={tipoConsumo} //Needed to check duplicate name
-  //         onClose={(cause, formData) => endDialog(cause, formData)}
-  //       ></DialogConsumption>
-  //     ),
-  //   })
-  // }
-
-  // async function endDialog(reason, formData) {
-  //   let nuevoTipoConsumo
-  //   let cursorOriginal
-
-  //   if (reason === undefined) return
-  //   if (reason === 'save') {
-  //     //Can reach this by saving new tipo consumo or editing existing one
-  //     TCB.requiereOptimizador = true
-  //     TCB.cambioTipoConsumo = true
-
-  //     if (editing.current) nuevoTipoConsumo = { idTipoConsumo: formData.idTipoConsumo }
-  //     else nuevoTipoConsumo = { idTipoConsumo: TCB.featIdUnico++ }
-
-  //     nuevoTipoConsumo.nombreTipoConsumo = formData.nombreTipoConsumo
-  //     nuevoTipoConsumo.fuente = formData.fuente
-
-  //     if (nuevoTipoConsumo.fuente === 'REE') {
-  //       nuevoTipoConsumo.consumoAnualREE = formData.consumoAnualREE
-  //       nuevoTipoConsumo.ficheroCSV = await UTIL.getFileFromUrl('./datos/REE.csv')
-  //       nuevoTipoConsumo.nombreFicheroCSV = ''
-  //       //Consumption profile of REE depends on TipoTarifa
-  //       nuevoTipoConsumo.tipoTarifaREE = TCB.tipoTarifa
-  //     } else {
-  //       nuevoTipoConsumo.consumoAnualREE = ''
-  //       nuevoTipoConsumo.ficheroCSV = formData.ficheroCSV
-  //       nuevoTipoConsumo.nombreFicheroCSV = formData.ficheroCSV.name
-  //     }
-
-  //     let astatus
-  //     let idxTC
-  //     cursorOriginal = document.body.style.cursor
-  //     document.body.style.cursor = 'progress'
-
-  //     //Will create a new TipoConsumo always, if editing will replace previous one by new one.
-  //     idxTC = TCB.TipoConsumo.push(new TipoConsumo(nuevoTipoConsumo)) - 1
-  //     astatus = await TCB.TipoConsumo[idxTC].loadTipoConsumoFromCSV()
-  //     if (astatus) {
-  //       if (editing.current) {
-  //         //Editando uno existente moveremos el recien creado a su posicion original
-  //         idxTC = TCB.TipoConsumo.findIndex((tc) => {
-  //           return tc.idTipoConsumo === formData.idTipoConsumo
-  //         })
-
-  //         TCB.TipoConsumo.splice(idxTC, 1, TCB.TipoConsumo.pop())
-  //       }
-  //       addTCBTipoToState(TCB.TipoConsumo[idxTC])
-  //       //showGraphsTC(nuevoTipoConsumo) //Autoproduccion tema decides not to show graph after loaded
-  //     } else {
-  //       UTIL.debugLog('Error detectado en carga de CSV')
-  //       TCB.TipoConsumo.pop()
-  //     }
-  //   }
-
-  //   document.body.style.cursor = cursorOriginal
-  //   closeDialog()
-  // }
-
-  function deleteTipoConsumo(ev, tc) {
-    ev.stopPropagation()
-    let prevTipoConsumo = [...tipoConsumo]
-    const nIndex = prevTipoConsumo.findIndex((t) => {
-      return t.idTipoConsumo === tc.idTipoConsumo
-    })
-    TCB.requiereOptimizador = true
-    TCB.cambioTipoConsumo = true
-    prevTipoConsumo.splice(nIndex, 1)
-    TCB.TipoConsumo.splice(nIndex, 1)
-    setTipoConsumo(prevTipoConsumo)
-    setActivo(undefined)
-  }
-
   function handleTipoConsumo(event) {
     setTipoConsumoAsignado(event.target.value)
     const newFincas = fincas.map((f) => {
@@ -310,6 +201,7 @@ export default function UnitsSummary(props) {
       return f
     })
     setFincas(newFincas)
+    summaryzeConsumption()
     TCB.cambioTipoConsumo = true
     TCB.requiereOptimizador = true
   }
@@ -317,27 +209,18 @@ export default function UnitsSummary(props) {
   function newConsumptionAll() {
     return (
       <GridToolbarContainer>
-        {/* <SLDRTooltip
-          title={<Typography>{t('UNITS.xxTOOLTIP_TIPO_USO')}</Typography>}
-          placement="end"
-        > */}
         <FormControlLabel
           labelPlacement="start"
           padding={3}
           control={
             <Select
-              sx={{ flex: 1, ml: '1rem', width: 390 }}
+              sx={{ flex: 1, ml: '1rem', width: 390, textAlign: 'center' }}
+              size={'small'}
               value={tipoConsumoAsignado}
               name="fuente"
               object="TipoConsumo"
               onChange={(event) => handleTipoConsumo(event)}
             >
-              {/* <MenuItem value={''}>Indefinido</MenuItem>
-              {tipoConsumo.map((e, index) => (
-                <MenuItem key={index} value={e.nombreTipoConsumo}>
-                  {e.nombreTipoConsumo}
-                </MenuItem>
-              ))} */}
               {tiposActivos.map((e, index) => (
                 <MenuItem key={index} value={e.value}>
                   {e.label}
@@ -347,14 +230,12 @@ export default function UnitsSummary(props) {
           }
           label={t('UNITS.LABEL_TIPO_USO')}
         />
-        {/* </SLDRTooltip> */}
       </GridToolbarContainer>
     )
   }
 
-  function totalConsumption() {
+  function summaryzeConsumption() {
     let total = 0
-
     units.forEach((e) => {
       if (e.nombreTipoConsumo !== '' && e.participa) {
         const tc = tipoConsumo.find((t) => {
@@ -367,49 +248,31 @@ export default function UnitsSummary(props) {
     return total
   }
 
-  function footerSummary() {
-    return (
-      <SLDRFooterBox>
-        <Grid
-          container
-          alignItems="center"
-          justifyContent="center"
-          spacing={2}
-          sx={{ mt: '2rem' }}
-        >
-          <Grid item>
-            <Typography
-              sx={theme.titles.level_2}
-              textAlign={'center'}
-              dangerouslySetInnerHTML={{
-                __html: t('CONSUMPTION.TOTAL_DEMMAND', {
-                  consumoTotal: formatoValor('energia', totalConsumption()),
-                }),
-              }}
-            />
-          </Grid>
-          <Grid item>
-            <Tooltip title={t('CONSUMPTION.TOOLTIP_botonMuestraTodosTipoConsumo')}>
-              <IconButton onClick={showGraphTotales}>
-                <AnalyticsIcon />
-              </IconButton>
-            </Tooltip>
-          </Grid>
-        </Grid>
-      </SLDRFooterBox>
-    )
-  }
-
-  function showGraphTotales() {
-    if (tipoConsumo.length > 0) {
-      const dummyType = new TipoConsumo({ nombreTipoConsumo: 'Totales' })
-      for (let tc of TCB.TipoConsumo) {
-        dummyType.suma(tc)
-      }
-      dummyType.fechaInicio = new Date(2023, 1, 1)
-      setActivo(dummyType)
-    }
-  }
+  // function footerSummary() {
+  //   return (
+  //     <SLDRFooterBox>
+  //       <Grid
+  //         container
+  //         alignItems="center"
+  //         justifyContent="center"
+  //         spacing={2}
+  //         sx={{ mt: '2rem' }}
+  //       >
+  //         <Grid item>
+  //           <Typography
+  //             sx={theme.titles.level_2}
+  //             textAlign={'center'}
+  //             dangerouslySetInnerHTML={{
+  //               __html: t('CONSUMPTION.TOTAL_DEMMAND', {
+  //                 consumoTotal: formatoValor('energia', totalConsumption),
+  //               }),
+  //             }}
+  //           />
+  //         </Grid>
+  //       </Grid>
+  //     </SLDRFooterBox>
+  //   )
+  // }
 
   function changeUnit(newUnitRow) {
     console.log('Cambiando:', newUnitRow)
@@ -423,6 +286,7 @@ export default function UnitsSummary(props) {
       return f
     })
     setFincas(newFincas)
+    summaryzeConsumption()
     TCB.cambioTipoConsumo = true
     TCB.requiereOptimizador = true
     return newUnitRow
@@ -460,9 +324,9 @@ export default function UnitsSummary(props) {
                 autoHeight
                 disableColumnMenu
                 localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
-                slots={{ toolbar: newConsumptionAll, footer: footerSummary }}
+                // slots={{ toolbar: newConsumptionAll, footer: footerSummary }}
+                slots={{ toolbar: newConsumptionAll }}
                 processRowUpdate={(updatedRow, originalRow) => changeUnit(updatedRow)}
-                // onCellEditCommit={changeUnit}
                 onProcessRowUpdateError={handleProcessRowUpdateError}
                 editMode="cell"
               />
