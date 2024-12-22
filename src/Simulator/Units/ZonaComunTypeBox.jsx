@@ -11,6 +11,7 @@ import * as UTIL from '../classes/Utiles'
 export default function ZonaComunTypeBox(props) {
   const theme = useTheme()
   const [nombreZC, setNombreZC] = useState(props.zonaComun.nombre)
+  const [CUPS, setCUPS] = useState(props.zonaComun.CUPS)
   const [tipoConsumoZC, setTipoConsumoZC] = useState(props.zonaComun.nombreTipoConsumo)
   const [totalConsumption, setTotalConsumption] = useState()
 
@@ -50,13 +51,20 @@ export default function ZonaComunTypeBox(props) {
     setNombreZC(nombre)
   }
 
+  function changeCUPS(CUPS) {
+    TCB.ZonaComun.find((_zc) => {
+      return _zc.idZonaComun === props.zonaComun.idZonaComun
+    }).CUPS = CUPS
+    setCUPS(CUPS)
+  }
+
   return (
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
         flexWrap: 'wrap',
-        gap: '10px',
+        gap: '4px',
         alignItems: 'center',
         border: '1px solid grey',
         borderRadius: 2,
@@ -70,7 +78,8 @@ export default function ZonaComunTypeBox(props) {
 
       <TextField
         label="Nombre"
-        sx={{ width: 200, height: 30, mt: '1rem', mb: '1rem' }}
+        sx={{ width: 200, height: 30, mt: '0.2rem', mb: '0.2rem' }}
+        size="small"
         type="text"
         id="nombre"
         value={nombreZC}
@@ -78,8 +87,19 @@ export default function ZonaComunTypeBox(props) {
       />
 
       <TextField
+        label="CUPS"
+        sx={{ width: 200, height: 30, mt: '1rem', mb: '0.2rem' }}
+        size="small"
+        type="text"
+        id="CUPS"
+        value={CUPS}
+        onChange={(event) => changeCUPS(event.target.value)}
+      />
+
+      <TextField
         label="Uso eléctrico"
-        sx={{ width: 200, height: 30, mt: '1rem', mb: '1rem' }}
+        sx={{ width: 200, height: 30, mt: '1rem' }}
+        size="small"
         select
         id="tipo"
         value={tipoConsumoZC}

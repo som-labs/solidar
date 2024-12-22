@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 // MUI objects
 import {
   Grid,
-  MenuItem,
   Box,
   Typography,
   Button,
@@ -32,7 +31,7 @@ export default function DialogParameters({ parameters, onClose }) {
   function validateFields(values) {
     let errors = {}
     for (let prop in values) {
-      if (prop !== 'tecnologia') {
+      if (prop !== 'CAU') {
         if (!values[prop]) {
           errors[prop] = 'Requerido'
         } else {

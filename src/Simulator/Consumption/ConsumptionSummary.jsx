@@ -261,37 +261,45 @@ export default function ConsumptionSummary() {
 
   function footerSummary() {
     return (
-      <SLDRFooterBox>
-        <Grid
-          container
-          alignItems="center"
-          justifyContent="center"
-          spacing={2}
-          sx={{ mt: '2rem' }}
-        >
-          <Grid item>
-            <Typography
-              sx={theme.titles.level_2}
-              textAlign={'center'}
-              dangerouslySetInnerHTML={{
-                __html: t('CONSUMPTION.TOTAL_DEMMAND', {
-                  consumoTotal: formatoValor(
-                    'energia',
-                    Math.round(tipoConsumo.reduce((sum, tc) => sum + tc.totalAnual, 0)),
-                  ),
-                }),
-              }}
-            />
-          </Grid>
-          <Grid item>
-            <Tooltip title={t('CONSUMPTION.TOOLTIP_botonMuestraTodosTipoConsumo')}>
-              <IconButton onClick={showGraphTotales}>
-                <AnalyticsIcon />
-              </IconButton>
-            </Tooltip>
-          </Grid>
-        </Grid>
-      </SLDRFooterBox>
+      <>
+        {TCB.modoActivo === 'INDIVIDUAL' ? (
+          <SLDRFooterBox>
+            <Grid
+              container
+              alignItems="center"
+              justifyContent="center"
+              spacing={2}
+              sx={{ mt: '2rem' }}
+            >
+              <Grid item>
+                <Typography
+                  sx={theme.titles.level_2}
+                  textAlign={'center'}
+                  dangerouslySetInnerHTML={{
+                    __html: t('CONSUMPTION.TOTAL_DEMMAND', {
+                      consumoTotal: formatoValor(
+                        'energia',
+                        Math.round(
+                          tipoConsumo.reduce((sum, tc) => sum + tc.totalAnual, 0),
+                        ),
+                      ),
+                    }),
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                <Tooltip title={t('CONSUMPTION.TOOLTIP_botonMuestraTodosTipoConsumo')}>
+                  <IconButton onClick={showGraphTotales}>
+                    <AnalyticsIcon />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+            </Grid>
+          </SLDRFooterBox>
+        ) : (
+          ' '
+        )}
+      </>
     )
   }
 

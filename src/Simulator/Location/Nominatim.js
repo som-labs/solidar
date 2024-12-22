@@ -156,7 +156,9 @@ async function getParcelaXY(punto) {
 
       TCB.participacionTotal = 0
       for (let unaFinca of jsonFincas) {
-        //unaFinca.idPuntoConsumo = this.idPuntoConsumo
+        //NOTA:Temporalmente asignamos idFinca como CUPS
+        unaFinca.CUPS = 'CUPS de ' + TCB.idFinca
+
         unaFinca.idFinca = TCB.idFinca++
         unaFinca.grupo = Finca.mapaUsoGrupo[unaFinca.uso]
         const _len = template.units.push(new Finca(unaFinca))

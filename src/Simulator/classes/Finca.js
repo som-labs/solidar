@@ -35,6 +35,7 @@ class Finca {
     this.superficie
     this.participacion
     this.grupo
+    this.CUPS
 
     //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto
     for (const objProp in finca) {
@@ -129,6 +130,7 @@ class Finca {
 
   static mapaUsoGrupo = {
     'Almacen-Estacionamiento': 'Estacionamiento',
+    Estacionamiento: 'Estacionamiento',
     Comercial: 'Comercial',
     Cultural: 'Otros',
     'Ocio y Hostelería': 'Otros',
@@ -148,6 +150,7 @@ class Finca {
     'Suelo sin edif., obras urbaniz., jardinería, constr. ruinosa': 'Otros',
     'Industrial agrario': 'Otros',
     'Almacén agrario': 'Otros',
+    Otros: 'Otros',
   }
 
   static getGrupos = {

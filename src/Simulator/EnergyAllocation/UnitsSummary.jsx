@@ -10,7 +10,10 @@ import {
   MenuItem,
   Dialog,
   FormControlLabel,
-  Select,
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormLabel,
   Button,
   DialogActions,
   DialogContent,
@@ -42,21 +45,13 @@ export default function UnitsSummary(props) {
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()
-  const {
-    tipoConsumo,
-    setTipoConsumo,
-    preciosValidos,
-    addTCBTipoToState,
-    fincas,
-    setFincas,
-  } = useContext(ConsumptionContext)
+  const { allocationGroup, setAllocationGroup, preciosValidos } =
+    useContext(ConsumptionContext)
 
-  const { grupo, units, setTotalConsumption } = props
+  const { grupo, units, setUnits } = props
 
   const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
-  const [tipoConsumoAsignado, setTipoConsumoAsignado] = useState()
-
-  const editing = useRef()
+  const [criterio, setCriterio] = useState()
 
   const columns = [
     {
@@ -137,6 +132,16 @@ export default function UnitsSummary(props) {
       description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
       sortable: false,
     },
+    {
+      field: 'coefEnergia',
+      headerName: 'Beta', //t('TipoConsumo.PROP.nombreTipoConsumo'),
+      headerAlign: 'center',
+      align: 'center',
+      type: 'number',
+      flex: 1,
+      description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
+      sortable: false,
+    },
 
     // {
     //   field: 'actions',
@@ -172,221 +177,79 @@ export default function UnitsSummary(props) {
     return row.idFinca
   }
 
-  // function editTipoConsumo(row) {
-  //   editing.current = true
-  //   console.log(row.nombreFicheroCSV)
-  //   //console.log('EDITING EDIT', editing)
-  //   openDialog({
-  //     children: (
-  //       <DialogConsumption
-  //         data={row}
-  //         previous={tipoConsumo}
-  //         maxWidth={'lg'}
-  //         fullWidth={true}
-  //         onClose={(cause, formData) => endDialog(cause, formData)}
-  //       ></DialogConsumption>
-  //     ),
-  //   })
-  // }
-
-  // function createTipoConsumo() {
-  //   editing.current = false
-  //   const initialValues = {
-  //     nombreTipoConsumo: 'Vivienda ' + TCB.featIdUnico,
-  //     fuente: '',
-  //     ficheroCSV: null,
-  //     consumoAnualREE: '',
-  //   }
-  //   openDialog({
-  //     children: (
-  //       <DialogConsumption
-  //         data={initialValues}
-  //         maxWidth={'lg'}
-  //         fullWidth={true}
-  //         previous={tipoConsumo} //Needed to check duplicate name
-  //         onClose={(cause, formData) => endDialog(cause, formData)}
-  //       ></DialogConsumption>
-  //     ),
-  //   })
-  // }
-
-  // async function endDialog(reason, formData) {
-  //   let nuevoTipoConsumo
-  //   let cursorOriginal
-
-  //   if (reason === undefined) return
-  //   if (reason === 'save') {
-  //     //Can reach this by saving new tipo consumo or editing existing one
-  //     TCB.requiereOptimizador = true
-  //     TCB.cambioTipoConsumo = true
-
-  //     if (editing.current) nuevoTipoConsumo = { idTipoConsumo: formData.idTipoConsumo }
-  //     else nuevoTipoConsumo = { idTipoConsumo: TCB.featIdUnico++ }
-
-  //     nuevoTipoConsumo.nombreTipoConsumo = formData.nombreTipoConsumo
-  //     nuevoTipoConsumo.fuente = formData.fuente
-
-  //     if (nuevoTipoConsumo.fuente === 'REE') {
-  //       nuevoTipoConsumo.consumoAnualREE = formData.consumoAnualREE
-  //       nuevoTipoConsumo.ficheroCSV = await UTIL.getFileFromUrl('./datos/REE.csv')
-  //       nuevoTipoConsumo.nombreFicheroCSV = ''
-  //       //Consumption profile of REE depends on TipoTarifa
-  //       nuevoTipoConsumo.tipoTarifaREE = TCB.tipoTarifa
-  //     } else {
-  //       nuevoTipoConsumo.consumoAnualREE = ''
-  //       nuevoTipoConsumo.ficheroCSV = formData.ficheroCSV
-  //       nuevoTipoConsumo.nombreFicheroCSV = formData.ficheroCSV.name
-  //     }
-
-  //     let astatus
-  //     let idxTC
-  //     cursorOriginal = document.body.style.cursor
-  //     document.body.style.cursor = 'progress'
-
-  //     //Will create a new TipoConsumo always, if editing will replace previous one by new one.
-  //     idxTC = TCB.TipoConsumo.push(new TipoConsumo(nuevoTipoConsumo)) - 1
-  //     astatus = await TCB.TipoConsumo[idxTC].loadTipoConsumoFromCSV()
-  //     if (astatus) {
-  //       if (editing.current) {
-  //         //Editando uno existente moveremos el recien creado a su posicion original
-  //         idxTC = TCB.TipoConsumo.findIndex((tc) => {
-  //           return tc.idTipoConsumo === formData.idTipoConsumo
-  //         })
-
-  //         TCB.TipoConsumo.splice(idxTC, 1, TCB.TipoConsumo.pop())
-  //       }
-  //       addTCBTipoToState(TCB.TipoConsumo[idxTC])
-  //       //showGraphsTC(nuevoTipoConsumo) //Autoproduccion tema decides not to show graph after loaded
-  //     } else {
-  //       UTIL.debugLog('Error detectado en carga de CSV')
-  //       TCB.TipoConsumo.pop()
-  //     }
-  //   }
-
-  //   document.body.style.cursor = cursorOriginal
-  //   closeDialog()
-  // }
-
-  // function deleteTipoConsumo(ev, tc) {
-  //   ev.stopPropagation()
-  //   let prevTipoConsumo = [...tipoConsumo]
-  //   const nIndex = prevTipoConsumo.findIndex((t) => {
-  //     return t.idTipoConsumo === tc.idTipoConsumo
-  //   })
-  //   TCB.requiereOptimizador = true
-  //   TCB.cambioTipoConsumo = true
-  //   prevTipoConsumo.splice(nIndex, 1)
-  //   TCB.TipoConsumo.splice(nIndex, 1)
-  //   setTipoConsumo(prevTipoConsumo)
-  //   setActivo(undefined)
-  // }
-
-  function handleTipoConsumo(event) {
-    setTipoConsumoAsignado(event.target.value)
-    const newFincas = fincas.map((f) => {
-      if (f.grupo === grupo) {
-        f.nombreTipoConsumo = event.target.value
-      }
-      return f
-    })
-    setFincas(newFincas)
-    TCB.cambioTipoConsumo = true
-    TCB.requiereOptimizador = true
-  }
-
-  function newConsumption() {
+  function changeCriterio() {
     return (
-      <GridToolbarContainer>
-        {/* <SLDRTooltip
-          title={<Typography>{t('UNITS.xxTOOLTIP_TIPO_USO')}</Typography>}
-          placement="end"
-        > */}
-        <FormControlLabel
-          labelPlacement="start"
-          padding={3}
-          control={
-            <Select
-              sx={{ flex: 1, ml: '1rem', width: 390 }}
-              value={tipoConsumoAsignado}
-              name="fuente"
-              object="TipoConsumo"
-              onChange={(event) => handleTipoConsumo(event)}
-            >
-              <MenuItem value={''}>Indefinido</MenuItem>
-              {tipoConsumo.map((e, index) => (
-                <MenuItem key={index} value={e.nombreTipoConsumo}>
-                  {e.nombreTipoConsumo}
-                </MenuItem>
-              ))}
-            </Select>
-          }
-          label={t('UNITS.LABEL_TIPO_USO')}
-        />
-        {/* </SLDRTooltip> */}
-      </GridToolbarContainer>
+      <FormControl>
+        <FormLabel>Elige criterio para distribuir la energía asignada</FormLabel>
+        <RadioGroup
+          row
+          value={allocationGroup[grupo].criterio}
+          onChange={(evt) => handleChange(evt.target)}
+        >
+          <FormControlLabel
+            value="PARTICIPACION"
+            control={<Radio />}
+            label="Participación"
+          />
+          <FormControlLabel value="CONSUMO" control={<Radio />} label="Uso eléctrico" />
+          <FormControlLabel
+            value="PARITARIO"
+            control={<Radio />}
+            label="Partes iguales"
+          />
+        </RadioGroup>
+      </FormControl>
     )
   }
 
-  function totalConsumption() {
-    let total = 0
-
-    units.forEach((e) => {
-      if (e.nombreTipoConsumo !== '') {
-        const tc = tipoConsumo.find((t) => {
-          return t.nombreTipoConsumo === e.nombreTipoConsumo
-        })
-        total += tc.totalAnual
-        setTotalConsumption(total)
-      }
-    })
-    console.log('CONSUMO TOTAL', { grupo, total })
-    return total
+  function handleChange(evt) {
+    setAllocationGroup((prev) => ({
+      ...prev,
+      [grupo]: {
+        ...prev[grupo],
+        criterio: evt.value,
+      },
+    }))
+    distributeAllocation(grupo, allocationGroup[grupo].produccion, evt.value)
   }
 
-  // function footerSummary() {
-  //   return (
-  //     <SLDRFooterBox>
-  //       <Grid
-  //         container
-  //         alignItems="center"
-  //         justifyContent="center"
-  //         spacing={2}
-  //         sx={{ mt: '2rem' }}
-  //       >
-  //         <Grid item>
-  //           <Typography
-  //             sx={theme.titles.level_2}
-  //             textAlign={'center'}
-  //             dangerouslySetInnerHTML={{
-  //               __html: t('CONSUMPTION.TOTAL_DEMMAND', {
-  //                 consumoTotal: formatoValor('energia', totalConsumption()),
-  //               }),
-  //             }}
-  //           />
-  //         </Grid>
-  //         <Grid item>
-  //           <Tooltip title={t('CONSUMPTION.TOOLTIP_botonMuestraTodosTipoConsumo')}>
-  //             <IconButton onClick={showGraphTotales}>
-  //               <AnalyticsIcon />
-  //             </IconButton>
-  //           </Tooltip>
-  //         </Grid>
-  //       </Grid>
-  //     </SLDRFooterBox>
-  //   )
-  // }
+  function distributeAllocation(grupo, coefGrupo, criterio) {
+    console.log('Distribuye grupo ' + grupo + 'coef ' + coefGrupo)
+    //Fincas que participan del grupo
+    //const participes = TCB.Finca.filter((f) => f.participa && f.grupo === grupo)
 
-  // function showGraphTotales() {
-  //   if (tipoConsumo.length > 0) {
-  //     const dummyType = new TipoConsumo({ nombreTipoConsumo: 'Totales' })
-  //     for (let tc of TCB.TipoConsumo) {
-  //       dummyType.suma(tc)
-  //     }
-  //     dummyType.fechaInicio = new Date(2023, 1, 1)
-  //     setActivo(dummyType)
-  //   }
-  // }
+    let consumoTotal
+    switch (criterio) {
+      case 'PARTICIPACION':
+        for (const f of TCB.Finca) {
+          if (f.participa && f.grupo === grupo) {
+            f.coefEnergia =
+              (f.participacion / 100 / allocationGroup[grupo].participacion) * coefGrupo
+          }
+        }
+        break
+      case 'CONSUMO':
+        consumoTotal = allocationGroup[grupo].consumo * TCB.consumo.totalAnual
+        for (const f of TCB.Finca) {
+          if (f.participa && f.grupo === grupo) {
+            const mConsumo = TCB.TipoConsumo.find(
+              (e) => e.nombreTipoConsumo === f.nombreTipoConsumo,
+            ).totalAnual
+            f.coefEnergia = (mConsumo / consumoTotal) * coefGrupo
+          }
+        }
+        break
+      case 'PARITARIO':
+        for (const f of TCB.Finca) {
+          if (f.participa && f.grupo === grupo) {
+            f.coefEnergia = coefGrupo / allocationGroup[grupo].unidades
+          }
+        }
+        break
+    }
+  }
 
+  console.log(allocationGroup[grupo])
   return (
     <Dialog
       fullScreen
@@ -405,16 +268,14 @@ export default function UnitsSummary(props) {
               <DataGrid
                 sx={theme.tables.headerWrap}
                 getRowId={getRowId}
-                rows={units.filter((f) => {
-                  return f.participa
-                })}
+                rows={TCB.Finca.filter((e) => e.participa && e.grupo === grupo)}
                 columns={columns}
                 hideFooter={false}
                 rowHeight={30}
                 autoHeight
                 disableColumnMenu
                 localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
-                // slots={{ toolbar: newConsumption, footer: footerSummary }}
+                slots={{ toolbar: changeCriterio }} //, footer: footerSummary }}
               />
             </Grid>
           )}

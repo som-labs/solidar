@@ -66,6 +66,16 @@ export default async function PreparaEnergyBalance() {
       }
     }
 
+    // Si estamos en modo no individual reset de cualquier coeficiente de reparto que hubiera existido previamente
+    if (TCB.modoActivo !== 'INDIVIDUAL') {
+      TCB.Finca.forEach((f) => {
+        f.coefEnergia = 0
+      })
+      TCB.ZonaComun.forEach((z) => {
+        z.coefEnergia = 0
+      })
+    }
+
     UTIL.debugLog('PreparaEnergyBalance - Todas las bases listas llama optimizador')
     // Se ejecuta el optimizador para determinar la configuración inicial propuesta
     let pendiente = optimizador(TCB.BaseSolar, TCB.consumo, TCB.tipoPanelActivo.potencia)

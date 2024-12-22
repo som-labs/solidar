@@ -33,7 +33,7 @@ export default function Page() {
   const { t } = useTranslation()
   const { SLDRAlert } = useContext(AlertContext)
   const { validaBases } = useContext(BasesContext)
-  const { validaTipoConsumo } = useContext(ConsumptionContext)
+  const { validaTipoConsumo, repartoValido } = useContext(ConsumptionContext)
   const { ecoData, setEcoData } = useContext(EconomicContext)
 
   const [a] = useSearchParams()
@@ -128,6 +128,16 @@ export default function Page() {
     }
   }
 
+  function validaAllocationStep() {
+    console.log(repartoValido)
+    if (!repartoValido) {
+      SLDRAlert('VALIDACION', 'Reparto energía no balanceado', 'error')
+      return false
+    } else {
+      return true
+    }
+  }
+
   const getSections = (modo) => {
     let sections = [
       <LocationStep
@@ -172,7 +182,7 @@ export default function Page() {
           key={'un_sec'}
           label="units"
           title={t('ALLOCATION.TITLE')}
-          //next={validaUnitsStep}
+          next={validaAllocationStep}
         />,
       )
     }
