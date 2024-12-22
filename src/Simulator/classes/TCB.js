@@ -234,7 +234,8 @@ const TCB = {
     IVAInstalacion: 21.0,
     perdidasSistema: 20,
     interesVAN: 3,
-    margen: 0.5,
+    margen: 0.5, //Se pondrá a 0 si es tejado inclinado
+    CAU: 'Codigo CAU',
   },
 
   //Default panel type

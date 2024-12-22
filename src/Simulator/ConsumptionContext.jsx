@@ -12,6 +12,8 @@ const ConsumptionContextProvider = ({ children }) => {
   const [zonasComunes, setZonasComunes] = useState([])
   const [fincasCargadas, setFincasCargadas] = useState(false)
   const [preciosValidos, setPreciosValidos] = useState(true)
+  const [repartoValido, setRepartoValido] = useState(false)
+  const [allocationGroup, setAllocationGroup] = useState()
 
   //TCB fields to be reflected in state
   const hdrTipo = {
@@ -75,6 +77,10 @@ const ConsumptionContextProvider = ({ children }) => {
     fincasCargadas,
     zonasComunes,
     setZonasComunes,
+    repartoValido,
+    setRepartoValido,
+    allocationGroup,
+    setAllocationGroup,
   }
 
   return (

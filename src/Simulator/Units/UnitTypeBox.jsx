@@ -35,9 +35,9 @@ export default function UnitTypeBox(props) {
           return t.nombreTipoConsumo === unit.nombreTipoConsumo
         })
         total += tc.totalAnual
-        setTotalConsumption(total)
       }
     })
+    setTotalConsumption(total)
   }, [])
 
   function showDetails() {
@@ -50,6 +50,7 @@ export default function UnitTypeBox(props) {
           fullWidth={true}
           onClose={closeDialog}
           setTotalConsumption={setTotalConsumption}
+          totalConsumption={totalConsumption}
         ></UnitsSummary>
       ),
     })

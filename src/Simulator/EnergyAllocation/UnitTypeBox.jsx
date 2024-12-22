@@ -11,46 +11,27 @@ import { useDialog } from '../../components/DialogProvider'
 import UnitsSummary from './UnitsSummary'
 
 // Solidar objects
+import Finca from '../classes/Finca.js'
 import TCB from '../classes/TCB.js'
 import * as UTIL from '../classes/Utiles'
 
 export default function UnitTypeBox(props) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { fincas, tipoConsumo } = useContext(ConsumptionContext)
+  const { fincas, tipoConsumo, allocationGroup } = useContext(ConsumptionContext)
   const [openDialog, closeDialog] = useDialog()
-  const [totalConsumption, setTotalConsumption] = useState()
-  const { tipo } = props
 
-  const units = fincas.filter((e) => e.grupo === tipo)
-
-  const participacionTotal = units.reduce((a, b) => {
-    return a + UTIL.returnFloat(b.participacion)
-  }, 0)
-
-  useEffect(() => {
-    let total = 0
-    units.forEach((unit) => {
-      if ((unit.nombreTipoConsumo !== '') & unit.participa) {
-        const tc = tipoConsumo.find((t) => {
-          return t.nombreTipoConsumo === unit.nombreTipoConsumo
-        })
-        total += tc.totalAnual
-      }
-    })
-    setTotalConsumption(total)
-  }, [])
+  const { grupo } = props
 
   function showDetails() {
     openDialog({
       children: (
         <UnitsSummary
-          grupo={tipo}
-          units={units}
+          grupo={grupo}
+          units={TCB.Finca.filter((f) => f.participa && f.grupo === grupo)}
           maxWidth={'xs'}
           fullWidth={true}
           onClose={closeDialog}
-          setTotalConsumption={setTotalConsumption}
         ></UnitsSummary>
       ),
     })
@@ -73,33 +54,62 @@ export default function UnitTypeBox(props) {
           }}
         >
           <Typography sx={theme.titles.level_1} textAlign={'center'} marginTop="1rem">
-            {tipo}
+            {grupo}
           </Typography>
-          <Typography
-            variant="body"
-            textAlign={'center'}
-            dangerouslySetInnerHTML={{
-              __html:
-                '<br />Cantidad: ' +
-                units.length +
-                '<br />Participación: ' +
-                UTIL.formatoValor('porciento', participacionTotal) +
-                '<br />Uso de energía: ' +
-                UTIL.formatoValor('energia', totalConsumption) +
-                '<br />% uso de energía total: ' +
-                UTIL.formatoValor(
-                  'porciento',
-                  (totalConsumption / TCB.consumo.totalAnual) * 100,
-                ) +
-                '<br />Energia Total asignada: ' +
-                UTIL.formatoValor(
-                  'energia',
-                  (TCB.produccion.totalAnual * totalConsumption) / TCB.consumo.totalAnual,
-                ),
-            }}
-          />
 
-          <Button onClick={showDetails}>{t('UNITS.LABEL_VER_DETALLES')}</Button>
+          {Finca.mapaUsoGrupo[grupo] ? (
+            <>
+              <Typography
+                variant="body"
+                textAlign={'center'}
+                dangerouslySetInnerHTML={{
+                  __html:
+                    '<br />Cantidad: <b>' +
+                    allocationGroup[grupo].unidades +
+                    '</b><br />Participación:  <b>' +
+                    UTIL.formatoValor('porciento', allocationGroup[grupo].participacion) +
+                    '</b><br />Uso de energía:  <b>' +
+                    UTIL.formatoValor(
+                      'energia',
+                      allocationGroup[grupo].consumo * TCB.consumo.totalAnual,
+                    ) +
+                    '</b><br />% uso de energía total:  <b>' +
+                    UTIL.formatoValor('porciento', allocationGroup[grupo].consumo * 100) +
+                    '</b><br />Energia Total asignada: <b>' +
+                    UTIL.formatoValor(
+                      'energia',
+                      TCB.produccion.totalAnual * allocationGroup[grupo].produccion,
+                    ) +
+                    '</b><br />Criterio asignación <b>' +
+                    allocationGroup[grupo].criterio +
+                    '</b>',
+                }}
+              />
+              <Button onClick={showDetails}>{t('UNITS.LABEL_VER_DETALLES')}</Button>
+            </>
+          ) : (
+            <>
+              <Typography
+                variant="body"
+                textAlign={'center'}
+                dangerouslySetInnerHTML={{
+                  __html:
+                    '<br />Uso de energía:  <b>' +
+                    UTIL.formatoValor(
+                      'energia',
+                      allocationGroup[grupo].consumo * TCB.consumo.totalAnual,
+                    ) +
+                    '</b><br />% uso de energía total:  <b>' +
+                    UTIL.formatoValor('porciento', allocationGroup[grupo].consumo * 100) +
+                    '</b><br />Energia Total asignada:  <b>' +
+                    UTIL.formatoValor(
+                      'energia',
+                      TCB.produccion.totalAnual * allocationGroup[grupo].produccion,
+                    ),
+                }}
+              />
+            </>
+          )}
         </Box>
       </Container>
     </>

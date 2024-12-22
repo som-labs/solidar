@@ -817,6 +817,7 @@ PARAMETROS:
     perdidasSistema: Pérdidas estimadas de la instalación en %
     interesVAN: Interés base (%) para calculo de VAN
     margen: Margen de instalación en metros
+    CAU: Código de Autoconsumo (CAU)
   TOOLTIP:
     impuestoElectrico: El impuesto especial sobre la electricidad
     IVAEnergia: El IVA que se repercute por el gasto en electricidad
@@ -824,7 +825,8 @@ PARAMETROS:
     perdidasSistema: Las pérdidas estimadas del sistema fotovoltaico debidas al deterioro
       de algunos componentes, condiciones adversas, inversores deficientes, etc.
     interesVAN: Tasa de descuento a aplicar en el cálculo del valor actual neto
-    margen: Distancia mantenida alrededor de la instalación a efectos de mantenimiento
+    margen: Distancia mantenida alrededor de la instalación a efectos de mantenimiento. Será 0 si es tejado inclinado
+    CAU: El código de autoconsumo será suministrado o asignado por la distribuidora eléctrica a la que se conecte la instalación de generación de electricidad
 
 CONTACTO:
   DIALOG_TITLE: Formulario de contacto
