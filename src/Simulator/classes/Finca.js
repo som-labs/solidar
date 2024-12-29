@@ -36,6 +36,7 @@ class Finca {
     this.participacion
     this.grupo
     this.CUPS
+    this.extraCost = {} //para almacenar los costes derivados de las zonas comunes
 
     //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto
     for (const objProp in finca) {

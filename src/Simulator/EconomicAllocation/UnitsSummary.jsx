@@ -114,11 +114,20 @@ export default function UnitsSummary(props) {
     },
     {
       field: 'participacion',
-      headerName: t('Finca.PROP.participacion'),
+      headerName:
+        t('Finca.PROP.participacion') +
+        '(' +
+        UTIL.round2Decimales(
+          TCB.Finca.filter((e) => e.participa && e.grupo === grupo).reduce(
+            (a, b) => a + b.participacion,
+            0,
+          ),
+        ) +
+        '% )',
       headerAlign: 'center',
       align: 'center',
       type: 'text',
-      flex: 0.5,
+      flex: 2,
       description: t('Finca.TOOLTIP.participacion'),
       sortable: false,
     },
@@ -134,12 +143,23 @@ export default function UnitsSummary(props) {
     },
     {
       field: 'coefEnergia',
-      headerName: t('ENERGY_ALLOCATION.BETA_LABEL'),
+      headerName: 'Beta', //t('TipoConsumo.PROP.nombreTipoConsumo'),
       headerAlign: 'center',
       align: 'center',
       type: 'number',
       flex: 1,
-      description: t('ENERGY_ALLOCATION.BETA_TOOLTIP'),
+      description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
+      sortable: false,
+    },
+    {
+      field: 'coste',
+      headerName: 'Gasto', //t('TipoConsumo.PROP.nombreTipoConsumo'),
+      headerAlign: 'center',
+      align: 'center',
+      type: 'number',
+      valueGetter: (params) => UTIL.formatoValor('dinero', params.row.coste),
+      flex: 1,
+      description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
       sortable: false,
     },
 
@@ -173,83 +193,101 @@ export default function UnitsSummary(props) {
     // },
   ]
 
+  for (const zc of TCB.ZonaComun) {
+    columns.push({
+      field: zc.nombre,
+      headerName: zc.nombre, //t('TipoConsumo.PROP.nombreTipoConsumo'),
+      headerAlign: 'center',
+      align: 'center',
+      type: 'number',
+      valueGetter: (params) =>
+        UTIL.formatoValor(
+          'dinero',
+          params.row.extraCost[zc.nombre] * TCB.economico.precioInstalacionCorregido,
+        ),
+      flex: 1,
+      description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
+      sortable: false,
+    })
+  }
+
   function getRowId(row) {
     return row.idFinca
   }
 
-  function changeCriterio() {
-    return (
-      <FormControl>
-        <FormLabel>Elige criterio para distribuir la energía asignada</FormLabel>
-        <RadioGroup
-          row
-          value={allocationGroup[grupo].criterio}
-          onChange={(evt) => handleChange(evt.target)}
-        >
-          <FormControlLabel
-            value="PARTICIPACION"
-            control={<Radio />}
-            label="Participación"
-          />
-          <FormControlLabel value="CONSUMO" control={<Radio />} label="Uso eléctrico" />
-          <FormControlLabel
-            value="PARITARIO"
-            control={<Radio />}
-            label="Partes iguales"
-          />
-        </RadioGroup>
-      </FormControl>
-    )
-  }
+  //   function changeCriterio() {
+  //     return (
+  //       <FormControl>
+  //         <FormLabel>Elige criterio para distribuir la energía asignada</FormLabel>
+  //         <RadioGroup
+  //           row
+  //           value={allocationGroup[grupo].criterio}
+  //           onChange={(evt) => handleChange(evt.target)}
+  //         >
+  //           <FormControlLabel
+  //             value="PARTICIPACION"
+  //             control={<Radio />}
+  //             label="Participación"
+  //           />
+  //           <FormControlLabel value="CONSUMO" control={<Radio />} label="Uso eléctrico" />
+  //           <FormControlLabel
+  //             value="PARITARIO"
+  //             control={<Radio />}
+  //             label="Partes iguales"
+  //           />
+  //         </RadioGroup>
+  //       </FormControl>
+  //     )
+  //   }
 
-  function handleChange(evt) {
-    setAllocationGroup((prev) => ({
-      ...prev,
-      [grupo]: {
-        ...prev[grupo],
-        criterio: evt.value,
-      },
-    }))
-    distributeAllocation(grupo, allocationGroup[grupo].produccion, evt.value)
-  }
+  //   function handleChange(evt) {
+  //     setAllocationGroup((prev) => ({
+  //       ...prev,
+  //       [grupo]: {
+  //         ...prev[grupo],
+  //         criterio: evt.value,
+  //       },
+  //     }))
+  //     distributeAllocation(grupo, allocationGroup[grupo].produccion, evt.value)
+  //   }
 
-  function distributeAllocation(grupo, coefGrupo, criterio) {
-    console.log('Distribuye grupo ' + grupo + 'coef ' + coefGrupo)
-    //Fincas que participan del grupo
-    //const participes = TCB.Finca.filter((f) => f.participa && f.grupo === grupo)
+  //   function distributeAllocation(grupo, coefGrupo, criterio) {
+  //     console.log('Distribuye grupo ' + grupo + 'coef ' + coefGrupo)
+  //     //Fincas que participan del grupo
+  //     //const participes = TCB.Finca.filter((f) => f.participa && f.grupo === grupo)
 
-    let consumoTotal
-    switch (criterio) {
-      case 'PARTICIPACION':
-        for (const f of TCB.Finca) {
-          if (f.participa && f.grupo === grupo) {
-            f.coefEnergia =
-              (f.participacion / allocationGroup[grupo].participacion) * coefGrupo
-          }
-        }
-        break
-      case 'CONSUMO':
-        consumoTotal = allocationGroup[grupo].consumo * TCB.consumo.totalAnual
-        for (const f of TCB.Finca) {
-          if (f.participa && f.grupo === grupo) {
-            const mConsumo = TCB.TipoConsumo.find(
-              (e) => e.nombreTipoConsumo === f.nombreTipoConsumo,
-            ).totalAnual
-            f.coefEnergia = (mConsumo / consumoTotal) * coefGrupo
-          }
-        }
-        break
-      case 'PARITARIO':
-        for (const f of TCB.Finca) {
-          if (f.participa && f.grupo === grupo) {
-            f.coefEnergia = coefGrupo / allocationGroup[grupo].unidades
-          }
-        }
-        break
-    }
-  }
+  //     let consumoTotal
+  //     switch (criterio) {
+  //       case 'PARTICIPACION':
+  //         for (const f of TCB.Finca) {
+  //           if (f.participa && f.grupo === grupo) {
+  //             f.coefEnergia =
+  //               (f.participacion / 100 / allocationGroup[grupo].participacion) * coefGrupo
+  //           }
+  //         }
+  //         break
+  //       case 'CONSUMO':
+  //         consumoTotal = allocationGroup[grupo].consumo * TCB.consumo.totalAnual
+  //         for (const f of TCB.Finca) {
+  //           if (f.participa && f.grupo === grupo) {
+  //             const mConsumo = TCB.TipoConsumo.find(
+  //               (e) => e.nombreTipoConsumo === f.nombreTipoConsumo,
+  //             ).totalAnual
+  //             f.coefEnergia = (mConsumo / consumoTotal) * coefGrupo
+  //           }
+  //         }
+  //         break
+  //       case 'PARITARIO':
+  //         for (const f of TCB.Finca) {
+  //           if (f.participa && f.grupo === grupo) {
+  //             f.coefEnergia = coefGrupo / allocationGroup[grupo].unidades
+  //           }
+  //         }
+  //         break
+  //     }
+  //   }
 
-  console.log(allocationGroup[grupo])
+  //   console.log(allocationGroup[grupo])
   return (
     <Dialog
       fullScreen
@@ -275,24 +313,10 @@ export default function UnitsSummary(props) {
                 autoHeight
                 disableColumnMenu
                 localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
-                slots={{ toolbar: changeCriterio }} //, footer: footerSummary }}
+                //slots={{ toolbar: changeCriterio }} //, footer: footerSummary }}
               />
             </Grid>
           )}
-          {/* {activo && preciosValidos && (
-        <>
-          <Grid item xs={12}>
-            <SLDRInfoBox>
-              <MapaMesHora activo={activo}></MapaMesHora>
-            </SLDRInfoBox>
-          </Grid>
-          <Grid item xs={12}>
-            <SLDRInfoBox>
-              <MapaDiaHora activo={activo}></MapaDiaHora>
-            </SLDRInfoBox>
-          </Grid>
-        </>
-      )} */}
         </Grid>
       </DialogContent>
       <DialogActions>

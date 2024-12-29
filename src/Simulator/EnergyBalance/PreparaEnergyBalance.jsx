@@ -19,6 +19,16 @@ export default async function PreparaEnergyBalance() {
   UTIL.debugLog('PreparaEnergyBalance - Hay cambio de consumos? ' + TCB.cambioTipoConsumo)
   if (TCB.cambioTipoConsumo) {
     TCB.consumo = new Consumo()
+    if (TCB.modoActivo !== 'INDIVIDUAL') {
+      //Caluclamos el coeficiente del consumo de cada finca sobre el total
+      for (const f of TCB.Finca) {
+        if (f.nombreTipoConsumo !== '')
+          f.coefConsumo = TCB.TipoConsumo.find(
+            (tc) => tc.nombreTipoConsumo === f.nombreTipoConsumo,
+          ).totalAnual
+        else f.coefConsumo = 0
+      }
+    }
     UTIL.debugLog('PreparaEnergyBalance - Nuevo consumo global creado', TCB.consumo)
     TCB.cambioTipoConsumo = false
   }
