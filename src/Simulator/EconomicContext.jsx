@@ -4,10 +4,13 @@ const EconomicContext = createContext()
 
 const EconomicContextProvider = ({ children }) => {
   const [ecoData, setEcoData] = useState({})
+  const [units, setUnits] = useState([])
 
   const contextValue = {
     ecoData,
     setEcoData,
+    units,
+    setUnits,
   }
 
   return (

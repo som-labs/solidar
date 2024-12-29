@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useState, useEffect, Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -18,10 +18,22 @@ import * as UTIL from '../classes/Utiles'
 export default function UnitTypeBox(props) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { fincas, tipoConsumo, allocationGroup } = useContext(ConsumptionContext)
+  const { fincas, tipoConsumo, allocationGroup, zonasComunes } =
+    useContext(ConsumptionContext)
   const [openDialog, closeDialog] = useDialog()
+  const [extraCost, setExtraCost] = useState({})
 
   const { grupo } = props
+
+  let tCost = {}
+  for (const zc of zonasComunes) {
+    tCost[zc.nombre] = 0
+    for (const fx of TCB.Finca.filter(
+      (f) => f.grupo === grupo && f.extraCost[zc.nombre] > 0,
+    )) {
+      tCost[zc.nombre] += fx.extraCost[zc.nombre]
+    }
+  }
 
   function showDetails() {
     openDialog({
@@ -50,14 +62,13 @@ export default function UnitTypeBox(props) {
             border: '1px solid grey',
             borderRadius: 2,
             padding: 2,
-            maxWidth: 300,
+            //maxWidth: 300,
+            backgroundColor: allocationGroup[grupo].unidades > 0 ? 'aquamarine' : 'green',
           }}
         >
           <Typography sx={theme.titles.level_1} textAlign={'center'} marginTop="1rem">
             {grupo}
           </Typography>
-
-          {/* {Finca.mapaUsoGrupo[grupo] ? ( */}
           {allocationGroup[grupo].unidades > 0 ? (
             <>
               <Typography
@@ -83,13 +94,35 @@ export default function UnitTypeBox(props) {
                     ) +
                     '</b><br />Criterio asignación <b>' +
                     allocationGroup[grupo].criterio +
-                    '</b>',
+                    '<br /><br />COSTES',
                 }}
               />
+              <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
+                <Typography sx={{ textAlign: 'center' }}>
+                  Propio:{' '}
+                  {UTIL.formatoValor(
+                    'dinero',
+                    TCB.economico.precioInstalacionCorregido *
+                      allocationGroup[grupo].produccion,
+                  )}
+                </Typography>
+
+                {Object.keys(tCost).map((key, value) => (
+                  <Fragment key={key}>
+                    <Typography sx={{ textAlign: 'center' }}>
+                      {key}:{' '}
+                      {UTIL.formatoValor(
+                        'dinero',
+                        tCost[key] * TCB.economico.precioInstalacionCorregido,
+                      )}
+                    </Typography>
+                  </Fragment>
+                ))}
+              </Box>
               <Button onClick={showDetails}>{t('UNITS.LABEL_VER_DETALLES')}</Button>
             </>
           ) : (
-            <>
+            <Box>
               <Typography
                 variant="body"
                 textAlign={'center'}
@@ -106,10 +139,16 @@ export default function UnitTypeBox(props) {
                     UTIL.formatoValor(
                       'energia',
                       TCB.produccion.totalAnual * allocationGroup[grupo].produccion,
+                    ) +
+                    '</b><br />Coste <b>' +
+                    UTIL.formatoValor(
+                      'dinero',
+                      TCB.economico.precioInstalacionCorregido *
+                        allocationGroup[grupo].produccion,
                     ),
                 }}
               />
-            </>
+            </Box>
           )}
         </Box>
       </Container>

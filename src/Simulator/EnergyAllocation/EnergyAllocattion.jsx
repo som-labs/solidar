@@ -22,7 +22,6 @@ import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import UnitTypeBox from './UnitTypeBox'
-import ZonaComunTypeBox from './ZonaComunTypeBox'
 import { AlertContext } from '../components/Alert'
 import HelpConsumption from '../Consumption/HelpConsumption'
 // REACT Solidar Components
@@ -31,7 +30,6 @@ import { ConsumptionContext } from '../ConsumptionContext'
 //Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import Finca from '../classes/Finca'
 
 //React global components
 import { useDialog } from '../../components/DialogProvider'
@@ -107,16 +105,18 @@ export default function EnergyAllocationStep() {
             consumo: _consTC / TCB.consumo.totalAnual,
             produccion:
               z.coefEnergia > 0 ? z.coefEnergia : _consTC / TCB.consumo.totalAnual,
+            unidades: 0, //Flag para indicar que este grupo es una zona comun
           }
         }
       }
     })
-    //console.log(uniqueGroup)
+    console.log(uniqueGroup)
     setAllocationGroup(uniqueGroup)
 
     //Primera asignacion de grupo basada en consumo y de participes basada en participacion
     for (const grupo in uniqueGroup) {
-      if (grupo in Finca.mapaUsoGrupo) {
+      //if (grupo in Finca.mapaUsoGrupo) {
+      if (uniqueGroup[grupo].unidades > 0) {
         //Es grupo de catastro hay que calcular betas y asignarlo a cada finca
         for (const f of TCB.Finca) {
           if (f.participa && f.grupo === grupo) {
@@ -211,7 +211,7 @@ export default function EnergyAllocationStep() {
             <Typography
               variant="body"
               dangerouslySetInnerHTML={{
-                __html: t('ALLOCATION.DESCRIPTION_1'),
+                __html: t('ENERGY_ALLOCATION.DESCRIPTION'),
               }}
             />
 

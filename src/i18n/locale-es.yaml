@@ -1023,12 +1023,22 @@ UNITS:
   DESCRIPTION_2: A continuación se definirá el uso de energía asignado a cada una de las unidades catastrales y zonas comunes identificadas en esta finca
   DESCRIPTION_3: Definición de los usos electricos de las zonas comunes del inmueble.
   LABEL_TIPO_USO: Define tipo de uso eléctrico para todas las unidades
-  TOOLTIP_TIPO_USO: Selecciona el tipo de uso eléctrico asignado a estas unidades
+  TOOLTIP_TIPO_USO: Selecciona el tipo de uso eléctrico asignado a todas las unidades
+  LABEL_TIPO_USO_1: Uso eléctrico
+  TOOLTIP_TIPO_USO_1: Selecciona el tipo de uso eléctrico asignado
   LABEL_VER_DETALLES: Ver detalles
 
-ALLOCATION:
-  TITLE: Reparto
-  DESCRIPTION_2: A continuación se definirá la cuota de energía producida por la instalación fotovoltaica a cada una de las unidades que participan en el proyecto.
+ENERGY_ALLOCATION:
+  TITLE: Reparto Energía
+  DESCRIPTION: A continuación se definirá la cuota de energía producida por la instalación fotovoltaica a cada una de las unidades que participan en el proyecto.
+  BETA_LABEL: Beta
+  BETA_TOOLTIP: Coeificiente beta asignado a esta unidad
+  NO_BALANCE: Reparto energía no balanceado
+
+ECONOMIC_ALLOCATION:
+  TITLE: Reparto Económico
+  DESCRIPTION: A continuación se definirán los pagos correpondientes a las unidades que participan en el proyecto.
+
 Finca:
   PROP:
     nombreFinca: Nombre de la finca

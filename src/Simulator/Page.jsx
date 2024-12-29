@@ -14,6 +14,7 @@ import UnitsStep from './Units/Units'
 import EnergyAllocationStep from './EnergyAllocation/EnergyAllocattion'
 import EnergyBalanceStep from './EnergyBalance/EnergyBalance'
 import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
+import EconomicAllocationStep from './EconomicAllocation/EconomicAllocattion'
 import SummarySOMStep from './Summary/SOM/Summary'
 
 import { ConsumptionContext } from './ConsumptionContext'
@@ -129,9 +130,8 @@ export default function Page() {
   }
 
   function validaAllocationStep() {
-    console.log(repartoValido)
     if (!repartoValido) {
-      SLDRAlert('VALIDACION', 'Reparto energía no balanceado', 'error')
+      SLDRAlert('VALIDACION', t('ENERGY_ALLOCATION.NO_BALANCE'), 'error')
       return false
     } else {
       return true
@@ -166,14 +166,12 @@ export default function Page() {
     }
 
     sections.push(
-      ...[
-        <EnergyBalanceStep
-          key={'en_sec'}
-          label="energybalance"
-          title={t('ENERGY_BALANCE.TITLE')}
-          next={validaEnergyBalanceStep}
-        />,
-      ],
+      <EnergyBalanceStep
+        key={'en_sec'}
+        label="energybalance"
+        title={t('ENERGY_BALANCE.TITLE')}
+        next={validaEnergyBalanceStep}
+      />,
     )
 
     if (modo !== 'INDIVIDUAL') {
@@ -181,21 +179,33 @@ export default function Page() {
         <EnergyAllocationStep
           key={'un_sec'}
           label="units"
-          title={t('ALLOCATION.TITLE')}
+          title={t('ENERGY_ALLOCATION.TITLE')}
           next={validaAllocationStep}
         />,
       )
     }
 
     sections.push(
-      ...[
-        <EconomicBalanceStep
-          key={'eb_sec'}
-          label="economicbalance"
-          title={t('ECONOMIC_BALANCE.TITLE')}
+      <EconomicBalanceStep
+        key={'eb_sec'}
+        label="economicbalance"
+        title={t('ECONOMIC_BALANCE.TITLE')}
+      />,
+    )
+
+    if (modo !== 'INDIVIDUAL') {
+      sections.push(
+        <EconomicAllocationStep
+          key={'un_sec'}
+          label="units"
+          title={t('ECONOMIC_ALLOCATION.TITLE')}
+          //next={}
         />,
-        <SummarySOMStep key={'sum_sec'} label="summary" title={t('SUMMARY.TITLE')} />,
-      ],
+      )
+    }
+
+    sections.push(
+      <SummarySOMStep key={'sum_sec'} label="summary" title={t('SUMMARY.TITLE')} />,
     )
 
     return sections

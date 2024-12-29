@@ -22,7 +22,6 @@ import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import UnitTypeBox from './UnitTypeBox'
-import ZonaComunTypeBox from './ZonaComunTypeBox'
 import { AlertContext } from '../components/Alert'
 import HelpConsumption from '../Consumption/HelpConsumption'
 // REACT Solidar Components
@@ -58,7 +57,6 @@ export default function AllocationGraph(props) {
   }
 
   useEffect(() => {
-    console.log({ variable: 'Props in child useEffect', value: props })
     // Function to get the width of the element
     const getWidth = () => {
       if (graphBox.current) {
@@ -73,7 +71,6 @@ export default function AllocationGraph(props) {
   useEffect(() => {
     let tmp = []
     for (const g in allocationGroup) {
-      console.log('Adding ' + g + ' to chartallocation')
       tmp.push({
         x: ['consumo', 'produccion'],
         y: [allocationGroup[g].consumo, allocationGroup[g].produccion],
@@ -91,12 +88,14 @@ export default function AllocationGraph(props) {
   }, [allocationGroup])
 
   function applyBalance() {
-    for (const g in allocationGroup) {
-      if (g in Finca.mapaUsoGrupo) {
-        distributeAllocation(g, allocationGroup[g].produccion)
+    console.log(allocationGroup, TCB.ZonaComun)
+    for (const grupo in allocationGroup) {
+      if (allocationGroup[grupo].unidades > 0) {
+        distributeAllocation(grupo, allocationGroup[grupo].produccion)
       } else {
-        TCB.ZonaComun.find((zc) => zc.nombre === g).coefEnergia =
-          allocationGroup[g].produccion
+        console.log(grupo)
+        TCB.ZonaComun.find((zc) => zc.nombre === grupo).coefEnergia =
+          allocationGroup[grupo].produccion
       }
     }
     setRepartoValido(true)
@@ -118,6 +117,7 @@ export default function AllocationGraph(props) {
     setAllocationGroup((prev) => ({
       ...prev,
       [group]: {
+        ...prev[group],
         consumo: prev[group].consumo,
         criterio: prev[group].criterio,
         produccion: value / 100,
