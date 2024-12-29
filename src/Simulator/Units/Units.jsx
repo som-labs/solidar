@@ -61,7 +61,7 @@ export default function UnitsStep() {
 
     TCB.ZonaComun.push(_zonaComun)
     TCB.requiereOptimizador = true
-    setZonasComunes([...zonasComunes, _zonaComun])
+    setZonasComunes((prev) => [...prev, _zonaComun])
   }
 
   return (
@@ -150,7 +150,7 @@ export default function UnitsStep() {
               gap: '15px',
             }}
           >
-            {TCB.ZonaComun.map((key, value) => (
+            {zonasComunes.map((key, value) => (
               <Fragment key={key}>
                 <Box sx={{ display: 'flex', flex: 1 }}>
                   <ZonaComunTypeBox zonaComun={key}></ZonaComunTypeBox>

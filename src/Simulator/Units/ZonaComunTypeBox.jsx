@@ -33,6 +33,10 @@ export default function ZonaComunTypeBox(props) {
       return _zc.idZonaComun === props.zonaComun.idZonaComun
     }).nombreTipoConsumo = tipo
     setTipoConsumoZC(tipo)
+    const _consumo = TCB.TipoConsumo.find((_tc) => {
+      return _tc.nombreTipoConsumo === tipo
+    }).totalAnual
+
     setTotalConsumption(
       TCB.TipoConsumo.find((_tc) => {
         return _tc.nombreTipoConsumo === tipo
