@@ -1,4 +1,4 @@
-import { useState, useContext, useRef } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -51,7 +51,7 @@ export default function UnitsSummary(props) {
   const { grupo, units, setUnits } = props
 
   const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
-  const [criterio, setCriterio] = useState()
+  const [totalCost, setTotalCost] = useState()
 
   const columns = [
     {
@@ -62,46 +62,46 @@ export default function UnitsSummary(props) {
       description: t('Finca.TOOLTIP.nombreFinca'),
       sortable: false,
     },
-    {
-      field: 'refcat',
-      headerName: t('Finca.PROP.refcat'),
-      headerAlign: 'center',
-      align: 'center',
-      type: 'text',
-      flex: 1,
-      description: t('Finca.TOOLTIP.refcat'),
-      sortable: false,
-    },
-    {
-      field: 'planta',
-      headerName: t('Finca.PROP.planta'),
-      headerAlign: 'center',
-      align: 'center',
-      type: 'text',
-      flex: 0.5,
-      description: t('Finca.TOOLTIP.planta'),
-      sortable: false,
-    },
-    {
-      field: 'puerta',
-      headerName: t('Finca.PROP.puerta'),
-      headerAlign: 'center',
-      align: 'center',
-      type: 'text',
-      flex: 0.5,
-      description: t('Finca.TOOLTIP.puerta'),
-      sortable: false,
-    },
-    {
-      field: 'uso',
-      headerName: t('Finca.PROP.uso'),
-      headerAlign: 'center',
-      align: 'center',
-      type: 'text',
-      flex: 1,
-      description: t('Finca.TOOLTIP.uso'),
-      sortable: false,
-    },
+    // {
+    //   field: 'refcat',
+    //   headerName: t('Finca.PROP.refcat'),
+    //   headerAlign: 'center',
+    //   align: 'center',
+    //   type: 'text',
+    //   flex: 1,
+    //   description: t('Finca.TOOLTIP.refcat'),
+    //   sortable: false,
+    // },
+    // {
+    //   field: 'planta',
+    //   headerName: t('Finca.PROP.planta'),
+    //   headerAlign: 'center',
+    //   align: 'center',
+    //   type: 'text',
+    //   flex: 0.5,
+    //   description: t('Finca.TOOLTIP.planta'),
+    //   sortable: false,
+    // },
+    // {
+    //   field: 'puerta',
+    //   headerName: t('Finca.PROP.puerta'),
+    //   headerAlign: 'center',
+    //   align: 'center',
+    //   type: 'text',
+    //   flex: 0.5,
+    //   description: t('Finca.TOOLTIP.puerta'),
+    //   sortable: false,
+    // },
+    // {
+    //   field: 'uso',
+    //   headerName: t('Finca.PROP.uso'),
+    //   headerAlign: 'center',
+    //   align: 'center',
+    //   type: 'text',
+    //   flex: 1,
+    //   description: t('Finca.TOOLTIP.uso'),
+    //   sortable: false,
+    // },
     {
       field: 'superficie',
       headerName: t('Finca.PROP.superficie'),
@@ -114,20 +114,24 @@ export default function UnitsSummary(props) {
     },
     {
       field: 'participacion',
-      headerName:
-        t('Finca.PROP.participacion') +
-        '(' +
-        UTIL.round2Decimales(
-          TCB.Finca.filter((e) => e.participa && e.grupo === grupo).reduce(
-            (a, b) => a + b.participacion,
-            0,
-          ),
-        ) +
-        '% )',
-      headerAlign: 'center',
+      renderHeader: () => (
+        <div style={{ textAlign: 'center', lineHeight: '1.2' }}>
+          {t('Finca.PROP.participacion')}
+          <br />
+          {'(' +
+            UTIL.round2Decimales(
+              TCB.Finca.filter((e) => e.grupo === grupo).reduce(
+                (a, b) => a + b.participacion,
+                0,
+              ),
+            ) +
+            '% )'}
+        </div>
+      ),
+
       align: 'center',
       type: 'text',
-      flex: 2,
+      flex: 1,
       description: t('Finca.TOOLTIP.participacion'),
       sortable: false,
     },
@@ -140,13 +144,31 @@ export default function UnitsSummary(props) {
       flex: 1,
       description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
       sortable: false,
+      valueGetter: (params) =>
+        params.row.nombreTipoConsumo ? params.row.nombreTipoConsumo : 'Indefinido',
     },
     {
       field: 'coefEnergia',
       headerName: 'Beta', //t('TipoConsumo.PROP.nombreTipoConsumo'),
+      renderHeader: () => (
+        <div style={{ textAlign: 'center', lineHeight: '1.2' }}>
+          {'Beta'}
+          <br />
+          {'(' +
+            UTIL.roundDecimales(
+              TCB.Finca.filter((e) => e.grupo === grupo).reduce(
+                (a, b) => a + b.coefEnergia * 100,
+                0,
+              ),
+              6,
+            ) +
+            ' %)'}
+        </div>
+      ),
       headerAlign: 'center',
       align: 'center',
       type: 'number',
+      valueGetter: (params) => params.row.coefEnergia.toFixed(6),
       flex: 1,
       description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
       sortable: false,
@@ -154,6 +176,19 @@ export default function UnitsSummary(props) {
     {
       field: 'coste',
       headerName: 'Gasto', //t('TipoConsumo.PROP.nombreTipoConsumo'),
+      renderHeader: () => (
+        <div style={{ textAlign: 'center', lineHeight: '1.2' }}>
+          {'Gasto'}
+          <br />
+          {'(' +
+            UTIL.formatoValor(
+              'dinero',
+              units.reduce((t, u) => t + u.coefEnergia, 0) *
+                TCB.economico.precioInstalacionCorregido,
+            ) +
+            ' )'}
+        </div>
+      ),
       headerAlign: 'center',
       align: 'center',
       type: 'number',
@@ -162,41 +197,28 @@ export default function UnitsSummary(props) {
       description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
       sortable: false,
     },
-
-    // {
-    //   field: 'actions',
-    //   type: 'actions',
-    //   headerName: t('BASIC.LABEL_ACCIONES'),
-    //   sortable: false,
-    //   getActions: (params) => [
-    //     <GridActionsCellItem
-    //       key={1}
-    //       icon={
-    //         <Tooltip title={t('CONSUMPTION.TOOLTIP_botonBorraTipoConsumo')}>
-    //           <DeleteIcon />
-    //         </Tooltip>
-    //       }
-    //       label="ShowGraphs"
-    //       onClick={(e) => deleteTipoConsumo(e, params.row)}
-    //     />,
-    //     <GridActionsCellItem
-    //       key={2}
-    //       icon={
-    //         <Tooltip title={t('CONSUMPTION.TOOLTIP_botonEditaTipoConsumo')}>
-    //           <EditIcon />
-    //         </Tooltip>
-    //       }
-    //       label="Edit"
-    //       onClick={() => editTipoConsumo(params.row)}
-    //     />,
-    //   ],
-    // },
   ]
 
   for (const zc of TCB.ZonaComun) {
     columns.push({
       field: zc.nombre,
       headerName: zc.nombre, //t('TipoConsumo.PROP.nombreTipoConsumo'),
+      renderHeader: () => (
+        <div style={{ textAlign: 'center', lineHeight: '1.2' }}>
+          {zc.nombre}
+          <br />
+          {'(' +
+            UTIL.formatoValor(
+              'dinero',
+              TCB.Finca.filter((e) => e.grupo === grupo).reduce(
+                (a, b) =>
+                  a + b.extraCost[zc.nombre] * TCB.economico.precioInstalacionCorregido,
+                0,
+              ),
+            ) +
+            ' )'}
+        </div>
+      ),
       headerAlign: 'center',
       align: 'center',
       type: 'number',
@@ -211,83 +233,42 @@ export default function UnitsSummary(props) {
     })
   }
 
+  columns.push({
+    field: 'total',
+    renderHeader: () => (
+      <div style={{ textAlign: 'center', lineHeight: '1.2' }}>
+        {'Total'}
+        <br />
+        {'(' + UTIL.formatoValor('dinero', totalCost) + ' )'}
+      </div>
+    ),
+    headerAlign: 'center',
+    align: 'center',
+    type: 'number',
+    valueGetter: (params) => {
+      const v =
+        params.row.coefEnergia +
+        Object.values(params.row.extraCost).reduce((a, b) => a + b, 0)
+      return UTIL.formatoValor('dinero', v * TCB.economico.precioInstalacionCorregido)
+    },
+    flex: 1,
+    description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
+    sortable: false,
+  })
+
   function getRowId(row) {
     return row.idFinca
   }
 
-  //   function changeCriterio() {
-  //     return (
-  //       <FormControl>
-  //         <FormLabel>Elige criterio para distribuir la energía asignada</FormLabel>
-  //         <RadioGroup
-  //           row
-  //           value={allocationGroup[grupo].criterio}
-  //           onChange={(evt) => handleChange(evt.target)}
-  //         >
-  //           <FormControlLabel
-  //             value="PARTICIPACION"
-  //             control={<Radio />}
-  //             label="Participación"
-  //           />
-  //           <FormControlLabel value="CONSUMO" control={<Radio />} label="Uso eléctrico" />
-  //           <FormControlLabel
-  //             value="PARITARIO"
-  //             control={<Radio />}
-  //             label="Partes iguales"
-  //           />
-  //         </RadioGroup>
-  //       </FormControl>
-  //     )
-  //   }
-
-  //   function handleChange(evt) {
-  //     setAllocationGroup((prev) => ({
-  //       ...prev,
-  //       [grupo]: {
-  //         ...prev[grupo],
-  //         criterio: evt.value,
-  //       },
-  //     }))
-  //     distributeAllocation(grupo, allocationGroup[grupo].produccion, evt.value)
-  //   }
-
-  //   function distributeAllocation(grupo, coefGrupo, criterio) {
-  //     console.log('Distribuye grupo ' + grupo + 'coef ' + coefGrupo)
-  //     //Fincas que participan del grupo
-  //     //const participes = TCB.Finca.filter((f) => f.participa && f.grupo === grupo)
-
-  //     let consumoTotal
-  //     switch (criterio) {
-  //       case 'PARTICIPACION':
-  //         for (const f of TCB.Finca) {
-  //           if (f.participa && f.grupo === grupo) {
-  //             f.coefEnergia =
-  //               (f.participacion / 100 / allocationGroup[grupo].participacion) * coefGrupo
-  //           }
-  //         }
-  //         break
-  //       case 'CONSUMO':
-  //         consumoTotal = allocationGroup[grupo].consumo * TCB.consumo.totalAnual
-  //         for (const f of TCB.Finca) {
-  //           if (f.participa && f.grupo === grupo) {
-  //             const mConsumo = TCB.TipoConsumo.find(
-  //               (e) => e.nombreTipoConsumo === f.nombreTipoConsumo,
-  //             ).totalAnual
-  //             f.coefEnergia = (mConsumo / consumoTotal) * coefGrupo
-  //           }
-  //         }
-  //         break
-  //       case 'PARITARIO':
-  //         for (const f of TCB.Finca) {
-  //           if (f.participa && f.grupo === grupo) {
-  //             f.coefEnergia = coefGrupo / allocationGroup[grupo].unidades
-  //           }
-  //         }
-  //         break
-  //     }
-  //   }
-
-  //   console.log(allocationGroup[grupo])
+  useEffect(() => {
+    console.log(units)
+    const vPropio = units.reduce((t, u) => t + u.coefEnergia, 0)
+    const vExtra = units.reduce(
+      (t, u) => t + Object.values(u.extraCost).reduce((st, e) => st + e, 0),
+      0,
+    )
+    setTotalCost((vPropio + vExtra) * TCB.economico.precioInstalacionCorregido)
+  }, [])
   return (
     <Dialog
       fullScreen
@@ -304,16 +285,21 @@ export default function UnitsSummary(props) {
           {preciosValidos && (
             <Grid item xs={11}>
               <DataGrid
-                sx={theme.tables.headerWrap}
+                sx={{
+                  '.header-wrap': {
+                    whiteSpace: 'pre-wrap', // Enables line breaks
+                    lineHeight: 'normal', // Prevents extra spacing
+                    textAlign: 'center', // Optional: center-align text
+                  },
+                }}
                 getRowId={getRowId}
-                rows={TCB.Finca.filter((e) => e.participa && e.grupo === grupo)}
+                rows={units}
                 columns={columns}
                 hideFooter={false}
                 rowHeight={30}
                 autoHeight
                 disableColumnMenu
                 localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
-                //slots={{ toolbar: changeCriterio }} //, footer: footerSummary }}
               />
             </Grid>
           )}

@@ -50,10 +50,11 @@ export default function AllocationGraph(props) {
   const graphBox = useRef()
 
   const layout = {
-    title: 'Asignación de producción comparada<br /> con uso de energía',
+    title: t('ENERGY_ALLOCATION.TITLE_BAR_CHART'),
     barmode: 'stack', // Set bar mode to "stack"
     //xaxis: { title: 'Categories' },
     yaxis: { title: 'coeficiente sobre total' },
+    width: graphWidth.current,
   }
 
   useEffect(() => {
@@ -71,29 +72,29 @@ export default function AllocationGraph(props) {
   useEffect(() => {
     let tmp = []
     for (const g in allocationGroup) {
-      tmp.push({
-        x: ['consumo', 'produccion'],
-        y: [allocationGroup[g].consumo, allocationGroup[g].produccion],
-        name: g,
-        type: 'bar',
-      })
+      if (allocationGroup[g].produccion > 0) {
+        tmp.push({
+          x: ['consumo', 'produccion'],
+          y: [allocationGroup[g].consumo, allocationGroup[g].produccion],
+          name: g,
+          type: 'bar',
+        })
+      }
     }
 
     setChartAllocation([...tmp])
 
-    if (Math.abs(1 - tmp.reduce((a, b) => a + b.y[1], 0)) <= 0.001) setBalance(true)
-    else setBalance(false)
+    if (Math.abs(1 - tmp.reduce((a, b) => a + b.y[1], 0)) <= 0.001) applyBalance()
+    else setRepartoValido(false)
 
     if (graphBox.current) Plotly.react(graphBox.current, tmp, layout)
   }, [allocationGroup])
 
   function applyBalance() {
-    console.log(allocationGroup, TCB.ZonaComun)
     for (const grupo in allocationGroup) {
       if (allocationGroup[grupo].unidades > 0) {
         distributeAllocation(grupo, allocationGroup[grupo].produccion)
       } else {
-        console.log(grupo)
         TCB.ZonaComun.find((zc) => zc.nombre === grupo).coefEnergia =
           allocationGroup[grupo].produccion
       }
@@ -132,13 +133,10 @@ export default function AllocationGraph(props) {
     )
 
     if (Math.abs(1 - chartAllocation.reduce((a, b) => a + b.y[1], 0)) <= 0.001)
-      setBalance(true)
+      applyBalance()
     else {
-      setBalance(false)
       setRepartoValido(false)
     }
-
-    //console.log({ variable: 'new chartallocation', value: chartAllocation })
   }
 
   // console.log({
@@ -147,89 +145,170 @@ export default function AllocationGraph(props) {
   //   allocationGroup: allocationGroup,
   // })
 
+  function Semaphore({ state }) {
+    const colors = {
+      red: '#f44336',
+      yellow: '#ffeb3b',
+      green: '#4caf50',
+    }
+    let up
+    let bottom
+
+    if (state) {
+      up = '#9e9e9e'
+      bottom = colors.green
+    } else {
+      up = colors.red
+      bottom = '#9e9e9e'
+    }
+
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          border: 1,
+          padding: 2,
+          borderRadius: 2,
+        }}
+      >
+        <Box
+          sx={{
+            width: 24,
+            height: 24,
+            borderRadius: '50%',
+            backgroundColor: up || '#9e9e9e', // Default to gray for invalid states
+            boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+          }}
+        ></Box>
+        <Box
+          sx={{
+            width: 24,
+            height: 24,
+            borderRadius: '50%',
+            backgroundColor: bottom || '#9e9e9e', // Default to gray for invalid states
+            boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+          }}
+        ></Box>
+      </Box>
+    )
+  }
+
   return (
     <>
       <Container>
         {allocationGroup ? (
-          <Grid container rowSpacing={3}>
-            <Box sx={{ mt: 4, width: '100%' }}>
-              Grupos de asignación de energía producida
-              {Object.keys(allocationGroup).map((group, index) => {
-                return (
-                  <Fragment key={index}>
-                    <Grid
-                      container
-                      spacing={0.2}
-                      alignItems="center"
-                      justifyContent="space-evenly"
-                    >
-                      <Grid
-                        item
-                        xs={3}
-                        sx={{ border: 0, textAlign: 'right', padding: 1 }}
-                      >
-                        {group}
-                      </Grid>
-
-                      <TextField
-                        sx={{
-                          mt: '0.1rem',
-                          mb: '0.1rem',
-                          fontWeight: 'bold',
-                          border: 1,
-                          borderRadius: 3,
-                        }}
-                        size="small"
-                        type="number"
-                        id="allocation"
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="start">&nbsp;%</InputAdornment>
-                          ),
-                          inputProps: {
-                            style: { textAlign: 'right' },
-                          },
-                        }}
-                        value={UTIL.round2Decimales(
-                          allocationGroup[group].produccion * 100,
-                        )}
-                        onChange={(event) => changeAllocation(group, event.target.value)}
-                      />
-
-                      <Grid
-                        item
-                        xs={3}
-                        sx={{
-                          fontWeight: 'bold',
-                          border: 1,
-                          borderRadius: 3,
-                          textAlign: 'center',
-                          padding: 0.5,
-                          borderColor: 'primary.light',
-                        }}
-                      >
-                        {UTIL.formatoValor(
-                          'energia',
-                          Math.round(
-                            allocationGroup[group].produccion * TCB.produccion.totalAnual,
-                          ),
-                        )}
-                      </Grid>
-                    </Grid>
-                  </Fragment>
-                )
-              })}
+          <>
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography sx={{ textAlign: 'center' }} variant="h5">
+                {t('ENERGY_ALLOCATION.ALLOCATION_GROUPS')}
+              </Typography>
+              <Typography
+                sx={{ textAlign: 'center' }}
+                variant="body"
+                dangerouslySetInnerHTML={{
+                  __html: t('ENERGY_ALLOCATION.DESCRIPTION_1'),
+                }}
+              />
             </Box>
-          </Grid>
+            <Box sx={{ display: 'flex', width: '100%', alignItems: 'center' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  mt: 1,
+                  mb: 2,
+                  width: '100%',
+                  justifyContent: 'center',
+                }}
+              >
+                {Object.keys(allocationGroup)
+                  .filter((g) => allocationGroup[g].produccion > 0)
+                  .map((group, index) => {
+                    return (
+                      <Fragment key={index}>
+                        <Grid
+                          container
+                          spacing={0.2}
+                          alignItems="center"
+                          justifyContent="space-evenly"
+                        >
+                          <Grid
+                            item
+                            xs={3}
+                            sx={{ border: 0, textAlign: 'right', padding: 1 }}
+                          >
+                            {group}
+                          </Grid>
+
+                          <TextField
+                            sx={{
+                              mt: '0.1rem',
+                              mb: '0.1rem',
+                              fontWeight: 'bold',
+                              border: 1,
+                              borderRadius: 3,
+                            }}
+                            size="small"
+                            type="number"
+                            id="allocation"
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="start">&nbsp;%</InputAdornment>
+                              ),
+                              inputProps: {
+                                style: { textAlign: 'right' },
+                              },
+                            }}
+                            value={UTIL.round2Decimales(
+                              allocationGroup[group].produccion * 100,
+                            )}
+                            onChange={(event) =>
+                              changeAllocation(group, event.target.value)
+                            }
+                          />
+
+                          <Grid
+                            item
+                            xs={3}
+                            sx={{
+                              fontWeight: 'bold',
+                              border: 1,
+                              borderRadius: 3,
+                              textAlign: 'center',
+                              padding: 0.5,
+                              borderColor: 'primary.light',
+                            }}
+                          >
+                            {UTIL.formatoValor(
+                              'energia',
+                              Math.round(
+                                allocationGroup[group].produccion *
+                                  TCB.produccion.totalAnual,
+                              ),
+                            )}
+                          </Grid>
+                        </Grid>
+                      </Fragment>
+                    )
+                  })}
+              </Box>
+              <Box>
+                <Semaphore state={repartoValido}></Semaphore>
+              </Box>
+            </Box>
+          </>
         ) : (
           ' '
         )}
-        <Typography
+
+        {/* <Typography
           variant="body"
           dangerouslySetInnerHTML={{
             __html: t('UNITS.DESCRIPTION_2'),
           }}
-        />
+        /> */}
         <Box
           justifyContent="space-between" // Equal spacing between boxes
           alignItems="center" // Vertically align items (optional)
@@ -241,12 +320,11 @@ export default function AllocationGraph(props) {
             mt: 4,
           }}
         >
-          <Box ref={graphBox} sx={{ display: 'flex', flex: 1 }}></Box>
+          <Box
+            ref={graphBox}
+            sx={{ display: 'flex', flex: 1, width: graphWidth.current }}
+          ></Box>
         </Box>
-
-        <Grid item xs={12}></Grid>
-
-        {balance ? <Button onClick={applyBalance}>Aplicar</Button> : ' '}
       </Container>
     </>
   )

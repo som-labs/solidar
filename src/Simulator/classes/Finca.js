@@ -25,7 +25,7 @@ class Finca {
     this.coste = 0
 
     this.nombreTipoConsumo = ''
-    this.participa = true
+    this.participa = false
     this.idFinca
     this.nombreFinca
     this.refcat

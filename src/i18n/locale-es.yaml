@@ -1030,14 +1030,21 @@ UNITS:
 
 ENERGY_ALLOCATION:
   TITLE: Reparto Energía
-  DESCRIPTION: A continuación se definirá la cuota de energía producida por la instalación fotovoltaica a cada una de las unidades que participan en el proyecto.
+  DESCRIPTION: A continuación se definirá la cuota de energía producida por la instalación fotovoltaica a cada uno de los grupos de fincas y zonas comunes que participan en el proyecto.
+  DESCRIPTION_1: Indique el porcentaje de la energía total que se asignará a cada grupo y zona común.<br />La distribución debe ser tal que el total sume 100%, que se indicará con el semáforo en verde.
+  DESCRIPTION_2: A continuación se muestran los datos resultantes de esta asignación para cada grupo y zona común.
+  TOTAL_ENERGY: 'Energia total disponible: {{energy}}'
+  ALLOCATION_GROUPS: Grupos de asignación de energía producida
+  ALLOCATION_SUMMARY: Unidades con uso {{grupo}}
   BETA_LABEL: Beta
   BETA_TOOLTIP: Coeificiente beta asignado a esta unidad
   NO_BALANCE: Reparto energía no balanceado
+  TITLE_BAR_CHART: Asignación de producción comparada<br /> con uso de energía
 
 ECONOMIC_ALLOCATION:
   TITLE: Reparto Económico
   DESCRIPTION: A continuación se definirán los pagos correpondientes a las unidades que participan en el proyecto.
+  DESCRIPTION_2: Aqui puedes ver el detalle de cada uno de los grupos
 
 Finca:
   PROP:

@@ -1,7 +1,3 @@
-import { useContext } from 'react'
-
-import { ConsumptionContext } from '../ConsumptionContext'
-
 // Solidar global modules
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
