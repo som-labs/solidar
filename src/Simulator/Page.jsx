@@ -103,13 +103,35 @@ export default function Page() {
     console.dir(TCB.Finca)
 
     let chk = false
-    for (let _fnc of TCB.Finca) {
+    for (const _fnc of TCB.Finca) {
+      if (_fnc.nombreTipoConsumo === '' && _fnc.participa) {
+        SLDRAlert(
+          'VALIDACION',
+          t(
+            _fnc.nombreFinca +
+              ' en el grupo ' +
+              _fnc.grupo +
+              ' participa pero falta uso electrico',
+          ),
+          'Error',
+        )
+        chk = false
+        return false
+      }
+
       if (_fnc.nombreTipoConsumo !== '') chk = true
       //return { status: true, error: '' }
     }
 
-    for (let _zc of TCB.ZonaComun) {
-      if (_zc.nombreTipoConsumo !== '') chk = true
+    for (const _zc of TCB.ZonaComun) {
+      if (_zc.nombreTipoConsumo === '') {
+        console.log('Error de validacion Zonas Comunes')
+        SLDRAlert('VALIDACION', t(_zc.nombre + ' falta uso electrico'), 'Error')
+        chk = false
+        return false
+      } else {
+        chk = true
+      }
       //return { status: true, error: '' }
     }
 
@@ -129,7 +151,7 @@ export default function Page() {
     }
   }
 
-  function validaAllocationStep() {
+  function validaEnergyAllocationStep() {
     if (!repartoValido) {
       SLDRAlert('VALIDACION', t('ENERGY_ALLOCATION.NO_BALANCE'), 'error')
       return false
@@ -180,7 +202,7 @@ export default function Page() {
           key={'un_sec'}
           label="units"
           title={t('ENERGY_ALLOCATION.TITLE')}
-          next={validaAllocationStep}
+          next={validaEnergyAllocationStep}
         />,
       )
     }

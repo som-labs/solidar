@@ -1,4 +1,4 @@
-import { useState, useContext, useRef } from 'react'
+import { useState, useContext, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -45,73 +45,70 @@ export default function UnitsSummary(props) {
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()
-  const { allocationGroup, setAllocationGroup, preciosValidos } =
+  const { allocationGroup, setAllocationGroup, preciosValidos, fincas, setFincas } =
     useContext(ConsumptionContext)
 
-  const { grupo, units, setUnits } = props
-
-  const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
-  const [criterio, setCriterio] = useState()
+  const { grupo, units } = props
 
   const columns = [
     {
       field: 'nombreFinca',
       headerName: t('Finca.PROP.nombreFinca'),
       headerAlign: 'center',
-      flex: 1,
+      flex: 0.8,
       description: t('Finca.TOOLTIP.nombreFinca'),
       sortable: false,
     },
-    {
-      field: 'refcat',
-      headerName: t('Finca.PROP.refcat'),
-      headerAlign: 'center',
-      align: 'center',
-      type: 'text',
-      flex: 1,
-      description: t('Finca.TOOLTIP.refcat'),
-      sortable: false,
-    },
-    {
-      field: 'planta',
-      headerName: t('Finca.PROP.planta'),
-      headerAlign: 'center',
-      align: 'center',
-      type: 'text',
-      flex: 0.5,
-      description: t('Finca.TOOLTIP.planta'),
-      sortable: false,
-    },
-    {
-      field: 'puerta',
-      headerName: t('Finca.PROP.puerta'),
-      headerAlign: 'center',
-      align: 'center',
-      type: 'text',
-      flex: 0.5,
-      description: t('Finca.TOOLTIP.puerta'),
-      sortable: false,
-    },
-    {
-      field: 'uso',
-      headerName: t('Finca.PROP.uso'),
-      headerAlign: 'center',
-      align: 'center',
-      type: 'text',
-      flex: 1,
-      description: t('Finca.TOOLTIP.uso'),
-      sortable: false,
-    },
-    {
-      field: 'superficie',
-      headerName: t('Finca.PROP.superficie'),
-      headerAlign: 'center',
-      align: 'center',
-      type: 'text',
-      flex: 0.5,
-      description: t('Finca.TOOLTIP.superficie'),
-      sortable: false,
-    },
+    // {
+    //   field: 'refcat',
+    //   headerName: t('Finca.PROP.refcat'),
+    //   headerAlign: 'center',
+    //   align: 'center',
+    //   type: 'text',
+    //   flex: 1,
+    //   description: t('Finca.TOOLTIP.refcat'),
+    //   sortable: false,
+    // },
+    // {
+    //   field: 'planta',
+    //   headerName: t('Finca.PROP.planta'),
+    //   headerAlign: 'center',
+    //   align: 'center',
+    //   type: 'text',
+    //   flex: 0.4,
+    //   description: t('Finca.TOOLTIP.planta'),
+    //   sortable: false,
+    // },
+    // {
+    //   field: 'puerta',
+    //   headerName: t('Finca.PROP.puerta'),
+    //   headerAlign: 'center',
+    //   align: 'center',
+    //   type: 'text',
+    //   flex: 0.4,
+    //   description: t('Finca.TOOLTIP.puerta'),
+    //   sortable: false,
+    // },
+    // {
+    //   field: 'uso',
+    //   headerName: t('Finca.PROP.uso'),
+    //   headerAlign: 'center',
+    //   align: 'center',
+    //   type: 'text',
+    //   flex: 0.8,
+    //   description: t('Finca.TOOLTIP.uso'),
+    //   sortable: false,
+    // },
+    // {
+    //   field: 'superficie',
+    //   headerName: t('Finca.PROP.superficie'),
+    //   headerAlign: 'center',
+    //   align: 'center',
+    //   type: 'text',
+    //   flex: 0.5,
+    //   description: t('Finca.TOOLTIP.superficie'),
+    //   sortable: false,
+    // },
     {
       field: 'participacion',
       headerName: t('Finca.PROP.participacion'),
@@ -128,49 +125,31 @@ export default function UnitsSummary(props) {
       headerAlign: 'center',
       align: 'center',
       type: 'text',
-      flex: 1,
+      flex: 0.8,
       description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
       sortable: false,
+      valueGetter: (params) =>
+        params.row.nombreTipoConsumo ? params.row.nombreTipoConsumo : 'Indefinido',
     },
     {
       field: 'coefEnergia',
       headerName: t('ENERGY_ALLOCATION.BETA_LABEL'),
+      valueGetter: (params) => params.row.coefEnergia.toFixed(6),
       headerAlign: 'center',
       align: 'center',
       type: 'number',
-      flex: 1,
+      flex: 0.7,
       description: t('ENERGY_ALLOCATION.BETA_TOOLTIP'),
       sortable: false,
     },
-
-    // {
-    //   field: 'actions',
-    //   type: 'actions',
-    //   headerName: t('BASIC.LABEL_ACCIONES'),
-    //   sortable: false,
-    //   getActions: (params) => [
-    //     <GridActionsCellItem
-    //       key={1}
-    //       icon={
-    //         <Tooltip title={t('CONSUMPTION.TOOLTIP_botonBorraTipoConsumo')}>
-    //           <DeleteIcon />
-    //         </Tooltip>
-    //       }
-    //       label="ShowGraphs"
-    //       onClick={(e) => deleteTipoConsumo(e, params.row)}
-    //     />,
-    //     <GridActionsCellItem
-    //       key={2}
-    //       icon={
-    //         <Tooltip title={t('CONSUMPTION.TOOLTIP_botonEditaTipoConsumo')}>
-    //           <EditIcon />
-    //         </Tooltip>
-    //       }
-    //       label="Edit"
-    //       onClick={() => editTipoConsumo(params.row)}
-    //     />,
-    //   ],
-    // },
+    {
+      field: 'participa',
+      headerName: t('Finca.PROP.participa'),
+      description: t('Finca.TOOLTIP.participa'),
+      type: 'boolean',
+      flex: 0.5,
+      sortable: false,
+    },
   ]
 
   function getRowId(row) {
@@ -180,7 +159,9 @@ export default function UnitsSummary(props) {
   function changeCriterio() {
     return (
       <FormControl>
-        <FormLabel>Elige criterio para distribuir la energía asignada</FormLabel>
+        <FormLabel>
+          Elige criterio para distribuir la energía asignada dentro del grupo
+        </FormLabel>
         <RadioGroup
           row
           value={allocationGroup[grupo].criterio}
@@ -214,42 +195,58 @@ export default function UnitsSummary(props) {
   }
 
   function distributeAllocation(grupo, coefGrupo, criterio) {
-    console.log('Distribuye grupo ' + grupo + 'coef ' + coefGrupo)
-    //Fincas que participan del grupo
-    //const participes = TCB.Finca.filter((f) => f.participa && f.grupo === grupo)
+    console.log(
+      'Distribuye grupo ' + grupo + ' coef ' + coefGrupo + ' criterio ' + criterio,
+    )
 
-    let consumoTotal
     switch (criterio) {
       case 'PARTICIPACION':
-        for (const f of TCB.Finca) {
+        for (const f of units) {
           if (f.participa && f.grupo === grupo) {
             f.coefEnergia =
-              (f.participacion / allocationGroup[grupo].participacion) * coefGrupo
+              (f.participacion / allocationGroup[grupo].participacionP) * coefGrupo
           }
         }
         break
       case 'CONSUMO':
-        consumoTotal = allocationGroup[grupo].consumo * TCB.consumo.totalAnual
-        for (const f of TCB.Finca) {
+        for (const f of units) {
           if (f.participa && f.grupo === grupo) {
-            const mConsumo = TCB.TipoConsumo.find(
-              (e) => e.nombreTipoConsumo === f.nombreTipoConsumo,
-            ).totalAnual
-            f.coefEnergia = (mConsumo / consumoTotal) * coefGrupo
+            f.coefEnergia = (f.coefConsumo / allocationGroup[grupo].consumo) * coefGrupo
           }
         }
         break
       case 'PARITARIO':
         for (const f of TCB.Finca) {
           if (f.participa && f.grupo === grupo) {
-            f.coefEnergia = coefGrupo / allocationGroup[grupo].unidades
+            f.coefEnergia = coefGrupo / allocationGroup[grupo].participes
           }
         }
         break
     }
+
+    let newFincas = []
+    for (const f of TCB.Finca) {
+      console.dir(f.coefEnergia)
+      newFincas.push(f)
+    }
+    for (const f of newFincas) {
+      console.dir(f.coefEnergia)
+    }
+
+    // const newFincas = TCB.Finca.map((f) => {
+    //   if (f.grupo === grupo && f.participa) {
+    //     f.coefEnergia = 1 //TCB.Finca.find((tf) => f.idFinca === tf.idFinca).coefEnergia
+    //     console.log(f)
+    //   }
+    //   return f
+    // })
+    console.dir(newFincas)
+    console.log('setting fincas in EnergyAllocation-UNITSSUMMARY')
+    setFincas([...newFincas])
   }
 
   console.log(allocationGroup[grupo])
+
   return (
     <Dialog
       fullScreen
@@ -258,7 +255,7 @@ export default function UnitsSummary(props) {
       aria-labelledby="full-screen-dialog-title"
     >
       <DialogTitle id="full-screen-dialog-title">
-        {'Unidades con uso ' + grupo}
+        {t('ENERGY_ALLOCATION.ALLOCATION_SUMMARY', { grupo: grupo })}
       </DialogTitle>
 
       <DialogContent>
@@ -268,7 +265,7 @@ export default function UnitsSummary(props) {
               <DataGrid
                 sx={theme.tables.headerWrap}
                 getRowId={getRowId}
-                rows={TCB.Finca.filter((e) => e.participa && e.grupo === grupo)}
+                rows={units}
                 columns={columns}
                 hideFooter={false}
                 rowHeight={30}
@@ -279,25 +276,11 @@ export default function UnitsSummary(props) {
               />
             </Grid>
           )}
-          {/* {activo && preciosValidos && (
-        <>
-          <Grid item xs={12}>
-            <SLDRInfoBox>
-              <MapaMesHora activo={activo}></MapaMesHora>
-            </SLDRInfoBox>
-          </Grid>
-          <Grid item xs={12}>
-            <SLDRInfoBox>
-              <MapaDiaHora activo={activo}></MapaDiaHora>
-            </SLDRInfoBox>
-          </Grid>
-        </>
-      )} */}
         </Grid>
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog} color="primary">
-          Close
+          {t('BASIC.LABEL_CLOSE')}
         </Button>
       </DialogActions>
     </Dialog>

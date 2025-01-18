@@ -40,7 +40,7 @@ export default function UnitTypeBox(props) {
       children: (
         <UnitsSummary
           grupo={grupo}
-          units={TCB.Finca.filter((f) => f.participa && f.grupo === grupo)}
+          units={TCB.Finca.filter((f) => f.grupo === grupo)}
           maxWidth={'xs'}
           fullWidth={true}
           onClose={closeDialog}
@@ -63,7 +63,14 @@ export default function UnitTypeBox(props) {
             borderRadius: 2,
             padding: 2,
             //maxWidth: 300,
-            backgroundColor: allocationGroup[grupo].unidades > 0 ? 'aquamarine' : 'green',
+            backgroundColor: 'aquamarine',
+
+            // backgroundColor: radial-gradient(
+            //   ellipse at right top,
+            //   #107667ed 0%,
+            //   #151419 47%,
+            //   #151419 100%
+            // );
           }}
         >
           <Typography sx={theme.titles.level_1} textAlign={'center'} marginTop="1rem">
@@ -76,10 +83,20 @@ export default function UnitTypeBox(props) {
                 textAlign={'center'}
                 dangerouslySetInnerHTML={{
                   __html:
-                    '<br />Cantidad: <b>' +
+                    '<br />Participes: <b>' +
+                    allocationGroup[grupo].participes +
+                    ' de ' +
                     allocationGroup[grupo].unidades +
                     '</b><br />Participación:  <b>' +
-                    UTIL.formatoValor('porciento', allocationGroup[grupo].participacion) +
+                    UTIL.formatoValor(
+                      'porciento',
+                      allocationGroup[grupo].participacionP,
+                    ) +
+                    ' de ' +
+                    UTIL.formatoValor(
+                      'porciento',
+                      allocationGroup[grupo].participacionT,
+                    ) +
                     '</b><br />Uso de energía:  <b>' +
                     UTIL.formatoValor(
                       'energia',

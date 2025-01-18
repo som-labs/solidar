@@ -20,12 +20,12 @@ export default async function PreparaEnergyBalance() {
   if (TCB.cambioTipoConsumo) {
     TCB.consumo = new Consumo()
     if (TCB.modoActivo !== 'INDIVIDUAL') {
-      //Caluclamos el coeficiente del consumo de cada finca sobre el total
+      //Calculamos el coeficiente del consumo de cada finca sobre el total
       for (const f of TCB.Finca) {
         if (f.nombreTipoConsumo !== '')
-          f.coefConsumo = TCB.TipoConsumo.find(
-            (tc) => tc.nombreTipoConsumo === f.nombreTipoConsumo,
-          ).totalAnual
+          f.coefConsumo =
+            TCB.TipoConsumo.find((tc) => tc.nombreTipoConsumo === f.nombreTipoConsumo)
+              .totalAnual / TCB.consumo.totalAnual
         else f.coefConsumo = 0
       }
     }

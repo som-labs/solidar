@@ -81,6 +81,7 @@ export default function EnergyBalanceStep() {
     })
   }
 
+  console.dir(TCB.Finca)
   return (
     <Container>
       <Grid container rowSpacing={4}>
