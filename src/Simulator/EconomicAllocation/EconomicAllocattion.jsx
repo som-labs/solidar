@@ -43,6 +43,7 @@ export default function EconomicAllocationStep() {
   const theme = useTheme()
 
   const { inLineHelp } = useContext(AlertContext)
+  const [totalCost, setTotalCost] = useState()
 
   const {
     fincas,
@@ -55,14 +56,13 @@ export default function EconomicAllocationStep() {
     setAllocationGroup,
   } = useContext(ConsumptionContext)
 
-  const { units, setUnits } = useContext(EconomicContext)
+  const [groupZC, setGroupZC] = useState([])
+  const [ready, setReady] = useState(false)
 
   const [openDialog, closeDialog] = useDialog()
   const allocationBox = useRef()
-  const boxWidth = useRef()
 
-  const opcionesReparto = ['PARTICIPACION', 'CONSUMO', 'PARITARIO', 'NO']
-
+  //La tabla de asignación de costes tiene una columna por cada zona comun y una fila por cada grupo
   let columns = []
   columns.push({
     field: 'id',
@@ -80,8 +80,7 @@ export default function EconomicAllocationStep() {
         headerName: zc.nombre,
         headerAlign: 'center',
         align: 'center',
-        type: 'singleSelect',
-        valueOptions: opcionesReparto,
+        type: 'boolean',
         editable: true,
         flex: 1,
         description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
@@ -91,37 +90,33 @@ export default function EconomicAllocationStep() {
   }
 
   useEffect(() => {
-    // Function to get the width of the element
-    const getWidth = () => {
-      if (allocationBox.current) {
-        boxWidth.current = allocationBox.current.offsetWidth / 3
-        console.log(allocationBox.current.offsetWidth)
-        console.log(boxWidth.current)
-      }
-    }
-
-    // Call the function to get the width after initial render
-    getWidth()
-
     //Distribuye el coste correspondiente al grupo en funcion del beta asignado a cada finca
-    for (const f of TCB.Finca) {
-      f.coste = TCB.economico.precioInstalacionCorregido * f.coefEnergia
-    }
+    if (TCB.GroupsZC.length === 0) {
+      //Asignacion del coste propio de cada unidad por el beta que le corresponde
+      for (const f of TCB.Finca) {
+        f.coste = UTIL.roundDecimales(
+          TCB.economico.precioInstalacionCorregido * f.coefEnergia,
+          2,
+        )
+      }
 
-    // Matriz de aasignacion de coste de ZC a grupo. A priori todos los grupos pagan todas la ZC
-    if (units.length === 0) {
-      console.log('Building units')
+      // Matriz de aasignacion de coste de ZC a grupo. A priori todos los grupos pagan todas la ZC
+      console.log('Building units ')
+
       for (const grupo in allocationGroup) {
         if (allocationGroup[grupo].unidades > 0) {
           let tRow = {}
           tRow.id = grupo
           for (const zc in zonasComunes) {
-            tRow[zonasComunes[zc].nombre] = 'PARTICIPACION' //Por defecto distribuimos por coef participacion DGC
+            tRow[zonasComunes[zc].nombre] = true
           }
-          setUnits((prevData) => [...prevData, tRow])
+          TCB.GroupsZC.push(tRow)
         }
       }
     }
+    distribuyeZonasComunes()
+    setGroupZC(TCB.GroupsZC)
+    setReady(true)
   }, [])
 
   function distribuyeCosteZonaComun(zonaComun, grupo, criterio, coef) {
@@ -137,27 +132,23 @@ export default function EconomicAllocationStep() {
     // )
     if (coef === 0) return //Nada que distribuir
 
-    let totP
+    let totP = 0
     switch (criterio) {
       case 'PARTICIPACION':
         // Cual es la participacion total de las Fincas que participan del gasto de esta zona comun
-        totP = TCB.Finca.filter((f) => f.extraCost[zonaComun] > 0).reduce(
-          (a, b) => a + b.participacion,
-          0,
-        )
+        for (const gZC of TCB.GroupsZC) {
+          if (gZC[zonaComun]) {
+            totP += allocationGroup[gZC.id].participacionT
+          }
+        }
+
         for (const f of TCB.Finca) {
-          if (f.grupo === grupo && f.participa) {
-            // console.log(
-            //   f.nombreFinca,
-            //   coef,
-            //   f.participacion,
-            //   allocationGroup[grupo].participacion,
-            //   (coef * f.participacion) / allocationGroup[grupo].participacion,
-            // )
+          if (f.grupo === grupo) {
             f.extraCost[zonaComun] = (coef * f.participacion) / totP
           }
         }
         break
+
       case 'CONSUMO':
         for (const f of TCB.Finca) {
           if (f.grupo === grupo && f.participa) {
@@ -185,50 +176,42 @@ export default function EconomicAllocationStep() {
     setFincas(TCB.Finca)
   }
 
-  function distribuyeZonasComunes(unidades) {
-    //console.log(unidades)
+  function distribuyeZonasComunes() {
     for (const zc of TCB.ZonaComun) {
-      for (const u of unidades) {
-        if (u[zc.nombre] === 'NO') {
+      for (const u of TCB.GroupsZC) {
+        if (!u[zc.nombre]) {
           for (const f of TCB.Finca) {
             if (f.grupo === u.id) f.extraCost[zc.nombre] = 0
           }
+        } else {
+          distribuyeCosteZonaComun(
+            zc.nombre,
+            u.id,
+            'PARTICIPACION', //allocationGroup[u.id].criterio, Independientemente de como se distribuya la energía dentro del grupo, las zonas comunes siempre se distribuyen por coeficiente de participacion
+            zc.coefEnergia,
+          )
         }
-        // console.log(
-        //   'Vamos a distribuyeCosteZonaComun',
-        //   zc.nombre,
-        //   u.id,
-        //   u[zc.nombre],
-        //   zc.coefEnergia,
-        // )
-        distribuyeCosteZonaComun(zc.nombre, u.id, u[zc.nombre], zc.coefEnergia)
       }
     }
   }
 
-  function changeDistributionGroup(newGroupRow, oldGroupRow) {
-    console.log('Cambiando:', oldGroupRow)
-    console.log('a: ', newGroupRow)
+  const vPropio = TCB.Finca.reduce((t, u) => t + u.coefEnergia, 0)
+  const vExtra = TCB.Finca.reduce(
+    (t, u) => t + Object.values(u.extraCost).reduce((st, e) => st + e, 0),
+    0,
+  )
+  let tCost = (vPropio + vExtra) * TCB.economico.precioInstalacionCorregido
 
+  function changeDistributionGroup(newGroupRow, oldGroupRow) {
     const updatedZonaComun = Object.keys(newGroupRow).filter(
       (key) => newGroupRow[key] !== oldGroupRow[key],
     )
-    console.log('Updated zona comun:', updatedZonaComun)
-    console.log('nuevo criterio ' + newGroupRow[updatedZonaComun])
-    console.log(units)
 
-    const newDistributionGroup = units.map((u) => {
-      if (u.id === newGroupRow.id) {
-        u[updatedZonaComun] = newGroupRow[updatedZonaComun]
-      }
-      return u
-    })
+    TCB.GroupsZC.find((gZC) => gZC.id === newGroupRow.id)[updatedZonaComun] =
+      newGroupRow[updatedZonaComun]
 
-    console.log('NewdistributionGroup', newDistributionGroup)
-    setUnits(newDistributionGroup)
-
-    distribuyeZonasComunes(units)
-    //distributeAllocation(grupo, allocationGroup[grupo].produccion, evt.value)
+    distribuyeZonasComunes()
+    setGroupZC(TCB.GroupsZC.map((a) => a))
   }
 
   function handleProcessRowUpdateError(params) {
@@ -250,10 +233,13 @@ export default function EconomicAllocationStep() {
         grupo: f.grupo,
         coste: f.coste,
         participacion: f.participacion,
-        beta: f.coefEnergia,
+        beta: UTIL.roundDecimales(f.coefEnergia, 6),
       }
       for (const zc of TCB.ZonaComun) {
-        e[zc.nombre] = f.extraCost[zc.nombre] * TCB.economico.precioInstalacionCorregido
+        e[zc.nombre] = UTIL.roundDecimales(
+          f.extraCost[zc.nombre] * TCB.economico.precioInstalacionCorregido,
+          2,
+        )
       }
       rowList.push(e)
     }
@@ -261,9 +247,10 @@ export default function EconomicAllocationStep() {
     UTIL.dumpData(TCB.parametros.CAU + '_reparto.txt', rowList)
   }
 
+  //const getRowId = (row) => row.id
   //   console.log(units)
   //   console.log(columns)
-  if (units.length > 0) distribuyeZonasComunes(units)
+
   return (
     <Container>
       <>
@@ -289,9 +276,25 @@ export default function EconomicAllocationStep() {
             >
               <HelpIcon />
             </IconButton>
-            <Typography variant="h4">
-              {UTIL.formatoValor('dinero', TCB.economico.precioInstalacionCorregido)}
-            </Typography>
+            <Box sx={{ display: 'flex' }}>
+              <Typography variant="h4">
+                {'Coste total a distribuir ' +
+                  UTIL.formatoValor('dinero', TCB.economico.precioInstalacionCorregido)}
+              </Typography>
+              {tCost.toFixed(0) !==
+              TCB.economico.precioInstalacionCorregido.toFixed(0) ? (
+                <Typography variant="h4">
+                  {'. Hay ' +
+                    UTIL.formatoValor(
+                      'dinero',
+                      TCB.economico.precioInstalacionCorregido - tCost,
+                    ) +
+                    ' pendientes de asignar'}
+                </Typography>
+              ) : (
+                ''
+              )}
+            </Box>
           </Grid>
         </Grid>
 
@@ -303,27 +306,31 @@ export default function EconomicAllocationStep() {
             width: '100%',
             display: 'flex',
             flexDirection: 'column',
-            border: 1,
-            mt: 4,
+            mt: 2,
           }}
         >
           <Box>
             <Typography variant="h5" textAlign={'center'}>
               Criterio para distribucion de costes de las zonas comunes
             </Typography>
+            <Typography variant="body" textAlign={'center'}>
+              Selecciona que grupos se hacen cargo de los gastos correspondientes a las
+              zonas comunes y cuales no
+            </Typography>
           </Box>
-          {units ? (
+          {ready ? (
             <Box
               sx={{
                 width: '100%',
                 display: 'flex',
                 border: 1,
-                mt: 4,
+                mt: 1,
               }}
             >
               <DataGrid
                 sx={theme.tables.headerWrap}
-                rows={units}
+                //id={getRowId}
+                rows={groupZC}
                 columns={columns}
                 hideFooter={true}
                 autosizeOptions={{
@@ -348,7 +355,7 @@ export default function EconomicAllocationStep() {
           )}
         </Box>
 
-        {units ? (
+        {groupZC ? (
           <>
             <Grid item xs={12}>
               <Typography
@@ -363,15 +370,18 @@ export default function EconomicAllocationStep() {
               <Box
                 sx={{
                   display: 'flex',
-                  flexDirection: 'column',
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  justifyContent: 'space-between',
                 }}
               >
                 {Object.entries(allocationGroup).map((key, value) => (
                   <Fragment key={key}>
-                    {/* <Box sx={{ display: 'flex', flex: 1, width: '400px' }}>
-                      <UnitTypeBox grupo={key[0]}></UnitTypeBox>
-                    </Box> */}
-                    <SLDRCollapsibleCard expanded={false} title={key[0]}>
+                    <SLDRCollapsibleCard
+                      expanded={false}
+                      title={key[0]}
+                      sx={{ width: '45%' }}
+                    >
                       <SLDRInfoBox>
                         <UnitTypeBox grupo={key[0]}></UnitTypeBox>
                       </SLDRInfoBox>

@@ -41,7 +41,7 @@ export default function ConsumptionSummary() {
       field: 'nombreTipoConsumo',
       headerName: t('TipoConsumo.PROP.nombreTipoConsumo'),
       headerAlign: 'center',
-      editable: true,
+      editable: false,
       flex: 1,
       description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
       sortable: false,
@@ -228,6 +228,14 @@ export default function ConsumptionSummary() {
     const nIndex = prevTipoConsumo.findIndex((t) => {
       return t.idTipoConsumo === tc.idTipoConsumo
     })
+
+    //Si estamos en colectivo no se pueden borrar tipos de consumo utilizados en alguna finca
+    if (TCB.modoActivo !== 'INDIVIDUAL') {
+      if (TCB.Finca.find((f) => f.nombreTipoConsumo === tc.nombreTipoConsumo)) {
+        alert('Existen fincas con este tipo de consumo.\nNo se puede borrar')
+        return
+      }
+    }
     TCB.requiereOptimizador = true
     TCB.cambioTipoConsumo = true
     prevTipoConsumo.splice(nIndex, 1)

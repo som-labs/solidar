@@ -19,7 +19,8 @@ import {
 import HelpIcon from '@mui/icons-material/HelpOutlineRounded.js'
 import AddBoxIcon from '@mui/icons-material/AddBox'
 import { useTheme } from '@mui/material/styles'
-
+//React global components
+import { SLDRInfoBox, SLDRCollapsibleCard } from '../../components/SLDRComponents'
 // REACT Solidar Components
 import UnitTypeBox from './UnitTypeBox'
 import { AlertContext } from '../components/Alert'
@@ -53,39 +54,55 @@ export default function EnergyAllocationStep() {
 
   const [openDialog, closeDialog] = useDialog()
 
-  const allocationBox = useRef()
-  const pieConsumption = useRef()
-
   useEffect(() => {
     // Summarize total consumo as % of total consumo and produccion of fincas by group
-    // uniqueGroup[group] = {consumo, produccion, criterio}
-    // Values 0 <= values <= 1
-    // Criterio = ['PARTICIPACION', 'CONSUMO', 'PARITARIO']
-    // first time produccion will be assigned same as consumo
+    // uniqueGroup[group] = {
+    //  consumo: como % del consumo total
+    //  produccion: asignada como % de la produccion total
+    //  criterio: de distribución de la produccion ['PARTICIPACION', 'CONSUMO', 'PARITARIO']
+    //  unidades: numero de unidades que confirman el grupo. Las que pagarán las zonas comunes
+    //  participes: numero de unidades que participan. Las que recibiran produccion
+    //  participacionT: % de propiedad total de participacion
+    //  participacionP: % de propiedad de los participes
 
+    // first time produccion will be assigned same as consumo
     let uniqueGroup = {}
 
     //Get consumption from each Finca and add to allocationGroup by grupo value
     fincas.forEach((f) => {
-      if (f.nombreTipoConsumo !== '' && f.participa) {
-        const _consTC = TCB.TipoConsumo.find((a) => {
-          return a.nombreTipoConsumo === f.nombreTipoConsumo
-        }).totalAnual
-        if (uniqueGroup[f.grupo]) {
+      if (uniqueGroup[f.grupo]) {
+        uniqueGroup[f.grupo].participacionT += f.participacion
+        uniqueGroup[f.grupo].unidades++
+        if (f.participa) {
+          uniqueGroup[f.grupo].participacionP += f.participacion
+          uniqueGroup[f.grupo].participes++
+          const _consTC = TCB.TipoConsumo.find((a) => {
+            return a.nombreTipoConsumo === f.nombreTipoConsumo
+          }).totalAnual
           uniqueGroup[f.grupo].consumo += _consTC / TCB.consumo.totalAnual
           uniqueGroup[f.grupo].produccion +=
             f.coefEnergia > 0 ? f.coefEnergia : _consTC / TCB.consumo.totalAnual
-          uniqueGroup[f.grupo].participacion += f.participacion
-          uniqueGroup[f.grupo].unidades++
+        }
+      } else {
+        uniqueGroup[f.grupo] = {
+          criterio: 'PARTICIPACION',
+          participacionT: f.participacion,
+          unidades: 1,
+        }
+        if (f.participa) {
+          const _consTC = TCB.TipoConsumo.find((a) => {
+            return a.nombreTipoConsumo === f.nombreTipoConsumo
+          }).totalAnual
+          uniqueGroup[f.grupo].participes = 1
+          uniqueGroup[f.grupo].participacionP = f.participacion
+          uniqueGroup[f.grupo].consumo = _consTC / TCB.consumo.totalAnual
+          uniqueGroup[f.grupo].produccion =
+            f.coefEnergia > 0 ? f.coefEnergia : _consTC / TCB.consumo.totalAnual
         } else {
-          uniqueGroup[f.grupo] = {
-            consumo: _consTC / TCB.consumo.totalAnual,
-            produccion:
-              f.coefEnergia > 0 ? f.coefEnergia : _consTC / TCB.consumo.totalAnual,
-            criterio: 'PARTICIPACION',
-            participacion: f.participacion,
-            unidades: 1,
-          }
+          uniqueGroup[f.grupo].participes = 0
+          uniqueGroup[f.grupo].participacionP = 0
+          uniqueGroup[f.grupo].consumo = 0
+          uniqueGroup[f.grupo].produccion = 0
         }
       }
     })
@@ -110,7 +127,6 @@ export default function EnergyAllocationStep() {
         }
       }
     })
-    console.log(uniqueGroup)
     setAllocationGroup(uniqueGroup)
 
     //Primera asignacion de grupo basada en consumo y de participes basada en participacion
@@ -120,53 +136,25 @@ export default function EnergyAllocationStep() {
         //Es grupo de catastro hay que calcular betas y asignarlo a cada finca
         for (const f of TCB.Finca) {
           if (f.participa && f.grupo === grupo) {
-            f.coefEnergia =
-              (f.participacion / uniqueGroup[grupo].participacion) *
-              uniqueGroup[grupo].produccion
-            // actualiza las fincas en state
-            const newFincas = fincas.map((p) => {
-              if (p.idFinca === f.idFinca) {
-                p.coefEnergia = f.coefEnergia
-              }
-              return p
-            })
-            setFincas(newFincas)
+            f.coefEnergia = UTIL.roundDecimales(
+              (f.participacion / uniqueGroup[grupo].participacionP) *
+                uniqueGroup[grupo].produccion,
+              6,
+            )
           }
         }
       } else {
         //Es una zona comun el beta es directamente la energia asignada al grupo
         TCB.ZonaComun.find((z) => z.nombre === grupo).coefEnergia =
           uniqueGroup[grupo].produccion
-
-        const newZonas = zonasComunes.map((p) => {
-          if (p.nombre === grupo) {
-            p.coefEnergia = uniqueGroup[grupo].produccion
-          }
-          return p
-        })
-        setZonasComunes(newZonas)
       }
     }
+    console.log('SETTING')
+    closeBetasToOne()
+    console.log('setting fincas in EnergyAllocation')
+    setFincas([...TCB.Finca])
+    setZonasComunes([...TCB.ZonaComun])
     setRepartoValido(true)
-
-    // Trace configuration for consumption Pie chart
-    const traceConsumption = {
-      labels: Object.keys(uniqueGroup),
-      values: Object.values(uniqueGroup).map((g) => g.consumo),
-      type: 'pie',
-      textinfo: 'label+percent',
-      hoverinfo: 'label+value+percent',
-    }
-
-    // Layout configuration for consumption Pie chart
-    const layoutConsumption = {
-      title: 'Distribución consumo',
-      height: 400,
-      width: 400,
-    }
-
-    // Consumption Pie chart
-    Plotly.react(pieConsumption.current, [traceConsumption], layoutConsumption)
   }, [])
 
   function help(level) {
@@ -176,37 +164,33 @@ export default function EnergyAllocationStep() {
       })
   }
 
+  /**
+    Hay que asegurar que la suma de lo beta con 6 decimales de exactamente 1.
+    Si hubiera alguna diferencia se la asignamos al primer CUPS
+   */
+  function closeBetasToOne() {
+    const chkTotal =
+      TCB.Finca.reduce((t, f) => t + f.coefEnergia, 0) +
+      TCB.ZonaComun.reduce((t, z) => t + z.coefEnergia, 0)
+    const dummyFinca = TCB.Finca.find((f) => f.coefEnergia > 0)
+    dummyFinca.coefEnergia += 1 - chkTotal
+  }
+
   function generaFicheroReparto() {
     const betaList = []
-    let chkTotal = 0
-    let beta6
     for (const f of TCB.Finca.filter((f) => f.coefEnergia > 0)) {
-      beta6 = UTIL.roundDecimales(f.coefEnergia, 6)
-      chkTotal += beta6
-      betaList.push({ CUPS: f.CUPS, beta: beta6 })
+      betaList.push({ CUPS: f.CUPS, beta: f.coefEnergia })
     }
-
     for (const z of TCB.ZonaComun.filter((z) => z.coefEnergia > 0)) {
-      beta6 = UTIL.roundDecimales(z.coefEnergia, 6)
-      chkTotal += beta6
-      betaList.push({ CUPS: z.CUPS, beta: beta6 })
+      betaList.push({ CUPS: z.CUPS, beta: z.coefEnergia })
     }
-
-    //Hay que asegurar que la suma de lo beta con 6 decimales de exactamente 1.
-    //Si hubiera alguna diferencia se la asignamos al primer CUPS
-    if (chkTotal !== 1) {
-      const gap = UTIL.roundDecimales(1 - chkTotal, 6)
-      betaList[0].beta = UTIL.roundDecimales(betaList[0].beta + gap, 6)
-      //console.log('Añadido a CUPS :' + betaList[0].CUPS + ' ' + gap)
-    }
-
     UTIL.dumpData(TCB.parametros.CAU + '.txt', betaList)
   }
 
   return (
     <Container>
       <>
-        <Grid container rowSpacing={3}>
+        <Grid container>
           <Grid item xs={12}>
             <Typography
               variant="body"
@@ -228,61 +212,61 @@ export default function EnergyAllocationStep() {
             >
               <HelpIcon />
             </IconButton>
-            <Typography variant="h4">
-              {UTIL.formatoValor('energia', TCB.produccion.totalAnual)}
-            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
+              <Typography variant="h4">
+                {t('ENERGY_ALLOCATION.TOTAL_ENERGY', {
+                  energy: UTIL.formatoValor('energia', TCB.produccion.totalAnual),
+                })}
+              </Typography>
+            </Box>
           </Grid>
         </Grid>
 
         <Box
-          ref={allocationBox}
-          justifyContent="space-between" // Equal spacing between boxes
           alignItems="center" // Vertically align items (optional)
           sx={{
             width: '100%',
             display: 'flex',
             flexDirection: 'row',
-            border: 1,
-            mt: 4,
+            mt: 2,
+            mb: 3,
           }}
         >
-          <Box ref={pieConsumption} sx={{ display: 'flex', flex: 0.6 }}></Box>
-          <Box sx={{ display: 'flex', flex: 0.8 }}>
-            <AllocationGraph
-              allocationGroup={allocationGroup}
-              setAllocationGroup={setAllocationGroup}
-            ></AllocationGraph>
-          </Box>
+          {/* <Box sx={{ display: 'flex', border: 1 }}> */}
+          <AllocationGraph
+            allocationGroup={allocationGroup}
+            setAllocationGroup={setAllocationGroup}
+          ></AllocationGraph>
+          {/* </Box> */}
         </Box>
 
         {repartoValido ? (
           <>
-            <Grid item xs={12}>
-              <Typography
-                variant="body"
-                dangerouslySetInnerHTML={{
-                  __html: t('UNITS.DESCRIPTION_2'),
-                }}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                }}
-              >
-                {Object.entries(allocationGroup).map((key, value) => (
-                  <Fragment key={key}>
-                    <Box sx={{ display: 'flex', flex: 1 }}>
-                      <UnitTypeBox grupo={key[0]}></UnitTypeBox>
-                    </Box>
-                  </Fragment>
-                ))}
-              </Box>
-            </Grid>
+            <Typography
+              variant="body"
+              dangerouslySetInnerHTML={{
+                __html: t('ENERGY_ALLOCATION.DESCRIPTION_2'),
+              }}
+            />
+            <Box sx={{ gap: 1, mt: 3, display: 'flex', flexDirection: 'column' }}>
+              {Object.entries(allocationGroup).map((key, value) => (
+                <Fragment key={key}>
+                  <SLDRInfoBox
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: '100%',
+                      alignItems: 'center',
+                      border: '1px solid',
+                      borderRadius: 2,
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <UnitTypeBox grupo={key[0]}></UnitTypeBox>
+                  </SLDRInfoBox>
+                </Fragment>
+              ))}
+            </Box>
           </>
         ) : (
           ' '

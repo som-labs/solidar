@@ -32,6 +32,24 @@ export default function UnitsStep() {
 
   const [openDialog, closeDialog] = useDialog()
 
+  /**
+   * Fields to be dumped / readed into csv file
+   */
+  const dumpFields = [
+    'nombreTipoConsumo',
+    'participa',
+    'idFinca',
+    'refcat',
+    'planta',
+    'puerta',
+    'nombreFinca',
+    'uso',
+    'superficie',
+    'participacion',
+    'CUPS',
+    'grupo',
+  ]
+
   function help(level) {
     if (level === 1)
       openDialog({
@@ -48,6 +66,81 @@ export default function UnitsStep() {
     }
   })
 
+  function loadFincasFromCSV(event) {
+    const file = event.target.files[0]
+    if (file) {
+      console.log('Selected file:', file.name)
+    }
+
+    let reader = new FileReader()
+    return new Promise((resolve, reject) => {
+      reader.onerror = (err) => {
+        alert(t('precios_MSG_errorLecturaFicheroImportacion') + '\nReader.error: ' + err)
+        reject('...error de lectura')
+      }
+
+      reader.onload = (e) => {
+        TCB.Finca = []
+        setFincas([])
+
+        const text = e.target.result
+        const data = csvToArray(text, ';')
+        for (let finca of data) {
+          finca.participacion = parseFloat(finca.participacion)
+          finca.participa = String(finca.participa).toLowerCase() === 'true'
+          //Si la finca cargada tiene un tipo de consumo inexistente lo limpiamos
+          if (finca.nombreTipoConsumo !== '') {
+            if (
+              !TCB.TipoConsumo.find(
+                (tc) => tc.nombreTipoConsumo === finca.nombreTipoConsumo,
+              )
+            ) {
+              finca.nombreTipoConsumo = ''
+            }
+          }
+          Finca.actualiza_creaFinca(finca)
+        }
+        console.log('setting fincas in UNITS loadCSV')
+        setFincas(TCB.Finca)
+        TCB.requiereOptimizador = true
+        console.log(TCB.Finca)
+        //_tablaFinca.updateOrAddData(data)
+      }
+      reader.readAsText(file)
+    })
+  }
+
+  function csvToArray(str, delimiter = ',') {
+    // slice from start of text to the first \n index
+    // use split to create an array from string by delimiter
+    try {
+      var headers = str.slice(0, str.indexOf('\n')).split(delimiter)
+      for (let i = 0; i < headers.length; i++)
+        headers[i] = headers[i].trim().replace(/['"]+/g, '')
+    } catch (e) {
+      alert('Posible error de formato fichero de consumos\n' + str)
+      return
+    }
+    UTIL.debugLog('Cabecera CSV:', headers)
+
+    // slice from \n index + 1 to the end of the text
+    // use split to create an array of each csv value row
+    const rows = str.slice(str.indexOf('\n') + 1).split('\n')
+    let arr = []
+    for (let i = 0; i < rows.length; i++) {
+      let el = {}
+      let valores = rows[i].split(delimiter)
+      if (valores.length === headers.length) {
+        for (let j = 0; j < headers.length; j++) {
+          el[headers[j]] = valores[j].replace(/['"\r]+/g, '')
+        }
+        if (parseInt(el.idFinca) > TCB.idFinca) TCB.idFinca = parseInt(el.idFinca)
+        arr.push(el)
+      }
+    }
+    return arr
+  }
+
   function creaZonaComun() {
     const _zonaComun = {
       nombreTipoConsumo: '',
@@ -61,6 +154,7 @@ export default function UnitsStep() {
 
     TCB.ZonaComun.push(_zonaComun)
     TCB.requiereOptimizador = true
+    TCB.requiereReparto = true
     setZonasComunes((prev) => [...prev, _zonaComun])
   }
 
@@ -108,10 +202,10 @@ export default function UnitsStep() {
               gap: '15px',
             }}
           >
-            {Object.entries(uniqueTypes).map((key, value) => (
-              <Fragment key={key}>
-                <Box sx={{ display: 'flex', flex: 1 }}>
-                  <UnitTypeBox tipo={key[0]}></UnitTypeBox>
+            {Object.keys(uniqueTypes).map((group) => (
+              <Fragment key={group}>
+                <Box sx={{ display: 'flex', width: '30%' }}>
+                  <UnitTypeBox tipo={group}></UnitTypeBox>
                 </Box>
               </Fragment>
             ))}
@@ -150,10 +244,10 @@ export default function UnitsStep() {
               gap: '15px',
             }}
           >
-            {zonasComunes.map((key, value) => (
-              <Fragment key={key}>
-                <Box sx={{ display: 'flex', flex: 1 }}>
-                  <ZonaComunTypeBox zonaComun={key}></ZonaComunTypeBox>
+            {zonasComunes.map((zc, index) => (
+              <Fragment key={index}>
+                <Box sx={{ display: 'flex', width: '30%' }}>
+                  <ZonaComunTypeBox zonaComun={zc}></ZonaComunTypeBox>
                 </Box>
               </Fragment>
             ))}
@@ -161,8 +255,24 @@ export default function UnitsStep() {
         </Grid>
       </Grid>
 
-      <Button onClick={() => UTIL.dumpData('Fincas.csv', TCB.Finca)}>Exportar</Button>
-      <Button>Importar</Button>
+      <Button onClick={() => UTIL.dumpData('Fincas.csv', TCB.Finca, null, dumpFields)}>
+        Exportar
+      </Button>
+
+      <div>
+        <input
+          accept="*/*"
+          id="file-input"
+          type="file"
+          style={{ display: 'none' }}
+          onChange={loadFincasFromCSV}
+        />
+        <label htmlFor="file-input">
+          <Button variant="contained" color="primary" component="span">
+            Importar
+          </Button>
+        </label>
+      </div>
     </Container>
   )
 }

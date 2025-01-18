@@ -1,8 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 
 // MUI objects
-import { Box, Typography, TextField, MenuItem } from '@mui/material'
+import { Box, Typography, TextField, MenuItem, IconButton } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import DeleteIcon from '@mui/icons-material/Delete'
+
+// REACT Solidar Components
+import { ConsumptionContext } from '../ConsumptionContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -10,56 +14,59 @@ import * as UTIL from '../classes/Utiles'
 
 export default function ZonaComunTypeBox(props) {
   const theme = useTheme()
-  const [nombreZC, setNombreZC] = useState(props.zonaComun.nombre)
-  const [CUPS, setCUPS] = useState(props.zonaComun.CUPS)
-  const [tipoConsumoZC, setTipoConsumoZC] = useState(props.zonaComun.nombreTipoConsumo)
+
+  const { zonasComunes, setZonasComunes } = useContext(ConsumptionContext)
+  const { zonaComun } = props
   const [totalConsumption, setTotalConsumption] = useState()
 
-  const [ready, setReady] = useState('yellow')
-
   useEffect(() => {
-    if (tipoConsumoZC != '') {
+    if (zonaComun.nombreTipoConsumo != '') {
       setTotalConsumption(
         TCB.TipoConsumo.find((_tc) => {
-          return _tc.nombreTipoConsumo === tipoConsumoZC
+          return _tc.nombreTipoConsumo === zonaComun.nombreTipoConsumo
         }).totalAnual,
       )
     }
   }, [])
 
-  //REVISAR: al asignar un tipo consumo da warning
   function changeTipoConsumo(tipo) {
     TCB.ZonaComun.find((_zc) => {
-      return _zc.idZonaComun === props.zonaComun.idZonaComun
+      return _zc.idZonaComun === zonaComun.idZonaComun
     }).nombreTipoConsumo = tipo
-    setTipoConsumoZC(tipo)
-    const _consumo = TCB.TipoConsumo.find((_tc) => {
-      return _tc.nombreTipoConsumo === tipo
-    }).totalAnual
-
+    setZonasComunes([...TCB.ZonaComun])
     setTotalConsumption(
       TCB.TipoConsumo.find((_tc) => {
         return _tc.nombreTipoConsumo === tipo
       }).totalAnual,
     )
 
-    if (tipo !== undefined) setReady('green')
     TCB.requiereOptimizador = true
+    TCB.requiereReparto = true
     TCB.cambioTipoConsumo = true
   }
 
   function changeNombreZonaComun(nombre) {
     TCB.ZonaComun.find((_zc) => {
-      return _zc.idZonaComun === props.zonaComun.idZonaComun
+      return _zc.idZonaComun === zonaComun.idZonaComun
     }).nombre = nombre
-    setNombreZC(nombre)
+    setZonasComunes([...TCB.ZonaComun])
   }
 
   function changeCUPS(CUPS) {
     TCB.ZonaComun.find((_zc) => {
       return _zc.idZonaComun === props.zonaComun.idZonaComun
     }).CUPS = CUPS
-    setCUPS(CUPS)
+    setZonasComunes([...TCB.ZonaComun])
+  }
+
+  function deleteZonaComun() {
+    let prevZonasComunes = [...zonasComunes]
+    const nIndex = prevZonasComunes.findIndex((zc) => {
+      return zc.idZonaComun === props.zonaComun.idZonaComun
+    })
+    prevZonasComunes.splice(nIndex, 1)
+    TCB.ZonaComun.splice(nIndex, 1)
+    setZonasComunes([...prevZonasComunes])
   }
 
   return (
@@ -86,7 +93,7 @@ export default function ZonaComunTypeBox(props) {
         size="small"
         type="text"
         id="nombre"
-        value={nombreZC}
+        value={zonaComun.nombre}
         onChange={(event) => changeNombreZonaComun(event.target.value)}
       />
 
@@ -96,7 +103,7 @@ export default function ZonaComunTypeBox(props) {
         size="small"
         type="text"
         id="CUPS"
-        value={CUPS}
+        value={zonaComun.CUPS}
         onChange={(event) => changeCUPS(event.target.value)}
       />
 
@@ -106,12 +113,9 @@ export default function ZonaComunTypeBox(props) {
         size="small"
         select
         id="tipo"
-        value={tipoConsumoZC}
+        value={zonaComun.nombreTipoConsumo}
         onChange={(event) => changeTipoConsumo(event.target.value)}
       >
-        <MenuItem key={-1} value={undefined}>
-          Indefinido
-        </MenuItem>
         {TCB.TipoConsumo.map((_tc, index) => (
           <MenuItem key={index} value={_tc.nombreTipoConsumo}>
             {_tc.nombreTipoConsumo}
@@ -126,6 +130,19 @@ export default function ZonaComunTypeBox(props) {
             '<br />Uso de energía: ' + UTIL.formatoValor('energia', totalConsumption),
         }}
       />
+      <IconButton
+        onClick={deleteZonaComun}
+        size="small"
+        style={{
+          color: theme.palette.helpIcon.main,
+          fontSize: 'inherit',
+          verticalAlign: 'text-center',
+          transform: 'scale(1)',
+          padding: 0,
+        }}
+      >
+        <DeleteIcon />
+      </IconButton>
     </Box>
   )
 }

@@ -11,34 +11,38 @@ import { useDialog } from '../../components/DialogProvider'
 import UnitsSummary from './UnitsSummary'
 
 // Solidar objects
+import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 export default function UnitTypeBox(props) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { fincas, tipoConsumo } = useContext(ConsumptionContext)
+  const { fincas, tipoConsumo, allocationGroup } = useContext(ConsumptionContext)
   const [openDialog, closeDialog] = useDialog()
   const [totalConsumption, setTotalConsumption] = useState()
+
   const { tipo } = props
 
   const units = fincas.filter((e) => e.grupo === tipo)
+
+  const participes = units.filter((fnc) => fnc.participa).length
 
   const participacionTotal = units.reduce((a, b) => {
     return a + UTIL.returnFloat(b.participacion)
   }, 0)
 
-  useEffect(() => {
+  const consumoTotal = () => {
     let total = 0
     units.forEach((unit) => {
-      if ((unit.nombreTipoConsumo !== '') & unit.participa) {
+      if (unit.participa && unit.nombreTipoConsumo !== '') {
         const tc = tipoConsumo.find((t) => {
           return t.nombreTipoConsumo === unit.nombreTipoConsumo
         })
         total += tc.totalAnual
       }
     })
-    setTotalConsumption(total)
-  }, [])
+    return total
+  }
 
   function showDetails() {
     openDialog({
@@ -49,8 +53,6 @@ export default function UnitTypeBox(props) {
           maxWidth={'xs'}
           fullWidth={true}
           onClose={closeDialog}
-          setTotalConsumption={setTotalConsumption}
-          totalConsumption={totalConsumption}
         ></UnitsSummary>
       ),
     })
@@ -80,12 +82,14 @@ export default function UnitTypeBox(props) {
             textAlign={'center'}
             dangerouslySetInnerHTML={{
               __html:
-                '<br />Cantidad: ' +
+                '<br />Participes: ' +
+                participes +
+                ' de ' +
                 units.length +
                 '<br />Participación: ' +
                 UTIL.formatoValor('porciento', participacionTotal) +
                 '<br />Uso de energía: ' +
-                UTIL.formatoValor('energia', totalConsumption),
+                UTIL.formatoValor('energia', consumoTotal()),
             }}
           />
           <Button onClick={showDetails}>{t('UNITS.LABEL_VER_DETALLES')}</Button>

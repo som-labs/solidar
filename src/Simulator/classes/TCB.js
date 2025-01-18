@@ -72,6 +72,8 @@ const TCB = {
    * @type {Array<ZonaComun>}
    */
   ZonaComun: [],
+  GroupsZC: [], // Array indicando que grupos participan del gasto correspondiente a una zona comun {id: nombre del grupo, zc1: true/false, zc2: true/false,....}
+  requiereReparto: true, //Flag indicando a Reparto economico si de debe recosntruir GruposZC
 
   // Variables de totalización
   consumo: {}, // Este campo contiene la suma de todos las consumos[]

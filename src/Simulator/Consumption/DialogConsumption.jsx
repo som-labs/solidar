@@ -26,6 +26,7 @@ import { SLDRInputField } from '../../components/SLDRComponents'
 import HelpDistribuidora from './HelpDistribuidora'
 
 // Solidar objects
+import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 //React global components
@@ -68,12 +69,25 @@ export default function DialogConsumption({ data, previous, onClose }) {
       return errors
     } else {
       previous.forEach((tc) => {
+        //Verificamos que no este duplicado
         if (
           tc.nombreTipoConsumo === values.nombreTipoConsumo &&
           tc.idTipoConsumo != values.idTipoConsumo
         ) {
           errors.nombreTipoConsumo = t('CONSUMPTION.ERROR_NOMBRE_TIPO_CONSUMO_DUPLICADO')
           return errors
+        }
+        //Si estamos cambiando el nombre y estamos en modo Colectivo
+        //Verificamos que no hay fincas con ese tipo de consumo
+        if (
+          tc.idTipoConsumo === values.idTipoConsumo &&
+          tc.nombreTipoConsumo !== values.nombreTipoConsumo &&
+          TCB.modoActivo !== 'INDIVIDUAL'
+        ) {
+          if (TCB.Finca.find((fnc) => fnc.nombreTipoConsumo === tc.nombreTipoConsumo)) {
+            errors.nombreTipoConsumo = 'Hay fincas con este tipo consumo'
+            return errors
+          }
         }
       })
     }

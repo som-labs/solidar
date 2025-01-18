@@ -3,9 +3,6 @@ import { useTranslation } from 'react-i18next'
 
 // MUI objects
 import {
-  IconButton,
-  Typography,
-  Tooltip,
   Grid,
   MenuItem,
   Dialog,
@@ -16,20 +13,15 @@ import {
   DialogContent,
   DialogTitle,
 } from '@mui/material'
+import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid'
 
 import { SLDRInputField } from '../../components/SLDRComponents'
 import { useTheme } from '@mui/material/styles'
-import AddIcon from '@mui/icons-material/Add'
-import DeleteIcon from '@mui/icons-material/Delete'
-import AnalyticsIcon from '@mui/icons-material/Analytics'
-import EditIcon from '@mui/icons-material/Edit'
-import { DataGrid, GridToolbarContainer, GridActionsCellItem } from '@mui/x-data-grid'
 
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
 import { useDialog } from '../../components/DialogProvider'
-import DialogConsumption from '../Consumption/DialogConsumption'
-import { SLDRFooterBox, SLDRInfoBox, SLDRTooltip } from '../../components/SLDRComponents'
+import { AlertContext } from '../components/Alert'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -39,6 +31,7 @@ import TipoConsumo from '../classes/TipoConsumo'
 
 export default function UnitsSummary(props) {
   const { t } = useTranslation()
+  //const { SLDRAlert } = useContext(AlertContext)
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()
@@ -51,12 +44,9 @@ export default function UnitsSummary(props) {
     setFincas,
   } = useContext(ConsumptionContext)
 
-  const { grupo, units, setTotalConsumption, totalConsumption } = props
-
-  const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
+  const { grupo, units } = props
+  const [selectionModel, setSelectionModel] = useState([])
   const [tipoConsumoAsignado, setTipoConsumoAsignado] = useState('')
-
-  const editing = useRef()
 
   let tiposActivos = [{ label: 'Indefinido', value: '' }].concat(
     tipoConsumo.map((tc) => ({
@@ -146,6 +136,11 @@ export default function UnitsSummary(props) {
       flex: 1,
       description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
       sortable: false,
+      renderCell: (params) => {
+        if (params.value === '' && params.row.participa) {
+          return <span style={{ color: 'red' }}>{'Indefinido'}</span>
+        }
+      },
     },
 
     {
@@ -192,16 +187,21 @@ export default function UnitsSummary(props) {
     return row.idFinca
   }
 
-  function handleTipoConsumo(event) {
-    setTipoConsumoAsignado(event.target.value)
+  function handleTipoConsumo(value) {
+    console.log('VALUE REC:', value)
+    const newValue = value //=== '' ? 'Indefinido' : value
+    console.log('NEWVALUE:', newValue)
+    setTipoConsumoAsignado(newValue)
+
     const newFincas = fincas.map((f) => {
       if (f.grupo === grupo) {
-        f.nombreTipoConsumo = event.target.value
+        f.nombreTipoConsumo = newValue
+        f.participa = newValue === '' ? false : true
       }
       return f
     })
+    console.log('setting fincas in UnitsSummary all')
     setFincas(newFincas)
-    summaryzeConsumption()
     TCB.cambioTipoConsumo = true
     TCB.requiereOptimizador = true
   }
@@ -219,7 +219,7 @@ export default function UnitsSummary(props) {
               value={tipoConsumoAsignado}
               name="fuente"
               object="TipoConsumo"
-              onChange={(event) => handleTipoConsumo(event)}
+              onChange={(event) => handleTipoConsumo(event.target.value)}
             >
               {tiposActivos.map((e, index) => (
                 <MenuItem key={index} value={e.value}>
@@ -234,49 +234,24 @@ export default function UnitsSummary(props) {
     )
   }
 
-  function summaryzeConsumption() {
-    let total = 0
-    units.forEach((e) => {
-      if (e.nombreTipoConsumo !== '' && e.participa) {
-        const tc = tipoConsumo.find((t) => {
-          return t.nombreTipoConsumo === e.nombreTipoConsumo
-        })
-        total += tc.totalAnual
-        setTotalConsumption(total)
+  function checkSummary() {
+    const fincasInFailure = []
+    for (let _fnc of units) {
+      if (_fnc.participa && _fnc.nombreTipoConsumo === '') {
+        fincasInFailure.push(_fnc.idFinca)
       }
-    })
-    return total
+    }
+    if (fincasInFailure.length > 0) {
+      alert(
+        'VALIDACION',
+        t('Existen ' + fincasInFailure.length + ' fincas con error'),
+        'Error',
+      )
+      setSelectionModel(fincasInFailure)
+    } else closeDialog()
   }
 
-  // function footerSummary() {
-  //   return (
-  //     <SLDRFooterBox>
-  //       <Grid
-  //         container
-  //         alignItems="center"
-  //         justifyContent="center"
-  //         spacing={2}
-  //         sx={{ mt: '2rem' }}
-  //       >
-  //         <Grid item>
-  //           <Typography
-  //             sx={theme.titles.level_2}
-  //             textAlign={'center'}
-  //             dangerouslySetInnerHTML={{
-  //               __html: t('CONSUMPTION.TOTAL_DEMMAND', {
-  //                 consumoTotal: formatoValor('energia', totalConsumption),
-  //               }),
-  //             }}
-  //           />
-  //         </Grid>
-  //       </Grid>
-  //     </SLDRFooterBox>
-  //   )
-  // }
-
   function changeUnit(newUnitRow) {
-    console.log('Cambiando:', newUnitRow)
-
     const newFincas = fincas.map((f) => {
       if (f.idFinca === newUnitRow.idFinca) {
         f.nombreTipoConsumo = newUnitRow.nombreTipoConsumo
@@ -285,14 +260,13 @@ export default function UnitsSummary(props) {
       }
       return f
     })
+    console.log('setting fincas in UnitsSummary 1')
     setFincas(newFincas)
-    summaryzeConsumption()
+    //summaryzeConsumption()
     TCB.cambioTipoConsumo = true
     TCB.requiereOptimizador = true
+    TCB.requiereReparto = true
     return newUnitRow
-    // console.log('Row ID:', params.id) // ID of the edited row
-    // console.log('Column:', params.field) // Column name
-    // console.log('New Value:', params.value) // The new value
   }
 
   function handleProcessRowUpdateError(params) {
@@ -329,13 +303,18 @@ export default function UnitsSummary(props) {
                 processRowUpdate={(updatedRow, originalRow) => changeUnit(updatedRow)}
                 onProcessRowUpdateError={handleProcessRowUpdateError}
                 editMode="cell"
+                selectionModel={selectionModel}
+                onSelectionModelChange={(newSelection) => {
+                  setSelectionModel(newSelection)
+                }}
+                getRowClassName={(params) => (params.isSelected ? 'red' : '')}
               />
             </Grid>
           )}
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeDialog} color="primary">
+        <Button onClick={checkSummary} color="primary">
           Close
         </Button>
       </DialogActions>

@@ -11,24 +11,28 @@ import { useDialog } from '../../components/DialogProvider'
 import UnitsSummary from './UnitsSummary'
 
 // Solidar objects
-import Finca from '../classes/Finca.js'
 import TCB from '../classes/TCB.js'
 import * as UTIL from '../classes/Utiles'
+import { all } from 'ol/events/condition.js'
 
 export default function UnitTypeBox(props) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { fincas, tipoConsumo, allocationGroup } = useContext(ConsumptionContext)
+
+  const { allocationGroup, fincas } = useContext(ConsumptionContext)
   const [openDialog, closeDialog] = useDialog()
 
   const { grupo } = props
+  console.log(grupo)
+  console.log(fincas.filter((e) => e.grupo === grupo))
+  const units = fincas.filter((e) => e.grupo === grupo)
 
   function showDetails() {
     openDialog({
       children: (
         <UnitsSummary
           grupo={grupo}
-          units={TCB.Finca.filter((f) => f.participa && f.grupo === grupo)}
+          units={units}
           maxWidth={'xs'}
           fullWidth={true}
           onClose={closeDialog}
@@ -39,28 +43,113 @@ export default function UnitTypeBox(props) {
 
   return (
     <>
-      <Container>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            flexWrap: 'wrap',
-            gap: '10px',
-            alignItems: 'center',
-            border: '1px solid grey',
-            borderRadius: 2,
-            padding: 2,
-            maxWidth: 300,
-          }}
-        >
-          <Typography sx={theme.titles.level_1} textAlign={'center'} marginTop="1rem">
-            {grupo}
-          </Typography>
+      <Typography sx={theme.titles.level_1} textAlign={'center'}>
+        {grupo}
+      </Typography>
 
-          {/* {Finca.mapaUsoGrupo[grupo] ? ( */}
-          {allocationGroup[grupo].unidades > 0 ? (
-            <>
-              <Typography
+      {allocationGroup[grupo].unidades > 0 ? (
+        <>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '90%',
+              gap: 1,
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                width: '100%',
+                gap: 1,
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flex: 1,
+                  border: '1px solid',
+                  alignItems: 'center',
+                  padding: 0.5,
+                  justifyContent: 'center',
+                }}
+              >
+                Unidades: {allocationGroup[grupo].unidades}
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flex: 1,
+                  border: '1px solid',
+                  padding: 0.5,
+                  justifyContent: 'center',
+                }}
+              >
+                Participes: {allocationGroup[grupo].participes}
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flex: 2,
+                  border: '1px solid',
+                  padding: 0.5,
+                  justifyContent: 'center',
+                }}
+              >
+                Criterio distribución: {allocationGroup[grupo].criterio}
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 1,
+                width: '100%',
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flex: 1,
+                  border: '1px solid',
+                  padding: 0.5,
+                  justifyContent: 'center',
+                }}
+              >
+                Uso eléctrico demandado:{' '}
+                {UTIL.formatoValor(
+                  'energia',
+                  allocationGroup[grupo].consumo * TCB.consumo.totalAnual,
+                )}
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flex: 1,
+                  border: '1px solid',
+                  padding: 0.5,
+                  justifyContent: 'center',
+                }}
+              >
+                Producción asignada:{' '}
+                {UTIL.formatoValor(
+                  'energia',
+                  allocationGroup[grupo].produccion * TCB.produccion.totalAnual,
+                )}
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flex: 1,
+                justifyContent: 'center',
+              }}
+            >
+              <Button onClick={showDetails}>{t('UNITS.LABEL_VER_DETALLES')}</Button>
+            </Box>
+          </Box>
+          {/* <Typography
                 variant="body"
                 textAlign={'center'}
                 dangerouslySetInnerHTML={{
@@ -86,11 +175,52 @@ export default function UnitTypeBox(props) {
                     '</b>',
                 }}
               />
-              <Button onClick={showDetails}>{t('UNITS.LABEL_VER_DETALLES')}</Button>
-            </>
-          ) : (
-            <>
-              <Typography
+              <Button onClick={showDetails}>{t('UNITS.LABEL_VER_DETALLES')}</Button> */}
+        </>
+      ) : (
+        <>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              width: '90%',
+              paddingBottom: 2,
+              gap: 1,
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flex: 1,
+                border: '1px solid',
+                padding: 0.5,
+                justifyContent: 'center',
+              }}
+            >
+              Uso eléctrico demandado:{' '}
+              {UTIL.formatoValor(
+                'energia',
+                allocationGroup[grupo].consumo * TCB.consumo.totalAnual,
+              )}
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flex: 1,
+                border: '1px solid',
+                padding: 0.5,
+                justifyContent: 'center',
+              }}
+            >
+              Producción asignada:{' '}
+              {UTIL.formatoValor(
+                'energia',
+                allocationGroup[grupo].produccion * TCB.produccion.totalAnual,
+              )}
+            </Box>
+          </Box>
+
+          {/* <Typography
                 variant="body"
                 textAlign={'center'}
                 dangerouslySetInnerHTML={{
@@ -108,11 +238,9 @@ export default function UnitTypeBox(props) {
                       TCB.produccion.totalAnual * allocationGroup[grupo].produccion,
                     ),
                 }}
-              />
-            </>
-          )}
-        </Box>
-      </Container>
+              /> */}
+        </>
+      )}
     </>
   )
 }

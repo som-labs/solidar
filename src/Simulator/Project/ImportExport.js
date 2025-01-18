@@ -84,7 +84,7 @@ async function exportProject() {
 
   // Copy all global properties stored in TCB
   TCB.datosProyecto.parametros = TCB.parametros
-  TCB.datosProyecto.precioInstalacion = TCB.precioInstalacion
+  TCB.datosProyecto.precioInstalacion = TCB.economico.precioInstalacion
   TCB.datosProyecto.featIdUnico = TCB.featIdUnico // Generador de identificadores de objeto unicos
   TCB.datosProyecto.totalPaneles = TCB.totalPaneles
   TCB.datosProyecto.areaTotal = TCB.areaTotal

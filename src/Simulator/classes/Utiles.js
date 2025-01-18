@@ -528,6 +528,7 @@ async function loadFromCSV(csvFile, aThis, options) {
           let _mes = parts[posMes] - 1 //_mes es el indice interno gestionado por JS pero es 1-24 en los ficheros de las distribuidoras
           let _ano = parts[posAno]
           if (_dia > 31 || _mes > 11) {
+            console.log(value, 'DIA: ', _dia, 'MES: ', _mes)
             //Es probable que hayan definido DATADIS para un CSV de distribuidora
             const tError = new Error(
               TCB.i18next.t('CONSUMPTION.ERROR_fuenteTipoErroneo_DATADIS'),
@@ -542,10 +543,12 @@ async function loadFromCSV(csvFile, aThis, options) {
           let tHora = parseInt(value.split(':')[0]) + options.deltaHour
           //Hay casos en ficheros CSV que aparece una hora 25 los dias de cambio de horario.
           if (tHora > 23) {
+            console.log(value, 'HORA: ', tHora)
             tHora = 23
             tHoraChk++
           }
           if (tHora < 0) {
+            console.log(value, 'HORA: ', tHora)
             //Es probable que hayan definido CSV de distribuidora para un DATADIS
             const tError = new Error(
               TCB.i18next.t('CONSUMPTION.ERROR_fuenteTipoErroneo_CSV'),
@@ -585,12 +588,12 @@ async function loadFromCSV(csvFile, aThis, options) {
 
         if (results.data.length === 0) return false
 
-        if (tHoraChk > 1) {
-          const tError = new Error(
-            TCB.i18next.t('CONSUMPTION.ERROR_fuenteTipoErroneo_SOM'),
-          )
-          reject(tError)
-        }
+        // if (tHoraChk > 1) {
+        //   const tError = new Error(
+        //     TCB.i18next.t('CONSUMPTION.ERROR_fuenteTipoErroneo_SOM'),
+        //   )
+        //   reject(tError)
+        // }
 
         debugLog(
           'CSV procesando ' +
@@ -671,59 +674,6 @@ async function loadFromCSV(csvFile, aThis, options) {
   })
 }
 
-// function csvToArray(str, delimiter = ',') {
-//   // slice from start of text to the first \n index
-//   // use split to create an array from string by delimiter
-//   try {
-//     var headers = str.slice(0, str.indexOf('\n')).split(delimiter)
-//     for (let i = 0; i < headers.length; i++) headers[i] = headers[i].trim()
-//   } catch (e) {
-//     alert('Posible error de formato fichero de consumos\n' + str)
-//     return
-//   }
-//   debugLog('Cabecera CSV:', headers)
-
-//   // la diferencia entre los ficheros de Naturgy y de Iberdrola es que
-//   // la cuarta columna donde esta el consumo se llama Consumo en Naturgy y Consumo_kWh en Iberdrola y VIESGO y AE_kWh en ENDESA.
-//   // unificamos en "Consumo"
-//   if (headers[3] == 'Consumo_kWh') headers[3] = 'Consumo'
-//   if (headers[3] == 'AE_kWh') headers[3] = 'Consumo'
-
-//   let chk_consumo = false
-//   let chk_fecha = false
-//   let chk_hora = false
-//   headers.forEach((hdr) => {
-//     if (hdr === 'Consumo' || hdr === '2.0TD' || hdr === '3.0TD') chk_consumo = true
-//     if (hdr === 'Fecha') chk_fecha = true
-//     if (hdr === 'Hora') chk_hora = true
-//   })
-//   if (!(chk_consumo && chk_fecha && chk_hora)) {
-//     let failHdr = ''
-//     if (!chk_consumo) failHdr += 'Consumo '
-//     if (!chk_fecha) failHdr += 'Fecha '
-//     if (!chk_hora) failHdr += 'Hora '
-//     alert(TCB.i18next.t('consumo_MSG_errorCabeceras', { cabeceras: failHdr }))
-//     return []
-//   }
-//   // slice from \n index + 1 to the end of the text
-//   // use split to create an array of each csv value row
-//   const rows = str.slice(str.indexOf('\n') + 1).split('\n')
-//   let arr = []
-//   rows.forEach((row) => {
-//     if (row.length > 1) {
-//       const values = row.split(delimiter)
-//       const el = headers.reduce(function (object, header, index) {
-//         object[header] = values[index]
-//         return object
-//       }, {})
-//       arr.push(el)
-//     }
-//   })
-
-//   // return the array
-//   return arr
-// }
-
 function promedio(arr) {
   return arr.reduce((a, b) => a + b) / arr.length
 }
@@ -758,33 +708,34 @@ function fechaDesdeIndice(indice) {
   }
 }
 
-function dumpData(nombre, idxTable, dataTable) {
+function dumpData(nombre, idxTable, dataTable = null, fields = []) {
   // Loop the array of objects
   var csv = ''
-  for (let row = 0; row < idxTable.length; row++) {
-    let keysAmount = Object.keys(idxTable[row]).length
-    let keysCounter = 0
 
-    // If this is the first row, generate the headings
-    if (row === 0) {
-      // Loop each property of the object
-      for (let key in idxTable[row]) {
-        // This is to not add a comma at the last cell
-        // The '\n' adds a new line
+  // fields argument exposes which fields to be dumped. If no fields argument all properties will be dumped
+  if (fields.length === 0) fields = Object.keys(idxTable[0])
 
-        csv += key + (keysCounter + 1 < keysAmount ? ';' : '')
-        keysCounter++
-      }
-      if (dataTable) {
-        for (let i = 0; i < 24; i++) {
-          csv += ';' + i
-        }
-      }
-      csv += '\r\n'
+  let keysAmount = fields.length
+  let keysCounter = 0
+
+  for (let key of fields) {
+    // This is to not add a comma at the last cell
+    // The '\n' adds a new line
+    csv += key + (keysCounter + 1 < keysAmount ? ';' : '')
+    keysCounter++
+  }
+
+  if (dataTable) {
+    for (let i = 0; i < 24; i++) {
+      csv += ';' + i
     }
+  }
+  csv += '\r\n'
+
+  for (let row = 0; row < idxTable.length; row++) {
     keysCounter = 0
-    for (let key in idxTable[row]) {
-      csv += idxTable[row][key] + (keysCounter + 1 < keysAmount ? ';' : '')
+    for (const key of fields) {
+      csv += idxTable[row]?.[key] + (keysCounter + 1 < keysAmount ? ';' : '')
       keysCounter++
     }
 
