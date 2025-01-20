@@ -11,6 +11,7 @@ import { useTheme } from '@mui/material/styles'
 import UnitTypeBox from './UnitTypeBox'
 import ZonaComunTypeBox from './ZonaComunTypeBox'
 import { AlertContext } from '../components/Alert'
+import { useAlert } from '../../components/AlertProvider.jsx'
 import HelpConsumption from '../Consumption/HelpConsumption'
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
@@ -26,7 +27,6 @@ import { useDialog } from '../../components/DialogProvider'
 export default function UnitsStep() {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { inLineHelp } = useContext(AlertContext)
   const { fincas, setFincas, zonasComunes, setZonasComunes } =
     useContext(ConsumptionContext)
 
