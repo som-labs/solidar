@@ -12,7 +12,7 @@ import { useTheme } from '@mui/material/styles'
 import { BasesContext } from '../BasesContext'
 import DialogBaseSolar from './DialogBaseSolar'
 import { useDialog } from '../../components/DialogProvider'
-import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
+import { SLDRFooterBox } from '../../components/SLDRComponents'
 
 // Solidar objects
 import TCB from '../classes/TCB'

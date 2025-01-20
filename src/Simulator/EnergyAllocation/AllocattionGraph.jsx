@@ -23,6 +23,7 @@ import { useTheme } from '@mui/material/styles'
 // REACT Solidar Components
 import UnitTypeBox from './UnitTypeBox'
 import { AlertContext } from '../components/Alert'
+import { useAlert } from '../../components/AlertProvider.jsx'
 import HelpConsumption from '../Consumption/HelpConsumption'
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
@@ -38,7 +39,6 @@ import { useDialog } from '../../components/DialogProvider'
 export default function AllocationGraph(props) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { inLineHelp } = useContext(AlertContext)
 
   const { repartoValido, setRepartoValido, allocationGroup, setAllocationGroup } =
     useContext(ConsumptionContext)

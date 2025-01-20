@@ -15,6 +15,7 @@ import { ConsumptionContext } from '../ConsumptionContext'
 import MapaMesHora from './MapaMesHora'
 import MapaDiaHora from './MapaDiaHora'
 import { useDialog } from '../../components/DialogProvider'
+import { useAlert } from '../../components/AlertProvider'
 import DialogConsumption from './DialogConsumption'
 import { SLDRFooterBox, SLDRInfoBox, SLDRTooltip } from '../../components/SLDRComponents'
 
@@ -27,7 +28,7 @@ import TipoConsumo from '../classes/TipoConsumo'
 export default function ConsumptionSummary() {
   const { t } = useTranslation()
   const theme = useTheme()
-
+  const { SLDRAlert } = useAlert()
   const [openDialog, closeDialog] = useDialog()
   const { tipoConsumo, setTipoConsumo, preciosValidos, addTCBTipoToState } =
     useContext(ConsumptionContext)
@@ -185,15 +186,15 @@ export default function ConsumptionSummary() {
         nuevoTipoConsumo.nombreFicheroCSV = formData.ficheroCSV.name
       }
 
-      let astatus
+      let rCode
       let idxTC
       cursorOriginal = document.body.style.cursor
       document.body.style.cursor = 'progress'
 
       //Will create a new TipoConsumo always, if editing will replace previous one by new one.
       idxTC = TCB.TipoConsumo.push(new TipoConsumo(nuevoTipoConsumo)) - 1
-      astatus = await TCB.TipoConsumo[idxTC].loadTipoConsumoFromCSV()
-      if (astatus) {
+      rCode = await TCB.TipoConsumo[idxTC].loadTipoConsumoFromCSV()
+      if (rCode.status) {
         if (editing.current) {
           //Editando uno existente moveremos el recien creado a su posicion original
           idxTC = TCB.TipoConsumo.findIndex((tc) => {
@@ -206,6 +207,7 @@ export default function ConsumptionSummary() {
         //showGraphsTC(nuevoTipoConsumo) //Autoproduccion tema decides not to show graph after loaded
       } else {
         UTIL.debugLog('Error detectado en carga de CSV')
+        SLDRAlert('CARGA TIPOLOGIA USO ENERGIA', rCode.err, 'Error')
         TCB.TipoConsumo.pop()
       }
     }
@@ -232,7 +234,11 @@ export default function ConsumptionSummary() {
     //Si estamos en colectivo no se pueden borrar tipos de consumo utilizados en alguna finca
     if (TCB.modoActivo !== 'INDIVIDUAL') {
       if (TCB.Finca.find((f) => f.nombreTipoConsumo === tc.nombreTipoConsumo)) {
-        alert('Existen fincas con este tipo de consumo.\nNo se puede borrar')
+        SLDRAlert(
+          'VALIDACIÓN',
+          'Existen fincas con este tipo de consumo.\nNo se puede borrar',
+          'Warning',
+        )
         return
       }
     }

@@ -3,21 +3,21 @@ import { debounce } from '@mui/material/utils'
 import { useTranslation } from 'react-i18next'
 
 // OpenLayers objects
-import { transform, fromLonLat } from 'ol/proj'
+import { fromLonLat } from 'ol/proj'
 
 // MUI objects
-import { TextField, Typography, Autocomplete } from '@mui/material'
+import { TextField, Autocomplete } from '@mui/material'
 
 // REACT Solidar Components
 import { BasesContext } from '../BasesContext'
-import { AlertContext } from '../components/Alert'
+import { useAlert } from '../../components/AlertProvider.jsx'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
 
 export default function AddressSearch() {
   const { t } = useTranslation()
-  const { SLDRAlert } = useContext(AlertContext)
+  const { SLDRAlert } = useAlert()
 
   const { map } = useContext(BasesContext)
   // Address search states
@@ -52,7 +52,7 @@ export default function AddressSearch() {
             err: 'Status: ' + respCandidatos.status,
             url: url,
           }),
-          'error',
+          'Error',
         )
         return false
       }
@@ -60,7 +60,7 @@ export default function AddressSearch() {
       SLDRAlert(
         'VALIDACION',
         t('ERROR_NOMINATIM_FETCH', { err: err.message, url: url }),
-        'error',
+        'Error',
       )
       return false
     }

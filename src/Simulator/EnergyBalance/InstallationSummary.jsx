@@ -13,6 +13,7 @@ import calculaResultados from '../classes/calculaResultados'
 import { BasesContext } from '../BasesContext'
 import { SLDRFooterBox } from '../../components/SLDRComponents'
 import { AlertContext } from '../components/Alert'
+import { useAlert } from '../../components/AlertProvider.jsx'
 import { useDialog } from '../../components/DialogProvider'
 import DialogProperties from '../components/DialogProperties'
 
@@ -27,7 +28,8 @@ export default function InstallationSummary() {
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()
-  const { SLDRAlert } = useContext(AlertContext)
+  //const { SLDRAlert } = useContext(AlertContext)
+  const { SLDRAlert } = useAlert()
   const { bases, setBases, updateTCBBasesToState } = useContext(BasesContext)
   const [updatedCells, setUpdatedCells] = useState({})
 

@@ -21,17 +21,15 @@ import { useTheme } from '@mui/material/styles'
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
 import { useDialog } from '../../components/DialogProvider'
-import { AlertContext } from '../components/Alert'
+import { useAlert } from '../../components/AlertProvider.jsx'
 
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import { formatoValor } from '../classes/Utiles'
-import TipoConsumo from '../classes/TipoConsumo'
 
 export default function UnitsSummary(props) {
   const { t } = useTranslation()
-  //const { SLDRAlert } = useContext(AlertContext)
+  const { SLDRAlert } = useAlert()
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()
@@ -242,7 +240,7 @@ export default function UnitsSummary(props) {
       }
     }
     if (fincasInFailure.length > 0) {
-      alert(
+      SLDRAlert(
         'VALIDACION',
         t('Existen ' + fincasInFailure.length + ' fincas con error'),
         'Error',

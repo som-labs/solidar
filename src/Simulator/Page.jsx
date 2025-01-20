@@ -19,9 +19,9 @@ import SummarySOMStep from './Summary/SOM/Summary'
 
 import { ConsumptionContext } from './ConsumptionContext'
 import { BasesContext } from './BasesContext'
-import { AlertContext } from './components/Alert'
 import { EconomicContext } from './EconomicContext'
-
+//import { AlertContext } from './components/Alert'
+import { useAlert } from '../components/AlertProvider.jsx'
 // Solidar objects
 import PreparaEnergyBalance from './EnergyBalance/PreparaEnergyBalance'
 import TCB from './classes/TCB'
@@ -32,7 +32,8 @@ import InicializaAplicacion from './classes/InicializaAplicacion'
 
 export default function Page() {
   const { t } = useTranslation()
-  const { SLDRAlert } = useContext(AlertContext)
+  const { SLDRAlert } = useAlert()
+  //const { SLDRAlert } = useContext(AlertContext)
   const { validaBases } = useContext(BasesContext)
   const { validaTipoConsumo, repartoValido } = useContext(ConsumptionContext)
   const { ecoData, setEcoData } = useContext(EconomicContext)
@@ -73,14 +74,14 @@ export default function Page() {
 
   function validaLocationStep() {
     results = validaBases()
-    if (!results.status) SLDRAlert('VALIDACION', results.error, 'error')
+    if (!results.status) SLDRAlert('VALIDACION', results.error, 'Warning')
     return results.status
   }
 
   async function validaConsumptionStep() {
     results = validaTipoConsumo()
     if (!results.status) {
-      SLDRAlert('VALIDACION', results.error, 'error')
+      SLDRAlert('VALIDACION', results.error, 'Error')
       return false
     }
     // Se crearan los objetos produccion, balance y economico
@@ -153,7 +154,7 @@ export default function Page() {
 
   function validaEnergyAllocationStep() {
     if (!repartoValido) {
-      SLDRAlert('VALIDACION', t('ENERGY_ALLOCATION.NO_BALANCE'), 'error')
+      SLDRAlert('VALIDACION', t('ENERGY_ALLOCATION.NO_BALANCE'), 'Error')
       return false
     } else {
       return true

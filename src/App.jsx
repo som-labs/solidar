@@ -14,7 +14,9 @@ import DialogProvider from './components/DialogProvider'
 import { BasesContextProvider } from './Simulator/BasesContext'
 import { ConsumptionContextProvider } from './Simulator/ConsumptionContext'
 import { EconomicContextProvider } from './Simulator/EconomicContext'
-import { AlertProvider } from './Simulator/components/Alert'
+//import { AlertProvider } from './Simulator/components/Alert'
+import { AlertProvider } from './components/AlertProvider'
+import { GlobalContextProvider } from './Simulator/GlobalContext'
 
 const routes = [
   {
@@ -44,19 +46,21 @@ const router = createBrowserRouter(routes)
 function App() {
   return (
     <GlobalTheme>
-      <BasesContextProvider>
-        <ConsumptionContextProvider>
-          <EconomicContextProvider>
-            <DialogProvider>
-              <AlertProvider>
-                <Suspense fallback={'Loading...'}>
-                  <RouterProvider router={router} />
-                </Suspense>
-              </AlertProvider>
-            </DialogProvider>
-          </EconomicContextProvider>
-        </ConsumptionContextProvider>
-      </BasesContextProvider>
+      <GlobalContextProvider>
+        <AlertProvider>
+          <BasesContextProvider>
+            <ConsumptionContextProvider>
+              <EconomicContextProvider>
+                <DialogProvider>
+                  <Suspense fallback={'Loading...'}>
+                    <RouterProvider router={router} />
+                  </Suspense>
+                </DialogProvider>
+              </EconomicContextProvider>
+            </ConsumptionContextProvider>
+          </BasesContextProvider>
+        </AlertProvider>
+      </GlobalContextProvider>
     </GlobalTheme>
   )
 }

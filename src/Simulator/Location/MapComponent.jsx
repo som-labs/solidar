@@ -24,7 +24,8 @@ import { ConsumptionContext } from '../ConsumptionContext'
 import DialogBaseSolar from './DialogBaseSolar'
 
 import { useDialog } from '../../components/DialogProvider'
-import { AlertContext } from '../components/Alert'
+import { useAlert } from '../../components/AlertProvider.jsx'
+//import { AlertContext } from '../components/Alert'
 
 // Local Location module
 import { verificaTerritorio, getParcelaXY } from './Nominatim.js'
@@ -54,7 +55,7 @@ export default function MapComponent() {
   const mapElement = useRef()
   const basesLayer = useRef()
   const mapRef = useRef(map)
-  const { SLDRAlert } = useContext(AlertContext)
+  const { SLDRAlert } = useAlert()
 
   const [openDialog, closeDialog] = useDialog()
 
@@ -344,17 +345,16 @@ export default function MapComponent() {
       document.body.style.cursor = cursorOriginal
       if (status !== 'success') {
         SLDRAlert(
-          'NOMINATIM error 1',
+          'NOMINATIM Verifica territorio',
           t('LOCATION.ERROR_' + status, { err: details }),
-          'ERROR',
+          'Warning',
         )
         TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
         return false
       }
       TCB.direccion = details.direccion
     } catch (error) {
-      console.log('CATCHED', error)
-      SLDRAlert('NOMINATIM error 2', error, 'ERROR')
+      SLDRAlert('NOMINATIM error 2', error, 'Error')
       TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
       return false
     }
@@ -366,8 +366,14 @@ export default function MapComponent() {
         setFincas(alfa.units)
         TCB.Finca = alfa.units.slice()
       } else {
-        alert('Error from fecth parcela' + alfa.error)
+        SLDRAlert(
+          'Busqueda catastro',
+          'Error buscando parcela<br />' + alfa.error,
+          'Warning',
+        )
+        TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
         setFincas([])
+        return false
       }
     }
 

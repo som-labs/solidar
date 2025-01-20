@@ -528,7 +528,6 @@ async function loadFromCSV(csvFile, aThis, options) {
           let _mes = parts[posMes] - 1 //_mes es el indice interno gestionado por JS pero es 1-24 en los ficheros de las distribuidoras
           let _ano = parts[posAno]
           if (_dia > 31 || _mes > 11) {
-            console.log(value, 'DIA: ', _dia, 'MES: ', _mes)
             //Es probable que hayan definido DATADIS para un CSV de distribuidora
             const tError = new Error(
               TCB.i18next.t('CONSUMPTION.ERROR_fuenteTipoErroneo_DATADIS'),
@@ -543,12 +542,10 @@ async function loadFromCSV(csvFile, aThis, options) {
           let tHora = parseInt(value.split(':')[0]) + options.deltaHour
           //Hay casos en ficheros CSV que aparece una hora 25 los dias de cambio de horario.
           if (tHora > 23) {
-            console.log(value, 'HORA: ', tHora)
             tHora = 23
             tHoraChk++
           }
           if (tHora < 0) {
-            console.log(value, 'HORA: ', tHora)
             //Es probable que hayan definido CSV de distribuidora para un DATADIS
             const tError = new Error(
               TCB.i18next.t('CONSUMPTION.ERROR_fuenteTipoErroneo_CSV'),

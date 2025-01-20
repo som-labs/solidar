@@ -31,10 +31,12 @@ import * as UTIL from '../classes/Utiles'
 
 //React global components
 import { useDialog } from '../../components/DialogProvider'
+import { useAlert } from '../../components/AlertProvider'
 
 export default function DialogConsumption({ data, previous, onClose }) {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
+  const { SLDRAlert } = useAlert()
 
   function showDistribuidoras() {
     openDialog({

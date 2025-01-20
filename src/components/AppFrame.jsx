@@ -14,19 +14,17 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { ScrollRestoration } from 'react-router-dom'
 
-import { AlertContext } from '../Simulator/components/Alert'
+import { GlobalContext } from '../Simulator/GlobalContext'
 import ParametersMenu from '../Simulator/Parameters/ParametersMenu'
 import ContactMenu from '../Simulator/Contact/ContactMenu'
 import InLineHelp from '../Simulator/InLineHelp/InLineHelp'
 import ProjectMenu from '../Simulator/Project/ProjectMenu'
 import { getParametrosEntrada } from '../Simulator/classes/Utiles'
 
-import TCB from '../Simulator/classes/TCB'
-
 export default function AppFrame({ children }) {
   const { t } = useTranslation()
 
-  const { setInLineHelp } = useContext(AlertContext)
+  const { setInLineHelp } = useContext(GlobalContext)
 
   useEffect(() => {
     //DEMO: Detalle
