@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from 'react'
+import { createContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // OpenLayers objects
@@ -6,16 +6,19 @@ import { useTranslation } from 'react-i18next'
 import Feature from 'ol/Feature'
 import { LineString } from 'ol/geom'
 
+// REACT Solidar Components
+import { useAlert } from '../components/AlertProvider.jsx'
+
 // Solidar objects
 import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
 import BaseSolar from './classes/BaseSolar'
-import { AlertContext } from './components/Alert'
 
 const BasesContext = createContext()
 
 const BasesContextProvider = ({ children }) => {
   const { t } = useTranslation()
+  const { SLDRAlert } = useAlert()
   const [map, setMap] = useState()
   const [bases, setBases] = useState([])
 
@@ -229,12 +232,14 @@ const BasesContextProvider = ({ children }) => {
     //console.log('ProcessFromData 2', formData)
     formData = Object.assign({}, formData, BaseSolar.configuraPaneles(formData))
     if (formData.filas * formData.columnas === 0) {
-      alert(
+      SLDRAlert(
+        'VERICACION AREA',
         t('LOCATION.NOT_ENOUGH_AREA', {
           largo: UTIL.formatoValor('longitud', TCB.tipoPanelActivo.largo),
           ancho: UTIL.formatoValor('longitud', TCB.tipoPanelActivo.ancho),
           margen: UTIL.formatoValor('longitud', TCB.parametros.margen),
         }),
+        'Warning',
       )
       UTIL.deleteBaseGeometries(formData.idBaseSolar)
       return false

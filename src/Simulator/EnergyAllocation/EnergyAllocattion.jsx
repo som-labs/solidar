@@ -24,6 +24,7 @@ import { SLDRInfoBox, SLDRCollapsibleCard } from '../../components/SLDRComponent
 // REACT Solidar Components
 import UnitTypeBox from './UnitTypeBox'
 import { AlertContext } from '../components/Alert'
+import { useAlert } from '../../components/AlertProvider.jsx'
 import HelpConsumption from '../Consumption/HelpConsumption'
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
@@ -39,7 +40,6 @@ import AllocationGraph from './AllocattionGraph'
 export default function EnergyAllocationStep() {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { inLineHelp } = useContext(AlertContext)
 
   const {
     fincas,

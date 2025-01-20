@@ -23,6 +23,7 @@ import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 import { exportProject, importProject } from './ImportExport'
 import { AlertContext } from '../components/Alert'
+import { useAlert } from '../../components/AlertProvider.jsx'
 import { BasesContext } from '../BasesContext'
 import { ConsumptionContext } from '../ConsumptionContext'
 import { EconomicContext } from '../EconomicContext'
@@ -32,7 +33,8 @@ import PreparaEnergyBalance from '../EnergyBalance/PreparaEnergyBalance.jsx'
 export default function ProjectMenu() {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
-  const { SLDRAlert } = useContext(AlertContext)
+  //const { SLDRAlert } = useContext(AlertContext)
+  const { SLDRAlert } = useAlert()
   const { map, bases, setBases, addTCBBaseToState, setTipoPanelActivo } =
     useContext(BasesContext)
   const { setTipoConsumo, addTCBTipoToState } = useContext(ConsumptionContext)
