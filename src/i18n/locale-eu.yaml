@@ -3,9 +3,46 @@ APP_FRAME:
   PAGE_SIMULATORS: Simulagailuak
   PAGE_ABOUT: Solidari buruz
 
+  CONTRIBUTE_TRANSLATIONS: Itzulpenak egiten lagundu
+  CHANGE_LANGUAGE: Hizkuntza aldatu
+  TOGGLE_COLOR_MODE: Gaiaren kolorea aldatu
+  GO_HOME: Orri nagusira joan
+  GO_SIMULATOR: Simulatzailera joan
+  PAGE_NOT_FOUND: Ez da orria aurkitu
+  IMPORT_EXPORT: Esportazioaren kudeaketa / Simulazio proiektu baten berreskurapena
 REPORT:
   AUTOGENERACIO_TEXT_PRIMER: Zer da autoprodukzioa?
   AUTOGENERACIO_LINK_PRIMER: 'https://eu.support.somenergia.coop/article/838-zer-da-autoprodukzioa?utm_source=linkidiomes&utm_medium=cda&utm_campaign=euskara'
   AUTOGENERACIO_LINK_SEGON: 'https://eu.support.somenergia.coop/article/980-autoprodukzioko-soberakinen-konpentsazio-sinplifikatua?utm_source=linkidiomes&utm_medium=cda&utm_campaign=euskara'
   AUTOGENERACIO_LINK_TERCER: 'https://eu.support.somenergia.coop/article/932-autoprodukzioa-zer-gertatuko-da-argirik-gabe-gelditzen-bagara?utm_source=linkidiomes&utm_medium=cda&utm_campaign=euskara'
   AUTOGENERACIO_LINK_CUART: 'https://eu.support.somenergia.coop/category/837-autoprodukzioa'
+HOME:
+  IS_IT_WORTH_TITLE1: Eguzki-panelak jarri nahi ditut
+  IS_IT_WORTH_TITLE2: Nola dakit konpentsatzen nauen?
+  IS_IT_WORTH_BUTTON: Simulazio tresnetara joan
+  FURTHER_INFORMATION_TITLE: Informazio interesgarria
+  IS_IT_WORTH_PARAGRAPH1: "Solidar teilatuaren baldintzen arabera\neta partehartaileen\
+    \ kontsumo elektrikoaren arabera\neguzki plaka kopuru egokiena zehazten duen \n\
+    kalkulagailua da Solidar\n"
+  IS_IT_WORTH_PARAGRAPH2: "Teilatuaren tamaina, inklinazioa eta orientazioa,\nkontsumo\
+    \ eta tarifa elektrikoa bezalako datuak hartuta,\nEguzki plaka kopurua, instalazioaren\
+    \ kostua\neta aurrezpen potentziala jasotzen dituen\ntxosten bat sortzen du\n"
+  SIMULATION_TOOLS_TITLE: Simulazio tresnak
+  SIMULATION_TOOLS_INDIVIDUAL: Banakako kontsumoaren simulagailua
+  SIMULATION_TOOLS_INDIVIDUAL_DESCRIPTION: (Bertsio berria eskuragarri)
+  SIMULATION_TOOLS_COLLECTIVE: Kontsumo kolektiborako simulagailua
+  SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION: (Garatzen)
+ABOUT:
+  TITLE: Zer da Solidar Energia?
+ene: Urtarrila
+feb: Otsaila
+mar: Martxoa
+abr: Apirila
+may: Maiatza
+jun: Ekaina
+jul: Uztaila
+ago: Abuztua
+sep: Iraila
+oct: Urria
+nov: Azaroa
+dic: Abendua
