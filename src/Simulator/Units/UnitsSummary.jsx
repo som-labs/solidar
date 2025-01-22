@@ -33,14 +33,8 @@ export default function UnitsSummary(props) {
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()
-  const {
-    tipoConsumo,
-    setTipoConsumo,
-    preciosValidos,
-    addTCBTipoToState,
-    fincas,
-    setFincas,
-  } = useContext(ConsumptionContext)
+  const { tipoConsumo, preciosValidos, fincas, setFincas } =
+    useContext(ConsumptionContext)
 
   const { grupo, units } = props
   const [selectionModel, setSelectionModel] = useState([])
@@ -186,9 +180,7 @@ export default function UnitsSummary(props) {
   }
 
   function handleTipoConsumo(value) {
-    console.log('VALUE REC:', value)
     const newValue = value //=== '' ? 'Indefinido' : value
-    console.log('NEWVALUE:', newValue)
     setTipoConsumoAsignado(newValue)
 
     const newFincas = fincas.map((f) => {
@@ -198,7 +190,7 @@ export default function UnitsSummary(props) {
       }
       return f
     })
-    console.log('setting fincas in UnitsSummary all')
+
     setFincas(newFincas)
     TCB.cambioTipoConsumo = true
     TCB.requiereOptimizador = true
@@ -258,9 +250,8 @@ export default function UnitsSummary(props) {
       }
       return f
     })
-    console.log('setting fincas in UnitsSummary 1')
+
     setFincas(newFincas)
-    //summaryzeConsumption()
     TCB.cambioTipoConsumo = true
     TCB.requiereOptimizador = true
     TCB.requiereReparto = true

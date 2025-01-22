@@ -156,7 +156,7 @@ async function getParcelaXY(punto) {
         unaFinca.CUPS = 'CUPS de ' + TCB.idFinca
 
         unaFinca.idFinca = TCB.idFinca++
-        unaFinca.grupo = Finca.mapaUsoGrupo[unaFinca.uso]
+        //unaFinca.grupo = Finca.mapaUsoGrupo[unaFinca.uso]
         const _len = template.units.push(new Finca(unaFinca))
         TCB.participacionTotal += template.units[_len - 1].participacion
       }

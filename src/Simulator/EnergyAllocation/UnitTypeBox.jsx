@@ -13,7 +13,6 @@ import UnitsSummary from './UnitsSummary'
 // Solidar objects
 import TCB from '../classes/TCB.js'
 import * as UTIL from '../classes/Utiles'
-import { all } from 'ol/events/condition.js'
 
 export default function UnitTypeBox(props) {
   const { t } = useTranslation()
@@ -23,16 +22,12 @@ export default function UnitTypeBox(props) {
   const [openDialog, closeDialog] = useDialog()
 
   const { grupo } = props
-  console.log(grupo)
-  console.log(fincas.filter((e) => e.grupo === grupo))
-  const units = fincas.filter((e) => e.grupo === grupo)
 
   function showDetails() {
     openDialog({
       children: (
         <UnitsSummary
           grupo={grupo}
-          units={units}
           maxWidth={'xs'}
           fullWidth={true}
           onClose={closeDialog}
@@ -48,6 +43,7 @@ export default function UnitTypeBox(props) {
       </Typography>
 
       {allocationGroup[grupo].unidades > 0 ? (
+        //Es un grupo de fincas
         <>
           <Box
             sx={{
@@ -149,35 +145,9 @@ export default function UnitTypeBox(props) {
               <Button onClick={showDetails}>{t('UNITS.LABEL_VER_DETALLES')}</Button>
             </Box>
           </Box>
-          {/* <Typography
-                variant="body"
-                textAlign={'center'}
-                dangerouslySetInnerHTML={{
-                  __html:
-                    '<br />Cantidad: <b>' +
-                    allocationGroup[grupo].unidades +
-                    '</b><br />Participación:  <b>' +
-                    UTIL.formatoValor('porciento', allocationGroup[grupo].participacion) +
-                    '</b><br />Uso de energía:  <b>' +
-                    UTIL.formatoValor(
-                      'energia',
-                      allocationGroup[grupo].consumo * TCB.consumo.totalAnual,
-                    ) +
-                    '</b><br />% uso de energía total:  <b>' +
-                    UTIL.formatoValor('porciento', allocationGroup[grupo].consumo * 100) +
-                    '</b><br />Energia Total asignada: <b>' +
-                    UTIL.formatoValor(
-                      'energia',
-                      TCB.produccion.totalAnual * allocationGroup[grupo].produccion,
-                    ) +
-                    '</b><br />Criterio asignación <b>' +
-                    allocationGroup[grupo].criterio +
-                    '</b>',
-                }}
-              />
-              <Button onClick={showDetails}>{t('UNITS.LABEL_VER_DETALLES')}</Button> */}
         </>
       ) : (
+        //Es una zona comun
         <>
           <Box
             sx={{
@@ -219,26 +189,6 @@ export default function UnitTypeBox(props) {
               )}
             </Box>
           </Box>
-
-          {/* <Typography
-                variant="body"
-                textAlign={'center'}
-                dangerouslySetInnerHTML={{
-                  __html:
-                    '<br />Uso de energía:  <b>' +
-                    UTIL.formatoValor(
-                      'energia',
-                      allocationGroup[grupo].consumo * TCB.consumo.totalAnual,
-                    ) +
-                    '</b><br />% uso de energía total:  <b>' +
-                    UTIL.formatoValor('porciento', allocationGroup[grupo].consumo * 100) +
-                    '</b><br />Energia Total asignada:  <b>' +
-                    UTIL.formatoValor(
-                      'energia',
-                      TCB.produccion.totalAnual * allocationGroup[grupo].produccion,
-                    ),
-                }}
-              /> */}
         </>
       )}
     </>

@@ -798,6 +798,8 @@ BASIC:
   valor_true: Verdadero
   valor_false: Falso
   LABEL_NO_ROWS: Sin datos
+  LABEL_YES: SI
+  LABEL_NO: 'NO'
 
 GRAPHICS:
   LABEL_CONSUMPTION: Uso eléctrico
@@ -1019,9 +1021,11 @@ REPORT:
   ANYS: años
   RETURN: Volver a la simulación
 UNITS:
+  DESCRIPTION_1: 'Los participes se agrupan por el tipo de uso en grupos a los que posteriormente se les asignará un porcentaje de la energía producida por los paneles.<br />  En este paso solo definimos el uso de la energia previsto para cada grupo, la distribución de la energía dentro del grupo se definirá en el paso de <b>REPARTO ENERGÍA</b>'
   TITLE: Unidades
-  DESCRIPTION_2: A continuación se definirá el uso de energía asignado a cada una de las unidades catastrales y zonas comunes identificadas en esta finca
-  DESCRIPTION_3: Definición de los usos electricos de las zonas comunes del inmueble.
+  DESCRIPTION_2: "A continuación se definirá el uso de energía previsto para cada participe asi como de las zonas comunes identificadas.<br />Si no se muestra información en esta pantalla es posible que no se hubieran obtenido datos de la Dirección General del Catastro en las coordenadas donde se realiza la instalación, en este caso podrás subir los datos desde un fichero CSV que incluya al menos las siguientes columnas: idFinca, nombreFinca, uso y participacion. <a href={{url}} target='_blank'>Puedes descargar una plantilla aqui"
+  HEADER_FIELDS: El campo {{field}} es requerido
+  DESCRIPTION_3: Definición de las zonas comunes del inmueble y sus usos eléctricos.
   LABEL_TIPO_USO: Define tipo de uso eléctrico para todas las unidades
   TOOLTIP_TIPO_USO: Selecciona el tipo de uso eléctrico asignado a todas las unidades
   LABEL_TIPO_USO_1: Uso eléctrico
@@ -1040,11 +1044,16 @@ ENERGY_ALLOCATION:
   BETA_TOOLTIP: Coeificiente beta asignado a esta unidad
   NO_BALANCE: Reparto energía no balanceado
   TITLE_BAR_CHART: Asignación de producción comparada<br /> con uso de energía
+  NULL_ALLOCATION: 'No se puede tener un grupo o zona común con uso de energía y sin asignación de producción.<br />Vuelve al paso de definición de unidades y redefine los usos.'
 
 ECONOMIC_ALLOCATION:
   TITLE: Reparto Económico
   DESCRIPTION: A continuación se definirán los pagos correpondientes a las unidades que participan en el proyecto.
   DESCRIPTION_2: Aqui puedes ver el detalle de cada uno de los grupos
+  ALLOCATION_CRITERIA: Criterio para distribucion de costes de las zonas comunes
+  SELECT_GROUPS: Selecciona que grupos se hacen cargo de los gastos correspondientes a las zonas comunes y cuales no
+  LABEL_EXPORT_CSV: Exportar a CSV
+  LABEL_FICHERO_REPARTO: Generar fichero reparto
 
 Finca:
   PROP:

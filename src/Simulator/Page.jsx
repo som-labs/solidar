@@ -74,7 +74,7 @@ export default function Page() {
 
   function validaLocationStep() {
     results = validaBases()
-    if (!results.status) SLDRAlert('VALIDACION', results.error, 'Warning')
+    if (!results.status) SLDRAlert('VALIDACION', results.error, 'Error')
     return results.status
   }
 
@@ -101,7 +101,6 @@ export default function Page() {
 
   async function validaUnitsStep() {
     //Verifica que al menos una unidad o una zona común tengan uso electrico asignado
-    console.dir(TCB.Finca)
 
     let chk = false
     for (const _fnc of TCB.Finca) {
