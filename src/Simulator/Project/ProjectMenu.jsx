@@ -22,7 +22,6 @@ import DialogProject from './DialogProject'
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 import { exportProject, importProject } from './ImportExport'
-import { AlertContext } from '../components/Alert'
 import { useAlert } from '../../components/AlertProvider.jsx'
 import { BasesContext } from '../BasesContext'
 import { ConsumptionContext } from '../ConsumptionContext'
@@ -33,7 +32,6 @@ import PreparaEnergyBalance from '../EnergyBalance/PreparaEnergyBalance.jsx'
 export default function ProjectMenu() {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
-  //const { SLDRAlert } = useContext(AlertContext)
   const { SLDRAlert } = useAlert()
   const { map, bases, setBases, addTCBBaseToState, setTipoPanelActivo } =
     useContext(BasesContext)
@@ -65,7 +63,7 @@ export default function ProjectMenu() {
         returnCondition = await importProject(formData)
 
         if (!returnCondition.status) {
-          alert(t(returnCondition.error))
+          SLDRAlert('IMPORTA PROYECTO', t(returnCondition.error), 'Error')
           return false
         }
 
@@ -95,8 +93,7 @@ export default function ProjectMenu() {
           setEcoData(TCB.economico)
         }
 
-        //SLDRAlert(t('Proyecto.MSG_success'), 'ABC', 'Info')
-        alert(TCB.i18next.t('Proyecto.MSG_success'))
+        SLDRAlert('SALVA PROYECTO', t('Proyecto.MSG_success'), 'Message')
         break
 
       case 'exportProject':
@@ -108,7 +105,8 @@ export default function ProjectMenu() {
         rFile = await exportProject()
         //REVISAR: se genera loop infinito de renderizacion
         //SLDRAlert(t('Fichero generado'), rFile, 'Info')
-        if (rFile) alert(t('Fichero generado -> ') + rFile)
+        if (rFile)
+          SLDRAlert('EXPORTA PROYECTO', t('Fichero generado -> ') + rFile, 'Message')
         break
       case 'save':
         for (let key in formData) {

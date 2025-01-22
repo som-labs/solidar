@@ -58,6 +58,7 @@ export default function EconomicAllocationStep() {
 
   const [groupZC, setGroupZC] = useState([])
   const [ready, setReady] = useState(false)
+  const [tCost, setTCost] = useState(0)
 
   const [openDialog, closeDialog] = useDialog()
   const allocationBox = useRef()
@@ -114,6 +115,13 @@ export default function EconomicAllocationStep() {
         }
       }
     }
+
+    const vPropio = TCB.Finca.reduce((t, u) => t + u.coefEnergia, 0)
+    const vExtra = TCB.Finca.reduce(
+      (t, u) => t + Object.values(u.extraCost).reduce((st, e) => st + e, 0),
+      0,
+    )
+    setTCost((vPropio + vExtra) * TCB.economico.precioInstalacionCorregido)
     distribuyeZonasComunes()
     setGroupZC(TCB.GroupsZC)
     setReady(true)
@@ -195,13 +203,6 @@ export default function EconomicAllocationStep() {
     }
   }
 
-  const vPropio = TCB.Finca.reduce((t, u) => t + u.coefEnergia, 0)
-  const vExtra = TCB.Finca.reduce(
-    (t, u) => t + Object.values(u.extraCost).reduce((st, e) => st + e, 0),
-    0,
-  )
-  let tCost = (vPropio + vExtra) * TCB.economico.precioInstalacionCorregido
-
   function changeDistributionGroup(newGroupRow, oldGroupRow) {
     const updatedZonaComun = Object.keys(newGroupRow).filter(
       (key) => newGroupRow[key] !== oldGroupRow[key],
@@ -263,7 +264,7 @@ export default function EconomicAllocationStep() {
               }}
             />
 
-            <IconButton
+            {/* <IconButton
               onClick={() => help(1)}
               size="small"
               style={{
@@ -275,22 +276,26 @@ export default function EconomicAllocationStep() {
               }}
             >
               <HelpIcon />
-            </IconButton>
-            <Box sx={{ display: 'flex' }}>
+            </IconButton> */}
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
               <Typography variant="h4">
                 {'Coste total a distribuir ' +
                   UTIL.formatoValor('dinero', TCB.economico.precioInstalacionCorregido)}
               </Typography>
-              {tCost.toFixed(0) !==
-              TCB.economico.precioInstalacionCorregido.toFixed(0) ? (
-                <Typography variant="h4">
-                  {'. Hay ' +
-                    UTIL.formatoValor(
-                      'dinero',
-                      TCB.economico.precioInstalacionCorregido - tCost,
-                    ) +
-                    ' pendientes de asignar'}
-                </Typography>
+              {tCost ? (
+                tCost.toFixed(0) !==
+                TCB.economico.precioInstalacionCorregido.toFixed(0) ? (
+                  <Typography variant="h4">
+                    {'. Hay ' +
+                      UTIL.formatoValor(
+                        'dinero',
+                        TCB.economico.precioInstalacionCorregido - tCost,
+                      ) +
+                      ' pendientes de asignar'}
+                  </Typography>
+                ) : (
+                  ''
+                )
               ) : (
                 ''
               )}
@@ -311,11 +316,10 @@ export default function EconomicAllocationStep() {
         >
           <Box>
             <Typography variant="h5" textAlign={'center'}>
-              Criterio para distribucion de costes de las zonas comunes
+              {t('ECONOMIC_ALLOCATION.ALLOCATION_CRITERIA')}
             </Typography>
             <Typography variant="body" textAlign={'center'}>
-              Selecciona que grupos se hacen cargo de los gastos correspondientes a las
-              zonas comunes y cuales no
+              {t('ECONOMIC_ALLOCATION.SELECT_GROUPS')}
             </Typography>
           </Box>
           {ready ? (
@@ -357,14 +361,14 @@ export default function EconomicAllocationStep() {
 
         {groupZC ? (
           <>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Typography
                 variant="body"
                 dangerouslySetInnerHTML={{
                   __html: t('ECONOMIC_ALLOCATIONS.DESCRIPTION_2'),
                 }}
               />
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={12}>
               <Box
@@ -397,10 +401,11 @@ export default function EconomicAllocationStep() {
       </>
 
       <Button onClick={() => UTIL.dumpData('EconomicAllocation.csv', TCB.Finca)}>
-        Exportar
+        {t('ECONOMIC_ALLOCATION.LABEL_EXPORT_CSV')}
       </Button>
-      <Button onClick={generaFicheroResumen}>Fichero reparto</Button>
-      <Button>Importar</Button>
+      <Button onClick={generaFicheroResumen}>
+        {t('ECONOMIC_ALLOCATION.LABEL_FICHERO_REPARTO')}
+      </Button>
     </Container>
   )
 }

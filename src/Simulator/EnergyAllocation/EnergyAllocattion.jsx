@@ -60,7 +60,7 @@ export default function EnergyAllocationStep() {
     //  consumo: como % del consumo total
     //  produccion: asignada como % de la produccion total
     //  criterio: de distribución de la produccion ['PARTICIPACION', 'CONSUMO', 'PARITARIO']
-    //  unidades: numero de unidades que confirman el grupo. Las que pagarán las zonas comunes
+    //  unidades: numero de unidades que conforman el grupo. Las que pagarán las zonas comunes
     //  participes: numero de unidades que participan. Las que recibiran produccion
     //  participacionT: % de propiedad total de participacion
     //  participacionP: % de propiedad de los participes
@@ -108,6 +108,7 @@ export default function EnergyAllocationStep() {
     })
 
     // Get consumption from each Zona Comun and add to the allocationGroup
+    console.log(zonasComunes)
     zonasComunes.forEach((z) => {
       if (z.nombreTipoConsumo !== '') {
         const _consTC = TCB.TipoConsumo.find(
@@ -129,9 +130,10 @@ export default function EnergyAllocationStep() {
     })
     setAllocationGroup(uniqueGroup)
 
-    //Primera asignacion de grupo basada en consumo y de participes basada en participacion
+    //Primera asignacion de produccion a cada grupo basada en el consumo grupal
+    //Distribución de la produccion del grupo entre sus participes basada en participacion
     for (const grupo in uniqueGroup) {
-      //if (grupo in Finca.mapaUsoGrupo) {
+      //Si el grupo tiene unidades esta formado por fincas de DGC
       if (uniqueGroup[grupo].unidades > 0) {
         //Es grupo de catastro hay que calcular betas y asignarlo a cada finca
         for (const f of TCB.Finca) {
@@ -149,9 +151,8 @@ export default function EnergyAllocationStep() {
           uniqueGroup[grupo].produccion
       }
     }
-    console.log('SETTING')
+
     closeBetasToOne()
-    console.log('setting fincas in EnergyAllocation')
     setFincas([...TCB.Finca])
     setZonasComunes([...TCB.ZonaComun])
     setRepartoValido(true)
@@ -165,24 +166,25 @@ export default function EnergyAllocationStep() {
   }
 
   /**
-    Hay que asegurar que la suma de lo beta con 6 decimales de exactamente 1.
+    Hay que asegurar que la suma de los beta con 6 decimales de exactamente 1.
     Si hubiera alguna diferencia se la asignamos al primer CUPS
    */
   function closeBetasToOne() {
     const chkTotal =
-      TCB.Finca.reduce((t, f) => t + f.coefEnergia, 0) +
+      TCB.Finca.reduce((t, f) => t + UTIL.roundDecimales(f.coefEnergia, 6), 0) +
       TCB.ZonaComun.reduce((t, z) => t + z.coefEnergia, 0)
-    const dummyFinca = TCB.Finca.find((f) => f.coefEnergia > 0)
+    const dummyFinca = TCB.Finca.find((f) => UTIL.roundDecimales(f.coefEnergia, 6) > 0)
     dummyFinca.coefEnergia += 1 - chkTotal
   }
 
   function generaFicheroReparto() {
+    closeBetasToOne()
     const betaList = []
     for (const f of TCB.Finca.filter((f) => f.coefEnergia > 0)) {
-      betaList.push({ CUPS: f.CUPS, beta: f.coefEnergia })
+      betaList.push({ CUPS: f.CUPS, beta: f.coefEnergia.toFixed(6) })
     }
     for (const z of TCB.ZonaComun.filter((z) => z.coefEnergia > 0)) {
-      betaList.push({ CUPS: z.CUPS, beta: z.coefEnergia })
+      betaList.push({ CUPS: z.CUPS, beta: z.coefEnergia.toFixed(6) })
     }
     UTIL.dumpData(TCB.parametros.CAU + '.txt', betaList)
   }
@@ -199,7 +201,7 @@ export default function EnergyAllocationStep() {
               }}
             />
 
-            <IconButton
+            {/* <IconButton
               onClick={() => help(1)}
               size="small"
               style={{
@@ -211,7 +213,7 @@ export default function EnergyAllocationStep() {
               }}
             >
               <HelpIcon />
-            </IconButton>
+            </IconButton> */}
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
               <Typography variant="h4">
                 {t('ENERGY_ALLOCATION.TOTAL_ENERGY', {

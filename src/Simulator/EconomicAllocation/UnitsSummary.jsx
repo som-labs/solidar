@@ -119,11 +119,12 @@ export default function UnitsSummary(props) {
           {t('Finca.PROP.participacion')}
           <br />
           {'(' +
-            UTIL.round2Decimales(
+            UTIL.roundDecimales(
               TCB.Finca.filter((e) => e.grupo === grupo).reduce(
                 (a, b) => a + b.participacion,
                 0,
               ),
+              2,
             ) +
             '% )'}
         </div>
@@ -157,12 +158,12 @@ export default function UnitsSummary(props) {
           {'(' +
             UTIL.roundDecimales(
               TCB.Finca.filter((e) => e.grupo === grupo).reduce(
-                (a, b) => a + b.coefEnergia * 100,
+                (a, b) => a + b.coefEnergia,
                 0,
-              ),
-              6,
+              ) * 100,
+              2,
             ) +
-            ' %)'}
+            '%)'}
         </div>
       ),
       headerAlign: 'center',
@@ -261,7 +262,6 @@ export default function UnitsSummary(props) {
   }
 
   useEffect(() => {
-    console.log(units)
     const vPropio = units.reduce((t, u) => t + u.coefEnergia, 0)
     const vExtra = units.reduce(
       (t, u) => t + Object.values(u.extraCost).reduce((st, e) => st + e, 0),
@@ -269,6 +269,7 @@ export default function UnitsSummary(props) {
     )
     setTotalCost((vPropio + vExtra) * TCB.economico.precioInstalacionCorregido)
   }, [])
+
   return (
     <Dialog
       fullScreen

@@ -70,6 +70,16 @@ export default function SomEnergiaTheme(isDarkMode) {
           excedente: isDarkMode ? '#997171' : '#997171',
         },
       },
+
+      alert: {
+        color: {
+          Error: isDarkMode ? '#f7805a' : '#f7805a',
+          Warning: isDarkMode ? '#f7dd5a' : '#f7dd5a',
+          Message: isDarkMode ? '#cff75a' : '#cff75a',
+        },
+        text: 'black',
+      },
+
       informe: {
         warning: {
           backgroundColor: isDarkMode ? '#333333' : '#f9cb9c',

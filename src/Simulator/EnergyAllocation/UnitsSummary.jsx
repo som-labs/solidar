@@ -45,10 +45,20 @@ export default function UnitsSummary(props) {
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()
+
   const { allocationGroup, setAllocationGroup, preciosValidos, fincas, setFincas } =
     useContext(ConsumptionContext)
 
-  const { grupo, units } = props
+  const { grupo } = props
+  const [units, setUnits] = useState(TCB.Finca.filter((e) => e.grupo === grupo))
+
+  useEffect(() => {
+    distributeAllocation(
+      grupo,
+      allocationGroup[grupo].produccion,
+      allocationGroup[grupo].criterio,
+    )
+  }, [])
 
   const columns = [
     {
@@ -195,94 +205,99 @@ export default function UnitsSummary(props) {
   }
 
   function distributeAllocation(grupo, coefGrupo, criterio) {
-    console.log(
-      'Distribuye grupo ' + grupo + ' coef ' + coefGrupo + ' criterio ' + criterio,
-    )
+    // console.log(
+    //   'Distribuye grupo ' + grupo + ' coef ' + coefGrupo + ' criterio ' + criterio,
+    // )
 
     switch (criterio) {
       case 'PARTICIPACION':
-        for (const f of units) {
-          if (f.participa && f.grupo === grupo) {
-            f.coefEnergia =
-              (f.participacion / allocationGroup[grupo].participacionP) * coefGrupo
-          }
+        setUnits((prevUnits) =>
+          prevUnits.map((unit) => ({
+            ...unit,
+            coefEnergia: unit.participa
+              ? (unit.participacion / allocationGroup[grupo].participacionP) * coefGrupo
+              : 0,
+          })),
+        )
+        for (const f of TCB.Finca) {
+          f.coefEnergia = f.participa
+            ? (f.participacion / allocationGroup[grupo].participacionP) * coefGrupo
+            : 0
         }
         break
       case 'CONSUMO':
-        for (const f of units) {
-          if (f.participa && f.grupo === grupo) {
-            f.coefEnergia = (f.coefConsumo / allocationGroup[grupo].consumo) * coefGrupo
-          }
+        setUnits((prevUnits) =>
+          prevUnits.map((unit) => ({
+            ...unit,
+            coefEnergia: unit.participa
+              ? (unit.coefConsumo / allocationGroup[grupo].consumo) * coefGrupo
+              : 0,
+          })),
+        )
+        for (const f of TCB.Finca) {
+          f.coefEnergia = f.participa
+            ? (f.coefConsumo / allocationGroup[grupo].consumo) * coefGrupo
+            : 0
         }
         break
       case 'PARITARIO':
+        setUnits((prevUnits) =>
+          prevUnits.map((unit) => ({
+            ...unit,
+            coefEnergia: unit.participa
+              ? coefGrupo / allocationGroup[grupo].participes
+              : 0,
+          })),
+        )
         for (const f of TCB.Finca) {
-          if (f.participa && f.grupo === grupo) {
-            f.coefEnergia = coefGrupo / allocationGroup[grupo].participes
-          }
+          f.coefEnergia = f.participa ? coefGrupo / allocationGroup[grupo].participes : 0
         }
         break
     }
 
-    let newFincas = []
-    for (const f of TCB.Finca) {
-      console.dir(f.coefEnergia)
-      newFincas.push(f)
-    }
-    for (const f of newFincas) {
-      console.dir(f.coefEnergia)
-    }
-
-    // const newFincas = TCB.Finca.map((f) => {
-    //   if (f.grupo === grupo && f.participa) {
-    //     f.coefEnergia = 1 //TCB.Finca.find((tf) => f.idFinca === tf.idFinca).coefEnergia
-    //     console.log(f)
-    //   }
-    //   return f
-    // })
-    console.dir(newFincas)
-    console.log('setting fincas in EnergyAllocation-UNITSSUMMARY')
-    setFincas([...newFincas])
+    setFincas([TCB.Finca])
   }
 
-  console.log(allocationGroup[grupo])
-
   return (
-    <Dialog
-      fullScreen
-      open={true}
-      onClose={closeDialog}
-      aria-labelledby="full-screen-dialog-title"
-    >
-      <DialogTitle id="full-screen-dialog-title">
-        {t('ENERGY_ALLOCATION.ALLOCATION_SUMMARY', { grupo: grupo })}
-      </DialogTitle>
+    <>
+      {units && (
+        <Dialog
+          fullScreen
+          open={true}
+          onClose={closeDialog}
+          aria-labelledby="full-screen-dialog-title"
+        >
+          <DialogTitle id="full-screen-dialog-title">
+            {t('ENERGY_ALLOCATION.ALLOCATION_SUMMARY', { grupo: grupo })}
+          </DialogTitle>
 
-      <DialogContent>
-        <Grid container justifyContent={'center'} rowSpacing={4}>
-          {preciosValidos && (
-            <Grid item xs={11}>
-              <DataGrid
-                sx={theme.tables.headerWrap}
-                getRowId={getRowId}
-                rows={units}
-                columns={columns}
-                hideFooter={false}
-                rowHeight={30}
-                autoHeight
-                disableColumnMenu
-                localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
-                slots={{ toolbar: changeCriterio }} //, footer: footerSummary }}
-              />
+          <DialogContent>
+            <Grid container justifyContent={'center'} rowSpacing={4}>
+              {preciosValidos && (
+                <Grid item xs={11}>
+                  <DataGrid
+                    sx={theme.tables.headerWrap}
+                    getRowId={getRowId}
+                    rows={units}
+                    columns={columns}
+                    hideFooter={false}
+                    rowHeight={30}
+                    autoHeight
+                    disableColumnMenu
+                    localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
+                    slots={{ toolbar: changeCriterio }} //, footer: footerSummary }}
+                  />
+                </Grid>
+              )}
             </Grid>
-          )}
-        </Grid>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={closeDialog} color="primary">
-          {t('BASIC.LABEL_CLOSE')}
-        </Button>
-      </DialogActions>
-    </Dialog>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={closeDialog} color="primary">
+              {t('BASIC.LABEL_CLOSE')}
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
+    </>
   )
 }

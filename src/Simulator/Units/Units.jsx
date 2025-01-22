@@ -10,7 +10,6 @@ import { useTheme } from '@mui/material/styles'
 // REACT Solidar Components
 import UnitTypeBox from './UnitTypeBox'
 import ZonaComunTypeBox from './ZonaComunTypeBox'
-import { AlertContext } from '../components/Alert'
 import { useAlert } from '../../components/AlertProvider.jsx'
 import HelpConsumption from '../Consumption/HelpConsumption'
 // REACT Solidar Components
@@ -27,6 +26,8 @@ import { useDialog } from '../../components/DialogProvider'
 export default function UnitsStep() {
   const { t } = useTranslation()
   const theme = useTheme()
+  const { SLDRAlert } = useAlert()
+
   const { fincas, setFincas, zonasComunes, setZonasComunes } =
     useContext(ConsumptionContext)
 
@@ -75,7 +76,11 @@ export default function UnitsStep() {
     let reader = new FileReader()
     return new Promise((resolve, reject) => {
       reader.onerror = (err) => {
-        alert(t('precios_MSG_errorLecturaFicheroImportacion') + '\nReader.error: ' + err)
+        SLDRAlert(
+          'CARGA FINCAS',
+          t('precios_MSG_errorLecturaFicheroImportacion') + '\nReader.error: ' + err,
+          'Error',
+        )
         reject('...error de lectura')
       }
 
@@ -85,26 +90,29 @@ export default function UnitsStep() {
 
         const text = e.target.result
         const data = csvToArray(text, ';')
-        for (let finca of data) {
-          finca.participacion = parseFloat(finca.participacion)
-          finca.participa = String(finca.participa).toLowerCase() === 'true'
-          //Si la finca cargada tiene un tipo de consumo inexistente lo limpiamos
-          if (finca.nombreTipoConsumo !== '') {
-            if (
-              !TCB.TipoConsumo.find(
-                (tc) => tc.nombreTipoConsumo === finca.nombreTipoConsumo,
-              )
-            ) {
-              finca.nombreTipoConsumo = ''
+        if (data.length > 0) {
+          for (let finca of data) {
+            finca.participacion = parseFloat(finca.participacion)
+            finca.participa = String(finca.participa).toLowerCase() === 'true'
+            //Si la finca cargada tiene un tipo de consumo inexistente lo limpiamos
+            if (finca.nombreTipoConsumo !== '') {
+              if (
+                !TCB.TipoConsumo.find(
+                  (tc) => tc.nombreTipoConsumo === finca.nombreTipoConsumo,
+                )
+              ) {
+                finca.nombreTipoConsumo = ''
+              }
             }
+            Finca.actualiza_creaFinca(finca)
           }
-          Finca.actualiza_creaFinca(finca)
+
+          console.log('setting fincas in UNITS loadCSV')
+          setFincas(TCB.Finca)
+          TCB.requiereOptimizador = true
+          console.log(TCB.Finca)
+          //_tablaFinca.updateOrAddData(data)
         }
-        console.log('setting fincas in UNITS loadCSV')
-        setFincas(TCB.Finca)
-        TCB.requiereOptimizador = true
-        console.log(TCB.Finca)
-        //_tablaFinca.updateOrAddData(data)
       }
       reader.readAsText(file)
     })
@@ -123,6 +131,31 @@ export default function UnitsStep() {
     }
     UTIL.debugLog('Cabecera CSV:', headers)
 
+    const fields = [
+      { name: 'nombreFinca', required: true },
+      { name: 'uso', required: true },
+      { name: 'superficie', required: false },
+      { name: 'participacion', required: true },
+      { name: 'CUPS', required: false },
+      { name: 'grupo', required: false },
+      { name: 'nombreTipoConsumo', required: false },
+      { name: 'participa', required: false },
+      { name: 'idFinca', required: true },
+      { name: 'refcat', required: false },
+    ]
+
+    for (let f in fields) {
+      if (fields[f].required) {
+        if (!headers.includes(fields[f].name)) {
+          SLDRAlert(
+            'IMPORTA FINCAS',
+            t('UNITS.HEADER_FIELDS', { field: fields[f].name }),
+            'Error',
+          )
+          return
+        }
+      }
+    }
     // slice from \n index + 1 to the end of the text
     // use split to create an array of each csv value row
     const rows = str.slice(str.indexOf('\n') + 1).split('\n')
@@ -187,7 +220,9 @@ export default function UnitsStep() {
           <Typography
             variant="body"
             dangerouslySetInnerHTML={{
-              __html: t('UNITS.DESCRIPTION_2'),
+              __html: t('UNITS.DESCRIPTION_2', {
+                url: TCB.basePath + '/public/FincasSample.csv',
+              }),
             }}
           />
         </Grid>
