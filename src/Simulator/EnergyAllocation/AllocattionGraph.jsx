@@ -2,48 +2,40 @@ import { useContext, Fragment, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Plotly objects
-import Plot from 'react-plotly.js'
 import Plotly from 'plotly.js-dist'
 
 // MUI objects
 import {
-  IconButton,
   Grid,
   Typography,
   Container,
   Box,
-  Button,
   TextField,
   InputAdornment,
 } from '@mui/material'
-import HelpIcon from '@mui/icons-material/HelpOutlineRounded.js'
-import AddBoxIcon from '@mui/icons-material/AddBox'
+
 import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
-import UnitTypeBox from './UnitTypeBox'
-import { AlertContext } from '../components/Alert'
 import { useAlert } from '../../components/AlertProvider.jsx'
-import HelpConsumption from '../Consumption/HelpConsumption'
+
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
 
 //Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import Finca from '../classes/Finca'
 
 //React global components
-import { useDialog } from '../../components/DialogProvider'
 
-export default function AllocationGraph(props) {
-  const { t } = useTranslation()
-  const theme = useTheme()
+export default function AllocationGraph() {
+  const { t, i18n } = useTranslation()
 
+  const { SLDRAlert } = useAlert()
+  const [error, setError] = useState({ status: false, field: '' })
   const { repartoValido, setRepartoValido, allocationGroup, setAllocationGroup } =
     useContext(ConsumptionContext)
 
-  const [balance, setBalance] = useState(false)
   const [chartAllocation, setChartAllocation] = useState([])
 
   const graphWidth = useRef()
@@ -115,6 +107,25 @@ export default function AllocationGraph(props) {
   }
 
   function changeAllocation(group, value) {
+    if (!UTIL.ValidateDecimal(i18n.language, value)) {
+      setError({ status: true, field: group })
+      return
+    } else {
+      setError({ status: false, field: group })
+    }
+
+    if (Number(value) < 0 || Number(value) > 100) {
+      setError({ status: true, field: group })
+      return
+    } else {
+      setError({ status: false, field: group })
+    }
+
+    if (Number(value) === 0) {
+      SLDRAlert('ASIGNACIÓN NULA', t('ENERGY_ALLOCATION.NULL_ALLOCATION'), 'Warning')
+      return
+    }
+
     setAllocationGroup((prev) => ({
       ...prev,
       [group]: {
@@ -171,6 +182,8 @@ export default function AllocationGraph(props) {
           border: 1,
           padding: 2,
           borderRadius: 2,
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <Box
@@ -191,6 +204,13 @@ export default function AllocationGraph(props) {
             boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
           }}
         ></Box>
+        {!state ? (
+          <Typography>
+            {((1 - chartAllocation.reduce((a, b) => a + b.y[1], 0)) * 100).toFixed(2)}
+          </Typography>
+        ) : (
+          ''
+        )}
       </Box>
     )
   }
@@ -266,6 +286,12 @@ export default function AllocationGraph(props) {
                             )}
                             onChange={(event) =>
                               changeAllocation(group, event.target.value)
+                            }
+                            error={error.status && error.field === group}
+                            helperText={
+                              error.status && error.field === group
+                                ? t('BASIC.LABEL_NUMBER')
+                                : ''
                             }
                           />
 

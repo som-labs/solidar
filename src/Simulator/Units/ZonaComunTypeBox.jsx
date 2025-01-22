@@ -15,7 +15,9 @@ import * as UTIL from '../classes/Utiles'
 export default function ZonaComunTypeBox(props) {
   const theme = useTheme()
 
-  const { zonasComunes, setZonasComunes } = useContext(ConsumptionContext)
+  const { zonasComunes, setZonasComunes, allocationGroup, setAllocationGroup } =
+    useContext(ConsumptionContext)
+
   const { zonaComun } = props
   const [totalConsumption, setTotalConsumption] = useState()
 
@@ -67,6 +69,12 @@ export default function ZonaComunTypeBox(props) {
     prevZonasComunes.splice(nIndex, 1)
     TCB.ZonaComun.splice(nIndex, 1)
     setZonasComunes([...prevZonasComunes])
+
+    if (allocationGroup) {
+      const newAllocationGroup = { ...allocationGroup }
+      delete newAllocationGroup[props.zonaComun.nombre]
+      setAllocationGroup(newAllocationGroup)
+    }
   }
 
   return (

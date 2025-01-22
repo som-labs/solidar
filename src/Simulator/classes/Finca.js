@@ -54,6 +54,8 @@ class Finca {
         ? parseFloat(finca.participacion.replace(',', '.'))
         : finca.participacion
 
+    this.grupo = Finca.mapaUsoGrupo?.[finca.uso] ? Finca.mapaUsoGrupo[finca.uso] : 'Otros'
+
     /**
      * Cada finca lleva un puntero al PuntoConsumo que pertenece
      * @see PuntoConsumo

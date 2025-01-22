@@ -366,14 +366,20 @@ export default function MapComponent() {
         setFincas(alfa.units)
         TCB.Finca = alfa.units.slice()
       } else {
-        SLDRAlert(
-          'Busqueda catastro',
-          'Error buscando parcela<br />' + alfa.error,
-          'Warning',
-        )
-        TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
-        setFincas([])
-        return false
+        if (
+          !(await SLDRAlert(
+            'Busqueda catastro',
+            'Error desde DGC buscando parcela en esas coordenadas:<br />' +
+              alfa.error +
+              '<br />¿Desea continuar y cargar las fincas mas tarde?',
+            'Warning',
+            true,
+          ))
+        ) {
+          TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
+          setFincas([])
+          return false
+        }
       }
     }
 
