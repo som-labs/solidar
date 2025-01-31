@@ -90,7 +90,7 @@ export default function UnitsSummary(props) {
       description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
       sortable: false,
       valueGetter: (params) =>
-        params.row.nombreTipoConsumo ? params.row.nombreTipoConsumo : 'Indefinido',
+        params.row.participa ? params.row.nombreTipoConsumo : 'No participa',
     },
     {
       field: 'coefEnergia',
