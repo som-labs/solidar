@@ -26,6 +26,7 @@ import { useAlert } from '../../components/AlertProvider.jsx'
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
+import TipoConsumo from '../classes/TipoConsumo.js'
 
 export default function UnitsSummary(props) {
   const { t } = useTranslation()
@@ -33,10 +34,10 @@ export default function UnitsSummary(props) {
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()
-  const { tipoConsumo, preciosValidos, fincas, setFincas } =
+  const { tipoConsumo, preciosValidos, fincas, setFincas, setAllocationGroup } =
     useContext(ConsumptionContext)
 
-  const { grupo, units } = props
+  const { grupo } = props
   const [selectionModel, setSelectionModel] = useState([])
   const [tipoConsumoAsignado, setTipoConsumoAsignado] = useState('')
 
@@ -144,56 +145,32 @@ export default function UnitsSummary(props) {
       flex: 0.5,
       sortable: false,
     },
-
-    // {
-    //   field: 'actions',
-    //   type: 'actions',
-    //   headerName: t('BASIC.LABEL_ACCIONES'),
-    //   sortable: false,
-    //   getActions: (params) => [
-    //     <GridActionsCellItem
-    //       key={1}
-    //       icon={
-    //         <Tooltip title={t('CONSUMPTION.TOOLTIP_botonBorraTipoConsumo')}>
-    //           <DeleteIcon />
-    //         </Tooltip>
-    //       }
-    //       label="ShowGraphs"
-    //       onClick={(e) => deleteTipoConsumo(e, params.row)}
-    //     />,
-    //     <GridActionsCellItem
-    //       key={2}
-    //       icon={
-    //         <Tooltip title={t('CONSUMPTION.TOOLTIP_botonEditaTipoConsumo')}>
-    //           <EditIcon />
-    //         </Tooltip>
-    //       }
-    //       label="Edit"
-    //       onClick={() => editTipoConsumo(params.row)}
-    //     />,
-    //   ],
-    // },
   ]
 
   function getRowId(row) {
     return row.idFinca
   }
 
+  //Asigna el tipo de consumo a todas las unidades del grupo
   function handleTipoConsumo(value) {
-    const newValue = value //=== '' ? 'Indefinido' : value
-    setTipoConsumoAsignado(newValue)
+    const newTipoConsumo = value
+    setTipoConsumoAsignado(newTipoConsumo)
 
-    const newFincas = fincas.map((f) => {
-      if (f.grupo === grupo) {
-        f.nombreTipoConsumo = newValue
-        f.participa = newValue === '' ? false : true
-      }
-      return f
-    })
-
-    setFincas(newFincas)
+    //Update tipo de consumo in fincas state para todas las fincas del grupo participen o no
+    setFincas((prev) =>
+      prev.map((f, ndx) => {
+        if (f.grupo === grupo) {
+          const t = TCB.Finca[ndx]
+          t.nombreTipoConsumo = newTipoConsumo
+          t.participa = newTipoConsumo === '' ? false : true
+          return t
+        } else {
+          return f
+        }
+      }),
+    )
     TCB.cambioTipoConsumo = true
-    TCB.requiereOptimizador = true
+    TCB.requiereReparto = true
   }
 
   function newConsumptionAll() {
@@ -224,13 +201,19 @@ export default function UnitsSummary(props) {
     )
   }
 
+  /**
+   * Verifica que toda finca que participa tiene tipoConsumo asignado
+   * Si no se da la condicion no se puede cerrar el dialogo
+   * Si si actualiza el consumo del grupo en allocationGroup
+   */
   function checkSummary() {
     const fincasInFailure = []
-    for (let _fnc of units) {
+    for (let _fnc of fincas.filter((f) => f.grupo === grupo)) {
       if (_fnc.participa && _fnc.nombreTipoConsumo === '') {
         fincasInFailure.push(_fnc.idFinca)
       }
     }
+
     if (fincasInFailure.length > 0) {
       SLDRAlert(
         'VALIDACION',
@@ -238,22 +221,51 @@ export default function UnitsSummary(props) {
         'Error',
       )
       setSelectionModel(fincasInFailure)
-    } else closeDialog()
+    } else {
+      let totalGrupo = 0
+      let totalParticipes = 0
+      let totalParticipacion = 0
+      for (let fg of fincas) {
+        if (fg.grupo === grupo && fg.participa) {
+          totalGrupo += TipoConsumo.getTotal(fg.nombreTipoConsumo)
+          totalParticipes++
+          totalParticipacion += fg.participacion
+        }
+      }
+
+      setAllocationGroup((prev) => ({
+        ...prev,
+        [grupo]: {
+          ...prev[grupo],
+          consumo: totalGrupo,
+          participes: totalParticipes,
+          participacionP: totalParticipacion,
+        },
+      }))
+      closeDialog()
+    }
   }
 
+  /**
+   * Cambia el tipo de consumo y la condicion de participación
+   * @param {xDataGridRow} newUnitRow
+   * @returns {xDataGridRow}
+   */
   function changeUnit(newUnitRow) {
-    const newFincas = fincas.map((f) => {
-      if (f.idFinca === newUnitRow.idFinca) {
-        f.nombreTipoConsumo = newUnitRow.nombreTipoConsumo
-        f.participa = newUnitRow.participa
-        f.nombreFinca = newUnitRow.nombreFinca
-      }
-      return f
-    })
+    setFincas((prev) =>
+      prev.map((f, ndx) => {
+        if (f.idFinca === newUnitRow.idFinca) {
+          const t = TCB.Finca[ndx]
+          t.nombreTipoConsumo = newUnitRow.nombreTipoConsumo
+          t.participa = newUnitRow.participa
+          return t
+        } else {
+          return f
+        }
+      }),
+    )
 
-    setFincas(newFincas)
     TCB.cambioTipoConsumo = true
-    TCB.requiereOptimizador = true
     TCB.requiereReparto = true
     return newUnitRow
   }
@@ -280,14 +292,13 @@ export default function UnitsSummary(props) {
               <DataGrid
                 sx={theme.tables.headerWrap}
                 getRowId={getRowId}
-                rows={units}
+                rows={fincas.filter((f) => f.grupo === grupo)}
                 columns={columns}
                 hideFooter={false}
                 rowHeight={30}
                 autoHeight
                 disableColumnMenu
                 localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
-                // slots={{ toolbar: newConsumptionAll, footer: footerSummary }}
                 slots={{ toolbar: newConsumptionAll }}
                 processRowUpdate={(updatedRow, originalRow) => changeUnit(updatedRow)}
                 onProcessRowUpdateError={handleProcessRowUpdateError}
@@ -304,7 +315,7 @@ export default function UnitsSummary(props) {
       </DialogContent>
       <DialogActions>
         <Button onClick={checkSummary} color="primary">
-          Close
+          {t('BASIC.LABEL_CLOSE')}
         </Button>
       </DialogActions>
     </Dialog>

@@ -107,7 +107,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
         }
       }
     }
-    if (values.fuente !== 'REE' && values.ficheroCSV === null) {
+    if (values.fuente !== 'REE' && values.ficheroCSV === '') {
       errors.ficheroCSV = t('CONSUMPTION.ERROR_FALTA_FICHERO_CONSUMO')
     }
     return errors

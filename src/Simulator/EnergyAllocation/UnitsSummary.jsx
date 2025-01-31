@@ -1,13 +1,9 @@
-import { useState, useContext, useRef, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
 import {
-  IconButton,
-  Typography,
-  Tooltip,
   Grid,
-  MenuItem,
   Dialog,
   FormControlLabel,
   Radio,
@@ -20,24 +16,16 @@ import {
   DialogTitle,
 } from '@mui/material'
 
-import { SLDRInputField } from '../../components/SLDRComponents'
 import { useTheme } from '@mui/material/styles'
-import AddIcon from '@mui/icons-material/Add'
-import DeleteIcon from '@mui/icons-material/Delete'
-import AnalyticsIcon from '@mui/icons-material/Analytics'
-import EditIcon from '@mui/icons-material/Edit'
-import { DataGrid, GridToolbarContainer, GridActionsCellItem } from '@mui/x-data-grid'
+import { DataGrid } from '@mui/x-data-grid'
 
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
 import { useDialog } from '../../components/DialogProvider'
-import DialogConsumption from '../Consumption/DialogConsumption'
-import { SLDRFooterBox, SLDRInfoBox, SLDRTooltip } from '../../components/SLDRComponents'
 
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import { formatoValor } from '../classes/Utiles'
 import TipoConsumo from '../classes/TipoConsumo'
 
 export default function UnitsSummary(props) {
@@ -46,11 +34,10 @@ export default function UnitsSummary(props) {
 
   const [openDialog, closeDialog] = useDialog()
 
-  const { allocationGroup, setAllocationGroup, preciosValidos, fincas, setFincas } =
+  const { allocationGroup, setAllocationGroup, fincas, setFincas } =
     useContext(ConsumptionContext)
 
   const { grupo } = props
-  const [units, setUnits] = useState(TCB.Finca.filter((e) => e.grupo === grupo))
 
   useEffect(() => {
     distributeAllocation(
@@ -58,7 +45,7 @@ export default function UnitsSummary(props) {
       allocationGroup[grupo].produccion,
       allocationGroup[grupo].criterio,
     )
-  }, [])
+  }, [allocationGroup])
 
   const columns = [
     {
@@ -144,6 +131,20 @@ export default function UnitsSummary(props) {
     {
       field: 'coefEnergia',
       headerName: t('ENERGY_ALLOCATION.BETA_LABEL'),
+      renderHeader: () => (
+        <div style={{ textAlign: 'center', lineHeight: '1.2' }}>
+          {'Beta'}
+          <br />
+          {'(' +
+            UTIL.roundDecimales(
+              fincas
+                .filter((e) => e.grupo === grupo)
+                .reduce((a, b) => a + b.coefEnergia, 0) * 100,
+              2,
+            ) +
+            '%)'}
+        </div>
+      ),
       valueGetter: (params) => params.row.coefEnergia.toFixed(6),
       headerAlign: 'center',
       align: 'center',
@@ -169,9 +170,7 @@ export default function UnitsSummary(props) {
   function changeCriterio() {
     return (
       <FormControl>
-        <FormLabel>
-          Elige criterio para distribuir la energía asignada dentro del grupo
-        </FormLabel>
+        <FormLabel>{t('ENERGY_ALLOCATION.SELECT_CRITERIO')}</FormLabel>
         <RadioGroup
           row
           value={allocationGroup[grupo].criterio}
@@ -204,100 +203,97 @@ export default function UnitsSummary(props) {
     distributeAllocation(grupo, allocationGroup[grupo].produccion, evt.value)
   }
 
+  /**
+   * Distribuye el coeficiente de producción asigando al grupo entre la fincas que lo forman
+   * segun el criterio propuesto
+   * Modifica tanto fincas en state como en TCB
+   * @param {string} grupo Nombre del grupo al que se realizará el cambio de criterio
+   * @param {double} coefGrupo Coeficiente de energia asignado al grupo
+   * @param {string} criterio Criterio con el que se distribuye [PARTICIPACION, CONSUMO, PARITARIO]
+   */
   function distributeAllocation(grupo, coefGrupo, criterio) {
-    // console.log(
-    //   'Distribuye grupo ' + grupo + ' coef ' + coefGrupo + ' criterio ' + criterio,
-    // )
-
     switch (criterio) {
       case 'PARTICIPACION':
-        setUnits((prevUnits) =>
-          prevUnits.map((unit) => ({
-            ...unit,
-            coefEnergia: unit.participa
-              ? (unit.participacion / allocationGroup[grupo].participacionP) * coefGrupo
-              : 0,
-          })),
+        setFincas((prev) =>
+          prev.map((f, ndx) => {
+            if (f.grupo === grupo && f.participa) {
+              TCB.Finca[ndx].coefEnergia =
+                (f.participacion / allocationGroup[grupo].participacionP) * coefGrupo
+              return TCB.Finca[ndx]
+            } else {
+              return f
+            }
+          }),
         )
-        for (const f of TCB.Finca) {
-          f.coefEnergia = f.participa
-            ? (f.participacion / allocationGroup[grupo].participacionP) * coefGrupo
-            : 0
-        }
         break
+
       case 'CONSUMO':
-        setUnits((prevUnits) =>
-          prevUnits.map((unit) => ({
-            ...unit,
-            coefEnergia: unit.participa
-              ? (unit.coefConsumo / allocationGroup[grupo].consumo) * coefGrupo
-              : 0,
-          })),
+        setFincas((prev) =>
+          prev.map((f, ndx) => {
+            if (f.grupo === grupo && f.participa) {
+              TCB.Finca[ndx].coefEnergia =
+                (TipoConsumo.getTotal(f.nombreTipoConsumo) /
+                  allocationGroup[grupo].consumo) *
+                coefGrupo
+              return TCB.Finca[ndx]
+            } else {
+              return f
+            }
+          }),
         )
-        for (const f of TCB.Finca) {
-          f.coefEnergia = f.participa
-            ? (f.coefConsumo / allocationGroup[grupo].consumo) * coefGrupo
-            : 0
-        }
         break
+
       case 'PARITARIO':
-        setUnits((prevUnits) =>
-          prevUnits.map((unit) => ({
-            ...unit,
-            coefEnergia: unit.participa
-              ? coefGrupo / allocationGroup[grupo].participes
-              : 0,
-          })),
+        setFincas((prev) =>
+          prev.map((f, ndx) => {
+            if (f.grupo === grupo && f.participa) {
+              TCB.Finca[ndx].coefEnergia = coefGrupo / allocationGroup[grupo].participes
+              return TCB.Finca[ndx]
+            } else {
+              return f
+            }
+          }),
         )
-        for (const f of TCB.Finca) {
-          f.coefEnergia = f.participa ? coefGrupo / allocationGroup[grupo].participes : 0
-        }
         break
     }
-
-    setFincas([TCB.Finca])
   }
 
   return (
     <>
-      {units && (
-        <Dialog
-          fullScreen
-          open={true}
-          onClose={closeDialog}
-          aria-labelledby="full-screen-dialog-title"
-        >
-          <DialogTitle id="full-screen-dialog-title">
-            {t('ENERGY_ALLOCATION.ALLOCATION_SUMMARY', { grupo: grupo })}
-          </DialogTitle>
+      <Dialog
+        fullScreen
+        open={true}
+        onClose={closeDialog}
+        aria-labelledby="full-screen-dialog-title"
+      >
+        <DialogTitle id="full-screen-dialog-title">
+          {t('ENERGY_ALLOCATION.ALLOCATION_SUMMARY', { grupo: grupo })}
+        </DialogTitle>
 
-          <DialogContent>
-            <Grid container justifyContent={'center'} rowSpacing={4}>
-              {preciosValidos && (
-                <Grid item xs={11}>
-                  <DataGrid
-                    sx={theme.tables.headerWrap}
-                    getRowId={getRowId}
-                    rows={units}
-                    columns={columns}
-                    hideFooter={false}
-                    rowHeight={30}
-                    autoHeight
-                    disableColumnMenu
-                    localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
-                    slots={{ toolbar: changeCriterio }} //, footer: footerSummary }}
-                  />
-                </Grid>
-              )}
+        <DialogContent>
+          <Grid container justifyContent={'center'} rowSpacing={4}>
+            <Grid item xs={11}>
+              <DataGrid
+                sx={theme.tables.headerWrap}
+                getRowId={getRowId}
+                rows={fincas.filter((f) => f.grupo === grupo)}
+                columns={columns}
+                hideFooter={false}
+                rowHeight={30}
+                autoHeight
+                disableColumnMenu
+                localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
+                slots={{ toolbar: changeCriterio }}
+              />
             </Grid>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={closeDialog} color="primary">
-              {t('BASIC.LABEL_CLOSE')}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      )}
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeDialog} color="primary">
+            {t('BASIC.LABEL_CLOSE')}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   )
 }

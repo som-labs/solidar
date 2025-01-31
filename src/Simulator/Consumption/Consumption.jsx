@@ -9,9 +9,8 @@ import { useTheme } from '@mui/material/styles'
 // REACT Solidar Components
 import PreciosTarifa from './PreciosTarifa'
 import ConsumptionSummary from './ConsumptionSummary'
-import { SLDRInfoBox, SLDRDetalle } from '../../components/SLDRComponents'
+import { SLDRInfoBox } from '../../components/SLDRComponents'
 import { useAlert } from '../../components/AlertProvider.jsx'
-import { AlertContext } from '../components/Alert'
 import HelpConsumption from './HelpConsumption'
 import HelpDistribuidora from './HelpDistribuidora'
 

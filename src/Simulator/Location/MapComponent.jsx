@@ -46,12 +46,12 @@ import * as UTIL from '../classes/Utiles'
 
 export default function MapComponent() {
   const { t } = useTranslation()
-  const { fincas, setFincas, setFincasCargadas } = useContext(ConsumptionContext)
+  const { fincas, setFincas } = useContext(ConsumptionContext)
   // Map state
   const [mapType, setMapType] = useState('LOCATION.LABEL_SATELITE')
   const [selectedCoord] = useState([-3.7, 40.45])
 
-  const { map, setMap, processFormData } = useContext(BasesContext)
+  const { map, setMap, bases, processFormData } = useContext(BasesContext)
   const mapElement = useRef()
   const basesLayer = useRef()
   const mapRef = useRef(map)
@@ -363,8 +363,7 @@ export default function MapComponent() {
       const alfa = await getParcelaXY(puntoAplicacion_4326)
       console.log('GETPARCELAXY', alfa)
       if (alfa.status) {
-        setFincas(alfa.units)
-        TCB.Finca = alfa.units.slice()
+        setFincas(alfa.units.map((u) => new Finca(u)))
       } else {
         if (
           !(await SLDRAlert(
@@ -419,7 +418,7 @@ export default function MapComponent() {
 
   //Fit map view to bases if any
   function fitMap() {
-    if (TCB.BaseSolar.length > 0) {
+    if (bases.length > 0) {
       const mapView = map.getView()
       const center = mapView.getCenter()
       mapView.fit(TCB.origenDatosSolidar.getExtent())

@@ -36,6 +36,12 @@ class TipoConsumo extends DiaHora {
     this.options = this.selectCSVOptions(this.fuente)
   } // End constructor
 
+  static getTotal(nombreTipoConsumo) {
+    const t = TCB.TipoConsumo.find((tc) => tc.nombreTipoConsumo === nombreTipoConsumo)
+    if (t) return t.totalAnual
+    else return null
+  }
+
   /**
    * Function to define options for the loadFromCsv function
    * @param {string} fuente [CVS, REE, DATADIS, SOM]

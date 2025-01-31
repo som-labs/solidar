@@ -1031,6 +1031,7 @@ UNITS:
   LABEL_TIPO_USO_1: Uso eléctrico
   TOOLTIP_TIPO_USO_1: Selecciona el tipo de uso eléctrico asignado
   LABEL_VER_DETALLES: Ver detalles
+  ERROR_AL_MENOS_UN_USOELECTRICO: Al menos un finca o una zona común deben tener asignado un uso eléctrico
 
 ENERGY_ALLOCATION:
   TITLE: Reparto Energía
@@ -1045,6 +1046,10 @@ ENERGY_ALLOCATION:
   NO_BALANCE: Reparto energía no balanceado
   TITLE_BAR_CHART: Asignación de producción comparada<br /> con uso de energía
   NULL_ALLOCATION: 'No se puede tener un grupo o zona común con uso de energía y sin asignación de producción.<br />Vuelve al paso de definición de unidades y redefine los usos.'
+  SELECT_CRITERIO: Elige criterio para distribuir la energía asignada dentro del grupo
+  GRAPH_Y_AXIS: Coeficiente sobre total
+  GRAPH_PRODUCCION: Produccion asignada
+  GRAPH_CONSUMPTION: Uso de energía
 
 ECONOMIC_ALLOCATION:
   TITLE: Reparto Económico

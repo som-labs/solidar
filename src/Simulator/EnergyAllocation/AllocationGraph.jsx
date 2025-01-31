@@ -30,11 +30,19 @@ import * as UTIL from '../classes/Utiles'
 
 export default function AllocationGraph() {
   const { t, i18n } = useTranslation()
-
   const { SLDRAlert } = useAlert()
+
   const [error, setError] = useState({ status: false, field: '' })
-  const { repartoValido, setRepartoValido, allocationGroup, setAllocationGroup } =
-    useContext(ConsumptionContext)
+  const {
+    repartoValido,
+    setRepartoValido,
+    allocationGroup,
+    setAllocationGroup,
+    zonasComunes,
+    setZonasComunes,
+    fincas,
+    setFincas,
+  } = useContext(ConsumptionContext)
 
   const [chartAllocation, setChartAllocation] = useState([])
 
@@ -44,8 +52,7 @@ export default function AllocationGraph() {
   const layout = {
     title: t('ENERGY_ALLOCATION.TITLE_BAR_CHART'),
     barmode: 'stack', // Set bar mode to "stack"
-    //xaxis: { title: 'Categories' },
-    yaxis: { title: 'coeficiente sobre total' },
+    yaxis: { title: t('ENERGY_ALLOCATION.GRAPH_Y_AXIS') },
     width: graphWidth.current,
   }
 
@@ -66,9 +73,16 @@ export default function AllocationGraph() {
     for (const g in allocationGroup) {
       if (allocationGroup[g].produccion > 0) {
         tmp.push({
-          x: ['consumo', 'produccion'],
-          y: [allocationGroup[g].consumo, allocationGroup[g].produccion],
-          name: g,
+          x: [
+            t('ENERGY_ALLOCATION.GRAPH_CONSUMPTION'),
+            t('ENERGY_ALLOCATION.GRAPH_PRODUCCION'),
+          ],
+          y: [
+            allocationGroup[g].consumo / TCB.consumo.totalAnual,
+            allocationGroup[g].produccion,
+          ],
+          name: allocationGroup[g].nombre,
+          id: g,
           type: 'bar',
         })
       }
@@ -87,8 +101,16 @@ export default function AllocationGraph() {
       if (allocationGroup[grupo].unidades > 0) {
         distributeAllocation(grupo, allocationGroup[grupo].produccion)
       } else {
-        TCB.ZonaComun.find((zc) => zc.nombre === grupo).coefEnergia =
-          allocationGroup[grupo].produccion
+        setZonasComunes((prev) =>
+          prev.map((_zc, ndx) => {
+            if (_zc.id === grupo) {
+              TCB.ZonaComun[ndx].coefEnergia = allocationGroup[grupo].produccion
+              return TCB.ZonaComun[ndx]
+            } else {
+              return _zc
+            }
+          }),
+        )
       }
     }
     setRepartoValido(true)
@@ -96,14 +118,25 @@ export default function AllocationGraph() {
 
   function distributeAllocation(grupo, coefGrupo) {
     //Fincas que participan del grupo
-    const participes = TCB.Finca.filter((f) => f.participa && f.grupo === grupo)
-    const totalParticipation = participes.reduce((a, b) => a + b.participacion, 0) / 100
+    //const participes = TCB.Finca.filter((f) => f.participa && f.grupo === grupo)
+    const totalParticipation =
+      fincas
+        .filter((f) => f.participa && f.grupo === grupo)
+        .reduce((a, b) => a + b.participacion, 0) / 100
 
-    for (const f of TCB.Finca) {
-      if (f.participa && f.grupo === grupo) {
-        f.coefEnergia = (f.participacion / 100 / totalParticipation) * coefGrupo
-      }
-    }
+    setFincas((prev) =>
+      prev.map((f, ndx) => {
+        if (f.grupo === grupo && f.participa) {
+          TCB.Finca[ndx].coefEnergia = UTIL.roundDecimales(
+            (f.participacion / 100 / totalParticipation) * coefGrupo,
+            6,
+          )
+          return TCB.Finca[ndx]
+        } else {
+          return f
+        }
+      }),
+    )
   }
 
   function changeAllocation(group, value) {
@@ -136,7 +169,7 @@ export default function AllocationGraph() {
       },
     }))
 
-    const chartItemIndex = chartAllocation.findIndex((e) => e.name === group)
+    const chartItemIndex = chartAllocation.findIndex((e) => e.id === group)
     let newItem = chartAllocation[chartItemIndex]
     newItem.y[1] = value / 100
     setChartAllocation((prevItems) =>
@@ -259,7 +292,7 @@ export default function AllocationGraph() {
                             xs={3}
                             sx={{ border: 0, textAlign: 'right', padding: 1 }}
                           >
-                            {group}
+                            {allocationGroup[group].nombre}
                           </Grid>
 
                           <TextField

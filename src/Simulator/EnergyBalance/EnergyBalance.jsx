@@ -40,7 +40,7 @@ export default function EnergyBalanceStep() {
   const [dataReady, setDataReady] = useState(false)
   const [monthlyData, setMonthlyData] = useState()
   const [yearlyData, setYearlyData] = useState({})
-  const { bases, updateTCBBasesToState } = useContext(BasesContext)
+  const { bases, setBases } = useContext(BasesContext)
   const { setEcoData } = useContext(EconomicContext)
   const [mes, setMes] = useState(t('ENERGY_BALANCE.VALUE_FULL_YEAR'))
   const [openDialog, closeDialog] = useDialog()
@@ -50,7 +50,7 @@ export default function EnergyBalanceStep() {
   // El rendimiento ha podido cambiar la inclinacion y por lo tanto el area, la configuracion de paneles y la potenciaMaxima
   // Si se usaron angulos optimos tambien ha cambiado el acimut.
   useEffect(() => {
-    updateTCBBasesToState()
+    setBases([...TCB.BaseSolar])
   }, [])
 
   useEffect(() => {

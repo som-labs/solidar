@@ -3,56 +3,48 @@ import { useTranslation } from 'react-i18next'
 
 // MUI objects
 import {
-  IconButton,
-  Typography,
-  Tooltip,
   Grid,
-  MenuItem,
   Dialog,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  FormControl,
-  FormLabel,
   Button,
   DialogActions,
   DialogContent,
   DialogTitle,
 } from '@mui/material'
 
-import { SLDRInputField } from '../../components/SLDRComponents'
 import { useTheme } from '@mui/material/styles'
-import AddIcon from '@mui/icons-material/Add'
-import DeleteIcon from '@mui/icons-material/Delete'
-import AnalyticsIcon from '@mui/icons-material/Analytics'
-import EditIcon from '@mui/icons-material/Edit'
-import { DataGrid, GridToolbarContainer, GridActionsCellItem } from '@mui/x-data-grid'
+import { DataGrid } from '@mui/x-data-grid'
 
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
 import { useDialog } from '../../components/DialogProvider'
-import DialogConsumption from '../Consumption/DialogConsumption'
-import { SLDRFooterBox, SLDRInfoBox, SLDRTooltip } from '../../components/SLDRComponents'
 
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import { formatoValor } from '../classes/Utiles'
-import TipoConsumo from '../classes/TipoConsumo'
+import { all } from 'ol/events/condition'
 
 export default function UnitsSummary(props) {
   const { t } = useTranslation()
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()
-  const { allocationGroup, setAllocationGroup, preciosValidos } =
+  const { preciosValidos, fincas, zonasComunes, allocationGroup } =
     useContext(ConsumptionContext)
 
-  const { grupo, units, setUnits } = props
-
-  const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
+  const { grupo, units } = props
   const [totalCost, setTotalCost] = useState()
 
+  function costeZCenFinca(participacion, zc) {
+    if (allocationGroup[grupo].zonasComunes[zc]) {
+      return (
+        ((allocationGroup[zc].produccion * participacion) /
+          allocationGroup[zc].participacionT) *
+        TCB.economico.precioInstalacionCorregido
+      )
+    } else {
+      return 0
+    }
+  }
   const columns = [
     {
       field: 'nombreFinca',
@@ -62,46 +54,6 @@ export default function UnitsSummary(props) {
       description: t('Finca.TOOLTIP.nombreFinca'),
       sortable: false,
     },
-    // {
-    //   field: 'refcat',
-    //   headerName: t('Finca.PROP.refcat'),
-    //   headerAlign: 'center',
-    //   align: 'center',
-    //   type: 'text',
-    //   flex: 1,
-    //   description: t('Finca.TOOLTIP.refcat'),
-    //   sortable: false,
-    // },
-    // {
-    //   field: 'planta',
-    //   headerName: t('Finca.PROP.planta'),
-    //   headerAlign: 'center',
-    //   align: 'center',
-    //   type: 'text',
-    //   flex: 0.5,
-    //   description: t('Finca.TOOLTIP.planta'),
-    //   sortable: false,
-    // },
-    // {
-    //   field: 'puerta',
-    //   headerName: t('Finca.PROP.puerta'),
-    //   headerAlign: 'center',
-    //   align: 'center',
-    //   type: 'text',
-    //   flex: 0.5,
-    //   description: t('Finca.TOOLTIP.puerta'),
-    //   sortable: false,
-    // },
-    // {
-    //   field: 'uso',
-    //   headerName: t('Finca.PROP.uso'),
-    //   headerAlign: 'center',
-    //   align: 'center',
-    //   type: 'text',
-    //   flex: 1,
-    //   description: t('Finca.TOOLTIP.uso'),
-    //   sortable: false,
-    // },
     {
       field: 'superficie',
       headerName: t('Finca.PROP.superficie'),
@@ -118,15 +70,7 @@ export default function UnitsSummary(props) {
         <div style={{ textAlign: 'center', lineHeight: '1.2' }}>
           {t('Finca.PROP.participacion')}
           <br />
-          {'(' +
-            UTIL.roundDecimales(
-              TCB.Finca.filter((e) => e.grupo === grupo).reduce(
-                (a, b) => a + b.participacion,
-                0,
-              ),
-              2,
-            ) +
-            '% )'}
+          {'(' + allocationGroup[grupo].participacionT.toFixed(2) + '% )'}
         </div>
       ),
 
@@ -155,15 +99,7 @@ export default function UnitsSummary(props) {
         <div style={{ textAlign: 'center', lineHeight: '1.2' }}>
           {'Beta'}
           <br />
-          {'(' +
-            UTIL.roundDecimales(
-              TCB.Finca.filter((e) => e.grupo === grupo).reduce(
-                (a, b) => a + b.coefEnergia,
-                0,
-              ) * 100,
-              2,
-            ) +
-            '%)'}
+          {'(' + UTIL.roundDecimales(allocationGroup[grupo].produccion * 100, 2) + '%)'}
         </div>
       ),
       headerAlign: 'center',
@@ -184,7 +120,7 @@ export default function UnitsSummary(props) {
           {'(' +
             UTIL.formatoValor(
               'dinero',
-              units.reduce((t, u) => t + u.coefEnergia, 0) *
+              allocationGroup[grupo].produccion *
                 TCB.economico.precioInstalacionCorregido,
             ) +
             ' )'}
@@ -200,38 +136,37 @@ export default function UnitsSummary(props) {
     },
   ]
 
-  for (const zc of TCB.ZonaComun) {
-    columns.push({
-      field: zc.nombre,
-      headerName: zc.nombre, //t('TipoConsumo.PROP.nombreTipoConsumo'),
-      renderHeader: () => (
-        <div style={{ textAlign: 'center', lineHeight: '1.2' }}>
-          {zc.nombre}
-          <br />
-          {'(' +
-            UTIL.formatoValor(
-              'dinero',
-              TCB.Finca.filter((e) => e.grupo === grupo).reduce(
-                (a, b) =>
-                  a + b.extraCost[zc.nombre] * TCB.economico.precioInstalacionCorregido,
-                0,
-              ),
-            ) +
-            ' )'}
-        </div>
-      ),
-      headerAlign: 'center',
-      align: 'center',
-      type: 'number',
-      valueGetter: (params) =>
-        UTIL.formatoValor(
-          'dinero',
-          params.row.extraCost[zc.nombre] * TCB.economico.precioInstalacionCorregido,
+  for (const gZC in allocationGroup) {
+    if (allocationGroup[gZC].unidades === 0) {
+      columns.push({
+        field: gZC,
+
+        renderHeader: () => (
+          <div style={{ textAlign: 'center', lineHeight: '1.2' }}>
+            {allocationGroup[gZC].nombre}
+            <br />
+            {'(' +
+              UTIL.formatoValor(
+                'dinero',
+                (allocationGroup[gZC].produccion *
+                  TCB.economico.precioInstalacionCorregido *
+                  allocationGroup[grupo].participacionT) /
+                  allocationGroup[gZC].participacionT,
+              ) +
+              ' )'}
+          </div>
         ),
-      flex: 1,
-      description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
-      sortable: false,
-    })
+        headerAlign: 'center',
+        align: 'center',
+        type: 'number',
+        valueGetter: (params) =>
+          UTIL.formatoValor('dinero', costeZCenFinca(params.row.participacion, gZC)),
+        //flex: 1,
+        width: 120,
+        description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
+        sortable: false,
+      })
+    }
   }
 
   columns.push({
@@ -247,10 +182,14 @@ export default function UnitsSummary(props) {
     align: 'center',
     type: 'number',
     valueGetter: (params) => {
-      const v =
-        params.row.coefEnergia +
-        Object.values(params.row.extraCost).reduce((a, b) => a + b, 0)
-      return UTIL.formatoValor('dinero', v * TCB.economico.precioInstalacionCorregido)
+      let v = 0
+
+      for (const zcid in allocationGroup[grupo].zonasComunes) {
+        v += costeZCenFinca(params.row.participacion, zcid)
+      }
+      v += params.row.coefEnergia * TCB.economico.precioInstalacionCorregido
+
+      return UTIL.formatoValor('dinero', v)
     },
     flex: 1,
     description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
@@ -262,12 +201,16 @@ export default function UnitsSummary(props) {
   }
 
   useEffect(() => {
-    const vPropio = units.reduce((t, u) => t + u.coefEnergia, 0)
-    const vExtra = units.reduce(
-      (t, u) => t + Object.values(u.extraCost).reduce((st, e) => st + e, 0),
-      0,
-    )
-    setTotalCost((vPropio + vExtra) * TCB.economico.precioInstalacionCorregido)
+    let v = 0
+    for (const zcid in allocationGroup[grupo].zonasComunes) {
+      if (allocationGroup[grupo].zonasComunes[zcid]) {
+        v +=
+          (allocationGroup[zcid].produccion * allocationGroup[grupo].participacionT) /
+          allocationGroup[zcid].participacionT
+      }
+    }
+    v += allocationGroup[grupo].produccion
+    setTotalCost(v * TCB.economico.precioInstalacionCorregido)
   }, [])
 
   return (
@@ -284,15 +227,9 @@ export default function UnitsSummary(props) {
       <DialogContent>
         <Grid container justifyContent={'center'} rowSpacing={4}>
           {preciosValidos && (
-            <Grid item xs={11}>
+            <Grid item xs={11} sx={{ overflowX: 'auto' }}>
               <DataGrid
-                sx={{
-                  '.header-wrap': {
-                    whiteSpace: 'pre-wrap', // Enables line breaks
-                    lineHeight: 'normal', // Prevents extra spacing
-                    textAlign: 'center', // Optional: center-align text
-                  },
-                }}
+                sx={theme.tables.headerWrap}
                 getRowId={getRowId}
                 rows={units}
                 columns={columns}
@@ -308,7 +245,7 @@ export default function UnitsSummary(props) {
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog} color="primary">
-          Close
+          {t('BASIC.LABEL_CLOSE')}
         </Button>
       </DialogActions>
     </Dialog>

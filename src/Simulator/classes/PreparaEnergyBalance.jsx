@@ -10,6 +10,7 @@ import calculaResultados from '../classes/calculaResultados'
 import Consumo from '../classes/Consumo'
 import BaseSolar from '../classes/BaseSolar'
 import Economico from '../classes/Economico'
+import TipoConsumo from './TipoConsumo'
 
 export default async function PreparaEnergyBalance() {
   let cursorOriginal = document.body.style.cursor
@@ -17,15 +18,16 @@ export default async function PreparaEnergyBalance() {
 
   //Crearemos el consumo global como suma de todos los tipos de consumo definidos
   UTIL.debugLog('PreparaEnergyBalance - Hay cambio de consumos? ' + TCB.cambioTipoConsumo)
+
   if (TCB.cambioTipoConsumo) {
+    TCB.requiereOptimizador = true
     TCB.consumo = new Consumo()
     if (TCB.modoActivo !== 'INDIVIDUAL') {
       //Calculamos el coeficiente del consumo de cada finca sobre el total
       for (const f of TCB.Finca) {
         if (f.nombreTipoConsumo !== '')
           f.coefConsumo =
-            TCB.TipoConsumo.find((tc) => tc.nombreTipoConsumo === f.nombreTipoConsumo)
-              .totalAnual / TCB.consumo.totalAnual
+            TipoConsumo.getTotal(f.nombreTipoConsumo) / TCB.consumo.totalAnual
         else f.coefConsumo = 0
       }
     }
@@ -102,6 +104,7 @@ export default async function PreparaEnergyBalance() {
       )
     }
     TCB.requiereOptimizador = false
+    TCB.requiereAllocation = true
     UTIL.debugLog('PreparaEnergyBalance - pasa a calculaResultados')
     await calculaResultados()
   }

@@ -18,8 +18,7 @@ import BaseSolar from '../classes/BaseSolar'
 export default function PanelsSelector() {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
-  //const [tipo, setTipo] = useState(TCB.tipoPanelActivo)
-  const { tipoPanelActivo, setTipoPanelActivo, updateTCBBasesToState } =
+  const { tipoPanelActivo, setTipoPanelActivo, setBases, bases } =
     useContext(BasesContext)
 
   function changePanelsType() {
@@ -35,12 +34,11 @@ export default function PanelsSelector() {
 
   function endDialog(reason, formData) {
     if (reason === 'save') {
-      //setTipo(formData)
       setTipoPanelActivo(formData)
       //If we are changing panel technology need to update PVGIS data for existing bases
       if (TCB.tipoPanelActivo.tecnologia !== formData.tecnologia) {
         TCB.tipoPanelActivo.tecnologia = formData.tecnologia
-        TCB.BaseSolar.forEach((base) => {
+        bases.forEach((base) => {
           base.requierePVGIS = true
         })
       }
@@ -61,14 +59,12 @@ export default function PanelsSelector() {
 
         //If panel ancho or largo has changed need to update bases configuration
 
-        TCB.BaseSolar.forEach((TCBbase) => {
+        bases.forEach((TCBbase) => {
           const config = BaseSolar.configuraPaneles(TCBbase)
-          //Update in TCB
+          //Update in bases state
           TCBbase.updateBase(config)
         })
       }
-
-      updateTCBBasesToState()
       TCB.requiereOptimizador = true
     }
     closeDialog()

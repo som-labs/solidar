@@ -27,7 +27,7 @@ import { BasesContext } from '../BasesContext'
 import { ConsumptionContext } from '../ConsumptionContext'
 import { EconomicContext } from '../EconomicContext'
 
-import PreparaEnergyBalance from '../EnergyBalance/PreparaEnergyBalance.jsx'
+import PreparaEnergyBalance from '../classes/PreparaEnergyBalance.jsx'
 
 export default function ProjectMenu() {
   const { t } = useTranslation()

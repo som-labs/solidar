@@ -33,10 +33,19 @@
   width: 100%;
 }
 
-.dataGrid-headers {
+/* Custom CSS for wrapping column header text */
+.MuiDataGrid-root .MuiDataGrid-columnHeader {
+  white-space: normal !important;
+  line-height: 1.5;
+  font-weight: bold;
+  color: 'red';
+  background-color: 'rgba(255,7,0,0.55)';
+  text-align: 'center';
+}
+/* .dataGrid-headers {
   font-weight: bold;
   background-color: 'rgba(255,7,0,0.55)';
-}
+} */
 
 .centered-alert {
   background-color: #f0f0f0;
