@@ -30,7 +30,7 @@ export default function ConsumptionSummary() {
   const theme = useTheme()
   const { SLDRAlert } = useAlert()
   const [openDialog, closeDialog] = useDialog()
-  const { tipoConsumo, setTipoConsumo, preciosValidos, addTCBTipoToState } =
+  const { tipoConsumo, setTipoConsumo, preciosValidos, fincas, addTCBTipoToState } =
     useContext(ConsumptionContext)
 
   const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
@@ -131,7 +131,7 @@ export default function ConsumptionSummary() {
           previous={tipoConsumo}
           maxWidth={'lg'}
           fullWidth={true}
-          onClose={(cause, formData) => endDialog(cause, formData)}
+          onClose={(reason, formData) => processFormData(reason, formData)}
         ></DialogConsumption>
       ),
     })
@@ -152,20 +152,20 @@ export default function ConsumptionSummary() {
           maxWidth={'lg'}
           fullWidth={true}
           previous={tipoConsumo} //Needed to check duplicate name
-          onClose={(cause, formData) => endDialog(cause, formData)}
+          onClose={(reason, formData) => processFormData(reason, formData)}
         ></DialogConsumption>
       ),
     })
   }
 
-  async function endDialog(reason, formData) {
-    let nuevoTipoConsumo
+  async function processFormData(reason, formData) {
+    let nuevoTipoConsumo = {}
     let cursorOriginal
 
     if (reason === undefined) return
+    //Update or create a BaseSolar with formData
     if (reason === 'save') {
       //Can reach this by saving new tipo consumo or editing existing one
-      TCB.requiereOptimizador = true
       TCB.cambioTipoConsumo = true
 
       if (editing.current) nuevoTipoConsumo = { idTipoConsumo: formData.idTipoConsumo }
@@ -187,28 +187,27 @@ export default function ConsumptionSummary() {
       }
 
       let rCode
-      let idxTC
       cursorOriginal = document.body.style.cursor
       document.body.style.cursor = 'progress'
 
       //Will create a new TipoConsumo always, if editing will replace previous one by new one.
-      idxTC = TCB.TipoConsumo.push(new TipoConsumo(nuevoTipoConsumo)) - 1
-      rCode = await TCB.TipoConsumo[idxTC].loadTipoConsumoFromCSV()
+      const newTipoConsumo = new TipoConsumo(nuevoTipoConsumo)
+      rCode = await newTipoConsumo.loadTipoConsumoFromCSV()
       if (rCode.status) {
         if (editing.current) {
-          //Editando uno existente moveremos el recien creado a su posicion original
-          idxTC = TCB.TipoConsumo.findIndex((tc) => {
-            return tc.idTipoConsumo === formData.idTipoConsumo
-          })
-
-          TCB.TipoConsumo.splice(idxTC, 1, TCB.TipoConsumo.pop())
+          //Editando uno existente
+          setTipoConsumo((prev) =>
+            prev.map((tc) =>
+              tc.idTipoConsumo === formData.idTipoConsumo ? newTipoConsumo : tc,
+            ),
+          )
+        } else {
+          //Creando uno nuevo
+          setTipoConsumo((prev) => [...prev, newTipoConsumo])
         }
-        addTCBTipoToState(TCB.TipoConsumo[idxTC])
-        //showGraphsTC(nuevoTipoConsumo) //Autoproduccion tema decides not to show graph after loaded
       } else {
         UTIL.debugLog('Error detectado en carga de CSV')
         SLDRAlert('CARGA TIPOLOGIA USO ENERGIA', rCode.err, 'Error')
-        TCB.TipoConsumo.pop()
       }
     }
 
@@ -218,22 +217,16 @@ export default function ConsumptionSummary() {
 
   // showGraphsTC recibe una fila del datagrid y activa el objeto TipoConsumo de TCB que correponde
   function showGraphsTC(tc) {
-    let newActivo = TCB.TipoConsumo.find((t) => {
+    let newActivo = tipoConsumo.find((t) => {
       return t.idTipoConsumo === tc.idTipoConsumo
     })
     setActivo(newActivo)
   }
 
   function deleteTipoConsumo(ev, tc) {
-    ev.stopPropagation()
-    let prevTipoConsumo = [...tipoConsumo]
-    const nIndex = prevTipoConsumo.findIndex((t) => {
-      return t.idTipoConsumo === tc.idTipoConsumo
-    })
-
     //Si estamos en colectivo no se pueden borrar tipos de consumo utilizados en alguna finca
     if (TCB.modoActivo !== 'INDIVIDUAL') {
-      if (TCB.Finca.find((f) => f.nombreTipoConsumo === tc.nombreTipoConsumo)) {
+      if (fincas.find((f) => f.nombreTipoConsumo === tc.nombreTipoConsumo)) {
         SLDRAlert(
           'VALIDACIÓN',
           'Existen fincas con este tipo de consumo.\nNo se puede borrar',
@@ -242,11 +235,10 @@ export default function ConsumptionSummary() {
         return
       }
     }
-    TCB.requiereOptimizador = true
+    setTipoConsumo((prev) =>
+      prev.filter((b) => b.nombreTipoConsumo !== tc.nombreTipoConsumo),
+    )
     TCB.cambioTipoConsumo = true
-    prevTipoConsumo.splice(nIndex, 1)
-    TCB.TipoConsumo.splice(nIndex, 1)
-    setTipoConsumo(prevTipoConsumo)
     setActivo(undefined)
   }
 
@@ -273,6 +265,10 @@ export default function ConsumptionSummary() {
     )
   }
 
+  /**
+   *
+   * @returns Showing total consumption of all TipoConsumo in case of INDIVIDUAL mode
+   */
   function footerSummary() {
     return (
       <>
@@ -320,7 +316,7 @@ export default function ConsumptionSummary() {
   function showGraphTotales() {
     if (tipoConsumo.length > 0) {
       const dummyType = new TipoConsumo({ nombreTipoConsumo: 'Totales' })
-      for (let tc of TCB.TipoConsumo) {
+      for (let tc of tipoConsumo) {
         dummyType.suma(tc)
       }
       dummyType.fechaInicio = new Date(2023, 1, 1)

@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, Fragment } from 'react'
+import { useContext, Fragment } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -11,27 +11,27 @@ import { useDialog } from '../../components/DialogProvider'
 import UnitsSummary from './UnitsSummary'
 
 // Solidar objects
-import Finca from '../classes/Finca.js'
 import TCB from '../classes/TCB.js'
 import * as UTIL from '../classes/Utiles'
+import { group } from 'd3'
 
 export default function UnitTypeBox(props) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { fincas, tipoConsumo, allocationGroup, zonasComunes } =
-    useContext(ConsumptionContext)
-  const [openDialog, closeDialog] = useDialog()
-  const [extraCost, setExtraCost] = useState({})
 
+  const { fincas, allocationGroup, zonasComunes } = useContext(ConsumptionContext)
+  const [openDialog, closeDialog] = useDialog()
   const { grupo } = props
 
   let tCost = {}
-  for (const zc of zonasComunes) {
-    tCost[zc.nombre] = 0
-    for (const fx of TCB.Finca.filter(
-      (f) => f.grupo === grupo && f.extraCost[zc.nombre] > 0,
-    )) {
-      tCost[zc.nombre] += fx.extraCost[zc.nombre]
+  if (allocationGroup[grupo].unidades > 0) {
+    for (const zc of zonasComunes) {
+      tCost[zc.nombre] = 0
+      if (allocationGroup[grupo].zonasComunes[zc.id]) {
+        tCost[zc.nombre] =
+          (allocationGroup[zc.id].produccion * allocationGroup[grupo].participacionT) /
+          allocationGroup[zc.id].participacionT
+      }
     }
   }
 
@@ -40,7 +40,7 @@ export default function UnitTypeBox(props) {
       children: (
         <UnitsSummary
           grupo={grupo}
-          units={TCB.Finca.filter((f) => f.grupo === grupo)}
+          units={fincas.filter((f) => f.grupo === grupo)}
           maxWidth={'xs'}
           fullWidth={true}
           onClose={closeDialog}
@@ -62,7 +62,6 @@ export default function UnitTypeBox(props) {
             border: '1px solid grey',
             borderRadius: 2,
             padding: 2,
-            //maxWidth: 300,
             backgroundColor: 'aquamarine',
 
             // backgroundColor: radial-gradient(
@@ -74,7 +73,7 @@ export default function UnitTypeBox(props) {
           }}
         >
           <Typography sx={theme.titles.level_1} textAlign={'center'} marginTop="1rem">
-            {grupo}
+            {allocationGroup[grupo].nombre}
           </Typography>
           {allocationGroup[grupo].unidades > 0 ? (
             <>
@@ -98,12 +97,12 @@ export default function UnitTypeBox(props) {
                       allocationGroup[grupo].participacionT,
                     ) +
                     '</b><br />Uso de energía:  <b>' +
-                    UTIL.formatoValor(
-                      'energia',
-                      allocationGroup[grupo].consumo * TCB.consumo.totalAnual,
-                    ) +
+                    UTIL.formatoValor('energia', allocationGroup[grupo].consumo) +
                     '</b><br />% uso de energía total:  <b>' +
-                    UTIL.formatoValor('porciento', allocationGroup[grupo].consumo * 100) +
+                    UTIL.formatoValor(
+                      'porciento',
+                      (allocationGroup[grupo].consumo / TCB.consumo.totalAnual) * 100,
+                    ) +
                     '</b><br />Energia Total asignada: <b>' +
                     UTIL.formatoValor(
                       'energia',
@@ -124,7 +123,7 @@ export default function UnitTypeBox(props) {
                   )}
                 </Typography>
 
-                {Object.keys(tCost).map((key, value) => (
+                {Object.keys(tCost).map((key) => (
                   <Fragment key={key}>
                     <Typography sx={{ textAlign: 'center' }}>
                       {key}:{' '}
@@ -146,12 +145,12 @@ export default function UnitTypeBox(props) {
                 dangerouslySetInnerHTML={{
                   __html:
                     '<br />Uso de energía:  <b>' +
-                    UTIL.formatoValor(
-                      'energia',
-                      allocationGroup[grupo].consumo * TCB.consumo.totalAnual,
-                    ) +
+                    UTIL.formatoValor('energia', allocationGroup[grupo].consumo) +
                     '</b><br />% uso de energía total:  <b>' +
-                    UTIL.formatoValor('porciento', allocationGroup[grupo].consumo * 100) +
+                    UTIL.formatoValor(
+                      'porciento',
+                      (allocationGroup[grupo].consumo / TCB.consumo.totalAnual) * 100,
+                    ) +
                     '</b><br />Energia Total asignada:  <b>' +
                     UTIL.formatoValor(
                       'energia',

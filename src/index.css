@@ -19,8 +19,6 @@ body {
   margin: 0;
 }
 
-
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -34,3 +32,10 @@ body {
   }
 }
 */
+/* Custom CSS for wrapping column header text */
+.MuiDataGrid-columnHeader {
+  white-space: normal !important;
+  line-height: 1.5;
+  font-weight: bold;
+  background-color: 'rgba(255,7,0,0.55)';
+}

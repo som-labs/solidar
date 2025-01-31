@@ -31,52 +31,6 @@ const BasesContextProvider = ({ children }) => {
     largo: 1.762,
   })
 
-  //TCB fields to be reflected in state
-  const hdrBase = {
-    idBaseSolar: undefined,
-    nombreBaseSolar: undefined,
-    cumbrera: undefined,
-    ancho: undefined,
-    inclinacion: undefined,
-    inclinacionOptima: undefined,
-    roofType: undefined,
-    inAcimut: undefined,
-    angulosOptimos: undefined,
-    requierePVGIS: undefined,
-    lonlatBaseSolar: undefined,
-    potenciaMaxima: undefined,
-    anchoReal: undefined,
-    areaReal: undefined,
-    panelesMaximo: undefined,
-    filas: undefined,
-    columnas: undefined,
-  }
-
-  // Move data object to the hdr template
-  const hdrFill = (data) => {
-    let newData = {}
-    for (let field in hdrBase) newData[field] = data[field]
-    newData.paneles = data?.instalacion.paneles
-    newData.potenciaUnitaria = data?.instalacion.potenciaUnitaria
-    newData.potenciaTotal = data?.instalacion.potenciaTotal
-    return newData
-  }
-
-  // Add base object to the bases state
-  function addTCBBaseToState(base) {
-    setBases((prevBases) => [...prevBases, hdrFill(base)])
-  }
-
-  // Update context bases with TCB ones
-  function updateTCBBasesToState() {
-    //Update CTX state
-    let updatedBases = []
-    TCB.BaseSolar.forEach((TCBbase) => {
-      updatedBases.push(hdrFill(TCBbase))
-    })
-    setBases(updatedBases)
-  }
-
   function computeAcimut(formData, center, area) {
     let inAcimut
     let cumbrera
@@ -221,15 +175,10 @@ const BasesContextProvider = ({ children }) => {
     const centerPoint = labelFeature.getGeometry()
     const areaComponent = 'BaseSolar.area.' + formData.idBaseSolar
     const areaShape = TCB.origenDatosSolidar.getFeatureById(areaComponent).getGeometry()
-
-    //console.log('ProcessFromData 1', formData)
-    //console.log('Compute', computeAcimut(formData, centerPoint, areaShape))
     if (reason === 'save') {
       formData = { ...formData, ...computeAcimut(formData, centerPoint, areaShape) }
-    } else {
-      //console.log('estamos editando por ahora no hay cambio de acimut desde dialogo')
     }
-    //console.log('ProcessFromData 2', formData)
+
     formData = Object.assign({}, formData, BaseSolar.configuraPaneles(formData))
     if (formData.filas * formData.columnas === 0) {
       SLDRAlert(
@@ -258,39 +207,42 @@ const BasesContextProvider = ({ children }) => {
     acimutLine.setStyle(null)
     TCB.origenDatosSolidar.addFeature(acimutLine)
 
-    //Update or create a TCB.BaseSolar with formData
-    let baseIndex
-
+    //Update or create a BaseSolar with formData
     if (reason === 'save') {
       // We are creating a new base
-      baseIndex = TCB.BaseSolar.push(new BaseSolar(formData)) - 1
+      const newBase = new BaseSolar(formData)
+      setBases((prev) => [...prev, newBase])
     } else {
       //We are updating existing base
-      baseIndex = TCB.BaseSolar.findIndex((base) => {
-        return base.idBaseSolar === formData.idBaseSolar
-      })
-      //Update TCB.BaseSolar with formData
-      TCB.BaseSolar[baseIndex].updateBase(formData)
+      setBases((prev) =>
+        prev.map((base) =>
+          base.idBaseSolar === formData.idBaseSolar ? new BaseSolar(formData) : base,
+        ),
+      )
     }
-    //Update context with new TCB data
-    updateTCBBasesToState()
+    TCB.requiereOptimizador = true
   }
 
-  function validaBases() {
-    if (TCB.BaseSolar.length > 0) {
+  async function validaBases() {
+    if (bases.length > 0) {
       //Carga rendimientos de cada base que lo requiera asincronicamente
       //La propiedad requierePVGIS es gestionada en GestionLocalizacion y se pone a true cuando cambia algun angulo
 
       try {
-        for (let base of TCB.BaseSolar) {
+        for (let base of bases) {
           if (base.requierePVGIS) {
             UTIL.debugLog('Base requiere PVGIS:', base)
-            base.cargaRendimiento()
-            base.requierePVGIS = false
+            await base.cargaRendimiento()
             TCB.requiereOptimizador = true
           }
         }
-        //setBases(oldBases)
+
+        /* Update TCB.BaseSolar with new state data */
+        TCB.BaseSolar = []
+        bases.forEach((base) => {
+          TCB.BaseSolar.push(base)
+        })
+
         return { status: true }
       } catch (err) {
         return { status: false, error: err }
@@ -307,8 +259,7 @@ const BasesContextProvider = ({ children }) => {
     setBases,
     processFormData,
     validaBases,
-    addTCBBaseToState,
-    updateTCBBasesToState,
+    // addTCBBaseToState,
     tipoPanelActivo,
     setTipoPanelActivo,
   }

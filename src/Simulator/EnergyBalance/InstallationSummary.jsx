@@ -30,7 +30,7 @@ export default function InstallationSummary() {
   const [openDialog, closeDialog] = useDialog()
   //const { SLDRAlert } = useContext(AlertContext)
   const { SLDRAlert } = useAlert()
-  const { bases, setBases, updateTCBBasesToState } = useContext(BasesContext)
+  const { bases, setBases } = useContext(BasesContext)
   const [updatedCells, setUpdatedCells] = useState({})
 
   const handleEditCellChange = (params, event) => {
@@ -78,12 +78,12 @@ export default function InstallationSummary() {
       },
       description: t('Instalacion.TOOLTIP.paneles'),
       renderCell: (params) => {
-        return UTIL.formatoValor('paneles', params.value)
+        return UTIL.formatoValor('paneles', params.row.instalacion.paneles)
       },
       cellClassName: (params) => {
         return clsx('super-app', {
-          negative: params.value > params.row.panelesMaximo,
-          positive: params.value <= params.row.panelesMaximo,
+          negative: params.row.instalacion.paneles > params.row.panelesMaximo,
+          positive: params.row.instalacion.paneles <= params.row.panelesMaximo,
         })
       },
     },
@@ -118,7 +118,10 @@ export default function InstallationSummary() {
       description: t('Instalacion.TOOLTIP.potenciaUnitaria'),
       sortable: false,
       renderCell: (params) => {
-        return UTIL.formatoValor('potenciaUnitaria', params.value)
+        return UTIL.formatoValor(
+          'potenciaUnitaria',
+          params.row.instalacion.potenciaUnitaria,
+        )
       },
     },
     {
@@ -130,7 +133,7 @@ export default function InstallationSummary() {
       description: t('Instalacion.TOOLTIP.potenciaTotal'),
       sortable: false,
       renderCell: (params) => {
-        return UTIL.formatoValor('potenciaTotal', params.value)
+        return UTIL.formatoValor('potenciaTotal', params.row.instalacion.potenciaTotal)
       },
     },
     {
@@ -154,7 +157,7 @@ export default function InstallationSummary() {
   ]
 
   function showProperties(id) {
-    const baseActiva = TCB.BaseSolar.find((base) => {
+    const baseActiva = bases.find((base) => {
       return base.idBaseSolar === id
     })
     openDialog({
@@ -174,11 +177,14 @@ export default function InstallationSummary() {
                 __html:
                   t('ENERGY_BALANCE.SUMMARY_FOOTER', {
                     paneles: Math.round(
-                      bases.reduce((sum, tBase) => sum + tBase.paneles, 0),
+                      bases.reduce((sum, tBase) => sum + tBase.instalacion.paneles, 0),
                     ),
                     potencia: UTIL.formatoValor(
                       'potenciaTotal',
-                      bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
+                      bases.reduce(
+                        (sum, tBase) => sum + tBase.instalacion.potenciaTotal,
+                        0,
+                      ),
                     ),
                   }) +
                   ' de ' +
@@ -209,14 +215,17 @@ export default function InstallationSummary() {
   }
 
   function setNewPaneles() {
-    //Update context with new TCB data
+    //Update energy balance with new number of panels
     calculaResultados()
+
     TCB.economico = new Economico()
     UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
     if (TCB.economico.periodoAmortizacion > 20) {
       alert(t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
     }
-    updateTCBBasesToState()
+    //Update context with new TCB data
+    setBases([...TCB.BaseSolar])
+
     //Update total number of panels in TCB
     TCB.totalPaneles = TCB.BaseSolar.reduce((a, b) => {
       return a + b.instalacion.paneles
@@ -224,19 +233,14 @@ export default function InstallationSummary() {
   }
 
   function maxConfiguration() {
-    //Update all BaseSolar panels in TCB
-    TCB.BaseSolar.forEach((base) => {
+    //Update all BaseSolar panels in TCB to maximun
+    bases.forEach((base) => {
       base.instalacion.paneles = base.panelesMaximo
     })
     setNewPaneles()
   }
 
   function recoverOptimos() {
-    // console.log('RECIVER', TCB.panelesOptimos)
-    // TCB.panelesOptimos.forEach((optBase) => {
-    //   const base = TCB.BaseSolar.find((b) => b.idBaseSolar === optBase.idBaseSolar)
-    //   base.instalacion.paneles = optBase.paneles
-    // })
     // Se ejecuta el optimizador para determinar la configuración inicial propuesta
     let pendiente = optimizador(TCB.BaseSolar, TCB.consumo, TCB.tipoPanelActivo.potencia)
     setNewPaneles()
@@ -248,7 +252,7 @@ export default function InstallationSummary() {
    */
 
   function nuevaInstalacion(params, event) {
-    let tmpPaneles = params.row.paneles
+    let tmpPaneles = params.row.instalacion.paneles
     if (params.reason === GridCellEditStopReasons.cellFocusOut) {
       event.defaultMuiPrevented = true
       return

@@ -14,8 +14,6 @@ import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { EconomicContext } from '../EconomicContext'
-// REACT Solidar Components
-import { SLDRTooltip } from '../../components/SLDRComponents'
 
 // Solidar objects
 import TCB from '../classes/TCB'

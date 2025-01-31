@@ -1,4 +1,4 @@
-import { useContext, Fragment } from 'react'
+import { useContext, Fragment, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -18,19 +18,27 @@ import { ConsumptionContext } from '../ConsumptionContext'
 //Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import Finca from '../classes/Finca'
 
 //React global components
 import { useDialog } from '../../components/DialogProvider'
+import TipoConsumo from '../classes/TipoConsumo.js'
 
 export default function UnitsStep() {
   const { t } = useTranslation()
   const theme = useTheme()
   const { SLDRAlert } = useAlert()
 
-  const { fincas, setFincas, zonasComunes, setZonasComunes } =
-    useContext(ConsumptionContext)
-
+  const {
+    fincas,
+    setFincas,
+    zonasComunes,
+    setZonasComunes,
+    tipoConsumo,
+    allocationGroup,
+    setAllocationGroup,
+    updateTCBUnitsFromState,
+  } = useContext(ConsumptionContext)
+  const [uniqueTypes, setUniqueTypes] = useState()
   const [openDialog, closeDialog] = useDialog()
 
   /**
@@ -58,14 +66,60 @@ export default function UnitsStep() {
       })
   }
 
-  const uniqueTypes = {}
-  fincas.forEach((f) => {
-    if (uniqueTypes[f.grupo]) {
-      uniqueTypes[f.grupo]++
-    } else {
-      uniqueTypes[f.grupo] = 1
+  useEffect(() => {
+    //Copy fincas and zonas comunes in state to TCB
+    updateTCBUnitsFromState()
+
+    if (!allocationGroup) {
+      //Build allocationGroup
+      let uniqueGroup = {}
+
+      //Get consumption from each Finca and add to allocationGroup by grupo value
+      fincas.forEach((f) => {
+        if (uniqueGroup[f.grupo]) {
+          uniqueGroup[f.grupo].participacionT += f.participacion
+          uniqueGroup[f.grupo].unidades++
+          if (f.participa) {
+            uniqueGroup[f.grupo].participacionP += f.participacion
+            uniqueGroup[f.grupo].participes++
+            uniqueGroup[f.grupo].consumo +=
+              f.nombreTipoConsumo !== '' ? TipoConsumo.getTotal(f.nombreTipoConsumo) : 0
+          }
+        } else {
+          uniqueGroup[f.grupo] = {
+            nombre: f.grupo,
+            criterio: 'PARTICIPACION',
+            participacionT: f.participacion,
+            unidades: 1,
+            consumo: 0,
+            produccion: 0,
+          }
+          if (f.participa) {
+            uniqueGroup[f.grupo].participes = 1
+            uniqueGroup[f.grupo].participacionP = f.participacion
+            uniqueGroup[f.grupo].consumo +=
+              f.nombreTipoConsumo !== '' ? TipoConsumo.getTotal(f.nombreTipoConsumo) : 0
+          } else {
+            uniqueGroup[f.grupo].participes = 0
+            uniqueGroup[f.grupo].participacionP = 0
+          }
+        }
+      })
+
+      //Get consumption from each ZonaComun and add to allocationGroup by name
+      zonasComunes.forEach((zc) => {
+        uniqueGroup[zc.id] = {
+          nombre: zc.nombre,
+          unidades: 0,
+          produccion: 0,
+          consumo:
+            zc.nombreTipoConsumo !== '' ? TipoConsumo.getTotal(zc.nombreTipoConsumo) : 0,
+        }
+      })
+
+      setAllocationGroup(uniqueGroup)
     }
-  })
+  }, [])
 
   function loadFincasFromCSV(event) {
     const file = event.target.files[0]
@@ -85,9 +139,7 @@ export default function UnitsStep() {
       }
 
       reader.onload = (e) => {
-        TCB.Finca = []
-        setFincas([])
-
+        const newFincas = []
         const text = e.target.result
         const data = csvToArray(text, ';')
         if (data.length > 0) {
@@ -97,21 +149,19 @@ export default function UnitsStep() {
             //Si la finca cargada tiene un tipo de consumo inexistente lo limpiamos
             if (finca.nombreTipoConsumo !== '') {
               if (
-                !TCB.TipoConsumo.find(
+                !tipoConsumo.find(
                   (tc) => tc.nombreTipoConsumo === finca.nombreTipoConsumo,
                 )
               ) {
                 finca.nombreTipoConsumo = ''
               }
             }
-            Finca.actualiza_creaFinca(finca)
+            newFincas.push(finca)
           }
 
           console.log('setting fincas in UNITS loadCSV')
-          setFincas(TCB.Finca)
-          TCB.requiereOptimizador = true
-          console.log(TCB.Finca)
-          //_tablaFinca.updateOrAddData(data)
+          setFincas([...newFincas])
+          TCB.cambioTipoConsumo = true
         }
       }
       reader.readAsText(file)
@@ -175,9 +225,9 @@ export default function UnitsStep() {
   }
 
   function creaZonaComun() {
-    const _zonaComun = {
+    const newZonaComun = {
       nombreTipoConsumo: '',
-      idZonaComun: (++TCB.idFinca).toFixed(0),
+      id: (++TCB.idFinca).toFixed(0),
       CUPS: 'CUPS de ' + TCB.idFinca.toFixed(0),
       nombre: 'Zona Comun ' + TCB.idFinca,
       coefEnergia: 0,
@@ -185,10 +235,37 @@ export default function UnitsStep() {
       cuotaHucha: 0,
     }
 
-    TCB.ZonaComun.push(_zonaComun)
-    TCB.requiereOptimizador = true
-    TCB.requiereReparto = true
-    setZonasComunes((prev) => [...prev, _zonaComun])
+    //Initially al groups participate in the cost of all zonas
+    const participacionTotal = fincas.reduce((p, f) => {
+      return p + UTIL.returnFloat(f.participacion)
+    }, 0)
+
+    //Add new zona comun to allocationGroup
+    setAllocationGroup((prev) => {
+      const tmpAG = prev
+      for (const grupo in tmpAG) {
+        if (tmpAG[grupo].unidades > 0)
+          //Is a DGC group, need to add new zonacomun to the list
+          tmpAG[grupo].zonasComunes = {
+            ...tmpAG[grupo].zonasComunes,
+            [newZonaComun.id]: true,
+          }
+      }
+      //Add newZonaComun to alloactionGroup
+      tmpAG[newZonaComun.id] = {
+        nombre: newZonaComun.nombre,
+        participacionT: participacionTotal,
+        consumo: 0,
+        produccion: 0,
+        unidades: 0,
+      }
+      return tmpAG
+    })
+
+    //Add new zona comun to state
+    setZonasComunes((prev) => [...prev, newZonaComun])
+    //Add new zona comun to TCB
+    TCB.ZonaComun.push(newZonaComun)
   }
 
   return (
@@ -237,13 +314,19 @@ export default function UnitsStep() {
               gap: '15px',
             }}
           >
-            {Object.keys(uniqueTypes).map((group) => (
-              <Fragment key={group}>
-                <Box sx={{ display: 'flex', width: '30%' }}>
-                  <UnitTypeBox tipo={group}></UnitTypeBox>
-                </Box>
-              </Fragment>
-            ))}
+            {allocationGroup
+              ? Object.keys(allocationGroup).map((group) => (
+                  <Fragment key={group}>
+                    {allocationGroup[group].unidades > 0 ? (
+                      <Box sx={{ display: 'flex', width: '30%' }}>
+                        <UnitTypeBox grupo={group}></UnitTypeBox>
+                      </Box>
+                    ) : (
+                      ''
+                    )}
+                  </Fragment>
+                ))
+              : ''}
           </Box>
         </Grid>
 
@@ -290,7 +373,7 @@ export default function UnitsStep() {
         </Grid>
       </Grid>
 
-      <Button onClick={() => UTIL.dumpData('Fincas.csv', TCB.Finca, null, dumpFields)}>
+      <Button onClick={() => UTIL.dumpData('Fincas.csv', fincas, null, dumpFields)}>
         Exportar
       </Button>
 
