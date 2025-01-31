@@ -1,4 +1,5 @@
-import { useEffect, useState, useContext } from 'react'
+import { useContext, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 // MUI objects
 import { Box, Typography, TextField, MenuItem, IconButton } from '@mui/material'
@@ -11,70 +12,91 @@ import { ConsumptionContext } from '../ConsumptionContext'
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
+import TipoConsumo from '../classes/TipoConsumo'
 
 export default function ZonaComunTypeBox(props) {
+  const { t } = useTranslation()
   const theme = useTheme()
 
-  const { zonasComunes, setZonasComunes, allocationGroup, setAllocationGroup } =
-    useContext(ConsumptionContext)
+  const {
+    zonasComunes,
+    setZonasComunes,
+    allocationGroup,
+    setAllocationGroup,
+    tipoConsumo,
+  } = useContext(ConsumptionContext)
 
+  const [error, setError] = useState({ status: false, field: '' })
   const { zonaComun } = props
-  const [totalConsumption, setTotalConsumption] = useState()
-
-  useEffect(() => {
-    if (zonaComun.nombreTipoConsumo != '') {
-      setTotalConsumption(
-        TCB.TipoConsumo.find((_tc) => {
-          return _tc.nombreTipoConsumo === zonaComun.nombreTipoConsumo
-        }).totalAnual,
-      )
-    }
-  }, [])
 
   function changeTipoConsumo(tipo) {
-    TCB.ZonaComun.find((_zc) => {
-      return _zc.idZonaComun === zonaComun.idZonaComun
-    }).nombreTipoConsumo = tipo
-    setZonasComunes([...TCB.ZonaComun])
-    setTotalConsumption(
-      TCB.TipoConsumo.find((_tc) => {
-        return _tc.nombreTipoConsumo === tipo
-      }).totalAnual,
+    //Change zonaComun tipo de consumo en state
+    setZonasComunes((prev) =>
+      prev.map((_zc) =>
+        _zc.id === zonaComun.id ? { ..._zc, nombreTipoConsumo: tipo } : _zc,
+      ),
     )
 
-    TCB.requiereOptimizador = true
+    //Change consumo de la zona comun en allocationGroup
+    const tConsumo = tipo !== '' ? TipoConsumo.getTotal(tipo) : 0
+    setAllocationGroup((prev) => ({
+      ...prev,
+      [zonaComun.id]: {
+        ...prev[zonaComun.id],
+        consumo: tConsumo,
+      },
+    }))
+
     TCB.requiereReparto = true
     TCB.cambioTipoConsumo = true
   }
 
-  function changeNombreZonaComun(nombre) {
-    TCB.ZonaComun.find((_zc) => {
-      return _zc.idZonaComun === zonaComun.idZonaComun
-    }).nombre = nombre
-    setZonasComunes([...TCB.ZonaComun])
+  function changeNombreZonaComun(event) {
+    const { id, value } = event.target
+    if (zonasComunes.find((zc) => zc.nombre === value)) {
+      setError({ status: true, field: id, name: value })
+    } else {
+      setZonasComunes((prev) =>
+        prev.map((_zc) => (_zc.id === zonaComun.id ? { ..._zc, nombre: value } : _zc)),
+      )
+      setError({ status: false, field: id })
+    }
+  }
+
+  function setNombreZonaComun(event) {
+    const { value } = event.target
+
+    setAllocationGroup((prev) => ({
+      ...prev,
+      [zonaComun.id]: { ...prev[zonaComun.id], nombre: value },
+    }))
+
+    setZonasComunes((prev) =>
+      prev.map((item) => (item.id === zonaComun.id ? { ...item, nombre: value } : item)),
+    )
   }
 
   function changeCUPS(CUPS) {
-    TCB.ZonaComun.find((_zc) => {
-      return _zc.idZonaComun === props.zonaComun.idZonaComun
-    }).CUPS = CUPS
-    setZonasComunes([...TCB.ZonaComun])
+    setZonasComunes((prev) =>
+      prev.map((_zc) => (_zc.id === zonaComun.id ? { ..._zc, CUPS: CUPS } : _zc)),
+    )
   }
 
   function deleteZonaComun() {
-    let prevZonasComunes = [...zonasComunes]
-    const nIndex = prevZonasComunes.findIndex((zc) => {
-      return zc.idZonaComun === props.zonaComun.idZonaComun
-    })
-    prevZonasComunes.splice(nIndex, 1)
-    TCB.ZonaComun.splice(nIndex, 1)
-    setZonasComunes([...prevZonasComunes])
+    setZonasComunes((prev) => prev.filter((_zc) => _zc.id !== zonaComun.id))
 
     if (allocationGroup) {
-      const newAllocationGroup = { ...allocationGroup }
-      delete newAllocationGroup[props.zonaComun.nombre]
-      setAllocationGroup(newAllocationGroup)
+      setAllocationGroup((prev) => {
+        const tmpAG = prev
+        for (const ag in tmpAG) {
+          if (tmpAG[ag].unidades > 0) delete tmpAG[ag].zonasComunes[zonaComun.id]
+        }
+        return tmpAG
+      })
     }
+
+    TCB.requiereReparto = true
+    TCB.cambioTipoConsumo = true
   }
 
   return (
@@ -97,12 +119,19 @@ export default function ZonaComunTypeBox(props) {
 
       <TextField
         label="Nombre"
-        sx={{ width: 200, height: 30, mt: '0.2rem', mb: '0.2rem' }}
+        sx={{ width: 200, height: 30, mt: '0.2rem', mb: '1rem' }}
         size="small"
         type="text"
-        id="nombre"
+        id="nombreZonaComun"
         value={zonaComun.nombre}
-        onChange={(event) => changeNombreZonaComun(event.target.value)}
+        onChange={changeNombreZonaComun}
+        onBlur={setNombreZonaComun}
+        error={error.status && error.field === 'nombreZonaComun'}
+        helperText={
+          error.status && error.field === 'nombreZonaComun'
+            ? t(error.name + ' Duplicado')
+            : ''
+        }
       />
 
       <TextField
@@ -117,14 +146,14 @@ export default function ZonaComunTypeBox(props) {
 
       <TextField
         label="Uso eléctrico"
-        sx={{ width: 200, height: 30, mt: '1rem' }}
+        sx={{ width: 200, height: 30, mt: '1rem', mb: 2 }}
         size="small"
         select
         id="tipo"
         value={zonaComun.nombreTipoConsumo}
         onChange={(event) => changeTipoConsumo(event.target.value)}
       >
-        {TCB.TipoConsumo.map((_tc, index) => (
+        {tipoConsumo.map((_tc, index) => (
           <MenuItem key={index} value={_tc.nombreTipoConsumo}>
             {_tc.nombreTipoConsumo}
           </MenuItem>
@@ -135,7 +164,8 @@ export default function ZonaComunTypeBox(props) {
         textAlign={'center'}
         dangerouslySetInnerHTML={{
           __html:
-            '<br />Uso de energía: ' + UTIL.formatoValor('energia', totalConsumption),
+            'Uso de energía: ' +
+            UTIL.formatoValor('energia', allocationGroup[zonaComun.id].consumo),
         }}
       />
       <IconButton

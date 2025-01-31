@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -11,7 +11,6 @@ import { useDialog } from '../../components/DialogProvider'
 import UnitsSummary from './UnitsSummary'
 
 // Solidar objects
-import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 export default function UnitTypeBox(props) {
@@ -19,37 +18,39 @@ export default function UnitTypeBox(props) {
   const theme = useTheme()
   const { fincas, tipoConsumo, allocationGroup } = useContext(ConsumptionContext)
   const [openDialog, closeDialog] = useDialog()
-  const [totalConsumption, setTotalConsumption] = useState()
 
-  const { tipo } = props
+  const { grupo } = props
 
-  const units = fincas.filter((e) => e.grupo === tipo)
-
-  const participes = units.filter((fnc) => fnc.participa).length
-
-  const participacionTotal = units.reduce((a, b) => {
-    return a + UTIL.returnFloat(b.participacion)
+  const unidades = fincas.reduce((p, f) => {
+    return f.grupo === grupo ? p + 1 : p
   }, 0)
 
-  const consumoTotal = () => {
-    let total = 0
-    units.forEach((unit) => {
-      if (unit.participa && unit.nombreTipoConsumo !== '') {
-        const tc = tipoConsumo.find((t) => {
-          return t.nombreTipoConsumo === unit.nombreTipoConsumo
-        })
-        total += tc.totalAnual
-      }
-    })
-    return total
+  const participes = fincas.reduce((p, f) => {
+    return f.grupo === grupo && f.participa ? p + 1 : p
+  }, 0)
+
+  const participacionTotal = fincas.reduce((p, f) => {
+    return f.grupo === grupo ? p + UTIL.returnFloat(f.participacion) : p
+  }, 0)
+
+  function consumoTotal() {
+    return fincas
+      .filter(
+        (unit) => unit.grupo === grupo && unit.participa && unit.nombreTipoConsumo !== '',
+      )
+      .reduce(
+        (t, u) =>
+          t +
+          tipoConsumo.find((t) => t.nombreTipoConsumo === u.nombreTipoConsumo).totalAnual,
+        0,
+      )
   }
 
   function showDetails() {
     openDialog({
       children: (
         <UnitsSummary
-          grupo={tipo}
-          units={units}
+          grupo={grupo}
           maxWidth={'xs'}
           fullWidth={true}
           onClose={closeDialog}
@@ -75,7 +76,7 @@ export default function UnitTypeBox(props) {
           }}
         >
           <Typography sx={theme.titles.level_1} textAlign={'center'} marginTop="1rem">
-            {tipo}
+            {grupo}
           </Typography>
           <Typography
             variant="body"
@@ -85,11 +86,12 @@ export default function UnitTypeBox(props) {
                 '<br />Participes: ' +
                 participes +
                 ' de ' +
-                units.length +
+                unidades +
                 '<br />Participación: ' +
                 UTIL.formatoValor('porciento', participacionTotal) +
                 '<br />Uso de energía: ' +
-                UTIL.formatoValor('energia', consumoTotal()),
+                //UTIL.formatoValor('energia', consumoTotal()),
+                UTIL.formatoValor('energia', allocationGroup[grupo].consumo),
             }}
           />
           <Button onClick={showDetails}>{t('UNITS.LABEL_VER_DETALLES')}</Button>

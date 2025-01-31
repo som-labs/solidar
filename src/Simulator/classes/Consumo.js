@@ -40,7 +40,6 @@ class Consumo extends DiaHora {
             let _tc = TCB.TipoConsumo.find((_tcn) => {
               return _tcn.nombreTipoConsumo === _zc.nombreTipoConsumo
             })
-            console.log(_tc)
             this.suma(_tc)
           }
         }

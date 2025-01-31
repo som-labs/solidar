@@ -9,7 +9,6 @@ import { useTheme } from '@mui/material/styles'
 export default function EnvironmentalImpact() {
   const { t } = useTranslation()
   const theme = useTheme()
-  //const { current } = React.useContext(ColorModeContext)
 
   const radiusNoRenovable = 200
   const radiusRenovable = parseInt(

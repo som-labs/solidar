@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSearchParams, useLocation } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
 import Container from '@mui/material/Container'
 
@@ -11,10 +11,10 @@ import Wizard from '../components/Wizard'
 import LocationStep from './Location/Location'
 import ConsumptionStep from './Consumption/Consumption'
 import UnitsStep from './Units/Units'
-import EnergyAllocationStep from './EnergyAllocation/EnergyAllocattion'
+import EnergyAllocationStep from './EnergyAllocation/EnergyAllocation'
 import EnergyBalanceStep from './EnergyBalance/EnergyBalance'
 import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
-import EconomicAllocationStep from './EconomicAllocation/EconomicAllocattion'
+import EconomicAllocationStep from './EconomicAllocation/EconomicAllocation'
 import SummarySOMStep from './Summary/SOM/Summary'
 
 import { ConsumptionContext } from './ConsumptionContext'
@@ -23,7 +23,8 @@ import { EconomicContext } from './EconomicContext'
 //import { AlertContext } from './components/Alert'
 import { useAlert } from '../components/AlertProvider.jsx'
 // Solidar objects
-import PreparaEnergyBalance from './EnergyBalance/PreparaEnergyBalance'
+import PreparaEnergyBalance from './classes/PreparaEnergyBalance.jsx'
+
 import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
 import InicializaAplicacion from './classes/InicializaAplicacion'
@@ -34,8 +35,16 @@ export default function Page() {
   const { t } = useTranslation()
   const { SLDRAlert } = useAlert()
   //const { SLDRAlert } = useContext(AlertContext)
-  const { validaBases } = useContext(BasesContext)
-  const { validaTipoConsumo, repartoValido } = useContext(ConsumptionContext)
+  const { validaBases, bases } = useContext(BasesContext)
+  const {
+    validaTipoConsumo,
+    validaUnits,
+    repartoValido,
+    fincas,
+    setFincas,
+    zonasComunes,
+    allocationGroup,
+  } = useContext(ConsumptionContext)
   const { ecoData, setEcoData } = useContext(EconomicContext)
 
   const [a] = useSearchParams()
@@ -45,7 +54,7 @@ export default function Page() {
   InicializaAplicacion()
 
   function validaEnergyBalanceStep() {
-    for (let base of TCB.BaseSolar) {
+    for (const base of bases) {
       if (!UTIL.ValidateEntero(base.instalacion.paneles)) {
         SLDRAlert(
           'VALIDACION',
@@ -72,8 +81,8 @@ export default function Page() {
     }
   }
 
-  function validaLocationStep() {
-    results = validaBases()
+  async function validaLocationStep() {
+    results = await validaBases()
     if (!results.status) SLDRAlert('VALIDACION', results.error, 'Error')
     return results.status
   }
@@ -92,7 +101,6 @@ export default function Page() {
         setEcoData((prev) => ({ ...prev, ...TCB.economico }))
         TCB.readyToExport = true
       } else {
-        console.log(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error)
         SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
       }
     }
@@ -100,42 +108,11 @@ export default function Page() {
   }
 
   async function validaUnitsStep() {
-    //Verifica que al menos una unidad o una zona común tengan uso electrico asignado
-
-    let chk = false
-    for (const _fnc of TCB.Finca) {
-      if (_fnc.nombreTipoConsumo === '' && _fnc.participa) {
-        SLDRAlert(
-          'VALIDACION',
-          t(
-            _fnc.nombreFinca +
-              ' en el grupo ' +
-              _fnc.grupo +
-              ' participa pero falta uso electrico',
-          ),
-          'Error',
-        )
-        chk = false
-        return false
-      }
-
-      if (_fnc.nombreTipoConsumo !== '') chk = true
-      //return { status: true, error: '' }
-    }
-
-    for (const _zc of TCB.ZonaComun) {
-      if (_zc.nombreTipoConsumo === '') {
-        console.log('Error de validacion Zonas Comunes')
-        SLDRAlert('VALIDACION', t(_zc.nombre + ' falta uso electrico'), 'Error')
-        chk = false
-        return false
-      } else {
-        chk = true
-      }
-      //return { status: true, error: '' }
-    }
-
-    if (chk) {
+    results = validaUnits()
+    if (!results.status) {
+      SLDRAlert('VALIDACION', results.error, 'Error')
+      return false
+    } else {
       results = await PreparaEnergyBalance()
       if (results.status) {
         setEcoData((prev) => ({ ...prev, ...TCB.economico }))
@@ -145,9 +122,6 @@ export default function Page() {
         SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
       }
       return results.status
-    } else {
-      SLDRAlert(t('CONSUMPTION.ERROR_AL_MENOS_UN_USOELECTRICO'), results.error, 'Error')
-      return false
     }
   }
 
@@ -158,6 +132,19 @@ export default function Page() {
     } else {
       return true
     }
+  }
+
+  function validaEconomicBalance() {
+    //Asignacion del coste propio de cada unidad por el beta que le corresponde
+    setFincas((prev) =>
+      prev.map((f, ndx) => {
+        TCB.Finca[ndx].coste = UTIL.roundDecimales(
+          ecoData.precioInstalacionCorregido * f.coefEnergia,
+          2,
+        )
+        return TCB.Finca[ndx]
+      }),
+    )
   }
 
   const getSections = (modo) => {
@@ -212,6 +199,7 @@ export default function Page() {
         key={'eb_sec'}
         label="economicbalance"
         title={t('ECONOMIC_BALANCE.TITLE')}
+        next={validaEconomicBalance}
       />,
     )
 

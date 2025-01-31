@@ -28,9 +28,7 @@ async function calculaResultados() {
   // Construccion objeto Balance global
   TCB.balance = new Balance(TCB.produccion, TCB.consumo, 100)
   UTIL.debugLog('calculaResultados - balance global ', TCB.balance)
-  TCB.balanceCreado = true
-  // TCB.economico = new Economico()
-  // UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
+
   return
 }
 

@@ -17,7 +17,7 @@ import { SLDRFooterBox } from '../../components/SLDRComponents'
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-
+import '../../App.css'
 export default function BasesSummary() {
   const { t } = useTranslation()
   const theme = useTheme()
@@ -130,17 +130,9 @@ export default function BasesSummary() {
   ]
 
   function deleteBaseSolar(rowId) {
-    let prevBases = [...bases]
-    const nIndex = prevBases.findIndex((bs) => {
-      return bs.idBaseSolar === rowId
-    })
-
+    setBases((prev) => prev.filter((b) => b.idBaseSolar !== rowId))
     TCB.requiereOptimizador = true
     UTIL.deleteBaseGeometries(rowId)
-
-    prevBases.splice(nIndex, 1)
-    TCB.BaseSolar.splice(nIndex, 1)
-    setBases(prevBases)
   }
 
   function editBaseSolar(rowId) {

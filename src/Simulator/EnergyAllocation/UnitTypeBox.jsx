@@ -39,7 +39,7 @@ export default function UnitTypeBox(props) {
   return (
     <>
       <Typography sx={theme.titles.level_1} textAlign={'center'}>
-        {grupo}
+        {allocationGroup[grupo].nombre}
       </Typography>
 
       {allocationGroup[grupo].unidades > 0 ? (
@@ -114,10 +114,7 @@ export default function UnitTypeBox(props) {
                 }}
               >
                 Uso eléctrico demandado:{' '}
-                {UTIL.formatoValor(
-                  'energia',
-                  allocationGroup[grupo].consumo * TCB.consumo.totalAnual,
-                )}
+                {UTIL.formatoValor('energia', allocationGroup[grupo].consumo)}
               </Box>
               <Box
                 sx={{
@@ -168,10 +165,7 @@ export default function UnitTypeBox(props) {
               }}
             >
               Uso eléctrico demandado:{' '}
-              {UTIL.formatoValor(
-                'energia',
-                allocationGroup[grupo].consumo * TCB.consumo.totalAnual,
-              )}
+              {UTIL.formatoValor('energia', allocationGroup[grupo].consumo)}
             </Box>
             <Box
               sx={{
