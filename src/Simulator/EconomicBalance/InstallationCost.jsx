@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useAlert } from '../../components/AlertProvider.jsx'
 
 // MUI objects
 import {
@@ -26,6 +27,7 @@ import TCB from '../classes/TCB'
 export default function InstallationCost() {
   const { t, i18n } = useTranslation()
   const theme = useTheme()
+  const { SLDRAlert } = useAlert()
   const [openDialog, closeDialog] = useDialog()
 
   const { ecoData, setEcoData } = useContext(EconomicContext)
@@ -50,12 +52,20 @@ export default function InstallationCost() {
         TCB.economico.precioInstalacionCorregido = parseInt(precioCorregido)
         TCB.economico.calculoFinanciero(100, 100)
         if (TCB.economico.periodoAmortizacion > 20) {
-          alert(t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
+          SLDRAlert(
+            'AMORTIZACION',
+            t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'),
+            'Warning',
+          )
         }
         setEcoData({ ...ecoData, ...TCB.economico })
         setError(false)
         if (TCB.porcientoSubvencion !== 0) {
-          alert('Es posible que tenga que verificar el valor de la subvención recibida')
+          SLDRAlert(
+            'SUBVENCION',
+            'Es posible que tenga que verificar el valor de la subvención recibida',
+            'Warning',
+          )
         }
       }
     }

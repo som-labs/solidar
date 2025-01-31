@@ -19,14 +19,19 @@ import { Button, Tooltip, Box, Grid } from '@mui/material'
 
 //React global components
 import { BasesContext } from '../BasesContext'
+import { ConsumptionContext } from '../ConsumptionContext'
+
 import DialogBaseSolar from './DialogBaseSolar'
+
 import { useDialog } from '../../components/DialogProvider'
-import { AlertContext } from '../components/Alert'
+import { useAlert } from '../../components/AlertProvider.jsx'
+//import { AlertContext } from '../components/Alert'
 
 // Local Location module
-import verificaTerritorio from './Nominatim.js'
+import { verificaTerritorio, getParcelaXY } from './Nominatim.js'
 
 // Solidar global modules
+import Finca from '../classes/Finca.js'
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
@@ -41,16 +46,16 @@ import * as UTIL from '../classes/Utiles'
 
 export default function MapComponent() {
   const { t } = useTranslation()
-
+  const { fincas, setFincas } = useContext(ConsumptionContext)
   // Map state
   const [mapType, setMapType] = useState('LOCATION.LABEL_SATELITE')
   const [selectedCoord] = useState([-3.7, 40.45])
 
-  const { map, setMap, processFormData } = useContext(BasesContext)
+  const { map, setMap, bases, processFormData } = useContext(BasesContext)
   const mapElement = useRef()
   const basesLayer = useRef()
   const mapRef = useRef(map)
-  const { SLDRAlert } = useContext(AlertContext)
+  const { SLDRAlert } = useAlert()
 
   const [openDialog, closeDialog] = useDialog()
 
@@ -340,19 +345,41 @@ export default function MapComponent() {
       document.body.style.cursor = cursorOriginal
       if (status !== 'success') {
         SLDRAlert(
-          'NOMINATIM error 1',
+          'NOMINATIM Verifica territorio',
           t('LOCATION.ERROR_' + status, { err: details }),
-          'ERROR',
+          'Warning',
         )
         TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
         return false
       }
       TCB.direccion = details.direccion
     } catch (error) {
-      console.log('CATCHED', error)
-      SLDRAlert('NOMINATIM error 2', error, 'ERROR')
+      SLDRAlert('NOMINATIM error 2', error, 'Error')
       TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
       return false
+    }
+
+    if (TCB.modoActivo !== 'INDIVIDUAL') {
+      const alfa = await getParcelaXY(puntoAplicacion_4326)
+      console.log('GETPARCELAXY', alfa)
+      if (alfa.status) {
+        setFincas(alfa.units.map((u) => new Finca(u)))
+      } else {
+        if (
+          !(await SLDRAlert(
+            'Busqueda catastro',
+            'Error desde DGC buscando parcela en esas coordenadas:<br />' +
+              alfa.error +
+              '<br />¿Desea continuar y cargar las fincas mas tarde?',
+            'Warning',
+            true,
+          ))
+        ) {
+          TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
+          setFincas([])
+          return false
+        }
+      }
     }
 
     //Preparamos los datos default para constuir un objeto BaseSolar
@@ -391,7 +418,7 @@ export default function MapComponent() {
 
   //Fit map view to bases if any
   function fitMap() {
-    if (TCB.BaseSolar.length > 0) {
+    if (bases.length > 0) {
       const mapView = map.getView()
       const center = mapView.getCenter()
       mapView.fit(TCB.origenDatosSolidar.getExtent())

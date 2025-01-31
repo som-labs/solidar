@@ -86,10 +86,10 @@ curl_close($ch);
 //Print the data out onto the page.
 echo $data;
 
-// $t2=date("Y/m/d H:i:s");
-// //Log call
-// $file = fopen("./log/PVGIScalls.txt", "a");
-// fwrite($file, $idSesion . ";" . $t1 . ";" . $t2 . ";" . $url . PHP_EOL);
-// fclose($file);
+$t2=date("Y/m/d H:i:s");
+//Log call
+$file = fopen("./log/PVGIScalls.txt", "a");
+fwrite($file, $idSesion . ";" . $t1 . ";" . $t2 . ";" . $url . PHP_EOL);
+fclose($file);
 
 ?>

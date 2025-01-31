@@ -10,6 +10,7 @@ import calculaResultados from '../classes/calculaResultados'
 import Consumo from '../classes/Consumo'
 import BaseSolar from '../classes/BaseSolar'
 import Economico from '../classes/Economico'
+import TipoConsumo from './TipoConsumo'
 
 export default async function PreparaEnergyBalance() {
   let cursorOriginal = document.body.style.cursor
@@ -17,8 +18,19 @@ export default async function PreparaEnergyBalance() {
 
   //Crearemos el consumo global como suma de todos los tipos de consumo definidos
   UTIL.debugLog('PreparaEnergyBalance - Hay cambio de consumos? ' + TCB.cambioTipoConsumo)
+
   if (TCB.cambioTipoConsumo) {
+    TCB.requiereOptimizador = true
     TCB.consumo = new Consumo()
+    if (TCB.modoActivo !== 'INDIVIDUAL') {
+      //Calculamos el coeficiente del consumo de cada finca sobre el total
+      for (const f of TCB.Finca) {
+        if (f.nombreTipoConsumo !== '')
+          f.coefConsumo =
+            TipoConsumo.getTotal(f.nombreTipoConsumo) / TCB.consumo.totalAnual
+        else f.coefConsumo = 0
+      }
+    }
     UTIL.debugLog('PreparaEnergyBalance - Nuevo consumo global creado', TCB.consumo)
     TCB.cambioTipoConsumo = false
   }
@@ -66,6 +78,16 @@ export default async function PreparaEnergyBalance() {
       }
     }
 
+    // Si estamos en modo no individual reset de cualquier coeficiente de reparto que hubiera existido previamente
+    if (TCB.modoActivo !== 'INDIVIDUAL') {
+      TCB.Finca.forEach((f) => {
+        f.coefEnergia = 0
+      })
+      TCB.ZonaComun.forEach((z) => {
+        z.coefEnergia = 0
+      })
+    }
+
     UTIL.debugLog('PreparaEnergyBalance - Todas las bases listas llama optimizador')
     // Se ejecuta el optimizador para determinar la configuración inicial propuesta
     let pendiente = optimizador(TCB.BaseSolar, TCB.consumo, TCB.tipoPanelActivo.potencia)
@@ -82,6 +104,7 @@ export default async function PreparaEnergyBalance() {
       )
     }
     TCB.requiereOptimizador = false
+    TCB.requiereAllocation = true
     UTIL.debugLog('PreparaEnergyBalance - pasa a calculaResultados')
     await calculaResultados()
   }

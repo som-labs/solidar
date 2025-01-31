@@ -60,6 +60,22 @@ const TCB = {
    */
   BaseSolar: [],
 
+  /**
+   *  @type {Array<Fincas>}
+   */
+  Finca: [],
+  UnitType: [], //Array con los tipos unicos de fincas obtenidos de DGC + las zonas comunes {nombre, consumo, allocation, zonaComun}
+  //Es la suma de las participaciones devueltas por DGC. Se untilizará para normalizar los coeficientes
+  participacionTotal: 0,
+
+  /**
+   * @type {Array<ZonaComun>}
+   */
+  ZonaComun: [],
+  GroupZC: {}, // Object indicando que grupos participan del gasto correspondiente a una zona comun {nombre del grupo: {zc1: true/false, zc2: true/false,....}}
+  requiereReparto: true, //Flag indicando a Reparto economico si de debe reconstruir GruposZC
+  requiereAllocation: true,
+
   // Variables de totalización
   consumo: {}, // Este campo contiene la suma de todos las consumos[]
   consumoCreado: false,
@@ -77,6 +93,7 @@ const TCB = {
   _tablaReparto: null,
   listaZonasComunes: [], //Lista de los nombres de las zonas comunes generadas en los modos colectivo y comunidad
   tiempoEsperaPVGIS: 100,
+  tiempoEsperaTarifas: 20, //Tiempo en segundos que espera los precios de Som
 
   //Por ver
   pdfDoc: '',
@@ -111,7 +128,6 @@ const TCB = {
   //rendimientoCreado: false,
   instalacionCreada: false,
   produccionCreada: false,
-  balanceCreado: false,
   economicoCreado: false,
   requiereOptimizador: true,
   ultimarefcat: '', //Ultima referencia catastral de la que se han cargado fincas
@@ -220,7 +236,8 @@ const TCB = {
     IVAInstalacion: 21.0,
     perdidasSistema: 20,
     interesVAN: 3,
-    margen: 0.5,
+    margen: 0.5, //Se pondrá a 0 si es tejado inclinado
+    CAU: 'Codigo CAU',
   },
 
   //Default panel type

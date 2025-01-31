@@ -1,0 +1,26 @@
+idFinca;nombreFinca;participacion;refcat;planta;puerta;uso;superficie;CUPS
+"Borrar esta fila y completar los datos. Salvar como CSV con separador punto y coma (;)";;;;;;;;
+(requerido);(requerido);(requerido);(opcional);(opcional); (opcional); (requerido); (opcional); (opcional)
+Número único identificativo de la finca;Nombre dado al participe;Porciento de propiedad de esta finca en el total;Referencia catastral;;;Un valor de esta lista;;Identificador del punto de sumistro
+;;;;;;Almacen-Estacionamiento;;
+;;;;;;Estacionamiento;;
+;;;;;;Comercial;;
+;;;;;;Cultural;;
+;;;;;;Ocio y Hostelería;;
+;;;;;;Industrial;;
+;;;;;;Deportivo;;
+;;;;;;Oficinas;;
+;;;;;;Edificio Singular;;
+;;;;;;Religioso;;
+;;;;;;Espectáculos;;
+;;;;;;Residencial;;
+;;;;;;RDL 1/2004 8.2.a;;
+;;;;;;RDL 1/2004 8.2.b;;
+;;;;;;RDL 1/2004 8.2.c;;
+;;;;;;RDL 1/2004 8.2.d;;
+;;;;;;Sanidad y Beneficencia;;
+;;;;;;Agrario;;
+;;;;;;Suelo sin edif., obras urbaniz., jardinería, constr. ruinosa;;
+;;;;;;Industrial agrario;;
+;;;;;;Almacén agrario;;
+;;;;;;Otros;;

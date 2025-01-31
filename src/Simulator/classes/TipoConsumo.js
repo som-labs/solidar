@@ -36,6 +36,12 @@ class TipoConsumo extends DiaHora {
     this.options = this.selectCSVOptions(this.fuente)
   } // End constructor
 
+  static getTotal(nombreTipoConsumo) {
+    const t = TCB.TipoConsumo.find((tc) => tc.nombreTipoConsumo === nombreTipoConsumo)
+    if (t) return t.totalAnual
+    else return null
+  }
+
   /**
    * Function to define options for the loadFromCsv function
    * @param {string} fuente [CVS, REE, DATADIS, SOM]
@@ -63,7 +69,7 @@ class TipoConsumo extends DiaHora {
 
   async loadTipoConsumoFromCSV() {
     this.inicializa()
-    var astatus = false
+    var rCode = { status: false, err: '' }
 
     await UTIL.loadFromCSV(this.ficheroCSV, this, this.options)
       .then((returnObject) => {
@@ -85,10 +91,10 @@ class TipoConsumo extends DiaHora {
               TCB.i18next.t('CONSUMPTION.ERROR_FALTAN_DATOS', { faltan: faltan }),
             )
           ) {
-            astatus = true
+            rCode.status = true
           }
-        } else astatus = true
-        if (astatus) {
+        } else rCode.status = true
+        if (rCode.status) {
           this.fechaInicio = returnObject.fechaInicio
           this.horaInicio = returnObject.horaInicio
           this.fechaFin = returnObject.fechaFin
@@ -99,10 +105,10 @@ class TipoConsumo extends DiaHora {
         }
       })
       .catch((e) => {
-        alert(e)
-        astatus = false
+        rCode.status = false
+        rCode.err = e
       })
-    return astatus
+    return rCode
   }
 }
 export default TipoConsumo

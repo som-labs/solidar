@@ -9,8 +9,8 @@ import { useTheme } from '@mui/material/styles'
 // REACT Solidar Components
 import PreciosTarifa from './PreciosTarifa'
 import ConsumptionSummary from './ConsumptionSummary'
-import { SLDRInfoBox, SLDRDetalle } from '../../components/SLDRComponents'
-import { AlertContext } from '../components/Alert'
+import { SLDRInfoBox } from '../../components/SLDRComponents'
+import { useAlert } from '../../components/AlertProvider.jsx'
 import HelpConsumption from './HelpConsumption'
 import HelpDistribuidora from './HelpDistribuidora'
 
@@ -20,7 +20,6 @@ import { useDialog } from '../../components/DialogProvider'
 const ConsumptionStep = () => {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { inLineHelp } = useContext(AlertContext)
 
   const [openDialog, closeDialog] = useDialog()
 

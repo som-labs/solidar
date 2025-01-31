@@ -8,12 +8,16 @@ const ConsumptionContext = createContext({})
 const ConsumptionContextProvider = ({ children }) => {
   const { t } = useTranslation()
   const [tipoConsumo, setTipoConsumo] = useState([])
+  const [fincas, setFincas] = useState([])
+  const [zonasComunes, setZonasComunes] = useState([])
   const [preciosValidos, setPreciosValidos] = useState(true)
+  const [repartoValido, setRepartoValido] = useState(false)
+  const [allocationGroup, setAllocationGroup] = useState()
 
   //TCB fields to be reflected in state
   const hdrTipo = {
     idTipoConsumo: undefined,
-    nombreTipoConsumo: undefined,
+    nombreTipoConsumo: '',
     fuente: undefined,
     consumoAnualREE: undefined,
     ficheroCSV: undefined,
@@ -28,35 +32,61 @@ const ConsumptionContextProvider = ({ children }) => {
     return newData
   }
 
-  /**
-   * Add or replace JS object tipo into the TipoConsumo array of ConsumptionContext
-   * @param {Object} tipo
-   */
-  function addTCBTipoToState(tipo) {
-    const prevTipos = [...tipoConsumo]
-    const idxTC = prevTipos.findIndex((tc) => {
-      return tc.idTipoConsumo === tipo.idTipoConsumo
-    })
-    if (idxTC === -1) {
-      setTipoConsumo((prevTipos) => [...prevTipos, hdrFill(tipo)])
-    } else {
-      prevTipos.splice(idxTC, 1, hdrFill(tipo))
-      setTipoConsumo(prevTipos)
-    }
-  }
-
   function validaTipoConsumo() {
-    if (TCB.TipoConsumo.length === 0) {
-      return { status: false, error: t('CONSUMPTION.ERROR_AL_MENOS_UN_TIPOCONSUMO') }
-    }
-
     if (!preciosValidos) {
       return {
         status: false,
         error: 'Debe definir los precios correctos de las tarifas antes de continuar',
       }
     }
-    return { status: true, error: '' }
+
+    if (tipoConsumo.length > 0) {
+      TCB.TipoConsumo = []
+      tipoConsumo.forEach((tipo) => {
+        TCB.TipoConsumo.push(tipo)
+      })
+      return { status: true, error: '' }
+    } else {
+      return { status: false, error: t('CONSUMPTION.ERROR_AL_MENOS_UN_TIPOCONSUMO') }
+    }
+  }
+
+  function updateTCBUnitsFromState() {
+    TCB.Finca = []
+    fincas.forEach((finca) => {
+      TCB.Finca.push(finca)
+    })
+
+    if (zonasComunes.length > 0) {
+      TCB.ZonaComun = []
+      zonasComunes.forEach((zona) => {
+        TCB.ZonaComun.push(zona)
+      })
+    }
+  }
+
+  function validaUnits() {
+    //Verifica que al menos una unidad o una zona común tengan uso electrico asignado
+    let results = { status: true, error: '' }
+    for (const _fnc of fincas) {
+      if (_fnc.nombreTipoConsumo !== '' && _fnc.participa) {
+        updateTCBUnitsFromState()
+        return results
+      }
+    }
+
+    for (const _zc of zonasComunes) {
+      if (_zc.nombreTipoConsumo !== '') {
+        updateTCBUnitsFromState()
+        console.log('VUELVE', results)
+        return results
+      }
+    }
+
+    console.log('Error de validacion Zonas Comunes')
+    results.status = false
+    results.error = t('UNITS.ERROR_AL_MENOS_UN_USOELECTRICO')
+    return results
   }
 
   const contextValue = {
@@ -65,7 +95,16 @@ const ConsumptionContextProvider = ({ children }) => {
     validaTipoConsumo,
     preciosValidos,
     setPreciosValidos,
-    addTCBTipoToState,
+    fincas,
+    setFincas,
+    zonasComunes,
+    setZonasComunes,
+    validaUnits,
+    repartoValido,
+    setRepartoValido,
+    allocationGroup,
+    setAllocationGroup,
+    updateTCBUnitsFromState,
   }
 
   return (

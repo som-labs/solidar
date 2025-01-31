@@ -1,6 +1,7 @@
 // Solidar global modules
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
+import Finca from '../classes/Finca'
 
 /** Vamos a verificar si el punto dado esta en España
   Devuelve false si no lo esta o alguno de los siguientes valores en caso de estar en España
@@ -10,7 +11,7 @@ import * as UTIL from '../classes/Utiles'
  * @returns false si no esta en España
  * @returns true si el punto esta en territorio español
  */
-export default async function verificaTerritorio(point) {
+async function verificaTerritorio(point) {
   try {
     const { status, details } = await verificaTerritorioNominatim(point)
     if (status !== 'success') {
@@ -102,3 +103,81 @@ async function verificaTerritorioNominatim(point) {
     console.log('error incontrolado')
   }
 }
+
+/**
+ * Devuelve datos de la parcela mas cercana al punto dado
+ * @param {Array(2)<Number>} punto en coordenadas sistema geografico EPSG:4326
+ * @returns {JSON} Devuelve objeto JSON de catastro con:
+ *  'codigo' => 0 si no hay error, <0 en caso de error
+ *  'refcat' => referencia catastral mas cercana a las coordenadas dadas,
+ *  'direccion' => dirección de la parcela;
+ *  'descripcion' => solo en caso de codigo <0
+ *  'units' => array de Fincas
+ */
+async function getParcelaXY(punto) {
+  let url = TCB.basePath + 'proxy-Catastro-refcat x lonlat.php?'
+  url += 'coorX=' + punto[0] + '&coorY=' + punto[1]
+  UTIL.debugLog('Consulta_RCCOOR :' + url)
+
+  let template = { parcela: {}, units: [], status: true, error: '' }
+  let errorMessage = ''
+
+  try {
+    const respuesta = await fetch(url)
+    if (respuesta.status === 200) {
+      let datoRC = await respuesta.json()
+      if (datoRC.codigo !== 0) {
+        return { status: false, error: datoRC.descripcion }
+      }
+      template.parcela = datoRC
+    }
+  } catch (err) {
+    errorMessage = TCB.i18next.t('catastro_MSG_errorFetch', {
+      err: err.message,
+      url: url,
+    })
+    return { status: false, error: errorMessage }
+  }
+
+  //Carga las fincas dependientes de cada punto de consumo con la llamada al catastro
+  url =
+    TCB.basePath + 'proxy-Catastro-detalle x refcat.php?refcat=' + template.parcela.refcat
+  url += '&idSesion=' + TCB.idSesion
+
+  try {
+    const responseFincas = await fetch(url)
+    UTIL.debugLog('Catastro ->' + url)
+    if (responseFincas.status === 200) {
+      let jsonFincas = await responseFincas.json()
+
+      TCB.participacionTotal = 0
+      for (let unaFinca of jsonFincas) {
+        //NOTA:Temporalmente asignamos idFinca como CUPS
+        unaFinca.CUPS = 'CUPS de ' + TCB.idFinca
+
+        unaFinca.idFinca = TCB.idFinca++
+        //unaFinca.grupo = Finca.mapaUsoGrupo[unaFinca.uso]
+        const _len = template.units.push(new Finca(unaFinca))
+        TCB.participacionTotal += template.units[_len - 1].participacion
+      }
+      console.log(
+        'Participacion total según DGC: ' + UTIL.round2Decimales(TCB.participacionTotal),
+      )
+      UTIL.debugLog('Participacion total según DGC: ' + TCB.participacionTotal)
+      template.status = true
+      template.error = ''
+      return template
+    } else {
+      template.status = false
+      template.error =
+        'Error obteniendo datos de catastro ' + responseFincas.status + '\n' + url
+      return template
+    }
+  } catch (err) {
+    template.status = false
+    template.error = 'Error obteniendo datos de catastro ' + err + '\n' + url
+    return template
+  }
+}
+
+export { getParcelaXY, verificaTerritorio }

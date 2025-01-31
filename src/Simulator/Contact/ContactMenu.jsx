@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton'
 
 // REACT Solidar Components
 import { useDialog } from '../../components/DialogProvider'
+import { useAlert } from '../../components/AlertProvider'
 import DialogContact from './DialogContact'
 
 //Solidar objects
@@ -13,6 +14,7 @@ import TCB from '../classes/TCB'
 
 export default function ContactMenu() {
   const { t } = useTranslation()
+  const { SLDRAlert } = useAlert()
   const [openDialog, closeDialog] = useDialog()
 
   const defaultData = {
@@ -45,6 +47,7 @@ export default function ContactMenu() {
       //   body: JSON.stringify(message),
       // })
       .then((response) => {
+        console.log(response.ok)
         if (!response.ok) {
           console.log(response)
           throw new Error('Network response was not ok.')
@@ -53,7 +56,7 @@ export default function ContactMenu() {
       })
       .then((data) => {
         // Handle the response data from the PHP file
-        alert(data)
+        SLDRAlert('CONTACTO', data, 'Message')
       })
       .catch((error) => {
         // Handle any errors that occurred during the fetch

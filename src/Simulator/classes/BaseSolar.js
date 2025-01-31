@@ -120,24 +120,33 @@ class BaseSolar {
     let config = {}
 
     const { roofType, cumbrera, anchoReal, inclinacion, lonlatBaseSolar } = area
-    //console.log('configura paneles para el area', area)
+
     if (roofType === 'Inclinado') {
+      /* Modificación 10/12/24 en caso de ser inclinado quitamos el margen del calculo de area disponible
       // Opcion largo panel paralelo a cumbrera
+      // hColumnas = Math.trunc(
+      //   (cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
+      // )
+      // hFilas = Math.trunc(
+      //   (anchoReal - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
+      // )
 
-      hColumnas = Math.trunc(
-        (cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
-      )
-      hFilas = Math.trunc(
-        (anchoReal - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
-      )
+      // // Opcion largo panel perpendicular a cumbrera
+      // vColumnas = Math.trunc(
+      //   (cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
+      // )
+      // vFilas = Math.trunc(
+      //   (anchoReal - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
+      // )
+    */
 
+      // Opcion largo panel paralelo a cumbrera
+      hColumnas = Math.trunc(cumbrera / TCB.tipoPanelActivo.largo)
+      hFilas = Math.trunc(anchoReal / TCB.tipoPanelActivo.ancho)
       // Opcion largo panel perpendicular a cumbrera
-      vColumnas = Math.trunc(
-        (cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
-      )
-      vFilas = Math.trunc(
-        (anchoReal - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
-      )
+      vColumnas = Math.trunc(cumbrera / TCB.tipoPanelActivo.ancho)
+      vFilas = Math.trunc(anchoReal / TCB.tipoPanelActivo.largo)
+
       // Elegimos la configuracion que nos permite mas paneles
     } else {
       //Caso tejado horizontal u optimo

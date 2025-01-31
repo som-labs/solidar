@@ -74,9 +74,16 @@ function DialogContainer(props) {
         onExited: onKill,
       }}
       open={open}
-      onClose={onClose}
+      onClose={(event, reason) => {
+        // Ignore backdrop click and Escape key
+        if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
+          onClose()
+        }
+      }}
+      //onClose={onClose}
       fullScreen={fullScreen}
       scroll="paper"
+      disableEscapeKeyDown // Prevent closing with Escape key
       maxWidth={maxWidth}
       {...extraprops}
     >

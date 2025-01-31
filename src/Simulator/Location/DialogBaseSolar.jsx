@@ -162,6 +162,7 @@ export default function DialogBaseSolar({ data, onClose }) {
       ...prevValues,
       inclinacionOptima: !values.inclinacionOptima,
       inclinacion: inclinacionDefault,
+      requierePVGIS: true,
     }))
   }
 

@@ -192,7 +192,7 @@ function SLDRCollapsibleCard(props) {
   const titleStyle = { ...defaultStyle, ...props.titleSX }
 
   return (
-    <Card>
+    <Card sx={props.sx}>
       <CardHeader
         title={props.title}
         sx={theme.titles.collapsible}

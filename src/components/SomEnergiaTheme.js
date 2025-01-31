@@ -70,6 +70,16 @@ export default function SomEnergiaTheme(isDarkMode) {
           excedente: isDarkMode ? '#997171' : '#997171',
         },
       },
+
+      alert: {
+        color: {
+          Error: isDarkMode ? '#f7805a' : '#f7805a',
+          Warning: isDarkMode ? '#f7dd5a' : '#f7dd5a',
+          Message: isDarkMode ? '#cff75a' : '#cff75a',
+        },
+        text: 'black',
+      },
+
       informe: {
         warning: {
           backgroundColor: isDarkMode ? '#333333' : '#f9cb9c',
@@ -129,7 +139,7 @@ export default function SomEnergiaTheme(isDarkMode) {
         },
       },
 
-      //       fontWeight: 400,
+      // fontWeight: 400,
       // borderRadius: "var(--none, 0px)",
       // borderBottom: "1px solid var(--divider, rgba(0, 0, 0, 0.12))",
       // borderLeft: "var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12))",
@@ -141,10 +151,13 @@ export default function SomEnergiaTheme(isDarkMode) {
       tables: {
         headerWrap: {
           '& .MuiDataGrid-columnHeaderTitle': {
-            whiteSpace: 'normal',
+            whiteSpace: 'normal !important',
             lineHeight: 'normal',
             //color: 'green',
             alignItems: 'center !important',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            //transform: 'rotate(-45deg)',
           },
           '& .MuiDataGrid-columnHeader': {
             // Forced to use important since overriding inline styles
