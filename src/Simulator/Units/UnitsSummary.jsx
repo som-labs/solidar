@@ -12,6 +12,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Typography,
 } from '@mui/material'
 import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid'
 
@@ -34,17 +35,24 @@ export default function UnitsSummary(props) {
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()
-  const { tipoConsumo, preciosValidos, fincas, setFincas, setAllocationGroup } =
+  const { tipoConsumo, preciosValidos, tarifas, fincas, setFincas, setAllocationGroup } =
     useContext(ConsumptionContext)
 
   const { grupo } = props
   const [selectionModel, setSelectionModel] = useState([])
   const [tipoConsumoAsignado, setTipoConsumoAsignado] = useState('')
+  const [tipoTarifaAsignada, setTipoTarifaAsignada] = useState('')
 
-  let tiposActivos = [{ label: 'Indefinido', value: '' }].concat(
+  const tiposActivos = [{ label: 'Indefinido', value: '' }].concat(
     tipoConsumo.map((tc) => ({
       label: tc.nombreTipoConsumo,
       value: tc.nombreTipoConsumo,
+    })),
+  )
+  const tarifasActivas = [{ label: 'Indefinido', value: '' }].concat(
+    tarifas.map((t) => ({
+      label: t.nombreTarifa,
+      value: t.idTarifa,
     })),
   )
 
@@ -135,6 +143,23 @@ export default function UnitsSummary(props) {
         }
       },
     },
+    {
+      field: 'idTarifa',
+      headerName: t('Tarifa.PROP.nombreTarifa'),
+      headerAlign: 'center',
+      align: 'center',
+      type: 'singleSelect',
+      valueOptions: tarifasActivas,
+      editable: true,
+      flex: 1,
+      description: t('TipoConsumo.TOOLTIP.nombreTarifa'),
+      sortable: false,
+      renderCell: (params) => {
+        if (params.value === '' && params.row.participa) {
+          return <span style={{ color: 'red' }}>{'Indefinido'}</span>
+        }
+      },
+    },
 
     {
       field: 'participa',
@@ -173,15 +198,42 @@ export default function UnitsSummary(props) {
     TCB.requiereReparto = true
   }
 
+  //Asigna el tipo de consumo a todas las unidades del grupo
+  function handleTipoTarifa(value) {
+    const newTipoTarifa = value
+    setTipoTarifaAsignada(newTipoTarifa)
+
+    //Update tarifa in fincas state para todas las fincas del grupo participen o no
+    setFincas((prev) =>
+      prev.map((f, ndx) => {
+        if (f.grupo === grupo) {
+          const t = TCB.Finca[ndx]
+          t.idTarifa = newTipoTarifa
+          t.participa = newTipoTarifa === '' ? false : true
+          return t
+        } else {
+          return f
+        }
+      }),
+    )
+  }
+
   function newConsumptionAll() {
     return (
-      <GridToolbarContainer>
+      <GridToolbarContainer sx={{ justifyContent: 'center', mr: 3, mt: 1 }}>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('UNITS.SUMMARY_DESCRIPTION'),
+          }}
+        />
+
         <FormControlLabel
           labelPlacement="start"
           padding={3}
           control={
             <Select
-              sx={{ flex: 1, ml: '1rem', width: 390, textAlign: 'center' }}
+              sx={{ flex: 1, ml: '1rem', width: 400, textAlign: 'center' }}
               size={'small'}
               value={tipoConsumoAsignado}
               name="fuente"
@@ -196,6 +248,27 @@ export default function UnitsSummary(props) {
             </Select>
           }
           label={t('UNITS.LABEL_TIPO_USO')}
+        />
+        <FormControlLabel
+          labelPlacement="start"
+          padding={3}
+          control={
+            <Select
+              sx={{ flex: 1, ml: '4rem', width: 400, textAlign: 'center' }}
+              size={'small'}
+              value={tipoTarifaAsignada}
+              name="fuente"
+              object="Tarifa"
+              onChange={(event) => handleTipoTarifa(event.target.value)}
+            >
+              {tarifasActivas.map((e, index) => (
+                <MenuItem key={index} value={e.value}>
+                  {e.label}
+                </MenuItem>
+              ))}
+            </Select>
+          }
+          label={t('UNITS.LABEL_NOMBRE_TARIFA')}
         />
       </GridToolbarContainer>
     )
@@ -251,13 +324,17 @@ export default function UnitsSummary(props) {
    * @param {xDataGridRow} newUnitRow
    * @returns {xDataGridRow}
    */
-  function changeUnit(newUnitRow) {
+  function changeUnit(newUnitRow, originalRow) {
     setFincas((prev) =>
       prev.map((f, ndx) => {
         if (f.idFinca === newUnitRow.idFinca) {
           const t = TCB.Finca[ndx]
-          t.nombreTipoConsumo = newUnitRow.nombreTipoConsumo
           t.participa = newUnitRow.participa
+          t.idTarifa = newUnitRow.idTarifa
+          if (newUnitRow.nombreTipoConsumo !== originalRow.nombreTipoConsumo)
+            t.nombreTipoConsumo = newUnitRow.nombreTipoConsumo
+          TCB.cambioTipoConsumo = true
+          TCB.requiereReparto = true
           return t
         } else {
           return f
@@ -265,8 +342,6 @@ export default function UnitsSummary(props) {
       }),
     )
 
-    TCB.cambioTipoConsumo = true
-    TCB.requiereReparto = true
     return newUnitRow
   }
 
@@ -287,30 +362,30 @@ export default function UnitsSummary(props) {
 
       <DialogContent>
         <Grid container justifyContent={'center'} rowSpacing={4}>
-          {preciosValidos && (
-            <Grid item xs={11}>
-              <DataGrid
-                sx={theme.tables.headerWrap}
-                getRowId={getRowId}
-                rows={fincas.filter((f) => f.grupo === grupo)}
-                columns={columns}
-                hideFooter={false}
-                rowHeight={30}
-                autoHeight
-                disableColumnMenu
-                localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
-                slots={{ toolbar: newConsumptionAll }}
-                processRowUpdate={(updatedRow, originalRow) => changeUnit(updatedRow)}
-                onProcessRowUpdateError={handleProcessRowUpdateError}
-                editMode="cell"
-                selectionModel={selectionModel}
-                onSelectionModelChange={(newSelection) => {
-                  setSelectionModel(newSelection)
-                }}
-                getRowClassName={(params) => (params.isSelected ? 'red' : '')}
-              />
-            </Grid>
-          )}
+          <Grid item xs={11}>
+            <DataGrid
+              sx={theme.tables.headerWrap}
+              getRowId={getRowId}
+              rows={fincas.filter((f) => f.grupo === grupo)}
+              columns={columns}
+              hideFooter={false}
+              rowHeight={30}
+              autoHeight
+              disableColumnMenu
+              localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
+              slots={{ toolbar: newConsumptionAll }}
+              processRowUpdate={(updatedRow, originalRow) =>
+                changeUnit(updatedRow, originalRow)
+              }
+              onProcessRowUpdateError={handleProcessRowUpdateError}
+              editMode="cell"
+              selectionModel={selectionModel}
+              onSelectionModelChange={(newSelection) => {
+                setSelectionModel(newSelection)
+              }}
+              getRowClassName={(params) => (params.isSelected ? 'red' : '')}
+            />
+          </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>

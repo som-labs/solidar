@@ -32,7 +32,6 @@ HOME:
   SIMULATION_TOOLS_COLLECTIVE: Simulador para Consumo Colectivo
   SIMULATION_TOOLS_COLLECTIVE_DESCRIPTION: (En desarrollo)
   FURTHER_INFORMATION_TITLE: Información de interés
-
 ABOUT:
   TITLE: ¿Qué es Solidar Energía?
   TEXT: |
@@ -204,7 +203,10 @@ Tarifa:
   PROP:
     territorio: Territorio
     tipoTarifa: Tipo de tarifa
-    nombreTarifa: El tipo de tarifa contratada con la compañía comercializadora
+    nombreTarifa: Nombre tarifa
+    coefHucha: '% acumulado en hucha'
+    cuotaHucha: Cuota mensual hucha
+
     P0: Compensación Excedentes
     2.0TD:
       P0: Compensación Excedentes
@@ -220,7 +222,11 @@ Tarifa:
       P5: P5
       P6: P6
   TOOLTIP:
-    tipoTarifa: Nombre del tipo de tarifa
+    P0: Precio con el que la comercializadora compensa los excedentes de producción
+    tipoTarifa: El tipo de tarifa contratada con la compañía comercializadora
+    nombreTarifa: Nombre con el que se identificará la tarifa para asignar al tipo de consumo
+    coefHucha: Porcentaje del saldo no compensado que pasa a la hucha
+    cuotaHucha: Cuota fija mensual en Euros sin IVA que la empresa comercializadora cobra por la gestión de la hucha
 
 Rendimiento:
   NAME: Rendimiento según PVGIS
@@ -513,11 +519,10 @@ CONSUMPTION:
   LABEL_TITLE_PROFILE_DAY: 'Perfil diario consumo del {{dia}} de {{mes}}'
   ERROR_DEFINIR_CONSUMO_REE: Debe definir un consumo anual base mayor que 0 para el
     perfil de REE
-  ERROR_AL_MENOS_UN_TIPOCONSUMO: Debe definir al menos un tipo de consumo
-  ERROR_FALTA_FICHERO_CONSUMO: Debe definir el fichero de consumos antes de continuar
+  ERROR_AL_MENOS_UN_TIPOCONSUMO: Debe definir al menos un tipo de consumo para continuar
+  ERROR_FALTA_FICHERO_CONSUMO: Debe definir el fichero de consumos para continuar
   LABEL_BUTTON_NUEVO_TIPOCONSUMO: Añade tu uso eléctrico
   TOOLTIP_BUTTON_NUEVO_TIPOCONSUMO: Boton para crear un nuevo tipo de consumo
-
   TITLE_DIALOG_NEW_CONSUMPTION: Formulario para crear un nuevo tipo de consumo
   DESCRIPTION_FUENTE_1: Existen diferentes formas de obtener la información referente
     al uso eléctrico anual
@@ -556,12 +561,20 @@ CONSUMPTION:
   ERROR_fuenteTipoErroneo_SOM: Posible error leyendo fichero con formato DATADIS o
     CSV distribuidora para fuente tipo SOM
   ERROR_FALTAN_DATOS: 'Faltan datos de {{faltan}} dias. ¿Quieres continuar?'
-  ERROR_NOMBRE_TIPO_CONSUMO_DUPLICADO: El nombre del tipo de consumo no puede estar
-    duplicado
+  ERROR_NOMBRE_TIPO_CONSUMO_DUPLICADO: El nombre del tipo de consumo no puede estar duplicado
+  ERROR_TIPO_CONSUMO_FINCAS: 'Existen fincas con este tipo de consumo.\nNo se puede borrar'
   consumo_MSG_resumen: '{{registros}} registros de consumo cargados desde {{desde}}
     hasta {{hasta}}'
   consumo_MSG_numeroLimitadoRegistros: Aviso-> solo existen {{registros}} registros
     que no completan un año de estadísticas
+
+  LABEL_BUTTON_NUEVA_TARIFA: Añade tus tarifas
+  TOOLTIP_BUTTON_NUEVA_TARIFA: Boton para crear una tarifa nueva
+  TITLE_DIALOG_NEW_TARIFA: Formulario para crear una nueva tarifa
+  ERROR_NOMBRE_TARIFA_DUPLICADO: El nombre del tipo de consumo no puede estar duplicado
+  ERROR_FALTA_TARIFA_INDIVIDUAL: Debe definir los precios correctos de las tarifas antes de continuar
+  ERROR_FALTA_TARIFA_COLECTIVO: Debe definir al menos una tarifa para continuar
+  ERROR_TIPO_TARIFA_FINCAS: 'Existen fincas con esta tarifa.\nNo se puede borrar'
 
 ENERGY_BALANCE:
   TITLE: Balance de Energía
@@ -1026,12 +1039,17 @@ UNITS:
   DESCRIPTION_2: "A continuación se definirá el uso de energía previsto para cada participe asi como de las zonas comunes identificadas.<br />Si no se muestra información en esta pantalla es posible que no se hubieran obtenido datos de la Dirección General del Catastro en las coordenadas donde se realiza la instalación, en este caso podrás subir los datos desde un fichero CSV que incluya al menos las siguientes columnas: idFinca, nombreFinca, uso y participacion. <a href={{url}} target='_blank'>Puedes descargar una plantilla aqui"
   HEADER_FIELDS: El campo {{field}} es requerido
   DESCRIPTION_3: Definición de las zonas comunes del inmueble y sus usos eléctricos.
+  SUMMARY_DESCRIPTION: Se definirá el uso eléctrico y la tarifa de cada unidad de forma individual.<br />Puedes utilizar la asignación global que asignará los mismos valores a todas ellas y luego cambiar individualemente las que correspondan
   LABEL_TIPO_USO: Define tipo de uso eléctrico para todas las unidades
-  TOOLTIP_TIPO_USO: Selecciona el tipo de uso eléctrico asignado a todas las unidades
+  TOOLTIP_TIPO_USO: Selecciona el tipo de uso eléctrico para asignarlo a todas las unidades
+  LABEL_NOMBRE_TARIFA: Define la tarifa asignada a todas las unidades
+  TOOLTIP_NOMBRE_TARIFA: Selecciona el nombre de la tarifa para asignarlo a todas las unidades
   LABEL_TIPO_USO_1: Uso eléctrico
   TOOLTIP_TIPO_USO_1: Selecciona el tipo de uso eléctrico asignado
   LABEL_VER_DETALLES: Ver detalles
-  ERROR_AL_MENOS_UN_USOELECTRICO: Al menos un finca o una zona común deben tener asignado un uso eléctrico
+  ERROR_ZONA_COMUN_SIN_TARIFA: Falta asignación de tarifa a la zona común {{zona}}
+  ERROR_ZONA_COMUN_SIN_USOELECTRICO: Falta asignación de uso eléctrico a la zona común {{zona}}
+  ERROR_AL_MENOS_UN_USOELECTRICO: Al menos una finca o una zona común deben tener asignado un uso eléctrico
 
 ENERGY_ALLOCATION:
   TITLE: Reparto Energía

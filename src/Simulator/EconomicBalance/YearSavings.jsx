@@ -13,11 +13,12 @@ import { EconomicContext } from '../EconomicContext'
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
 
-export default function YearSaving() {
+export default function YearSaving({ finca }) {
   const { t } = useTranslation()
   const theme = useTheme()
 
   const { ecoData } = useContext(EconomicContext)
+  const localEcoData = finca ? finca.economico : ecoData
 
   return (
     <>
@@ -45,12 +46,12 @@ export default function YearSaving() {
               __html: t('ECONOMIC_BALANCE.DESCRIPTION_YEAR_SAVINGS', {
                 porcientoAhorro: UTIL.formatoValor(
                   'porciento',
-                  (ecoData.ahorroAnual / ecoData.gastoSinPlacasAnual) * 100,
+                  (localEcoData.ahorroAnual / localEcoData.gastoSinPlacasAnual) * 100,
                 ),
               }),
             }}
           />
-          <GraphBoxSavings></GraphBoxSavings>
+          <GraphBoxSavings finca={finca}></GraphBoxSavings>
         </Box>
       </Container>
     </>

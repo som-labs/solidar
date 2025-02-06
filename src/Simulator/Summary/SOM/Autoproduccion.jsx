@@ -25,16 +25,18 @@ export default function Autoproduccion() {
   const theme = useTheme()
   const { bases } = useContext(BasesContext)
 
+  console.log(bases)
+
   let areasEscogidas = 0
   let paneles = 0
   const produccionAnual = TCB.produccion.totalAnual
   const areasDisponibles = bases.length
-  const potencia = bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0)
+  const potencia = bases.reduce((sum, tBase) => sum + tBase.instalacion.potenciaTotal, 0)
 
   for (let base of bases) {
-    if (base.paneles > 0) {
+    if (base.instalacion.paneles > 0) {
       areasEscogidas += 1
-      paneles += base.paneles
+      paneles += base.instalacion.paneles
     }
   }
 

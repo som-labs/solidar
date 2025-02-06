@@ -227,11 +227,7 @@ export default function ConsumptionSummary() {
     //Si estamos en colectivo no se pueden borrar tipos de consumo utilizados en alguna finca
     if (TCB.modoActivo !== 'INDIVIDUAL') {
       if (fincas.find((f) => f.nombreTipoConsumo === tc.nombreTipoConsumo)) {
-        SLDRAlert(
-          'VALIDACIÓN',
-          'Existen fincas con este tipo de consumo.\nNo se puede borrar',
-          'Warning',
-        )
+        SLDRAlert('VALIDACIÓN', t('CONSUMPTION.ERROR_TIPO_CONSUMO_FINCAS'), 'Warning')
         return
       }
     }
@@ -326,25 +322,24 @@ export default function ConsumptionSummary() {
 
   return (
     <Grid container justifyContent={'center'} rowSpacing={4}>
-      {preciosValidos && (
-        <Grid item xs={11}>
-          <SLDRInfoBox>
-            <DataGrid
-              sx={theme.tables.headerWrap}
-              getRowId={getRowId}
-              rows={tipoConsumo}
-              columns={columns}
-              hideFooter={false}
-              rowHeight={30}
-              autoHeight
-              disableColumnMenu
-              localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
-              slots={{ toolbar: newConsumption, footer: footerSummary }}
-            />
-          </SLDRInfoBox>
-        </Grid>
-      )}
-      {activo && preciosValidos && (
+      <Grid item xs={11}>
+        <SLDRInfoBox>
+          <DataGrid
+            sx={theme.tables.headerWrap}
+            getRowId={getRowId}
+            rows={tipoConsumo}
+            columns={columns}
+            hideFooter={false}
+            rowHeight={30}
+            autoHeight
+            disableColumnMenu
+            localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
+            slots={{ toolbar: newConsumption, footer: footerSummary }}
+          />
+        </SLDRInfoBox>
+      </Grid>
+
+      {activo && (
         <>
           <Grid item xs={12}>
             <SLDRInfoBox>

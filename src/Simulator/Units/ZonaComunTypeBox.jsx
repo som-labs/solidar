@@ -24,6 +24,7 @@ export default function ZonaComunTypeBox(props) {
     allocationGroup,
     setAllocationGroup,
     tipoConsumo,
+    tarifas,
   } = useContext(ConsumptionContext)
 
   const [error, setError] = useState({ status: false, field: '' })
@@ -49,6 +50,13 @@ export default function ZonaComunTypeBox(props) {
 
     TCB.requiereReparto = true
     TCB.cambioTipoConsumo = true
+  }
+
+  function changeTarifa(id) {
+    //Change zonaComun tarifa en state
+    setZonasComunes((prev) =>
+      prev.map((_zc) => (_zc.id === zonaComun.id ? { ..._zc, idTarifa: id } : _zc)),
+    )
   }
 
   function changeNombreZonaComun(event) {
@@ -83,13 +91,15 @@ export default function ZonaComunTypeBox(props) {
   }
 
   function deleteZonaComun() {
-    setZonasComunes((prev) => prev.filter((_zc) => _zc.id !== zonaComun.id))
+    setZonasComunes((prev) => [...prev.filter((_zc) => _zc.id !== zonaComun.id)])
 
     if (allocationGroup) {
       setAllocationGroup((prev) => {
         const tmpAG = prev
         for (const ag in tmpAG) {
+          console.log(ag, zonaComun)
           if (tmpAG[ag].unidades > 0) delete tmpAG[ag].zonasComunes[zonaComun.id]
+          if (ag === zonaComun.id) delete tmpAG[ag]
         }
         return tmpAG
       })
@@ -143,6 +153,22 @@ export default function ZonaComunTypeBox(props) {
         value={zonaComun.CUPS}
         onChange={(event) => changeCUPS(event.target.value)}
       />
+
+      <TextField
+        label={t('Tarifa.PROP.nombreTarifa')}
+        sx={{ width: 200, height: 30, mt: '1rem', mb: 2 }}
+        size="small"
+        select
+        id="tarifa"
+        value={zonaComun.idTarifa}
+        onChange={(event) => changeTarifa(event.target.value)}
+      >
+        {tarifas.map((_t, index) => (
+          <MenuItem key={index} value={_t.idTarifa}>
+            {_t.nombreTarifa}
+          </MenuItem>
+        ))}
+      </TextField>
 
       <TextField
         label="Uso eléctrico"

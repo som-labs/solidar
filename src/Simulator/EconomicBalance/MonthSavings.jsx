@@ -16,13 +16,15 @@ import { EconomicContext } from '../EconomicContext'
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
 
-export default function MonthSaving() {
+export default function MonthSaving({ finca }) {
   const { t } = useTranslation()
   const theme = useTheme()
 
   const { ecoData } = useContext(EconomicContext)
   const graphElement = useRef()
   const graphWidth = useRef()
+
+  const localEcoData = finca ? finca.economico : ecoData
 
   useEffect(() => {
     // Function to get the width of the element
@@ -48,13 +50,13 @@ export default function MonthSaving() {
       var _compensado = new Array(12)
       for (let i = 0; i < 12; i++) {
         //las perdidas y lo compensado lo graficamos negativo
-        _perdidas[i] = -ecoData.perdidaMes[i]
-        _compensado[i] = -ecoData.compensadoMensualCorregido[i]
+        _perdidas[i] = -localEcoData.perdidaMes[i]
+        _compensado[i] = -localEcoData.compensadoMensualCorregido[i]
       }
 
       var trace_pagado = {
         x: mesMapa,
-        y: ecoData.consumoConPlacasMensualCorregido,
+        y: localEcoData.consumoConPlacasMensualCorregido,
         name: t('GRAFICOS.LABEL_graficasGastoConPaneles'),
         type: 'scatter',
         line: { shape: 'spline', width: 3, color: '#819368' },
@@ -67,7 +69,7 @@ export default function MonthSaving() {
 
       var trace_consumo = {
         x: mesMapa,
-        y: ecoData.consumoOriginalMensual,
+        y: localEcoData.consumoOriginalMensual,
         name: t('GRAFICOS.LABEL_graficasGastoSinPaneles'),
         type: 'scatter',
         line: { shape: 'spline', width: 3, color: '#810C04' },
@@ -80,7 +82,7 @@ export default function MonthSaving() {
 
       var trace_base = {
         x: mesMapa,
-        y: ecoData.consumoConPlacasMensualCorregido,
+        y: localEcoData.consumoConPlacasMensualCorregido,
         name: 'base',
         type: 'bar',
         hoverinfo: 'none',
@@ -106,7 +108,7 @@ export default function MonthSaving() {
 
       var trace_ahorro = {
         x: mesMapa,
-        y: ecoData.ahorradoAutoconsumoMes,
+        y: localEcoData.ahorradoAutoconsumoMes,
         width: 0.3,
         marker: { color: '#C7A6CF' },
         name: t('GRAFICOS.LABEL_graficasAutoconsumo'),
@@ -166,7 +168,7 @@ export default function MonthSaving() {
       if (TCB.coefHucha > 0) {
         var trace_huchaSaldo = {
           x: mesMapa,
-          y: ecoData.huchaSaldo,
+          y: localEcoData.huchaSaldo,
           name: t('GRAFICOS.LABEL_SALDO_VIRTUAL_BATTERY'),
           type: 'scatter',
           line: { shape: 'spline', width: 3, color: '#F99F00' },
@@ -179,7 +181,7 @@ export default function MonthSaving() {
 
         var trace_extraccionHucha = {
           x: mesMapa,
-          y: ecoData.extraccionHucha,
+          y: localEcoData.extraccionHucha,
           width: 0.3,
           marker: { color: '#4F1F5B' },
           name: t('GRAFICOS.LABEL_EXTRACCION_VIRTUAL_BATTERY'),
@@ -225,7 +227,7 @@ export default function MonthSaving() {
         )
       })
     }
-  }, [ecoData])
+  }, [localEcoData])
 
   return (
     <Container>
