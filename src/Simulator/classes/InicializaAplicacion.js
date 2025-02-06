@@ -39,7 +39,7 @@ async function InicializaAplicacion() {
   try {
     const precios = await fetch(ficheroPreciosInstalacion)
     if (precios.status === 200) {
-      TCB.precioInstalacion = await precios.json()
+      TCB.preciosInstalacion = await precios.json()
     }
   } catch (err) {
     UTIL.debugLog(
@@ -85,7 +85,7 @@ async function InicializaAplicacion() {
       )
     }
   }
-  TCB.tarifaActiva = TCB.tarifas[TCB.nombreTarifaActiva]
+  TCB.tarifaActiva.precios = [...TCB.tarifas[TCB.nombreTarifaActiva].precios]
 
   // // Evento del boton de instrucciones
   // document.getElementById('botonInstrucciones').addEventListener("click", async function handleChange() {

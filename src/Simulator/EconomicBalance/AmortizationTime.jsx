@@ -11,11 +11,13 @@ import { useTheme } from '@mui/material/styles'
 // REACT Solidar Components
 import { EconomicContext } from '../EconomicContext'
 
-export default function AmortizationTime() {
+export default function AmortizationTime({ finca }) {
   const { t } = useTranslation()
   const theme = useTheme()
 
   const { ecoData } = useContext(EconomicContext)
+  const localEcoData = finca ? finca.economico : ecoData
+
   return (
     <>
       <Container>
@@ -38,7 +40,7 @@ export default function AmortizationTime() {
           /> */}
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <Typography variant="h4" color={'#4D4D4D'} textAlign={'center'}>
-              {ecoData.periodoAmortizacion + ' ' + t('BASIC.LABEL_AÑOS')}
+              {localEcoData.periodoAmortizacion + ' ' + t('BASIC.LABEL_AÑOS')}
             </Typography>
             <Typography variant="body" textAlign={'center'}>
               {t('ECONOMIC_BALANCE.PROMPT_AMORTIZATION_TIME')}

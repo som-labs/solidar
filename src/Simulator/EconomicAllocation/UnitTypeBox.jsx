@@ -13,7 +13,6 @@ import UnitsSummary from './UnitsSummary'
 // Solidar objects
 import TCB from '../classes/TCB.js'
 import * as UTIL from '../classes/Utiles'
-import { group } from 'd3'
 
 export default function UnitTypeBox(props) {
   const { t } = useTranslation()
@@ -22,18 +21,6 @@ export default function UnitTypeBox(props) {
   const { fincas, allocationGroup, zonasComunes } = useContext(ConsumptionContext)
   const [openDialog, closeDialog] = useDialog()
   const { grupo } = props
-
-  let tCost = {}
-  if (allocationGroup[grupo].unidades > 0) {
-    for (const zc of zonasComunes) {
-      tCost[zc.nombre] = 0
-      if (allocationGroup[grupo].zonasComunes[zc.id]) {
-        tCost[zc.nombre] =
-          (allocationGroup[zc.id].produccion * allocationGroup[grupo].participacionT) /
-          allocationGroup[zc.id].participacionT
-      }
-    }
-  }
 
   function showDetails() {
     openDialog({
@@ -123,13 +110,18 @@ export default function UnitTypeBox(props) {
                   )}
                 </Typography>
 
-                {Object.keys(tCost).map((key) => (
-                  <Fragment key={key}>
+                {zonasComunes.map((zc) => (
+                  <Fragment key={zc.id}>
                     <Typography sx={{ textAlign: 'center' }}>
-                      {key}:{' '}
+                      {zc.nombre}:{' '}
                       {UTIL.formatoValor(
                         'dinero',
-                        tCost[key] * TCB.economico.precioInstalacionCorregido,
+                        allocationGroup[grupo].zonasComunes[zc.id]
+                          ? ((allocationGroup[zc.id].produccion *
+                              allocationGroup[grupo].participacionT) /
+                              allocationGroup[zc.id].participacionT) *
+                              TCB.economico.precioInstalacionCorregido
+                          : 0,
                       )}
                     </Typography>
                   </Fragment>

@@ -6,16 +6,21 @@ import TCB from './TCB'
 
 class Tarifa {
   /**
-   * @param {string} nombreTarifa El formato del nombre de la tarifa es X.0TD-Y
+   * @param {string} nombreTarifa idenficador
+   * @param {string} tipo El formato del nombre de la tarifa es X.0TD-Y
    *    X - nombreTarifa = [ 2.0TD, 3.0TD]
    *    Y - territorio = ['Peninsula', 'Islas Baleares', 'Canarias', 'Melilla', 'Ceuta']
    */
-  constructor(nombreTarifa) {
+  constructor(nombreTarifa, tipo) {
     this._name = 'Tarifa'
+    this.tipo = tipo
     this.idTarifa = TCB.featIdUnico++
     this.nombreTarifa = nombreTarifa
-    this.precios = Array.from(TCB.tarifas[nombreTarifa].precios)
-    this.horas = TCB.tarifas[nombreTarifa].horas
+    this.precios = Array.from(TCB.tarifas[tipo].precios)
+    this.detalle = tipo === '3.0TD' ? tipo + '-' + TCB.territorio : tipo
+    this.horas = TCB.tarifas[tipo].horas
+    this.coefHucha = 80 //Default de SOM
+    this.cuotaHucha = 0
   }
 
   setTarifa(nombreTarifa) {

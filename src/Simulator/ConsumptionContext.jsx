@@ -13,6 +13,7 @@ const ConsumptionContextProvider = ({ children }) => {
   const [preciosValidos, setPreciosValidos] = useState(true)
   const [repartoValido, setRepartoValido] = useState(false)
   const [allocationGroup, setAllocationGroup] = useState()
+  const [tarifas, setTarifas] = useState([])
 
   //TCB fields to be reflected in state
   const hdrTipo = {
@@ -33,13 +34,29 @@ const ConsumptionContextProvider = ({ children }) => {
   }
 
   function validaTipoConsumo() {
-    if (!preciosValidos) {
-      return {
-        status: false,
-        error: 'Debe definir los precios correctos de las tarifas antes de continuar',
+    //Verify right Tarifas
+    if (TCB.modoActivo === 'INDIVIDUAL') {
+      if (!preciosValidos) {
+        return {
+          status: false,
+          error: t('CONSUMPTION.ERROR_FALTA_TARIFA_INDIVIDUAL'),
+        }
+      }
+    } else {
+      if (tarifas.length > 0) {
+        TCB.Tarifa = []
+        tarifas.forEach((tarifa) => {
+          TCB.Tarifa.push(tarifa)
+        })
+      } else {
+        return {
+          status: false,
+          error: t('CONSUMPTION.ERROR_FALTA_TARIFA_COLECTIVO'),
+        }
       }
     }
 
+    //Verify right TipoConsumo
     if (tipoConsumo.length > 0) {
       TCB.TipoConsumo = []
       tipoConsumo.forEach((tipo) => {
@@ -57,17 +74,38 @@ const ConsumptionContextProvider = ({ children }) => {
       TCB.Finca.push(finca)
     })
 
-    if (zonasComunes.length > 0) {
-      TCB.ZonaComun = []
-      zonasComunes.forEach((zona) => {
-        TCB.ZonaComun.push(zona)
-      })
-    }
+    TCB.ZonaComun = []
+    zonasComunes.forEach((zona) => {
+      TCB.ZonaComun.push(zona)
+    })
   }
 
   function validaUnits() {
-    //Verifica que al menos una unidad o una zona común tengan uso electrico asignado
+    //Verifica que al menos una unidad o una zona común tengan uso electrico asignado y que todas las zonas comunes tienen tarifa y nombreTipoConsumo
+    console.log('EN validaUnits')
     let results = { status: true, error: '' }
+
+    console.log(zonasComunes, allocationGroup)
+    console.log('UPDATING ZONAS')
+    for (const _zc of zonasComunes) {
+      //Verify each zonaComun have Tarifa assigned
+      if (_zc.idTarifa === '') {
+        results.status = false
+        results.error = t('UNITS.ERROR_ZONA_COMUN_SIN_TARIFA', { zona: _zc.nombre })
+      } else {
+        //Verify has tipoConsumo
+        if (_zc.nombreTipoConsumo === '') {
+          results.status = false
+          results.error = t('UNITS.ERROR_ZONA_COMUN_SIN_USOELECTRICO', {
+            zona: _zc.nombre,
+          })
+        } else {
+          updateTCBUnitsFromState()
+          return results
+        }
+      }
+    }
+    //If there is not zonasComunes check at least one finca participa and has tipoConsumo assigned
     for (const _fnc of fincas) {
       if (_fnc.nombreTipoConsumo !== '' && _fnc.participa) {
         updateTCBUnitsFromState()
@@ -75,15 +113,6 @@ const ConsumptionContextProvider = ({ children }) => {
       }
     }
 
-    for (const _zc of zonasComunes) {
-      if (_zc.nombreTipoConsumo !== '') {
-        updateTCBUnitsFromState()
-        console.log('VUELVE', results)
-        return results
-      }
-    }
-
-    console.log('Error de validacion Zonas Comunes')
     results.status = false
     results.error = t('UNITS.ERROR_AL_MENOS_UN_USOELECTRICO')
     return results
@@ -105,6 +134,8 @@ const ConsumptionContextProvider = ({ children }) => {
     allocationGroup,
     setAllocationGroup,
     updateTCBUnitsFromState,
+    tarifas,
+    setTarifas,
   }
 
   return (

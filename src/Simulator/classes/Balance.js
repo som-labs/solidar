@@ -17,7 +17,7 @@ class Balance extends DiaHora {
    * @constructor
    * @param {Produccion} produccion Producción global de la configuración
    * @param {Consumo} consumo Consumo a satisfacer
-   * @param {number} coefEnergia Coeficiente de energía asignado (0 - 100)
+   * @param {number} coefEnergia Coeficiente de energía asignado (0 - 1)
    */
   constructor(produccion, consumo, coefEnergia) {
     UTIL.debugLog('Generando balance')
@@ -42,8 +42,7 @@ class Balance extends DiaHora {
         }
 
         this.diaHora[idxDia][hora] =
-          consumo.diaHora[idxDia][hora] -
-          (produccion.diaHora[idxDia][hora] * coefEnergia) / 100
+          consumo.diaHora[idxDia][hora] - produccion.diaHora[idxDia][hora] * coefEnergia
 
         if (this.diaHora[idxDia][hora] < 0) {
           this.autoconsumo += consumo.diaHora[idxDia][hora]
@@ -53,9 +52,9 @@ class Balance extends DiaHora {
         } else {
           this.deficitAnual += this.diaHora[idxDia][hora]
           this.idxTable[idxDia].deficit += this.diaHora[idxDia][hora]
-          this.autoconsumo += (produccion.diaHora[idxDia][hora] * coefEnergia) / 100
+          this.autoconsumo += produccion.diaHora[idxDia][hora] * coefEnergia
           this.idxTable[idxDia].autoconsumo +=
-            (produccion.diaHora[idxDia][hora] * coefEnergia) / 100
+            produccion.diaHora[idxDia][hora] * coefEnergia
         }
       }
     }

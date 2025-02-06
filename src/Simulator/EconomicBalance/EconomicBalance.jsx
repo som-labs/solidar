@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
-import { Box, Grid, Typography, Container } from '@mui/material'
+import { Box, Grid, Typography, Container, Button } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 //React global components
 import { SLDRInfoBox, SLDRCollapsibleCard } from '../../components/SLDRComponents'
@@ -20,7 +20,6 @@ import GraphAlternatives from './GraphAlternatives'
 export default function EconomicBalanceStep() {
   const { t } = useTranslation()
   const theme = useTheme()
-
   return (
     <Container>
       <Grid container rowSpacing={4}>

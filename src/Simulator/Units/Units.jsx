@@ -71,7 +71,7 @@ export default function UnitsStep() {
     updateTCBUnitsFromState()
 
     if (!allocationGroup) {
-      //Build allocationGroup
+      //Build new allocationGroup
       let uniqueGroup = {}
 
       //Get consumption from each Finca and add to allocationGroup by grupo value
@@ -116,8 +116,22 @@ export default function UnitsStep() {
             zc.nombreTipoConsumo !== '' ? TipoConsumo.getTotal(zc.nombreTipoConsumo) : 0,
         }
       })
-
       setAllocationGroup(uniqueGroup)
+      //If previous allocationGroup just update consumo if there has been any change in TipoConsumo
+    } else if (TCB.cambioTipoConsumo) {
+      const prev = allocationGroup
+      for (let g in prev) {
+        if (prev[g].unidades > 0) {
+          prev[g].consumo = fincas
+            .filter((_f) => _f.grupo === g && _f.participa && _f.nombreTipoConsumo !== '')
+            .reduce((t, _fc) => t + TipoConsumo.getTotal(_fc.nombreTipoConsumo), 0)
+        } else {
+          const zc = zonasComunes.find((_zc) => _zc.id === g)
+          prev[g].consumo =
+            zc.nombreTipoConsumo !== '' ? TipoConsumo.getTotal(zc.nombreTipoConsumo) : 0
+        }
+      }
+      setAllocationGroup({ ...prev })
     }
   }, [])
 
@@ -228,6 +242,7 @@ export default function UnitsStep() {
     const newZonaComun = {
       nombreTipoConsumo: '',
       id: (++TCB.idFinca).toFixed(0),
+      idTarifa: '',
       CUPS: 'CUPS de ' + TCB.idFinca.toFixed(0),
       nombre: 'Zona Comun ' + TCB.idFinca,
       coefEnergia: 0,

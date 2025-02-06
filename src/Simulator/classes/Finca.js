@@ -22,9 +22,10 @@ class Finca {
     this.coefEnergia = 0
     this.coefHucha = 0
     this.cuotaHucha = 0
-    this.coste = 0
+    //this.coste = 0
 
     this.nombreTipoConsumo = ''
+    this.idTarifa = ''
     this.participa = false
     this.idFinca
     this.nombreFinca
@@ -36,7 +37,6 @@ class Finca {
     this.participacion
     this.grupo
     this.CUPS
-    this.extraCost = {} //para almacenar los costes derivados de las zonas comunes
 
     //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto
     for (const objProp in finca) {
@@ -71,6 +71,10 @@ class Finca {
      * @see Economico
      */
     this.economico
+    /**
+     * Cada Finca tiene una tarifa
+     */
+    this.idTarifa
   }
 
   actualizaCondicionesHucha(coefHucha, cuotaHucha) {
@@ -109,18 +113,6 @@ class Finca {
         row[prop] = _f[0][prop]
       }
     }
-    /*       row.idFinca = actFinca.idFinca;
-      row.idPuntoConsumo = actFinca.idPuntoConsumo;
-      row.nombreFinca = actFinca.nombreFinca;
-      row.uso = actFinca.uso;
-      row.grupo = actFinca.grupo;
-      row.participacion = actFinca.participacion;
-      row.coefEnergia = actFinca.coefEnergia;
-      row.coefInversion = actFinca.coefInversion;
-      row.coste = actFinca.coste;
-      row.coefConsumo = actFinca.coefConsumo;
-      row.coefHucha = actFinca.coefHucha;
-      row.cuotaHucha = actFinca.cuotaHucha; */
 
     row.produccionTotal = (_f[0].coefEnergia * TCB.produccion.pTotalAnual) / 100
     row.precioInstalacion = (_f[0].coefInversion * TCB.produccion.precioInstalacion) / 100

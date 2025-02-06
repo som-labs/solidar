@@ -19,13 +19,15 @@ import HelpEconomicBalance from './HelpEconomicBalance'
 import * as UTIL from '../classes/Utiles'
 import { SLDRFooterBox } from '../../components/SLDRComponents'
 
-export default function FinanceSummary() {
+export default function FinanceSummary({ finca }) {
   const { t } = useTranslation()
   const theme = useTheme()
   const [openDialog, closeDialog] = useDialog()
 
   const { ecoData } = useContext(EconomicContext)
-  if (ecoData.cashFlow === undefined) return
+  const localEcoData = finca ? finca.economico : ecoData
+
+  if (localEcoData.cashFlow === undefined) return
 
   function getRowId(row) {
     return row.ano
@@ -51,7 +53,7 @@ export default function FinanceSummary() {
         >
           <Typography sx={theme.titles.level_2}>
             {t('ECONOMIC_BALANCE.LABEL_FOOTER_VAN', {
-              VANProyecto: UTIL.formatoValor('dinero', ecoData.VANProyecto),
+              VANProyecto: UTIL.formatoValor('dinero', localEcoData.VANProyecto),
             })}
           </Typography>
           <IconButton
@@ -78,7 +80,7 @@ export default function FinanceSummary() {
         >
           <Typography sx={theme.titles.level_2}>
             {t('ECONOMIC_BALANCE.LABEL_FOOTER_TIR', {
-              TIRProyecto: UTIL.formatoValor('porciento', ecoData.TIRProyecto),
+              TIRProyecto: UTIL.formatoValor('porciento', localEcoData.TIRProyecto),
             })}
           </Typography>
 
@@ -218,7 +220,7 @@ export default function FinanceSummary() {
         <DataGrid
           sx={theme.tables.headerWrap}
           getRowId={getRowId}
-          rows={ecoData.cashFlow}
+          rows={localEcoData.cashFlow}
           columns={columns}
           hideFooter={false}
           rowHeight={30}

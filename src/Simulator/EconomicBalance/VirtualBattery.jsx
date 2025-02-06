@@ -26,8 +26,8 @@ export default function VirtualBattery() {
 
   const { ecoData, setEcoData } = useContext(EconomicContext)
 
-  const [cuota, setCuota] = useState(TCB.cuotaHucha)
-  const [coef, setCoef] = useState(TCB.coefHucha)
+  const [cuota, setCuota] = useState(TCB.tarifaActiva.cuotaHucha)
+  const [coef, setCoef] = useState(TCB.tarifaActiva.coefHucha)
 
   const changeFlux = (event) => {
     const { name, value } = event.target
@@ -56,8 +56,8 @@ export default function VirtualBattery() {
       setError({ status: true, field: name })
     } else {
       setError({ status: false, field: '' })
-      TCB.cuotaHucha = cuota
-      TCB.coefHucha = coef
+      TCB.tarifaActiva.cuotaHucha = cuota
+      TCB.tarifaActiva.coefHucha = coef
       TCB.economico.correccionExcedentes(coef, cuota)
       TCB.economico.calculoFinanciero(100, 100)
       setEcoData({ ...ecoData, ...TCB.economico })

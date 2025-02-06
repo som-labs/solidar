@@ -11,11 +11,12 @@ import { EconomicContext } from '../EconomicContext'
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
 
-export default function GraphBoxSavings() {
+export default function GraphBoxSavings({ finca }) {
   const { t } = useTranslation()
   const theme = useTheme()
 
   const { ecoData } = useContext(EconomicContext)
+  const localEcoData = finca ? finca.economico : ecoData
   return (
     <Box
       sx={{
@@ -71,7 +72,7 @@ export default function GraphBoxSavings() {
           }}
         >
           <Typography variant="h5" textAlign={'center'} color={'black'}>
-            {UTIL.formatoValor('dinero', ecoData.gastoSinPlacasAnual)}
+            {UTIL.formatoValor('dinero', localEcoData.gastoSinPlacasAnual)}
           </Typography>
         </Box>
       </Box>
@@ -86,7 +87,9 @@ export default function GraphBoxSavings() {
         <Box
           id="B21"
           sx={{
-            height: parseInt((200 / ecoData.gastoSinPlacasAnual) * ecoData.ahorroAnual),
+            height: parseInt(
+              (200 / localEcoData.gastoSinPlacasAnual) * localEcoData.ahorroAnual,
+            ),
             mr: '0.3rem',
             display: 'flex',
             alignItems: 'center',
@@ -100,12 +103,12 @@ export default function GraphBoxSavings() {
             {'ahorro anual'}
           </Typography>
           <Typography variant="h5" textAlign={'center'} color={'black'}>
-            {UTIL.formatoValor('dinero', ecoData.ahorroAnual)}
+            {UTIL.formatoValor('dinero', localEcoData.ahorroAnual)}
           </Typography>
           <Typography variant="body" textAlign={'center'} color={'black'}>
             {UTIL.formatoValor(
               'porciento',
-              (ecoData.ahorroAnual / ecoData.gastoSinPlacasAnual) * 100,
+              (localEcoData.ahorroAnual / localEcoData.gastoSinPlacasAnual) * 100,
             )}
           </Typography>
         </Box>
@@ -113,7 +116,7 @@ export default function GraphBoxSavings() {
           id="B22"
           sx={{
             height: parseInt(
-              (200 / ecoData.gastoSinPlacasAnual) * ecoData.gastoConPlacasAnual,
+              (200 / localEcoData.gastoSinPlacasAnual) * localEcoData.gastoConPlacasAnual,
             ),
             mr: '0.3rem',
             display: 'flex',
@@ -145,12 +148,12 @@ export default function GraphBoxSavings() {
           }}
         >
           <Typography variant="h5" textAlign={'center'} color={'black'}>
-            {UTIL.formatoValor('dinero', ecoData.gastoConPlacasAnual)}
+            {UTIL.formatoValor('dinero', localEcoData.gastoConPlacasAnual)}
           </Typography>
         </Box>
       </Box>
       {/* This code is showing a thrid column in the graph showin no compensated ammount */}
-      {/* {UTIL.suma(ecoData.perdidaMes) > 0 && (
+      {/* {UTIL.suma(localEcoData.perdidaMes) > 0 && (
         <Box
           id="B3"
           sx={{
@@ -163,8 +166,8 @@ export default function GraphBoxSavings() {
             id="B31"
             sx={{
               height: parseInt(
-                (200 / ecoData.gastoSinPlacasAnual) *
-                  (ecoData.gastoSinPlacasAnual - UTIL.suma(ecoData.perdidaMes)),
+                (200 / localEcoData.gastoSinPlacasAnual) *
+                  (localEcoData.gastoSinPlacasAnual - UTIL.suma(localEcoData.perdidaMes)),
               ),
               mr: '0.3rem',
               display: 'flex',
@@ -177,7 +180,7 @@ export default function GraphBoxSavings() {
             id="B32"
             sx={{
               height: parseInt(
-                (200 / ecoData.gastoSinPlacasAnual) * UTIL.suma(ecoData.perdidaMes),
+                (200 / localEcoData.gastoSinPlacasAnual) * UTIL.suma(localEcoData.perdidaMes),
               ),
               mr: '0.3rem',
               display: 'flex',
@@ -209,7 +212,7 @@ export default function GraphBoxSavings() {
             }}
           >
             <Typography variant="h5" textAlign={'right'}>
-              {UTIL.formatoValor('dinero', UTIL.suma(ecoData.perdidaMes))}
+              {UTIL.formatoValor('dinero', UTIL.suma(localEcoData.perdidaMes))}
             </Typography>
           </Box>
         </Box>
