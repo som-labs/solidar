@@ -99,10 +99,10 @@ class Instalacion {
     let precioInstalacion = 0
     if (potenciaTotal > 0) {
       let potenciaBase = potenciaTotal
-      let i = TCB.precioInstalacion.precios.findIndex(
+      let i = TCB.preciosInstalacion.findIndex(
         (rango) => rango.desde <= potenciaBase && rango.hasta >= potenciaBase,
       )
-      precioInstalacion = potenciaTotal * TCB.precioInstalacion.precios[i].precio
+      precioInstalacion = potenciaTotal * TCB.preciosInstalacion[i].precio
     } else {
       precioInstalacion = 0
     }

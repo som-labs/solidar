@@ -24,6 +24,7 @@ import { EconomicContext } from './EconomicContext'
 import { useAlert } from '../components/AlertProvider.jsx'
 // Solidar objects
 import PreparaEnergyBalance from './classes/PreparaEnergyBalance.jsx'
+import PreparaEconomicBalance from './classes/PreparaEconomicBalance.jsx'
 
 import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
@@ -44,6 +45,7 @@ export default function Page() {
     setFincas,
     zonasComunes,
     allocationGroup,
+    tarifas,
   } = useContext(ConsumptionContext)
   const { ecoData, setEcoData } = useContext(EconomicContext)
 
@@ -53,7 +55,55 @@ export default function Page() {
   let results
   InicializaAplicacion()
 
+  async function validaLocationStep() {
+    console.log('validaLocationStep')
+    results = await validaBases()
+    if (!results.status) SLDRAlert('VALIDACION', results.error, 'Error')
+    return results.status
+  }
+
+  async function validaConsumptionStep() {
+    console.log('validaConsumptionStep')
+    results = validaTipoConsumo()
+    if (!results.status) {
+      SLDRAlert('VALIDACION', results.error, 'Error')
+      return false
+    }
+    // Se crearan los objetos produccion, balance y economico
+    // PENDIENTE: podria haber un warning de falta de espacio enviado desde Prepara...
+    if (TCB.modoActivo === 'INDIVIDUAL') {
+      results = await PreparaEnergyBalance()
+      if (results.status) {
+        // setEcoData((prev) => ({ ...prev, ...TCB.economico }))
+        // TCB.readyToExport = true
+      } else {
+        SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
+      }
+    }
+    return results.status
+  }
+
+  async function validaUnitsStep() {
+    console.log('validaUnitsStep')
+    results = validaUnits()
+    if (!results.status) {
+      SLDRAlert('VALIDACION', results.error, 'Error')
+      return false
+    } else {
+      results = await PreparaEnergyBalance()
+      if (results.status) {
+        // setEcoData((prev) => ({ ...prev, ...TCB.economico }))
+        // TCB.readyToExport = true
+      } else {
+        console.log(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error)
+        SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
+      }
+      return results.status
+    }
+  }
+
   function validaEnergyBalanceStep() {
+    console.log('validaEnergyBalanceStep')
     for (const base of bases) {
       if (!UTIL.ValidateEntero(base.instalacion.paneles)) {
         SLDRAlert(
@@ -65,63 +115,23 @@ export default function Page() {
       }
     }
 
-    //If periodoAmortizacion is less than zero means it is bigger than maximum number of years expected for the economic balance and cannot continue.
-
-    if (ecoData.periodoAmortizacion < 0) {
-      SLDRAlert(
-        'VALIDACION',
-        t('ECONOMIC_BALANCE.MSG_NO_FINANCE', {
-          periodo: Math.abs(ecoData.periodoAmortizacion),
-        }),
-        'error',
-      )
-      return false
-    } else {
-      return true
-    }
-  }
-
-  async function validaLocationStep() {
-    results = await validaBases()
-    if (!results.status) SLDRAlert('VALIDACION', results.error, 'Error')
-    return results.status
-  }
-
-  async function validaConsumptionStep() {
-    results = validaTipoConsumo()
-    if (!results.status) {
-      SLDRAlert('VALIDACION', results.error, 'Error')
-      return false
-    }
-    // Se crearan los objetos produccion, balance y economico
-    // PENDIENTE: podria haber un warning de falta de espacio enviado desde Prepara...
     if (TCB.modoActivo === 'INDIVIDUAL') {
-      results = await PreparaEnergyBalance()
-      if (results.status) {
-        setEcoData((prev) => ({ ...prev, ...TCB.economico }))
-        TCB.readyToExport = true
-      } else {
-        SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
-      }
-    }
-    return results.status
-  }
+      PreparaEconomicBalance()
+      setEcoData(TCB.economico)
 
-  async function validaUnitsStep() {
-    results = validaUnits()
-    if (!results.status) {
-      SLDRAlert('VALIDACION', results.error, 'Error')
-      return false
-    } else {
-      results = await PreparaEnergyBalance()
-      if (results.status) {
-        setEcoData((prev) => ({ ...prev, ...TCB.economico }))
-        TCB.readyToExport = true
-      } else {
-        console.log(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error)
-        SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
+      //If periodoAmortizacion is less than zero means it is bigger than maximum number of years expected for the economic balance and cannot continue.
+      if (ecoData.periodoAmortizacion < 0) {
+        console.log(ecoData.periodoAmortizacion)
+        SLDRAlert(
+          'VALIDACION',
+          t('ECONOMIC_BALANCE.MSG_NO_FINANCE', {
+            periodo: Math.abs(ecoData.periodoAmortizacion),
+          }),
+          'error',
+        )
+        return false
       }
-      return results.status
+      return true
     }
   }
 
@@ -130,22 +140,23 @@ export default function Page() {
       SLDRAlert('VALIDACION', t('ENERGY_ALLOCATION.NO_BALANCE'), 'Error')
       return false
     } else {
+      PreparaEconomicBalance()
+      setEcoData(TCB.economico)
+      //Asignacion del coste propio de cada unidad por el beta que le corresponde
+      // setFincas((prev) =>
+      //   prev.map((f, ndx) => {
+      //     TCB.Finca[ndx].coste = UTIL.roundDecimales(
+      //       ecoData.precioInstalacionCorregido * f.coefEnergia,
+      //       2,
+      //     )
+      //     return TCB.Finca[ndx]
+      //   }),
+      // )
       return true
     }
   }
 
-  function validaEconomicBalance() {
-    //Asignacion del coste propio de cada unidad por el beta que le corresponde
-    setFincas((prev) =>
-      prev.map((f, ndx) => {
-        TCB.Finca[ndx].coste = UTIL.roundDecimales(
-          ecoData.precioInstalacionCorregido * f.coefEnergia,
-          2,
-        )
-        return TCB.Finca[ndx]
-      }),
-    )
-  }
+  function validaEconomicBalance() {}
 
   const getSections = (modo) => {
     let sections = [
@@ -192,24 +203,22 @@ export default function Page() {
           next={validaEnergyAllocationStep}
         />,
       )
-    }
 
-    sections.push(
-      <EconomicBalanceStep
-        key={'eb_sec'}
-        label="economicbalance"
-        title={t('ECONOMIC_BALANCE.TITLE')}
-        next={validaEconomicBalance}
-      />,
-    )
-
-    if (modo !== 'INDIVIDUAL') {
       sections.push(
         <EconomicAllocationStep
           key={'un_sec'}
           label="units"
           title={t('ECONOMIC_ALLOCATION.TITLE')}
           //next={}
+        />,
+      )
+    } else {
+      sections.push(
+        <EconomicBalanceStep
+          key={'eb_sec'}
+          label="economicbalance"
+          title={t('ECONOMIC_BALANCE.TITLE')}
+          next={validaEconomicBalance}
         />,
       )
     }

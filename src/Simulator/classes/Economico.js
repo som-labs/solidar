@@ -1,16 +1,19 @@
 import TCB from './TCB'
 import * as UTIL from './Utiles'
 import Instalacion from './Instalacion'
+import Finca from './Finca'
+
 /**
  * @class Economico
- * @classdesc Clase representa las condiciones economico financieras de la configuración global o de cada Finca individualmente
+ * @classdesc Clase representa las condiciones economico financieras de la configuración global o de cada Finca o Zona comun individualmente
  */
 
 //Numero maximo de años esperando cashflow positivo
 const maxNumberCashFlow = 50
 
 class Economico {
-  constructor() {
+  //La unidad puede ser una finca, una zona comun o null para el economico global
+  constructor(unidad) {
     this._name = 'Economico'
     // Inicializa la tabla indice de acceso
     this.idxTable = Array(365)
@@ -49,14 +52,35 @@ class Economico {
     this.ahorradoAutoconsumoMes = new Array(12).fill(0)
     this.perdidaMes = new Array(12).fill(0)
     this.ahorroAnual = 0
+    this.ahorroAnualZC = 0
     this.TIRProyecto = 0
     this.VANProyecto = 0
     this.interesVAN = TCB.parametros.interesVAN
 
     //A efectos de fechas (fines de semana) por ahora usamos el TipoConsumo[0]
     let _tc = TCB.TipoConsumo[0]
-    if (TCB.tipoTarifa === '2.0TD') TCB.consumo.periodo = new Array(3).fill(0)
-    else TCB.consumo.periodo = new Array(6).fill(0)
+
+    let tarifaActiva = {}
+    let tarifaHoras = []
+    let _consumo
+    let _balance
+
+    if (unidad) {
+      tarifaActiva = TCB.Tarifa.find((_t) => _t.idTarifa === unidad.idTarifa)
+      _consumo = TCB.TipoConsumo.find(
+        (_tc) => _tc.nombreTipoConsumo === unidad.nombreTipoConsumo,
+      )
+      _balance = unidad.balance
+    } else {
+      tarifaActiva = TCB.tarifaActiva
+      _consumo = TCB.consumo
+      _balance = TCB.balance
+    }
+
+    tarifaHoras = [...TCB.tarifas[tarifaActiva.detalle].horas]
+
+    if (tarifaActiva.tipo === '2.0TD') _consumo.periodo = new Array(3).fill(0)
+    else _consumo.periodo = new Array(6).fill(0)
 
     //Vamos a calcular el precio de la energia cada dia
     for (let dia = 0; dia < 365; dia++) {
@@ -71,48 +95,46 @@ class Economico {
         let idxPeriodo
         //Vamos a calcular el precio de la energia cada hora
         for (let hora = 0; hora < 24; hora++) {
-          if (TCB.tipoTarifa === '2.0TD') {
+          if (tarifaActiva.tipo === '2.0TD') {
             if (diaSemana == 0 || diaSemana == 6) {
               //es un fin de semana por lo que tarifa P3 todo el dia
-              this.diaHoraTarifaOriginal[dia][hora] = TCB.tarifaActiva.precios[3]
+              this.diaHoraTarifaOriginal[dia][hora] = tarifaActiva.precios[3]
               idxPeriodo = 3
             } else {
               this.diaHoraTarifaOriginal[dia][hora] =
-                TCB.tarifaActiva.precios[TCB.tarifaActiva.horas[hora]]
-              idxPeriodo = TCB.tarifaActiva.horas[hora]
+                tarifaActiva.precios[tarifaHoras[hora]]
+              idxPeriodo = tarifaHoras[hora]
             }
           } else {
             if (diaSemana == 0 || diaSemana == 6) {
-              this.diaHoraTarifaOriginal[dia][hora] = TCB.tarifaActiva.precios[6] //es un fin de semana por lo que tarifa P6 todo el dia
+              this.diaHoraTarifaOriginal[dia][hora] = tarifaActiva.precios[6] //es un fin de semana por lo que tarifa P6 todo el dia
               idxPeriodo = 6
             } else {
               this.diaHoraTarifaOriginal[dia][hora] =
-                TCB.tarifaActiva.precios[
-                  [TCB.tarifaActiva.horas[this.idxTable[dia].mes][hora]]
-                ]
-              idxPeriodo = TCB.tarifaActiva.horas[this.idxTable[dia].mes][hora]
+                tarifaActiva.precios[[tarifaHoras[this.idxTable[dia].mes][hora]]]
+              idxPeriodo = tarifaHoras[this.idxTable[dia].mes][hora]
             }
           }
 
           // La tarifa original es -> this.diaHoraTarifaOriginal[dia][hora]
           this.diaHoraPrecioOriginal[dia][hora] =
-            TCB.consumo.diaHora[dia][hora] *
+            _consumo.diaHora[dia][hora] *
             this.diaHoraTarifaOriginal[dia][hora] *
             coefImpuesto
 
           // Store energia consumed by fee period
-          TCB.consumo.periodo[idxPeriodo - 1] += TCB.consumo.diaHora[dia][hora]
+          _consumo.periodo[idxPeriodo - 1] += _consumo.diaHora[dia][hora]
           if (idxPeriodo > 6) console.log(dia, hora)
 
           // Determinamos el precio de esa hora (la tarifa) segun sea el balance es decir teniendo en cuanta los paneles. Si es negativo compensa
-          if (TCB.balance.diaHora[dia][hora] < 0) {
+          if (_balance.diaHora[dia][hora] < 0) {
             //Aportamos energia a la red de distribución
-            this.diaHoraTarifaConPaneles[dia][hora] = TCB.tarifaActiva.precios[0] //Es el precio de compensacion
+            this.diaHoraTarifaConPaneles[dia][hora] = tarifaActiva.precios[0] //Es el precio de compensacion
             this.idxTable[dia].ahorradoAutoconsumo +=
               this.diaHoraPrecioOriginal[dia][hora] //Ahorro del gasto original
 
-            this.diaHoraPrecioConPaneles[dia][hora] +=
-              TCB.balance.diaHora[dia][hora] *
+            this.diaHoraPrecioConPaneles[dia][hora] =
+              _balance.diaHora[dia][hora] *
               this.diaHoraTarifaConPaneles[dia][hora] *
               coefImpuesto
 
@@ -121,14 +143,16 @@ class Economico {
             //Demandamos energia de la red de distribucion
             this.diaHoraTarifaConPaneles[dia][hora] =
               this.diaHoraTarifaOriginal[dia][hora]
+
             this.diaHoraPrecioConPaneles[dia][hora] =
-              TCB.balance.diaHora[dia][hora] *
+              _balance.diaHora[dia][hora] *
               this.diaHoraTarifaConPaneles[dia][hora] *
               coefImpuesto
+
+            // const kProd = unidad ? unidad.coefEnergia : 1
             this.idxTable[dia].ahorradoAutoconsumo +=
-              ((TCB.produccion.diaHora[dia][hora] * 100) / 100) *
-              this.diaHoraTarifaOriginal[dia][hora] *
-              coefImpuesto
+              this.diaHoraPrecioOriginal[dia][hora] -
+              this.diaHoraPrecioConPaneles[dia][hora]
           }
           this.idxTable[dia].consumoOriginal += this.diaHoraPrecioOriginal[dia][hora]
           this.idxTable[dia].consumoConPlacas += this.diaHoraPrecioConPaneles[dia][hora]
@@ -142,15 +166,19 @@ class Economico {
     this.ahorradoAutoconsumoMes = this.resumenMensual('ahorradoAutoconsumo')
 
     //calculate installation cost
-    this.precioInstalacion = Instalacion.getInstallationPrice(
-      TCB.produccion.potenciaTotalInstalada,
-    )
+    //CUIDADO
+    this.precioInstalacion = unidad
+      ? TCB.economico.precioInstalacionCorregido * unidad.coefEnergia
+      : Instalacion.getInstallationPrice(TCB.produccion.potenciaTotalInstalada)
+
     this.precioInstalacionCorregido = this.precioInstalacion
 
     //Se debe corregir que si la comercializadora limita economicamente la compensacion al consumo o compensar mediante bateria virtual
+    this.correccionExcedentes(tarifaActiva.coefHucha, tarifaActiva.cuotaHucha)
 
-    this.correccionExcedentes(TCB.coefHucha, TCB.cuotaHucha)
-    this.calculoFinanciero(100, 100)
+    if (unidad) {
+      this.calculoFinanciero(unidad.coefEnergia, unidad.coefEnergia, unidad)
+    } else this.calculoFinanciero(1, 1)
   }
 
   /** Función para la gestion economica de excedentes de cada mes
@@ -226,7 +254,7 @@ class Economico {
    * @param {number} coefEnergia Porcentaje de la inversión total que correponde a la Finca
    * @param {number} coefInversion Porcentaje del la producción total de energia que corresponde a la Finca
    */
-  calculoFinanciero(coefEnergia, coefInversion) {
+  calculoFinanciero(coefEnergia, coefInversion, unidad) {
     //Es un participe que invierte pero no recibe energia. ¿existe?
     if (coefEnergia == 0) {
       this.VANProyecto = 'N/A'
@@ -234,9 +262,22 @@ class Economico {
       return
     }
 
+    this.ahorroAnualZC = 0
+    if (unidad) {
+      this.ahorroAnualZC =
+        unidad.constructor === Finca //Solo si es una Finca obtiene ahorros de las zonasComunes
+          ? TCB.ZonaComun.reduce(
+              (t, zc) =>
+                t + TCB.costeZCenFinca(unidad, zc).local * zc.economico.ahorroAnual,
+              0,
+            )
+          : 0
+    }
+
     this.ahorroAnual =
       UTIL.suma(this.consumoOriginalMensual) -
       UTIL.suma(this.consumoConPlacasMensualCorregido)
+
     //Algunas cuotas de la hucha pueden producir ahorros negativos que no tienen sentido
     if (this.ahorroAnual <= 0) {
       UTIL.debugLog('Cuotas hucha generan ahorro negativo')
@@ -292,16 +333,39 @@ class Economico {
     let i = 1
     let unFlow = {}
     //InversionReal includes IVA
-    const inversionReal = -this.precioInstalacionCorregido * (coefInversion / 100)
+
+    //Calculamos la inversion que corresponde a cada finca en las zonas comunes
+    let inversionZC = 0
+
+    //Calculamos lo que tendra que seguir pagando por el gasto energetico anual de las zonas comunes
+    let gastoAnualZC = 0
+
+    //Si la unidad no es una finca => es una zona comun no hacemos el calculo
+    if (unidad) {
+      if (unidad.constructor === Finca) {
+        inversionZC =
+          TCB.ZonaComun.reduce((t, zc) => t + TCB.costeZCenFinca(unidad, zc).global, 0) *
+          TCB.economico.precioInstalacionCorregido
+
+        gastoAnualZC = TCB.ZonaComun.reduce(
+          (t, zc) =>
+            t + TCB.costeZCenFinca(unidad, zc).local * zc.economico.gastoConPlacasAnual,
+          0,
+        )
+      }
+    }
+
+    const inversionReal = -this.precioInstalacionCorregido - inversionZC
+    const ahorroReal = this.ahorroAnual + this.ahorroAnualZC
 
     unFlow = {
       ano: i,
-      ahorro: this.ahorroAnual,
+      ahorro: ahorroReal,
       previo: 0,
-      inversion: inversionReal,
+      inversion: inversionReal - gastoAnualZC,
       subvencion: 0,
       IBI: 0,
-      pendiente: inversionReal + this.ahorroAnual,
+      pendiente: inversionReal + ahorroReal,
     }
     cuota = unFlow.inversion + unFlow.ahorro
     cuotaPeriodo.push(cuota)
@@ -328,16 +392,14 @@ class Economico {
 
       unFlow = {}
       unFlow.ano = ++i
-      unFlow.ahorro = this.ahorroAnual
+      unFlow.ahorro = ahorroReal
       unFlow.previo = lastPendiente
-      unFlow.inversion = 0 //LONGTERM: Cuidado probablemente en caso de prestamo cambie
+      unFlow.inversion = -1 * gastoAnualZC //0 //LONGTERM: Cuidado probablemente en caso de prestamo cambie
       if (i == 2) {
         //La subvención se cobra con suerte despues de un año
         //unFlow.subvencion = (valorSubvencion * coefInversion) / 100
         unFlow.subvencion =
-          (((this.precioInstalacionCorregido * coefInversion) / 100) *
-            porcientoSubvencion) /
-          100
+          (this.precioInstalacionCorregido * coefInversion * porcientoSubvencion) / 100
       } else {
         unFlow.subvencion = 0
       }
@@ -376,7 +438,7 @@ class Economico {
       )
     }
 
-    if (coefInversion === 100) {
+    if (coefInversion === 1) {
       //Vamos aguardar estas variables en TCB para el calculo económico global
       TCB.tiempoSubvencionIBI = tiempoSubvencionIBI
       TCB.valorSubvencionIBI = valorSubvencionIBI

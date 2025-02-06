@@ -16,6 +16,10 @@ import HelpDistribuidora from './HelpDistribuidora'
 
 //React global components
 import { useDialog } from '../../components/DialogProvider'
+import TarifasSummary from './TarifasSummary.jsx'
+
+// Solidar objects
+import TCB from '../classes/TCB'
 
 const ConsumptionStep = () => {
   const { t } = useTranslation()
@@ -63,11 +67,19 @@ const ConsumptionStep = () => {
             }}
           />
         </Grid>
-        <Grid item xs={12}>
-          <SLDRInfoBox>
-            <PreciosTarifa></PreciosTarifa>
-          </SLDRInfoBox>
-        </Grid>
+        {TCB.modoActivo === 'INDIVIDUAL' ? (
+          <Grid item xs={12}>
+            <SLDRInfoBox>
+              <PreciosTarifa></PreciosTarifa>
+            </SLDRInfoBox>
+          </Grid>
+        ) : (
+          <Grid item xs={12}>
+            <SLDRInfoBox>
+              <TarifasSummary></TarifasSummary>
+            </SLDRInfoBox>
+          </Grid>
+        )}
 
         <Grid item xs={12}>
           <Typography

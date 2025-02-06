@@ -1097,7 +1097,7 @@ async function cargaTarifasDesdeSOM() {
   // Add_1: Adding non response status from apienergia after waiting 20 secs
   const controller = new AbortController()
   const signal = controller.signal
-  const timeoutId = setTimeout(() => controller.abort(), TCB.tiempoEsperaTarifas * 1000)
+  //const timeoutId = setTimeout(() => controller.abort(), TCB.tiempoEsperaTarifas * 1000)
   const options = {}
   //
 
@@ -1106,7 +1106,7 @@ async function cargaTarifasDesdeSOM() {
     debugLog('Intentando tarifas desde SOM:' + _url)
     // Modify_1: , { ...options, signal }
     respuesta = await fetch(_url, { ...options, signal })
-    clearTimeout(timeoutId)
+    //clearTimeout(timeoutId)
     //
 
     if (respuesta.status === 200) {
@@ -1120,7 +1120,8 @@ async function cargaTarifasDesdeSOM() {
     debugLog('Success Tarifas 2.0TD desde SOM', { txtTarifas })
 
     _url = urlSOMTarifas + '3.0TD'
-    respuesta = await fetch(_url)
+    respuesta = await fetch(_url, { ...options, signal })
+    //clearTimeout(timeoutId)
     if (respuesta.status === 200) {
       txtTarifas = await respuesta.text()
       if (txtTarifas.includes('error')) throw new Error(txtTarifas)
@@ -1146,7 +1147,7 @@ async function cargaTarifasDesdeSOM() {
     return true
   } catch (err) {
     //Add_1
-    clearTimeout(timeoutId)
+    //clearTimeout(timeoutId)
     debugLog(
       'Error leyendo tarifas desde SOM Energia\n' +
         err.name +

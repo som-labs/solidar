@@ -109,15 +109,38 @@ export default async function PreparaEnergyBalance() {
     await calculaResultados()
   }
 
-  //When importing first time will not compute Economico next yes
-  if (!TCB.importando) {
-    TCB.economico = new Economico()
-  }
+  // //When importing first time will not compute Economico next yes
+  // if (!TCB.importando) {
+  //   if (TCB.modoActivo !== 'INDIVIDUAL') {
+  //     for (const _f of TCB.Finca) {
+  //       const eco = TCB.EcoList.find(
+  //         (eco) =>
+  //           eco.idTarifa === _f.idTarifa &&
+  //           eco.nombreTipoConsumo === _f.nombreTipoConsumo,
+  //       )
 
-  UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
-  if (TCB.economico.periodoAmortizacion > 20) {
-    alert(TCB.i18next.t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
-  }
+  //       if (eco) {
+  //         eco.unidades++
+  //       } else {
+  //         TCB.EcoList.push({
+  //           unidades: 1,
+  //           nombreTipoConsumo: _f.nombreTipoConsumo,
+  //           idTarifa: _f.idTarifa,
+  //           eco: new Economico(_f),
+  //         })
+  //       }
+  //     }
+  //   } else {
+  //     TCB.economico = new Economico()
+  //   }
+  // }
+
+  // if (TCB.modoActivo === 'INDIVIDUAL') {
+  //   UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
+  //   if (TCB.economico.periodoAmortizacion > 20) {
+  //     alert(TCB.i18next.t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
+  //   }
+  // }
   document.body.style.cursor = cursorOriginal
   return { status: true }
 }

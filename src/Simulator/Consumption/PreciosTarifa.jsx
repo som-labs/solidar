@@ -16,54 +16,58 @@ import * as UTIL from '../classes/Utiles'
 export default function PreciosTarifa() {
   const { t, i18n } = useTranslation()
   const { setPreciosValidos } = useContext(ConsumptionContext)
-
   const [nPrecios, setNPrecios] = useState()
-  const [tipoTarifa, setTipoTarifa] = useState(TCB.tipoTarifa)
 
   useEffect(() => {
-    setTipoTarifa(TCB.tipoTarifa)
     setNPrecios(4)
-    if (TCB.tipoTarifa === '3.0TD') {
+    if (TCB.tarifaActiva.tipo === '3.0TD') {
       setNPrecios(7)
     } else {
       setNPrecios(4)
     }
   }, [])
 
-  function cambiaTipoTarifa(event, setValues) {
-    setTipoTarifa(event.target.value)
-    TCB.tipoTarifa = event.target.value
-
-    setNPrecios(4)
-    if (TCB.tipoTarifa === '3.0TD') {
-      TCB.nombreTarifaActiva = '3.0TD-' + TCB.territorio
+  function cambiaTipoTarifa(newTipo, setValues) {
+    let detalle
+    if (newTipo === '3.0TD') {
+      detalle = '3.0TD-' + TCB.territorio
       setNPrecios(7)
     } else {
-      TCB.nombreTarifaActiva = TCB.tipoTarifa
+      detalle = '2.0TD'
       setNPrecios(4)
     }
 
-    TCB.tarifaActiva = TCB.tarifas[TCB.nombreTarifaActiva]
-    setValues(TCB.tarifaActiva.precios)
+    setValues((prev) => ({
+      ...prev,
+      tipo: newTipo,
+      detalle: detalle,
+      precios: [...TCB.tarifas[detalle].precios],
+    }))
+
+    TCB.tarifaActiva.tipo = newTipo
+    TCB.tarifaActiva.detalle = detalle
+    TCB.tarifaActiva.precios = [...TCB.tarifas[detalle].precios]
   }
 
   function cambiaPrecio(posicion, nuevoValor, values, setValues) {
-    let prevPrecios = [...values]
-    prevPrecios[posicion] = nuevoValor
-    setValues(prevPrecios)
+    setValues((prev) => ({
+      ...prev,
+      precios: values.precios.map((_p, ndx) => (ndx === posicion ? nuevoValor : _p)),
+    }))
     TCB.tarifaActiva.precios[posicion] = parseFloat(nuevoValor.replace(',', '.'))
   }
 
   function validateFields(values) {
     let errors = {}
     setPreciosValidos(true)
+
     for (let i = 0; i < nPrecios; i++) {
-      if (values[i] === '') {
-        errors[i] = 'Requerido'
+      if (values.precios[i] === '') {
+        errors[i] = t('BASIC.LABEL_REQUIRED')
       } else {
-        if (typeof values[i] === 'string') {
-          if (!UTIL.ValidateDecimal(i18n.language, values[i])) {
-            errors[i] = 'Debe ser un número mayor o igual que cero'
+        if (typeof values.precios[i] === 'string') {
+          if (!UTIL.ValidateDecimal(i18n.language, values.precios[i])) {
+            errors[i] = t('BASIC.LABEL_NUMBER')
           }
         }
       }
@@ -73,9 +77,10 @@ export default function PreciosTarifa() {
     return errors
   }
 
-  if (TCB.tarifaActiva.precios.length !== 0) {
+  if (nPrecios) {
+    console.log('PRECIOS DESDE', TCB.tarifaActiva)
     return (
-      <Formik initialValues={TCB.tarifaActiva.precios} validate={validateFields}>
+      <Formik initialValues={TCB.tarifaActiva} validate={validateFields}>
         {({ values, setValues, setPreciosValidos }) => (
           <Form>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -83,9 +88,9 @@ export default function PreciosTarifa() {
                 sx={{ width: 200, height: 50, textAlign: 'center', mb: '1rem' }}
                 select
                 label={t('Tarifa.PROP.tipoTarifa')}
-                onChange={(e) => cambiaTipoTarifa(e, setValues)}
-                name="tipoTarifa"
-                value={tipoTarifa}
+                onChange={(e) => cambiaTipoTarifa(e.target.value, setValues)}
+                name="tipo"
+                value={values.tipo}
                 object="Tarifa"
               >
                 <MenuItem key={'A1'} value={'2.0TD'}>
@@ -98,7 +103,8 @@ export default function PreciosTarifa() {
             </FormControl>
 
             <Grid container spacing={1} alignItems="center" justifyContent="space-evenly">
-              {values.map((precio, index) => (
+              {console.log(JSON.stringify(values))}
+              {values.precios.map((precio, index) => (
                 <Fragment key={index}>
                   {index < nPrecios && (
                     <Grid item xs>
@@ -115,7 +121,7 @@ export default function PreciosTarifa() {
                             setPreciosValidos,
                           )
                         }
-                        label={t('Tarifa.PROP.' + tipoTarifa + '.P' + index)}
+                        label={t('Tarifa.PROP.' + values.tipo + '.P' + index)}
                         name={String(index)}
                       ></SLDRInputField>
                     </Grid>

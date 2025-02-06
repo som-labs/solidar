@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -16,7 +16,8 @@ import * as UTIL from '../classes/Utiles'
 export default function UnitTypeBox(props) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { fincas, tipoConsumo, allocationGroup } = useContext(ConsumptionContext)
+  const { fincas, tipoConsumo, allocationGroup, setAllocationGroup } =
+    useContext(ConsumptionContext)
   const [openDialog, closeDialog] = useDialog()
 
   const { grupo } = props

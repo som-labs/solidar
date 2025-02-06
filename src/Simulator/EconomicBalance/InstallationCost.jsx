@@ -42,7 +42,7 @@ export default function InstallationCost() {
 
     if (precioCorregido === '') {
       // If new cost field is empty will use app calculated cost
-      setPrecioCorregido(TCB.economico.precioInstalacion)
+      setPrecioCorregido(ecoData.precioInstalacion)
       TCB.economico.precioInstalacionCorregido = TCB.economico.precioInstalacion
       setError(false)
     } else if (!UTIL.ValidateDecimal(i18n.language, precioCorregido)) {

@@ -93,7 +93,7 @@ const TCB = {
   _tablaReparto: null,
   listaZonasComunes: [], //Lista de los nombres de las zonas comunes generadas en los modos colectivo y comunidad
   tiempoEsperaPVGIS: 100,
-  tiempoEsperaTarifas: 20, //Tiempo en segundos que espera los precios de Som
+  tiempoEsperaTarifas: 10, //Tiempo en segundos que espera los precios de Som
 
   //Por ver
   pdfDoc: '',
@@ -130,12 +130,11 @@ const TCB = {
   produccionCreada: false,
   economicoCreado: false,
   requiereOptimizador: true,
-  ultimarefcat: '', //Ultima referencia catastral de la que se han cargado fincas
 
-  // Estos precios son los de SOM a agosto 2022 y no deberían estar aqui.
+  // Estos precios son los de SOM a agosto 2022 y solo sirven de backup en caso de no acceder al API de la cooperativa o no acceder al fichero local.
   tarifas: {
     '2.0TD': {
-      precios: [0.07, 0.247, 0.189, 0.154, 0, 0, 0],
+      precios: [0.05, 0.241, 0.166, 0.127, 0, 0, 0],
       horas: [3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 2, 2, 2],
     },
     '3.0TD-Peninsula': {
@@ -156,7 +155,7 @@ const TCB = {
       ],
     },
     '3.0TD-Ceuta': {
-      precios: [0.07, 0.215, 0.197, 0.167, 0.159, 0.145, 0.147],
+      precios: [0.05, 0.202, 0.163, 0.165, 0.134, 0.105, 0.122],
       horas: [
         [6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 1, 1, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 1, 4],
         [6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 1, 1, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 1, 4],
@@ -173,7 +172,7 @@ const TCB = {
       ],
     },
     '3.0TD-Melilla': {
-      precios: [0.07, 0.215, 0.197, 0.167, 0.159, 0.145, 0.147],
+      precios: [0.05, 0.202, 0.163, 0.165, 0.134, 0.105, 0.122],
       horas: [
         [6, 6, 6, 6, 6, 6, 6, 6, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 2],
         [6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 3],
@@ -189,8 +188,8 @@ const TCB = {
         [6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 3],
       ],
     },
-    '3.0TD-Illes Balears': {
-      precios: [0.07, 0.215, 0.197, 0.167, 0.159, 0.145, 0.147],
+    '3.0TD-Islas Baleares': {
+      precios: [0.05, 0.202, 0.163, 0.165, 0.134, 0.105, 0.122],
       horas: [
         [6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 4, 4],
         [6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 4, 4],
@@ -207,7 +206,7 @@ const TCB = {
       ],
     },
     '3.0TD-Canarias': {
-      precios: [0.07, 0.215, 0.197, 0.167, 0.159, 0.145, 0.147],
+      precios: [0.05, 0.202, 0.163, 0.165, 0.134, 0.105, 0.122],
       horas: [
         [6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 2, 2, 2, 2, 2, 4, 4, 4, 2, 2, 2, 2, 4, 4],
         [6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 2, 2, 2, 2, 2, 4, 4, 4, 2, 2, 2, 2, 4, 4],
@@ -224,10 +223,23 @@ const TCB = {
       ],
     },
   },
-  //Algunos valores por defecto
+  //Valores a utilizar en INDIVIDUAL con defaults
+  tarifaActiva: {
+    tipo: '2.0TD',
+    nombre: '',
+    detalle: '2.0TD',
+    idTarifa: 0,
+    precios: [],
+    coefHucha: 80,
+    cuotaHucha: 0,
+  },
+
   nombreTarifaActiva: '2.0TD', //El nombre de la tarifa activa en caso de 3.0TD incluye el territorio
   tipoTarifa: '2.0TD', //Puede ser 2.0TD o 3.0TD
-  tarifaActiva: {},
+  //tarifaActiva: {},
+
+  //Valores a utilizar en !INDIVIDUAL y completados en consumptionStep
+  Tarifa: [],
 
   // Parametros por defecto
   parametros: {
