@@ -30,8 +30,6 @@ import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
 import InicializaAplicacion from './classes/InicializaAplicacion'
 
-//InicializaAplicacion()
-
 export default function Page() {
   const { t } = useTranslation()
   const { SLDRAlert } = useAlert()
@@ -53,7 +51,8 @@ export default function Page() {
   TCB.URLParameters = a
 
   let results
-  InicializaAplicacion()
+
+  if (!TCB.appInitialized) InicializaAplicacion()
 
   async function validaLocationStep() {
     console.log('validaLocationStep')
@@ -115,8 +114,8 @@ export default function Page() {
       }
     }
 
+    PreparaEconomicBalance()
     if (TCB.modoActivo === 'INDIVIDUAL') {
-      PreparaEconomicBalance()
       setEcoData(TCB.economico)
 
       //If periodoAmortizacion is less than zero means it is bigger than maximum number of years expected for the economic balance and cannot continue.
@@ -132,6 +131,8 @@ export default function Page() {
         return false
       }
       return true
+    } else {
+      setFincas([...TCB.Finca])
     }
   }
 

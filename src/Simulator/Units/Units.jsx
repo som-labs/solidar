@@ -38,7 +38,7 @@ export default function UnitsStep() {
     setAllocationGroup,
     updateTCBUnitsFromState,
   } = useContext(ConsumptionContext)
-  const [uniqueTypes, setUniqueTypes] = useState()
+
   const [openDialog, closeDialog] = useDialog()
 
   /**
@@ -69,7 +69,7 @@ export default function UnitsStep() {
   useEffect(() => {
     //Copy fincas and zonas comunes in state to TCB
     updateTCBUnitsFromState()
-
+    console.log('RECIBIDO ALLOCATION GROUP', allocationGroup)
     if (!allocationGroup) {
       //Build new allocationGroup
       let uniqueGroup = {}
@@ -116,7 +116,9 @@ export default function UnitsStep() {
             zc.nombreTipoConsumo !== '' ? TipoConsumo.getTotal(zc.nombreTipoConsumo) : 0,
         }
       })
+      console.log('Cosntruyendo uniquegroup', uniqueGroup)
       setAllocationGroup(uniqueGroup)
+      TCB.allocationGroup = uniqueGroup
       //If previous allocationGroup just update consumo if there has been any change in TipoConsumo
     } else if (TCB.cambioTipoConsumo) {
       const prev = allocationGroup
@@ -132,6 +134,7 @@ export default function UnitsStep() {
         }
       }
       setAllocationGroup({ ...prev })
+      TCB.allocationGroup = allocationGroup
     }
   }, [])
 
@@ -276,7 +279,7 @@ export default function UnitsStep() {
       }
       return tmpAG
     })
-
+    TCB.allocationGroup = allocationGroup
     //Add new zona comun to state
     setZonasComunes((prev) => [...prev, newZonaComun])
     //Add new zona comun to TCB
@@ -388,24 +391,31 @@ export default function UnitsStep() {
         </Grid>
       </Grid>
 
-      <Button onClick={() => UTIL.dumpData('Fincas.csv', fincas, null, dumpFields)}>
-        Exportar
-      </Button>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 10 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          component="span"
+          onClick={() => UTIL.dumpData('Fincas.csv', fincas, null, dumpFields)}
+        >
+          {t('BASIC.LABEL_EXPORT')}
+        </Button>
 
-      <div>
-        <input
-          accept="*/*"
-          id="file-input"
-          type="file"
-          style={{ display: 'none' }}
-          onChange={loadFincasFromCSV}
-        />
-        <label htmlFor="file-input">
-          <Button variant="contained" color="primary" component="span">
-            Importar
-          </Button>
-        </label>
-      </div>
+        <div>
+          <input
+            accept="*/*"
+            id="file-input"
+            type="file"
+            style={{ display: 'none' }}
+            onChange={loadFincasFromCSV}
+          />
+          <label htmlFor="file-input">
+            <Button variant="contained" color="primary" component="span">
+              {t('BASIC.LABEL_IMPORT')}
+            </Button>
+          </label>
+        </div>
+      </Box>
     </Container>
   )
 }

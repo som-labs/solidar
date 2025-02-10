@@ -168,6 +168,7 @@ export default function AllocationGraph() {
         produccion: value / 100,
       },
     }))
+    TCB.allocationGroup = allocationGroup
 
     const chartItemIndex = chartAllocation.findIndex((e) => e.id === group)
     let newItem = chartAllocation[chartItemIndex]

@@ -8,9 +8,12 @@ import BaseSolar from '../classes/BaseSolar.js'
 import Instalacion from '../classes/Instalacion.js'
 import Rendimiento from '../classes/Rendimiento.js'
 import TipoConsumo from '../classes/TipoConsumo.js'
+import pako from 'pako'
+
 import Consumo from '../classes/Consumo.js'
 import Economico from '../classes/Economico.js'
 import calculaResultados from '../classes/calculaResultados.js'
+import Produccion from '../classes/Produccion.js'
 
 /**
  * Utilizada en exporta para salvar los datos del mapa usando OpenLayers GeoJSON
@@ -29,12 +32,15 @@ function salvarDatosMapa() {
  * @returns {string} Generated filename
  */
 function export2txt(originalData) {
+  const outString = JSON.stringify(originalData)
+  console.log(outString)
+  const compressed = pako.gzip(outString)
+  const blob = new Blob([compressed], { type: 'application/gzip' })
+  const url = URL.createObjectURL(blob)
+
   const a = document.createElement('a')
-  a.href = URL.createObjectURL(
-    new Blob([JSON.stringify(originalData, null, 2)], {
-      type: 'text/plain',
-    }),
-  )
+  a.href = url
+
   const date = new Date()
   let fName = TCB.nombreProyecto + '(' + date.getFullYear()
   fName += (date.getMonth() + 1).toLocaleString(TCB.i18next.language, {
@@ -54,6 +60,7 @@ function export2txt(originalData) {
     .getMinutes()
     .toLocaleString(TCB.i18next.language, { minimumIntegerDigits: 2, useGrouping: false })
   fName += ').solimp'
+
   a.setAttribute('download', fName)
   document.body.appendChild(a)
   a.click()
@@ -68,11 +75,12 @@ function export2txt(originalData) {
  */
 async function exportProject() {
   //At least one BaseSolar should exist to export
-  if (!TCB.readyToExport) {
+  if (TCB.BaseSolar.length === 0) {
     alert(TCB.i18next.t('Proyecto.NO_EXPORT_AVAILABLE'))
     return false
   }
   // Proyecto hdr info
+  TCB.datosProyecto.modoActivo = TCB.modoActivo
   TCB.datosProyecto.fechaExportacion = new Date()
   TCB.datosProyecto.nombreProyecto = TCB.nombreProyecto
   TCB.datosProyecto.territorio = TCB.territorio
@@ -84,39 +92,61 @@ async function exportProject() {
 
   // Copy all global properties stored in TCB
   TCB.datosProyecto.parametros = TCB.parametros
-  TCB.datosProyecto.precioInstalacion = TCB.economico.precioInstalacion
   TCB.datosProyecto.featIdUnico = TCB.featIdUnico // Generador de identificadores de objeto unicos
-  TCB.datosProyecto.totalPaneles = TCB.totalPaneles
-  TCB.datosProyecto.areaTotal = TCB.areaTotal
+  //TCB.datosProyecto.areaTotal = TCB.areaTotal
   TCB.datosProyecto.conversionCO2 = TCB.conversionCO2
-  TCB.datosProyecto.nombreTarifaActiva = TCB.nombreTarifaActiva
-  TCB.datosProyecto.tipoTarifa = TCB.tipoTarifa
-  TCB.datosProyecto.tarifaActiva = TCB.tarifaActiva
   TCB.datosProyecto.tipoPanelActivo = TCB.tipoPanelActivo
 
   // Guardamos los datos del mapa en formato geoJSON
   TCB.datosProyecto.mapa = salvarDatosMapa()
   // Guardamos las bases
   TCB.datosProyecto.BaseSolar = TCB.BaseSolar
-  //Guardamos los tipos de consumo
 
-  TCB.datosProyecto.TipoConsumo = TCB.TipoConsumo
-  //El objeto File correspondiente no puede ser exportado via JSON.
-  TCB.datosProyecto.TipoConsumo.forEach((tipo) => {
-    delete tipo.ficheroCSV
-  })
+  //Si es !INDIVIDUAL guardamos las fincas
+  if (TCB.modoActivo !== 'INDIVIDUAL') {
+    TCB.datosProyecto.Finca = TCB.Finca
+    TCB.datosProyecto.ZonaComun = TCB.ZonaComun
+    //Guardamos la distribucion de energia entre los participes
+    console.log('Exportando allocationGroup', TCB.allocationGroup)
+    if (TCB.allocationGroup) TCB.datosProyecto.allocationGroup = TCB.allocationGroup
+  }
+
+  //Guardamos los tipos de consumo
+  if (TCB.TipoConsumo.length !== 0) {
+    TCB.datosProyecto.TipoConsumo = TCB.TipoConsumo
+    //El objeto File correspondiente no puede ser exportado via JSON.
+    TCB.datosProyecto.TipoConsumo.forEach((tipo) => {
+      delete tipo.ficheroCSV
+    })
+  }
+
+  //Guardamos la información de tarifas
+  TCB.datosProyecto.nombreTarifaActiva = TCB.nombreTarifaActiva
+  TCB.datosProyecto.tipoTarifa = TCB.tipoTarifa
+  TCB.datosProyecto.tarifaActiva = TCB.tarifaActiva
+  if (TCB.modoActivo !== 'INDIVIDUAL') {
+    TCB.datosProyecto.Tarifa = TCB.Tarifa
+  }
+
+  TCB.datosProyecto.totalPaneles = TCB.totalPaneles
+
+  if (TCB.economico) {
+    TCB.datosProyecto.economico = TCB.economico
+  }
+
+  //TCB.datosProyecto.precioInstalacion = TCB.economico.precioInstalacion
 
   // Guardamos condiciones economicas no almacenadas en el objeto Economico
-  TCB.datosProyecto.tiempoSubvencionIBI = TCB.tiempoSubvencionIBI
-  TCB.datosProyecto.valorSubvencionIBI = TCB.valorSubvencionIBI
-  TCB.datosProyecto.porcientoSubvencionIBI = TCB.porcientoSubvencionIBI
-  TCB.datosProyecto.valorSubvencion = TCB.valorSubvencion
-  TCB.datosProyecto.porcientoSubvencion = TCB.porcientoSubvencion
-  TCB.datosProyecto.coefHucha = TCB.coefHucha
-  TCB.datosProyecto.cuotaHucha = TCB.cuotaHucha
+  // TCB.datosProyecto.tiempoSubvencionIBI = TCB.tiempoSubvencionIBI
+  // TCB.datosProyecto.valorSubvencionIBI = TCB.valorSubvencionIBI
+  // TCB.datosProyecto.porcientoSubvencionIBI = TCB.porcientoSubvencionIBI
+  // TCB.datosProyecto.valorSubvencion = TCB.valorSubvencion
+  // TCB.datosProyecto.porcientoSubvencion = TCB.porcientoSubvencion
+  // TCB.datosProyecto.coefHucha = TCB.coefHucha
+  // TCB.datosProyecto.cuotaHucha = TCB.cuotaHucha
 
   //Guardamos precio de la instalacion modificado
-  TCB.datosProyecto.precioInstalacionCorregido = TCB.economico.precioInstalacionCorregido
+  //TCB.datosProyecto.precioInstalacionCorregido = TCB.economico.precioInstalacionCorregido
 
   //Generamos el fichero solimp
   const rFile = export2txt(TCB.datosProyecto)
@@ -138,7 +168,9 @@ async function obtenerDatos(fichero) {
 
     reader.onload = (e) => {
       try {
-        datos = JSON.parse(e.target.result)
+        const compressedData = new Uint8Array(e.target.result)
+        const decompressed = pako.ungzip(compressedData, { to: 'string' })
+        datos = JSON.parse(decompressed)
         resolve(datos)
       } catch (err) {
         alert(
@@ -150,7 +182,7 @@ async function obtenerDatos(fichero) {
       }
     }
 
-    reader.readAsText(fichero)
+    reader.readAsArrayBuffer(fichero)
   })
 }
 
@@ -174,21 +206,7 @@ async function importLocalizacion(datosImportar) {
     UTIL.debugLog('importLocalizacion - nueva base creada', tbase)
 
     //Creamos el objeto instalacion de la base
-    // En versiones anteriores a la 4.1 la potencia unitaria estaba en kWp, ahora esta en Wp
-    if (datosImportar.version === '4') {
-      base.instalacion.potenciaUnitaria *= 1000
-      tbase.instalacion = new Instalacion(base.instalacion)
-      //   {paneles: base.instalacion.paneles,
-      //   potenciaUnitaria: base.instalacion.potenciaUnitaria * 1000,
-      //   precioInstalacion: base.instalacion.precio
-      // })
-    } else {
-      tbase.instalacion = new Instalacion(base.instalacion)
-      //   {
-      //   paneles: base.instalacion.paneles,
-      //   potenciaUnitaria: base.instalacion.potenciaUnitaria,
-      // })
-    }
+    tbase.instalacion = new Instalacion(base.instalacion)
 
     UTIL.debugLog('importLocalizacion - nueva instalacion creada', tbase.instalacion)
 
@@ -211,10 +229,15 @@ async function importTipoConsumo(datosImportar) {
     UTIL.debugLog('importTipoConsumo - nuevo tipoConsumo creado', tTipo)
 
     // Insert into TCB
+
     TCB.TipoConsumo.push(tTipo)
     TCB.TipoConsumo.ficheroCSV = TCB.TipoConsumo.nombreFicheroCSV
   })
-  TCB.cambioTipoConsumo = true
+  if (TCB.TipoConsumo.length > 0) {
+    //   TCB.consumo = new Consumo()
+    TCB.cambioTipoConsumo = true
+  }
+  // } else TCB.cambioTipoConsumo = true
 }
 
 /**
@@ -223,6 +246,7 @@ async function importTipoConsumo(datosImportar) {
  * @returns {boolean} true si todo ha ido bien false si algo ha fallado
  */
 async function importProject(fichero) {
+  TCB.importando = true
   //Limpiamos todas las estructuras
   TCB.TipoConsumo = []
   TCB.BaseSolar = []
@@ -238,14 +262,18 @@ async function importProject(fichero) {
   })
 
   // Don' want to optimize, Use panels as imported
-  TCB.requiereOptimizador = false
+  //TCB.requiereOptimizador = false
 
   // read data from solimp file
   const datosImportar = await obtenerDatos(fichero)
-
+  console.log(datosImportar)
   // Check solimp version to check if compatible
   if (datosImportar.version[0] !== '4') {
     return { status: false, error: 'MSG_problemaVersion' }
+  }
+
+  if (datosImportar.modoActivo !== TCB.modoActivo) {
+    return { status: false, error: 'Modo incompatible' }
   }
 
   TCB.nombreProyecto = datosImportar.nombreProyecto
@@ -256,64 +284,72 @@ async function importProject(fichero) {
   TCB.fechaCreacion = datosImportar.fechaCreacion
   TCB.descripcion = datosImportar.descripcion
   TCB.parametros = datosImportar.parametros
-  TCB.precioInstalacion = datosImportar.precioInstalacion
   TCB.featIdUnico = parseInt(datosImportar.featIdUnico) // Generador de identificadores de objeto unicos
-  TCB.totalPaneles = datosImportar.totalPaneles
-  TCB.areaTotal = datosImportar.areaTotal
   TCB.conversionCO2 = datosImportar.conversionCO2
+  TCB.tipoPanelActivo = datosImportar.tipoPanelActivo
+  importLocalizacion(datosImportar)
 
-  // Import IBI and subvenciones
-  TCB.tiempoSubvencionIBI = datosImportar.tiempoSubvencionIBI
-  TCB.valorSubvencionIBI = datosImportar.valorSubvencionIBI
-  TCB.porcientoSubvencionIBI = datosImportar.porcientoSubvencionIBI
+  if (TCB.modoActivo !== 'INDIVIDUAL') {
+    TCB.Finca = datosImportar.Finca
+    TCB.ZonaComun = datosImportar.ZonaComun
+  }
+  console.log(TCB.Finca[0])
+  //TCB.precioInstalacion = datosImportar.precioInstalacion
+
+  TCB.totalPaneles = datosImportar.totalPaneles
+  //TCB.areaTotal = datosImportar.areaTotal
 
   // Import Tarifa
   TCB.nombreTarifaActiva = datosImportar.nombreTarifaActiva
   TCB.tipoTarifa = datosImportar.tipoTarifa
   TCB.tarifaActiva = datosImportar.tarifaActiva
+  TCB.Tarifa = datosImportar.Tarifa
+  importTipoConsumo(datosImportar)
 
-  // Import parameters
-  for (let param in datosImportar.parametros) {
-    if (datosImportar.version === '4') {
-      if (param === 'IVAinstalacion') {
-        TCB.parametros.IVAInstalacion = datosImportar.parametros[param]
-      } else if (param === 'IVAenergia') {
-        TCB.parametros.IVAEnergia = datosImportar.parametros[param]
-      } else {
-        TCB.parametros[param] = datosImportar.parametros[param]
-      }
-    } else {
-      TCB.parametros[param] = datosImportar.parametros[param]
+  // //Importamos la distribucion de energia entre los participes
+  if (TCB.modoActivo !== 'INDIVIDUAL') {
+    console.log(datosImportar.allocationGroup)
+    if (datosImportar.allocationGroup) {
+      TCB.allocationGroup = datosImportar.allocationGroup
+      console.log('IMPORTADO AllocationGroup rn TCB', datosImportar.allocationGroup)
     }
   }
-  TCB.tipoPanelActivo = datosImportar.tipoPanelActivo
+
+  //if (TCB.modoActivo === 'INDIVIDUAL') {
+  // Import IBI and subvenciones
+  TCB.economico = datosImportar.economico
+  console.log(TCB.economico)
+  // TCB.economico.tiempoSubvencionIBI = datosImportar.tiempoSubvencionIBI
+  // TCB.economico.valorSubvencionIBI = datosImportar.valorSubvencionIBI
+  // TCB.economico.porcientoSubvencionIBI = datosImportar.porcientoSubvencionIBI
+  //}
+
   // En versiones anteriores a la 4.1 la potencia unitaria estaba en kWp, ahora esta en Wp
-  if (datosImportar.version === '4') {
-    TCB.tipoPanelActivo.potencia = datosImportar.tipoPanelActivo.potencia * 1000
-    TCB.valorSubvencion = 0
-    TCB.porcientoSubvencion = 0
-    //Import virtual battery
-    TCB.coefHucha = 80
-    TCB.cuotaHucha = 0
-  } else {
-    TCB.tipoPanelActivo.potencia = datosImportar.tipoPanelActivo.potencia
-    TCB.valorSubvencion = datosImportar.valorSubvencion
-    TCB.porcientoSubvencion = datosImportar.porcientoSubvencion
-    TCB.coefHucha = datosImportar.coefHucha
-    TCB.cuotaHucha = datosImportar.cuotaHucha
-    TCB.version = datosImportar.version
-  }
+  // if (datosImportar.version === '4') {
+  //   TCB.tipoPanelActivo.potencia = datosImportar.tipoPanelActivo.potencia * 1000
+  //   TCB.valorSubvencion = 0
+  //   TCB.porcientoSubvencion = 0
+  //   //Import virtual battery
+  //   TCB.coefHucha = 80
+  //   TCB.cuotaHucha = 0
+  // } else {
+  //   TCB.tipoPanelActivo.potencia = datosImportar.tipoPanelActivo.potencia
+  //   TCB.valorSubvencion = datosImportar.valorSubvencion
+  //   TCB.porcientoSubvencion = datosImportar.porcientoSubvencion
+  //   TCB.coefHucha = datosImportar.coefHucha
+  //   TCB.cuotaHucha = datosImportar.cuotaHucha
+  //   TCB.version = datosImportar.version
+  // }
 
-  importLocalizacion(datosImportar)
-  importTipoConsumo(datosImportar)
-  TCB.consumo = new Consumo()
-  TCB.cambioTipoConsumo = false
-  await calculaResultados(true)
+  // importTipoConsumo(datosImportar)
+  // TCB.consumo = new Consumo()
+  // TCB.cambioTipoConsumo = false
+  // await calculaResultados(true)
 
-  TCB.importando = true //This is a flag for PreparaEnergyBalance not to compute Economico again
-  TCB.economico = new Economico()
-  if (datosImportar.precioInstalacionCorregido !== undefined)
-    TCB.economico.precioInstalacionCorregido = datosImportar.precioInstalacionCorregido
+  // TCB.importando = true //This is a flag for PreparaEnergyBalance not to compute Economico again
+  // TCB.economico = new Economico()
+  // if (datosImportar.precioInstalacionCorregido !== undefined)
+  //   TCB.economico.precioInstalacionCorregido = datosImportar.precioInstalacionCorregido
   return { status: true, error: '' }
 }
 

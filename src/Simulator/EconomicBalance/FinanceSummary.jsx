@@ -28,6 +28,7 @@ export default function FinanceSummary({ finca }) {
   const localEcoData = finca ? finca.economico : ecoData
 
   if (localEcoData.cashFlow === undefined) return
+  console.log('FinanceSummary', localEcoData)
 
   function getRowId(row) {
     return row.ano

@@ -14,7 +14,6 @@ class Consumo extends DiaHora {
     super()
     this._name = 'Consumo'
     this.periodo //Will store kWh per fee period (P1, P2, ...)
-    console.log('NUEVOCONSUMO', consumo, TCB.Finca, TCB.ZonaComun)
     if (consumo === undefined) {
       //Creacion del consumo global
       //Dependiendo del modo debemos calcular el consumo total

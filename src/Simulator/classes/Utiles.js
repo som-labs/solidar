@@ -1088,8 +1088,12 @@ function selectTCB(tabla, campo, valor) {
   return recordSet
 }
 
+/**
+ * Funcion para obtener los valores de las tarifas actuales de SOM
+ * @returns
+ */
 async function cargaTarifasDesdeSOM() {
-  const urlSOMTarifas = TCB.basePath + 'proxy SOM.php?nombre='
+  const urlSOMTarifas = TCB.basePath + 'proxy SOM.php'
   let _url
   let respuesta
   let txtTarifas
@@ -1097,57 +1101,48 @@ async function cargaTarifasDesdeSOM() {
   // Add_1: Adding non response status from apienergia after waiting 20 secs
   const controller = new AbortController()
   const signal = controller.signal
-  //const timeoutId = setTimeout(() => controller.abort(), TCB.tiempoEsperaTarifas * 1000)
+  const timeoutId = setTimeout(() => controller.abort(), TCB.tiempoEsperaTarifas * 1000)
   const options = {}
   //
 
   try {
-    _url = urlSOMTarifas + '2.0TD'
+    _url = urlSOMTarifas
     debugLog('Intentando tarifas desde SOM:' + _url)
-    // Modify_1: , { ...options, signal }
+
     respuesta = await fetch(_url, { ...options, signal })
-    //clearTimeout(timeoutId)
-    //
+    clearTimeout(timeoutId)
 
     if (respuesta.status === 200) {
-      txtTarifas = await respuesta.text()
-      if (txtTarifas.includes('error')) throw new Error(txtTarifas)
-      else
-        TCB.tarifas['2.0TD'].precios = txtTarifas.split(',').map((t) => {
-          return parseFloat(t)
-        })
-    }
-    debugLog('Success Tarifas 2.0TD desde SOM', { txtTarifas })
+      txtTarifas = await respuesta.json()
 
-    _url = urlSOMTarifas + '3.0TD'
-    respuesta = await fetch(_url, { ...options, signal })
-    //clearTimeout(timeoutId)
-    if (respuesta.status === 200) {
-      txtTarifas = await respuesta.text()
-      if (txtTarifas.includes('error')) throw new Error(txtTarifas)
-      else {
-        TCB.tarifas['3.0TD-Peninsula'].precios = txtTarifas.split(',').map((t) => {
-          return parseFloat(t)
-        })
-        TCB.tarifas['3.0TD-Ceuta'].precios = txtTarifas.split(',').map((t) => {
-          return parseFloat(t)
-        })
-        TCB.tarifas['3.0TD-Melilla'].precios = txtTarifas.split(',').map((t) => {
-          return parseFloat(t)
-        })
-        TCB.tarifas['3.0TD-Illes Balears'].precios = txtTarifas.split(',').map((t) => {
-          return parseFloat(t)
-        })
-        TCB.tarifas['3.0TD-Canarias'].precios = txtTarifas.split(',').map((t) => {
-          return parseFloat(t)
-        })
-      }
+      if ('error' in txtTarifas) throw new Error(txtTarifas.error)
+
+      TCB.tarifas['2.0TD'].precios = txtTarifas['2.0TD'].map((t, ndx) => {
+        return ndx < 4 ? parseFloat(t) : 0
+      })
+      TCB.tarifas['3.0TD-Peninsula'].precios = txtTarifas['3.0TD'].map((t) => {
+        return parseFloat(t)
+      })
+      TCB.tarifas['3.0TD-Ceuta'].precios = txtTarifas['3.0TD'].map((t) => {
+        return parseFloat(t)
+      })
+      TCB.tarifas['3.0TD-Melilla'].precios = txtTarifas['3.0TD'].map((t) => {
+        return parseFloat(t)
+      })
+      TCB.tarifas['3.0TD-Illes Balears'].precios = txtTarifas['3.0TD'].map((t) => {
+        return parseFloat(t)
+      })
+      TCB.tarifas['3.0TD-Canarias'].precios = txtTarifas['3.0TD'].map((t) => {
+        return parseFloat(t)
+      })
+    } else {
+      throw new Error(respuesta)
     }
-    debugLog('Success Tarifas 3.0TD desde SOM', { txtTarifas })
+    debugLog('Success Tarifas desde SOM', { txtTarifas })
     return true
   } catch (err) {
-    //Add_1
-    //clearTimeout(timeoutId)
+    console.log('FALLO SOM', err)
+    clearTimeout(timeoutId)
     debugLog(
       'Error leyendo tarifas desde SOM Energia\n' +
         err.name +

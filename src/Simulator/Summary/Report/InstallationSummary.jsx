@@ -86,10 +86,13 @@ export default function InstallationSummary(props) {
         ? t('Instalacion.SHORT.paneles')
         : t('Instalacion.PROP.paneles'),
       type: 'number',
-      editable: true,
+      editable: false,
       headerAlign: 'center',
       flex: 0.9,
       align: 'center',
+      renderCell: (params) => {
+        return params.row.instalacion.paneles
+      },
     },
   ]
 
@@ -101,10 +104,13 @@ export default function InstallationSummary(props) {
           textAlign={'center'}
           dangerouslySetInnerHTML={{
             __html: t('REPORT.FOOTER_BASES_INSTALADAS', {
-              paneles: bases.reduce((sum, tBase) => sum + parseInt(tBase.paneles), 0),
+              paneles: bases.reduce(
+                (sum, tBase) => sum + parseInt(tBase.instalacion.paneles),
+                0,
+              ),
               potencia: UTIL.formatoValor(
                 'potenciaTotal',
-                bases.reduce((sum, tBase) => sum + tBase.potenciaTotal, 0),
+                bases.reduce((sum, tBase) => sum + tBase.instalacion.potenciaTotal, 0),
               ),
             }),
           }}

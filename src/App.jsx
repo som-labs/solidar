@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
 import './i18n/i18n'
+import InicializaAplicacion from './Simulator/classes/InicializaAplicacion'
 
 const TestPage = lazy(() => import('./components/TestPage'))
 const HomePage = lazy(() => import('./Home/Page'))
@@ -42,7 +43,6 @@ const routes = [
 ]
 
 const router = createBrowserRouter(routes)
-
 function App() {
   return (
     <GlobalTheme>

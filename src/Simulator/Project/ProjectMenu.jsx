@@ -35,7 +35,8 @@ export default function ProjectMenu() {
   const { SLDRAlert } = useAlert()
   const { map, bases, setBases, addTCBBaseToState, setTipoPanelActivo } =
     useContext(BasesContext)
-  const { setTipoConsumo, addTCBTipoToState } = useContext(ConsumptionContext)
+  const { setTipoConsumo, setFincas, setTarifas, setZonasComunes, setAllocationGroup } =
+    useContext(ConsumptionContext)
   const { setEcoData } = useContext(EconomicContext)
 
   function openDialogProject() {
@@ -73,25 +74,33 @@ export default function ProjectMenu() {
         if (mapView.getZoom() > 18) mapView.setZoom(18)
 
         // State cleaning done here becasue importProject is not React
-        setBases([])
+        //setBases([])
         //Add imported bases to bases context
-        for (let base of TCB.BaseSolar) {
-          addTCBBaseToState(base)
-        }
-        setTipoPanelActivo({ ...TCB.tipoPanelActivo })
 
-        // State cleaning done here because importProject is not React
-        setTipoConsumo([])
-        //Add imported tipoconsumo to consumption context
-        for (let tipo of TCB.TipoConsumo) {
-          addTCBTipoToState(tipo)
+        setBases([...TCB.BaseSolar])
+        setTipoConsumo([...TCB.TipoConsumo])
+        if (TCB.modoActivo !== 'INDIVIDUAL') {
+          setTarifas([...TCB.Tarifa])
+          setFincas([...TCB.Finca])
+          setZonasComunes([...TCB.ZonaComun])
+          if (TCB.allocationGroup) setAllocationGroup({ ...TCB.allocationGroup })
         }
+        if (TCB.economico) setEcoData({ ...TCB.economico })
+
+        // setTipoPanelActivo({ ...TCB.tipoPanelActivo })
+
+        // // State cleaning done here because importProject is not React
+        // setTipoConsumo([])
+        // //Add imported tipoconsumo to consumption context
+        // for (let tipo of TCB.TipoConsumo) {
+        //   addTCBTipoToState(tipo)
+        // }
 
         //Compute economico if there are bases and consumos
-        if (TCB.BaseSolar.length > 0 && TCB.TipoConsumo.length > 0) {
-          await PreparaEnergyBalance()
-          setEcoData(TCB.economico)
-        }
+        // if (TCB.BaseSolar.length > 0 && TCB.TipoConsumo.length > 0) {
+        //   await PreparaEnergyBalance()
+        //   setEcoData(TCB.economico)
+        // }
 
         SLDRAlert('SALVA PROYECTO', t('Proyecto.MSG_success'), 'Message')
         break

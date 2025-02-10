@@ -9,18 +9,20 @@ import calculaResultados from '../classes/calculaResultados'
 // Solidar objects
 import Consumo from '../classes/Consumo'
 import BaseSolar from '../classes/BaseSolar'
-import Economico from '../classes/Economico'
 import TipoConsumo from './TipoConsumo'
 
 export default async function PreparaEnergyBalance() {
+  console.log('PreparaEnergyBalance')
   let cursorOriginal = document.body.style.cursor
   document.body.style.cursor = 'progress'
 
   //Crearemos el consumo global como suma de todos los tipos de consumo definidos
   UTIL.debugLog('PreparaEnergyBalance - Hay cambio de consumos? ' + TCB.cambioTipoConsumo)
 
+  console.log('BUILDING CONSUMO', TCB.cambioTipoConsumo)
   if (TCB.cambioTipoConsumo) {
     TCB.requiereOptimizador = true
+
     TCB.consumo = new Consumo()
     if (TCB.modoActivo !== 'INDIVIDUAL') {
       //Calculamos el coeficiente del consumo de cada finca sobre el total

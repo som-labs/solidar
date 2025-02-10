@@ -18,7 +18,9 @@ const DESARROLLO = 'DESARROLLO'
 
 /*global INDIVIDUAL, COLECTIVO, COMUNIDAD, DESARROLLO, ol*/
 const TCB = {
+  appInitialized: false,
   URLParameters: null, //Argumentos de la llamada.
+
   //Variables globales de funcionamiento
   debug: false,
   user: null,
@@ -32,6 +34,7 @@ const TCB = {
 
   modos: [INDIVIDUAL, COLECTIVO, COMUNIDAD, DESARROLLO],
   modoActivo: INDIVIDUAL,
+
   estilos: ['SOM', 'CLARA'],
   estiloActivo: 'SOM',
 
@@ -48,7 +51,7 @@ const TCB = {
   readyToExport: false,
   importando: false, //Es verdadero durante el proceso de importacion
   //Donde se guardan los datos a exportar
-  datosProyecto: { version: '4.1' },
+  datosProyecto: { version: '4.2' },
 
   /**
    * @type {Array<TipoConsumo>}
@@ -64,6 +67,7 @@ const TCB = {
    *  @type {Array<Fincas>}
    */
   Finca: [],
+
   UnitType: [], //Array con los tipos unicos de fincas obtenidos de DGC + las zonas comunes {nombre, consumo, allocation, zonaComun}
   //Es la suma de las participaciones devueltas por DGC. Se untilizará para normalizar los coeficientes
   participacionTotal: 0,
@@ -72,7 +76,7 @@ const TCB = {
    * @type {Array<ZonaComun>}
    */
   ZonaComun: [],
-  GroupZC: {}, // Object indicando que grupos participan del gasto correspondiente a una zona comun {nombre del grupo: {zc1: true/false, zc2: true/false,....}}
+  allocationGroup: {}, // Object indicando que grupos participan del gasto correspondiente a una zona comun {nombre del grupo: {zc1: true/false, zc2: true/false,....}}
   requiereReparto: true, //Flag indicando a Reparto economico si de debe reconstruir GruposZC
   requiereAllocation: true,
 
@@ -93,7 +97,6 @@ const TCB = {
   _tablaReparto: null,
   listaZonasComunes: [], //Lista de los nombres de las zonas comunes generadas en los modos colectivo y comunidad
   tiempoEsperaPVGIS: 100,
-  tiempoEsperaTarifas: 10, //Tiempo en segundos que espera los precios de Som
 
   //Por ver
   pdfDoc: '',
@@ -188,7 +191,7 @@ const TCB = {
         [6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 3],
       ],
     },
-    '3.0TD-Islas Baleares': {
+    '3.0TD-TD-Illes Balears': {
       precios: [0.05, 0.202, 0.163, 0.165, 0.134, 0.105, 0.122],
       horas: [
         [6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 4, 4],
@@ -233,10 +236,10 @@ const TCB = {
     coefHucha: 80,
     cuotaHucha: 0,
   },
-
+  tiempoEsperaTarifas: 20, //Tiempo en segundos que espera los precios de Som
+  fuenteTarifa: '',
   nombreTarifaActiva: '2.0TD', //El nombre de la tarifa activa en caso de 3.0TD incluye el territorio
   tipoTarifa: '2.0TD', //Puede ser 2.0TD o 3.0TD
-  //tarifaActiva: {},
 
   //Valores a utilizar en !INDIVIDUAL y completados en consumptionStep
   Tarifa: [],

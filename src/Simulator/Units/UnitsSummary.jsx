@@ -35,8 +35,15 @@ export default function UnitsSummary(props) {
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()
-  const { tipoConsumo, preciosValidos, tarifas, fincas, setFincas, setAllocationGroup } =
-    useContext(ConsumptionContext)
+  const {
+    tipoConsumo,
+    preciosValidos,
+    tarifas,
+    fincas,
+    setFincas,
+    allocationGroup,
+    setAllocationGroup,
+  } = useContext(ConsumptionContext)
 
   const { grupo } = props
   const [selectionModel, setSelectionModel] = useState([])
@@ -315,6 +322,7 @@ export default function UnitsSummary(props) {
           participacionP: totalParticipacion,
         },
       }))
+      TCB.allocationGroup = allocationGroup
       closeDialog()
     }
   }

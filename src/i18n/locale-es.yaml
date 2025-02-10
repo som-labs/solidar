@@ -813,6 +813,8 @@ BASIC:
   LABEL_NO_ROWS: Sin datos
   LABEL_YES: SI
   LABEL_NO: 'NO'
+  LABEL_EXPORT: Exportar
+  LABEL_IMPORT: Importar
 
 GRAPHICS:
   LABEL_CONSUMPTION: Uso eléctrico
@@ -896,8 +898,7 @@ Proyecto:
   MSG_success: Fichero importado satisfactoriamente
   MSG_problemaVersion: Lamentablemente no se puede importar un fichero Solimp de versiones
     anteriores a 4',
-  NO_EXPORT_AVAILABLE: El proyecto solo de puede exportar despues del paso Balance
-    de energia
+  NO_EXPORT_AVAILABLE: Al menos debe existir una base para exportar el proyecto
 
 GRAFICOS:
   LABEL_panelesActuales: Paneles actuales {{paneles}}

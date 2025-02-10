@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createBrowserRouter, RouterProvider, useLocation } from 'react-router-dom'
 
 import Container from '@mui/material/Container'
@@ -20,11 +20,9 @@ import { useTheme } from '@mui/material/styles'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
-
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
-
   return null
 }
 
@@ -45,6 +43,22 @@ function DefaultWizardPage(params) {
   } = params
 
   const theme = useTheme()
+  // const [pieVisible, setPieVisible] = useState(false)
+  // const targetRef = useRef(null)
+
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(
+  //     ([entry]) => {
+  //       setPieVisible(entry.isIntersecting)
+  //     },
+  //     { threshold: 0 },
+  //   )
+  //   if (targetRef.current) {
+  //     observer.observe(targetRef.current)
+  //   }
+
+  //   return () => observer.disconnect()
+  // }, [])
 
   return (
     <>
@@ -54,25 +68,55 @@ function DefaultWizardPage(params) {
           width: '100%',
           display: 'flex',
           flexFlow: 'row',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           my: 2,
         }}
       >
+        {/* Los botones superiores se mantienen fijos y visibles hasta que aparecen los botones inferiores */}
         <Button
-          disabled={prevDisabled || !isCurrent}
+          sx={{
+            position: 'fixed',
+            // visibility: pieVisible || prevDisabled ? 'hidden' : 'visible',
+            visibility: prevDisabled ? 'hidden' : 'visible',
+            left: 0, // Distance from right
+            zIndex: 1000, // Ensures it stays on top
+            borderRadius: 3, // Makes it round
+            //bottom: 20, // Distance from bottom
+            //width: 120,
+            //height: 50,
+            //padding: 1,
+            //minWidth: 'auto',
+            //display: prevDisabled ? 'none' : 'block',
+            //width: 'fit-content',
+          }}
+          variant="contained"
           startIcon={<ArrowBackIosIcon />}
           onClick={prev}
         >
-          {prevLabel}
+          {/* {prevLabel} */}
         </Button>
         {title ? <Typography sx={theme.titles.level_0}>{title}</Typography> : null}
+
         <Button
+          sx={{
+            position: 'fixed',
+            // visibility: pieVisible || nextDisabled ? 'hidden' : 'visible',
+            visibility: nextDisabled ? 'hidden' : 'visible',
+            right: 0, // Distance from right
+            zIndex: 1000, // Ensures it stays on top
+            borderRadius: 3, // Makes it round
+            //bottom: 20, // Distance from bottom
+            //width: 10,
+            //height: 50,
+            //padding: 1,
+            //minWidth: 'auto',
+            //width: 'fit-content',
+          }}
           variant="contained"
           endIcon={<ArrowForwardIosIcon />}
-          disabled={nextDisabled || !isCurrent}
           onClick={next}
         >
-          {nextLabel}
+          {/* {nextLabel} */}
         </Button>
       </Box>
       <Box
@@ -90,6 +134,7 @@ function DefaultWizardPage(params) {
         {children}
       </Box>
       <Box
+        // ref={targetRef}
         sx={{
           width: '100%',
           display: 'flex',
@@ -99,6 +144,10 @@ function DefaultWizardPage(params) {
         }}
       >
         <Button
+          sx={{
+            visibility: prevDisabled ? 'hidden' : 'visible',
+          }}
+          variant="contained"
           disabled={prevDisabled || !isCurrent}
           startIcon={<ArrowBackIosIcon />}
           onClick={prev}
@@ -111,6 +160,9 @@ function DefaultWizardPage(params) {
           </Typography>
         ) : null}
         <Button
+          sx={{
+            visibility: nextDisabled ? 'hidden' : 'visible',
+          }}
           variant="contained"
           endIcon={<ArrowForwardIosIcon />}
           disabled={nextDisabled || !isCurrent}

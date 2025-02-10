@@ -47,7 +47,7 @@ export default function ZonaComunTypeBox(props) {
         consumo: tConsumo,
       },
     }))
-
+    TCB.allocationGroup = allocationGroup
     TCB.requiereReparto = true
     TCB.cambioTipoConsumo = true
   }
@@ -78,7 +78,7 @@ export default function ZonaComunTypeBox(props) {
       ...prev,
       [zonaComun.id]: { ...prev[zonaComun.id], nombre: value },
     }))
-
+    TCB.allocationGroup = allocationGroup
     setZonasComunes((prev) =>
       prev.map((item) => (item.id === zonaComun.id ? { ...item, nombre: value } : item)),
     )
@@ -103,110 +103,116 @@ export default function ZonaComunTypeBox(props) {
         }
         return tmpAG
       })
+      TCB.allocationGroup = allocationGroup
     }
 
     TCB.requiereReparto = true
     TCB.cambioTipoConsumo = true
   }
 
+  console.log(allocationGroup)
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        flexWrap: 'wrap',
-        gap: '4px',
-        alignItems: 'center',
-        border: '1px solid grey',
-        borderRadius: 2,
-        padding: 2,
-        maxWidth: 300,
-      }}
-    >
-      <Typography sx={theme.titles.level_1} textAlign={'center'} marginTop="1rem">
-        {'Zona Común'}
-      </Typography>
+    <>
+      {allocationGroup && (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            flexWrap: 'wrap',
+            gap: '4px',
+            alignItems: 'center',
+            border: '1px solid grey',
+            borderRadius: 2,
+            padding: 2,
+            maxWidth: 300,
+          }}
+        >
+          <Typography sx={theme.titles.level_1} textAlign={'center'} marginTop="1rem">
+            {'Zona Común'}
+          </Typography>
 
-      <TextField
-        label="Nombre"
-        sx={{ width: 200, height: 30, mt: '0.2rem', mb: '1rem' }}
-        size="small"
-        type="text"
-        id="nombreZonaComun"
-        value={zonaComun.nombre}
-        onChange={changeNombreZonaComun}
-        onBlur={setNombreZonaComun}
-        error={error.status && error.field === 'nombreZonaComun'}
-        helperText={
-          error.status && error.field === 'nombreZonaComun'
-            ? t(error.name + ' Duplicado')
-            : ''
-        }
-      />
+          <TextField
+            label="Nombre"
+            sx={{ width: 200, height: 30, mt: '0.2rem', mb: '1rem' }}
+            size="small"
+            type="text"
+            id="nombreZonaComun"
+            value={zonaComun.nombre}
+            onChange={changeNombreZonaComun}
+            onBlur={setNombreZonaComun}
+            error={error.status && error.field === 'nombreZonaComun'}
+            helperText={
+              error.status && error.field === 'nombreZonaComun'
+                ? t(error.name + ' Duplicado')
+                : ''
+            }
+          />
 
-      <TextField
-        label="CUPS"
-        sx={{ width: 200, height: 30, mt: '1rem', mb: '0.2rem' }}
-        size="small"
-        type="text"
-        id="CUPS"
-        value={zonaComun.CUPS}
-        onChange={(event) => changeCUPS(event.target.value)}
-      />
+          <TextField
+            label="CUPS"
+            sx={{ width: 200, height: 30, mt: '1rem', mb: '0.2rem' }}
+            size="small"
+            type="text"
+            id="CUPS"
+            value={zonaComun.CUPS}
+            onChange={(event) => changeCUPS(event.target.value)}
+          />
 
-      <TextField
-        label={t('Tarifa.PROP.nombreTarifa')}
-        sx={{ width: 200, height: 30, mt: '1rem', mb: 2 }}
-        size="small"
-        select
-        id="tarifa"
-        value={zonaComun.idTarifa}
-        onChange={(event) => changeTarifa(event.target.value)}
-      >
-        {tarifas.map((_t, index) => (
-          <MenuItem key={index} value={_t.idTarifa}>
-            {_t.nombreTarifa}
-          </MenuItem>
-        ))}
-      </TextField>
+          <TextField
+            label={t('Tarifa.PROP.nombreTarifa')}
+            sx={{ width: 200, height: 30, mt: '1rem', mb: 2 }}
+            size="small"
+            select
+            id="tarifa"
+            value={zonaComun.idTarifa}
+            onChange={(event) => changeTarifa(event.target.value)}
+          >
+            {tarifas.map((_t, index) => (
+              <MenuItem key={index} value={_t.idTarifa}>
+                {_t.nombreTarifa}
+              </MenuItem>
+            ))}
+          </TextField>
 
-      <TextField
-        label="Uso eléctrico"
-        sx={{ width: 200, height: 30, mt: '1rem', mb: 2 }}
-        size="small"
-        select
-        id="tipo"
-        value={zonaComun.nombreTipoConsumo}
-        onChange={(event) => changeTipoConsumo(event.target.value)}
-      >
-        {tipoConsumo.map((_tc, index) => (
-          <MenuItem key={index} value={_tc.nombreTipoConsumo}>
-            {_tc.nombreTipoConsumo}
-          </MenuItem>
-        ))}
-      </TextField>
-      <Typography
-        variant="body"
-        textAlign={'center'}
-        dangerouslySetInnerHTML={{
-          __html:
-            'Uso de energía: ' +
-            UTIL.formatoValor('energia', allocationGroup[zonaComun.id].consumo),
-        }}
-      />
-      <IconButton
-        onClick={deleteZonaComun}
-        size="small"
-        style={{
-          color: theme.palette.helpIcon.main,
-          fontSize: 'inherit',
-          verticalAlign: 'text-center',
-          transform: 'scale(1)',
-          padding: 0,
-        }}
-      >
-        <DeleteIcon />
-      </IconButton>
-    </Box>
+          <TextField
+            label="Uso eléctrico"
+            sx={{ width: 200, height: 30, mt: '1rem', mb: 2 }}
+            size="small"
+            select
+            id="tipo"
+            value={zonaComun.nombreTipoConsumo}
+            onChange={(event) => changeTipoConsumo(event.target.value)}
+          >
+            {tipoConsumo.map((_tc, index) => (
+              <MenuItem key={index} value={_tc.nombreTipoConsumo}>
+                {_tc.nombreTipoConsumo}
+              </MenuItem>
+            ))}
+          </TextField>
+          <Typography
+            variant="body"
+            textAlign={'center'}
+            dangerouslySetInnerHTML={{
+              __html:
+                'Uso de energía: ' +
+                UTIL.formatoValor('energia', allocationGroup[zonaComun.id].consumo),
+            }}
+          />
+          <IconButton
+            onClick={deleteZonaComun}
+            size="small"
+            style={{
+              color: theme.palette.helpIcon.main,
+              fontSize: 'inherit',
+              verticalAlign: 'text-center',
+              transform: 'scale(1)',
+              padding: 0,
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Box>
+      )}
+    </>
   )
 }
