@@ -54,48 +54,57 @@ export default function EnergyAllocationStep() {
        }
     }
     */
+    // console.log(
+    //   'UE EnergyAllocation',
+    //   JSON.stringify(allocationGroup),
+    //   TCB.requiereAllocation,
+    // )
 
-    //Primera asignacion de produccion a cada grupo basada en el consumo grupal
-    setAllocationGroup((prev) => {
-      const newAllocation = { ...prev }
-      Object.keys(newAllocation).forEach(
-        (group) =>
-          (newAllocation[group].produccion =
-            newAllocation[group].consumo / TCB.consumo.totalAnual),
-      )
-      return newAllocation
-    })
+    if (allocationGroup) {
+      //Primera asignacion de produccion a cada grupo basada en el consumo grupal
+      setAllocationGroup((prev) => {
+        const newAllocation = { ...prev }
+        Object.keys(newAllocation).forEach(
+          (group) =>
+            (newAllocation[group].produccion =
+              newAllocation[group].consumo / TCB.consumo.totalAnual),
+        )
+        return newAllocation
+      })
+      TCB.allocationGroup = allocationGroup
 
-    //Distribución de la produccion del grupo entre sus participes basada en participacion
-    for (const grupo in allocationGroup) {
-      //Si el grupo tiene unidades esta formado por fincas de DGC
-      if (allocationGroup[grupo].unidades > 0) {
-        //Es grupo de catastro hay que calcular betas y asignarlo a cada finca
-        setFincas((prev) =>
-          prev.map((f, ndx) => {
-            if (f.participa && f.grupo === grupo) {
-              TCB.Finca[ndx].coefEnergia = UTIL.roundDecimales(
-                (f.participacion / allocationGroup[grupo].participacionP) *
-                  allocationGroup[grupo].produccion,
-                6,
-              )
-              return TCB.Finca[ndx]
-            } else {
-              return f
-            }
-          }),
-        )
-      } else {
-        //Es una zona comun el beta es directamente la energia asignada al grupo
-        setZonasComunes((prev) =>
-          prev.map((_zc) => {
-            return { ..._zc, coefEnergia: allocationGroup[_zc.id].produccion }
-          }),
-        )
+      //Distribución de la produccion del grupo entre sus participes basada en participacion
+      for (const grupo in allocationGroup) {
+        //Si el grupo tiene unidades esta formado por fincas de DGC
+        if (allocationGroup[grupo].unidades > 0) {
+          //Es grupo de catastro hay que calcular betas y asignarlo a cada finca
+          setFincas((prev) =>
+            prev.map((f, ndx) => {
+              if (f.participa && f.grupo === grupo) {
+                TCB.Finca[ndx].coefEnergia = UTIL.roundDecimales(
+                  (f.participacion / allocationGroup[grupo].participacionP) *
+                    allocationGroup[grupo].produccion,
+                  6,
+                )
+                return TCB.Finca[ndx]
+              } else {
+                return f
+              }
+            }),
+          )
+        } else {
+          //Es una zona comun el beta es directamente la energia asignada al grupo
+          setZonasComunes((prev) =>
+            prev.map((_zc) => {
+              return { ..._zc, coefEnergia: allocationGroup[_zc.id].produccion }
+            }),
+          )
+        }
       }
+      closeBetasToOne()
+      setRepartoValido(true)
+      TCB.requiereAllocation = false
     }
-    closeBetasToOne()
-    setRepartoValido(true)
   }, [])
 
   function help(level) {
@@ -157,6 +166,11 @@ export default function EnergyAllocationStep() {
     UTIL.dumpData(TCB.parametros.CAU + '.txt', betaList)
   }
 
+  // console.log(
+  //   'render EnergyAllocation',
+  //   JSON.stringify(allocationGroup),
+  //   TCB.requiereAllocation,
+  // )
   return (
     <Container>
       <>

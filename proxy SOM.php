@@ -1,6 +1,9 @@
 <?PHP
 //$url = 'https://apinergia.somenergia.coop/tariff?type=[2.0TD o 3.0TD]';
 // Allow from any origin
+
+    header('Content-Type: application/json');
+
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
     header('Access-Control-Allow-Credentials: true');
@@ -18,13 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-$urlBase = 'https://apinergia.somenergia.coop/tariff?';
-if(isset($_GET['nombre']))
-{
-	$nombre = $_GET['nombre'];
-}
-
-    $url = $urlBase . 'type=' . $nombre;
+$url = 'https://apinergia.somenergia.coop/tariff';
 
     //Initialize cURL.
     $ch = curl_init();
@@ -39,17 +36,30 @@ if(isset($_GET['nombre']))
     //Close the cURL handle.
     curl_close($ch);
     //Print the data out onto the page.
-    $tarifa = json_decode($serviceData);
+    $tarifas = json_decode($serviceData);
 
-    if ($tarifa->count > 0) {
-        $tmp = $tarifa->data[0]->prices->current->autoconsumo->P1->value . ",";
-        foreach($tarifa->data as $unidad) {
-            foreach($unidad->prices->current->activeEnergy as $clave=>$valor) {
-                $tmp = $tmp . $valor->value . ",";
+    $data = [];
+
+    $tmp = "{";
+    if ($tarifas->count > 0) {
+        foreach($tarifas->data as $tarifa) {
+            if ($tarifa->tariffPriceId == 43) { $nombre = "2.0TD"; } 
+            else if ($tarifa->tariffPriceId == 44) { $nombre = "3.0TD";}
+            else {$nombre = "";};
+            if ($nombre != "") {
+                $data[$nombre] = [];
+                $data[$nombre][] = $tarifa->prices->current->autoconsumo->P1->value;
+                $tmp = $tmp . "'" . $nombre . "':["  . $tarifa->prices->current->autoconsumo->P1->value;
+                foreach($tarifa->prices->current->activeEnergy as $clave=>$valor) {
+                    $data[$nombre][] = $valor->value;
+                    $tmp = $tmp . "," . $valor->value;
+                }
+                $tmp = $tmp . "],";
             }
-            echo substr($tmp, 0, -1);
         }
+        echo json_encode($data);
+        //echo json_encode(substr($tmp, 0, -1) . "}");
     } else {
-        echo 'error:' . $serviceData;
+        echo json_encode("{'error':'" . $serviceData . "'}");
     }
 ?>

@@ -200,6 +200,7 @@ export default function UnitsSummary(props) {
         criterio: evt.value,
       },
     }))
+    TCB.allocationGroup = allocationGroup
     distributeAllocation(grupo, allocationGroup[grupo].produccion, evt.value)
   }
 

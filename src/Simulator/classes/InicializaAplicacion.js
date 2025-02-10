@@ -2,6 +2,9 @@ import TCB from './TCB'
 import * as UTIL from './Utiles'
 
 async function InicializaAplicacion() {
+  console.log('INICIALIZA', TCB.appInitialized)
+  //if (TCB.appInitialized) return
+  console.log('INICIALIZANDO...')
   //Si recibimos argumento debug en la url ejecutamos con debug
   TCB.debug = UTIL.getParametrosEntrada('debug')
   UTIL.debugLog('_initEvents Debug activo: ' + TCB.debug)
@@ -9,7 +12,7 @@ async function InicializaAplicacion() {
   //Identificación de la sesión con objeto Date.now() de javascript.
   TCB.idSesion = Date.now()
 
-  //Definimos el modo de trabajo
+  //Definimos el modo de trabajo [INDIVIDUAL / COLECTIVO]
   let _modo = UTIL.getParametrosEntrada('modo')
   if (_modo) {
     _modo = _modo.toUpperCase()
@@ -65,26 +68,36 @@ async function InicializaAplicacion() {
     )
   }
 
-  // lectura del fichero de tarifas del servidor. Si falla se usan las de la TCB
-  if (!(await UTIL.cargaTarifasDesdeSOM())) {
-    //Dejamos esta llamada hasta que el tiempo de respuesta de SOM sea aceptable
-    UTIL.debugLog('Fallo lectura desde apitarifas')
-    const ficheroTarifa = '/datos/tarifas.json'
-    try {
-      UTIL.debugLog(
-        'Intentando leer tarifas desde servidor solidarenergia:' + ficheroTarifa,
-      )
-      const respuesta = await fetch(ficheroTarifa)
-      if (respuesta.status === 200) {
-        UTIL.debugLog('Success Tarifas leidas desde solidarenergia:' + ficheroTarifa)
-        TCB.tarifas = await respuesta.json()
-      }
-    } catch (err) {
-      UTIL.debugLog(
-        'Error leyendo tarifas del servidor ' + err.message + '<br>Seguimos con TCB',
-      )
+  //Definicion de tarifas (APLICACION->SERVER->SOM)
+
+  TCB.fuenteTarifa = 'APLICACION'
+  const ficheroTarifa = '/datos/tarifas.json'
+  try {
+    UTIL.debugLog(
+      'Intentando leer tarifas desde servidor solidarenergia:' + ficheroTarifa,
+    )
+    const respuesta = await fetch(ficheroTarifa)
+    if (respuesta.status === 200) {
+      UTIL.debugLog('Success Tarifas leidas desde solidarenergia:' + ficheroTarifa)
+      TCB.tarifas = await respuesta.json()
+      TCB.fuenteTarifa = 'SERVER'
     }
+  } catch (err) {
+    UTIL.debugLog(
+      'Error leyendo tarifas del servidor ' + err.message + '<br>Seguimos con TCB',
+    )
   }
+
+  // Obtencion tarifas desde SOM
+  ;(async () => {
+    try {
+      const rCode = await UTIL.cargaTarifasDesdeSOM()
+      if (rCode) TCB.fuenteTarifa = 'SOM'
+    } catch (error) {
+      console.log('Fallo lectura desde apitarifas', error.message)
+    }
+  })()
+
   TCB.tarifaActiva.precios = [...TCB.tarifas[TCB.nombreTarifaActiva].precios]
 
   // // Evento del boton de instrucciones
@@ -130,7 +143,7 @@ async function InicializaAplicacion() {
   // if (noMostrarMas === 'false' || noMostrarMas === null) {
   //   bienvenida();
   // }
-
+  TCB.appInitialized = true
   return true
 }
 

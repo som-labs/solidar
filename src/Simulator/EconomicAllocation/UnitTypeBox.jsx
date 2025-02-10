@@ -36,6 +36,7 @@ export default function UnitTypeBox(props) {
     })
   }
 
+  console.log(allocationGroup)
   return (
     <>
       <Container>

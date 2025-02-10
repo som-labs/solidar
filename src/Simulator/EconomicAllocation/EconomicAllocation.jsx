@@ -99,7 +99,7 @@ export default function EconomicAllocationStep() {
       }
       return tAlloc
     })
-
+    TCB.allocationGroup = allocationGroup
     return newGroupRow
   }
 
@@ -149,8 +149,8 @@ export default function EconomicAllocationStep() {
         costeTotal += cZC
         ahorroTotal += aZC
       }
-      e['Coste total'] = UTIL.roundDecimales(costeTotal, 2)
-      e['Ahorro total'] = UTIL.roundDecimales(ahorroTotal, 2)
+      e['Inversión'] = UTIL.roundDecimales(costeTotal, 2)
+      e['Ahorro anual'] = UTIL.roundDecimales(ahorroTotal, 2)
 
       rowList.push(e)
     }

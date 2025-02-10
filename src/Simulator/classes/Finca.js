@@ -89,7 +89,7 @@ class Finca {
    * @param {Object} fincaActualizada
    */
   static actualiza_creaFinca(fincaActiva) {
-    const fincaActualizada = UTIL.selectTCB('Finca', 'idFinca', fincaActiva.idFinca)
+    const fincaActualizada = TCB.Finca.find((f) => f.idFinca === fincaActiva.idFinca)
     //const fincaActualizada = TCB.Finca.find( (finca) => { return finca.idFinca === fincaActiva.idFinca });
     //if (fincaActualizada === undefined) {
     if (fincaActualizada.length === 0) {
@@ -99,28 +99,6 @@ class Finca {
         fincaActualizada[0][prop] = fincaActiva[prop]
       }
     }
-  }
-
-  static getTabulatorRow(campo, valor) {
-    //cambio actFinca por _f y [0]
-    //const actFinca = TCB.Finca.find( (b) => { return b[campo] === valor})
-    const _f = UTIL.selectTCB('Finca', campo, valor)
-    //if (actFinca === undefined) return undefined;
-    if (_f.length === 0) return undefined
-    let row = {}
-    for (let prop in _f[0]) {
-      if (typeof _f[0][prop] !== 'object') {
-        row[prop] = _f[0][prop]
-      }
-    }
-
-    row.produccionTotal = (_f[0].coefEnergia * TCB.produccion.pTotalAnual) / 100
-    row.precioInstalacion = (_f[0].coefInversion * TCB.produccion.precioInstalacion) / 100
-    row.cTotalAnual = (_f[0].coefConsumo * TCB.consumo.cTotalAnual) / 100
-
-    if (_f[0].economico !== undefined) row.ahorroFincaAnual = _f[0].economico.ahorroAnual
-    else row.ahorroFincaAnual = ''
-    return row
   }
 
   static mapaUsoGrupo = {

@@ -394,7 +394,7 @@ export default function MapComponent() {
     nuevaBaseSolar.area = getArea(geometria)
     nuevaBaseSolar.inclinacion = 20
     nuevaBaseSolar.inclinacionOptima = false
-    nuevaBaseSolar.roofType = 'Inclinado'
+    nuevaBaseSolar.roofType = TCB.modoActivo === 'INDIVIDUAL' ? 'Inclinado' : 'Horizontal'
     nuevaBaseSolar.inAcimut = undefined
     nuevaBaseSolar.angulosOptimos = false
     nuevaBaseSolar.requierePVGIS = true

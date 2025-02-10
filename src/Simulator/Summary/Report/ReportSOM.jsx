@@ -38,7 +38,7 @@ export default function ReportSOM({ onClose }) {
 
   //const [yearlyData, setYearlyData] = useState({})
 
-  const usedBases = bases.filter((b) => b.paneles > 0)
+  const usedBases = bases.filter((b) => b.instalacion.paneles > 0)
   const shortFormat = usedBases.length < 5 ? true : false
 
   let ahorroAutoconsumo = Math.round(UTIL.suma(TCB.economico.ahorradoAutoconsumoMes))
