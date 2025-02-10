@@ -46,3 +46,30 @@ sep: Iraila
 oct: Urria
 nov: Azaroa
 dic: Abendua
+BaseSolar:
+  NAME: Eguzki oinarria
+  SHORT:
+    nombreBaseSolar: Izena
+    areaReal: Azalera
+    inclinacion: Malda
+    inAcimut: Hego orientazioa
+  PROP:
+    roofType: Teilatu mota
+    nombreBaseSolar: Azaleraren izena
+    angulosOptimos: Angelu egokienak
+    inclinacion: Malda
+    inclinacionTejado: Teilatuaren malda
+    inclinacionPaneles: Eguzki plaken inklinazioa
+    inclinacionOptima: Malda egokiena
+    inAcimut: Hegoalde orientazioa
+    areaReal: Azalera erabilgarria
+    panelesMaximo: Gehienezko plaka kopurua
+    potenciaMaxima: Gehienezko potentzia
+    anchoReal: Zeharkako luzera
+    cumbrera: Gailurraren luzera
+    columnas: Plaken gehieneko kopurua zutabeko
+    filas: Ilara bakoitzeko plaka kopuru maximoa
+    lonlatBaseSolar: koordenatu geografikoak
+    modoInstalacion: Panelen antolamendua
+  TOOLTIP:
+    nombreBaseSolar: Azalera hau izendatu etorkizuneko erreferentzietarako
