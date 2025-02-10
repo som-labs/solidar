@@ -52,14 +52,13 @@ export default function UnitTypeBox(props) {
       children: (
         <UnitsSummary
           grupo={grupo}
-          maxWidth={'xs'}
+          maxWidth={'lg'}
           fullWidth={true}
           onClose={closeDialog}
         ></UnitsSummary>
       ),
     })
   }
-
   return (
     <>
       <Container>

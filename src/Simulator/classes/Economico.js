@@ -53,6 +53,9 @@ class Economico {
     this.perdidaMes = new Array(12).fill(0)
     this.ahorroAnual = 0
     this.ahorroAnualZC = 0
+    this.tiempoSubvencionIBI = 0
+    this.valorSubvencionIBI = 0
+    this.porcientoSubvencionIBI = 0
     this.TIRProyecto = 0
     this.VANProyecto = 0
     this.interesVAN = TCB.parametros.interesVAN
@@ -255,6 +258,8 @@ class Economico {
    * @param {number} coefInversion Porcentaje del la producción total de energia que corresponde a la Finca
    */
   calculoFinanciero(coefEnergia, coefInversion, unidad) {
+    console.log('CALCULO FINANCIERO', this)
+
     //Es un participe que invierte pero no recibe energia. ¿existe?
     if (coefEnergia == 0) {
       this.VANProyecto = 'N/A'
@@ -285,9 +290,9 @@ class Economico {
     }
 
     //Datos de la bonificación del IBI
-    const valorSubvencionIBI = TCB.valorSubvencionIBI
-    const tiempoSubvencionIBI = TCB.tiempoSubvencionIBI
-    const porcientoSubvencionIBI = TCB.porcientoSubvencionIBI
+    const valorSubvencionIBI = this.valorSubvencionIBI
+    const tiempoSubvencionIBI = this.tiempoSubvencionIBI
+    const porcientoSubvencionIBI = this.porcientoSubvencionIBI
 
     // Calculo de la subvención
     var valorSubvencion
@@ -440,9 +445,9 @@ class Economico {
 
     if (coefInversion === 1) {
       //Vamos aguardar estas variables en TCB para el calculo económico global
-      TCB.tiempoSubvencionIBI = tiempoSubvencionIBI
-      TCB.valorSubvencionIBI = valorSubvencionIBI
-      TCB.porcientoSubvencionIBI = porcientoSubvencionIBI
+      // TCB.economico.tiempoSubvencionIBI = tiempoSubvencionIBI
+      // TCB.economico.valorSubvencionIBI = valorSubvencionIBI
+      // TCB.economico.porcientoSubvencionIBI = porcientoSubvencionIBI
       TCB.valorSubvencion = valorSubvencion
       //TCB.tipoSubvencion = tipoSubvencion //Only for EU Next generation
     }

@@ -78,7 +78,7 @@ export default function PreciosTarifa() {
   }
 
   if (nPrecios) {
-    console.log('PRECIOS DESDE', TCB.tarifaActiva)
+    console.log('Precios obtenidos de ' + TCB.fuenteTarifa, TCB.tarifaActiva)
     return (
       <Formik initialValues={TCB.tarifaActiva} validate={validateFields}>
         {({ values, setValues, setPreciosValidos }) => (

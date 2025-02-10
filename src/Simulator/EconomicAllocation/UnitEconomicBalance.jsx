@@ -61,7 +61,7 @@ export default function UnitEconomicBalanceStep({ finca, onClose }) {
               }}
             >
               <SLDRInfoBox sx={{ borderRight: '1px solid grey' }}>
-                <ReduccionIBI></ReduccionIBI>
+                <ReduccionIBI finca={finca}></ReduccionIBI>
               </SLDRInfoBox>
               <SLDRInfoBox sx={{ borderRight: '1px solid grey' }}>
                 <Subvencion></Subvencion>
