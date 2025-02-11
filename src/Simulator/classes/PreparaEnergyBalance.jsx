@@ -84,10 +84,14 @@ export default async function PreparaEnergyBalance() {
     if (TCB.modoActivo !== 'INDIVIDUAL') {
       TCB.Finca.forEach((f) => {
         f.coefEnergia = 0
+        f.economico = {}
       })
       TCB.ZonaComun.forEach((z) => {
         z.coefEnergia = 0
+        z.economico = {}
       })
+    } else {
+      TCB.economico = {}
     }
 
     UTIL.debugLog('PreparaEnergyBalance - Todas las bases listas llama optimizador')

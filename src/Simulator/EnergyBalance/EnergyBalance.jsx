@@ -71,7 +71,7 @@ export default function EnergyBalanceStep() {
       consumoDiurno: TCB.balance.consumoDiurno,
     })
 
-    setEcoData(TCB.economico)
+    //setEcoData(TCB.economico)
     setDataReady(true)
   }, [bases, setEcoData, mes])
 
