@@ -101,16 +101,13 @@ export default function AllocationGraph() {
       if (allocationGroup[grupo].unidades > 0) {
         distributeAllocation(grupo, allocationGroup[grupo].produccion)
       } else {
-        setZonasComunes((prev) =>
-          prev.map((_zc, ndx) => {
-            if (_zc.id === grupo) {
-              TCB.ZonaComun[ndx].coefEnergia = allocationGroup[grupo].produccion
-              return TCB.ZonaComun[ndx]
-            } else {
-              return _zc
-            }
-          }),
-        )
+        TCB.ZonaComun.map((zc) => {
+          if (zc.id === grupo) {
+            zc.coefEnergia = allocationGroup[grupo].produccion
+            return zc
+          }
+        })
+        setZonasComunes([...TCB.ZonaComun])
       }
     }
     setRepartoValido(true)
@@ -124,19 +121,17 @@ export default function AllocationGraph() {
         .filter((f) => f.participa && f.grupo === grupo)
         .reduce((a, b) => a + b.participacion, 0) / 100
 
-    setFincas((prev) =>
-      prev.map((f, ndx) => {
-        if (f.grupo === grupo && f.participa) {
-          TCB.Finca[ndx].coefEnergia = UTIL.roundDecimales(
-            (f.participacion / 100 / totalParticipation) * coefGrupo,
-            6,
-          )
-          return TCB.Finca[ndx]
-        } else {
-          return f
-        }
-      }),
-    )
+    TCB.Finca.map((f) => {
+      if (f.grupo === grupo && f.participa) {
+        f.coefEnergia = UTIL.roundDecimales(
+          (f.participacion / 100 / totalParticipation) * coefGrupo,
+          6,
+        )
+        console.log('AAAAAAAAAAAAA', f.coefEnergia)
+        return f
+      }
+    }),
+      setFincas([...TCB.Finca])
   }
 
   function changeAllocation(group, value) {

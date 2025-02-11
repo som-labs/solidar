@@ -243,6 +243,7 @@ export default function UnitsStep() {
 
   function creaZonaComun() {
     const newZonaComun = {
+      _name: 'ZonaComun',
       nombreTipoConsumo: '',
       id: (++TCB.idFinca).toFixed(0),
       idTarifa: '',

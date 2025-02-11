@@ -17,6 +17,7 @@ class Finca {
   }
 
   constructor(finca) {
+    this._name = 'Finca'
     this.coefConsumo = 0
     this.coefInversion = 0
     this.coefEnergia = 0

@@ -21,6 +21,7 @@ class Balance extends DiaHora {
    */
   constructor(produccion, consumo, coefEnergia) {
     UTIL.debugLog('Generando balance')
+
     super()
     this._name = 'Balance'
     /**
@@ -32,6 +33,8 @@ class Balance extends DiaHora {
       this.idxTable[i].autoconsumo = 0
       this.idxTable[i].consumoDiurno = 0
     }
+
+    console.log('Calculando balance de', produccion, consumo, coefEnergia)
 
     for (let idxDia = 0; idxDia < 365; idxDia++) {
       this.idxTable[idxDia].fecha = consumo.idxTable[idxDia].fecha

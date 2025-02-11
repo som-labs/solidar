@@ -41,6 +41,7 @@ export default function EconomicAllocationStep() {
   //La tabla de asignación de costes tiene una columna por cada zona comun y una fila por cada grupo
   let columns = []
 
+  console.log(fincas)
   columns.push({
     field: 'id',
     headerName: 'Grupo',

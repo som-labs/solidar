@@ -29,16 +29,19 @@ export default function ReduccionIBI({ finca }) {
   const { setFincas } = useContext(ConsumptionContext)
   const { SLDRAlert } = useAlert()
 
-  const localData = finca ? finca.economico : ecoData
+  const localEcoData = finca ? finca.economico : ecoData
 
   const [_IBI, _setIBI] = useState({
-    tiempoSubvencionIBI: localData.tiempoSubvencionIBI,
-    valorSubvencionIBI: localData.valorSubvencionIBI,
-    porcientoSubvencionIBI: localData.porcientoSubvencionIBI,
+    tiempoSubvencionIBI: localEcoData.tiempoSubvencionIBI,
+    valorSubvencionIBI: localEcoData.valorSubvencionIBI,
+    porcientoSubvencionIBI: localEcoData.porcientoSubvencionIBI,
   })
 
   const setNewIBI = (event) => {
     const { name, value } = event.target
+    const coste = finca
+      ? ecoData.precioInstalacionCorregido * finca.coefEnergia
+      : ecoData.precioInstalacionCorregido
 
     if (isNaN(value)) {
       setError({ status: true, field: name })
@@ -49,10 +52,9 @@ export default function ReduccionIBI({ finca }) {
           _IBI.tiempoSubvencionIBI *
           _IBI.porcientoSubvencionIBI) /
         100
-      if (totalIBI > localData.precioInstalacionCorregido) {
+      if (totalIBI > coste) {
         const limitIBI = parseInt(
-          localData.precioInstalacionCorregido /
-            ((_IBI.valorSubvencionIBI * _IBI.porcientoSubvencionIBI) / 100),
+          coste / ((_IBI.valorSubvencionIBI * _IBI.porcientoSubvencionIBI) / 100),
         )
         SLDRAlert(
           'SUBVENCION IBI',

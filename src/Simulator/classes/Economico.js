@@ -56,6 +56,8 @@ class Economico {
     this.tiempoSubvencionIBI = 0
     this.valorSubvencionIBI = 0
     this.porcientoSubvencionIBI = 0
+    this.valorSubvencion = 0
+    this.porcientoSubvencion = 0
     this.TIRProyecto = 0
     this.VANProyecto = 0
     this.interesVAN = TCB.parametros.interesVAN
@@ -67,6 +69,8 @@ class Economico {
     let tarifaHoras = []
     let _consumo
     let _balance
+
+    console.log('Prepara economico de', unidad)
 
     if (unidad) {
       tarifaActiva = TCB.Tarifa.find((_t) => _t.idTarifa === unidad.idTarifa)
@@ -168,6 +172,8 @@ class Economico {
     this.compensadoMensual = this.resumenMensual('compensado')
     this.ahorradoAutoconsumoMes = this.resumenMensual('ahorradoAutoconsumo')
 
+    console.log(this.consumoOriginalMensual, this.consumoConPlacasMensual)
+
     //calculate installation cost
     //CUIDADO
     this.precioInstalacion = unidad
@@ -256,38 +262,42 @@ class Economico {
    * Cálcula la tabla de amortización de la inversion con un mínimo de 10 años o hasta el año siguiente al que se acaba la bonificación del IBI
    * @param {number} coefEnergia Porcentaje de la inversión total que correponde a la Finca
    * @param {number} coefInversion Porcentaje del la producción total de energia que corresponde a la Finca
+   * @param {Object} unidad Puede ser una Finca, una Zona Comun o nada si es individual -> TCB
    */
   calculoFinanciero(coefEnergia, coefInversion, unidad) {
-    console.log('CALCULO FINANCIERO', this)
+    console.log('CALCULO FINANCIERO', unidad, this)
 
     //Es un participe que invierte pero no recibe energia. ¿existe?
-    if (coefEnergia == 0) {
-      this.VANProyecto = 'N/A'
-      this.TIRProyecto = 'N/A'
-      return
-    }
+    console.log(unidad?.coefEnergia === 0)
+    // if (unidad?.coefEnergia === 0) {
+    //   this.VANProyecto = 'N/A'
+    //   this.TIRProyecto = 'N/A'
+    //   return
+    // }
 
+    //Calculamos el ahorro que obtiene esta finca por su inversion en zonascomunes
     this.ahorroAnualZC = 0
-    if (unidad) {
-      this.ahorroAnualZC =
-        unidad.constructor === Finca //Solo si es una Finca obtiene ahorros de las zonasComunes
-          ? TCB.ZonaComun.reduce(
-              (t, zc) =>
-                t + TCB.costeZCenFinca(unidad, zc).local * zc.economico.ahorroAnual,
-              0,
-            )
-          : 0
+    console.log(unidad?.idFinca)
+    if (unidad?.idFinca >= 0) {
+      //Solo si es una Finca obtiene ahorros de las zonasComunes
+      this.ahorroAnualZC = TCB.ZonaComun.reduce(
+        (t, zc) => t + TCB.costeZCenFinca(unidad, zc).local * zc.economico.ahorroAnual,
+        0,
+      )
     }
 
     this.ahorroAnual =
       UTIL.suma(this.consumoOriginalMensual) -
       UTIL.suma(this.consumoConPlacasMensualCorregido)
 
+    console.log(this.ahorroAnual, this.ahorroAnualZC)
     //Algunas cuotas de la hucha pueden producir ahorros negativos que no tienen sentido
     if (this.ahorroAnual <= 0) {
       UTIL.debugLog('Cuotas hucha generan ahorro negativo')
       return
     }
+
+    if (unidad?._name === 'ZonaComun') return
 
     //Datos de la bonificación del IBI
     const valorSubvencionIBI = this.valorSubvencionIBI
@@ -295,16 +305,26 @@ class Economico {
     const porcientoSubvencionIBI = this.porcientoSubvencionIBI
 
     // Calculo de la subvención
-    var valorSubvencion
-    var porcientoSubvencion
+    let valorSubvencion
+    let porcientoSubvencion
+    const coef = unidad ? unidad.coefEnergia : 1
+    const coste = unidad
+      ? TCB.economico.precioInstalacionCorregido
+      : this.precioInstalacionCorregido
 
     valorSubvencion =
-      TCB.valorSubvencion !== 0
-        ? TCB.valorSubvencion
-        : (TCB.porcientoSubvencion / 100) * this.precioInstalacionCorregido
+      this.valorSubvencion !== 0
+        ? this.valorSubvencion
+        : (this.porcientoSubvencion / 100) * coste * coef
+    porcientoSubvencion = (valorSubvencion / coste) * coef * 100
 
-    //porcientoSubvencion is used when given a valorSubvencion has to calculate it for different panels configuration
-    porcientoSubvencion = (valorSubvencion / this.precioInstalacionCorregido) * 100
+    // const valorSubvencion =
+    //   this.valorSubvencion !== 0
+    //     ? this.valorSubvencion
+    //     : (this.porcientoSubvencion / 100) * this.precioInstalacionCorregido
+
+    // //porcientoSubvencion is used when given a valorSubvencion has to calculate it for different panels configuration
+    // const porcientoSubvencion = (valorSubvencion / this.precioInstalacionCorregido) * 100
 
     /* Module to compute EU next Generation conditions
     if (
@@ -328,7 +348,11 @@ class Economico {
       }
     }
     */
-
+    console.log(
+      'Prepara cash flow con ahorro anual',
+      this.ahorroAnual,
+      this.ahorroAnualZC,
+    )
     //Preparación del cashflow
     this.periodoAmortizacion = 0
     let cuotaPeriodo = [] //Es el resultado neto negativo de inversión o positivo de ganancia de cada año
@@ -347,17 +371,15 @@ class Economico {
 
     //Si la unidad no es una finca => es una zona comun no hacemos el calculo
     if (unidad) {
-      if (unidad.constructor === Finca) {
-        inversionZC =
-          TCB.ZonaComun.reduce((t, zc) => t + TCB.costeZCenFinca(unidad, zc).global, 0) *
-          TCB.economico.precioInstalacionCorregido
+      inversionZC =
+        TCB.ZonaComun.reduce((t, zc) => t + TCB.costeZCenFinca(unidad, zc).global, 0) *
+        TCB.economico.precioInstalacionCorregido
 
-        gastoAnualZC = TCB.ZonaComun.reduce(
-          (t, zc) =>
-            t + TCB.costeZCenFinca(unidad, zc).local * zc.economico.gastoConPlacasAnual,
-          0,
-        )
-      }
+      gastoAnualZC = TCB.ZonaComun.reduce(
+        (t, zc) =>
+          t + TCB.costeZCenFinca(unidad, zc).local * zc.economico.gastoConPlacasAnual,
+        0,
+      )
     }
 
     const inversionReal = -this.precioInstalacionCorregido - inversionZC
@@ -376,6 +398,7 @@ class Economico {
     cuotaPeriodo.push(cuota)
     this.cashFlow.push(unFlow)
     this.periodoAmortizacion = null
+
     // Se genera la tabla hasta alcanzar el retorno de la inversión o la finalización de la subvención de IBI
     while (unFlow.ano < maxNumberCashFlow) {
       //Puede ser que la cuota de la hucha haga que el ahorro sea negativo. En ese caso mostramos los resultados de 10 años
@@ -403,8 +426,8 @@ class Economico {
       if (i == 2) {
         //La subvención se cobra con suerte despues de un año
         //unFlow.subvencion = (valorSubvencion * coefInversion) / 100
-        unFlow.subvencion =
-          (this.precioInstalacionCorregido * coefInversion * porcientoSubvencion) / 100
+        unFlow.subvencion = valorSubvencion
+        //(this.precioInstalacionCorregido * coefInversion * porcientoSubvencion) / 100
       } else {
         unFlow.subvencion = 0
       }
@@ -418,7 +441,6 @@ class Economico {
       cuotaPeriodo.push(cuota)
       unFlow.pendiente = unFlow.previo + cuota
       this.cashFlow.push(unFlow)
-
       this.periodoAmortizacion =
         unFlow.pendiente > 0 && !this.periodoAmortizacion
           ? unFlow.ano

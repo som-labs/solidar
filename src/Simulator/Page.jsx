@@ -132,6 +132,7 @@ export default function Page() {
       }
       return true
     } else {
+      console.log(TCB.Finca)
       setFincas([...TCB.Finca])
     }
   }
