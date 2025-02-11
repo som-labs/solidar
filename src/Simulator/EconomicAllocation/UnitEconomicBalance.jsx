@@ -35,6 +35,8 @@ export default function UnitEconomicBalanceStep({ finca, onClose }) {
   const { zonasComunes } = useContext(ConsumptionContext)
   const { costeZCenFinca } = useContext(EconomicContext)
 
+  console.log(zonasComunes, finca, TCB.economico.precioInstalacionCorregido)
+
   return (
     <Container>
       <DialogTitle>
@@ -64,7 +66,7 @@ export default function UnitEconomicBalanceStep({ finca, onClose }) {
                 <ReduccionIBI finca={finca}></ReduccionIBI>
               </SLDRInfoBox>
               <SLDRInfoBox sx={{ borderRight: '1px solid grey' }}>
-                <Subvencion></Subvencion>
+                <Subvencion finca={finca}></Subvencion>
               </SLDRInfoBox>
             </Box>
           </Grid>

@@ -20,9 +20,11 @@ export default async function PreparaEconomicBalance() {
       alert(TCB.i18next.t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
     }
 
+    console.log('Condiciones recalculo fincas', TCB.modoActivo !== 'INDIVIDUAL')
+
     if (TCB.modoActivo !== 'INDIVIDUAL') {
       let _consumo
-
+      console.log('Recalculo Zonascomunes')
       //Calcular balance y economico de zonas comunes para asignar ahorro a las fincas despues
       for (const _zc of TCB.ZonaComun) {
         _consumo = TCB.TipoConsumo.find(
@@ -31,18 +33,22 @@ export default async function PreparaEconomicBalance() {
         _zc.balance = new Balance(TCB.produccion, _consumo, _zc.coefEnergia)
         _zc.economico = new Economico(_zc)
       }
-
+      console.log('recalculo fincas')
       //Calcular balance y economico de las fincas
+      console.log(TCB.Finca)
       for (let _f of TCB.Finca) {
         if (_f.participa && _f.nombreTipoConsumo !== '') {
           _consumo = TCB.TipoConsumo.find(
             (_tc) => _tc.nombreTipoConsumo === _f.nombreTipoConsumo,
           )
+          console.log('A balance de ', JSON.stringify(_f), ' con', _f.coefEnergia)
           _f.balance = new Balance(TCB.produccion, _consumo, _f.coefEnergia)
           _f.economico = new Economico(_f)
+          console.log(_f)
         }
       }
     }
+    TCB.requiereReparto = false
   }
 
   document.body.style.cursor = cursorOriginal
