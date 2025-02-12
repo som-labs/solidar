@@ -10,6 +10,7 @@ import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { BasesContext } from '../BasesContext'
+import { GlobalContext } from '../GlobalContext'
 import DialogBaseSolar from './DialogBaseSolar'
 import { useDialog } from '../../components/DialogProvider'
 import { SLDRFooterBox } from '../../components/SLDRComponents'
@@ -18,12 +19,22 @@ import { SLDRFooterBox } from '../../components/SLDRComponents'
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 import '../../App.css'
+
 export default function BasesSummary() {
   const { t } = useTranslation()
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()
-  const { bases, setBases, processFormData } = useContext(BasesContext)
+  const {
+    bases,
+    setBases,
+    updateBaseFromForm,
+    addBase,
+    modifyBase,
+    deleteBase,
+    tipoPanelActivo,
+  } = useContext(BasesContext)
+  const { setNewBases } = useContext(GlobalContext)
 
   const getRowId = (row) => {
     return row.idBaseSolar
@@ -96,7 +107,10 @@ export default function BasesSummary() {
       sortable: false,
       description: t('BaseSolar.TOOLTIP.potenciaMaxima'),
       renderCell: (params) => {
-        return UTIL.formatoValor('potenciaMaxima', params.value)
+        return UTIL.formatoValor(
+          'potenciaMaxima',
+          (params.row.panelesMaximo * tipoPanelActivo.potencia) / 1000,
+        )
       },
     },
     {
@@ -130,8 +144,8 @@ export default function BasesSummary() {
   ]
 
   function deleteBaseSolar(rowId) {
-    setBases((prev) => prev.filter((b) => b.idBaseSolar !== rowId))
-    TCB.requiereOptimizador = true
+    deleteBase(rowId)
+    setNewBases(true)
     UTIL.deleteBaseGeometries(rowId)
   }
 
@@ -144,14 +158,14 @@ export default function BasesSummary() {
         <DialogBaseSolar
           data={_base}
           previous={bases}
-          onClose={(reason, formData) => endDialog(reason, formData)}
+          onClose={(reason, formData) => processFormData(reason, formData)}
         />
       ),
     })
   }
 
-  function endDialog(reason, formData) {
-    if (reason === 'save') processFormData('edit', formData)
+  function processFormData(reason, formData) {
+    if (reason === 'save') updateBaseFromForm('edit', formData)
     closeDialog()
   }
 
@@ -171,7 +185,11 @@ export default function BasesSummary() {
                   ),
                   potenciaMaxima: UTIL.formatoValor(
                     'potenciaMaxima',
-                    bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0),
+                    bases.reduce(
+                      (sum, tBase) =>
+                        sum + (tBase.panelesMaximo * tipoPanelActivo.potencia) / 1000,
+                      0,
+                    ),
                   ),
                 }),
               }}
@@ -181,6 +199,7 @@ export default function BasesSummary() {
       </SLDRFooterBox>
     )
   }
+
   return (
     <Grid container justifyContent={'center'} sx={{ mt: '1rem' }}>
       <Grid item xs={11}>

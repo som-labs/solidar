@@ -10,6 +10,7 @@ import InfoIcon from '@mui/icons-material/Info'
 //React global components
 import { BasesContext } from '../BasesContext'
 import { EconomicContext } from '../EconomicContext'
+import { GlobalContext } from '../GlobalContext'
 import { SLDRInfoBox, SLDRCollapsibleCard } from '../../components/SLDRComponents'
 
 // REACT Solidar Components
@@ -40,8 +41,9 @@ export default function EnergyBalanceStep() {
   const [dataReady, setDataReady] = useState(false)
   const [monthlyData, setMonthlyData] = useState()
   const [yearlyData, setYearlyData] = useState({})
-  const { bases, setBases } = useContext(BasesContext)
+  const { bases, setBases, addBase, modifyBase, deleteBase } = useContext(BasesContext)
   const { setEcoData } = useContext(EconomicContext)
+  const { newBases, setNewBases, newPrecios, newPanelActivo } = useContext(GlobalContext)
   const [mes, setMes] = useState(t('ENERGY_BALANCE.VALUE_FULL_YEAR'))
   const [openDialog, closeDialog] = useDialog()
 
@@ -50,6 +52,11 @@ export default function EnergyBalanceStep() {
   // El rendimiento ha podido cambiar la inclinacion y por lo tanto el area, la configuracion de paneles y la potenciaMaxima
   // Si se usaron angulos optimos tambien ha cambiado el acimut.
   useEffect(() => {
+    console.log('EnergyBalance preconditions:', {
+      bases: newBases,
+      precios: newPrecios,
+      panelActivo: newPanelActivo,
+    })
     setBases([...TCB.BaseSolar])
   }, [])
 
@@ -73,7 +80,8 @@ export default function EnergyBalanceStep() {
 
     //setEcoData(TCB.economico)
     setDataReady(true)
-  }, [bases, setEcoData, mes])
+    setNewBases(false)
+  }, [bases, mes])
 
   function help(level) {
     openDialog({

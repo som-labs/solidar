@@ -263,7 +263,7 @@ const TCB = {
     ancho: 1.134,
     largo: 1.762,
   },
-  // This data will be read from datos/tipoPaneles.json during InicailizaAplicacion
+  // This data will be read from datos/tipoPaneles.json during InicializaAplicacion
   tipoPaneles: [],
   panelesOptimos: [],
 

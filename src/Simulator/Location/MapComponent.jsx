@@ -20,6 +20,7 @@ import { Button, Tooltip, Box, Grid } from '@mui/material'
 //React global components
 import { BasesContext } from '../BasesContext'
 import { ConsumptionContext } from '../ConsumptionContext'
+import { GlobalContext } from '../GlobalContext'
 
 import DialogBaseSolar from './DialogBaseSolar'
 
@@ -50,8 +51,8 @@ export default function MapComponent() {
   // Map state
   const [mapType, setMapType] = useState('LOCATION.LABEL_SATELITE')
   const [selectedCoord] = useState([-3.7, 40.45])
-
-  const { map, setMap, bases, processFormData } = useContext(BasesContext)
+  //const {setNewBases} = useContext(GlobalContext)
+  const { map, setMap, bases, updateBaseFromForm } = useContext(BasesContext)
   const mapElement = useRef()
   const basesLayer = useRef()
   const mapRef = useRef(map)
@@ -295,12 +296,12 @@ export default function MapComponent() {
   }, [])
 
   // Function called when properties dialog is closed
-  function endDialog(reason, formData) {
+  function processFromData(reason, formData) {
     switch (reason) {
       case undefined:
         return
       case 'save':
-        processFormData(reason, formData)
+        updateBaseFromForm(reason, formData)
         break
       case 'cancel':
         UTIL.deleteBaseGeometries(formData.idBaseSolar)
@@ -410,7 +411,7 @@ export default function MapComponent() {
       children: (
         <DialogBaseSolar
           data={nuevaBaseSolar}
-          onClose={(cause, formData) => endDialog(cause, formData)}
+          onClose={(cause, formData) => processFromData(cause, formData)}
         />
       ),
     })

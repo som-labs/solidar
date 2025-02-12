@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useState, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // OpenLayers objects
@@ -8,6 +8,7 @@ import { LineString } from 'ol/geom'
 
 // REACT Solidar Components
 import { useAlert } from '../components/AlertProvider.jsx'
+import { GlobalContext } from './GlobalContext.jsx'
 
 // Solidar objects
 import TCB from './classes/TCB'
@@ -18,6 +19,7 @@ const BasesContext = createContext()
 
 const BasesContextProvider = ({ children }) => {
   const { t } = useTranslation()
+  const { setNewBases } = useContext(GlobalContext)
   const { SLDRAlert } = useAlert()
   const [map, setMap] = useState()
   const [bases, setBases] = useState([])
@@ -30,6 +32,27 @@ const BasesContextProvider = ({ children }) => {
     ancho: 1.134,
     largo: 1.762,
   })
+
+  const addBase = (base) => {
+    setBases((prev) => [...prev, base])
+  }
+
+  const modifyBase = (updatedBase) => {
+    setBases(
+      bases.map((base) =>
+        base.idBaseSolar === updatedBase.idBaseSolar
+          ? Object.create(
+              Object.getPrototypeOf(updatedBase),
+              Object.getOwnPropertyDescriptors(updatedBase),
+            )
+          : base,
+      ),
+    )
+  }
+
+  const deleteBase = (id) => {
+    setBases(bases.filter((base) => base.idBaseSolar !== id))
+  }
 
   function computeAcimut(formData, center, area) {
     let inAcimut
@@ -74,7 +97,7 @@ const BasesContextProvider = ({ children }) => {
       let opcCumbrera = {
         ...formData,
       }
-      const A = BaseSolar.configuraPaneles(opcCumbrera)
+      const A = BaseSolar.configuraPaneles(opcCumbrera, tipoPanelActivo)
       // console.log(
       //   'OPTION Cumbrera como Cumbrera',
       //   A,
@@ -88,7 +111,7 @@ const BasesContextProvider = ({ children }) => {
         anchoReal: formData.cumbrera,
         cumbrera: formData.anchoReal,
       }
-      const B = BaseSolar.configuraPaneles(opcAncho)
+      const B = BaseSolar.configuraPaneles(opcAncho, tipoPanelActivo)
       // console.log(
       //   'OPTION Ancho como cumbrera',
       //   B,
@@ -147,7 +170,7 @@ const BasesContextProvider = ({ children }) => {
    * @param {Object} formData New data provided by dialog
    */
 
-  function processFormData(reason, formData) {
+  function updateBaseFromForm(reason, formData) {
     //Update openlayers label with nombreBaseSolar
     const labelFeatId = 'BaseSolar.label.' + formData.idBaseSolar
     const labelFeature = TCB.origenDatosSolidar.getFeatureById(labelFeatId)
@@ -179,7 +202,11 @@ const BasesContextProvider = ({ children }) => {
       formData = { ...formData, ...computeAcimut(formData, centerPoint, areaShape) }
     }
 
-    formData = Object.assign({}, formData, BaseSolar.configuraPaneles(formData))
+    formData = Object.assign(
+      {},
+      formData,
+      BaseSolar.configuraPaneles(formData, tipoPanelActivo),
+    )
     if (formData.filas * formData.columnas === 0) {
       SLDRAlert(
         'VERICACION AREA',
@@ -210,16 +237,12 @@ const BasesContextProvider = ({ children }) => {
     //Update or create a BaseSolar with formData
     if (reason === 'save') {
       // We are creating a new base
-      const newBase = new BaseSolar(formData)
-      setBases((prev) => [...prev, newBase])
+      addBase(new BaseSolar(formData, tipoPanelActivo))
     } else {
       //We are updating existing base
-      setBases((prev) =>
-        prev.map((base) =>
-          base.idBaseSolar === formData.idBaseSolar ? new BaseSolar(formData) : base,
-        ),
-      )
+      modifyBase(new BaseSolar(formData, tipoPanelActivo))
     }
+    setNewBases(true)
     TCB.requiereOptimizador = true
   }
 
@@ -233,15 +256,9 @@ const BasesContextProvider = ({ children }) => {
           if (base.requierePVGIS) {
             UTIL.debugLog('Base requiere PVGIS:', base)
             await base.cargaRendimiento()
-            TCB.requiereOptimizador = true
+            setNewBases(true)
           }
         }
-
-        /* Update TCB.BaseSolar with new state data */
-        TCB.BaseSolar = []
-        bases.forEach((base) => {
-          TCB.BaseSolar.push(base)
-        })
 
         return { status: true }
       } catch (err) {
@@ -257,9 +274,11 @@ const BasesContextProvider = ({ children }) => {
     setMap,
     bases,
     setBases,
-    processFormData,
+    addBase,
+    modifyBase,
+    deleteBase,
+    updateBaseFromForm,
     validaBases,
-    // addTCBBaseToState,
     tipoPanelActivo,
     setTipoPanelActivo,
   }

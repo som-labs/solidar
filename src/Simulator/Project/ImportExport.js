@@ -202,7 +202,7 @@ async function importLocalizacion(datosImportar) {
     UTIL.setLabel(label, base.nombreBaseSolar, TCB.baseLabelColor, TCB.baseLabelBGColor)
 
     //Creamos el objeto BaseSolar
-    let tbase = new BaseSolar(base)
+    let tbase = new BaseSolar(base, tipoPanelActivo)
     UTIL.debugLog('importLocalizacion - nueva base creada', tbase)
 
     //Creamos el objeto instalacion de la base
