@@ -34,7 +34,7 @@ export default function Page() {
   const { t } = useTranslation()
   const { SLDRAlert } = useAlert()
   //const { SLDRAlert } = useContext(AlertContext)
-  const { validaBases, bases } = useContext(BasesContext)
+  const { validaBases, bases, tipoPanelActivo } = useContext(BasesContext)
   const {
     validaTipoConsumo,
     validaUnits,
@@ -55,8 +55,8 @@ export default function Page() {
   if (!TCB.appInitialized) InicializaAplicacion()
 
   async function validaLocationStep() {
-    console.log('validaLocationStep')
     results = await validaBases()
+    console.log('validaLocationStep', results)
     if (!results.status) SLDRAlert('VALIDACION', results.error, 'Error')
     return results.status
   }
@@ -71,7 +71,7 @@ export default function Page() {
     // Se crearan los objetos produccion, balance y economico
     // PENDIENTE: podria haber un warning de falta de espacio enviado desde Prepara...
     if (TCB.modoActivo === 'INDIVIDUAL') {
-      results = await PreparaEnergyBalance()
+      results = await PreparaEnergyBalance(tipoPanelActivo)
       if (results.status) {
         // setEcoData((prev) => ({ ...prev, ...TCB.economico }))
         // TCB.readyToExport = true
@@ -89,7 +89,7 @@ export default function Page() {
       SLDRAlert('VALIDACION', results.error, 'Error')
       return false
     } else {
-      results = await PreparaEnergyBalance()
+      results = await PreparaEnergyBalance(tipoPanelActivo)
       if (results.status) {
         // setEcoData((prev) => ({ ...prev, ...TCB.economico }))
         // TCB.readyToExport = true

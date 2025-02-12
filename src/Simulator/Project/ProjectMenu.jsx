@@ -33,8 +33,16 @@ export default function ProjectMenu() {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
   const { SLDRAlert } = useAlert()
-  const { map, bases, setBases, addTCBBaseToState, setTipoPanelActivo } =
-    useContext(BasesContext)
+  const {
+    map,
+    bases,
+    setBases,
+    addTCBBaseToState,
+    setTipoPanelActivo,
+    addBase,
+    modifyBase,
+    deleteBase,
+  } = useContext(BasesContext)
   const { setTipoConsumo, setFincas, setTarifas, setZonasComunes, setAllocationGroup } =
     useContext(ConsumptionContext)
   const { setEcoData } = useContext(EconomicContext)

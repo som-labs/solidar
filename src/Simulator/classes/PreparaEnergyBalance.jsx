@@ -11,7 +11,7 @@ import Consumo from '../classes/Consumo'
 import BaseSolar from '../classes/BaseSolar'
 import TipoConsumo from './TipoConsumo'
 
-export default async function PreparaEnergyBalance() {
+export default async function PreparaEnergyBalance(tipoPanelActivo) {
   console.log('PreparaEnergyBalance')
   let cursorOriginal = document.body.style.cursor
   document.body.style.cursor = 'progress'
@@ -76,6 +76,7 @@ export default async function PreparaEnergyBalance() {
       //base.inAcimut = base.rendimiento.acimut
       if (base.inclinacionOptima) {
         base.inclinacion = base.rendimiento.inclinacion
+        //CUIDADO ffalta tipoPanelActivo
         BaseSolar.configuraPaneles(base)
       }
     }
@@ -96,7 +97,7 @@ export default async function PreparaEnergyBalance() {
 
     UTIL.debugLog('PreparaEnergyBalance - Todas las bases listas llama optimizador')
     // Se ejecuta el optimizador para determinar la configuración inicial propuesta
-    let pendiente = optimizador(TCB.BaseSolar, TCB.consumo, TCB.tipoPanelActivo.potencia)
+    let pendiente = optimizador(TCB.BaseSolar, TCB.consumo, tipoPanelActivo.potencia)
 
     if (pendiente > 0) {
       UTIL.debugLog(

@@ -7,13 +7,83 @@ const ConsumptionContext = createContext({})
 
 const ConsumptionContextProvider = ({ children }) => {
   const { t } = useTranslation()
-  const [tipoConsumo, setTipoConsumo] = useState([])
+  const [tiposConsumo, setTiposConsumo] = useState([])
   const [fincas, setFincas] = useState([])
   const [zonasComunes, setZonasComunes] = useState([])
   const [preciosValidos, setPreciosValidos] = useState(true)
   const [repartoValido, setRepartoValido] = useState(false)
   const [allocationGroup, setAllocationGroup] = useState()
   const [tarifas, setTarifas] = useState([])
+  const [consumo, setConsumo] = useState({})
+
+  const addConsumptionData = (clase, data) => {
+    switch (clase) {
+      case 'TipoConsumo':
+        setTiposConsumo([...tiposConsumo, data])
+        break
+      case 'Tarifa':
+        setTarifas([...tarifas, data])
+        break
+      case 'ZonaComun':
+        setZonasComunes([...zonasComunes, data])
+        break
+    }
+  }
+
+  const modifyConsumptionData = (clase, updatedData) => {
+    switch (clase) {
+      case 'TipoConsumo':
+        setTiposConsumo(
+          tiposConsumo.map((tipo) =>
+            tipo.idTipoConsumo === updatedData.idTipoConsumo
+              ? Object.create(
+                  Object.getPrototypeOf(updatedData),
+                  Object.getOwnPropertyDescriptors(updatedData),
+                )
+              : tipo,
+          ),
+        )
+        break
+      case 'ZonaComun':
+        setZonasComunes(
+          zonasComunes.map((zona) =>
+            zona.id === updatedData.id
+              ? Object.create(
+                  Object.getPrototypeOf(updatedData),
+                  Object.getOwnPropertyDescriptors(updatedData),
+                )
+              : zona,
+          ),
+        )
+        break
+      case 'Tarifa':
+        setTarifas(
+          tarifas.map((tarifa) =>
+            tarifa.idTipoConsumo === updatedData.idTarifa
+              ? Object.create(
+                  Object.getPrototypeOf(updatedData),
+                  Object.getOwnPropertyDescriptors(updatedData),
+                )
+              : tarifa,
+          ),
+        )
+        break
+    }
+  }
+
+  const deleteConsumptionData = (clase, id) => {
+    switch (clase) {
+      case 'TipoConsumo':
+        setTiposConsumo(tiposConsumo.filter((tipo) => tipo.idTipoConsumo !== id))
+        break
+      case 'Tarifa':
+        setTarifas(tarifas.filter((tarifa) => tarifa.id !== id))
+        break
+      case 'ZonaComun':
+        setZonasComunes(zonasComunes.filter((zona) => zona.id !== id))
+        break
+    }
+  }
 
   //TCB fields to be reflected in state
   const hdrTipo = {
@@ -42,30 +112,9 @@ const ConsumptionContextProvider = ({ children }) => {
           error: t('CONSUMPTION.ERROR_FALTA_TARIFA_INDIVIDUAL'),
         }
       }
-    } else {
-      if (tarifas.length > 0) {
-        TCB.Tarifa = []
-        tarifas.forEach((tarifa) => {
-          TCB.Tarifa.push(tarifa)
-        })
-      } else {
-        return {
-          status: false,
-          error: t('CONSUMPTION.ERROR_FALTA_TARIFA_COLECTIVO'),
-        }
-      }
     }
 
-    //Verify right TipoConsumo
-    if (tipoConsumo.length > 0) {
-      TCB.TipoConsumo = []
-      tipoConsumo.forEach((tipo) => {
-        TCB.TipoConsumo.push(tipo)
-      })
-      return { status: true, error: '' }
-    } else {
-      return { status: false, error: t('CONSUMPTION.ERROR_AL_MENOS_UN_TIPOCONSUMO') }
-    }
+    return { status: true, error: '' }
   }
 
   function updateTCBUnitsFromState() {
@@ -119,8 +168,8 @@ const ConsumptionContextProvider = ({ children }) => {
   }
 
   const contextValue = {
-    tipoConsumo,
-    setTipoConsumo,
+    tiposConsumo,
+    setTiposConsumo,
     validaTipoConsumo,
     preciosValidos,
     setPreciosValidos,
@@ -136,6 +185,11 @@ const ConsumptionContextProvider = ({ children }) => {
     updateTCBUnitsFromState,
     tarifas,
     setTarifas,
+    consumo,
+    setConsumo,
+    addConsumptionData,
+    modifyConsumptionData,
+    deleteConsumptionData,
   }
 
   return (

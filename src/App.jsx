@@ -2,7 +2,6 @@ import { lazy, Suspense } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
 import './i18n/i18n'
-import InicializaAplicacion from './Simulator/classes/InicializaAplicacion'
 
 const TestPage = lazy(() => import('./components/TestPage'))
 const HomePage = lazy(() => import('./Home/Page'))
@@ -12,12 +11,13 @@ const NotFoundPage = lazy(() => import('./NotFound/Page'))
 
 import GlobalTheme from './components/GlobalTheme'
 import DialogProvider from './components/DialogProvider'
+import { AlertProvider } from './components/AlertProvider'
+
+import { GlobalContextProvider } from './Simulator/GlobalContext'
 import { BasesContextProvider } from './Simulator/BasesContext'
 import { ConsumptionContextProvider } from './Simulator/ConsumptionContext'
+import { EnergyContextProvider } from './Simulator/EnergyContext'
 import { EconomicContextProvider } from './Simulator/EconomicContext'
-//import { AlertProvider } from './Simulator/components/Alert'
-import { AlertProvider } from './components/AlertProvider'
-import { GlobalContextProvider } from './Simulator/GlobalContext'
 
 const routes = [
   {
@@ -50,13 +50,15 @@ function App() {
         <AlertProvider>
           <BasesContextProvider>
             <ConsumptionContextProvider>
-              <EconomicContextProvider>
-                <DialogProvider>
-                  <Suspense fallback={'Loading...'}>
-                    <RouterProvider router={router} />
-                  </Suspense>
-                </DialogProvider>
-              </EconomicContextProvider>
+              <EnergyContextProvider>
+                <EconomicContextProvider>
+                  <DialogProvider>
+                    <Suspense fallback={'Loading...'}>
+                      <RouterProvider router={router} />
+                    </Suspense>
+                  </DialogProvider>
+                </EconomicContextProvider>
+              </EnergyContextProvider>
             </ConsumptionContextProvider>
           </BasesContextProvider>
         </AlertProvider>

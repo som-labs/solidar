@@ -14,30 +14,20 @@ class BaseSolar {
    */
   constructor(area) {
     Object.defineProperties(this, {
-      inclinacion: {
-        enumerable: true,
-        set(angulo) {
-          this.#inclinacion = angulo
-          //BaseSolar.configuraPaneles(this)
-        },
-        get() {
-          return this.#inclinacion
-        },
-      },
-      potenciaMaxima: {
-        enumerable: true,
-        set(valor) {}, //Esta aqui para evitar error al intentar set desde update
-        get() {
-          return (this.columnas * this.filas * TCB.tipoPanelActivo.potencia) / 1000
-        },
-      },
+      // potenciaMaxima: {
+      //   enumerable: true,
+      //   set(valor) {}, //Esta aqui para evitar error al intentar set desde update
+      //   get() {
+      //     return (this.columnas * this.filas * this.tipoPanelActivo.potencia) / 1000
+      //   },
+      // },
       anchoReal: {
         enumerable: true,
         set(valor) {}, //Esta aqui para evitar error al intentar set desde update
         get() {
           //El ancho corregido por la inclinacion del tejado en caso inclinado
           if (this.roofType === 'Inclinado')
-            return this.ancho / Math.cos((this.#inclinacion * Math.PI) / 180)
+            return this.ancho / Math.cos((this.inclinacion * Math.PI) / 180)
           else return this.ancho
         },
       },
@@ -47,7 +37,7 @@ class BaseSolar {
         get() {
           //El ancho corregido por la inclinacion del tejado en caso inclinado
           if (this.roofType === 'Inclinado')
-            return this.area / Math.cos((this.#inclinacion * Math.PI) / 180)
+            return this.area / Math.cos((this.inclinacion * Math.PI) / 180)
           else return this.area
         },
       },
@@ -75,6 +65,7 @@ class BaseSolar {
     //Configuracion de los paneles
     this.filas // = 0
     this.columnas // = 0
+    this.modoInstalacion
 
     //Angulos optimos de la configuracion
     this.angulosOptimos = area.angulosOptimos
@@ -82,7 +73,7 @@ class BaseSolar {
 
     //La inclinacion real se gestiona por el setter ya que su cambio implica cambio de areas
     //CUIDADO: roofType debe estar predefinido para que la configuración de paneles sea correcto.
-    this.#inclinacion = area.inclinacion
+    this.inclinacion = area.inclinacion
     //BaseSolar.configuraInclinacion(this)
 
     this.inAcimut = area.inAcimut
@@ -110,7 +101,7 @@ class BaseSolar {
     this.rendimiento = new Rendimiento(this)
   }
 
-  static configuraPaneles(area) {
+  static configuraPaneles(area, tipoPanelActivo) {
     let hColumnas
     let hFilas
     let vColumnas
@@ -141,11 +132,11 @@ class BaseSolar {
     */
 
       // Opcion largo panel paralelo a cumbrera
-      hColumnas = Math.trunc(cumbrera / TCB.tipoPanelActivo.largo)
-      hFilas = Math.trunc(anchoReal / TCB.tipoPanelActivo.ancho)
+      hColumnas = Math.trunc(cumbrera / tipoPanelActivo.largo)
+      hFilas = Math.trunc(anchoReal / tipoPanelActivo.ancho)
       // Opcion largo panel perpendicular a cumbrera
-      vColumnas = Math.trunc(cumbrera / TCB.tipoPanelActivo.ancho)
-      vFilas = Math.trunc(anchoReal / TCB.tipoPanelActivo.largo)
+      vColumnas = Math.trunc(cumbrera / tipoPanelActivo.ancho)
+      vFilas = Math.trunc(anchoReal / tipoPanelActivo.largo)
 
       // Elegimos la configuracion que nos permite mas paneles
     } else {
@@ -153,11 +144,11 @@ class BaseSolar {
       const latitud = parseFloat(lonlatBaseSolar.split(',')[1])
       // Opcion largo panel paralelo a la cumbrera
       hGap =
-        TCB.tipoPanelActivo.ancho * Math.cos((inclinacion * Math.PI) / 180) +
-        (TCB.tipoPanelActivo.ancho * Math.sin((inclinacion * Math.PI) / 180)) /
+        tipoPanelActivo.ancho * Math.cos((inclinacion * Math.PI) / 180) +
+        (tipoPanelActivo.ancho * Math.sin((inclinacion * Math.PI) / 180)) /
           Math.tan(((61 - latitud) * Math.PI) / 180)
       hColumnas = Math.trunc(
-        (cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.largo,
+        (cumbrera - 2 * TCB.parametros.margen) / tipoPanelActivo.largo,
       )
       hFilas = Math.trunc((anchoReal - 2 * TCB.parametros.margen) / hGap)
       //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
@@ -166,11 +157,11 @@ class BaseSolar {
       //console.log('HORIZONTAL', hGap, hColumnas, hFilas)
       // Opcion largo panel perpendicular a cumpbrera
       vGap =
-        TCB.tipoPanelActivo.largo * Math.cos((inclinacion * Math.PI) / 180) +
-        (TCB.tipoPanelActivo.largo * Math.sin((inclinacion * Math.PI) / 180)) /
+        tipoPanelActivo.largo * Math.cos((inclinacion * Math.PI) / 180) +
+        (tipoPanelActivo.largo * Math.sin((inclinacion * Math.PI) / 180)) /
           Math.tan(((61 - latitud) * Math.PI) / 180)
       vColumnas = Math.trunc(
-        (cumbrera - 2 * TCB.parametros.margen) / TCB.tipoPanelActivo.ancho,
+        (cumbrera - 2 * TCB.parametros.margen) / tipoPanelActivo.ancho,
       )
       vFilas = Math.trunc((anchoReal - 2 * TCB.parametros.margen) / vGap)
       //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
@@ -205,36 +196,6 @@ class BaseSolar {
           this[objProp] = newData[objProp]
         }
       }
-    }
-  }
-
-  /**
-   * @typedef {Object} row
-   * @property {number} idBaseSolar base.idBaseSolar
-   * @property {string} nombreBaseSolar base.nombreBaseSolar
-   * @property {number} unitarioTotal base.rendimiento.unitarioTotal
-   * @property {number} potenciaMaxima base.potenciaMaxima
-   * @property {number} paneles base.instalacion.paneles
-   * @property {number} potenciaUnitaria base.instalacion.potenciaUnitaria
-   * @property {number} potenciaTotal base.instalacion.potenciaTotal
-   */
-  /**
-   * Simula un select de la tabla BaseSolar con la vista de Instalacion
-   * @static
-   * @returns {row}
-   */
-  static getTabulatorRow(campo, valor) {
-    const base = TCB.BaseSolar.find((b) => {
-      return b[campo] === valor
-    })
-    return {
-      idBaseSolar: base.idBaseSolar,
-      nombreBaseSolar: base.nombreBaseSolar,
-      unitarioTotal: base.rendimiento.unitarioTotal,
-      potenciaMaxima: base.potenciaMaxima,
-      paneles: base.instalacion.paneles,
-      potenciaUnitaria: base.instalacion.potenciaUnitaria,
-      potenciaTotal: base.instalacion.potenciaTotal,
     }
   }
 }
