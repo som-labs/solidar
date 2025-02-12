@@ -9,18 +9,33 @@ import FormControl from '@mui/material/FormControl'
 // REACT Solidar Components
 import { SLDRInputField } from '../../components/SLDRComponents'
 import { ConsumptionContext } from '../ConsumptionContext'
+import { GlobalContext } from '../GlobalContext'
+
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
+import Tarifa from '../classes/Tarifa'
 
 export default function PreciosTarifa() {
   const { t, i18n } = useTranslation()
-  const { setPreciosValidos } = useContext(ConsumptionContext)
+  const {
+    setPreciosValidos,
+    addConsumptionData,
+    modifyConsumptionData,
+    deleteConsumptionData,
+    tarifas,
+  } = useContext(ConsumptionContext)
+  const { setNewPrecios } = useContext(GlobalContext)
   const [nPrecios, setNPrecios] = useState()
 
   useEffect(() => {
+    //En modo INDIVIDUAL existe una unica Tarifa
+    if (tarifas.length === 0) {
+      addConsumptionData('Tarifa', new Tarifa('Tarifa SOM', '2.0TD'))
+    }
+
     setNPrecios(4)
-    if (TCB.tarifaActiva.tipo === '3.0TD') {
+    if (tarifas[0].tipo === '3.0TD') {
       setNPrecios(7)
     } else {
       setNPrecios(4)
@@ -37,16 +52,15 @@ export default function PreciosTarifa() {
       setNPrecios(4)
     }
 
-    setValues((prev) => ({
-      ...prev,
-      tipo: newTipo,
-      detalle: detalle,
-      precios: [...TCB.tarifas[detalle].precios],
-    }))
+    const modifiedTarifa = tarifas[0]
+    modifiedTarifa.tipo = newTipo
+    modifiedTarifa.detalle = detalle
+    modifiedTarifa.precios = [...TCB.tarifas[detalle].precios]
+    modifyConsumptionData('Tarifa', modifiedTarifa)
 
-    TCB.tarifaActiva.tipo = newTipo
-    TCB.tarifaActiva.detalle = detalle
-    TCB.tarifaActiva.precios = [...TCB.tarifas[detalle].precios]
+    setValues((prev) => {
+      prev, modifiedTarifa
+    })
   }
 
   function cambiaPrecio(posicion, nuevoValor, values, setValues) {
@@ -54,7 +68,10 @@ export default function PreciosTarifa() {
       ...prev,
       precios: values.precios.map((_p, ndx) => (ndx === posicion ? nuevoValor : _p)),
     }))
-    TCB.tarifaActiva.precios[posicion] = parseFloat(nuevoValor.replace(',', '.'))
+    const modifiedTarifa = tarifas[0]
+    modifiedTarifa.precios[posicion] = parseFloat(nuevoValor.replace(',', '.'))
+    modifyConsumptionData('Tarifa', modifiedTarifa)
+    setNewPrecios(true)
   }
 
   function validateFields(values) {
@@ -78,9 +95,8 @@ export default function PreciosTarifa() {
   }
 
   if (nPrecios) {
-    console.log('Precios obtenidos de ' + TCB.fuenteTarifa, TCB.tarifaActiva)
     return (
-      <Formik initialValues={TCB.tarifaActiva} validate={validateFields}>
+      <Formik initialValues={tarifas[0]} validate={validateFields}>
         {({ values, setValues, setPreciosValidos }) => (
           <Form>
             <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -103,7 +119,6 @@ export default function PreciosTarifa() {
             </FormControl>
 
             <Grid container spacing={1} alignItems="center" justifyContent="space-evenly">
-              {console.log(JSON.stringify(values))}
               {values.precios.map((precio, index) => (
                 <Fragment key={index}>
                   {index < nPrecios && (

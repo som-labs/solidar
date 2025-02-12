@@ -9,6 +9,7 @@ import Plot from 'react-plotly.js'
 import { Container, Typography } from '@mui/material'
 
 // REACT Solidar Components
+import { BasesContext } from '../BasesContext'
 import { EconomicContext } from '../EconomicContext'
 
 // Solidar objects
@@ -26,6 +27,8 @@ export default function GraphAlternatives() {
   const graphWidth = useRef()
   const [layout, setLayout] = useState()
   const [traces, setTraces] = useState([])
+  const { tipoPanelActivo, setTipoPanelActivo } = useContext(BasesContext)
+
   const [config, setConfig] = useState()
 
   const { ecoData } = useContext(EconomicContext)
@@ -79,7 +82,7 @@ export default function GraphAlternatives() {
     for (let intento of intentos) {
       if (intento >= 1) {
         // Establecemos la configuracion de bases para este numero de paneles
-        nuevoTotalPaneles(intento)
+        nuevoTotalPaneles(intento, tipoPanelActivo.potencia)
 
         // Se realizan todos los calculos
         calculaResultados()

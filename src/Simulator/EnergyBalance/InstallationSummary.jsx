@@ -30,7 +30,8 @@ export default function InstallationSummary() {
   const [openDialog, closeDialog] = useDialog()
   //const { SLDRAlert } = useContext(AlertContext)
   const { SLDRAlert } = useAlert()
-  const { bases, setBases } = useContext(BasesContext)
+  const { bases, setBases, addBase, modifyBase, deleteBase, tipoPanelActivo } =
+    useContext(BasesContext)
   const [updatedCells, setUpdatedCells] = useState({})
 
   const handleEditCellChange = (params, event) => {
@@ -242,7 +243,7 @@ export default function InstallationSummary() {
 
   function recoverOptimos() {
     // Se ejecuta el optimizador para determinar la configuración inicial propuesta
-    let pendiente = optimizador(TCB.BaseSolar, TCB.consumo, TCB.tipoPanelActivo.potencia)
+    let pendiente = optimizador(TCB.BaseSolar, TCB.consumo, tipoPanelActivo.potencia)
     setNewPaneles()
   }
   /**

@@ -23,7 +23,8 @@ function optimizador(bases, consumo, potenciaPanelInicio) {
     bases.sort((a, b) => b.rendimiento.unitarioTotal - a.rendimiento.unitarioTotal)
 
   for (let i = 0; i < bases.length; i++) {
-    energiaAsignada = bases[i].rendimiento.unitarioTotal * bases[i].potenciaMaxima
+    energiaAsignada =
+      bases[i].rendimiento.unitarioTotal * bases[i].panelesMaximo * potenciaPanelInicio
     energiaAsignada =
       energiaAsignada > energiaPendiente ? energiaPendiente : energiaAsignada
     tmpPaneles = Math.round(
@@ -58,7 +59,7 @@ function optimizador(bases, consumo, potenciaPanelInicio) {
  * @param {Int} panelesNuevo Total number of panels to install in all bases available
  * @returns {}
  */
-function nuevoTotalPaneles(panelesNuevo) {
+function nuevoTotalPaneles(panelesNuevo, potenciaPanelInicio) {
   let tmpPaneles
   let panelesPendientes = panelesNuevo
   let maxPanelesBase
@@ -73,7 +74,8 @@ function nuevoTotalPaneles(panelesNuevo) {
 
   for (let base of TCB.BaseSolar) {
     maxPanelesBase = Math.trunc(
-      base.potenciaMaxima / (base.instalacion.potenciaUnitaria / 1000),
+      (base.panelesMaximo * potenciaPanelInicio) /
+        (base.instalacion.potenciaUnitaria / 1000),
     )
 
     tmpPaneles = maxPanelesBase > panelesPendientes ? panelesPendientes : maxPanelesBase
