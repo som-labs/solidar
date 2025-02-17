@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -16,8 +16,7 @@ import * as UTIL from '../classes/Utiles'
 export default function UnitTypeBox(props) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { fincas, tipoConsumo, allocationGroup, setAllocationGroup } =
-    useContext(ConsumptionContext)
+  const { fincas, allocationGroup } = useContext(ConsumptionContext)
   const [openDialog, closeDialog] = useDialog()
 
   const { grupo } = props
@@ -33,19 +32,6 @@ export default function UnitTypeBox(props) {
   const participacionTotal = fincas.reduce((p, f) => {
     return f.grupo === grupo ? p + UTIL.returnFloat(f.participacion) : p
   }, 0)
-
-  function consumoTotal() {
-    return fincas
-      .filter(
-        (unit) => unit.grupo === grupo && unit.participa && unit.nombreTipoConsumo !== '',
-      )
-      .reduce(
-        (t, u) =>
-          t +
-          tipoConsumo.find((t) => t.nombreTipoConsumo === u.nombreTipoConsumo).totalAnual,
-        0,
-      )
-  }
 
   function showDetails() {
     openDialog({
@@ -90,7 +76,6 @@ export default function UnitTypeBox(props) {
                 '<br />Participación: ' +
                 UTIL.formatoValor('porciento', participacionTotal) +
                 '<br />Uso de energía: ' +
-                //UTIL.formatoValor('energia', consumoTotal()),
                 UTIL.formatoValor('energia', allocationGroup[grupo].consumo),
             }}
           />

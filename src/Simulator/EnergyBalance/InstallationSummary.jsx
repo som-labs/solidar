@@ -9,8 +9,9 @@ import InfoIcon from '@mui/icons-material/Info'
 import clsx from 'clsx'
 
 //React global components
-import calculaResultados from '../classes/calculaResultados'
+//import calculaResultados from '../classes/calculaResultados'
 import { BasesContext } from '../BasesContext'
+import { EnergyContext } from '../EnergyContext'
 import { SLDRFooterBox } from '../../components/SLDRComponents'
 import { AlertContext } from '../components/Alert'
 import { useAlert } from '../../components/AlertProvider.jsx'
@@ -32,6 +33,8 @@ export default function InstallationSummary() {
   const { SLDRAlert } = useAlert()
   const { bases, setBases, addBase, modifyBase, deleteBase, tipoPanelActivo } =
     useContext(BasesContext)
+  const { calculaResultados, setTotalPaneles, totalPaneles, consumoGlobal } =
+    useContext(EnergyContext)
   const [updatedCells, setUpdatedCells] = useState({})
 
   const handleEditCellChange = (params, event) => {
@@ -64,6 +67,7 @@ export default function InstallationSummary() {
       width: 250,
       description: t('BaseSolar.TOOLTIP.nombreBaseSolar'),
       sortable: false,
+      editable: false,
     },
     {
       field: 'paneles',
@@ -95,6 +99,7 @@ export default function InstallationSummary() {
       flex: 0.8,
       align: 'center',
       description: t('BaseSolar.TOOLTIP.panelesMaximo'),
+      editable: false,
       sortable: false,
     },
     // {
@@ -118,6 +123,7 @@ export default function InstallationSummary() {
       align: 'center',
       description: t('Instalacion.TOOLTIP.potenciaUnitaria'),
       sortable: false,
+      editable: false,
       renderCell: (params) => {
         return UTIL.formatoValor(
           'potenciaUnitaria',
@@ -133,6 +139,7 @@ export default function InstallationSummary() {
       align: 'center',
       description: t('Instalacion.TOOLTIP.potenciaTotal'),
       sortable: false,
+      editable: false,
       renderCell: (params) => {
         return UTIL.formatoValor('potenciaTotal', params.row.instalacion.potenciaTotal)
       },
@@ -177,9 +184,7 @@ export default function InstallationSummary() {
               dangerouslySetInnerHTML={{
                 __html:
                   t('ENERGY_BALANCE.SUMMARY_FOOTER', {
-                    paneles: Math.round(
-                      bases.reduce((sum, tBase) => sum + tBase.instalacion.paneles, 0),
-                    ),
+                    paneles: totalPaneles,
                     potencia: UTIL.formatoValor(
                       'potenciaTotal',
                       bases.reduce(
@@ -191,7 +196,11 @@ export default function InstallationSummary() {
                   ' de ' +
                   UTIL.formatoValor(
                     'potenciaTotal',
-                    bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0),
+                    bases.reduce(
+                      (sum, tBase) =>
+                        sum + (tBase.panelesMaximo * tipoPanelActivo.potencia) / 1000,
+                      0,
+                    ),
                   ) +
                   ' posibles',
               }}
@@ -216,34 +225,43 @@ export default function InstallationSummary() {
   }
 
   function setNewPaneles() {
-    //Update energy balance with new number of panels
-    calculaResultados()
+    /* Recalculamos el balance energetico con el nuevo numero de paneles */
+    console.log('Reclaculamos balance energetico')
+    calculaResultados(consumoGlobal)
 
-    TCB.economico = new Economico()
-    UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
-    if (TCB.economico.periodoAmortizacion > 20) {
-      alert(t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
-    }
+    // TCB.economico = new Economico()
+    // UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
+    // if (TCB.economico.periodoAmortizacion > 20) {
+    //   alert(t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
+    // }
     //Update context with new TCB data
-    setBases([...TCB.BaseSolar])
+    //setBases([...TCB.BaseSolar])
 
     //Update total number of panels in TCB
-    TCB.totalPaneles = TCB.BaseSolar.reduce((a, b) => {
-      return a + b.instalacion.paneles
-    }, 0)
+    setTotalPaneles(
+      bases.reduce((a, b) => {
+        return a + b.instalacion.paneles
+      }, 0),
+    )
   }
 
   function maxConfiguration() {
     //Update all BaseSolar panels in TCB to maximun
     bases.forEach((base) => {
       base.instalacion.paneles = base.panelesMaximo
+      modifyBase(base)
     })
     setNewPaneles()
   }
 
   function recoverOptimos() {
     // Se ejecuta el optimizador para determinar la configuración inicial propuesta
-    let pendiente = optimizador(TCB.BaseSolar, TCB.consumo, tipoPanelActivo.potencia)
+    let pendiente = optimizador(
+      bases,
+      consumoGlobal,
+      tipoPanelActivo.potencia,
+      modifyBase,
+    )
     setNewPaneles()
   }
   /**
@@ -258,38 +276,39 @@ export default function InstallationSummary() {
       event.defaultMuiPrevented = true
       return
     }
-    if (params.field === 'paneles') {
-      if (UTIL.ValidateEntero(event.target.value)) {
-        tmpPaneles = parseInt(event.target.value)
-        if (tmpPaneles < 0) {
-          SLDRAlert(
-            'VALIDACION',
-            'El número de paneles debe ser mayor o igual a cero e idealmente menor que los ' +
-              params.row.panelesMaximo +
-              ' paneles que estimamos se pueden instalar en el area definida',
-            'error',
-          )
-          return
-        }
 
-        if (tmpPaneles > params.row.panelesMaximo) {
-          SLDRAlert(
-            'VALIDACION',
-            'Esta asignando mas paneles que los ' +
-              params.row.panelesMaximo +
-              ' que estimamos se pueden instalar en el area definida',
-            'error',
-          )
-        }
-
-        //Update this BaseSolar panels and potenciaUnitaria in TCB
-        let baseActiva = TCB.BaseSolar.find((base) => {
-          return base.idBaseSolar === params.id
-        })
-        //baseActiva.instalacion.potenciaUnitaria = tmpPotenciaUnitaria
-        baseActiva.instalacion.paneles = tmpPaneles
-        setNewPaneles()
+    if (UTIL.ValidateEntero(event.target.value)) {
+      tmpPaneles = parseInt(event.target.value)
+      if (tmpPaneles < 0) {
+        SLDRAlert(
+          'VALIDACION',
+          'El número de paneles debe ser mayor o igual a cero e idealmente menor que los ' +
+            params.row.panelesMaximo +
+            ' paneles que estimamos se pueden instalar en el area definida',
+          'error',
+        )
+        return
       }
+
+      if (tmpPaneles > params.row.panelesMaximo) {
+        SLDRAlert(
+          'VALIDACION',
+          'Esta asignando mas paneles que los ' +
+            params.row.panelesMaximo +
+            ' que estimamos se pueden instalar en el area definida',
+          'error',
+        )
+      }
+
+      //Update this BaseSolar panels and potenciaUnitaria in TCB
+      params.row.instalacion.paneles = tmpPaneles
+      modifyBase(params.row)
+      // let baseActiva = bases.find((base) => {
+      //   return base.idBaseSolar === params.id
+      // })
+      //baseActiva.instalacion.potenciaUnitaria = tmpPotenciaUnitaria
+      //baseActiva.instalacion.paneles = tmpPaneles
+      setNewPaneles()
     }
   }
 

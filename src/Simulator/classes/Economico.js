@@ -13,7 +13,17 @@ const maxNumberCashFlow = 50
 
 class Economico {
   //La unidad puede ser una finca, una zona comun o null para el economico global
-  constructor(unidad) {
+  constructor(
+    unidad,
+    tarifas,
+    tiposConsumo,
+    consumoGlobal,
+    balanceGlobal,
+    produccionGlobal,
+    economicoGlobal,
+    zonasComunes,
+    costeZCenFinca,
+  ) {
     this._name = 'Economico'
     // Inicializa la tabla indice de acceso
     this.idxTable = Array(365)
@@ -63,29 +73,30 @@ class Economico {
     this.interesVAN = TCB.parametros.interesVAN
 
     //A efectos de fechas (fines de semana) por ahora usamos el TipoConsumo[0]
-    let _tc = TCB.TipoConsumo[0]
+    console.log(tiposConsumo)
+    let _tc = tiposConsumo[0]
 
     let tarifaActiva = {}
     let tarifaHoras = []
     let _consumo
     let _balance
 
-    console.log('Prepara economico de', unidad)
-
     if (unidad) {
-      tarifaActiva = TCB.Tarifa.find((_t) => _t.idTarifa === unidad.idTarifa)
-      _consumo = TCB.TipoConsumo.find(
+      tarifaActiva = tarifas.find((_t) => _t.idTarifa === unidad.idTarifa)
+      _consumo = tiposConsumo.find(
         (_tc) => _tc.nombreTipoConsumo === unidad.nombreTipoConsumo,
       )
       _balance = unidad.balance
     } else {
-      tarifaActiva = TCB.tarifaActiva
-      _consumo = TCB.consumo
-      _balance = TCB.balance
+      tarifaActiva = tarifas[0]
+      console.log('Balance de dia 0 hora 13 antes', balanceGlobal.diaHora[0][13])
+      _consumo = consumoGlobal
+      _balance = balanceGlobal
     }
 
-    tarifaHoras = [...TCB.tarifas[tarifaActiva.detalle].horas]
+    console.log('6 Balance de dia 0 hora 13 despues', _balance.diaHora[0][13])
 
+    tarifaHoras = TCB.tarifas[tarifaActiva.detalle].horas
     if (tarifaActiva.tipo === '2.0TD') _consumo.periodo = new Array(3).fill(0)
     else _consumo.periodo = new Array(6).fill(0)
 
@@ -172,13 +183,12 @@ class Economico {
     this.compensadoMensual = this.resumenMensual('compensado')
     this.ahorradoAutoconsumoMes = this.resumenMensual('ahorradoAutoconsumo')
 
-    console.log(this.consumoOriginalMensual, this.consumoConPlacasMensual)
-
+    console.log('7', this.idxTable[0])
     //calculate installation cost
     //CUIDADO
     this.precioInstalacion = unidad
-      ? TCB.economico.precioInstalacionCorregido * unidad.coefEnergia
-      : Instalacion.getInstallationPrice(TCB.produccion.potenciaTotalInstalada)
+      ? economicoGlobal.precioInstalacionCorregido * unidad.coefEnergia
+      : Instalacion.getInstallationPrice(produccionGlobal.potenciaTotalInstalada)
 
     this.precioInstalacionCorregido = this.precioInstalacion
 
@@ -186,7 +196,14 @@ class Economico {
     this.correccionExcedentes(tarifaActiva.coefHucha, tarifaActiva.cuotaHucha)
 
     if (unidad) {
-      this.calculoFinanciero(unidad.coefEnergia, unidad.coefEnergia, unidad)
+      this.calculoFinanciero(
+        unidad.coefEnergia,
+        unidad.coefEnergia,
+        economicoGlobal,
+        unidad,
+        zonasComunes,
+        costeZCenFinca,
+      )
     } else this.calculoFinanciero(1, 1)
   }
 
@@ -264,24 +281,20 @@ class Economico {
    * @param {number} coefInversion Porcentaje del la producción total de energia que corresponde a la Finca
    * @param {Object} unidad Puede ser una Finca, una Zona Comun o nada si es individual -> TCB
    */
-  calculoFinanciero(coefEnergia, coefInversion, unidad) {
-    console.log('CALCULO FINANCIERO', unidad, this)
-
-    //Es un participe que invierte pero no recibe energia. ¿existe?
-    console.log(unidad?.coefEnergia === 0)
-    // if (unidad?.coefEnergia === 0) {
-    //   this.VANProyecto = 'N/A'
-    //   this.TIRProyecto = 'N/A'
-    //   return
-    // }
-
+  calculoFinanciero(
+    coefEnergia,
+    coefInversion,
+    economicoGlobal,
+    unidad,
+    zonasComunes,
+    costeZCenFinca,
+  ) {
     //Calculamos el ahorro que obtiene esta finca por su inversion en zonascomunes
     this.ahorroAnualZC = 0
-    console.log(unidad?.idFinca)
     if (unidad?.idFinca >= 0) {
       //Solo si es una Finca obtiene ahorros de las zonasComunes
-      this.ahorroAnualZC = TCB.ZonaComun.reduce(
-        (t, zc) => t + TCB.costeZCenFinca(unidad, zc).local * zc.economico.ahorroAnual,
+      this.ahorroAnualZC = zonasComunes.reduce(
+        (t, zc) => t + costeZCenFinca(unidad, zc).local * zc.economico.ahorroAnual,
         0,
       )
     }
@@ -290,7 +303,7 @@ class Economico {
       UTIL.suma(this.consumoOriginalMensual) -
       UTIL.suma(this.consumoConPlacasMensualCorregido)
 
-    console.log(this.ahorroAnual, this.ahorroAnualZC)
+    console.log('8 Ahorros anual propio y de ZCs', this.ahorroAnual, this.ahorroAnualZC)
     //Algunas cuotas de la hucha pueden producir ahorros negativos que no tienen sentido
     if (this.ahorroAnual <= 0) {
       UTIL.debugLog('Cuotas hucha generan ahorro negativo')
@@ -309,22 +322,15 @@ class Economico {
     let porcientoSubvencion
     const coef = unidad ? unidad.coefEnergia : 1
     const coste = unidad
-      ? TCB.economico.precioInstalacionCorregido
+      ? economicoGlobal.precioInstalacionCorregido
       : this.precioInstalacionCorregido
 
     valorSubvencion =
       this.valorSubvencion !== 0
         ? this.valorSubvencion
         : (this.porcientoSubvencion / 100) * coste * coef
+
     porcientoSubvencion = (valorSubvencion / coste) * coef * 100
-
-    // const valorSubvencion =
-    //   this.valorSubvencion !== 0
-    //     ? this.valorSubvencion
-    //     : (this.porcientoSubvencion / 100) * this.precioInstalacionCorregido
-
-    // //porcientoSubvencion is used when given a valorSubvencion has to calculate it for different panels configuration
-    // const porcientoSubvencion = (valorSubvencion / this.precioInstalacionCorregido) * 100
 
     /* Module to compute EU next Generation conditions
     if (
@@ -348,11 +354,7 @@ class Economico {
       }
     }
     */
-    console.log(
-      'Prepara cash flow con ahorro anual',
-      this.ahorroAnual,
-      this.ahorroAnualZC,
-    )
+
     //Preparación del cashflow
     this.periodoAmortizacion = 0
     let cuotaPeriodo = [] //Es el resultado neto negativo de inversión o positivo de ganancia de cada año
@@ -372,12 +374,12 @@ class Economico {
     //Si la unidad no es una finca => es una zona comun no hacemos el calculo
     if (unidad) {
       inversionZC =
-        TCB.ZonaComun.reduce((t, zc) => t + TCB.costeZCenFinca(unidad, zc).global, 0) *
-        TCB.economico.precioInstalacionCorregido
+        zonasComunes.reduce((t, zc) => t + costeZCenFinca(unidad, zc).global, 0) *
+        economicoGlobal.precioInstalacionCorregido
 
-      gastoAnualZC = TCB.ZonaComun.reduce(
+      gastoAnualZC = zonasComunes.reduce(
         (t, zc) =>
-          t + TCB.costeZCenFinca(unidad, zc).local * zc.economico.gastoConPlacasAnual,
+          t + costeZCenFinca(unidad, zc).local * zc.economico.gastoConPlacasAnual,
         0,
       )
     }

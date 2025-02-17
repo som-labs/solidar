@@ -17,9 +17,10 @@ export default function YearSaving({ finca }) {
   const { t } = useTranslation()
   const theme = useTheme()
 
-  const { ecoData } = useContext(EconomicContext)
-  const localEcoData = finca ? finca.economico : ecoData
+  const { economicoGlobal } = useContext(EconomicContext)
+  const localEcoData = finca ? finca.economico : economicoGlobal
 
+  console.log(localEcoData)
   return (
     <>
       <Container>

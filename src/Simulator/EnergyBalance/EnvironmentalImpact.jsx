@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Box, Typography, Container } from '@mui/material'
@@ -5,15 +6,17 @@ import { Box, Typography, Container } from '@mui/material'
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
 import { useTheme } from '@mui/material/styles'
+import { EnergyContext } from '../EnergyContext'
 
 export default function EnvironmentalImpact() {
   const { t } = useTranslation()
   const theme = useTheme()
+  const { produccionGlobal } = useContext(EnergyContext)
 
   const radiusNoRenovable = 200
   const radiusRenovable = parseInt(
-    (radiusNoRenovable * TCB.produccion.CO2AnualRenovable) /
-      TCB.produccion.CO2AnualNoRenovable,
+    (radiusNoRenovable * produccionGlobal.CO2AnualRenovable) /
+      produccionGlobal.CO2AnualNoRenovable,
   )
   return (
     <>
@@ -71,7 +74,7 @@ export default function EnvironmentalImpact() {
                 >
                   {UTIL.formatoValor(
                     'CO2AnualRenovable',
-                    TCB.produccion.CO2AnualRenovable,
+                    produccionGlobal.CO2AnualRenovable,
                   )}
                 </Typography>
               </Box>
@@ -108,7 +111,7 @@ export default function EnvironmentalImpact() {
                 <Typography variant="h6" textAlign={'center'} color={'white'}>
                   {UTIL.formatoValor(
                     'CO2AnualNoRenovable',
-                    TCB.produccion.CO2AnualNoRenovable,
+                    produccionGlobal.CO2AnualNoRenovable,
                   )}
                 </Typography>
               </Box>

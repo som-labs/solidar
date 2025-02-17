@@ -21,6 +21,7 @@ import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
+import { GlobalContext } from '../GlobalContext'
 import { useDialog } from '../../components/DialogProvider'
 import { useAlert } from '../../components/AlertProvider.jsx'
 
@@ -36,14 +37,18 @@ export default function UnitsSummary(props) {
 
   const [openDialog, closeDialog] = useDialog()
   const {
-    tipoConsumo,
+    tiposConsumo,
     preciosValidos,
     tarifas,
     fincas,
     setFincas,
     allocationGroup,
     setAllocationGroup,
+    addConsumptionData,
+    modifyConsumptionData,
+    deleteConsumptionData,
   } = useContext(ConsumptionContext)
+  const { setNewTiposConsumo } = useContext(GlobalContext)
 
   const { grupo } = props
   const [selectionModel, setSelectionModel] = useState([])
@@ -51,7 +56,7 @@ export default function UnitsSummary(props) {
   const [tipoTarifaAsignada, setTipoTarifaAsignada] = useState('')
 
   const tiposActivos = [{ label: 'Indefinido', value: '' }].concat(
-    tipoConsumo.map((tc) => ({
+    tiposConsumo.map((tc) => ({
       label: tc.nombreTipoConsumo,
       value: tc.nombreTipoConsumo,
     })),
@@ -190,18 +195,16 @@ export default function UnitsSummary(props) {
 
     //Update tipo de consumo in fincas state para todas las fincas del grupo participen o no
     setFincas((prev) =>
-      prev.map((f, ndx) => {
+      prev.map((f) => {
         if (f.grupo === grupo) {
-          const t = TCB.Finca[ndx]
-          t.nombreTipoConsumo = newTipoConsumo
-          t.participa = newTipoConsumo === '' ? false : true
-          return t
-        } else {
-          return f
+          f.nombreTipoConsumo = newTipoConsumo
+          f.participa = newTipoConsumo === '' ? false : true
         }
+        return f
       }),
     )
-    TCB.cambioTipoConsumo = true
+
+    setNewTiposConsumo(true)
     TCB.requiereReparto = true
   }
 
@@ -212,17 +215,15 @@ export default function UnitsSummary(props) {
 
     //Update tarifa in fincas state para todas las fincas del grupo participen o no
     setFincas((prev) =>
-      prev.map((f, ndx) => {
+      prev.map((f) => {
         if (f.grupo === grupo) {
-          const t = TCB.Finca[ndx]
-          t.idTarifa = newTipoTarifa
-          t.participa = newTipoTarifa === '' ? false : true
-          return t
-        } else {
-          return f
+          f.idTarifa = newTipoTarifa
+          f.participa = newTipoTarifa === '' ? false : true
         }
+        return f
       }),
     )
+    setNewTiposConsumo(true)
   }
 
   function newConsumptionAll() {
@@ -294,6 +295,13 @@ export default function UnitsSummary(props) {
       }
     }
 
+    for (let _fnc of fincas.filter((f) => f.grupo === grupo)) {
+      console.log(_fnc)
+      if (_fnc.participa && _fnc.idTarifa === '') {
+        fincasInFailure.push(_fnc.idFinca)
+      }
+    }
+
     if (fincasInFailure.length > 0) {
       SLDRAlert(
         'VALIDACION',
@@ -307,7 +315,11 @@ export default function UnitsSummary(props) {
       let totalParticipacion = 0
       for (let fg of fincas) {
         if (fg.grupo === grupo && fg.participa) {
-          totalGrupo += TipoConsumo.getTotal(fg.nombreTipoConsumo)
+          totalGrupo +=
+            fg.nombreTipoConsumo !== ''
+              ? tiposConsumo.find((tc) => tc.nombreTipoConsumo === fg.nombreTipoConsumo)
+                  .totalAnual
+              : 0
           totalParticipes++
           totalParticipacion += fg.participacion
         }
@@ -322,7 +334,6 @@ export default function UnitsSummary(props) {
           participacionP: totalParticipacion,
         },
       }))
-      TCB.allocationGroup = allocationGroup
       closeDialog()
     }
   }
@@ -333,23 +344,13 @@ export default function UnitsSummary(props) {
    * @returns {xDataGridRow}
    */
   function changeUnit(newUnitRow, originalRow) {
-    setFincas((prev) =>
-      prev.map((f, ndx) => {
-        if (f.idFinca === newUnitRow.idFinca) {
-          const t = TCB.Finca[ndx]
-          t.participa = newUnitRow.participa
-          t.idTarifa = newUnitRow.idTarifa
-          if (newUnitRow.nombreTipoConsumo !== originalRow.nombreTipoConsumo)
-            t.nombreTipoConsumo = newUnitRow.nombreTipoConsumo
-          TCB.cambioTipoConsumo = true
-          TCB.requiereReparto = true
-          return t
-        } else {
-          return f
-        }
-      }),
-    )
-
+    if (
+      newUnitRow.nombreTipoConsumo !== originalRow.nombreTipoConsumo ||
+      newUnitRow.idTarifa !== originalRow.idTarifa
+    ) {
+      modifyConsumptionData('Finca', newUnitRow)
+      setNewTiposConsumo(true)
+    }
     return newUnitRow
   }
 

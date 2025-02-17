@@ -7,18 +7,21 @@ import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
+import { EnergyContext } from '../EnergyContext.jsx'
 import { useDialog } from '../../components/DialogProvider'
 import UnitsSummary from './UnitsSummary'
 
 // Solidar objects
-import TCB from '../classes/TCB.js'
 import * as UTIL from '../classes/Utiles'
+import { EconomicContext } from '../EconomicContext.jsx'
 
 export default function UnitTypeBox(props) {
   const { t } = useTranslation()
   const theme = useTheme()
 
   const { fincas, allocationGroup, zonasComunes } = useContext(ConsumptionContext)
+  const { consumoGlobal, produccionGlobal } = useContext(EnergyContext)
+  const { economicoGlobal } = useContext(EconomicContext)
   const [openDialog, closeDialog] = useDialog()
   const { grupo } = props
 
@@ -36,7 +39,6 @@ export default function UnitTypeBox(props) {
     })
   }
 
-  console.log(allocationGroup)
   return (
     <>
       <Container>
@@ -89,12 +91,12 @@ export default function UnitTypeBox(props) {
                     '</b><br />% uso de energía total:  <b>' +
                     UTIL.formatoValor(
                       'porciento',
-                      (allocationGroup[grupo].consumo / TCB.consumo.totalAnual) * 100,
+                      (allocationGroup[grupo].consumo / consumoGlobal.totalAnual) * 100,
                     ) +
                     '</b><br />Energia Total asignada: <b>' +
                     UTIL.formatoValor(
                       'energia',
-                      TCB.produccion.totalAnual * allocationGroup[grupo].produccion,
+                      produccionGlobal.totalAnual * allocationGroup[grupo].produccion,
                     ) +
                     '</b><br />Criterio asignación <b>' +
                     allocationGroup[grupo].criterio +
@@ -106,7 +108,7 @@ export default function UnitTypeBox(props) {
                   Propio:{' '}
                   {UTIL.formatoValor(
                     'dinero',
-                    TCB.economico.precioInstalacionCorregido *
+                    economicoGlobal.precioInstalacionCorregido *
                       allocationGroup[grupo].produccion,
                   )}
                 </Typography>
@@ -121,7 +123,7 @@ export default function UnitTypeBox(props) {
                           ? ((allocationGroup[zc.id].produccion *
                               allocationGroup[grupo].participacionT) /
                               allocationGroup[zc.id].participacionT) *
-                              TCB.economico.precioInstalacionCorregido
+                              economicoGlobal.precioInstalacionCorregido
                           : 0,
                       )}
                     </Typography>
@@ -142,17 +144,17 @@ export default function UnitTypeBox(props) {
                     '</b><br />% uso de energía total:  <b>' +
                     UTIL.formatoValor(
                       'porciento',
-                      (allocationGroup[grupo].consumo / TCB.consumo.totalAnual) * 100,
+                      (allocationGroup[grupo].consumo / consumoGlobal.totalAnual) * 100,
                     ) +
                     '</b><br />Energia Total asignada:  <b>' +
                     UTIL.formatoValor(
                       'energia',
-                      TCB.produccion.totalAnual * allocationGroup[grupo].produccion,
+                      produccionGlobal.totalAnual * allocationGroup[grupo].produccion,
                     ) +
                     '</b><br />Coste <b>' +
                     UTIL.formatoValor(
                       'dinero',
-                      TCB.economico.precioInstalacionCorregido *
+                      economicoGlobal.precioInstalacionCorregido *
                         allocationGroup[grupo].produccion,
                     ),
                 }}

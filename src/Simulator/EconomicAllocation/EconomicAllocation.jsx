@@ -27,8 +27,8 @@ import InstallationCost from '../EconomicBalance/InstallationCost.jsx'
 export default function EconomicAllocationStep() {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { ecoData, setEcoData, costeZCenFinca } = useContext(EconomicContext)
-  const { fincas, setFincas, zonasComunes, allocationGroup, setAllocationGroup } =
+  const { economicoGlobal, costeZCenFinca } = useContext(EconomicContext)
+  const { fincas, zonasComunes, allocationGroup, setAllocationGroup } =
     useContext(ConsumptionContext)
 
   const [ready, setReady] = useState(false)
@@ -41,7 +41,6 @@ export default function EconomicAllocationStep() {
   //La tabla de asignación de costes tiene una columna por cada zona comun y una fila por cada grupo
   let columns = []
 
-  console.log(fincas)
   columns.push({
     field: 'id',
     headerName: 'Grupo',
@@ -100,7 +99,6 @@ export default function EconomicAllocationStep() {
       }
       return tAlloc
     })
-    TCB.allocationGroup = allocationGroup
     return newGroupRow
   }
 
@@ -117,7 +115,7 @@ export default function EconomicAllocationStep() {
 
   function generaFicheroResumen() {
     const rowList = []
-    for (const f of TCB.Finca) {
+    for (const f of fincas) {
       console.log(f)
       let costeTotal = 0
       let ahorroTotal = 0
@@ -128,7 +126,7 @@ export default function EconomicAllocationStep() {
         participacion: f.participacion,
         beta: UTIL.roundDecimales(f.coefEnergia, 6),
         coste: UTIL.roundDecimales(
-          TCB.economico.precioInstalacionCorregido * f.coefEnergia,
+          economicoGlobal.precioInstalacionCorregido * f.coefEnergia,
           2,
         ),
         ahorro: f?.economico ? UTIL.roundDecimales(f.economico.ahorroAnual, 2) : 0,
@@ -136,9 +134,9 @@ export default function EconomicAllocationStep() {
       costeTotal = e.coste
       ahorroTotal = e.ahorro
 
-      for (const zc of TCB.ZonaComun) {
+      for (const zc of zonasComunes) {
         const cZC = UTIL.roundDecimales(
-          costeZCenFinca(f, zc).global * TCB.economico.precioInstalacionCorregido,
+          costeZCenFinca(f, zc).global * economicoGlobal.precioInstalacionCorregido,
           2,
         )
         e['Coste ' + zc.nombre] = cZC
@@ -181,7 +179,10 @@ export default function EconomicAllocationStep() {
                   color={theme.palette.primary.main}
                 >
                   {'Coste total a distribuir ' +
-                    UTIL.formatoValor('dinero', ecoData.precioInstalacionCorregido)}
+                    UTIL.formatoValor(
+                      'dinero',
+                      economicoGlobal.precioInstalacionCorregido,
+                    )}
                 </Typography>
               </Box>
             </Grid>
@@ -280,7 +281,7 @@ export default function EconomicAllocationStep() {
           ) : (
             ' '
           )}
-          <Button onClick={() => UTIL.dumpData('EconomicAllocation.csv', TCB.Finca)}>
+          <Button onClick={() => UTIL.dumpData('EconomicAllocation.csv', fincas)}>
             {t('ECONOMIC_ALLOCATION.LABEL_EXPORT_CSV')}
           </Button>
           <Button onClick={generaFicheroResumen}>

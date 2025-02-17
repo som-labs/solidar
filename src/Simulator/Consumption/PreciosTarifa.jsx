@@ -24,25 +24,28 @@ export default function PreciosTarifa() {
     modifyConsumptionData,
     deleteConsumptionData,
     tarifas,
+    setTarifas,
   } = useContext(ConsumptionContext)
   const { setNewPrecios } = useContext(GlobalContext)
   const [nPrecios, setNPrecios] = useState()
 
   useEffect(() => {
-    //En modo INDIVIDUAL existe una unica Tarifa
     if (tarifas.length === 0) {
-      addConsumptionData('Tarifa', new Tarifa('Tarifa SOM', '2.0TD'))
-    }
-
-    setNPrecios(4)
-    if (tarifas[0].tipo === '3.0TD') {
-      setNPrecios(7)
-    } else {
+      setTarifas([new Tarifa('Tarifa SOM', '2.0TD')])
       setNPrecios(4)
+    } else {
+      console.log(tarifas)
+      if (tarifas[0].tipo === '3.0TD') {
+        setNPrecios(7)
+      } else {
+        setNPrecios(4)
+      }
     }
   }, [])
 
-  function cambiaTipoTarifa(newTipo, setValues) {
+  function cambiaTipoTarifa(newTipo, values, setValues) {
+    console.log(values)
+
     let detalle
     if (newTipo === '3.0TD') {
       detalle = '3.0TD-' + TCB.territorio
@@ -56,11 +59,14 @@ export default function PreciosTarifa() {
     modifiedTarifa.tipo = newTipo
     modifiedTarifa.detalle = detalle
     modifiedTarifa.precios = [...TCB.tarifas[detalle].precios]
+    console.log(modifiedTarifa)
+
     modifyConsumptionData('Tarifa', modifiedTarifa)
 
     setValues((prev) => {
       prev, modifiedTarifa
     })
+    console.log(values)
   }
 
   function cambiaPrecio(posicion, nuevoValor, values, setValues) {
@@ -68,13 +74,16 @@ export default function PreciosTarifa() {
       ...prev,
       precios: values.precios.map((_p, ndx) => (ndx === posicion ? nuevoValor : _p)),
     }))
+
     const modifiedTarifa = tarifas[0]
     modifiedTarifa.precios[posicion] = parseFloat(nuevoValor.replace(',', '.'))
+    console.log(modifiedTarifa)
     modifyConsumptionData('Tarifa', modifiedTarifa)
     setNewPrecios(true)
   }
 
   function validateFields(values) {
+    console.log(values)
     let errors = {}
     setPreciosValidos(true)
 
@@ -104,7 +113,7 @@ export default function PreciosTarifa() {
                 sx={{ width: 200, height: 50, textAlign: 'center', mb: '1rem' }}
                 select
                 label={t('Tarifa.PROP.tipoTarifa')}
-                onChange={(e) => cambiaTipoTarifa(e.target.value, setValues)}
+                onChange={(e) => cambiaTipoTarifa(e.target.value, values, setValues)}
                 name="tipo"
                 value={values.tipo}
                 object="Tarifa"
@@ -136,7 +145,7 @@ export default function PreciosTarifa() {
                             setPreciosValidos,
                           )
                         }
-                        label={t('Tarifa.PROP.' + values.tipo + '.P' + index)}
+                        label={t('Tarifa.PROP.' + tarifas[0].tipo + '.P' + index)}
                         name={String(index)}
                       ></SLDRInputField>
                     </Grid>

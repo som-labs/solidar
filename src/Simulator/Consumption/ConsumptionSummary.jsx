@@ -12,6 +12,7 @@ import { DataGrid, GridToolbarContainer, GridActionsCellItem } from '@mui/x-data
 
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
+import { GlobalContext } from '../GlobalContext'
 import MapaMesHora from './MapaMesHora'
 import MapaDiaHora from './MapaDiaHora'
 import { useDialog } from '../../components/DialogProvider'
@@ -30,8 +31,18 @@ export default function ConsumptionSummary() {
   const theme = useTheme()
   const { SLDRAlert } = useAlert()
   const [openDialog, closeDialog] = useDialog()
-  const { tipoConsumo, setTipoConsumo, preciosValidos, fincas, addTCBTipoToState } =
-    useContext(ConsumptionContext)
+  const {
+    tiposConsumo,
+    setTiposConsumo,
+    preciosValidos,
+    fincas,
+    addTCBTipoToState,
+    addConsumptionData,
+    modifyConsumptionData,
+    deleteConsumptionData,
+  } = useContext(ConsumptionContext)
+
+  const { newTiposConsumo, setNewTiposConsumo } = useContext(GlobalContext)
 
   const [activo, setActivo] = useState() //Corresponde al objeto TipoConsumo en State que se esta manipulando
 
@@ -122,13 +133,11 @@ export default function ConsumptionSummary() {
 
   function editTipoConsumo(row) {
     editing.current = true
-    console.log(row.nombreFicheroCSV)
-    //console.log('EDITING EDIT', editing)
     openDialog({
       children: (
         <DialogConsumption
           data={row}
-          previous={tipoConsumo}
+          previous={tiposConsumo}
           maxWidth={'lg'}
           fullWidth={true}
           onClose={(reason, formData) => processFormData(reason, formData)}
@@ -151,7 +160,7 @@ export default function ConsumptionSummary() {
           data={initialValues}
           maxWidth={'lg'}
           fullWidth={true}
-          previous={tipoConsumo} //Needed to check duplicate name
+          previous={tiposConsumo} //Needed to check duplicate name
           onClose={(reason, formData) => processFormData(reason, formData)}
         ></DialogConsumption>
       ),
@@ -166,7 +175,6 @@ export default function ConsumptionSummary() {
     //Update or create a BaseSolar with formData
     if (reason === 'save') {
       //Can reach this by saving new tipo consumo or editing existing one
-      TCB.cambioTipoConsumo = true
 
       if (editing.current) nuevoTipoConsumo = { idTipoConsumo: formData.idTipoConsumo }
       else nuevoTipoConsumo = { idTipoConsumo: TCB.featIdUnico++ }
@@ -196,14 +204,10 @@ export default function ConsumptionSummary() {
       if (rCode.status) {
         if (editing.current) {
           //Editando uno existente
-          setTipoConsumo((prev) =>
-            prev.map((tc) =>
-              tc.idTipoConsumo === formData.idTipoConsumo ? newTipoConsumo : tc,
-            ),
-          )
+          modifyConsumptionData('TipoConsumo', newTipoConsumo)
         } else {
           //Creando uno nuevo
-          setTipoConsumo((prev) => [...prev, newTipoConsumo])
+          addConsumptionData('TipoConsumo', newTipoConsumo)
         }
       } else {
         UTIL.debugLog('Error detectado en carga de CSV')
@@ -212,12 +216,13 @@ export default function ConsumptionSummary() {
     }
 
     document.body.style.cursor = cursorOriginal
+    setNewTiposConsumo(true)
     closeDialog()
   }
 
   // showGraphsTC recibe una fila del datagrid y activa el objeto TipoConsumo de TCB que correponde
   function showGraphsTC(tc) {
-    let newActivo = tipoConsumo.find((t) => {
+    let newActivo = tiposConsumo.find((t) => {
       return t.idTipoConsumo === tc.idTipoConsumo
     })
     setActivo(newActivo)
@@ -231,10 +236,8 @@ export default function ConsumptionSummary() {
         return
       }
     }
-    setTipoConsumo((prev) =>
-      prev.filter((b) => b.nombreTipoConsumo !== tc.nombreTipoConsumo),
-    )
-    TCB.cambioTipoConsumo = true
+    deleteConsumptionData('TipoConsumo', tc.idTipoConsumo)
+    setNewTiposConsumo(true)
     setActivo(undefined)
   }
 
@@ -286,7 +289,7 @@ export default function ConsumptionSummary() {
                       consumoTotal: formatoValor(
                         'energia',
                         Math.round(
-                          tipoConsumo.reduce((sum, tc) => sum + tc.totalAnual, 0),
+                          tiposConsumo.reduce((sum, tc) => sum + tc.totalAnual, 0),
                         ),
                       ),
                     }),
@@ -310,9 +313,9 @@ export default function ConsumptionSummary() {
   }
 
   function showGraphTotales() {
-    if (tipoConsumo.length > 0) {
+    if (tiposConsumo.length > 0) {
       const dummyType = new TipoConsumo({ nombreTipoConsumo: 'Totales' })
-      for (let tc of tipoConsumo) {
+      for (let tc of tiposConsumo) {
         dummyType.suma(tc)
       }
       dummyType.fechaInicio = new Date(2023, 1, 1)
@@ -327,7 +330,7 @@ export default function ConsumptionSummary() {
           <DataGrid
             sx={theme.tables.headerWrap}
             getRowId={getRowId}
-            rows={tipoConsumo}
+            rows={tiposConsumo}
             columns={columns}
             hideFooter={false}
             rowHeight={30}

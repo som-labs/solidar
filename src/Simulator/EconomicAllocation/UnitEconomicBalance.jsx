@@ -27,15 +27,12 @@ import MonthSaving from '../EconomicBalance/MonthSavings'
 import FinanceSummary from '../EconomicBalance/FinanceSummary'
 
 import * as UTIL from '../classes/Utiles'
-import TCB from '../classes/TCB'
 
 export default function UnitEconomicBalanceStep({ finca, onClose }) {
   const { t } = useTranslation()
   const theme = useTheme()
   const { zonasComunes } = useContext(ConsumptionContext)
-  const { costeZCenFinca } = useContext(EconomicContext)
-
-  console.log(zonasComunes, finca, TCB.economico.precioInstalacionCorregido)
+  const { costeZCenFinca, economicoGlobal } = useContext(EconomicContext)
 
   return (
     <Container>
@@ -87,7 +84,7 @@ export default function UnitEconomicBalanceStep({ finca, onClose }) {
                   Gasto propio <br />
                   {UTIL.formatoValor(
                     'precioInstalacion',
-                    TCB.economico.precioInstalacionCorregido * finca.coefEnergia,
+                    economicoGlobal.precioInstalacionCorregido * finca.coefEnergia,
                   ) +
                     ' ' +
                     t('ECONOMIC_BALANCE.IVA_INCLUDED')}
@@ -105,7 +102,7 @@ export default function UnitEconomicBalanceStep({ finca, onClose }) {
                     zonasComunes.reduce(
                       (t, zc) => t + costeZCenFinca(finca, zc).global,
                       0,
-                    ) * TCB.economico.precioInstalacionCorregido,
+                    ) * economicoGlobal.precioInstalacionCorregido,
                   )}
                   <br />
                   Ahorro de zonas comunes

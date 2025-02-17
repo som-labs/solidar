@@ -1,9 +1,15 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '@mui/material/styles'
 
 // Plotly objects
 import Plot from 'react-plotly.js'
+
+//React global components
+import { BasesContext } from '../BasesContext'
+import { EconomicContext } from '../EconomicContext'
+import { EnergyContext } from '../EnergyContext'
+import { GlobalContext } from '../GlobalContext'
 
 // MUI objects
 import { Typography, MenuItem, TextField, Container, Box } from '@mui/material'
@@ -23,7 +29,8 @@ export default function HourlyEnergyBalance(props) {
   const [mes, setMes] = useState(t('ENERGY_BALANCE.VALUE_FULL_YEAR'))
   const { report } = props
   const maxHour = useRef()
-
+  const { consumoGlobal, setConsumoGlobal, calculaResultados, produccionGlobal } =
+    useContext(EnergyContext)
   useEffect(() => {
     // Function to get the width of the element
     const getWidth = () => {
@@ -51,17 +58,17 @@ export default function HourlyEnergyBalance(props) {
     for (let hora = 0; hora < 24; hora++) {
       hHora.push(hora)
       if (mes !== t('ENERGY_BALANCE.VALUE_FULL_YEAR')) {
-        mProduccion = TCB.produccion
+        mProduccion = produccionGlobal
           .getHora(hora)
           .slice(UTIL.indiceDia[mes][1], UTIL.indiceDia[mes][2] + 1)
         hProduccion.push(UTIL.promedio(mProduccion))
-        mConsumo = TCB.consumo
+        mConsumo = consumoGlobal
           .getHora(hora)
           .slice(UTIL.indiceDia[mes][1], UTIL.indiceDia[mes][2] + 1)
         hConsumo.push(UTIL.promedio(mConsumo))
       }
-      yProduccion.push(UTIL.promedio(TCB.produccion.getHora(hora)))
-      yConsumo.push(UTIL.promedio(TCB.consumo.getHora(hora)))
+      yProduccion.push(UTIL.promedio(produccionGlobal.getHora(hora)))
+      yConsumo.push(UTIL.promedio(consumoGlobal.getHora(hora)))
     }
     const maxHourMonth = Math.max(Math.max(...hConsumo), Math.max(...hProduccion))
     const maxHourYear = Math.max(Math.max(...yConsumo), Math.max(...yProduccion))

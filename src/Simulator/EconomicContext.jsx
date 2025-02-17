@@ -4,8 +4,10 @@ import { ConsumptionContext } from './ConsumptionContext'
 const EconomicContext = createContext()
 
 const EconomicContextProvider = ({ children }) => {
-  const [ecoData, setEcoData] = useState({})
+  const [economicoGlobal, setEconomicoGlobal] = useState()
+  const [, forceUpdate] = useState(0)
   const [units, setUnits] = useState([])
+  const [newEconomicBalance, setNewEconomicBalance] = useState(false)
   const { allocationGroup } = useContext(ConsumptionContext)
 
   /**
@@ -34,14 +36,15 @@ const EconomicContextProvider = ({ children }) => {
     return localSet
   }
 
-  TCB.costeZCenFinca = costeZCenFinca
-
   const contextValue = {
-    ecoData,
-    setEcoData,
+    economicoGlobal,
+    setEconomicoGlobal,
     units,
     setUnits,
     costeZCenFinca,
+    forceUpdate,
+    newEconomicBalance,
+    setNewEconomicBalance,
   }
 
   return (

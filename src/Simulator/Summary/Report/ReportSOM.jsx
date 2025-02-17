@@ -17,6 +17,12 @@ import euro from './images/euro.png'
 
 //React global components
 import { BasesContext } from '../../BasesContext'
+import { EconomicContext } from '../../EconomicContext'
+import { GlobalContext } from '../../GlobalContext'
+import { EnergyContext } from '../../EnergyContext'
+import { ConsumptionContext } from '../../ConsumptionContext'
+
+//React local components
 import SummaryPreciosTarifa from '../SummaryPreciosTarifa'
 import SummaryConsumptionTarifa from '../SummaryConsumptionTarifa'
 import HourlyEnergyBalance from '../../EnergyBalance/HourlyEnergyBalance'
@@ -34,7 +40,10 @@ export default function ReportSOM({ onClose }) {
   const theme = useTheme()
 
   const componentRef = useRef()
-  const { bases } = useContext(BasesContext)
+
+  //Variables de contexto
+  const { bases, tipoPanelActivo } = useContext(BasesContext)
+  const { totalPaneles } = useContext(EnergyContext)
 
   //const [yearlyData, setYearlyData] = useState({})
 
@@ -329,12 +338,12 @@ export default function ReportSOM({ onClose }) {
                 </Box>
                 <Box sx={{ ml: '2rem', padding: 1 }}>
                   <Typography>
-                    {t('REPORT.INSTALACIO_NOMBRE')}: <strong>{TCB.totalPaneles}</strong>
+                    {t('REPORT.INSTALACIO_NOMBRE')}: <strong>{totalPaneles}</strong>
                   </Typography>
                   <Typography>
                     {t('REPORT.INSTALACIO_POTENCIA_UNITARIA')}:{' '}
                     <strong>
-                      {UTIL.formatoValor('potenciaWp', TCB.tipoPanelActivo.potencia)}
+                      {UTIL.formatoValor('potenciaWp', tipoPanelActivo.potencia)}
                     </strong>
                   </Typography>
                   <Typography>
@@ -342,7 +351,7 @@ export default function ReportSOM({ onClose }) {
                     <strong>
                       {UTIL.formatoValor(
                         'potenciaTotal',
-                        TCB.totalPaneles * (TCB.tipoPanelActivo.potencia / 1000),
+                        totalPaneles * (tipoPanelActivo.potencia / 1000),
                       )}
                     </strong>
                   </Typography>

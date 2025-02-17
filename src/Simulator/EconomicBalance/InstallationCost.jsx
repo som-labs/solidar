@@ -30,10 +30,10 @@ export default function InstallationCost() {
   const { SLDRAlert } = useAlert()
   const [openDialog, closeDialog] = useDialog()
 
-  const { ecoData, setEcoData } = useContext(EconomicContext)
+  const { economicoGlobal, setEconomicoGlobal, forceUpdate } = useContext(EconomicContext)
 
   const [precioCorregido, setPrecioCorregido] = useState(
-    ecoData.precioInstalacionCorregido,
+    economicoGlobal.precioInstalacionCorregido,
   )
   const [error, setError] = useState(false)
 
@@ -42,25 +42,24 @@ export default function InstallationCost() {
 
     if (precioCorregido === '') {
       // If new cost field is empty will use app calculated cost
-      setPrecioCorregido(ecoData.precioInstalacion)
-      TCB.economico.precioInstalacionCorregido = TCB.economico.precioInstalacion
+      setPrecioCorregido(economicoGlobal.precioInstalacion)
+      economicoGlobal.precioInstalacionCorregido = economicoGlobal.precioInstalacion
       setError(false)
     } else if (!UTIL.ValidateDecimal(i18n.language, precioCorregido)) {
       setError(true)
     } else {
       if (precioCorregido > 0) {
-        TCB.economico.precioInstalacionCorregido = parseInt(precioCorregido)
-        TCB.economico.calculoFinanciero(100, 100)
-        if (TCB.economico.periodoAmortizacion > 20) {
+        economicoGlobal.precioInstalacionCorregido = parseInt(precioCorregido)
+        economicoGlobal.calculoFinanciero(100, 100)
+        if (economicoGlobal.periodoAmortizacion > 20) {
           SLDRAlert(
             'AMORTIZACION',
             t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'),
             'Warning',
           )
         }
-        setEcoData({ ...ecoData, ...TCB.economico })
         setError(false)
-        if (TCB.porcientoSubvencion !== 0) {
+        if (economicoGlobal.porcientoSubvencion !== 0) {
           SLDRAlert(
             'SUBVENCION',
             'Es posible que tenga que verificar el valor de la subvención recibida',
@@ -69,11 +68,12 @@ export default function InstallationCost() {
         }
       }
     }
+    forceUpdate((prev) => prev + 1)
   }
 
   function changePrecioInstalacion(event) {
     if (event.target.value === '') {
-      setPrecioCorregido(TCB.economico.precioInstalacion)
+      setPrecioCorregido(economicoGlobal.precioInstalacion)
       setError(false)
       return
     }
@@ -133,7 +133,7 @@ export default function InstallationCost() {
             color={theme.palette.primary.main}
             textAlign={'center'}
           >
-            {UTIL.formatoValor('precioInstalacion', TCB.economico.precioInstalacion) +
+            {UTIL.formatoValor('precioInstalacion', economicoGlobal.precioInstalacion) +
               ' ' +
               t('ECONOMIC_BALANCE.IVA_INCLUDED')}
           </Typography>
@@ -157,7 +157,9 @@ export default function InstallationCost() {
               error={error}
               helperText={error ? 'Pon un número válido mayor que cero' : ''}
               value={
-                precioCorregido !== TCB.economico.precioInstalacion ? precioCorregido : ''
+                precioCorregido !== economicoGlobal.precioInstalacion
+                  ? precioCorregido
+                  : ''
               }
             />
           </FormControl>

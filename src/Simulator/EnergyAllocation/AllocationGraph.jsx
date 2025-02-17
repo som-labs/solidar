@@ -21,6 +21,7 @@ import { useAlert } from '../../components/AlertProvider.jsx'
 
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
+import { EnergyContext } from '../EnergyContext.jsx'
 
 //Solidar objects
 import TCB from '../classes/TCB'
@@ -43,6 +44,8 @@ export default function AllocationGraph() {
     fincas,
     setFincas,
   } = useContext(ConsumptionContext)
+
+  const { consumoGlobal, produccionGlobal } = useContext(EnergyContext)
 
   const [chartAllocation, setChartAllocation] = useState([])
 
@@ -69,6 +72,7 @@ export default function AllocationGraph() {
   }, [])
 
   useEffect(() => {
+    console.log(allocationGroup)
     let tmp = []
     for (const g in allocationGroup) {
       if (allocationGroup[g].produccion > 0) {
@@ -78,7 +82,7 @@ export default function AllocationGraph() {
             t('ENERGY_ALLOCATION.GRAPH_PRODUCCION'),
           ],
           y: [
-            allocationGroup[g].consumo / TCB.consumo.totalAnual,
+            allocationGroup[g].consumo / consumoGlobal.totalAnual,
             allocationGroup[g].produccion,
           ],
           name: allocationGroup[g].nombre,
@@ -101,13 +105,12 @@ export default function AllocationGraph() {
       if (allocationGroup[grupo].unidades > 0) {
         distributeAllocation(grupo, allocationGroup[grupo].produccion)
       } else {
-        TCB.ZonaComun.map((zc) => {
+        zonasComunes.map((zc) => {
           if (zc.id === grupo) {
             zc.coefEnergia = allocationGroup[grupo].produccion
             return zc
           }
         })
-        setZonasComunes([...TCB.ZonaComun])
       }
     }
     setRepartoValido(true)
@@ -121,7 +124,7 @@ export default function AllocationGraph() {
         .filter((f) => f.participa && f.grupo === grupo)
         .reduce((a, b) => a + b.participacion, 0) / 100
 
-    TCB.Finca.map((f) => {
+    fincas.map((f) => {
       if (f.grupo === grupo && f.participa) {
         f.coefEnergia = UTIL.roundDecimales(
           (f.participacion / 100 / totalParticipation) * coefGrupo,
@@ -130,8 +133,7 @@ export default function AllocationGraph() {
         console.log('AAAAAAAAAAAAA', f.coefEnergia)
         return f
       }
-    }),
-      setFincas([...TCB.Finca])
+    })
   }
 
   function changeAllocation(group, value) {
@@ -163,7 +165,6 @@ export default function AllocationGraph() {
         produccion: value / 100,
       },
     }))
-    TCB.allocationGroup = allocationGroup
 
     const chartItemIndex = chartAllocation.findIndex((e) => e.id === group)
     let newItem = chartAllocation[chartItemIndex]
@@ -340,7 +341,7 @@ export default function AllocationGraph() {
                               'energia',
                               Math.round(
                                 allocationGroup[group].produccion *
-                                  TCB.produccion.totalAnual,
+                                  produccionGlobal.totalAnual,
                               ),
                             )}
                           </Grid>

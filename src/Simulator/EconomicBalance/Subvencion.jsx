@@ -25,28 +25,29 @@ export default function Subvencion({ finca }) {
   const theme = useTheme()
   const [error, setError] = useState({ status: false, field: '' })
 
-  const { ecoData, setEcoData } = useContext(EconomicContext)
-  const { setFincas } = useContext(ConsumptionContext)
+  const { economicoGlobal, setEconomicoGlobal, forceUpdate, costeZCenFinca } =
+    useContext(EconomicContext)
+  const { fincas, setFincas, zonasComunes } = useContext(ConsumptionContext)
 
-  const localEcoData = finca ? finca.economico : ecoData
+  const localEcoData = finca ? finca.economico : economicoGlobal
 
   const [valor, setValor] = useState(localEcoData.valorSubvencion)
   const [porciento, setPorciento] = useState(localEcoData.porcientoSubvencion)
 
-  console.log(localEcoData, TCB.economico)
   /*Asumimos que si hay valor y porciento de subvencion prevalece el valor. Esto implica que se recalcula el porciento en base al valor por si hubiera habido un cambio en el precio de la instalacion.*/
   useEffect(() => {
-    console.log('en useEffect', valor)
     if (valor !== 0) {
       setPorciento(
-        parseInt((valor / (ecoData.precioInstalacionCorregido * coefEnergia)) * 100),
+        parseInt(
+          (valor / (economicoGlobal.precioInstalacionCorregido * coefEnergia)) * 100,
+        ),
       )
       if (finca) {
         finca.economico.porcientoSubvencion =
-          (valor / ecoData.precioInstalacionCorregido) * coefEnergia * 100
+          (valor / economicoGlobal.precioInstalacionCorregido) * coefEnergia * 100
       } else {
-        TCB.economico.porcientoSubvencion =
-          (valor / ecoData.precioInstalacionCorregido) * coefEnergia * 100
+        economicoGlobal.porcientoSubvencion =
+          (valor / economicoGlobal.precioInstalacionCorregido) * coefEnergia * 100
       }
     }
   }, [])
@@ -58,8 +59,7 @@ export default function Subvencion({ finca }) {
     if (!UTIL.ValidateDecimal(i18n.language, value)) {
       setError({ status: true, field: name })
     } else {
-      console.log(ecoData, finca)
-      if (valor > ecoData.precioInstalacionCorregido * coefEnergia) {
+      if (valor > economicoGlobal.precioInstalacionCorregido * coefEnergia) {
         //alert(t('ECONOMIC_BALANCE.SUBVENCION_SURPLUS'))
         // setValor(ecoData.precioInstalacionCorregido)
         // setPorciento(100)
@@ -69,20 +69,27 @@ export default function Subvencion({ finca }) {
       } else {
         setError({ status: false, field: '' })
         if (finca) {
-          TCB.Finca.map((f) => {
+          fincas.map((f) => {
             if (f.idFinca === finca.idFinca) {
               f.economico.porcientoSubvencion = porciento
               f.economico.valorSubvencion = valor
-              f.economico.calculoFinanciero(coefEnergia, coefEnergia, f)
+
+              f.economico.calculoFinanciero(
+                coefEnergia,
+                coefEnergia,
+                economicoGlobal,
+                f,
+                zonasComunes,
+                costeZCenFinca,
+              )
             }
           })
-          setFincas([...TCB.Finca])
         } else {
-          TCB.economico.porcientoSubvencion = porciento
-          TCB.economico.valorSubvencion = valor
-          TCB.economico.calculoFinanciero(1, 1)
-          console.log('cambio subvencion', porciento, valor, TCB.economico)
-          setEcoData({ ...ecoData, ...TCB.economico })
+          economicoGlobal.porcientoSubvencion = porciento
+          economicoGlobal.valorSubvencion = valor
+          economicoGlobal.calculoFinanciero(1, 1, economicoGlobal)
+          console.log('cambio subvencion', porciento, valor, economicoGlobal)
+          forceUpdate((prev) => prev + 1)
         }
       }
     }
@@ -102,7 +109,7 @@ export default function Subvencion({ finca }) {
           setValor(parseInt(value))
           setPorciento(
             parseInt(
-              (parseFloat(value) / ecoData.precioInstalacionCorregido) *
+              (parseFloat(value) / localEcoData.precioInstalacionCorregido) *
                 coefEnergia *
                 100,
             ),
@@ -110,7 +117,9 @@ export default function Subvencion({ finca }) {
         } else {
           setPorciento(parseInt(value))
           setValor(
-            parseInt((ecoData.precioInstalacionCorregido * coefEnergia * value) / 100),
+            parseInt(
+              (localEcoData.precioInstalacionCorregido * coefEnergia * value) / 100,
+            ),
           )
         }
       }

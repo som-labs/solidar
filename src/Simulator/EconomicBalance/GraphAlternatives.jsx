@@ -11,6 +11,8 @@ import { Container, Typography } from '@mui/material'
 // REACT Solidar Components
 import { BasesContext } from '../BasesContext'
 import { EconomicContext } from '../EconomicContext'
+import { EnergyContext } from '../EnergyContext'
+import { ConsumptionContext } from '../ConsumptionContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -27,11 +29,19 @@ export default function GraphAlternatives() {
   const graphWidth = useRef()
   const [layout, setLayout] = useState()
   const [traces, setTraces] = useState([])
-  const { tipoPanelActivo, setTipoPanelActivo } = useContext(BasesContext)
+  const { tipoPanelActivo, setTipoPanelActivo, bases } = useContext(BasesContext)
+  const {
+    totalPaneles,
+    calculaResultados,
+    consumoGlobal,
+    balanceGlobal,
+    produccionGlobal,
+  } = useContext(EnergyContext)
 
   const [config, setConfig] = useState()
 
-  const { ecoData } = useContext(EconomicContext)
+  const { economicoGlobal } = useContext(EconomicContext)
+  const { tarifas, tiposConsumo, zonasComunes } = useContext(ConsumptionContext)
 
   useEffect(() => {
     // Function to get the width of the element
@@ -44,6 +54,32 @@ export default function GraphAlternatives() {
     // Call the function to get the width after initial render
     getWidth()
 
+    async function oneLoop(intento) {
+      // Se realizan todos los calculos
+      console.log('4a oneloop')
+      await calculaResultados(consumoGlobal)
+
+      console.log(
+        '5 intento dia 0 hora 13 balance y produccion',
+        intento,
+        balanceGlobal.diaHora[0][13],
+        produccionGlobal.diaHora[0][13],
+      )
+
+      const tEco = await new Economico(
+        null,
+        tarifas,
+        tiposConsumo,
+        consumoGlobal,
+        balanceGlobal,
+        produccionGlobal,
+        economicoGlobal,
+        zonasComunes,
+      )
+      console.log('9 Vuelvo de economico intento', intento)
+      return tEco
+    }
+
     var paneles = []
     var autoconsumo = []
     var TIR = []
@@ -55,19 +91,17 @@ export default function GraphAlternatives() {
     // Calcula el numero maximo de paneles que soportan todas la bases
     let numeroMaximoPaneles = 0
     let configuracionOriginal = []
-    for (let i = 0; i < TCB.BaseSolar.length; i++) {
-      numeroMaximoPaneles += TCB.BaseSolar[i].columnas * TCB.BaseSolar[i].filas
+    for (const [index, base] of bases.entries()) {
+      numeroMaximoPaneles += base.columnas * base.filas
       configuracionOriginal.push({
-        base: i,
-        paneles: TCB.BaseSolar[i].instalacion.paneles,
+        base: index,
+        paneles: base.instalacion.paneles,
       })
     }
 
     // El maximo numero de paneles a graficar es el doble de lo propuesto o el máximo numero de paneles
     let maximoPanelesEnX =
-      numeroMaximoPaneles > 2 * TCB.totalPaneles
-        ? 2 * TCB.totalPaneles
-        : numeroMaximoPaneles
+      numeroMaximoPaneles > 2 * totalPaneles ? 2 * totalPaneles : numeroMaximoPaneles
 
     var intentos = [
       1,
@@ -82,35 +116,62 @@ export default function GraphAlternatives() {
     for (let intento of intentos) {
       if (intento >= 1) {
         // Establecemos la configuracion de bases para este numero de paneles
-        nuevoTotalPaneles(intento, tipoPanelActivo.potencia)
+        console.log('1 loop de ', intento)
+        nuevoTotalPaneles(bases, intento, tipoPanelActivo.potencia)
+        // // Se realizan todos los calculos
+        // calculaResultados(consumoGlobal)
 
-        // Se realizan todos los calculos
-        calculaResultados()
+        // console.log(
+        //   'dia 0 hora 13 balance y produccion',
+        //   balanceGlobal.diaHora[0][13],
+        //   produccionGlobal.diaHora[0][13],
+        // )
 
-        TCB.economico = new Economico()
-        UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
+        // const TCBeconomico = new Economico(
+        //   null,
+        //   tarifas,
+        //   tiposConsumo,
+        //   consumoGlobal,
+        //   balanceGlobal,
+        //   produccionGlobal,
+        //   economicoGlobal,
+        //   zonasComunes,
+        // )
 
-        if (TCB.economico.periodoAmortizacion > 0) {
+        // console.log(
+        //   'calculaResultados - economico global intento:',
+        //   intento,
+        //   TCBeconomico.gastoConPlacasAnual,
+        // )
+        console.log('4 Nuevo economico de loop ', intento)
+        const TCBeconomico = oneLoop(intento)
+        console.log('X retorno de oneloop')
+        if (TCBeconomico.periodoAmortizacion > 0) {
           // Se extraen los valores de las variables que forman parte del grafico
           paneles.push(intento)
-          autoconsumo.push((TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100)
-          autosuficiencia.push((TCB.balance.autoconsumo / TCB.consumo.totalAnual) * 100)
-          consvsprod.push((TCB.consumo.totalAnual / TCB.produccion.totalAnual) * 100)
-          TIR.push(TCB.economico.TIRProyecto)
-          precioInstalacion.push(TCB.economico.precioInstalacionCorregido)
-          ahorroAnual.push(TCB.economico.ahorroAnual)
+          autoconsumo.push(
+            (balanceGlobal.autoconsumo / produccionGlobal.totalAnual) * 100,
+          )
+          autosuficiencia.push(
+            (balanceGlobal.autoconsumo / consumoGlobal.totalAnual) * 100,
+          )
+          consvsprod.push((consumoGlobal.totalAnual / produccionGlobal.totalAnual) * 100)
+          TIR.push(TCBeconomico.TIRProyecto)
+          precioInstalacion.push(TCBeconomico.precioInstalacionCorregido)
+          ahorroAnual.push(TCBeconomico.ahorroAnual)
         }
       }
     }
 
     //Dejamos las cosas como estaban al principio antes del loop
     for (let i = 0; i < configuracionOriginal.length; i++) {
-      TCB.BaseSolar[configuracionOriginal[i].base].instalacion.paneles =
+      bases[configuracionOriginal[i].base].instalacion.paneles =
         configuracionOriginal[i].paneles
     }
 
-    calculaResultados()
-    TCB.economico = new Economico()
+    calculaResultados(consumoGlobal)
+
+    //TCB.economico = new Economico()
 
     //Buscamos punto en el que la produccion represente el 80% del consumo anual total para definir el limite subvencion EU
     let i = 0
@@ -246,27 +307,27 @@ export default function GraphAlternatives() {
       shapes: [
         {
           type: 'line',
-          x0: TCB.totalPaneles,
+          x0: totalPaneles,
           y0: 0,
-          x1: TCB.totalPaneles,
+          x1: totalPaneles,
           y1: 100,
           line: { color: 'rgb(55, 128, 191)', width: 3 },
         },
       ],
       annotations: [
         {
-          x: TCB.totalPaneles,
+          x: totalPaneles,
           y: 95,
           xref: 'x',
           yref: 'y',
           text: t('GRAFICOS.LABEL_panelesActuales', {
-            paneles: TCB.totalPaneles,
+            paneles: totalPaneles,
           }),
           showarrow: true,
           arrowhead: 2,
           xanchor: 'left',
           hovertext: t('GRAFICOS.LABEL_panelesActuales', {
-            paneles: TCB.totalPaneles,
+            paneles: totalPaneles,
           }),
           ax: 20,
           ay: -20,

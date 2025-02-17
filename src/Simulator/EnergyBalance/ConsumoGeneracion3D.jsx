@@ -1,7 +1,7 @@
-import { useRef } from 'react'
+import { useRef, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '@mui/material/styles'
-
+import { EnergyContext } from '../EnergyContext'
 // Plotly objects
 import Plot from 'react-plotly.js'
 
@@ -23,11 +23,12 @@ export default function ConsumoGeneracion3D() {
 
   const [openDialog, closeDialog] = useDialog()
   const graphWidth = useRef()
+  const { consumoGlobal, produccionGlobal } = useContext(EnergyContext)
 
   const meses = Array.from(i18nextMes())
   var g_produccion = {
-    z: TCB.produccion.diaHora,
-    y: TCB.produccion.idxTable.map((e) => {
+    z: produccionGlobal.diaHora,
+    y: produccionGlobal.idxTable.map((e) => {
       let mes = parseInt(e.fecha.getMonth()) + 1
       return e.fecha.getDate() + '/' + mes
     }),
@@ -61,8 +62,8 @@ export default function ConsumoGeneracion3D() {
   }
 
   var g_consumo = {
-    z: TCB.consumo.diaHora,
-    y: TCB.produccion.idxTable.map((e) => {
+    z: consumoGlobal.diaHora,
+    y: produccionGlobal.idxTable.map((e) => {
       let mes = parseInt(e.fecha.getMonth()) + 1
       return e.fecha.getDate() + '/' + mes
     }),

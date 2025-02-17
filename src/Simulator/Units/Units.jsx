@@ -22,6 +22,7 @@ import * as UTIL from '../classes/Utiles'
 //React global components
 import { useDialog } from '../../components/DialogProvider'
 import TipoConsumo from '../classes/TipoConsumo.js'
+import { GlobalContext } from '../GlobalContext.jsx'
 
 export default function UnitsStep() {
   const { t } = useTranslation()
@@ -37,7 +38,13 @@ export default function UnitsStep() {
     allocationGroup,
     setAllocationGroup,
     updateTCBUnitsFromState,
+    addConsumptionData,
+    modifyConsumptionData,
+    deleteConsumptionData,
+    getConsumoTotal,
   } = useContext(ConsumptionContext)
+
+  const { newTiposConsumo, setNewTiposConsumo } = useContext(GlobalContext)
 
   const [openDialog, closeDialog] = useDialog()
 
@@ -68,7 +75,7 @@ export default function UnitsStep() {
 
   useEffect(() => {
     //Copy fincas and zonas comunes in state to TCB
-    updateTCBUnitsFromState()
+    //updateTCBUnitsFromState()
     console.log('RECIBIDO ALLOCATION GROUP', allocationGroup)
     if (!allocationGroup) {
       //Build new allocationGroup
@@ -83,7 +90,7 @@ export default function UnitsStep() {
             uniqueGroup[f.grupo].participacionP += f.participacion
             uniqueGroup[f.grupo].participes++
             uniqueGroup[f.grupo].consumo +=
-              f.nombreTipoConsumo !== '' ? TipoConsumo.getTotal(f.nombreTipoConsumo) : 0
+              f.nombreTipoConsumo !== '' ? getConsumoTotal(f.nombreTipoConsumo) : 0
           }
         } else {
           uniqueGroup[f.grupo] = {
@@ -98,7 +105,7 @@ export default function UnitsStep() {
             uniqueGroup[f.grupo].participes = 1
             uniqueGroup[f.grupo].participacionP = f.participacion
             uniqueGroup[f.grupo].consumo +=
-              f.nombreTipoConsumo !== '' ? TipoConsumo.getTotal(f.nombreTipoConsumo) : 0
+              f.nombreTipoConsumo !== '' ? getConsumoTotal(f.nombreTipoConsumo) : 0
           } else {
             uniqueGroup[f.grupo].participes = 0
             uniqueGroup[f.grupo].participacionP = 0
@@ -113,28 +120,27 @@ export default function UnitsStep() {
           unidades: 0,
           produccion: 0,
           consumo:
-            zc.nombreTipoConsumo !== '' ? TipoConsumo.getTotal(zc.nombreTipoConsumo) : 0,
+            zc.nombreTipoConsumo !== '' ? getConsumoTotal(zc.nombreTipoConsumo) : 0,
         }
       })
-      console.log('Cosntruyendo uniquegroup', uniqueGroup)
+      console.log('Construyendo uniquegroup', uniqueGroup)
       setAllocationGroup(uniqueGroup)
-      TCB.allocationGroup = uniqueGroup
+
       //If previous allocationGroup just update consumo if there has been any change in TipoConsumo
-    } else if (TCB.cambioTipoConsumo) {
-      const prev = allocationGroup
-      for (let g in prev) {
-        if (prev[g].unidades > 0) {
-          prev[g].consumo = fincas
+    } else if (newTiposConsumo) {
+      const previo = allocationGroup
+      for (let g in previo) {
+        if (previo[g].unidades > 0) {
+          previo[g].consumo = fincas
             .filter((_f) => _f.grupo === g && _f.participa && _f.nombreTipoConsumo !== '')
-            .reduce((t, _fc) => t + TipoConsumo.getTotal(_fc.nombreTipoConsumo), 0)
+            .reduce((t, _fc) => t + getConsumoTotal(_fc.nombreTipoConsumo), 0)
         } else {
           const zc = zonasComunes.find((_zc) => _zc.id === g)
-          prev[g].consumo =
-            zc.nombreTipoConsumo !== '' ? TipoConsumo.getTotal(zc.nombreTipoConsumo) : 0
+          previo[g].consumo =
+            zc.nombreTipoConsumo !== '' ? getConsumoTotal(zc.nombreTipoConsumo) : 0
         }
       }
-      setAllocationGroup({ ...prev })
-      TCB.allocationGroup = allocationGroup
+      setAllocationGroup({ ...previo })
     }
   }, [])
 
@@ -178,7 +184,7 @@ export default function UnitsStep() {
 
           console.log('setting fincas in UNITS loadCSV')
           setFincas([...newFincas])
-          TCB.cambioTipoConsumo = true
+          setNewTiposConsumo(true)
         }
       }
       reader.readAsText(file)
@@ -280,11 +286,13 @@ export default function UnitsStep() {
       }
       return tmpAG
     })
-    TCB.allocationGroup = allocationGroup
+
     //Add new zona comun to state
-    setZonasComunes((prev) => [...prev, newZonaComun])
+
+    addConsumptionData('ZonaComun', newZonaComun)
+
     //Add new zona comun to TCB
-    TCB.ZonaComun.push(newZonaComun)
+    //TCB.ZonaComun.push(newZonaComun)
   }
 
   return (

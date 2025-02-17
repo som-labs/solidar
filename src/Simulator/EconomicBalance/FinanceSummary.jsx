@@ -24,8 +24,8 @@ export default function FinanceSummary({ finca }) {
   const theme = useTheme()
   const [openDialog, closeDialog] = useDialog()
 
-  const { ecoData } = useContext(EconomicContext)
-  const localEcoData = finca ? finca.economico : ecoData
+  const { economicoGlobal } = useContext(EconomicContext)
+  const localEcoData = finca ? finca.economico : economicoGlobal
 
   if (localEcoData.cashFlow === undefined) return
 

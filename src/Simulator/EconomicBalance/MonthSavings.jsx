@@ -20,11 +20,11 @@ export default function MonthSaving({ finca }) {
   const { t } = useTranslation()
   const theme = useTheme()
 
-  const { ecoData } = useContext(EconomicContext)
+  const { economicoGlobal } = useContext(EconomicContext)
   const graphElement = useRef()
   const graphWidth = useRef()
 
-  const localEcoData = finca ? finca.economico : ecoData
+  const localEcoData = finca ? finca.economico : economicoGlobal
 
   useEffect(() => {
     // Function to get the width of the element
@@ -165,7 +165,7 @@ export default function MonthSaving({ finca }) {
       }
 
       let data
-      if (TCB.coefHucha > 0) {
+      if (localEcoData.coefHucha > 0) {
         var trace_huchaSaldo = {
           x: mesMapa,
           y: localEcoData.huchaSaldo,
