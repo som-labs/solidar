@@ -7,12 +7,14 @@ import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
+
 import { useDialog } from '../../components/DialogProvider'
 import UnitsSummary from './UnitsSummary'
 
 // Solidar objects
 import TCB from '../classes/TCB.js'
 import * as UTIL from '../classes/Utiles'
+import { EnergyContext } from '../EnergyContext.jsx'
 
 export default function UnitTypeBox(props) {
   const { t } = useTranslation()
@@ -20,7 +22,7 @@ export default function UnitTypeBox(props) {
 
   const { allocationGroup, fincas } = useContext(ConsumptionContext)
   const [openDialog, closeDialog] = useDialog()
-
+  const { produccionGlobal } = useContext(EnergyContext)
   const { grupo } = props
 
   function showDetails() {
@@ -128,7 +130,7 @@ export default function UnitTypeBox(props) {
                 Producción asignada:{' '}
                 {UTIL.formatoValor(
                   'energia',
-                  allocationGroup[grupo].produccion * TCB.produccion.totalAnual,
+                  allocationGroup[grupo].produccion * produccionGlobal.totalAnual,
                 )}
               </Box>
             </Box>
@@ -179,7 +181,7 @@ export default function UnitTypeBox(props) {
               Producción asignada:{' '}
               {UTIL.formatoValor(
                 'energia',
-                allocationGroup[grupo].produccion * TCB.produccion.totalAnual,
+                allocationGroup[grupo].produccion * produccionGlobal.totalAnual,
               )}
             </Box>
           </Box>

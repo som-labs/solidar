@@ -67,19 +67,19 @@ const ConsumptionStep = () => {
             }}
           />
         </Grid>
-        {TCB.modoActivo === 'INDIVIDUAL' ? (
+        {/* {TCB.modoActivo === 'INDIVIDUAL' ? (
           <Grid item xs={12}>
             <SLDRInfoBox>
               <PreciosTarifa></PreciosTarifa>
             </SLDRInfoBox>
           </Grid>
-        ) : (
-          <Grid item xs={12}>
-            <SLDRInfoBox>
-              <TarifasSummary></TarifasSummary>
-            </SLDRInfoBox>
-          </Grid>
-        )}
+        ) : ( */}
+        <Grid item xs={12}>
+          <SLDRInfoBox>
+            <TarifasSummary></TarifasSummary>
+          </SLDRInfoBox>
+        </Grid>
+        {/* )} */}
 
         <Grid item xs={12}>
           <Typography

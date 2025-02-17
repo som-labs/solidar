@@ -10,7 +10,7 @@ import Balance from './Balance'
  * Construye el balance Energia
  * Construye el balance Economico
  */
-async function calculaResultados() {
+async function calculaResultados(bases) {
   // Se genera un objeto produccion para cada una de las bases
   // PENDIENTE: cuando importamos la base ya trae la produccion calculada. Ver como evitar
 

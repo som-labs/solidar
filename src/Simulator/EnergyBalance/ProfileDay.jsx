@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '@mui/material/styles'
 
@@ -8,6 +8,7 @@ import Plot from 'react-plotly.js'
 // MUI objects
 import { Box, Button, Typography } from '@mui/material'
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
+import { EnergyContext } from '../EnergyContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -18,7 +19,7 @@ export default function ProfileDay(props) {
   const theme = useTheme()
 
   const { diaActivo, onClose } = props
-
+  const { consumoGlobal, produccionGlobal } = useContext(EnergyContext)
   const divGraph = useRef()
   const graphElement = useRef()
   const graphWidth = useRef()
@@ -45,7 +46,7 @@ export default function ProfileDay(props) {
   const mes = t(UTIL.nombreMes[clickedDate[1] - 1])
 
   const trace1 = {
-    y: TCB.consumo.diaHora[indexDay],
+    y: consumoGlobal.diaHora[indexDay],
     type: 'scatter',
     showlegend: true,
     name: t('GRAPHICS.LABEL_CONSUMPTION'),
@@ -54,7 +55,7 @@ export default function ProfileDay(props) {
   }
 
   const trace2 = {
-    y: TCB.produccion.diaHora[indexDay],
+    y: produccionGlobal.diaHora[indexDay],
     type: 'scatter',
     showlegend: true,
     name: t('GRAPHICS.LABEL_PRODUCTION'),
@@ -63,8 +64,8 @@ export default function ProfileDay(props) {
   }
 
   const maxDay = Math.max([
-    Math.max(TCB.produccion.diaHora[indexDay]),
-    Math.max(TCB.consumo.diaHora[indexDay]),
+    Math.max(produccionGlobal.diaHora[indexDay]),
+    Math.max(consumoGlobal.diaHora[indexDay]),
   ])
 
   const layout = {

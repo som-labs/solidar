@@ -575,6 +575,7 @@ CONSUMPTION:
   ERROR_FALTA_TARIFA_INDIVIDUAL: Debe definir los precios correctos de las tarifas antes de continuar
   ERROR_FALTA_TARIFA_COLECTIVO: Debe definir al menos una tarifa para continuar
   ERROR_TIPO_TARIFA_FINCAS: 'Existen fincas con esta tarifa.\nNo se puede borrar'
+  LABEL_CAMBIO_TARIFA: Cambiar
 
 ENERGY_BALANCE:
   TITLE: Balance de Energía
@@ -606,7 +607,7 @@ ENERGY_BALANCE:
   LABEL_EXCEDENTE_ANUAL: Electricidad sobrante
   TOOLTIP_EXCEDENTE_ANUAL: Electricidad sobrante volcada a la red
   LABEL_AUTOCONSUMO: Uso directo energía
-  LABEL_ENERGIA_RED: Energía obtenida de la red
+  LABEL_ENERGIA_RED: Energía de la red
   LABEL_ENERGIA_PANELES: Energía obtenida de los paneles
   TITLE_HOURLY_ENERGY_BALANCE: Balance horario
   TITLE_HOURLY_PERIODO: Periodo

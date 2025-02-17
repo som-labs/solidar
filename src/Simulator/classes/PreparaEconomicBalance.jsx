@@ -11,9 +11,9 @@ export default async function PreparaEconomicBalance() {
   let cursorOriginal = document.body.style.cursor
   document.body.style.cursor = 'progress'
 
-  console.log(TCB.importando, TCB.economico, !TCB.importando || !TCB.economico)
+  console.log(TCB.importando, economicoGlobal, !TCB.importando || !economicoGlobal)
   //When importing first time will not compute Economico next yes
-  if (!TCB.importando || !TCB.economico) {
+  if (!TCB.importando || !economicoGlobal) {
     TCB.economico = new Economico()
     UTIL.debugLog('calcula economico global ', TCB.economico)
     if (TCB.economico.periodoAmortizacion > 20) {
