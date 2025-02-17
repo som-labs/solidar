@@ -18,7 +18,7 @@ class Tarifa {
     this.nombreTarifa = nombreTarifa
     this.precios = Array.from(TCB.tarifas[tipo].precios)
     this.detalle = tipo === '3.0TD' ? tipo + '-' + TCB.territorio : tipo
-    this.horas = TCB.tarifas[tipo].horas
+    //this.horas = TCB.tarifas[tipo].horas
     this.coefHucha = 80 //Default de SOM
     this.cuotaHucha = 0
   }
@@ -26,7 +26,7 @@ class Tarifa {
   setTarifa(nombreTarifa) {
     this.nombreTarifa = nombreTarifa
     this.precios = Array.from(TCB.tarifas[nombreTarifa].precios)
-    this.horas = TCB.tarifas[nombreTarifa].horas
+    //this.horas = TCB.tarifas[nombreTarifa].horas
   }
 
   getTarifa() {

@@ -25,11 +25,12 @@ export default function ReduccionIBI({ finca }) {
   const { t, i18n } = useTranslation()
   const theme = useTheme()
   const [error, setError] = useState({ status: false, field: '' })
-  const { ecoData, setEcoData } = useContext(EconomicContext)
-  const { setFincas } = useContext(ConsumptionContext)
+  const { economicoGlobal, setEconomicoGlobal, costeZCenFinca, forceUpdate } =
+    useContext(EconomicContext)
+  const { setFincas, zonasComunes } = useContext(ConsumptionContext)
   const { SLDRAlert } = useAlert()
 
-  const localEcoData = finca ? finca.economico : ecoData
+  const localEcoData = finca ? finca.economico : economicoGlobal
 
   const [_IBI, _setIBI] = useState({
     tiempoSubvencionIBI: localEcoData.tiempoSubvencionIBI,
@@ -40,8 +41,8 @@ export default function ReduccionIBI({ finca }) {
   const setNewIBI = (event) => {
     const { name, value } = event.target
     const coste = finca
-      ? ecoData.precioInstalacionCorregido * finca.coefEnergia
-      : ecoData.precioInstalacionCorregido
+      ? economicoGlobal.precioInstalacionCorregido * finca.coefEnergia
+      : economicoGlobal.precioInstalacionCorregido
 
     if (isNaN(value)) {
       setError({ status: true, field: name })
@@ -65,33 +66,32 @@ export default function ReduccionIBI({ finca }) {
       }
       if (finca) {
         setFincas((prev) =>
-          prev.map((f, ndx) => {
+          prev.map((f) => {
             if (f.idFinca === finca.idFinca) {
-              TCB.Finca[ndx].economico.tiempoSubvencionIBI = _IBI.tiempoSubvencionIBI
-              TCB.Finca[ndx].economico.valorSubvencionIBI = _IBI.valorSubvencionIBI
-              TCB.Finca[ndx].economico.porcientoSubvencionIBI =
-                _IBI.porcientoSubvencionIBI
-              console.log(TCB.Finca[ndx])
-              TCB.Finca[ndx].economico.calculoFinanciero(
+              f.economico.tiempoSubvencionIBI = _IBI.tiempoSubvencionIBI
+              f.economico.valorSubvencionIBI = _IBI.valorSubvencionIBI
+              f.economico.porcientoSubvencionIBI = _IBI.porcientoSubvencionIBI
+              f.economico.calculoFinanciero(
                 finca.coefEnergia,
                 finca.coefEnergia,
-                finca,
+                economicoGlobal,
+                f,
+                zonasComunes,
+                costeZCenFinca,
               )
-              return TCB.Finca[ndx]
-            } else {
-              return f
             }
+            return f
           }),
         )
         //console.dir(finca)
         //finca.economico.calculoFinanciero(finca.coefEnergia, finca.coefEnergia)
       } else {
-        TCB.economico.tiempoSubvencionIBI = _IBI.tiempoSubvencionIBI
-        TCB.economico.valorSubvencionIBI = _IBI.valorSubvencionIBI
-        TCB.economico.porcientoSubvencionIBI = _IBI.porcientoSubvencionIBI
-        TCB.economico.calculoFinanciero(100, 100)
-        setEcoData({ ...ecoData, ...TCB.economico })
+        economicoGlobal.tiempoSubvencionIBI = _IBI.tiempoSubvencionIBI
+        economicoGlobal.valorSubvencionIBI = _IBI.valorSubvencionIBI
+        economicoGlobal.porcientoSubvencionIBI = _IBI.porcientoSubvencionIBI
+        economicoGlobal.calculoFinanciero(100, 100)
       }
+      forceUpdate((prev) => prev + 1)
     }
   }
 
@@ -102,7 +102,6 @@ export default function ReduccionIBI({ finca }) {
     } else {
       setError({ status: false, field: '' })
       _setIBI((prevIBI) => ({ ...prevIBI, [name]: value !== '' ? parseInt(value) : 0 }))
-      TCB[name] = value !== '' ? parseInt(value) : 0
     }
   }
 

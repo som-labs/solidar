@@ -48,32 +48,26 @@ export default function PanelsSelector() {
         setNewPanelActivo(true)
       }
 
-      //If the panel peak power has changes optimizer has to be executed
+      //If the panel peak power has changed optimizer has to be executed
       if (tipoPanelActivo.potencia !== formData.potencia) {
         newPanel.potencia = UTIL.returnFloat(formData.potencia)
-        TCB.requiereOptimizador = true
         setNewPanelActivo(true)
       }
 
-      //If there is any change in panel size need to reconfigura exisiting bases
+      //If there is any change in panel size need to reconfigura existing bases
       if (
         tipoPanelActivo.ancho !== formData.ancho ||
         tipoPanelActivo.largo !== formData.largo
       ) {
         newPanel.ancho = UTIL.returnFloat(formData.ancho)
         newPanel.largo = UTIL.returnFloat(formData.largo)
-
-        //If panel ancho or largo has changed need to update bases configuration
-
         bases.forEach((base) => {
           const newConfiguration = BaseSolar.configuraPaneles(base, newPanel)
           base.columnas = newConfiguration.columnas
           base.filas = newConfiguration.filas
           base.modoInstalacion = newConfiguration.modoInstalacion
-          //Update in bases state
           modifyBase(base)
         })
-        TCB.requiereOptimizador = true
         setNewPanelActivo(true)
       }
     }

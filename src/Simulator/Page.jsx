@@ -20,21 +20,42 @@ import SummarySOMStep from './Summary/SOM/Summary'
 import { ConsumptionContext } from './ConsumptionContext'
 import { BasesContext } from './BasesContext'
 import { EconomicContext } from './EconomicContext'
+import { GlobalContext } from './GlobalContext.jsx'
+import { EnergyContext } from './EnergyContext.jsx'
+
 //import { AlertContext } from './components/Alert'
 import { useAlert } from '../components/AlertProvider.jsx'
 // Solidar objects
-import PreparaEnergyBalance from './classes/PreparaEnergyBalance.jsx'
-import PreparaEconomicBalance from './classes/PreparaEconomicBalance.jsx'
+// import PreparaEnergyBalance from './classes/PreparaEnergyBalance.jsx'
+// import PreparaEconomicBalance from './classes/PreparaEconomicBalance.jsx'
 
 import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
 import InicializaAplicacion from './classes/InicializaAplicacion'
+import Consumo from './classes/Consumo.js'
+import Economico from './classes/Economico.js'
+import Balance from './classes/Balance.js'
+import BaseSolar from './classes/BaseSolar.js'
+import { optimizador } from './classes/optimizador.js'
 
 export default function Page() {
   const { t } = useTranslation()
   const { SLDRAlert } = useAlert()
   //const { SLDRAlert } = useContext(AlertContext)
-  const { validaBases, bases, tipoPanelActivo } = useContext(BasesContext)
+  const { validaBases, bases, tipoPanelActivo, modifyBase } = useContext(BasesContext)
+
+  const {
+    newBases,
+    setNewBases,
+    newPrecios,
+    newPanelActivo,
+    newTiposConsumo,
+    newUnits,
+    setNewTiposConsumo,
+    newEnergyBalance,
+    setNewEnergyBalance,
+  } = useContext(GlobalContext)
+
   const {
     validaTipoConsumo,
     validaUnits,
@@ -42,10 +63,27 @@ export default function Page() {
     fincas,
     setFincas,
     zonasComunes,
-    allocationGroup,
+    tiposConsumo,
+    getConsumoTotal,
     tarifas,
   } = useContext(ConsumptionContext)
-  const { ecoData, setEcoData } = useContext(EconomicContext)
+
+  const {
+    economicoGlobal,
+    setEconomicoGlobal,
+    newEconomicBalance,
+    setNewEconomicBalance,
+    costeZCenFinca,
+  } = useContext(EconomicContext)
+
+  const {
+    consumoGlobal,
+    setConsumoGlobal,
+    calculaResultados,
+    produccionGlobal,
+    balanceGlobal,
+    setTotalPaneles,
+  } = useContext(EnergyContext)
 
   const [a] = useSearchParams()
   TCB.URLParameters = a
@@ -62,24 +100,209 @@ export default function Page() {
   }
 
   async function validaConsumptionStep() {
-    console.log('validaConsumptionStep')
     results = validaTipoConsumo()
     if (!results.status) {
       SLDRAlert('VALIDACION', results.error, 'Error')
       return false
     }
-    // Se crearan los objetos produccion, balance y economico
-    // PENDIENTE: podria haber un warning de falta de espacio enviado desde Prepara...
-    if (TCB.modoActivo === 'INDIVIDUAL') {
-      results = await PreparaEnergyBalance(tipoPanelActivo)
-      if (results.status) {
-        // setEcoData((prev) => ({ ...prev, ...TCB.economico }))
-        // TCB.readyToExport = true
+
+    if (TCB.modoActivo === 'INDIVIDUAL') return await PreparaEnergyBalance()
+    else return true
+  }
+
+  async function PreparaEnergyBalance() {
+    console.log('Preparando energy balance consiciones:', {
+      newTiposConsumo: newTiposConsumo,
+      newBases: newBases,
+      newPanelActivo: newPanelActivo,
+      newUnits: newUnits,
+    })
+    let newConsumo
+
+    /* Condiciones bajo las cuales hay que hacer un recalculo del balanceEnergetico */
+    if (newTiposConsumo || newBases || newPanelActivo || newUnits) {
+      /* Si han cambiado los tipos de consumo hay que reconstruir el consumoGlobal */
+      console.log('PreparaEnergyBalance Construyendo nuevo consumo Global')
+      if (newTiposConsumo) {
+        newConsumo = new Consumo(tiposConsumo, fincas, zonasComunes)
+        setConsumoGlobal(newConsumo)
+        console.log('Newconsumo in page', newConsumo)
+        /* Calculamos el coeficiente del consumo de cada finca sobre el total */
+        if (TCB.modoActivo !== 'INDIVIDUAL') {
+          for (const f of fincas) {
+            f.coefConsumo = getConsumoTotal(f.nombreTipoConsumo) / newConsumo.totalAnual
+          }
+        }
+        UTIL.debugLog('PreparaEnergyBalance - Nuevo consumo global creado', newConsumo)
+
+        console.log('PreparaEnergyBalance Consumo Global creado', newConsumo)
+        setNewTiposConsumo(false)
       } else {
-        SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
+        newConsumo = consumoGlobal
       }
+
+      if (newBases) {
+        /* Si hay nuevos datos de bases. Comprobamos que estan cargados todos los rendimientos. Es el flag base.rendimiento.PVGISresults.status. True si todo OK, undefined si pendiente, False si error en PVGIS */
+        let waitLoop = 0
+        for (let base of bases) {
+          var sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+          if (base.rendimiento.PVGISresults.status === undefined) {
+            //Has to wait
+            document.body.style.cursor = 'wait'
+            SLDRAlert(
+              'PVGIS',
+              'Esperando datos PVGIS para base: ' + base.nombreBaseSolar,
+              'Warning',
+            )
+            while (
+              base.rendimiento.PVGISresults.status === undefined &&
+              waitLoop++ < TCB.tiempoEsperaPVGIS
+            ) {
+              console.log(waitLoop + ' seg. (max: ' + TCB.tiempoEsperaPVGIS + ')')
+              await sleep(1000)
+            }
+          }
+          document.body.style.cursor = 'default'
+          if (!base.rendimiento.PVGISresults.status) return base.rendimiento.PVGISresults
+
+          if (waitLoop >= TCB.tiempoEsperaPVGIS) {
+            SLDRAlert(
+              'PVGIS',
+              'Tiempo de respuesta excesivo en la llamada a PVGIS',
+              'Error',
+            )
+            // PENDIENTE: reemplazar alert con confimr de espera. Como usar SLDRAlert desde aqui
+            return {
+              status: false,
+              error: 'Tiempo de respuesta excesivo en la llamada a PVGIS',
+            }
+          }
+          // PENDIENTE: limpiar alert de espera
+          /* Si la base tiene configurada la inclinación óptima, la establecemos y volvemos a reconfigurar los paneles */
+          if (base.inclinacionOptima) {
+            base.inclinacion = base.rendimiento.inclinacion
+            BaseSolar.configuraPaneles(base, tipoPanelActivo)
+          }
+        }
+        setNewBases(false)
+      }
+
+      UTIL.debugLog('PreparaEnergyBalance - Todas las bases listas llama optimizador')
+      // Se ejecuta el optimizador para determinar la configuración inicial propuesta
+      let pendiente = optimizador(bases, newConsumo, tipoPanelActivo.potencia, modifyBase)
+      if (pendiente > 0) {
+        UTIL.debugLog(
+          'PreparaEnergyBalance - No hay superficie suficiente. Falta: ' + pendiente,
+        )
+        //PENDIENTE: ver como procesamos este aviso
+        SLDRAlert(
+          'AREA LIMITADA',
+          'No es posible instalar los paneles necesarios.\nPendiente: ' +
+            UTIL.formatoValor('energia', pendiente) +
+            '\nContinuamos con el máximo número de paneles posible',
+          'Warning',
+        )
+      }
+      setTotalPaneles(
+        bases.reduce((a, b) => {
+          return a + b.instalacion.paneles
+        }, 0),
+      )
+      setNewEnergyBalance(true)
+      calculaResultados(newConsumo)
     }
     return results.status
+  }
+
+  async function PreparaEconomicBalance() {
+    console.log('->PreparaEconomicBalance')
+    let cursorOriginal = document.body.style.cursor
+    document.body.style.cursor = 'progress'
+
+    console.log(balanceGlobal, economicoGlobal, produccionGlobal)
+    //When importing first time will not compute Economico next yes
+    if (!TCB.importando || !economicoGlobal) {
+      let newEconomico = new Economico(
+        null,
+        tarifas,
+        tiposConsumo,
+        consumoGlobal,
+        balanceGlobal,
+        produccionGlobal,
+        economicoGlobal,
+        zonasComunes,
+        costeZCenFinca,
+      )
+      console.log('NUEVO ECONOMICO GLABAL', newEconomico)
+      setEconomicoGlobal(newEconomico)
+      UTIL.debugLog('calcula economico global ', newEconomico)
+      if (newEconomico.periodoAmortizacion > 20) {
+        SLDRAlert('ECONOMICO', t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'), 'Warning')
+      }
+
+      //If periodoAmortizacion is less than zero means it is bigger than maximum number of years expected for the economic balance and cannot continue.
+      if (newEconomico.periodoAmortizacion < 0) {
+        SLDRAlert(
+          'VALIDACION',
+          t('ECONOMIC_BALANCE.MSG_NO_FINANCE', {
+            periodo: Math.abs(newEconomico.periodoAmortizacion),
+          }),
+          'error',
+        )
+        return { status: false }
+      }
+
+      if (TCB.modoActivo !== 'INDIVIDUAL') {
+        let consumoIndividual
+        console.log('Recalculo Zonascomunes')
+        //Calcular balance y economico de zonas comunes para asignar ahorro a las fincas despues
+        for (const _zc of zonasComunes) {
+          consumoIndividual = tiposConsumo.find(
+            (_tc) => _zc.nombreTipoConsumo === _tc.nombreTipoConsumo,
+          )
+          _zc.balance = new Balance(produccionGlobal, consumoIndividual, _zc.coefEnergia)
+          _zc.economico = new Economico(
+            _zc,
+            tarifas,
+            tiposConsumo,
+            consumoGlobal,
+            balanceGlobal,
+            produccionGlobal,
+            newEconomico,
+            zonasComunes,
+            costeZCenFinca,
+          )
+        }
+        console.log('recalculo fincas')
+        //Calcular balance y economico de las fincas
+
+        for (let _f of fincas) {
+          if (_f.participa && _f.nombreTipoConsumo !== '') {
+            consumoIndividual = tiposConsumo.find(
+              (_tc) => _tc.nombreTipoConsumo === _f.nombreTipoConsumo,
+            )
+            _f.balance = new Balance(produccionGlobal, consumoIndividual, _f.coefEnergia)
+            _f.economico = new Economico(
+              _f,
+              tarifas,
+              tiposConsumo,
+              consumoGlobal,
+              balanceGlobal,
+              produccionGlobal,
+              newEconomico,
+              zonasComunes,
+              costeZCenFinca,
+            )
+            console.log(_f)
+          }
+        }
+      }
+      TCB.requiereReparto = false
+    }
+
+    document.body.style.cursor = cursorOriginal
+    setNewEconomicBalance(true)
+    return { status: true }
   }
 
   async function validaUnitsStep() {
@@ -89,19 +312,11 @@ export default function Page() {
       SLDRAlert('VALIDACION', results.error, 'Error')
       return false
     } else {
-      results = await PreparaEnergyBalance(tipoPanelActivo)
-      if (results.status) {
-        // setEcoData((prev) => ({ ...prev, ...TCB.economico }))
-        // TCB.readyToExport = true
-      } else {
-        console.log(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error)
-        SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
-      }
-      return results.status
+      return await PreparaEnergyBalance()
     }
   }
 
-  function validaEnergyBalanceStep() {
+  async function validaEnergyBalanceStep() {
     console.log('validaEnergyBalanceStep')
     for (const base of bases) {
       if (!UTIL.ValidateEntero(base.instalacion.paneles)) {
@@ -114,26 +329,8 @@ export default function Page() {
       }
     }
 
-    PreparaEconomicBalance()
     if (TCB.modoActivo === 'INDIVIDUAL') {
-      setEcoData(TCB.economico)
-
-      //If periodoAmortizacion is less than zero means it is bigger than maximum number of years expected for the economic balance and cannot continue.
-      if (ecoData.periodoAmortizacion < 0) {
-        console.log(ecoData.periodoAmortizacion)
-        SLDRAlert(
-          'VALIDACION',
-          t('ECONOMIC_BALANCE.MSG_NO_FINANCE', {
-            periodo: Math.abs(ecoData.periodoAmortizacion),
-          }),
-          'error',
-        )
-        return false
-      }
-      return true
-    } else {
-      console.log(TCB.Finca)
-      setFincas([...TCB.Finca])
+      return await PreparaEconomicBalance().status
     }
   }
 
@@ -143,7 +340,7 @@ export default function Page() {
       return false
     } else {
       PreparaEconomicBalance()
-      setEcoData(TCB.economico)
+
       //Asignacion del coste propio de cada unidad por el beta que le corresponde
       // setFincas((prev) =>
       //   prev.map((f, ndx) => {

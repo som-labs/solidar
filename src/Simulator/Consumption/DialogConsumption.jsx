@@ -32,11 +32,14 @@ import * as UTIL from '../classes/Utiles'
 //React global components
 import { useDialog } from '../../components/DialogProvider'
 import { useAlert } from '../../components/AlertProvider'
+import { ConsumptionContext } from '../ConsumptionContext'
+import { useContext } from 'react'
 
 export default function DialogConsumption({ data, previous, onClose }) {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
   const { SLDRAlert } = useAlert()
+  const { fincas } = useContext(ConsumptionContext)
 
   function showDistribuidoras() {
     openDialog({
@@ -86,7 +89,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
           tc.nombreTipoConsumo !== values.nombreTipoConsumo &&
           TCB.modoActivo !== 'INDIVIDUAL'
         ) {
-          if (TCB.Finca.find((fnc) => fnc.nombreTipoConsumo === tc.nombreTipoConsumo)) {
+          if (fincas.find((fnc) => fnc.nombreTipoConsumo === tc.nombreTipoConsumo)) {
             errors.nombreTipoConsumo = 'Hay fincas con este tipo consumo'
             return errors
           }

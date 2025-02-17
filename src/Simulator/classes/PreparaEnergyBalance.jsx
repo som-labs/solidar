@@ -20,22 +20,22 @@ export default async function PreparaEnergyBalance(tipoPanelActivo) {
   UTIL.debugLog('PreparaEnergyBalance - Hay cambio de consumos? ' + TCB.cambioTipoConsumo)
 
   console.log('BUILDING CONSUMO', TCB.cambioTipoConsumo)
-  if (TCB.cambioTipoConsumo) {
-    TCB.requiereOptimizador = true
+  // if (TCB.cambioTipoConsumo) {
+  //   TCB.requiereOptimizador = true
 
-    TCB.consumo = new Consumo()
-    if (TCB.modoActivo !== 'INDIVIDUAL') {
-      //Calculamos el coeficiente del consumo de cada finca sobre el total
-      for (const f of TCB.Finca) {
-        if (f.nombreTipoConsumo !== '')
-          f.coefConsumo =
-            TipoConsumo.getTotal(f.nombreTipoConsumo) / TCB.consumo.totalAnual
-        else f.coefConsumo = 0
-      }
-    }
-    UTIL.debugLog('PreparaEnergyBalance - Nuevo consumo global creado', TCB.consumo)
-    TCB.cambioTipoConsumo = false
-  }
+  //   TCB.consumo = new Consumo()
+  //   if (TCB.modoActivo !== 'INDIVIDUAL') {
+  //     //Calculamos el coeficiente del consumo de cada finca sobre el total
+  //     for (const f of TCB.Finca) {
+  //       if (f.nombreTipoConsumo !== '')
+  //         f.coefConsumo =
+  //           TipoConsumo.getTotal(f.nombreTipoConsumo) / TCB.consumo.totalAnual
+  //       else f.coefConsumo = 0
+  //     }
+  //   }
+  //   UTIL.debugLog('PreparaEnergyBalance - Nuevo consumo global creado', TCB.consumo)
+  //   TCB.cambioTipoConsumo = false
+  // }
 
   //PENDIENTE: desabilitariamos la posibilidad de dar al boton siguiente mientras estamos preparando los resultados
   // document.getElementById('botonSiguiente').disabled = true

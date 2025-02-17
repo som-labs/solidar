@@ -34,7 +34,7 @@ export default function UnitsSummary(props) {
 
   const [openDialog, closeDialog] = useDialog()
 
-  const { allocationGroup, setAllocationGroup, fincas, setFincas } =
+  const { allocationGroup, setAllocationGroup, fincas, setFincas, getConsumoTotal } =
     useContext(ConsumptionContext)
 
   const { grupo } = props
@@ -200,7 +200,6 @@ export default function UnitsSummary(props) {
         criterio: evt.value,
       },
     }))
-    TCB.allocationGroup = allocationGroup
     distributeAllocation(grupo, allocationGroup[grupo].produccion, evt.value)
   }
 
@@ -216,43 +215,36 @@ export default function UnitsSummary(props) {
     switch (criterio) {
       case 'PARTICIPACION':
         setFincas((prev) =>
-          prev.map((f, ndx) => {
+          prev.map((f) => {
             if (f.grupo === grupo && f.participa) {
-              TCB.Finca[ndx].coefEnergia =
+              f.coefEnergia =
                 (f.participacion / allocationGroup[grupo].participacionP) * coefGrupo
-              return TCB.Finca[ndx]
-            } else {
-              return f
             }
+            return f
           }),
         )
         break
 
       case 'CONSUMO':
         setFincas((prev) =>
-          prev.map((f, ndx) => {
+          prev.map((f) => {
             if (f.grupo === grupo && f.participa) {
-              TCB.Finca[ndx].coefEnergia =
-                (TipoConsumo.getTotal(f.nombreTipoConsumo) /
-                  allocationGroup[grupo].consumo) *
+              f.coefEnergia =
+                (getConsumoTotal(f.nombreTipoConsumo) / allocationGroup[grupo].consumo) *
                 coefGrupo
-              return TCB.Finca[ndx]
-            } else {
-              return f
             }
+            return f
           }),
         )
         break
 
       case 'PARITARIO':
         setFincas((prev) =>
-          prev.map((f, ndx) => {
+          prev.map((f) => {
             if (f.grupo === grupo && f.participa) {
-              TCB.Finca[ndx].coefEnergia = coefGrupo / allocationGroup[grupo].participes
-              return TCB.Finca[ndx]
-            } else {
-              return f
+              f.coefEnergia = coefGrupo / allocationGroup[grupo].participes
             }
+            return f
           }),
         )
         break

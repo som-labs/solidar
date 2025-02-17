@@ -22,6 +22,7 @@ import * as UTIL from '../classes/Utiles'
 //React global components
 import { useDialog } from '../../components/DialogProvider'
 import AllocationGraph from './AllocationGraph'
+import { EnergyContext } from '../EnergyContext.jsx'
 
 export default function EnergyAllocationStep() {
   const { t } = useTranslation()
@@ -36,7 +37,10 @@ export default function EnergyAllocationStep() {
     setRepartoValido,
     allocationGroup,
     setAllocationGroup,
+    modifyConsumptionData,
   } = useContext(ConsumptionContext)
+
+  const { consumoGlobal } = useContext(EnergyContext)
 
   const [openDialog, closeDialog] = useDialog()
 
@@ -67,31 +71,26 @@ export default function EnergyAllocationStep() {
         Object.keys(newAllocation).forEach(
           (group) =>
             (newAllocation[group].produccion =
-              newAllocation[group].consumo / TCB.consumo.totalAnual),
+              newAllocation[group].consumo / consumoGlobal.totalAnual),
         )
         return newAllocation
       })
-      TCB.allocationGroup = allocationGroup
 
       //Distribución de la produccion del grupo entre sus participes basada en participacion
       for (const grupo in allocationGroup) {
         //Si el grupo tiene unidades esta formado por fincas de DGC
         if (allocationGroup[grupo].unidades > 0) {
           //Es grupo de catastro hay que calcular betas y asignarlo a cada finca
-          setFincas((prev) =>
-            prev.map((f, ndx) => {
-              if (f.participa && f.grupo === grupo) {
-                TCB.Finca[ndx].coefEnergia = UTIL.roundDecimales(
-                  (f.participacion / allocationGroup[grupo].participacionP) *
-                    allocationGroup[grupo].produccion,
-                  6,
-                )
-                return TCB.Finca[ndx]
-              } else {
-                return f
-              }
-            }),
-          )
+          for (const f of fincas) {
+            if (f.participa && f.grupo === grupo) {
+              f.coefEnergia = UTIL.roundDecimales(
+                (f.participacion / allocationGroup[grupo].participacionP) *
+                  allocationGroup[grupo].produccion,
+                6,
+              )
+              modifyConsumptionData('Finca', f)
+            }
+          }
         } else {
           //Es una zona comun el beta es directamente la energia asignada al grupo
           setZonasComunes((prev) =>
@@ -129,27 +128,11 @@ export default function EnergyAllocationStep() {
     )
     const deltaTotal = 1 - betaFincas - betaZonasComunes
     if (zonasComunes.length > 0) {
-      setZonasComunes((prev) =>
-        prev.map((z, ndx) => {
-          if (ndx === 0) {
-            TCB.ZonaComun[ndx].coefEnergia += deltaTotal
-            return TCB.ZonaComun[ndx]
-          } else {
-            return z
-          }
-        }),
-      )
+      zonasComunes[0].coefEnergia += deltaTotal
+      modifyConsumptionData('ZonaComun', zonasComunes[0])
     } else {
-      setFincas((prev) =>
-        prev.map((f, ndx) => {
-          if (ndx === 0) {
-            TCB.Finca[ndx].coefEnergia += deltaTotal
-            return TCB.Finca[ndx]
-          } else {
-            return f
-          }
-        }),
-      )
+      fincas[0].coefEnergia += deltaTotal
+      modifyConsumptionData('Finca', fincas[0])
     }
   }
 
@@ -166,11 +149,7 @@ export default function EnergyAllocationStep() {
     UTIL.dumpData(TCB.parametros.CAU + '.txt', betaList)
   }
 
-  // console.log(
-  //   'render EnergyAllocation',
-  //   JSON.stringify(allocationGroup),
-  //   TCB.requiereAllocation,
-  // )
+  console.log(allocationGroup)
   return (
     <Container>
       <>

@@ -32,7 +32,7 @@ export default function UnitsSummary(props) {
   const [openDialog, closeDialog] = useDialog()
   const { preciosValidos, fincas, zonasComunes, allocationGroup } =
     useContext(ConsumptionContext)
-  const { setEcoData, costeZCenFinca } = useContext(EconomicContext)
+  const { economicoGlobal, costeZCenFinca } = useContext(EconomicContext)
 
   const { grupo, units } = props
   const [totalCost, setTotalCost] = useState()
@@ -115,7 +115,7 @@ export default function UnitsSummary(props) {
             UTIL.formatoValor(
               'dinero',
               allocationGroup[grupo].produccion *
-                TCB.economico.precioInstalacionCorregido,
+                economicoGlobal.precioInstalacionCorregido,
             ) +
             ' )'}
         </div>
@@ -126,7 +126,7 @@ export default function UnitsSummary(props) {
       valueGetter: (params) =>
         UTIL.formatoValor(
           'dinero',
-          params.row.coefEnergia * TCB.economico.precioInstalacionCorregido,
+          params.row.coefEnergia * economicoGlobal.precioInstalacionCorregido,
         ),
       flex: 1,
       description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
@@ -174,7 +174,7 @@ export default function UnitsSummary(props) {
             UTIL.formatoValor(
               'dinero',
               (allocationGroup[gZC.id].produccion *
-                TCB.economico.precioInstalacionCorregido *
+                economicoGlobal.precioInstalacionCorregido *
                 allocationGroup[grupo].participacionT) /
                 allocationGroup[gZC.id].participacionT,
             ) +
@@ -188,7 +188,7 @@ export default function UnitsSummary(props) {
         UTIL.formatoValor(
           'dinero',
           costeZCenFinca(params.row, gZC).global *
-            TCB.economico.precioInstalacionCorregido,
+            economicoGlobal.precioInstalacionCorregido,
         ),
       //flex: 1,
       width: 120,
@@ -215,7 +215,7 @@ export default function UnitsSummary(props) {
         v += costeZCenFinca(params.row, zc).global
       }
       v += params.row.coefEnergia
-      return UTIL.formatoValor('dinero', v * TCB.economico.precioInstalacionCorregido)
+      return UTIL.formatoValor('dinero', v * economicoGlobal.precioInstalacionCorregido)
     },
     flex: 1,
     description: t('TipoConsumo.TOOLTIP.nombreTipoConsumo'),
@@ -270,7 +270,7 @@ export default function UnitsSummary(props) {
     }
     //Coste de la produccion propia
     v += allocationGroup[grupo].produccion
-    setTotalCost(v * TCB.economico.precioInstalacionCorregido)
+    setTotalCost(v * economicoGlobal.precioInstalacionCorregido)
   }, [])
 
   // console.log(units.filter((_f) => _f.participa))

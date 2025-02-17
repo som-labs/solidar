@@ -1,4 +1,4 @@
-import { useState, useContext, useRef } from 'react'
+import { useState, useContext, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -12,6 +12,7 @@ import { DataGrid, GridToolbarContainer, GridActionsCellItem } from '@mui/x-data
 
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
+import { GlobalContext } from '../GlobalContext'
 import MapaMesHora from './MapaMesHora'
 import MapaDiaHora from './MapaDiaHora'
 import { useDialog } from '../../components/DialogProvider'
@@ -33,8 +34,23 @@ export default function TarifasSummary() {
   const { SLDRAlert } = useAlert()
   const [openDialog, closeDialog] = useDialog()
   const [initialTarifa, setInitialTarifa] = useState()
-  const { setPreciosValidos, fincas, tarifas, setTarifas } =
-    useContext(ConsumptionContext)
+  const {
+    setPreciosValidos,
+    fincas,
+    tarifas,
+    setTarifas,
+    addConsumptionData,
+    modifyConsumptionData,
+    deleteConsumptionData,
+  } = useContext(ConsumptionContext)
+
+  useEffect(() => {
+    console.log('Insert')
+    if (TCB.modoActivo === 'INDIVIDUAL' && tarifas.length === 0) {
+      setTarifas([new Tarifa('Tarifa Som Energia', '2.0TD')])
+    }
+  }, [])
+  const { setNewPrecios } = useContext(GlobalContext)
 
   const editing = useRef()
 
@@ -97,34 +113,55 @@ export default function TarifasSummary() {
     })
   }
 
-  columns.push({
-    field: 'actions',
-    type: 'actions',
-    headerName: t('BASIC.LABEL_ACCIONES'),
-    sortable: false,
-    getActions: (params) => [
-      <GridActionsCellItem
-        key={1}
-        icon={
-          <Tooltip title={t('TARIFA.TOOLTIP_botonBorraTarifa')}>
-            <DeleteIcon />
-          </Tooltip>
-        }
-        label="Borra"
-        onClick={(e) => deleteTarifa(e, params.row)}
-      />,
-      <GridActionsCellItem
-        key={2}
-        icon={
-          <Tooltip title={t('TARIFA.TOOLTIP_botonEditaTarifa')}>
-            <EditIcon />
-          </Tooltip>
-        }
-        label="Edit"
-        onClick={() => editTarifa(params.row)}
-      />,
-    ],
-  })
+  if (TCB.modoActivo !== 'INDIVIDUAL') {
+    columns.push({
+      field: 'actions',
+      type: 'actions',
+      headerName: t('BASIC.LABEL_ACCIONES'),
+      sortable: false,
+      getActions: (params) => [
+        <GridActionsCellItem
+          key={1}
+          icon={
+            <Tooltip title={t('TARIFA.TOOLTIP_botonBorraTarifa')}>
+              <DeleteIcon />
+            </Tooltip>
+          }
+          label="Borra"
+          onClick={(e) => deleteTarifa(e, params.row)}
+        />,
+        <GridActionsCellItem
+          key={2}
+          icon={
+            <Tooltip title={t('TARIFA.TOOLTIP_botonEditaTarifa')}>
+              <EditIcon />
+            </Tooltip>
+          }
+          label="Edit"
+          onClick={() => editTarifa(params.row)}
+        />,
+      ],
+    })
+  } else {
+    columns.push({
+      field: 'actions',
+      type: 'actions',
+      headerName: t('CONSUMPTION.LABEL_CAMBIO_TARIFA'),
+      sortable: false,
+      getActions: (params) => [
+        <GridActionsCellItem
+          key={2}
+          icon={
+            <Tooltip title={t('TARIFA.TOOLTIP_botonEditaTarifa')}>
+              <EditIcon />
+            </Tooltip>
+          }
+          label="Edit"
+          onClick={() => editTarifa(params.row)}
+        />,
+      ],
+    })
+  }
 
   function getRowId(row) {
     return row.idTarifa
@@ -166,17 +203,15 @@ export default function TarifasSummary() {
     if (reason === undefined) return
     //Update or create a Tarifa with formData
     if (reason === 'save') {
-      TCB.cambioTipoConsumo = true
       //Can reach this by saving new tarifa or editing existing one
       if (editing.current) {
-        setTarifas((prev) =>
-          prev.map((t) => (t.idTarifa === formData.idTarifa ? formData : t)),
-        )
+        modifyConsumptionData('Tarifa', formData)
       } else {
-        setTarifas((prev) => [...prev, formData])
+        addConsumptionData('Tarifa', formData)
       }
     }
     if (tarifas.length > 0) setPreciosValidos(true)
+    setNewPrecios(true)
     closeDialog()
   }
 
@@ -188,8 +223,8 @@ export default function TarifasSummary() {
         return
       }
     }
-    setTarifas((prev) => prev.filter((b) => b.idTarifa !== tid.idTarifa))
-    TCB.cambioTipoConsumo = true
+    deleteConsumptionData('Tarifa', tid.idTarifa)
+    setNewPrecios(true)
   }
 
   function newTarifa() {
@@ -213,23 +248,22 @@ export default function TarifasSummary() {
     )
   }
 
+  console.log(tarifas)
   return (
     <Grid container justifyContent={'center'} rowSpacing={4}>
       <Grid item xs={11}>
-        <SLDRInfoBox>
-          <DataGrid
-            sx={theme.tables.headerWrap}
-            getRowId={getRowId}
-            rows={tarifas}
-            columns={columns}
-            hideFooter={false}
-            rowHeight={30}
-            autoHeight
-            disableColumnMenu
-            localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
-            slots={{ toolbar: newTarifa }}
-          />
-        </SLDRInfoBox>
+        <DataGrid
+          sx={theme.tables.headerWrap}
+          getRowId={getRowId}
+          rows={tarifas}
+          columns={columns}
+          hideFooter={true}
+          rowHeight={30}
+          autoHeight
+          disableColumnMenu
+          localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
+          slots={{ toolbar: TCB.modoActivo !== 'INDIVIDUAL' ? newTarifa : '' }}
+        />
       </Grid>
     </Grid>
   )

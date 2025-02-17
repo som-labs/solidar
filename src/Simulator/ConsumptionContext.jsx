@@ -2,6 +2,7 @@ import { useState, createContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import TCB from './classes/TCB'
+import Tarifa from './classes/Tarifa'
 
 const ConsumptionContext = createContext({})
 
@@ -19,17 +20,24 @@ const ConsumptionContextProvider = ({ children }) => {
   const addConsumptionData = (clase, data) => {
     switch (clase) {
       case 'TipoConsumo':
-        setTiposConsumo([...tiposConsumo, data])
+        setTiposConsumo((prev) => [...prev, data])
         break
       case 'Tarifa':
-        setTarifas([...tarifas, data])
+        setTarifas((prev) => [...prev, data])
         break
       case 'ZonaComun':
-        setZonasComunes([...zonasComunes, data])
+        setZonasComunes((prev) => [...prev, data])
+        break
+      case 'Finca':
+        setFincas((prev) => [...prev, data])
         break
     }
   }
-
+  /**
+   * Modifica un objecto existente en ConsumptionContext
+   * @param {string} clase Un valor entre TipoConsumo, ZonaComun, Tarifa
+   * @param {*} updatedData
+   */
   const modifyConsumptionData = (clase, updatedData) => {
     switch (clase) {
       case 'TipoConsumo':
@@ -59,12 +67,24 @@ const ConsumptionContextProvider = ({ children }) => {
       case 'Tarifa':
         setTarifas(
           tarifas.map((tarifa) =>
-            tarifa.idTipoConsumo === updatedData.idTarifa
+            tarifa.idTarifa === updatedData.idTarifa
               ? Object.create(
                   Object.getPrototypeOf(updatedData),
                   Object.getOwnPropertyDescriptors(updatedData),
                 )
               : tarifa,
+          ),
+        )
+        break
+      case 'Finca':
+        setFincas(
+          fincas.map((finca) =>
+            finca.idFinca === updatedData.idFinca
+              ? Object.create(
+                  Object.getPrototypeOf(updatedData),
+                  Object.getOwnPropertyDescriptors(updatedData),
+                )
+              : finca,
           ),
         )
         break
@@ -77,10 +97,13 @@ const ConsumptionContextProvider = ({ children }) => {
         setTiposConsumo(tiposConsumo.filter((tipo) => tipo.idTipoConsumo !== id))
         break
       case 'Tarifa':
-        setTarifas(tarifas.filter((tarifa) => tarifa.id !== id))
+        setTarifas(tarifas.filter((tarifa) => tarifa.idTarifa !== id))
         break
       case 'ZonaComun':
         setZonasComunes(zonasComunes.filter((zona) => zona.id !== id))
+        break
+      case 'Finca':
+        setFincas(fincas.filter((finca) => finca.idFinca !== id))
         break
     }
   }
@@ -112,8 +135,21 @@ const ConsumptionContextProvider = ({ children }) => {
           error: t('CONSUMPTION.ERROR_FALTA_TARIFA_INDIVIDUAL'),
         }
       }
+    } else {
+      if (tarifas.length === 0) {
+        return {
+          status: false,
+          error: t('CONSUMPTION.ERROR_FALTA_TARIFA_COLECTIVO'),
+        }
+      }
     }
 
+    if (tiposConsumo.length === 0) {
+      return {
+        status: false,
+        error: t('CONSUMPTION.ERROR_AL_MENOS_UN_TIPOCONSUMO'),
+      }
+    }
     return { status: true, error: '' }
   }
 
@@ -134,8 +170,7 @@ const ConsumptionContextProvider = ({ children }) => {
     console.log('EN validaUnits')
     let results = { status: true, error: '' }
 
-    console.log(zonasComunes, allocationGroup)
-    console.log('UPDATING ZONAS')
+    console.log(zonasComunes, fincas, allocationGroup)
     for (const _zc of zonasComunes) {
       //Verify each zonaComun have Tarifa assigned
       if (_zc.idTarifa === '') {
@@ -149,7 +184,7 @@ const ConsumptionContextProvider = ({ children }) => {
             zona: _zc.nombre,
           })
         } else {
-          updateTCBUnitsFromState()
+          //updateTCBUnitsFromState()
           return results
         }
       }
@@ -157,7 +192,7 @@ const ConsumptionContextProvider = ({ children }) => {
     //If there is not zonasComunes check at least one finca participa and has tipoConsumo assigned
     for (const _fnc of fincas) {
       if (_fnc.nombreTipoConsumo !== '' && _fnc.participa) {
-        updateTCBUnitsFromState()
+        //updateTCBUnitsFromState()
         return results
       }
     }
@@ -165,6 +200,12 @@ const ConsumptionContextProvider = ({ children }) => {
     results.status = false
     results.error = t('UNITS.ERROR_AL_MENOS_UN_USOELECTRICO')
     return results
+  }
+
+  function getConsumoTotal(nombreTipoConsumo) {
+    return nombreTipoConsumo !== ''
+      ? tiposConsumo.find((tc) => tc.nombreTipoConsumo === nombreTipoConsumo).totalAnual
+      : 0
   }
 
   const contextValue = {
@@ -190,6 +231,7 @@ const ConsumptionContextProvider = ({ children }) => {
     addConsumptionData,
     modifyConsumptionData,
     deleteConsumptionData,
+    getConsumoTotal,
   }
 
   return (

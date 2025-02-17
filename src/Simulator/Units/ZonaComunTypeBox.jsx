@@ -8,7 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
-
+import { GlobalContext } from '../GlobalContext'
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
@@ -23,10 +23,13 @@ export default function ZonaComunTypeBox(props) {
     setZonasComunes,
     allocationGroup,
     setAllocationGroup,
-    tipoConsumo,
+    tiposConsumo,
     tarifas,
+    addConsumptionData,
+    modifyConsumptionData,
+    deleteConsumptionData,
   } = useContext(ConsumptionContext)
-
+  const { setNewTiposConsumo, setNewPrecios } = useContext(GlobalContext)
   const [error, setError] = useState({ status: false, field: '' })
   const { zonaComun } = props
 
@@ -39,7 +42,10 @@ export default function ZonaComunTypeBox(props) {
     )
 
     //Change consumo de la zona comun en allocationGroup
-    const tConsumo = tipo !== '' ? TipoConsumo.getTotal(tipo) : 0
+    const tConsumo =
+      tipo !== ''
+        ? tiposConsumo.find((tc) => tc.nombreTipoConsumo === tipo).totalAnual
+        : 0
     setAllocationGroup((prev) => ({
       ...prev,
       [zonaComun.id]: {
@@ -47,9 +53,7 @@ export default function ZonaComunTypeBox(props) {
         consumo: tConsumo,
       },
     }))
-    TCB.allocationGroup = allocationGroup
-    TCB.requiereReparto = true
-    TCB.cambioTipoConsumo = true
+    setNewTiposConsumo(true)
   }
 
   function changeTarifa(id) {
@@ -57,6 +61,7 @@ export default function ZonaComunTypeBox(props) {
     setZonasComunes((prev) =>
       prev.map((_zc) => (_zc.id === zonaComun.id ? { ..._zc, idTarifa: id } : _zc)),
     )
+    setNewPrecios(true)
   }
 
   function changeNombreZonaComun(event) {
@@ -78,7 +83,6 @@ export default function ZonaComunTypeBox(props) {
       ...prev,
       [zonaComun.id]: { ...prev[zonaComun.id], nombre: value },
     }))
-    TCB.allocationGroup = allocationGroup
     setZonasComunes((prev) =>
       prev.map((item) => (item.id === zonaComun.id ? { ...item, nombre: value } : item)),
     )
@@ -91,7 +95,7 @@ export default function ZonaComunTypeBox(props) {
   }
 
   function deleteZonaComun() {
-    setZonasComunes((prev) => [...prev.filter((_zc) => _zc.id !== zonaComun.id)])
+    deleteConsumptionData('ZonaComun', zonaComun.id)
 
     if (allocationGroup) {
       setAllocationGroup((prev) => {
@@ -103,14 +107,10 @@ export default function ZonaComunTypeBox(props) {
         }
         return tmpAG
       })
-      TCB.allocationGroup = allocationGroup
     }
-
-    TCB.requiereReparto = true
-    TCB.cambioTipoConsumo = true
+    setNewTiposConsumo(true)
   }
 
-  console.log(allocationGroup)
   return (
     <>
       {allocationGroup && (
@@ -183,7 +183,7 @@ export default function ZonaComunTypeBox(props) {
             value={zonaComun.nombreTipoConsumo}
             onChange={(event) => changeTipoConsumo(event.target.value)}
           >
-            {tipoConsumo.map((_tc, index) => (
+            {tiposConsumo.map((_tc, index) => (
               <MenuItem key={index} value={_tc.nombreTipoConsumo}>
                 {_tc.nombreTipoConsumo}
               </MenuItem>
