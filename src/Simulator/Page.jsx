@@ -98,7 +98,6 @@ export default function Page() {
 
   async function validaLocationStep() {
     results = await validaBases()
-    console.log('validaLocationStep', results)
     if (!results.status) SLDRAlert('VALIDACION', results.error, 'Error')
     return results.status
   }
@@ -128,11 +127,9 @@ export default function Page() {
     /* Condiciones bajo las cuales hay que hacer un recalculo del balanceEnergetico */
     if (newTiposConsumo || newUnits || importando) {
       /* Si han cambiado los tipos de consumo o estamos importando hay que reconstruir el consumoGlobal */
-      console.log('PreparaEnergyBalance Construyendo nuevo consumo Global')
 
       newConsumo = new Consumo(tiposConsumo, fincas, zonasComunes)
       setConsumoGlobal(newConsumo)
-      console.log('Newconsumo in page', newConsumo)
       /* Calculamos el coeficiente del consumo de cada finca sobre el total */
       if (TCB.modoActivo !== 'INDIVIDUAL') {
         for (const f of fincas) {
@@ -140,7 +137,6 @@ export default function Page() {
         }
       }
       UTIL.debugLog('PreparaEnergyBalance - Nuevo consumo global creado', newConsumo)
-      console.log('PreparaEnergyBalance Consumo Global creado', newConsumo)
       setNewTiposConsumo(false)
     } else {
       newConsumo = consumoGlobal
@@ -227,13 +223,10 @@ export default function Page() {
   }
 
   async function PreparaEconomicBalance() {
-    console.log('->PreparaEconomicBalance')
     let cursorOriginal = document.body.style.cursor
     document.body.style.cursor = 'progress'
-
-    console.log(balanceGlobal, economicoGlobal, produccionGlobal)
     //When importing first time will not compute Economico next yes
-    console.log(importando, economicoGlobal)
+
     if (!importando || !economicoGlobal) {
       let newEconomico = new Economico(
         null,
@@ -246,7 +239,7 @@ export default function Page() {
         zonasComunes,
         costeZCenFinca,
       )
-      console.log('NUEVO ECONOMICO GLABAL', newEconomico)
+
       setEconomicoGlobal(newEconomico)
       UTIL.debugLog('calcula economico global ', newEconomico)
       if (newEconomico.periodoAmortizacion > 20) {
@@ -267,7 +260,7 @@ export default function Page() {
 
       if (TCB.modoActivo !== 'INDIVIDUAL') {
         let consumoIndividual
-        console.log('Recalculo Zonascomunes')
+
         //Calcular balance y economico de zonas comunes para asignar ahorro a las fincas despues
         for (const _zc of zonasComunes) {
           consumoIndividual = tiposConsumo.find(
@@ -286,7 +279,7 @@ export default function Page() {
             costeZCenFinca,
           )
         }
-        console.log('recalculo fincas')
+
         //Calcular balance y economico de las fincas
 
         for (let _f of fincas) {
@@ -306,7 +299,6 @@ export default function Page() {
               zonasComunes,
               costeZCenFinca,
             )
-            console.log(_f)
           }
         }
       }
@@ -319,7 +311,6 @@ export default function Page() {
   }
 
   async function validaUnitsStep() {
-    console.log('validaUnitsStep')
     results = validaUnits()
     if (!results.status) {
       SLDRAlert('VALIDACION', results.error, 'Error')
@@ -330,7 +321,6 @@ export default function Page() {
   }
 
   async function validaEnergyBalanceStep() {
-    console.log('validaEnergyBalanceStep')
     for (const base of bases) {
       if (!UTIL.ValidateEntero(base.instalacion.paneles)) {
         SLDRAlert(
@@ -368,7 +358,18 @@ export default function Page() {
     }
   }
 
-  function validaEconomicBalance() {}
+  function validaEconomicBalance() {
+    /* 
+    Se copia a TCB para aprovehar los informes previos.
+    Analizar la posibilidad de rehacer usando la fuente disponible en los context
+    */
+    TCB.BaseSolar = bases
+    TCB.consumo = consumoGlobal
+    TCB.produccion = produccionGlobal
+    TCB.balance = balanceGlobal
+    TCB.economico = economicoGlobal
+    console.log(economicoGlobal)
+  }
 
   const getSections = (modo) => {
     let sections = [
@@ -421,7 +422,7 @@ export default function Page() {
           key={'un_sec'}
           label="units"
           title={t('ECONOMIC_ALLOCATION.TITLE')}
-          //next={}
+          next={validaEconomicBalance}
         />,
       )
     } else {

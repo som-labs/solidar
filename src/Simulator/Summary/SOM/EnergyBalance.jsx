@@ -1,4 +1,4 @@
-import { useRef, useContext, useState, useEffect } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -8,28 +8,27 @@ import { useTheme } from '@mui/material/styles'
 // REACT Solidar Components
 import { EconomicContext } from '../../EconomicContext'
 import { BasesContext } from '../../BasesContext'
+import { EnergyContext } from '../../EnergyContext'
 import { SLDRInfoBox } from '../../../components/SLDRComponents'
-import GraphBoxAutoconsumo from '../../EnergyBalance/GraphBoxAutoconsumo'
-// import CallSankey from '../../EnergyBalance/SankeyFlow/CallSankey'
+import GraphBoxAutoconsumo from './GraphBoxAutoconsumo'
 
 // Solidar objects
-import TCB from '../../classes/TCB'
 import * as UTIL from '../../classes/Utiles'
 
 export default function EnergyBalance() {
   const { t } = useTranslation()
   const theme = useTheme()
-
+  const { produccionGlobal, balanceGlobal, consumoGlobal } = useContext(EnergyContext)
   const [yearlyData, setYearlyData] = useState({})
 
   useEffect(() => {
     setYearlyData({
-      consumo: TCB.consumo.totalAnual,
-      produccion: TCB.produccion.totalAnual,
-      deficit: TCB.balance.deficitAnual,
-      autoconsumo: TCB.balance.autoconsumo,
-      excedente: TCB.balance.excedenteAnual,
-      consumoDiurno: TCB.balance.consumoDiurno,
+      consumo: consumoGlobal.totalAnual,
+      produccion: produccionGlobal.totalAnual,
+      deficit: balanceGlobal.deficitAnual,
+      autoconsumo: balanceGlobal.autoconsumo,
+      excedente: balanceGlobal.excedenteAnual,
+      consumoDiurno: balanceGlobal.consumoDiurno,
     })
   }, [])
 
@@ -61,7 +60,7 @@ export default function EnergyBalance() {
       <Typography variant="h4" color={theme.palette.text} textAlign={'center'}>
         {UTIL.formatoValor(
           'porciento',
-          (TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100,
+          (balanceGlobal.autoconsumo / produccionGlobal.totalAnual) * 100,
         )}
       </Typography>
       <Typography

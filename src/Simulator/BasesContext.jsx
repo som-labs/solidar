@@ -38,12 +38,6 @@ const BasesContextProvider = ({ children }) => {
   }
 
   const modifyBase = (updatedBase) => {
-    console.log(
-      'Modificando base',
-      updatedBase.idBaseSolar,
-      'paneles ',
-      updatedBase.instalacion.paneles,
-    )
     setBases(
       bases.map((base) =>
         base.idBaseSolar === updatedBase.idBaseSolar

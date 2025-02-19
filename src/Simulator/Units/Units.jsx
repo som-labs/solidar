@@ -74,9 +74,6 @@ export default function UnitsStep() {
   }
 
   useEffect(() => {
-    //Copy fincas and zonas comunes in state to TCB
-    //updateTCBUnitsFromState()
-    console.log('RECIBIDO ALLOCATION GROUP', allocationGroup)
     if (!allocationGroup) {
       //Build new allocationGroup
       let uniqueGroup = {}
@@ -123,7 +120,6 @@ export default function UnitsStep() {
             zc.nombreTipoConsumo !== '' ? getConsumoTotal(zc.nombreTipoConsumo) : 0,
         }
       })
-      console.log('Construyendo uniquegroup', uniqueGroup)
       setAllocationGroup(uniqueGroup)
 
       //If previous allocationGroup just update consumo if there has been any change in TipoConsumo

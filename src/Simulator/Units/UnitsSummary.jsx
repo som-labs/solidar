@@ -296,7 +296,6 @@ export default function UnitsSummary(props) {
     }
 
     for (let _fnc of fincas.filter((f) => f.grupo === grupo)) {
-      console.log(_fnc)
       if (_fnc.participa && _fnc.idTarifa === '') {
         fincasInFailure.push(_fnc.idFinca)
       }

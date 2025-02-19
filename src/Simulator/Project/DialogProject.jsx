@@ -313,11 +313,6 @@ export default function DialogProject({ onClose }) {
     }
   }
 
-  // const importProject = (event) => {
-  //   const selectedFile = event.target.files[0]
-  //   console.log('importProject', selectedFile)
-  // }
-
   /**
    * Proceso de importación de un proyecto solimp
    * @param {File} fichero Objeto File asociado al fichero solimp a importar
@@ -344,19 +339,21 @@ export default function DialogProject({ onClose }) {
       TCB.origenDatosSolidar.removeFeature(feat)
     })
 
-    // Don' want to optimize, Use panels as imported
-    //TCB.requiereOptimizador = false
-
     // read data from solimp file
     const datosImportar = await obtenerDatos(fichero)
-    console.log(datosImportar)
     // Check solimp version to check if compatible
     if (datosImportar.version[0] !== '4') {
-      return { status: false, error: 'MSG_problemaVersion' }
+      SLDRAlert('IMPORT ERROR', t('PROYECTO.MSG_VERSION_PROBLEM'))
+      return
     }
 
     if (datosImportar.modoActivo !== TCB.modoActivo) {
-      return { status: false, error: 'Modo incompatible' }
+      SLDRAlert(
+        'IMPORT ERROR',
+        t('Proyecto.MSG_INCOMPATIBLE_MODE', { modo: datosImportar.modoActivo }),
+        'Warning',
+      )
+      return
     }
 
     TCB.nombreProyecto = datosImportar.nombreProyecto
@@ -371,15 +368,14 @@ export default function DialogProject({ onClose }) {
     TCB.conversionCO2 = datosImportar.conversionCO2
     TCB.tipoPanelActivo = datosImportar.tipoPanelActivo
     setNewPanelActivo(false)
+
     importLocalizacion(datosImportar)
     setNewBases(false)
-
     if (TCB.modoActivo !== 'INDIVIDUAL') {
       if (datosImportar.Finca) setFincas(datosImportar.Finca)
       if (datosImportar.ZonaComun) setZonasComunes(datosImportar.ZonaComun)
     }
     setNewUnits(false)
-
     setTotalPaneles(datosImportar.totalPaneles)
 
     // Import Tarifa
@@ -389,6 +385,7 @@ export default function DialogProject({ onClose }) {
     if (datosImportar.tarifas) {
       setTarifas(datosImportar.tarifas)
     }
+
     if (datosImportar.TipoConsumo) {
       importTipoConsumo(datosImportar)
       setNewTiposConsumo(false)
@@ -399,7 +396,7 @@ export default function DialogProject({ onClose }) {
       console.log(datosImportar?.allocationGroup)
       if (datosImportar?.allocationGroup) {
         setAllocationGroup(datosImportar.allocationGroup)
-        console.log('IMPORTADO AllocationGroup rn TCB', datosImportar.allocationGroup)
+        console.log('IMPORTADO AllocationGroup', datosImportar.allocationGroup)
       }
     }
 

@@ -14,8 +14,6 @@ import BaseSolar from './BaseSolar'
  */
 
 function optimizador(bases, consumo, potenciaPanelInicio, modifyBase) {
-  console.log('Optimizador', bases, consumo, potenciaPanelInicio)
-
   let energiaPendiente = consumo.totalAnual
   let energiaAsignada = 0
   let tmpPaneles
@@ -37,20 +35,10 @@ function optimizador(bases, consumo, potenciaPanelInicio, modifyBase) {
     energiaAsignada =
       energiaAsignada > energiaPendiente ? energiaPendiente : energiaAsignada
 
-    console.log('Asignada', energiaAsignada, 'Pendiente', energiaPendiente)
     tmpPaneles = Math.round(
       energiaAsignada /
         localBases[i].rendimiento.unitarioTotal /
         (potenciaPanelInicio / 1000),
-    )
-
-    console.log(
-      'Creada Instalacion con ' +
-        tmpPaneles +
-        ' paneles de ' +
-        potenciaPanelInicio +
-        ' Wp en la base ',
-      localBases[i].idBaseSolar,
     )
 
     //Si no hay consumo suficiente para justificar un panel ponemos un panel

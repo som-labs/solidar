@@ -45,7 +45,6 @@ export default function TarifasSummary() {
   } = useContext(ConsumptionContext)
 
   useEffect(() => {
-    console.log('Insert')
     if (TCB.modoActivo === 'INDIVIDUAL' && tarifas.length === 0) {
       setTarifas([new Tarifa('Tarifa Som Energia', '2.0TD')])
     }
@@ -248,7 +247,6 @@ export default function TarifasSummary() {
     )
   }
 
-  console.log(tarifas)
   return (
     <Grid container justifyContent={'center'} rowSpacing={4}>
       <Grid item xs={11}>

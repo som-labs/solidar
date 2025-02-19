@@ -77,12 +77,9 @@ class DiaHora {
         this.diaHora[dia][hora] += inDiaHora.diaHora[dia][hora]
       }
       this.idxTable[dia].fecha = inDiaHora.idxTable[dia].fecha
-      this.idxTable[dia].suma += inDiaHora.idxTable[dia].suma
-      this.idxTable[dia].promedio = this.idxTable[dia].suma / 2
-      this.idxTable[dia].maximo =
-        this.idxTable[dia].maximo > inDiaHora.idxTable[dia].maximo
-          ? this.idxTable[dia].maximo
-          : inDiaHora.idxTable[dia].maximo
+      this.idxTable[dia].suma = this.diaHora[dia].reduce((t, a) => t + a, 0)
+      this.idxTable[dia].promedio = this.idxTable[dia].suma / 24
+      this.idxTable[dia].maximo = Math.max(...this.diaHora[dia])
     }
     this.sintesis()
   }

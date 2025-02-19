@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Typography, Box, Button } from '@mui/material'
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
+import TCB from '../classes/TCB'
 //import { useDialog } from '../../components/DialogProvider'
 
 export default function HelpConsumption(props) {
@@ -15,7 +16,7 @@ export default function HelpConsumption(props) {
           <Typography
             variant="body"
             dangerouslySetInnerHTML={{
-              __html: t('CONSUMPTION.COMPENSACION_DESCRIPTION'),
+              __html: t('CONSUMPTION.COMPENSACION_DESCRIPTION_' + TCB.modoActivo),
             }}
           />
         </Box>

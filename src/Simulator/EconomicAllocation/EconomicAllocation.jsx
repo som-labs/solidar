@@ -116,23 +116,22 @@ export default function EconomicAllocationStep() {
   function generaFicheroResumen() {
     const rowList = []
     for (const f of fincas) {
-      console.log(f)
       let costeTotal = 0
       let ahorroTotal = 0
 
       const e = {
-        nombre: f.nombreFinca,
-        grupo: f.grupo,
-        participacion: f.participacion,
+        Nombre: f.nombreFinca,
+        Grupo: f.grupo,
+        Participacion: f.participacion,
         beta: UTIL.roundDecimales(f.coefEnergia, 6),
-        coste: UTIL.roundDecimales(
+        'Coste propio': UTIL.roundDecimales(
           economicoGlobal.precioInstalacionCorregido * f.coefEnergia,
           2,
         ),
-        ahorro: f?.economico ? UTIL.roundDecimales(f.economico.ahorroAnual, 2) : 0,
+        Ahorro: f?.economico ? UTIL.roundDecimales(f.economico.ahorroAnual, 2) : 0,
       }
-      costeTotal = e.coste
-      ahorroTotal = e.ahorro
+      costeTotal = e['Coste propio']
+      ahorroTotal = e.Ahorro
 
       for (const zc of zonasComunes) {
         const cZC = UTIL.roundDecimales(
@@ -148,7 +147,7 @@ export default function EconomicAllocationStep() {
         costeTotal += cZC
         ahorroTotal += aZC
       }
-      e['Inversión'] = UTIL.roundDecimales(costeTotal, 2)
+      e['Coste total'] = UTIL.roundDecimales(costeTotal, 2)
       e['Ahorro anual'] = UTIL.roundDecimales(ahorroTotal, 2)
 
       rowList.push(e)

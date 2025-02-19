@@ -20,7 +20,6 @@ export default function YearSaving({ finca }) {
   const { economicoGlobal } = useContext(EconomicContext)
   const localEcoData = finca ? finca.economico : economicoGlobal
 
-  console.log(localEcoData)
   return (
     <>
       <Container>

@@ -7,6 +7,7 @@ import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { EconomicContext } from '../../EconomicContext'
+
 import { SLDRInfoBox } from '../../../components/SLDRComponents'
 import GraphBoxSavings from '../../EconomicBalance/GraphBoxSavings'
 // import CallSankey from '../../EnergyBalance/SankeyFlow/CallSankey'
@@ -17,7 +18,7 @@ import * as UTIL from '../../classes/Utiles'
 export default function EconomicBalance() {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { ecoData } = useContext(EconomicContext)
+  const { economicoGlobal } = useContext(EconomicContext)
 
   return (
     <SLDRInfoBox
@@ -41,7 +42,10 @@ export default function EconomicBalance() {
         textAlign={'center'}
         dangerouslySetInnerHTML={{
           __html: t('SUMMARY.LABEL_COSTE', {
-            coste: UTIL.formatoValor('dinero', ecoData.precioInstalacionCorregido),
+            coste: UTIL.formatoValor(
+              'dinero',
+              economicoGlobal.precioInstalacionCorregido,
+            ),
           }),
         }}
       />
@@ -51,7 +55,7 @@ export default function EconomicBalance() {
         textAlign={'center'}
         dangerouslySetInnerHTML={{
           __html: t('SUMMARY.LABEL_AMORTIZACION', {
-            amortizacion: ecoData.periodoAmortizacion,
+            amortizacion: economicoGlobal.periodoAmortizacion,
           }),
         }}
       />
@@ -65,9 +69,11 @@ export default function EconomicBalance() {
             subvenciones: UTIL.formatoValor(
               'dinero',
               parseFloat(
-                ((ecoData.valorSubvencionIBI * ecoData.porcientoSubvencionIBI) / 100) *
-                  ecoData.tiempoSubvencionIBI,
-              ) + parseFloat(ecoData.valorSubvencion),
+                ((economicoGlobal.valorSubvencionIBI *
+                  economicoGlobal.porcientoSubvencionIBI) /
+                  100) *
+                  economicoGlobal.tiempoSubvencionIBI,
+              ) + parseFloat(economicoGlobal.valorSubvencion),
             ),
           }),
         }}

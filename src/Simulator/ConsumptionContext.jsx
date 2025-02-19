@@ -167,10 +167,8 @@ const ConsumptionContextProvider = ({ children }) => {
 
   function validaUnits() {
     //Verifica que al menos una unidad o una zona común tengan uso electrico asignado y que todas las zonas comunes tienen tarifa y nombreTipoConsumo
-    console.log('EN validaUnits')
     let results = { status: true, error: '' }
 
-    console.log(zonasComunes, fincas, allocationGroup)
     for (const _zc of zonasComunes) {
       //Verify each zonaComun have Tarifa assigned
       if (_zc.idTarifa === '') {

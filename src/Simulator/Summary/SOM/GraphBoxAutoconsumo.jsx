@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -5,35 +6,37 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 
 // Solidar objects
-import TCB from '../classes/TCB'
-import * as UTIL from '../classes/Utiles'
+import * as UTIL from '../../classes/Utiles'
+import { EnergyContext } from '../../EnergyContext'
 
 export default function GraphBoxAutoconsumo() {
   const { t } = useTranslation()
+  const { consumoGlobal, produccionGlobal, balanceGlobal } = useContext(EnergyContext)
+
   //PENDIENTE: analizar mover a Summary ya que no se utiliza en energybalance
   let gapConsumo
   let gapProduccion
   let heightGap
   let coef
 
-  if (TCB.consumo.totalAnual > TCB.produccion.totalAnual) {
+  if (consumoGlobal.totalAnual > produccionGlobal.totalAnual) {
     gapConsumo = false
     gapProduccion = true
-    coef = 200 / TCB.consumo.totalAnual
-    heightGap = (TCB.consumo.totalAnual - TCB.produccion.totalAnual) * coef
+    coef = 200 / consumoGlobal.totalAnual
+    heightGap = (consumoGlobal.totalAnual - produccionGlobal.totalAnual) * coef
   } else {
     gapConsumo = true
     gapProduccion = false
-    coef = 200 / TCB.produccion.totalAnual
-    heightGap = (TCB.produccion.totalAnual - TCB.consumo.totalAnual) * coef
+    coef = 200 / produccionGlobal.totalAnual
+    heightGap = (produccionGlobal.totalAnual - consumoGlobal.totalAnual) * coef
   }
 
-  const heightAutoconsumo = parseInt(TCB.balance.autoconsumo * coef)
+  const heightAutoconsumo = parseInt(balanceGlobal.autoconsumo * coef)
   const heightConsumo = parseInt(
-    (TCB.consumo.totalAnual - TCB.balance.autoconsumo) * coef,
+    (consumoGlobal.totalAnual - balanceGlobal.autoconsumo) * coef,
   )
   const heightProduccion = parseInt(
-    (TCB.produccion.totalAnual - TCB.balance.autoconsumo) * coef,
+    (produccionGlobal.totalAnual - balanceGlobal.autoconsumo) * coef,
   )
 
   return (
@@ -165,7 +168,7 @@ export default function GraphBoxAutoconsumo() {
           }}
         >
           <Typography variant="h5" textAlign={'right'}>
-            {UTIL.formatoValor('energia', TCB.balance.autoconsumo)}
+            {UTIL.formatoValor('energia', balanceGlobal.autoconsumo)}
           </Typography>
         </Box>
       </Box>
@@ -230,7 +233,7 @@ export default function GraphBoxAutoconsumo() {
           }}
         >
           <Typography variant="h5" textAlign={'center'}>
-            {UTIL.formatoValor('energia', TCB.consumo.totalAnual)}
+            {UTIL.formatoValor('energia', consumoGlobal.totalAnual)}
           </Typography>
         </Box>
         <Box
@@ -244,7 +247,7 @@ export default function GraphBoxAutoconsumo() {
           }}
         >
           <Typography variant="h5" textAlign={'center'}>
-            {UTIL.formatoValor('energia', TCB.produccion.totalAnual)}
+            {UTIL.formatoValor('energia', produccionGlobal.totalAnual)}
           </Typography>
         </Box>
       </Box>

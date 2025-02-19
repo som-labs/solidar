@@ -17,10 +17,13 @@ export default function ProfileDayConsumption(props) {
   const theme = useTheme()
 
   const { diaActivo, onClose } = props
-  const [consumo] = useState(props.consumo)
+  //const [consumo] = useState(props.consumo)
   const graphElement = useRef()
   const graphWidth = useRef()
 
+  const { consumo } = props
+
+  console.dir(consumo)
   // Function to get the width of the element
   const getWidth = () => {
     if (graphElement.current) {

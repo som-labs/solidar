@@ -69,7 +69,6 @@ export default function AllocationGraph() {
   }, [])
 
   useEffect(() => {
-    console.log(allocationGroup)
     let tmp = []
     for (const g in allocationGroup) {
       if (allocationGroup[g].produccion > 0) {
