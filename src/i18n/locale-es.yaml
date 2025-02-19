@@ -894,9 +894,10 @@ Proyecto:
   LABEL:
     importarProyecto: Importar proyecto
     exportarProyecto: Exportar proyecto
-  MSG_confirmaReemplazo: El proyecto existente será reemplazado por el importado
+  MSG_CONFIRM_REPLACE: El proyecto existente será reemplazado por el importado
   MSG_importando: Importando
   MSG_success: Fichero importado satisfactoriamente
+  MSG_SUCCESS_EXPORT: Fichero {{fichero}} exportado satisfactoriamente
   MSG_problemaVersion: Lamentablemente no se puede importar un fichero Solimp de versiones
     anteriores a 4',
   NO_EXPORT_AVAILABLE: Al menos debe existir una base para exportar el proyecto

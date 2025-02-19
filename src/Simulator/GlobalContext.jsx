@@ -10,6 +10,8 @@ const GlobalContextProvider = ({ children }) => {
   const [newTiposConsumo, setNewTiposConsumo] = useState(true)
   const [newUnits, setNewUnits] = useState(true)
   const [newEnergyBalance, setNewEnergyBalance] = useState()
+  const [task, setTask] = useState()
+  const [importando, setImportando] = useState(false)
 
   const [tipoPanelActivo, setTipoPanelActivo] = useState({
     nombre: '430 Wp',
@@ -34,6 +36,8 @@ const GlobalContextProvider = ({ children }) => {
     setNewUnits,
     newEnergyBalance,
     setNewEnergyBalance,
+    importando,
+    setImportando,
   }
 
   return <GlobalContext.Provider value={contextValue}>{children}</GlobalContext.Provider>

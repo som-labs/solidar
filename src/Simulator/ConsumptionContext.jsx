@@ -192,7 +192,6 @@ const ConsumptionContextProvider = ({ children }) => {
     //If there is not zonasComunes check at least one finca participa and has tipoConsumo assigned
     for (const _fnc of fincas) {
       if (_fnc.nombreTipoConsumo !== '' && _fnc.participa) {
-        //updateTCBUnitsFromState()
         return results
       }
     }

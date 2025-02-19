@@ -133,6 +133,7 @@ export default function ConsumptionSummary() {
 
   function editTipoConsumo(row) {
     editing.current = true
+    if (row.fuente === 'REE') row.fuente = row.fuente + ' ' + row.tipoTarifaREE
     openDialog({
       children: (
         <DialogConsumption
@@ -182,12 +183,16 @@ export default function ConsumptionSummary() {
       nuevoTipoConsumo.nombreTipoConsumo = formData.nombreTipoConsumo
       nuevoTipoConsumo.fuente = formData.fuente
 
-      if (nuevoTipoConsumo.fuente === 'REE') {
+      if (nuevoTipoConsumo.fuente.includes('REE')) {
         nuevoTipoConsumo.consumoAnualREE = formData.consumoAnualREE
         nuevoTipoConsumo.ficheroCSV = await UTIL.getFileFromUrl('./datos/REE.csv')
-        nuevoTipoConsumo.nombreFicheroCSV = ''
+
         //Consumption profile of REE depends on TipoTarifa
-        nuevoTipoConsumo.tipoTarifaREE = TCB.tipoTarifa
+        nuevoTipoConsumo.tipoTarifaREE = formData.fuente.includes('2.0TD')
+          ? '2.0TD'
+          : '3.0TD'
+        nuevoTipoConsumo.nombreFicheroCSV = nuevoTipoConsumo.tipoTarifaREE
+        nuevoTipoConsumo.fuente = 'REE'
       } else {
         nuevoTipoConsumo.consumoAnualREE = ''
         nuevoTipoConsumo.ficheroCSV = formData.ficheroCSV

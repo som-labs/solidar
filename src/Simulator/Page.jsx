@@ -49,11 +49,14 @@ export default function Page() {
     setNewBases,
     newPrecios,
     newPanelActivo,
+    setNewPanelActivo,
     newTiposConsumo,
     newUnits,
+    setNewUnits,
     setNewTiposConsumo,
     newEnergyBalance,
     setNewEnergyBalance,
+    importando,
   } = useContext(GlobalContext)
 
   const {
@@ -82,6 +85,7 @@ export default function Page() {
     calculaResultados,
     produccionGlobal,
     balanceGlobal,
+    totalPaneles,
     setTotalPaneles,
   } = useContext(EnergyContext)
 
@@ -111,84 +115,87 @@ export default function Page() {
   }
 
   async function PreparaEnergyBalance() {
-    console.log('Preparando energy balance consiciones:', {
+    console.log('Preparando energy balance condiciones:', {
       newTiposConsumo: newTiposConsumo,
       newBases: newBases,
       newPanelActivo: newPanelActivo,
       newUnits: newUnits,
+      importando: importando,
+      totalPaneles: totalPaneles,
     })
     let newConsumo
 
     /* Condiciones bajo las cuales hay que hacer un recalculo del balanceEnergetico */
-    if (newTiposConsumo || newBases || newPanelActivo || newUnits) {
-      /* Si han cambiado los tipos de consumo hay que reconstruir el consumoGlobal */
+    if (newTiposConsumo || newUnits || importando) {
+      /* Si han cambiado los tipos de consumo o estamos importando hay que reconstruir el consumoGlobal */
       console.log('PreparaEnergyBalance Construyendo nuevo consumo Global')
-      if (newTiposConsumo) {
-        newConsumo = new Consumo(tiposConsumo, fincas, zonasComunes)
-        setConsumoGlobal(newConsumo)
-        console.log('Newconsumo in page', newConsumo)
-        /* Calculamos el coeficiente del consumo de cada finca sobre el total */
-        if (TCB.modoActivo !== 'INDIVIDUAL') {
-          for (const f of fincas) {
-            f.coefConsumo = getConsumoTotal(f.nombreTipoConsumo) / newConsumo.totalAnual
+
+      newConsumo = new Consumo(tiposConsumo, fincas, zonasComunes)
+      setConsumoGlobal(newConsumo)
+      console.log('Newconsumo in page', newConsumo)
+      /* Calculamos el coeficiente del consumo de cada finca sobre el total */
+      if (TCB.modoActivo !== 'INDIVIDUAL') {
+        for (const f of fincas) {
+          f.coefConsumo = getConsumoTotal(f.nombreTipoConsumo) / newConsumo.totalAnual
+        }
+      }
+      UTIL.debugLog('PreparaEnergyBalance - Nuevo consumo global creado', newConsumo)
+      console.log('PreparaEnergyBalance Consumo Global creado', newConsumo)
+      setNewTiposConsumo(false)
+    } else {
+      newConsumo = consumoGlobal
+    }
+
+    if (newBases) {
+      /* Si hay nuevos datos de bases. Comprobamos que estan cargados todos los rendimientos. Es el flag base.rendimiento.PVGISresults.status. True si todo OK, undefined si pendiente, False si error en PVGIS */
+      let waitLoop = 0
+      for (let base of bases) {
+        var sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+        if (base.rendimiento.PVGISresults.status === undefined) {
+          //Has to wait
+          document.body.style.cursor = 'wait'
+          SLDRAlert(
+            'PVGIS',
+            'Esperando datos PVGIS para base: ' + base.nombreBaseSolar,
+            'Warning',
+          )
+          while (
+            base.rendimiento.PVGISresults.status === undefined &&
+            waitLoop++ < TCB.tiempoEsperaPVGIS
+          ) {
+            console.log(waitLoop + ' seg. (max: ' + TCB.tiempoEsperaPVGIS + ')')
+            await sleep(1000)
           }
         }
-        UTIL.debugLog('PreparaEnergyBalance - Nuevo consumo global creado', newConsumo)
+        document.body.style.cursor = 'default'
+        if (!base.rendimiento.PVGISresults.status) return base.rendimiento.PVGISresults
 
-        console.log('PreparaEnergyBalance Consumo Global creado', newConsumo)
-        setNewTiposConsumo(false)
-      } else {
-        newConsumo = consumoGlobal
-      }
-
-      if (newBases) {
-        /* Si hay nuevos datos de bases. Comprobamos que estan cargados todos los rendimientos. Es el flag base.rendimiento.PVGISresults.status. True si todo OK, undefined si pendiente, False si error en PVGIS */
-        let waitLoop = 0
-        for (let base of bases) {
-          var sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
-          if (base.rendimiento.PVGISresults.status === undefined) {
-            //Has to wait
-            document.body.style.cursor = 'wait'
-            SLDRAlert(
-              'PVGIS',
-              'Esperando datos PVGIS para base: ' + base.nombreBaseSolar,
-              'Warning',
-            )
-            while (
-              base.rendimiento.PVGISresults.status === undefined &&
-              waitLoop++ < TCB.tiempoEsperaPVGIS
-            ) {
-              console.log(waitLoop + ' seg. (max: ' + TCB.tiempoEsperaPVGIS + ')')
-              await sleep(1000)
-            }
-          }
-          document.body.style.cursor = 'default'
-          if (!base.rendimiento.PVGISresults.status) return base.rendimiento.PVGISresults
-
-          if (waitLoop >= TCB.tiempoEsperaPVGIS) {
-            SLDRAlert(
-              'PVGIS',
-              'Tiempo de respuesta excesivo en la llamada a PVGIS',
-              'Error',
-            )
-            // PENDIENTE: reemplazar alert con confimr de espera. Como usar SLDRAlert desde aqui
-            return {
-              status: false,
-              error: 'Tiempo de respuesta excesivo en la llamada a PVGIS',
-            }
-          }
-          // PENDIENTE: limpiar alert de espera
-          /* Si la base tiene configurada la inclinación óptima, la establecemos y volvemos a reconfigurar los paneles */
-          if (base.inclinacionOptima) {
-            base.inclinacion = base.rendimiento.inclinacion
-            BaseSolar.configuraPaneles(base, tipoPanelActivo)
+        if (waitLoop >= TCB.tiempoEsperaPVGIS) {
+          SLDRAlert(
+            'PVGIS',
+            'Tiempo de respuesta excesivo en la llamada a PVGIS',
+            'Error',
+          )
+          // PENDIENTE: reemplazar alert con confimr de espera. Como usar SLDRAlert desde aqui
+          return {
+            status: false,
+            error: 'Tiempo de respuesta excesivo en la llamada a PVGIS',
           }
         }
-        setNewBases(false)
+        // PENDIENTE: limpiar alert de espera
+        /* Si la base tiene configurada la inclinación óptima, la establecemos y volvemos a reconfigurar los paneles */
+        if (base.inclinacionOptima) {
+          base.inclinacion = base.rendimiento.inclinacion
+          BaseSolar.configuraPaneles(base, tipoPanelActivo)
+        }
       }
+    }
 
-      UTIL.debugLog('PreparaEnergyBalance - Todas las bases listas llama optimizador')
-      // Se ejecuta el optimizador para determinar la configuración inicial propuesta
+    UTIL.debugLog('PreparaEnergyBalance - Todas las bases listas llama optimizador')
+    // Se ejecuta el optimizador para determinar la configuración inicial propuesta
+
+    if (newTiposConsumo || newBases || newPanelActivo || newUnits || totalPaneles === 0) {
+      console.log('Optimizando....')
       let pendiente = optimizador(bases, newConsumo, tipoPanelActivo.potencia, modifyBase)
       if (pendiente > 0) {
         UTIL.debugLog(
@@ -210,7 +217,12 @@ export default function Page() {
       )
       setNewEnergyBalance(true)
       calculaResultados(newConsumo)
-    }
+    } else if (importando) calculaResultados(newConsumo)
+
+    setNewTiposConsumo(false)
+    setNewBases(false)
+    setNewPanelActivo(false)
+    setNewUnits(false)
     return results.status
   }
 
@@ -221,7 +233,8 @@ export default function Page() {
 
     console.log(balanceGlobal, economicoGlobal, produccionGlobal)
     //When importing first time will not compute Economico next yes
-    if (!TCB.importando || !economicoGlobal) {
+    console.log(importando, economicoGlobal)
+    if (!importando || !economicoGlobal) {
       let newEconomico = new Economico(
         null,
         tarifas,

@@ -73,7 +73,7 @@ class Economico {
     this.interesVAN = TCB.parametros.interesVAN
 
     //A efectos de fechas (fines de semana) por ahora usamos el TipoConsumo[0]
-    console.log(tiposConsumo)
+    //console.log(tiposConsumo)
     let _tc = tiposConsumo[0]
 
     let tarifaActiva = {}
@@ -94,7 +94,7 @@ class Economico {
       _balance = balanceGlobal
     }
 
-    console.log('6 Balance de dia 0 hora 13 despues', _balance.diaHora[0][13])
+    //console.log('6 Balance de dia 0 hora 13 despues', _balance.diaHora[0][13])
 
     tarifaHoras = TCB.tarifas[tarifaActiva.detalle].horas
     if (tarifaActiva.tipo === '2.0TD') _consumo.periodo = new Array(3).fill(0)
@@ -183,7 +183,7 @@ class Economico {
     this.compensadoMensual = this.resumenMensual('compensado')
     this.ahorradoAutoconsumoMes = this.resumenMensual('ahorradoAutoconsumo')
 
-    console.log('7', this.idxTable[0])
+    //console.log('7', this.idxTable[0])
     //calculate installation cost
     //CUIDADO
     this.precioInstalacion = unidad

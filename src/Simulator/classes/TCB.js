@@ -48,8 +48,6 @@ const TCB = {
 
   territorio: null,
 
-  readyToExport: false,
-  importando: false, //Es verdadero durante el proceso de importacion
   //Donde se guardan los datos a exportar
   datosProyecto: { version: '4.2' },
 

@@ -24,9 +24,7 @@ import { ConsumptionContext } from '../ConsumptionContext'
 import { useDialog } from '../../components/DialogProvider'
 
 // Solidar objects
-import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import TipoConsumo from '../classes/TipoConsumo'
 
 export default function UnitsSummary(props) {
   const { t } = useTranslation()

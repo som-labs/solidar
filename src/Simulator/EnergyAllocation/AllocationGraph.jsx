@@ -24,7 +24,6 @@ import { ConsumptionContext } from '../ConsumptionContext'
 import { EnergyContext } from '../EnergyContext.jsx'
 
 //Solidar objects
-import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 //React global components
@@ -40,9 +39,7 @@ export default function AllocationGraph() {
     allocationGroup,
     setAllocationGroup,
     zonasComunes,
-    setZonasComunes,
     fincas,
-    setFincas,
   } = useContext(ConsumptionContext)
 
   const { consumoGlobal, produccionGlobal } = useContext(EnergyContext)
@@ -130,7 +127,6 @@ export default function AllocationGraph() {
           (f.participacion / 100 / totalParticipation) * coefGrupo,
           6,
         )
-        console.log('AAAAAAAAAAAAA', f.coefEnergia)
         return f
       }
     })
