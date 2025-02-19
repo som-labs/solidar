@@ -13,11 +13,8 @@ import BaseSolar from './BaseSolar'
  * @returns {Float} energiaPendiente Es el valor de la energía que no ha podiodo ser asignada
  */
 
-let localModifyBase
-
 function optimizador(bases, consumo, potenciaPanelInicio, modifyBase) {
   console.log('Optimizador', bases, consumo, potenciaPanelInicio)
-  localModifyBase = modifyBase
 
   let energiaPendiente = consumo.totalAnual
   let energiaAsignada = 0
@@ -77,7 +74,7 @@ function optimizador(bases, consumo, potenciaPanelInicio, modifyBase) {
  * @param {Int} panelesNuevo Total number of panels to install in all bases available
  * @returns {}
  */
-function nuevoTotalPaneles(bases, panelesNuevo, potenciaPanelInicio) {
+function nuevoTotalPaneles(bases, panelesNuevo, potenciaPanelInicio, modifyBase) {
   let tmpPaneles
   let panelesPendientes = panelesNuevo
   let maxPanelesBase
@@ -100,7 +97,7 @@ function nuevoTotalPaneles(bases, panelesNuevo, potenciaPanelInicio) {
       localBases[i].panelesMaximo > panelesPendientes ? panelesPendientes : maxPanelesBase
     localBases[i].instalacion.paneles = tmpPaneles
     console.log('3 nuevoTotalPaneles modify base', localBases[i].instalacion.paneles)
-    localModifyBase(localBases[i])
+    modifyBase(localBases[i])
     panelesPendientes -= tmpPaneles
   }
 

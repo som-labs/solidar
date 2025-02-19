@@ -101,7 +101,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
       errors.fuente = t('BASIC.LABEL_REQUIRED')
     }
 
-    if (values.fuente === 'REE') {
+    if (values.fuente.includes('REE')) {
       if (values.consumoAnualREE === '' || values.consumoAnualREE === 0) {
         errors.consumoAnualREE = t('BASIC.LABEL_REQUIRED')
       } else {
@@ -110,7 +110,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
         }
       }
     }
-    if (values.fuente !== 'REE' && values.ficheroCSV === '') {
+    if (!values.fuente.includes('REE') && values.ficheroCSV === '') {
       errors.ficheroCSV = t('CONSUMPTION.ERROR_FALTA_FICHERO_CONSUMO')
     }
     return errors
@@ -228,7 +228,8 @@ export default function DialogConsumption({ data, previous, onClose }) {
                       <MenuItem value={'SOM'}>Som Energía</MenuItem>
                       <MenuItem value={'CSV'}>Empresa distribuidora</MenuItem>
                       <MenuItem value={'DATADIS'}>DATADIS</MenuItem>
-                      <MenuItem value={'REE'}>Perfil estándar (REE)</MenuItem>
+                      <MenuItem value={'REE 2.0TD'}>Perfil estándar (REE 2.0TD)</MenuItem>
+                      <MenuItem value={'REE 3.0TD'}>Perfil estándar (REE 3.0TD)</MenuItem>
                     </SLDRInputField>
                   }
                   label={t('TipoConsumo.PROP.fuente')}
@@ -242,7 +243,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
                     flexDirection: 'column',
                   }}
                 >
-                  {values.fuente !== 'REE' && values.fuente !== '' && (
+                  {!values.fuente.includes('REE') && values.fuente !== '' && (
                     <>
                       <Field name="ficheroCSV">
                         {({ field }) => (
@@ -269,7 +270,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
                       </ErrorMessage>
                     </>
                   )}
-                  {values.fuente === 'REE' && (
+                  {values.fuente.includes('REE') && (
                     <>
                       <FormControl>
                         <Grid

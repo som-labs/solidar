@@ -7,7 +7,7 @@ import { Button } from '@mui/material'
 
 //
 import { GeneraInformePDF } from './GeneraInformePDF'
-import { exportProject } from '../Project/ImportExport'
+//import { ExportProject } from '../Project/ImportExport'
 import { useDialog } from '../../components/DialogProvider'
 import ReportSOM from './Report/ReportSOM'
 
@@ -41,9 +41,9 @@ export default function Reports() {
       <Button sx={{ mr: '1rem' }} variant="contained" size="large" onClick={SOMSummary}>
         {t('SUMMARY.LABEL_SOM_REPORT')}
       </Button>
-      <Button variant="contained" size="large" onClick={exportProject}>
+      {/* <Button variant="contained" size="large" onClick={ExportProject}>
         {t('Proyecto.LABEL.exportarProyecto')}
-      </Button>
+      </Button> */}
     </Container>
   )
 }
