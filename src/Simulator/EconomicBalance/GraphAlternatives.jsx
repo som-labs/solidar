@@ -29,7 +29,8 @@ export default function GraphAlternatives() {
   const graphWidth = useRef()
   const [layout, setLayout] = useState()
   const [traces, setTraces] = useState([])
-  const { tipoPanelActivo, setTipoPanelActivo, bases } = useContext(BasesContext)
+  const { tipoPanelActivo, setTipoPanelActivo, bases, modifyBase } =
+    useContext(BasesContext)
   const {
     totalPaneles,
     calculaResultados,
@@ -39,7 +40,6 @@ export default function GraphAlternatives() {
   } = useContext(EnergyContext)
 
   const [config, setConfig] = useState()
-
   const { economicoGlobal } = useContext(EconomicContext)
   const { tarifas, tiposConsumo, zonasComunes } = useContext(ConsumptionContext)
 
@@ -54,6 +54,20 @@ export default function GraphAlternatives() {
     // Call the function to get the width after initial render
     getWidth()
 
+    async function buildEco() {
+      const tEco = new Economico(
+        null,
+        tarifas,
+        tiposConsumo,
+        consumoGlobal,
+        balanceGlobal,
+        produccionGlobal,
+        economicoGlobal,
+        zonasComunes,
+      )
+      return tEco
+    }
+
     async function oneLoop(intento) {
       // Se realizan todos los calculos
       console.log('4a oneloop')
@@ -66,18 +80,8 @@ export default function GraphAlternatives() {
         produccionGlobal.diaHora[0][13],
       )
 
-      const tEco = await new Economico(
-        null,
-        tarifas,
-        tiposConsumo,
-        consumoGlobal,
-        balanceGlobal,
-        produccionGlobal,
-        economicoGlobal,
-        zonasComunes,
-      )
       console.log('9 Vuelvo de economico intento', intento)
-      return tEco
+      return await buildEco()
     }
 
     var paneles = []
@@ -112,53 +116,35 @@ export default function GraphAlternatives() {
     ]
     intentos.sort((a, b) => a - b)
 
-    // Bucle del calculo de resultados para cada alternativa propuesta
-    for (let intento of intentos) {
-      if (intento >= 1) {
-        // Establecemos la configuracion de bases para este numero de paneles
-        console.log('1 loop de ', intento)
-        nuevoTotalPaneles(bases, intento, tipoPanelActivo.potencia)
-        // // Se realizan todos los calculos
-        // calculaResultados(consumoGlobal)
+    lupea(intentos)
 
-        // console.log(
-        //   'dia 0 hora 13 balance y produccion',
-        //   balanceGlobal.diaHora[0][13],
-        //   produccionGlobal.diaHora[0][13],
-        // )
+    async function lupea(intentos) {
+      // Bucle del calculo de resultados para cada alternativa propuesta
+      for (let intento of intentos) {
+        if (intento >= 1) {
+          // Establecemos la configuracion de bases para este numero de paneles
+          console.log('1 loop de ', intento, ' panel')
+          await nuevoTotalPaneles(bases, intento, tipoPanelActivo.potencia, modifyBase)
 
-        // const TCBeconomico = new Economico(
-        //   null,
-        //   tarifas,
-        //   tiposConsumo,
-        //   consumoGlobal,
-        //   balanceGlobal,
-        //   produccionGlobal,
-        //   economicoGlobal,
-        //   zonasComunes,
-        // )
-
-        // console.log(
-        //   'calculaResultados - economico global intento:',
-        //   intento,
-        //   TCBeconomico.gastoConPlacasAnual,
-        // )
-        console.log('4 Nuevo economico de loop ', intento)
-        const TCBeconomico = oneLoop(intento)
-        console.log('X retorno de oneloop')
-        if (TCBeconomico.periodoAmortizacion > 0) {
-          // Se extraen los valores de las variables que forman parte del grafico
-          paneles.push(intento)
-          autoconsumo.push(
-            (balanceGlobal.autoconsumo / produccionGlobal.totalAnual) * 100,
-          )
-          autosuficiencia.push(
-            (balanceGlobal.autoconsumo / consumoGlobal.totalAnual) * 100,
-          )
-          consvsprod.push((consumoGlobal.totalAnual / produccionGlobal.totalAnual) * 100)
-          TIR.push(TCBeconomico.TIRProyecto)
-          precioInstalacion.push(TCBeconomico.precioInstalacionCorregido)
-          ahorroAnual.push(TCBeconomico.ahorroAnual)
+          console.log('4 Nuevo economico de loop ', intento)
+          const TCBeconomico = await oneLoop(intento)
+          console.log('X retorno de oneloop', TCBeconomico.ahorroAnual)
+          if (TCBeconomico.periodoAmortizacion > 0) {
+            // Se extraen los valores de las variables que forman parte del grafico
+            paneles.push(intento)
+            autoconsumo.push(
+              (balanceGlobal.autoconsumo / produccionGlobal.totalAnual) * 100,
+            )
+            autosuficiencia.push(
+              (balanceGlobal.autoconsumo / consumoGlobal.totalAnual) * 100,
+            )
+            consvsprod.push(
+              (consumoGlobal.totalAnual / produccionGlobal.totalAnual) * 100,
+            )
+            TIR.push(TCBeconomico.TIRProyecto)
+            precioInstalacion.push(TCBeconomico.precioInstalacionCorregido)
+            ahorroAnual.push(TCBeconomico.ahorroAnual)
+          }
         }
       }
     }

@@ -13,7 +13,7 @@ const EnergyContextProvider = ({ children }) => {
   const [balanceGlobal, setBalanceGlobal] = useState()
   const [produccionGlobal, setProduccionGlobal] = useState()
   const [consumoGlobal, setConsumoGlobal] = useState()
-  const [totalPaneles, setTotalPaneles] = useState()
+  const [totalPaneles, setTotalPaneles] = useState(0)
 
   const { bases, setBases } = useContext(BasesContext)
 

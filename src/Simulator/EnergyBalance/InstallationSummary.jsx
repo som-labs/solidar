@@ -35,9 +35,11 @@ export default function InstallationSummary() {
     useContext(BasesContext)
   const { calculaResultados, setTotalPaneles, totalPaneles, consumoGlobal } =
     useContext(EnergyContext)
+
   const [updatedCells, setUpdatedCells] = useState({})
 
   const handleEditCellChange = (params, event) => {
+    console.log('edit', params)
     const { id, field, value } = params
     setUpdatedCells({ ...updatedCells, [id]: { ...updatedCells[id], [field]: value } })
   }
@@ -226,7 +228,7 @@ export default function InstallationSummary() {
 
   function setNewPaneles() {
     /* Recalculamos el balance energetico con el nuevo numero de paneles */
-    console.log('Reclaculamos balance energetico')
+    console.log('Recalculamos balance energetico')
     calculaResultados(consumoGlobal)
 
     // TCB.economico = new Economico()
@@ -270,39 +272,38 @@ export default function InstallationSummary() {
    * @param {Event} event Valor cambiado
    */
 
-  function nuevaInstalacion(params, event) {
-    let tmpPaneles = params.row.instalacion.paneles
-    if (params.reason === GridCellEditStopReasons.cellFocusOut) {
-      event.defaultMuiPrevented = true
-      return
-    }
+  function nuevaInstalacion(newRow, oldRow) {
+    console.log('nueva', newRow)
 
-    if (UTIL.ValidateEntero(event.target.value)) {
-      tmpPaneles = parseInt(event.target.value)
+    let tmpPaneles = newRow.paneles
+    newRow.instalacion.paneles = newRow.paneles
+
+    if (UTIL.ValidateEntero(newRow.paneles)) {
+      tmpPaneles = parseInt(newRow.paneles)
       if (tmpPaneles < 0) {
         SLDRAlert(
           'VALIDACION',
           'El número de paneles debe ser mayor o igual a cero e idealmente menor que los ' +
-            params.row.panelesMaximo +
+            newRow.panelesMaximo +
             ' paneles que estimamos se pueden instalar en el area definida',
           'error',
         )
         return
       }
 
-      if (tmpPaneles > params.row.panelesMaximo) {
+      if (tmpPaneles > newRow.panelesMaximo) {
         SLDRAlert(
           'VALIDACION',
           'Esta asignando mas paneles que los ' +
-            params.row.panelesMaximo +
+            newRow.panelesMaximo +
             ' que estimamos se pueden instalar en el area definida',
           'error',
         )
       }
 
       //Update this BaseSolar panels and potenciaUnitaria in TCB
-      params.row.instalacion.paneles = tmpPaneles
-      modifyBase(params.row)
+
+      modifyBase(newRow)
       // let baseActiva = bases.find((base) => {
       //   return base.idBaseSolar === params.id
       // })
@@ -310,6 +311,7 @@ export default function InstallationSummary() {
       //baseActiva.instalacion.paneles = tmpPaneles
       setNewPaneles()
     }
+    return newRow
   }
 
   return (
@@ -345,8 +347,7 @@ export default function InstallationSummary() {
             autoHeight
             disableColumnMenu
             editMode="cell"
-            onCellKeyDown={(params, event) => handleEditCellChange(params, event)}
-            onCellEditStop={(params, event) => nuevaInstalacion(params, event)}
+            processRowUpdate={nuevaInstalacion}
             slots={{ footer: footerSummary }}
           />
         </Grid>
