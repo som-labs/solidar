@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -11,10 +12,18 @@ import { GeneraInformePDF } from './GeneraInformePDF'
 import { useDialog } from '../../components/DialogProvider'
 import ReportSOM from './Report/ReportSOM'
 
+// REACT Solidar Components
+import { EconomicContext } from '../EconomicContext'
+import { BasesContext } from '../BasesContext'
+import { EnergyContext } from '../EnergyContext'
+
+import TCB from '../classes/TCB'
 // eslint-disable-next-line react/display-name
 export default function Reports() {
   const { t } = useTranslation()
-
+  // const { consumoGlobal, produccionGlobal, balanceGlobal } = useContext(EnergyContext)
+  // const { bases } = useContext(BasesContext)
+  // const { economicoGlobal } = useContext(economicoGlobal)
   const [openDialog, closeDialog] = useDialog()
 
   function pdfSummary() {

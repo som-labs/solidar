@@ -7,9 +7,10 @@ import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
 import { EconomicContext } from '../../EconomicContext'
+import { EnergyContext } from '../../EnergyContext'
 import { BasesContext } from '../../BasesContext'
 import { SLDRInfoBox } from '../../../components/SLDRComponents'
-import GraphBoxAutoconsumo from '../../EnergyBalance/GraphBoxAutoconsumo'
+
 // import CallSankey from '../../EnergyBalance/SankeyFlow/CallSankey'
 import GraphBoxSavings from '../../EconomicBalance/GraphBoxSavings'
 // import SummaryEconomicBalance from '../SummaryEconomicBalance'
@@ -17,19 +18,17 @@ import Reports from '../Reports'
 import MicroMap from '../../Location/MicroMap'
 
 // Solidar objects
-import TCB from '../../classes/TCB'
 import * as UTIL from '../../classes/Utiles'
 
 export default function Autoproduccion() {
   const { t } = useTranslation()
   const theme = useTheme()
   const { bases } = useContext(BasesContext)
-
-  console.log(bases)
+  const { produccionGlobal } = useContext(EnergyContext)
 
   let areasEscogidas = 0
   let paneles = 0
-  const produccionAnual = TCB.produccion.totalAnual
+  const produccionAnual = produccionGlobal.totalAnual
   const areasDisponibles = bases.length
   const potencia = bases.reduce((sum, tBase) => sum + tBase.instalacion.potenciaTotal, 0)
 

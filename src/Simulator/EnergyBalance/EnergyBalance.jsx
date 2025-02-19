@@ -66,8 +66,6 @@ export default function EnergyBalanceStep() {
     useContext(ConsumptionContext)
 
   useEffect(() => {
-    console.log('USE', consumoGlobal, produccionGlobal, balanceGlobal)
-
     setMonthlyData({
       consumo: consumoGlobal.resumenMensual('suma'),
       produccion: produccionGlobal.resumenMensual('suma'),

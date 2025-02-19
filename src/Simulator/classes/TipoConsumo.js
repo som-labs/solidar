@@ -34,7 +34,6 @@ class TipoConsumo extends DiaHora {
     }
 
     this.options = this.selectCSVOptions(this.fuente)
-    console.log(this.fuente, this.options)
   } // End constructor
 
   static getTotal(nombreTipoConsumo) {
@@ -49,7 +48,6 @@ class TipoConsumo extends DiaHora {
    * @returns
    */
   selectCSVOptions(fuente) {
-    console.log(fuente)
     let options = { metodo: 'PROMEDIO', fuente: fuente }
     if (fuente === 'REE') {
       options = { ...options, valorArr: this.tipoTarifaREE, factor: this.consumoAnualREE }
@@ -64,7 +62,6 @@ class TipoConsumo extends DiaHora {
     options.fechaSwp = fuente === 'DATADIS'
     //Si la fuente es SOM loadcsv la hora ya viene 0:23, si no viene 1:24
     options.deltaHour = fuente === 'SOM' ? 0 : -1
-    console.log(options)
     return options
   }
 
