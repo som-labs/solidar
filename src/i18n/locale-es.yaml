@@ -488,10 +488,12 @@ CONSUMPTION:
     En caso de tener una <a href='https://es.support.somenergia.coop/article/1325-la-tarifa-2-0td-indexada' target='_blank'>tarifa indexada</a>, Som Energía muestra en sus facturas el precio medio ponderado para cada período. Te lo explicamos <a href='https://es.support.somenergia.coop/article/1368-por-que-veo-periodos-en-la-factura-de-indexada' target='_blank'>aquí.</a><br />
     Si tu contrato está con otra comercializadora deberás consultar la mediana de los precios en los diferentes periodos. Ten en cuenta que la tarifa indexada no ofrece precios fijos en la parte de uso ni en la compensación de excedentes por lo que el cálculo será en base a una información que puede ser muy variable.
   COMPENSACION_TITLE: Compensación simplificada de excedentes
-  COMPENSACION_DESCRIPTION: |
+  COMPENSACION_DESCRIPTION_INDIVIDUAL: |
     La <strong>energía excedentaria</strong> es aquella que ha sido generada por los paneles solares fotovoltaicas y que, como no se utiliza de forma instantánea, circula a través del contador y se vierte a la red eléctrica de distribución.<br /><br />
     Esta energía excedentaria se contabiliza en el contador en tramos de una hora. A partir de los valores registrados, se aplican dos mecanismos de manera consecutiva: primero se aplica el <strong>balance neto horario</strong> y, después, en el momento de facturar, se aplica <strong>la compensación simplificada de excedentes.</strong><br /><br />
     <a href='https://es.support.somenergia.coop/article/784-como-funciona-la-compensacion-simplificada-de-excedentes' target='_blank'>¿Cómo funciona la compensación simplificada de excedentes?</a>
+  COMPENSACION_DESCRIPTION_COLECTIVO: |
+    Se considerará energía excedentaria aquella cantidad de energía fotovoltaica que asignada cada hora del día a cada participante según su coeficiente de participación exceda el consumo eléctrico realizado en su inmueble
 
   TITLE_MAP_MONTH_HOUR: Gráfico de uso eléctrico anual para {{nombreTipoConsumo}}
   TITLE_MAP_MONTH_HOUR_TOTAL: Gráfico del total de los usos eléctricos
@@ -898,8 +900,9 @@ Proyecto:
   MSG_importando: Importando
   MSG_success: Fichero importado satisfactoriamente
   MSG_SUCCESS_EXPORT: Fichero {{fichero}} exportado satisfactoriamente
-  MSG_problemaVersion: Lamentablemente no se puede importar un fichero Solimp de versiones
+  MSG_VERSION_PROBLEM: Lamentablemente no se puede importar un fichero Solimp de versiones
     anteriores a 4',
+  MSG_INCOMPATIBLE_MODE: El fichero contiene información de un proyecto realizado en modalidad {{modo}} y  solo se puede importar en el mismo modo de análisis.
   NO_EXPORT_AVAILABLE: Al menos debe existir una base para exportar el proyecto
 
 GRAFICOS:

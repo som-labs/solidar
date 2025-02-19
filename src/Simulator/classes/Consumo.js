@@ -13,7 +13,6 @@ class Consumo extends DiaHora {
    */
   constructor(tiposConsumo, fincas, zonasComunes) {
     super()
-    console.log('BUILDING Consumo', tiposConsumo, fincas, zonasComunes)
     this._name = 'Consumo'
     this.periodo //Will store kWh per fee period (P1, P2, ...)
 
@@ -44,7 +43,6 @@ class Consumo extends DiaHora {
           this.suma(_tc)
         }
       }
-      console.log(this)
     }
   } // End constructor
 }

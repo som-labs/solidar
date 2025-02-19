@@ -149,7 +149,6 @@ export default function EnergyAllocationStep() {
     UTIL.dumpData(TCB.parametros.CAU + '.txt', betaList)
   }
 
-  console.log(allocationGroup)
   return (
     <Container>
       <>

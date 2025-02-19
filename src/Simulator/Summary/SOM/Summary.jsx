@@ -8,6 +8,7 @@ import { useTheme } from '@mui/material/styles'
 // REACT Solidar Components
 import { EconomicContext } from '../../EconomicContext'
 import { BasesContext } from '../../BasesContext'
+import { EnergyContext } from '../../EnergyContext'
 import { SLDRInfoBox } from '../../../components/SLDRComponents'
 import CallSankey from '../../EnergyBalance/SankeyFlow/CallSankey'
 
@@ -17,22 +18,21 @@ import Autoproduccion from './Autoproduccion'
 import EnergyBalance from './EnergyBalance'
 import EconomicBalance from './EconomicBalance'
 
-import TCB from '../../classes/TCB'
-
 export default function SummarySOMStep() {
   const { t } = useTranslation()
   const theme = useTheme()
   const [yearlyData, setYearlyData] = useState({})
   const contentRef = useRef(null)
+  const { consumoGlobal, produccionGlobal, balanceGlobal } = useContext(EnergyContext)
 
   useEffect(() => {
     setYearlyData({
-      consumo: TCB.consumo.totalAnual,
-      produccion: TCB.produccion.totalAnual,
-      deficit: TCB.balance.deficitAnual,
-      autoconsumo: TCB.balance.autoconsumo,
-      excedente: TCB.balance.excedenteAnual,
-      consumoDiurno: TCB.balance.consumoDiurno,
+      consumo: consumoGlobal.totalAnual,
+      produccion: produccionGlobal.totalAnual,
+      deficit: balanceGlobal.deficitAnual,
+      autoconsumo: balanceGlobal.autoconsumo,
+      excedente: balanceGlobal.excedenteAnual,
+      consumoDiurno: balanceGlobal.consumoDiurno,
     })
   }, [])
 
