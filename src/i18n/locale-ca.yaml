@@ -107,7 +107,8 @@ BaseSolar:
     nombreBaseSolar: Posa un nom a la teva àrea disponible
     angulosOptimos: En aquest cas, l'aplicació et proposarà la millor inclinació dels
       panells de manera que s'obtingui el màxim rendiment de la instal·lació.
-    inAcimut: Has d'indicar l'orientació que tindran els panells respecte al sud geogràfic.
+    inAcimut:
+      Has d'indicar l'orientació que tindran els panells respecte al sud geogràfic.
       La primera proposta la fa l'aplicació en base a l'àrea que has dibuixat, però
       la pots canviar en aquest camp.
     inclinacionTejado: Indica'ns la inclinació de la teulada on s'instal·laran els
@@ -192,13 +193,7 @@ Instalacion:
   DESCRIPTION:
     precioInstalacion: |
       Tot i intentar mantenir els preus actualitzats aquesta quantitat s’hauria de considerar com una orientació provisional del projecte que un instal·lador pot formular (sobretot si té més informació sobre el lloc final). \n Aquí no estan repercutides algunes despeses: obra civil (si fos necessària) substitució de l’aïllament o les teules antigues de la coberta mitjans d'elevació si calguessin modificacions que la distribuïdora o l'Administració poguessin requerir per a la instal·lació i alguns impostos i taxes que l'ajuntament podria cobrar (ICIO o llicència d'obres)
-    paneles: "La simulació es realitzarà amb un panell estàndard de {{potència}}.\
-      \ Si vols, pots modificar la potència i la tecnologia utilitzada.\n"
-  LABEL_tecnologiaDesconocida: Desconeguda
 
-  SHORT:
-    paneles: Panells
-  LABEL_tipoPanel: Selecciona la potència del panell
 Tarifa:
   NAME: Tarifa
   PROP:
@@ -289,7 +284,8 @@ Balance:
       l’any (no sempre es consumeix tota).
     autosuficienciaMediaAnual: Percentatge mitjà d’energia consumida procedent dels
       panells solars. És una mesura d’independència respecte a la xarxa elèctrica
-    autosuficienciaMaxima: L'autosuficiència màxima que es podria assolir si tot l'excedent
+    autosuficienciaMaxima:
+      L'autosuficiència màxima que es podria assolir si tot l'excedent
       fotovoltaic es pogués consumir (bé amb bateries i/o canviant els hàbits de consum).\nS'assoleix
       el nombre màxim teòric de panells en arribar en aquesta variable al 100%.
 
@@ -408,7 +404,8 @@ LOCATION:
       \ 255, 204)'>Localitzador</span></b> on pots escriure el nom de la zona o carrer\
       \ i número. És important que incloguis la ciutat per evitar una llarga llista\
       \ de candidats que es desplegarà sota el camp a mesura que vagis escrivint.</p>\n"
-    PRE_MAPA: "Quan estiguis ubicat a l'àrea de treball pots ajudar-te amb la visualització\
+    PRE_MAPA:
+      "Quan estiguis ubicat a l'àrea de treball pots ajudar-te amb la visualització\
       \ satèl·lit per identificar la teulada o terrat on tens planejada la instal·lació.\
       \ Ara has de dibuixar almenys una àrea que representi la zona on pots instal·lar\
       \ panells.\nEls dos primers punts defineixen el carener o la part alta dels\
@@ -541,7 +538,8 @@ CONSUMPTION:
   consumo_MSG_nombreCSVPorDefinir: Por definir
   tipoConsumo_LBL_fichero: Selecciona fitxer
 
-  TIPO_CONSUMO_DESCRIPTION_1: "<strong>PAS 4.</strong> A continuació necessitem informació\
+  TIPO_CONSUMO_DESCRIPTION_1:
+    "<strong>PAS 4.</strong> A continuació necessitem informació\
     \ sobre el teu consum elèctric per calcular el nombre de panells necessari per\
     \ cobrir-lo. El document de corbes horàries (en format .csv) ens permetrà conèixer\
     \ els vostres hàbits d'ús elèctric, saber en quins trams horaris i en quins mesos\
@@ -556,7 +554,9 @@ CONSUMPTION:
     \ hauràs de consultar la mitjana dels preus als diferents períodes. Tingues en\
     \ compte que la tarifa indexada no ofereix preus fixos a la part d'ús ni a la\
     \ compensació d'excedents, per la qual cosa el càlcul serà basat en una informació\
-    \ que pot ser molt variable.\n"
+    \ que pot ser molt variable.\n
+    <br />També es defineixen els paràmetres per obtenir descomptes (hucha) pels <a href='https://es.support.somenergia.coop/article/1398-que-son-los-excedentes-no-compensados' target='_blank'>excedents no compensats</a> com el <a href='https://es.support.s-energía ='_blank'>Flux Solar</a>, bateries virtuals o hucha solar en cas que la teva comercialitzadora ho ofereixi."
+
   TARIFA_DESCRIPTION_1: "Necessitem conèixer la teva tarifa, els preus per trams horaris\
     \ de cada període i el preu de la compensació d'excedents de la teva comercialitzadora\
     \ si és una altra diferent a Som Energia.\n"
@@ -627,7 +627,8 @@ ENERGY_BALANCE:
   LABEL_AUTOCONSUMO: Ús directe d'energia
   LABEL_ENERGIA_RED: Energia obtinguda de la xarxa
   LABEL_ENERGIA_PANELES: Energia obtinguda dels panells
-  TITLE_GRAPH_MONTH_ENERGY_BALANCE: "Producció versus consum mensual <br />\nper {{potencia}}\
+  TITLE_GRAPH_MONTH_ENERGY_BALANCE:
+    "Producció versus consum mensual <br />\nper {{potencia}}\
     \ instal·lada\n"
 
   MSG_disclaimerProduccion: |
@@ -743,8 +744,7 @@ ENERGY_BALANCE:
 ECONOMIC_BALANCE:
   TITLE: Balanç Econòmic
   DESCRIPTION: |
-    A continuació coneixeràs quant et costarà la instal·lació, quant t'estalviaràs anualment a la factura i en quant de temps recuperaràs la inversió. Has de tenir en compte les possibles subvencions que puguis demanar en el moment de la instal·lació, les bonificacions d'IBI (si l'ajuntament les ofereix) i les eines per obtenir descomptes pels <a href='https://ca.support.somenergia.coop/article/1397-que-son-els-excedents-no-compensats' target='_blank'>excedents no compensats</a> com el <a href='https://ca.support.somenergia.coop/article/1371-que-es-el-flux-solar' target='_blank'>Flux Solar</a>, bateries virtuals o guardiola solar en cas que la teva comercialitzadora ho ofereixi.
-
+    A continuació coneixeràs quant et costarà la instal·lació, quant t'estalviaràs anualment a la factura i en quant de temps recuperaràs la inversió. Has de tenir en compte les possibles subvencions que puguis demanar en el moment de la instal·lació, les bonificacions d'IBI (si l'ajuntament les ofereix).
   LABEL_ANO: Any
   TOOLTIP_ANO: Període d'amortització
   LABEL_PREVIO: Previ
@@ -765,7 +765,8 @@ ECONOMIC_BALANCE:
     \ bonificació sobre l'IBI. <a href='https://fundacionrenovables.org/averigua-municipio-bonifica-ibi-icio-autoconsumo/'\
     \ target='_blank'>On trobo la bonificació que em correspon per municipi?</a><br\
     \ />\n"
-  ERROR_IBI_SURPLUS: Aquesta subvenció d'IBI és superior al cost previst de la instal·lació.
+  ERROR_IBI_SURPLUS:
+    Aquesta subvenció d'IBI és superior al cost previst de la instal·lació.
     El limitarem a {{años}} anys.
   SUBVENCION_DESCRIPTION: "És probable que hi hagi subvencions per a la instal·lació\
     \ de panells solars i que això suposi un estalvi. Si és així, indica el % o l'import\
@@ -773,12 +774,14 @@ ECONOMIC_BALANCE:
   DESCRIPTION_INSTALLATION_COST: Aquest és un import orientatiu que pot variar depenent
     del preu del mercat. A més, no té en compte taxes i/o despeses addicionals que
     puguin aparèixer.
-  ADVICE_PRICE_DESCRIPTION: "En el preu no està inclòs el cost de les taxes administratives\
+  ADVICE_PRICE_DESCRIPTION:
+    "En el preu no està inclòs el cost de les taxes administratives\
     \ necessàries (ICIO, llicència d'obres i legalització de la instal·lació), així\
     \ com despeses addicionals que puguin sorgir com a mitjans d'elevació, actuacions\
     \ d'adequació de l'habitatge (reparacions de la coberta, de la instal·lació elèctrica,\
     \ etc) o altres intervencions que l'empresa de distribució elèctrica pugui exigir.\n"
-  DESCRIPTION_VIRTUAL_BATTERY: "La forma d'aplicar els descomptes depèn de la comercialitzadora:\
+  DESCRIPTION_VIRTUAL_BATTERY:
+    "La forma d'aplicar els descomptes depèn de la comercialitzadora:\
     \ els descomptes poden ser un percentatge del total d'excedents no compensats,\
     \ com en el cas de <a href='https://ca.support.somenergia.coop/article/1371-que-es-el-flux-solar'\
     \ target='_blank'>Flux Solar</a> o una quota mensual fixa per oferir el servei.\n"
@@ -880,7 +883,8 @@ SUMMARY:
     \ els preus vinculats a la instal·lació són orientatius i que hi ha força volatilitat\
     \ en aquest factor, per la qual cosa no podem garantir que reflecteixi la realitat\
     \ del mercat en cada moment i territori.\n"
-  LABEL_DISCLAIMER_2: "Som Energia posa a disposició pública aquesta eina amb la finalitat\
+  LABEL_DISCLAIMER_2:
+    "Som Energia posa a disposició pública aquesta eina amb la finalitat\
     \ de contribuir a una transició energètica justa, descentralitzada i neta.\n"
   LABEL_PRINT: Imprimeix resum
   LABEL_PDF_REPORT: Informe de càlcul
@@ -939,7 +943,8 @@ PARAMETROS:
   parametros_MSG_errorLecturaFicheroTarifas: Error llegint fitxer local de tarifes
 
   TOOLTIP:
-    perdidasSistema: Les pèrdues estimades del sistema fotovoltaic degudes al deteriorament
+    perdidasSistema:
+      Les pèrdues estimades del sistema fotovoltaic degudes al deteriorament
       d'alguns components, condicions adverses, inversors deficients, etc.
     impuestoElectrico: L'impost especial sobre l'electricitat
     IVAEnergia: L'IVA que es repercuteix per la despesa en electricitat
@@ -1005,7 +1010,8 @@ AYUDAS:
 
 PROYECTO:
   nombreProyecto_LBL: Nom projecte
-  nombreProyecto_TT: "Nom que l'usuari dona a aquesta simulació (p. ex.:  pis01 lumescala01\
+  nombreProyecto_TT:
+    "Nom que l'usuari dona a aquesta simulació (p. ex.:  pis01 lumescala01\
     \ garatge00 ...)"
   importarProyecto_LBL: Importar projecte
   importarProyecto_TT: Selecciona el fitxer .solimp exportat prèviament per Solidar
@@ -1124,12 +1130,12 @@ REPORT:
   TITLE_PRIMER: INFORME PROVISIONAL
   TITLE_STRONG: AUTOGENERACIÓ
   TITLE_SEGON: FOTOVOLTAICA
-  ATENCIO: 'Atenció: Aquest informe intenta donar una informació orientativa a partir
-    de les dades d''ús elèctric indicades i estimacions aproximades del rendiment
+  ATENCIO: "Atenció: Aquest informe intenta donar una informació orientativa a partir
+    de les dades d'ús elèctric indicades i estimacions aproximades del rendiment
     de la instal·lació, així com del cost. Hem intentat que les fonts siguin el més
     fiables i properes a la realitat, però en cap cas no garantim des de Som Energia,
     que aquests valors siguin els reals en el transcurs dels 25 anys de vida útils
-    estimats.'
+    estimats."
   DADES_TITLE: Dades principals
   DADES_NOM: Nom
   DADES_DIRECCIO: Direcció
@@ -1208,11 +1214,11 @@ REPORT:
   TEXT: Cal tenir en compte que si es modifiquen els horaris d'ús d'energia i/o el
     total d'energia utilitzada els resultats poden variar significativament.
   ECONOMIQUES_TITLE: Dades econòmiques
-  ECONOMIQUES_DESCRIPTION: 'En el preu no està inclòs el cost de les taxes administratives
-    necessàries (ICIO, llicència d''obres i legalització de la instal·lació), així
-    com despeses addicionals que puguin sorgir com a mitjans d''elevació, actuacions
-    d''adequació de l''habitatge (reparacions de la coberta, de la instal·lació elèctrica,
-    etc) o altres intervencions que l''empresa de distribució elèctrica pugui exigir.'
+  ECONOMIQUES_DESCRIPTION: "En el preu no està inclòs el cost de les taxes administratives
+    necessàries (ICIO, llicència d'obres i legalització de la instal·lació), així
+    com despeses addicionals que puguin sorgir com a mitjans d'elevació, actuacions
+    d'adequació de l'habitatge (reparacions de la coberta, de la instal·lació elèctrica,
+    etc) o altres intervencions que l'empresa de distribució elèctrica pugui exigir."
   PEU: Per a qualsevol dubte pots escriure a auto@somenergia.coop
   ANY: any
   ANYS: anys
@@ -1266,10 +1272,17 @@ ABOUT:
   TITLE: Què és Solidar Energia?
 DIALOG_PANELS:
   TITLE: Característiques dels panells solars
-  DESCRIPTION: Pots triar entre diferents panells estàndard amb tecnologia de silici
+  DESCRIPTION_2: |
+    Pots triar entre diferents panells estàndard amb tecnologia de silici
     cristal·lí (els més habituals al mercat).
-  OTHERS: No obstant això, si vols utilitzar un panell que no és a la llista, pots
+  OTHERS: |
+    No obstant això, si vols utilitzar un panell que no és a la llista, pots
     definir les seves característiques en els camps següents.
+
+  DESCRIPTION_1: 'La simulació es realitzarà amb un panell estàndard de {{potència}}. Si vols, pots modificar la potència i la tecnologia utilitzada.'
+  UNKNONW_TECHNOLOGY: Desconeguda
+  LABEL_NOMBRE_PANEL: Selecciona el tipus de panell
+
 Proyecto:
   DIALOG_TITLE: Dades del projecte
   DIALOG_DESCRIPTION: En aquest formulari pots definir certs valors per documentar

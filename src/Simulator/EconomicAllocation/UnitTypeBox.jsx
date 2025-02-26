@@ -156,6 +156,11 @@ export default function UnitTypeBox(props) {
                       'dinero',
                       economicoGlobal.precioInstalacionCorregido *
                         allocationGroup[grupo].produccion,
+                    ) +
+                    '</b><br />Ahorro anual <b>' +
+                    UTIL.formatoValor(
+                      'dinero',
+                      zonasComunes.find((zc) => zc.id === grupo).economico.ahorroAnual,
                     ),
                 }}
               />

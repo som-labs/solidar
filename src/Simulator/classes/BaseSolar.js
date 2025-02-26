@@ -62,10 +62,11 @@ class BaseSolar {
     this.cumbrera = area.cumbrera //Longitud de la base en la parte alta cuando roofType === inclinado
     this.ancho = area.ancho //Longitud de la dimension transversal a la cumbrera medida en el mapa
     this.area = area.area //Superficie plana sobre el mapa
+
     //Configuracion de los paneles
     this.filas // = 0
     this.columnas // = 0
-    this.modoInstalacion
+    this.modoInstalacion //Horizontal: lado largo paralelo a cumbrera, Vertical: lado largo perpendicular a cumbrera
 
     //Angulos optimos de la configuracion
     this.angulosOptimos = area.angulosOptimos
@@ -74,13 +75,12 @@ class BaseSolar {
     //La inclinacion real se gestiona por el setter ya que su cambio implica cambio de areas
     //CUIDADO: roofType debe estar predefinido para que la configuración de paneles sea correcto.
     this.inclinacion = area.inclinacion
-    //BaseSolar.configuraInclinacion(this)
 
     this.inAcimut = area.inAcimut
 
     this.rendimientoCreado = false //true si ya tiene cargados los datos de PVGIS y se ha calculado su rendimiento
     this.requierePVGIS = true //Flag para controlar si es necesario llamar a PVGIS o no despues de cambios
-
+    this.tipoPanel = area.tipoPanel
     this.rendimiento = {}
     this.instalacion = {}
     this.produccion = {}
@@ -101,7 +101,7 @@ class BaseSolar {
     this.rendimiento = new Rendimiento(this)
   }
 
-  static configuraPaneles(area, tipoPanelActivo) {
+  static configuraPaneles(area) {
     let hColumnas
     let hFilas
     let vColumnas
@@ -110,7 +110,8 @@ class BaseSolar {
     let vGap
     let config = {}
 
-    const { roofType, cumbrera, anchoReal, inclinacion, lonlatBaseSolar } = area
+    const { roofType, cumbrera, anchoReal, inclinacion, lonlatBaseSolar, tipoPanel } =
+      area
 
     if (roofType === 'Inclinado') {
       /* Modificación 10/12/24 en caso de ser inclinado quitamos el margen del calculo de area disponible
@@ -132,37 +133,31 @@ class BaseSolar {
     */
 
       // Opcion largo panel paralelo a cumbrera
-      hColumnas = Math.trunc(cumbrera / tipoPanelActivo.largo)
-      hFilas = Math.trunc(anchoReal / tipoPanelActivo.ancho)
+      hColumnas = Math.trunc(cumbrera / tipoPanel.largo)
+      hFilas = Math.trunc(anchoReal / tipoPanel.ancho)
       // Opcion largo panel perpendicular a cumbrera
-      vColumnas = Math.trunc(cumbrera / tipoPanelActivo.ancho)
-      vFilas = Math.trunc(anchoReal / tipoPanelActivo.largo)
-
-      // Elegimos la configuracion que nos permite mas paneles
+      vColumnas = Math.trunc(cumbrera / tipoPanel.ancho)
+      vFilas = Math.trunc(anchoReal / tipoPanel.largo)
     } else {
       //Caso tejado horizontal u optimo
       const latitud = parseFloat(lonlatBaseSolar.split(',')[1])
       // Opcion largo panel paralelo a la cumbrera
       hGap =
-        tipoPanelActivo.ancho * Math.cos((inclinacion * Math.PI) / 180) +
-        (tipoPanelActivo.ancho * Math.sin((inclinacion * Math.PI) / 180)) /
+        tipoPanel.ancho * Math.cos((inclinacion * Math.PI) / 180) +
+        (tipoPanel.ancho * Math.sin((inclinacion * Math.PI) / 180)) /
           Math.tan(((61 - latitud) * Math.PI) / 180)
-      hColumnas = Math.trunc(
-        (cumbrera - 2 * TCB.parametros.margen) / tipoPanelActivo.largo,
-      )
+      hColumnas = Math.trunc((cumbrera - 2 * TCB.parametros.margen) / tipoPanel.largo)
       hFilas = Math.trunc((anchoReal - 2 * TCB.parametros.margen) / hGap)
       //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
       hFilas = hFilas === 0 ? 1 : hFilas
 
       //console.log('HORIZONTAL', hGap, hColumnas, hFilas)
-      // Opcion largo panel perpendicular a cumpbrera
+      // Opcion largo panel perpendicular a cumbrera
       vGap =
-        tipoPanelActivo.largo * Math.cos((inclinacion * Math.PI) / 180) +
-        (tipoPanelActivo.largo * Math.sin((inclinacion * Math.PI) / 180)) /
+        tipoPanel.largo * Math.cos((inclinacion * Math.PI) / 180) +
+        (tipoPanel.largo * Math.sin((inclinacion * Math.PI) / 180)) /
           Math.tan(((61 - latitud) * Math.PI) / 180)
-      vColumnas = Math.trunc(
-        (cumbrera - 2 * TCB.parametros.margen) / tipoPanelActivo.ancho,
-      )
+      vColumnas = Math.trunc((cumbrera - 2 * TCB.parametros.margen) / tipoPanel.ancho)
       vFilas = Math.trunc((anchoReal - 2 * TCB.parametros.margen) / vGap)
       //En el caso de una sola fila podría suceder que la inclinación indique un ancho entre filas superior al ancho pero igualmente entra un panel
       vFilas = vFilas === 0 ? 1 : vFilas
@@ -170,6 +165,7 @@ class BaseSolar {
       //console.log('VERTICAL', vGap, vColumnas, vFilas)
     }
 
+    // Elegimos la configuracion que nos permite mas paneles
     if (hColumnas * hFilas > vColumnas * vFilas) {
       config = { columnas: hColumnas, filas: hFilas, modoInstalacion: 'Horizontal' }
     } else {

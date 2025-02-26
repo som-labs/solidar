@@ -23,6 +23,7 @@ import * as UTIL from '../classes/Utiles'
 import { useDialog } from '../../components/DialogProvider'
 import AllocationGraph from './AllocationGraph'
 import { EnergyContext } from '../EnergyContext.jsx'
+import { GlobalContext } from '../GlobalContext.jsx'
 
 export default function EnergyAllocationStep() {
   const { t } = useTranslation()
@@ -40,7 +41,8 @@ export default function EnergyAllocationStep() {
     modifyConsumptionData,
   } = useContext(ConsumptionContext)
 
-  const { consumoGlobal } = useContext(EnergyContext)
+  const { consumoGlobal, produccionGlobal } = useContext(EnergyContext)
+  const { newEnergyBalance, setNewEnergyBalance } = useContext(GlobalContext)
 
   const [openDialog, closeDialog] = useDialog()
 
@@ -64,7 +66,7 @@ export default function EnergyAllocationStep() {
     //   TCB.requiereAllocation,
     // )
 
-    if (allocationGroup) {
+    if (newEnergyBalance) {
       //Primera asignacion de produccion a cada grupo basada en el consumo grupal
       setAllocationGroup((prev) => {
         const newAllocation = { ...prev }
@@ -88,8 +90,10 @@ export default function EnergyAllocationStep() {
                   allocationGroup[grupo].produccion,
                 6,
               )
-              modifyConsumptionData('Finca', f)
+            } else {
+              f.coefEnergia = 0
             }
+            modifyConsumptionData('Finca', f)
           }
         } else {
           //Es una zona comun el beta es directamente la energia asignada al grupo
@@ -102,7 +106,7 @@ export default function EnergyAllocationStep() {
       }
       closeBetasToOne()
       setRepartoValido(true)
-      TCB.requiereAllocation = false
+      setNewEnergyBalance(false)
     }
   }, [])
 
@@ -139,11 +143,11 @@ export default function EnergyAllocationStep() {
   function generaFicheroReparto() {
     closeBetasToOne()
     const betaList = []
-    for (const f of TCB.Finca.filter((f) => f.coefEnergia > 0)) {
+    for (const f of fincas.filter((f) => f.coefEnergia > 0)) {
       betaList.push({ CUPS: f.CUPS, beta: f.coefEnergia.toFixed(6) })
     }
-    console.log('GENERAFICHERO', TCB.ZonaComun, zonasComunes)
-    for (const z of TCB.ZonaComun.filter((z) => z.coefEnergia > 0)) {
+    console.log('GENERAFICHERO', zonasComunes)
+    for (const z of zonasComunes.filter((z) => z.coefEnergia > 0)) {
       betaList.push({ CUPS: z.CUPS, beta: z.coefEnergia.toFixed(6) })
     }
     UTIL.dumpData(TCB.parametros.CAU + '.txt', betaList)
@@ -177,7 +181,7 @@ export default function EnergyAllocationStep() {
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
               <Typography variant="h4">
                 {t('ENERGY_ALLOCATION.TOTAL_ENERGY', {
-                  energy: UTIL.formatoValor('energia', TCB.produccion.totalAnual),
+                  energy: UTIL.formatoValor('energia', produccionGlobal.totalAnual),
                 })}
               </Typography>
             </Box>
@@ -233,7 +237,7 @@ export default function EnergyAllocationStep() {
         )}
       </>
 
-      <Button onClick={() => UTIL.dumpData('Fincas.csv', TCB.Finca)}>Exportar</Button>
+      <Button onClick={() => UTIL.dumpData('Fincas.csv', fincas)}>Exportar</Button>
       <Button onClick={generaFicheroReparto}>Genera fichero reparto</Button>
     </Container>
   )

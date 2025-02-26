@@ -1,5 +1,14 @@
 [
   {
+    "id": 0,
+    "nombre": "Otros",
+    "tecnologia": "Unknown",
+    "potencia": "",
+    "ancho": "",
+    "largo": ""
+  },
+  {
+    "id": 1,
     "nombre": "505 Wp",
     "tecnologia": "crystSi",
     "potencia": 505,
@@ -7,6 +16,7 @@
     "largo": 2.094
   },
   {
+    "id": 2,
     "nombre": "455 Wp",
     "tecnologia": "crystSi",
     "potencia": 455,
@@ -14,6 +24,7 @@
     "largo": 2.096
   },
   {
+    "id": 3,
     "nombre": "430 Wp",
     "tecnologia": "crystSi",
     "potencia": 430,
@@ -21,17 +32,11 @@
     "largo": 1.762
   },
   {
+    "id": 4,
     "nombre": "320 Wp",
     "tecnologia": "crystSi",
     "potencia": 320,
     "ancho": 0.992,
     "largo": 1.658
-  },
-  {
-    "nombre": "otros",
-    "tecnologia": "Unknown",
-    "potencia": "",
-    "ancho": "",
-    "largo": ""
   }
 ]

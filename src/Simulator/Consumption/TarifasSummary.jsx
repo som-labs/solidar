@@ -203,6 +203,10 @@ export default function TarifasSummary() {
     //Update or create a Tarifa with formData
     if (reason === 'save') {
       //Can reach this by saving new tarifa or editing existing one
+      //Ensure prices are converted to float
+      formData.precios.forEach(
+        (val, index, array) => (array[index] = UTIL.returnFloat(val)),
+      )
       if (editing.current) {
         modifyConsumptionData('Tarifa', formData)
       } else {

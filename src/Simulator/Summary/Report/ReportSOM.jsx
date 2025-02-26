@@ -1093,7 +1093,18 @@ export default function ReportSOM({ onClose }) {
         >
           {t('SUMMARY.LABEL_PRINT')}
         </Button>
-        <Button variant="contained" size="large" onClick={onClose}>
+        <Button
+          variant="contained"
+          size="large"
+          onClick={onClose}
+          sx={{
+            position: 'fixed',
+            right: 0,
+            bottom: 5,
+            zIndex: 1000,
+            borderRadius: 3,
+          }}
+        >
           {t('REPORT.RETURN')}
         </Button>
       </Container>

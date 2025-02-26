@@ -21,9 +21,6 @@ class Finca {
     this.coefConsumo = 0
     this.coefInversion = 0
     this.coefEnergia = 0
-    this.coefHucha = 0
-    this.cuotaHucha = 0
-    //this.coste = 0
 
     this.nombreTipoConsumo = ''
     this.idTarifa = ''
@@ -39,6 +36,7 @@ class Finca {
     this.grupo
     this.CUPS
 
+    //PENDIENTE: quitar y usar object.assign
     //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto
     for (const objProp in finca) {
       if (typeof finca[objProp] !== Object) {
@@ -50,6 +48,7 @@ class Finca {
       typeof finca.superficie === 'string'
         ? parseFloat(finca.superficie.replace(',', '.'))
         : finca.superficie
+
     this.participacion =
       typeof finca.participacion === 'string'
         ? parseFloat(finca.participacion.replace(',', '.'))
@@ -76,30 +75,6 @@ class Finca {
      * Cada Finca tiene una tarifa
      */
     this.idTarifa
-  }
-
-  actualizaCondicionesHucha(coefHucha, cuotaHucha) {
-    if (this.economico === undefined) return
-    this.coefHucha = coefHucha
-    this.cuotaHucha = cuotaHucha
-    this.economico.correccionExcedentes(coefHucha, cuotaHucha)
-  }
-
-  /** La funcion actualiza la finca con el mismo idFinca que el argumento fincaActiva. Si esta no existe se crea una nueva finca con las propiedades de fincaActiva
-   *
-   * @param {Object} fincaActualizada
-   */
-  static actualiza_creaFinca(fincaActiva) {
-    const fincaActualizada = TCB.Finca.find((f) => f.idFinca === fincaActiva.idFinca)
-    //const fincaActualizada = TCB.Finca.find( (finca) => { return finca.idFinca === fincaActiva.idFinca });
-    //if (fincaActualizada === undefined) {
-    if (fincaActualizada.length === 0) {
-      TCB.Finca.push(new Finca(fincaActiva))
-    } else {
-      for (let prop in fincaActiva) {
-        fincaActualizada[0][prop] = fincaActiva[prop]
-      }
-    }
   }
 
   static mapaUsoGrupo = {
