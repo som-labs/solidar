@@ -2,12 +2,15 @@ import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 
+// MUI objects
 import Container from '@mui/material/Container'
 
-// REACT Solidar Components
+// REACT Solidar Global Components
 import AppFrame from '../components/AppFrame'
 import Wizard from '../components/Wizard'
+import { useAlert } from '../components/AlertProvider.jsx'
 
+// REACT Solidar local Components
 import LocationStep from './Location/Location'
 import ConsumptionStep from './Consumption/Consumption'
 import UnitsStep from './Units/Units'
@@ -17,21 +20,16 @@ import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
 import EconomicAllocationStep from './EconomicAllocation/EconomicAllocation'
 import SummarySOMStep from './Summary/SOM/Summary'
 
+// REACT Solidar contexts
 import { ConsumptionContext } from './ConsumptionContext'
 import { BasesContext } from './BasesContext'
 import { EconomicContext } from './EconomicContext'
 import { GlobalContext } from './GlobalContext.jsx'
 import { EnergyContext } from './EnergyContext.jsx'
 
-//import { AlertContext } from './components/Alert'
-import { useAlert } from '../components/AlertProvider.jsx'
 // Solidar objects
-// import PreparaEnergyBalance from './classes/PreparaEnergyBalance.jsx'
-// import PreparaEconomicBalance from './classes/PreparaEconomicBalance.jsx'
-
 import TCB from './classes/TCB'
 import * as UTIL from './classes/Utiles'
-import InicializaAplicacion from './classes/InicializaAplicacion'
 import Consumo from './classes/Consumo.js'
 import Economico from './classes/Economico.js'
 import Balance from './classes/Balance.js'
@@ -41,13 +39,11 @@ import { optimizador } from './classes/optimizador.js'
 export default function Page() {
   const { t } = useTranslation()
   const { SLDRAlert } = useAlert()
-  //const { SLDRAlert } = useContext(AlertContext)
   const { validaBases, bases, tipoPanelActivo, modifyBase } = useContext(BasesContext)
 
   const {
     newBases,
     setNewBases,
-    newPrecios,
     newPanelActivo,
     setNewPanelActivo,
     newTiposConsumo,
@@ -64,20 +60,14 @@ export default function Page() {
     validaUnits,
     repartoValido,
     fincas,
-    setFincas,
     zonasComunes,
     tiposConsumo,
     getConsumoTotal,
     tarifas,
   } = useContext(ConsumptionContext)
 
-  const {
-    economicoGlobal,
-    setEconomicoGlobal,
-    newEconomicBalance,
-    setNewEconomicBalance,
-    costeZCenFinca,
-  } = useContext(EconomicContext)
+  const { economicoGlobal, setEconomicoGlobal, setNewEconomicBalance, costeZCenFinca } =
+    useContext(EconomicContext)
 
   const {
     consumoGlobal,
@@ -89,12 +79,36 @@ export default function Page() {
     setTotalPaneles,
   } = useContext(EnergyContext)
 
-  const [a] = useSearchParams()
-  TCB.URLParameters = a
+  const GetURLArguments = () => {
+    const [a] = useSearchParams()
+    TCB.URLParameters = a
+
+    //Si recibimos argumento debug en la url ejecutamos con debug
+    TCB.debug = UTIL.getParametrosEntrada('debug')
+    UTIL.debugLog('GetURLArguments Debug activo: ' + TCB.debug)
+
+    //Definimos el modo de trabajo [INDIVIDUAL / COLECTIVO]
+    let _modo = UTIL.getParametrosEntrada('modo')
+    if (_modo) {
+      _modo = _modo.toUpperCase()
+      if (TCB.modos.includes(_modo)) TCB.modoActivo = _modo
+    }
+    UTIL.debugLog('GetURLArguments modo de trabajo: ' + TCB.modoActivo)
+
+    //Definimos el estilo. Por ahora puede ser SOM o GL. Cambia la pestaña de Resumen
+    let _estilo = UTIL.getParametrosEntrada('estilo')
+    if (_estilo) {
+      _estilo = _estilo.toUpperCase()
+      if (TCB.estilos.includes(_estilo)) TCB.estiloActivo = _estilo
+    }
+    UTIL.debugLog('GetURLArguments estilo de aplicacion: ' + TCB.estiloActivo)
+
+    //Definimos si es un usuario especial
+    TCB.user = UTIL.getParametrosEntrada('user')
+    UTIL.debugLog('GetURLArguments usuario de la aplicacion: ' + TCB.user)
+  }
 
   let results
-
-  if (!TCB.appInitialized) InicializaAplicacion()
 
   async function validaLocationStep() {
     results = await validaBases()
@@ -182,7 +196,7 @@ export default function Page() {
         /* Si la base tiene configurada la inclinación óptima, la establecemos y volvemos a reconfigurar los paneles */
         if (base.inclinacionOptima) {
           base.inclinacion = base.rendimiento.inclinacion
-          BaseSolar.configuraPaneles(base, tipoPanelActivo)
+          BaseSolar.configuraPaneles(base)
         }
       }
     }
@@ -227,7 +241,7 @@ export default function Page() {
     document.body.style.cursor = 'progress'
     //When importing first time will not compute Economico next yes
 
-    if (!importando || !economicoGlobal) {
+    if (!importando || !economicoGlobal || newEnergyBalance) {
       let newEconomico = new Economico(
         null,
         tarifas,
@@ -337,12 +351,12 @@ export default function Page() {
     }
   }
 
-  function validaEnergyAllocationStep() {
+  async function validaEnergyAllocationStep() {
     if (!repartoValido) {
       SLDRAlert('VALIDACION', t('ENERGY_ALLOCATION.NO_BALANCE'), 'Error')
       return false
     } else {
-      PreparaEconomicBalance()
+      await PreparaEconomicBalance()
 
       //Asignacion del coste propio de cada unidad por el beta que le corresponde
       // setFincas((prev) =>
@@ -443,6 +457,7 @@ export default function Page() {
     return sections
   }
 
+  GetURLArguments()
   return (
     <>
       <AppFrame>

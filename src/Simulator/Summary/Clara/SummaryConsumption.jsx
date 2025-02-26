@@ -15,7 +15,7 @@ import * as UTIL from '../../classes/Utiles'
 
 export default function SummaryConsumption() {
   const { t } = useTranslation()
-  const { tipoConsumo } = useContext(ConsumptionContext)
+  const { tiposConsumo } = useContext(ConsumptionContext)
 
   const columns = [
     {
@@ -50,7 +50,7 @@ export default function SummaryConsumption() {
           autoHeight
           rowHeight={30}
           getRowId={getRowId}
-          rows={tipoConsumo}
+          rows={tiposConsumo}
           columns={columns}
           hideFooter={true}
           sx={{

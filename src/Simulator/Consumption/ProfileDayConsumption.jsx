@@ -23,7 +23,6 @@ export default function ProfileDayConsumption(props) {
 
   const { consumo } = props
 
-  console.dir(consumo)
   // Function to get the width of the element
   const getWidth = () => {
     if (graphElement.current) {

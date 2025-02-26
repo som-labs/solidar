@@ -5,9 +5,13 @@ import { useTranslation } from 'react-i18next'
 import { Typography, IconButton, Box } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 
-// REACT Solidar Components
+// REACT Solidar Global Components
 import { useDialog } from '../../components/DialogProvider'
+
+// REACT Solidar local Components
 import DialogPanelsType from './DialogPanelsType'
+
+// REACT Solidar contexts
 import { BasesContext } from '../BasesContext'
 import { GlobalContext } from '../GlobalContext'
 
@@ -28,7 +32,7 @@ export default function PanelsSelector() {
     openDialog({
       children: (
         <DialogPanelsType
-          data={tipoPanelActivo}
+          tipoPanelActivo={tipoPanelActivo}
           onClose={(cause, formData) => processFormData(cause, formData)}
         ></DialogPanelsType>
       ),
@@ -36,59 +40,57 @@ export default function PanelsSelector() {
   }
 
   function processFormData(reason, formData) {
-    let newPanel = tipoPanelActivo
-
     if (reason === 'save') {
-      //If we are changing panel technology need to update PVGIS data for existing bases
-      if (tipoPanelActivo.tecnologia !== formData.tecnologia) {
-        bases.forEach((base) => {
-          base.requierePVGIS = true
-        })
-        newPanel.tecnologia = formData.tecnologia
-        setNewPanelActivo(true)
-      }
+      //Si el usuario ha definido o cambiado el userPanel lo copiamos a TCB.tipoPaneles[0]
+      if (formData.id === 0) Object.assign(TCB.tipoPaneles[0], formData)
 
-      //If the panel peak power has changed optimizer has to be executed
-      if (tipoPanelActivo.potencia !== formData.potencia) {
-        newPanel.potencia = UTIL.returnFloat(formData.potencia)
-        setNewPanelActivo(true)
-      }
-
-      //If there is any change in panel size need to reconfigura existing bases
-      if (
-        tipoPanelActivo.ancho !== formData.ancho ||
-        tipoPanelActivo.largo !== formData.largo
-      ) {
-        newPanel.ancho = UTIL.returnFloat(formData.ancho)
-        newPanel.largo = UTIL.returnFloat(formData.largo)
+      //Si se ha cambiado el tipo de panel activo en el form y hay bases ya creadas hay que aplicar el cambio a todas
+      if (formData.id !== tipoPanelActivo.id || formData.id === 0) {
         bases.forEach((base) => {
-          const newConfiguration = BaseSolar.configuraPaneles(base, newPanel)
-          base.columnas = newConfiguration.columnas
-          base.filas = newConfiguration.filas
-          base.modoInstalacion = newConfiguration.modoInstalacion
-          modifyBase(base)
+          base.tipoPanel = TCB.tipoPaneles[formData.id]
+
+          //If we are changing panel technology need to update PVGIS data for existing bases
+          if (tipoPanelActivo.tecnologia !== formData.tecnologia)
+            base.requierePVGIS = true
+
+          //If there is any change in panel size need to reconfigure base
+          if (
+            tipoPanelActivo.ancho !== formData.ancho ||
+            tipoPanelActivo.largo !== formData.largo
+          ) {
+            formData.ancho = UTIL.returnFloat(formData.ancho)
+            formData.largo = UTIL.returnFloat(formData.largo)
+            const newConfiguration = BaseSolar.configuraPaneles(base)
+            base.columnas = newConfiguration.columnas
+            base.filas = newConfiguration.filas
+            base.modoInstalacion = newConfiguration.modoInstalacion
+            modifyBase(base)
+          }
+          setNewPanelActivo(true)
         })
-        setNewPanelActivo(true)
+        setTipoPanelActivo({ ...formData })
       }
     }
-
-    setTipoPanelActivo({ ...newPanel })
     closeDialog()
   }
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', padding: 1 }}>
-      <Typography
-        variant="body"
-        dangerouslySetInnerHTML={{
-          __html: t('Instalacion.DESCRIPTION.paneles', {
-            potencia: UTIL.formatoValor('potenciaWp', tipoPanelActivo.potencia),
-          }),
-        }}
-      ></Typography>
-      <IconButton onClick={changePanelsType}>
-        <EditIcon />
-      </IconButton>
-    </Box>
+    <>
+      <Box
+        sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', padding: 1 }}
+      >
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('DIALOG_PANELS.DESCRIPTION_1', {
+              potencia: UTIL.formatoValor('potenciaWp', tipoPanelActivo.potencia),
+            }),
+          }}
+        ></Typography>
+        <IconButton onClick={changePanelsType}>
+          <EditIcon />
+        </IconButton>
+      </Box>
+    </>
   )
 }

@@ -62,8 +62,8 @@ export default function DialogTarifa({ tarifa, previous, onClose }) {
   function cambiaPrecio(posicion, nuevoValor, values, setValues) {
     setValues((prevValues) => ({
       ...prevValues,
-      precios: prevValues.precios.map((a, index) =>
-        index === posicion ? nuevoValor : a,
+      precios: prevValues.precios.map((precio, index) =>
+        index === posicion ? nuevoValor : precio,
       ),
     }))
   }
@@ -112,7 +112,6 @@ export default function DialogTarifa({ tarifa, previous, onClose }) {
         errors.nombreTarifa = t('CONSUMPTION.ERROR_NOMBRE_TARIFA_DUPLICADO')
       }
     }
-
     return errors
   }
 

@@ -22,7 +22,6 @@ import { useDialog } from '../../components/DialogProvider'
 import UnitEconomiBalance from './UnitEconomicBalance'
 
 // Solidar objects
-import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 export default function UnitsSummary(props) {
@@ -37,8 +36,6 @@ export default function UnitsSummary(props) {
   const { grupo, units } = props
   const [totalCost, setTotalCost] = useState()
 
-  console.log(units)
-
   const columns = [
     {
       field: 'nombreFinca',
@@ -47,6 +44,13 @@ export default function UnitsSummary(props) {
       flex: 1,
       description: t('Finca.TOOLTIP.nombreFinca'),
       sortable: false,
+      renderHeader: (params) => (
+        <div
+          style={{ resize: 'horizontal', overflow: 'hidden', display: 'inline-block' }}
+        >
+          {params.colDef.headerName}
+        </div>
+      ),
     },
     {
       field: 'superficie',
@@ -226,18 +230,36 @@ export default function UnitsSummary(props) {
     type: 'actions',
     headerName: t('BASIC.LABEL_ACCIONES'),
     sortable: false,
-    getActions: (params) => [
-      <GridActionsCellItem
-        key={1}
-        icon={
-          <Tooltip title={t('Showbalance')}>
-            <AnalyticsIcon />
-          </Tooltip>
-        }
-        label="ShowBalance"
-        onClick={() => showEconomicBalance(params.id)}
-      />,
-    ],
+    renderCell: (params) => {
+      if (params.row.economico === undefined) {
+        return null
+      }
+      return (
+        <GridActionsCellItem
+          key={1}
+          icon={
+            <Tooltip title={t('Showbalance')}>
+              <AnalyticsIcon />
+            </Tooltip>
+          }
+          label="ShowBalance"
+          onClick={() => showEconomicBalance(params.id)}
+        />
+      )
+    },
+
+    // getActions: (params) => [
+    //   <GridActionsCellItem
+    //     key={1}
+    //     icon={
+    //       <Tooltip title={t('Showbalance')}>
+    //         <AnalyticsIcon />
+    //       </Tooltip>
+    //     }
+    //     label="ShowBalance"
+    //     onClick={() => showEconomicBalance(params.id)}
+    //   />,
+    // ],
   })
 
   function showEconomicBalance(idFinca) {
@@ -279,6 +301,7 @@ export default function UnitsSummary(props) {
   //     .filter((_f) => _f.participa)
   //     .reduce((_fe, t) => t + _fe.economico.ahorroAnual, 0),
   // )
+  console.log(units)
   return (
     <Dialog
       fullScreen
@@ -301,9 +324,10 @@ export default function UnitsSummary(props) {
                 columns={columns}
                 hideFooter={false}
                 rowHeight={30}
-                autoHeight
-                disableColumnMenu
+                //autoHeight
+                //disableColumnMenu
                 localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
+                //autoPageSize
               />
             </Grid>
           )}

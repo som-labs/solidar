@@ -22,6 +22,7 @@ import { useAlert } from '../../components/AlertProvider.jsx'
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
 import { EnergyContext } from '../EnergyContext.jsx'
+import { GlobalContext } from '../GlobalContext.jsx'
 
 //Solidar objects
 import * as UTIL from '../classes/Utiles'
@@ -43,6 +44,7 @@ export default function AllocationGraph() {
   } = useContext(ConsumptionContext)
 
   const { consumoGlobal, produccionGlobal } = useContext(EnergyContext)
+  const { newEnergyBalance, setNewEnergyBalance } = useContext(GlobalContext)
 
   const [chartAllocation, setChartAllocation] = useState([])
 
@@ -69,6 +71,9 @@ export default function AllocationGraph() {
   }, [])
 
   useEffect(() => {
+    //console.log(newEnergyBalance)
+    //if (newEnergyBalance) {
+    console.log(allocationGroup)
     let tmp = []
     for (const g in allocationGroup) {
       if (allocationGroup[g].produccion > 0) {
@@ -94,6 +99,8 @@ export default function AllocationGraph() {
     else setRepartoValido(false)
 
     if (graphBox.current) Plotly.react(graphBox.current, tmp, layout)
+    setNewEnergyBalance(false)
+    //}
   }, [allocationGroup])
 
   function applyBalance() {
