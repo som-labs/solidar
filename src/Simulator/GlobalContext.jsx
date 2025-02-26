@@ -13,14 +13,6 @@ const GlobalContextProvider = ({ children }) => {
   const [task, setTask] = useState()
   const [importando, setImportando] = useState(false)
 
-  const [tipoPanelActivo, setTipoPanelActivo] = useState({
-    nombre: '430 Wp',
-    tecnologia: 'crystSi',
-    potencia: 430,
-    ancho: 1.134,
-    largo: 1.762,
-  })
-
   const contextValue = {
     inLineHelp,
     setInLineHelp,

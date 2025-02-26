@@ -73,7 +73,7 @@ class Rendimiento extends DiaHora {
       addurl += '&loss=' + TCB.parametros.perdidasSistema
     }
 
-    addurl += '&pvtechchoice=' + TCB.tipoPanelActivo.tecnologia
+    addurl += '&pvtechchoice=' + base.tipoPanel.tecnologia
     let [lon, lat] = base.lonlatBaseSolar.split(',')
 
     let url =

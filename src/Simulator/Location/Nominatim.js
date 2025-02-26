@@ -149,12 +149,10 @@ async function getParcelaXY(punto) {
     UTIL.debugLog('Catastro ->' + url)
     if (responseFincas.status === 200) {
       let jsonFincas = await responseFincas.json()
-
       TCB.participacionTotal = 0
       for (let unaFinca of jsonFincas) {
         //NOTA:Temporalmente asignamos idFinca como CUPS
         unaFinca.CUPS = 'CUPS de ' + TCB.idFinca
-
         unaFinca.idFinca = TCB.idFinca++
         //unaFinca.grupo = Finca.mapaUsoGrupo[unaFinca.uso]
         const _len = template.units.push(new Finca(unaFinca))

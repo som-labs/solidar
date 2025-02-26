@@ -17,24 +17,24 @@ import { getArea, getDistance } from 'ol/sphere.js'
 // MUI objects
 import { Button, Tooltip, Box, Grid } from '@mui/material'
 
-//React global components
-import { BasesContext } from '../BasesContext'
-import { ConsumptionContext } from '../ConsumptionContext'
-import { GlobalContext } from '../GlobalContext'
-
-import DialogBaseSolar from './DialogBaseSolar'
-
+// REACT Solidar Global Components
 import { useDialog } from '../../components/DialogProvider'
 import { useAlert } from '../../components/AlertProvider.jsx'
-//import { AlertContext } from '../components/Alert'
+
+// REACT Solidar contexts
+import { BasesContext } from '../BasesContext'
+import { ConsumptionContext } from '../ConsumptionContext'
+
+// REACT Solidar local Components
+import DialogBaseSolar from './DialogBaseSolar'
 
 // Local Location module
 import { verificaTerritorio, getParcelaXY } from './Nominatim.js'
 
-// Solidar global modules
-import Finca from '../classes/Finca.js'
+// Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
+import Finca from '../classes/Finca.js'
 
 /**
  * A React component to create BaseSolar on the OpenLayer map interface
@@ -47,18 +47,19 @@ import * as UTIL from '../classes/Utiles'
 
 export default function MapComponent() {
   const { t } = useTranslation()
-  const { fincas, setFincas } = useContext(ConsumptionContext)
+  const { SLDRAlert } = useAlert()
+  const [openDialog, closeDialog] = useDialog()
+
+  const { setFincas } = useContext(ConsumptionContext)
+  const { map, setMap, bases, updateBaseFromForm, tipoPanelActivo } =
+    useContext(BasesContext)
+
   // Map state
   const [mapType, setMapType] = useState('LOCATION.LABEL_SATELITE')
   const [selectedCoord] = useState([-3.7, 40.45])
-  //const {setNewBases} = useContext(GlobalContext)
-  const { map, setMap, bases, updateBaseFromForm } = useContext(BasesContext)
   const mapElement = useRef()
   const basesLayer = useRef()
   const mapRef = useRef(map)
-  const { SLDRAlert } = useAlert()
-
-  const [openDialog, closeDialog] = useDialog()
 
   const baseInteraction = new Draw({
     source: TCB.origenDatosSolidar,
@@ -332,9 +333,14 @@ export default function MapComponent() {
     end = transform(puntos[2], 'EPSG:3857', 'EPSG:4326')
     const ancho = getDistance(start, end)
 
-    // Calculamos una coordenada central para esta base que utilizaremos en PVGIS y donde la rotularemos
+    /*
+    Calculamos una coordenada central para esta base que utilizaremos en:
+    - Llamada nominatim para verificar territorio
+    - Llamada PVGIS para obtener rendimiento unitario
+    - Rotularemos el label
+    - Llamada DGCatastro para obtener fincas
+    */
     const puntoAplicacion = geometria.getInteriorPoint().getCoordinates()
-
     // Transformamos el punto al EPSG:4326 necesario para Nominatim
     const puntoAplicacion_4326 = transform(puntoAplicacion, 'EPSG:3857', 'EPSG:4326')
 
@@ -399,6 +405,7 @@ export default function MapComponent() {
     nuevaBaseSolar.inAcimut = undefined
     nuevaBaseSolar.angulosOptimos = false
     nuevaBaseSolar.requierePVGIS = true
+    nuevaBaseSolar.tipoPanel = tipoPanelActivo
     nuevaBaseSolar.lonlatBaseSolar =
       puntoAplicacion_4326[0].toFixed(4) + ',' + puntoAplicacion_4326[1].toFixed(4)
     //New point feature where the name label will be set
@@ -443,19 +450,19 @@ export default function MapComponent() {
     )
   }
 
-  function openShadowMap() {
-    const center = mapRef.current.getView().getCenter()
-    const lonLat = transform(center, 'EPSG:3857', 'EPSG:4326')
-    const lon = lonLat[0]
-    const lat = lonLat[1]
-    window.open(
-      'https://app.shadowmap.org/?lat=' +
-        lat +
-        '&lng=' +
-        lon +
-        '&zoom=16.31&azimuth=-0.07499&basemap=map&elevation=nextzen&f=29.0&polar=0.52360&time=1708600229817&vq=2',
-    )
-  }
+  // function openShadowMap() {
+  //   const center = mapRef.current.getView().getCenter()
+  //   const lonLat = transform(center, 'EPSG:3857', 'EPSG:4326')
+  //   const lon = lonLat[0]
+  //   const lat = lonLat[1]
+  //   window.open(
+  //     'https://app.shadowmap.org/?lat=' +
+  //       lat +
+  //       '&lng=' +
+  //       lon +
+  //       '&zoom=16.31&azimuth=-0.07499&basemap=map&elevation=nextzen&f=29.0&polar=0.52360&time=1708600229817&vq=2',
+  //   )
+  // }
 
   return (
     <Grid container>

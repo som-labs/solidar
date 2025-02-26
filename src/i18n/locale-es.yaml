@@ -165,6 +165,7 @@ Instalacion:
     tecnologia: Tecnología de los paneles
     largo: Largo del panel propuesto
     ancho: Ancho del panel propuesto
+  LABEL_tecnologiaDesconocida: Desconocida
 
   TOOLTIP:
     precioInstalacion: Precio de la instalación
@@ -191,12 +192,6 @@ Instalacion:
       Desconocido: se asumiran unas pérdidas de potencia debido al efecto de la temperatura de 8% (valor genérico para climas templados)"
     largo: Largo del panel en metros
     ancho: Ancho del panel en metros
-
-  DESCRIPTION:
-    paneles: |
-      La simulación se realizará con un panel estándar de {{potencia}}. Si lo deseas, puedes modificar la potencia y la tecnología utilizada.
-  LABEL_tecnologiaDesconocida: Desconocida
-  LABEL_tipoPanel: Seleccione la potencia del panel
 
 Tarifa:
   NAME: Tarifa
@@ -370,10 +365,13 @@ Economico:
 
 DIALOG_PANELS:
   TITLE: Características de los paneles solares
-  DESCRIPTION: Puedes escoger entre diferentes paneles estándar con tecnología de
-    silicio cristalino (los más habituales en el mercado).
-  OTHERS: Sin embargo, si deseas utilizar un panel que no esta en la lista, puedes
-    definir sus caracteristicas en los siguientes campos.
+  DESCRIPTION_2: |
+    Puedes escoger entre diferentes paneles estándar con tecnología de silicio cristalino (los más habituales en el mercado).
+  OTHERS: |
+    Sin embargo, si deseas utilizar un panel que no esta en la lista, selecciona la opción "Otros" de la lista y podrás definir sus caracteristicas en los siguientes campos.
+  DESCRIPTION_1: La simulación se realizará con un panel estándar de {{potencia}}. Si lo deseas, puedes modificar la potencia y la tecnología utilizada.
+  UNKNONW_TECHNOLOGY: Desconocida
+  LABEL_NOMBRE_PANEL: Seleccione el tipo de panel
 
 LOCATION:
   LABEL: Localización
@@ -486,7 +484,8 @@ CONSUMPTION:
   TARIFA_DESCRIPTION_2: |
     <strong>PASO 3.</strong> Indica los precios sin impuestos.<br />
     En caso de tener una <a href='https://es.support.somenergia.coop/article/1325-la-tarifa-2-0td-indexada' target='_blank'>tarifa indexada</a>, Som Energía muestra en sus facturas el precio medio ponderado para cada período. Te lo explicamos <a href='https://es.support.somenergia.coop/article/1368-por-que-veo-periodos-en-la-factura-de-indexada' target='_blank'>aquí.</a><br />
-    Si tu contrato está con otra comercializadora deberás consultar la mediana de los precios en los diferentes periodos. Ten en cuenta que la tarifa indexada no ofrece precios fijos en la parte de uso ni en la compensación de excedentes por lo que el cálculo será en base a una información que puede ser muy variable.
+    Si tu contrato está con otra comercializadora deberás consultar la mediana de los precios en los diferentes periodos. Ten en cuenta que la tarifa indexada no ofrece precios fijos en la parte de uso ni en la compensación de excedentes por lo que el cálculo será en base a una información que puede ser muy variable.<br />
+    También se definen los parametros para obtener descuentos (hucha) por los <a href='https://es.support.somenergia.coop/article/1398-que-son-los-excedentes-no-compensados' target='_blank'>excedentes no compensados</a> como el <a href='https://es.support.somenergia.coop/article/1372-que-es-el-flux-solar' target='_blank'>Flux Solar</a>, baterías virtuales o hucha solar en caso de que tu comercializadora lo ofrezca.
   COMPENSACION_TITLE: Compensación simplificada de excedentes
   COMPENSACION_DESCRIPTION_INDIVIDUAL: |
     La <strong>energía excedentaria</strong> es aquella que ha sido generada por los paneles solares fotovoltaicas y que, como no se utiliza de forma instantánea, circula a través del contador y se vierte a la red eléctrica de distribución.<br /><br />
@@ -674,7 +673,7 @@ ENERGY_BALANCE:
 ECONOMIC_BALANCE:
   TITLE: Balance Económico
   DESCRIPTION: |
-    A continuación conocerás cuánto te costará la instalación, cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión. Debes tener en cuenta las posibles subvenciones que puedas pedir en el momento de la instalación, las bonificaciones de IBI (si el ayuntamiento las ofrece) y las herramientas para obtener descuentos por los <a href='https://es.support.somenergia.coop/article/1398-que-son-los-excedentes-no-compensados' target='_blank'>excedentes no compensados</a> como el <a href='https://es.support.somenergia.coop/article/1372-que-es-el-flux-solar' target='_blank'>Flux Solar</a>, baterías virtuales o hucha solar en caso de que tu comercializadora lo ofrezca.
+    A continuación conocerás cuánto te costará la instalación, cuánto te ahorrarás anualmente en la factura y en cuánto tiempo recuperarás la inversión. Debes tener en cuenta las posibles subvenciones que puedas pedir en el momento de la instalación, las bonificaciones de IBI (si el ayuntamiento las ofrece).
   TITLE_IBI: Reducción del IBI
   DESCRIPTION_IBI: |
     Si instalas paneles solares es posible que puedas optar a una bonificación sobre el IBI. <a href='https://fundacionrenovables.org/averigua-municipio-bonifica-ibi-icio-autoconsumo/' target='_blank'>¿Dónde encuentro la bonificación que me corresponde por municipio?</a><br />
@@ -818,6 +817,7 @@ BASIC:
   LABEL_NO: 'NO'
   LABEL_EXPORT: Exportar
   LABEL_IMPORT: Importar
+  LABEL_EXEC: Ejecutar
 
 GRAPHICS:
   LABEL_CONSUMPTION: Uso eléctrico
@@ -1053,8 +1053,8 @@ UNITS:
   LABEL_TIPO_USO_1: Uso eléctrico
   TOOLTIP_TIPO_USO_1: Selecciona el tipo de uso eléctrico asignado
   LABEL_VER_DETALLES: Ver detalles
-  ERROR_ZONA_COMUN_SIN_TARIFA: Falta asignación de tarifa a la zona común {{zona}}
-  ERROR_ZONA_COMUN_SIN_USOELECTRICO: Falta asignación de uso eléctrico a la zona común {{zona}}
+  ERROR_UNIT_SIN_TARIFA: Falta asignación de tarifa a la {{tipo}} {{id}}
+  ERROR_UNIT_SIN_USOELECTRICO: Falta asignación de uso eléctrico a la {{tipo}} {{id}}
   ERROR_AL_MENOS_UN_USOELECTRICO: Al menos una finca o una zona común deben tener asignado un uso eléctrico
 
 ENERGY_ALLOCATION:

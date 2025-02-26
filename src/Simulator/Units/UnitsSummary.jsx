@@ -6,6 +6,7 @@ import {
   Grid,
   MenuItem,
   Dialog,
+  InputLabel,
   FormControlLabel,
   Select,
   Button,
@@ -13,10 +14,11 @@ import {
   DialogContent,
   DialogTitle,
   Typography,
+  FormControl,
 } from '@mui/material'
 import { DataGrid, GridToolbarContainer } from '@mui/x-data-grid'
 
-import { SLDRInputField } from '../../components/SLDRComponents'
+// REACT Solidar Global Components
 import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
@@ -229,55 +231,59 @@ export default function UnitsSummary(props) {
   function newConsumptionAll() {
     return (
       <GridToolbarContainer sx={{ justifyContent: 'center', mr: 3, mt: 1 }}>
-        <Typography
-          variant="body"
-          dangerouslySetInnerHTML={{
-            __html: t('UNITS.SUMMARY_DESCRIPTION'),
-          }}
-        />
+        <Grid container alignItems="center">
+          <Grid item xs={12} sx={{ textAlign: 'center', mb: 2 }}>
+            <Typography
+              variant="body"
+              dangerouslySetInnerHTML={{
+                __html: t('UNITS.SUMMARY_DESCRIPTION'),
+              }}
+            />
+          </Grid>
+          <Grid item xs={6} style={{ textAlign: 'right' }}>
+            <InputLabel htmlFor="tipoConsumo">{t('UNITS.LABEL_TIPO_USO')}</InputLabel>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth>
+              <Select
+                sx={{ flex: 1, ml: '4rem', textAlign: 'center' }}
+                object="TipoConsumo"
+                name="tipoConsumo"
+                size="small"
+                onChange={(event) => handleTipoConsumo(event.target.value)}
+                value={tipoConsumoAsignado}
+              >
+                {tiposActivos.map((e, index) => (
+                  <MenuItem key={index} value={e.value}>
+                    {e.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
 
-        <FormControlLabel
-          labelPlacement="start"
-          padding={3}
-          control={
-            <Select
-              sx={{ flex: 1, ml: '1rem', width: 400, textAlign: 'center' }}
-              size={'small'}
-              value={tipoConsumoAsignado}
-              name="fuente"
-              object="TipoConsumo"
-              onChange={(event) => handleTipoConsumo(event.target.value)}
-            >
-              {tiposActivos.map((e, index) => (
-                <MenuItem key={index} value={e.value}>
-                  {e.label}
-                </MenuItem>
-              ))}
-            </Select>
-          }
-          label={t('UNITS.LABEL_TIPO_USO')}
-        />
-        <FormControlLabel
-          labelPlacement="start"
-          padding={3}
-          control={
-            <Select
-              sx={{ flex: 1, ml: '4rem', width: 400, textAlign: 'center' }}
-              size={'small'}
-              value={tipoTarifaAsignada}
-              name="fuente"
-              object="Tarifa"
-              onChange={(event) => handleTipoTarifa(event.target.value)}
-            >
-              {tarifasActivas.map((e, index) => (
-                <MenuItem key={index} value={e.value}>
-                  {e.label}
-                </MenuItem>
-              ))}
-            </Select>
-          }
-          label={t('UNITS.LABEL_NOMBRE_TARIFA')}
-        />
+          <Grid item xs={6} style={{ textAlign: 'right' }}>
+            <InputLabel htmlFor="tarifa">{t('UNITS.LABEL_NOMBRE_TARIFA')}</InputLabel>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth>
+              <Select
+                sx={{ flex: 1, ml: '4rem', textAlign: 'center' }}
+                size="small"
+                value={tipoTarifaAsignada}
+                name="tarifa"
+                object="Tarifa"
+                onChange={(event) => handleTipoTarifa(event.target.value)}
+              >
+                {tarifasActivas.map((e, index) => (
+                  <MenuItem key={index} value={e.value}>
+                    {e.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
       </GridToolbarContainer>
     )
   }
@@ -345,7 +351,8 @@ export default function UnitsSummary(props) {
   function changeUnit(newUnitRow, originalRow) {
     if (
       newUnitRow.nombreTipoConsumo !== originalRow.nombreTipoConsumo ||
-      newUnitRow.idTarifa !== originalRow.idTarifa
+      newUnitRow.idTarifa !== originalRow.idTarifa ||
+      newUnitRow.participa !== originalRow.participa
     ) {
       modifyConsumptionData('Finca', newUnitRow)
       setNewTiposConsumo(true)
@@ -364,7 +371,10 @@ export default function UnitsSummary(props) {
       onClose={closeDialog}
       aria-labelledby="full-screen-dialog-title"
     >
-      <DialogTitle id="full-screen-dialog-title">
+      <DialogTitle
+        id="full-screen-dialog-title"
+        sx={{ fontSize: '20px', fontWeight: 'bold' }}
+      >
         {'Unidades con uso ' + grupo}
       </DialogTitle>
 

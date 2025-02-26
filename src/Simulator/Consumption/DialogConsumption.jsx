@@ -35,7 +35,7 @@ import { useAlert } from '../../components/AlertProvider'
 import { ConsumptionContext } from '../ConsumptionContext'
 import { useContext } from 'react'
 
-export default function DialogConsumption({ data, previous, onClose }) {
+export default function DialogConsumption({ data, previous, onClose, editing }) {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
   const { SLDRAlert } = useAlert()
@@ -48,6 +48,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
   }
 
   const handleFile = (event, setValues) => {
+    console.log(event)
     setValues((prevValues) => ({ ...prevValues, ['ficheroCSV']: event }))
   }
 
@@ -110,7 +111,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
         }
       }
     }
-    if (!values.fuente.includes('REE') && values.ficheroCSV === '') {
+    if (!values.fuente.includes('REE') && values.ficheroCSV.length === 0) {
       errors.ficheroCSV = t('CONSUMPTION.ERROR_FALTA_FICHERO_CONSUMO')
     }
     return errors
@@ -254,6 +255,7 @@ export default function DialogConsumption({ data, previous, onClose }) {
                                 <MuiFileInput
                                   {...field}
                                   size="small"
+                                  multiple={!editing} //Si estamos editando no se permite multiple files
                                   sx={{ flex: 1, ml: '1rem' }}
                                   inputProps={{ accept: '.csv' }}
                                   onChange={(event) => handleFile(event, setValues)}

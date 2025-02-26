@@ -166,36 +166,64 @@ const ConsumptionContextProvider = ({ children }) => {
   }
 
   function validaUnits() {
-    //Verifica que al menos una unidad o una zona común tengan uso electrico asignado y que todas las zonas comunes tienen tarifa y nombreTipoConsumo
+    /* 
+    Verifica que al menos una unidad o una zona común tengan uso electrico asignado
+    Que todas las zonas comunes tienen tarifa y nombreTipoConsumo
+    Que todas las fincas que participan tienen tipoConsumo y tarifa asignados
+    */
+    let usuarios = 0
     let results = { status: true, error: '' }
 
+    console.log(zonasComunes)
     for (const _zc of zonasComunes) {
-      //Verify each zonaComun have Tarifa assigned
+      //Verify each zonaComun has Tarifa assigned
       if (_zc.idTarifa === '') {
         results.status = false
-        results.error = t('UNITS.ERROR_ZONA_COMUN_SIN_TARIFA', { zona: _zc.nombre })
+        results.error = t('UNITS.ERROR_UNIT_SIN_TARIFA', {
+          tipo: 'Zona común',
+          id: _zc.nombre,
+        })
       } else {
-        //Verify has tipoConsumo
+        //Verify each ZonaComun has tipoConsumo
         if (_zc.nombreTipoConsumo === '') {
           results.status = false
-          results.error = t('UNITS.ERROR_ZONA_COMUN_SIN_USOELECTRICO', {
-            zona: _zc.nombre,
+          results.error = t('UNITS.ERROR_UNIT_SIN_USOELECTRICO', {
+            tipo: 'Zona común',
+            id: _zc.nombre,
           })
         } else {
-          //updateTCBUnitsFromState()
-          return results
+          usuarios++
         }
       }
     }
+
     //If there is not zonasComunes check at least one finca participa and has tipoConsumo assigned
     for (const _fnc of fincas) {
-      if (_fnc.nombreTipoConsumo !== '' && _fnc.participa) {
-        return results
+      if (_fnc.participa) {
+        if (_fnc.nombreTipoConsumo !== '') {
+          if (_fnc.idTarifa === '') {
+            results.status = false
+            results.error = t('UNITS.ERROR_UNIT_SIN_TARIFA', {
+              tipo: 'Finca',
+              id: _fnc.nombreFinca,
+            })
+          } else {
+            usuarios++
+          }
+        } else {
+          results.status = false
+          results.error = t('UNITS.ERROR_UNIT_SIN_USOELECTRICO', {
+            tipo: 'Finca',
+            id: _fnc.nombreFinca,
+          })
+        }
       }
     }
 
-    results.status = false
-    results.error = t('UNITS.ERROR_AL_MENOS_UN_USOELECTRICO')
+    if (usuarios === 0) {
+      results.status = false
+      results.error = t('UNITS.ERROR_AL_MENOS_UN_USOELECTRICO')
+    }
     return results
   }
 

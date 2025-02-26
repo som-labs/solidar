@@ -9,11 +9,10 @@ import InfoIcon from '@mui/icons-material/Info'
 import clsx from 'clsx'
 
 //React global components
-//import calculaResultados from '../classes/calculaResultados'
 import { BasesContext } from '../BasesContext'
 import { EnergyContext } from '../EnergyContext'
+import { GlobalContext } from '../GlobalContext.jsx'
 import { SLDRFooterBox } from '../../components/SLDRComponents'
-import { AlertContext } from '../components/Alert'
 import { useAlert } from '../../components/AlertProvider.jsx'
 import { useDialog } from '../../components/DialogProvider'
 import DialogProperties from '../components/DialogProperties'
@@ -21,7 +20,6 @@ import DialogProperties from '../components/DialogProperties'
 // Solidar objects
 import Economico from '../classes/Economico'
 import { optimizador } from '../classes/optimizador'
-import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 export default function InstallationSummary() {
@@ -35,28 +33,7 @@ export default function InstallationSummary() {
     useContext(BasesContext)
   const { calculaResultados, setTotalPaneles, totalPaneles, consumoGlobal } =
     useContext(EnergyContext)
-
-  const [updatedCells, setUpdatedCells] = useState({})
-
-  const handleEditCellChange = (params, event) => {
-    console.log('edit', params)
-    const { id, field, value } = params
-    setUpdatedCells({ ...updatedCells, [id]: { ...updatedCells[id], [field]: value } })
-  }
-
-  const handleCellBlur = (params, event) => {
-    console.log('BLUR', params, event)
-    const { id, field } = params
-    // Revert cell value to original if changes were not saved
-    if (updatedCells[id]?.[field] !== undefined) {
-      // Retrieve original value and update the cell
-      const originalValue = bases.find((row) => row.id === id)?.[field]
-      setUpdatedCells({
-        ...updatedCells,
-        [id]: { ...updatedCells[id], [field]: originalValue },
-      })
-    }
-  }
+  const { setNewEnergyBalance } = useContext(GlobalContext)
 
   const getRowId = (row) => {
     return row.idBaseSolar
@@ -200,7 +177,7 @@ export default function InstallationSummary() {
                     'potenciaTotal',
                     bases.reduce(
                       (sum, tBase) =>
-                        sum + (tBase.panelesMaximo * tipoPanelActivo.potencia) / 1000,
+                        sum + (tBase.panelesMaximo * tBase.tipoPanel.potencia) / 1000,
                       0,
                     ),
                   ) +
@@ -230,6 +207,7 @@ export default function InstallationSummary() {
     /* Recalculamos el balance energetico con el nuevo numero de paneles */
     console.log('Recalculamos balance energetico')
     calculaResultados(consumoGlobal)
+    setNewEnergyBalance(true)
 
     // TCB.economico = new Economico()
     // UTIL.debugLog('calculaResultados - economico global ', TCB.economico)

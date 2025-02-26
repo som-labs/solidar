@@ -7,25 +7,27 @@ import HelpIcon from '@mui/icons-material/HelpOutlineRounded.js'
 import InfoIcon from '@mui/icons-material/Info'
 import { useTheme } from '@mui/material/styles'
 
-// REACT Solidar Components
+// REACT Solidar Global Components
 import { SLDRDetalle, SLDRInfoBox } from '../../components/SLDRComponents'
-import { useAlert } from '../../components/AlertProvider.jsx'
+import { useDialog } from '../../components/DialogProvider'
+
+// REACT Solidar local Components
 import AddressSearch from './AddressSearch'
 import PanelsSelector from './PanelsSelector.jsx'
 import MapComponent from './MapComponent'
 import BasesSummary from './BasesSummary'
 import HelpAvailableAreas from './HelpAvailableAreas.jsx'
+
+// REACT Solidar contexts
 import { BasesContext } from '../BasesContext'
 import { GlobalContext } from '../GlobalContext'
-//React global components
-import { useDialog } from '../../components/DialogProvider'
 
+//OpenLayers objects
 import { transform } from 'ol/proj'
 
 const LocationStep = () => {
   const { t } = useTranslation()
   const theme = useTheme()
-  const SLDRAlert = useAlert()
 
   const { inLineHelp } = useContext(GlobalContext)
   const [openDialog, closeDialog] = useDialog()

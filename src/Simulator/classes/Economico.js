@@ -94,7 +94,7 @@ class Economico {
       _balance = balanceGlobal
     }
 
-    //console.log('6 Balance de dia 0 hora 13 despues', _balance.diaHora[0][13])
+    console.log('6 Balance ', _balance)
 
     tarifaHoras = TCB.tarifas[tarifaActiva.detalle].horas
     if (tarifaActiva.tipo === '2.0TD') _consumo.periodo = new Array(3).fill(0)
@@ -135,6 +135,7 @@ class Economico {
           }
 
           // La tarifa original es -> this.diaHoraTarifaOriginal[dia][hora]
+
           this.diaHoraPrecioOriginal[dia][hora] =
             _consumo.diaHora[dia][hora] *
             this.diaHoraTarifaOriginal[dia][hora] *
@@ -302,8 +303,7 @@ class Economico {
     this.ahorroAnual =
       UTIL.suma(this.consumoOriginalMensual) -
       UTIL.suma(this.consumoConPlacasMensualCorregido)
-
-    console.log('8 Ahorros anual propio y de ZCs', this.ahorroAnual, this.ahorroAnualZC)
+    //console.log('8 Ahorros anual propio y de ZCs', this.ahorroAnual, this.ahorroAnualZC)
     //Algunas cuotas de la hucha pueden producir ahorros negativos que no tienen sentido
     if (this.ahorroAnual <= 0) {
       UTIL.debugLog('Cuotas hucha generan ahorro negativo')

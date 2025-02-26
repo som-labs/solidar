@@ -33,7 +33,8 @@ export default function DialogProject({ onClose }) {
   const { SLDRAlert } = useAlert()
   const fileInputRef = useRef(null)
   const [task, setTask] = useState()
-  const { tipoPanelActivo, bases, setBases } = useContext(BasesContext)
+  const { tipoPanelActivo, setTipoPanelActivo, bases, setBases, map } =
+    useContext(BasesContext)
   const {
     fincas,
     setFincas,
@@ -166,6 +167,7 @@ export default function DialogProject({ onClose }) {
     TCB.datosProyecto.parametros = TCB.parametros
     TCB.datosProyecto.featIdUnico = TCB.featIdUnico
     TCB.datosProyecto.conversionCO2 = TCB.conversionCO2
+    TCB.datosProyecto.tipoPaneles = TCB.tipoPaneles
     TCB.datosProyecto.tipoPanelActivo = tipoPanelActivo
 
     // Guardamos los datos del mapa en formato geoJSON
@@ -284,6 +286,15 @@ export default function DialogProject({ onClose }) {
 
       //Creamos la baseSolar en TCB
       setBases((prev) => [...prev, tbase])
+      //Fit map view to bases if any
+
+      const mapView = map.getView()
+      const center = mapView.getCenter()
+      mapView.fit(TCB.origenDatosSolidar.getExtent())
+      if (mapView.getZoom() > 20) {
+        mapView.setCenter(center)
+        mapView.setZoom(20)
+      }
     })
   }
 
@@ -366,7 +377,8 @@ export default function DialogProject({ onClose }) {
     TCB.parametros = datosImportar.parametros
     TCB.featIdUnico = parseInt(datosImportar.featIdUnico) // Generador de identificadores de objeto unicos
     TCB.conversionCO2 = datosImportar.conversionCO2
-    TCB.tipoPanelActivo = datosImportar.tipoPanelActivo
+    TCB.tipoPaneles = datosImportar.tipoPaneles
+    setTipoPanelActivo(datosImportar.tipoPanelActivo)
     setNewPanelActivo(false)
 
     importLocalizacion(datosImportar)
@@ -378,10 +390,12 @@ export default function DialogProject({ onClose }) {
     setNewUnits(false)
     setTotalPaneles(datosImportar.totalPaneles)
 
+    console.log(datosImportar)
     // Import Tarifa
-    TCB.nombreTarifaActiva = datosImportar.nombreTarifaActiva
-    TCB.tipoTarifa = datosImportar.tipoTarifa
-    TCB.tarifaActiva = datosImportar.tarifaActiva
+    // TCB.nombreTarifaActiva = datosImportar.nombreTarifaActiva
+    // TCB.tipoTarifa = datosImportar.tipoTarifa
+    // TCB.tarifaActiva = datosImportar.tarifaActiva
+
     if (datosImportar.tarifas) {
       setTarifas(datosImportar.tarifas)
     }
@@ -393,7 +407,6 @@ export default function DialogProject({ onClose }) {
 
     // //Importamos la distribucion de energia entre los participes
     if (TCB.modoActivo !== 'INDIVIDUAL') {
-      console.log(datosImportar?.allocationGroup)
       if (datosImportar?.allocationGroup) {
         setAllocationGroup(datosImportar.allocationGroup)
         console.log('IMPORTADO AllocationGroup', datosImportar.allocationGroup)

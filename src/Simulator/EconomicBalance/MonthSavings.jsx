@@ -2,15 +2,15 @@ import { useContext, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Plotly library
-import Plot from 'react-plotly.js'
 import Plotly from 'plotly.js-dist'
 
 // MUI objects
-import { Typography, Container } from '@mui/material'
+import { Container } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
-// REACT Solidar Components
+// REACT Solidar Contexts
 import { EconomicContext } from '../EconomicContext'
+import { ConsumptionContext } from '../ConsumptionContext'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
@@ -21,10 +21,18 @@ export default function MonthSaving({ finca }) {
   const theme = useTheme()
 
   const { economicoGlobal } = useContext(EconomicContext)
+  const { tarifas } = useContext(ConsumptionContext)
   const graphElement = useRef()
   const graphWidth = useRef()
 
-  const localEcoData = finca ? finca.economico : economicoGlobal
+  let localEcoData
+  if (finca) {
+    localEcoData = finca.economico
+    localEcoData.coefHucha = tarifas.find((t) => t.idTarifa === finca.idTarifa).coefHucha
+  } else {
+    localEcoData = economicoGlobal
+    localEcoData.coefHucha = tarifas[0].coefHucha
+  }
 
   useEffect(() => {
     // Function to get the width of the element

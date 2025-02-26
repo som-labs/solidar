@@ -1,39 +1,16 @@
 import TCB from './TCB'
 import * as UTIL from './Utiles'
 
-async function InicializaAplicacion() {
-  console.log('INICIALIZA', TCB.appInitialized)
-  //if (TCB.appInitialized) return
-  console.log('INICIALIZANDO...')
-  //Si recibimos argumento debug en la url ejecutamos con debug
-  TCB.debug = UTIL.getParametrosEntrada('debug')
-  UTIL.debugLog('_initEvents Debug activo: ' + TCB.debug)
-
+export default async function InicializaAplicacion() {
   //Identificación de la sesión con objeto Date.now() de javascript.
   TCB.idSesion = Date.now()
 
-  //Definimos el modo de trabajo [INDIVIDUAL / COLECTIVO]
-  let _modo = UTIL.getParametrosEntrada('modo')
-  if (_modo) {
-    _modo = _modo.toUpperCase()
-    if (TCB.modos.includes(_modo)) TCB.modoActivo = _modo
-  }
-  UTIL.debugLog('_initEvents modo de trabajo: ' + TCB.modoActivo)
-
-  //Definimos el estilo. Por ahora puede ser SOM o GL. Cambia la pestaña de Resumen
-  let _estilo = UTIL.getParametrosEntrada('estilo')
-  if (_estilo) {
-    _estilo = _estilo.toUpperCase()
-    if (TCB.estilos.includes(_estilo)) TCB.estiloActivo = _estilo
-  }
-  UTIL.debugLog('_initEvents estilo de aplicacion: ' + TCB.estiloActivo)
-
-  //Definimos si es un usuario especial
-  TCB.user = UTIL.getParametrosEntrada('user')
-
+  console.log(window.location.hostname)
   // Define la url base de la aplicación
   TCB.basePath =
-    window.location.hostname === '127.0.0.1' ? 'http://localhost/SOM/REACT/solidar/' : '/'
+    window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
+      ? 'http://localhost/SOM/REACT/solidar/'
+      : '/'
   UTIL.debugLog('_initEvents ejecutando desde ' + TCB.basePath)
 
   //lectura del fichero de precios de instalación del servidor. Si falla se usan las de la TCB
@@ -69,7 +46,6 @@ async function InicializaAplicacion() {
   }
 
   //Definicion de tarifas (APLICACION->SERVER->SOM)
-
   TCB.fuenteTarifa = 'APLICACION'
   const ficheroTarifa = '/datos/tarifas.json'
   try {
@@ -146,5 +122,3 @@ async function InicializaAplicacion() {
   TCB.appInitialized = true
   return true
 }
-
-export default InicializaAplicacion

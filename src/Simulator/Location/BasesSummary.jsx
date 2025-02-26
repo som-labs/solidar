@@ -8,32 +8,28 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { useTheme } from '@mui/material/styles'
 
-// REACT Solidar Components
-import { BasesContext } from '../BasesContext'
-import { GlobalContext } from '../GlobalContext'
-import DialogBaseSolar from './DialogBaseSolar'
+// REACT Solidar Global Components
 import { useDialog } from '../../components/DialogProvider'
 import { SLDRFooterBox } from '../../components/SLDRComponents'
 
+// REACT Solidar contexts
+import { BasesContext } from '../BasesContext'
+import { GlobalContext } from '../GlobalContext'
+
+// REACT Solidar local Components
+import DialogBaseSolar from './DialogBaseSolar'
+
 // Solidar objects
-import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import '../../App.css'
+//import '../../App.css'
 
 export default function BasesSummary() {
   const { t } = useTranslation()
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()
-  const {
-    bases,
-    setBases,
-    updateBaseFromForm,
-    addBase,
-    modifyBase,
-    deleteBase,
-    tipoPanelActivo,
-  } = useContext(BasesContext)
+  const { bases, updateBaseFromForm, deleteBase } = useContext(BasesContext)
+
   const { setNewBases } = useContext(GlobalContext)
 
   const getRowId = (row) => {
@@ -109,7 +105,7 @@ export default function BasesSummary() {
       renderCell: (params) => {
         return UTIL.formatoValor(
           'potenciaMaxima',
-          (params.row.panelesMaximo * tipoPanelActivo.potencia) / 1000,
+          (params.row.panelesMaximo * params.row.tipoPanel.potencia) / 1000,
         )
       },
     },
@@ -187,7 +183,7 @@ export default function BasesSummary() {
                     'potenciaMaxima',
                     bases.reduce(
                       (sum, tBase) =>
-                        sum + (tBase.panelesMaximo * tipoPanelActivo.potencia) / 1000,
+                        sum + (tBase.panelesMaximo * tBase.tipoPanel.potencia) / 1000,
                       0,
                     ),
                   ),

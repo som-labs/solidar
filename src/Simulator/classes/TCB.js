@@ -91,9 +91,6 @@ const TCB = {
   featIdUnico: 0, // Generador de identificadores de objeto unicos
   idFinca: 0, //Generador de id de finca. Inicializado desde el proxy de catastro
 
-  _tablaBasesAsignadas: null,
-  _tablaReparto: null,
-  listaZonasComunes: [], //Lista de los nombres de las zonas comunes generadas en los modos colectivo y comunidad
   tiempoEsperaPVGIS: 100,
 
   //Por ver
@@ -245,25 +242,18 @@ const TCB = {
   // Parametros por defecto
   parametros: {
     impuestoElectrico: 5.113,
-    IVAEnergia: 10.0,
+    IVAEnergia: 21.0,
     IVAInstalacion: 21.0,
     perdidasSistema: 20,
     interesVAN: 3,
     margen: 0.5, //Se pondrá a 0 si es tejado inclinado
-    CAU: 'Codigo CAU',
+    CAU: 'CAU Proyecto',
   },
 
-  //Default panel type
-  tipoPanelActivo: {
-    nombre: '430 Wp',
-    tecnologia: 'crystSi',
-    potencia: 430,
-    ancho: 1.134,
-    largo: 1.762,
-  },
-  // This data will be read from datos/tipoPaneles.json during InicializaAplicacion
+  /* This data will be read from datos/tipoPaneles.json during InicializaAplicacion */
+  /* tipoPaneles[0], is the user defined panel. It can be filled in PanelsSelector */
   tipoPaneles: [],
-  panelesOptimos: [],
+  defaultPanelActivo: 2, //Default panel type from json file
 
   /** Constante donde se define el precio estimado de la instalación en base a la potencia instalada
    * @typedef {object} precioInstalacion

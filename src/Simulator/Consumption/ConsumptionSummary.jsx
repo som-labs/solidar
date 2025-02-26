@@ -139,6 +139,7 @@ export default function ConsumptionSummary() {
         <DialogConsumption
           data={row}
           previous={tiposConsumo}
+          editing={true}
           maxWidth={'lg'}
           fullWidth={true}
           onClose={(reason, formData) => processFormData(reason, formData)}
@@ -161,6 +162,7 @@ export default function ConsumptionSummary() {
           data={initialValues}
           maxWidth={'lg'}
           fullWidth={true}
+          editing={false}
           previous={tiposConsumo} //Needed to check duplicate name
           onClose={(reason, formData) => processFormData(reason, formData)}
         ></DialogConsumption>
@@ -168,17 +170,43 @@ export default function ConsumptionSummary() {
     })
   }
 
+  const create_load = async (tipo) => {
+    const newTipoConsumo = new TipoConsumo(tipo)
+    const rCode = await newTipoConsumo.loadTipoConsumoFromCSV()
+    if (rCode.status) {
+      if (editing.current) {
+        //Editando uno existente
+        modifyConsumptionData('TipoConsumo', newTipoConsumo)
+      } else {
+        //Creando uno nuevo
+        addConsumptionData('TipoConsumo', newTipoConsumo)
+      }
+    } else {
+      UTIL.debugLog('Error detectado en carga de CSV')
+      SLDRAlert(
+        'CARGA TIPOLOGIA USO ENERGIA',
+        'Fichero: ' + newTipoConsumo.nombreFicheroCSV + '\n' + rCode.err,
+        'Error',
+      )
+    }
+  }
+
   async function processFormData(reason, formData) {
     let nuevoTipoConsumo = {}
     let cursorOriginal
+    cursorOriginal = document.body.style.cursor
 
     if (reason === undefined) return
     //Update or create a BaseSolar with formData
     if (reason === 'save') {
+      document.body.style.cursor = 'progress'
       //Can reach this by saving new tipo consumo or editing existing one
-
-      if (editing.current) nuevoTipoConsumo = { idTipoConsumo: formData.idTipoConsumo }
-      else nuevoTipoConsumo = { idTipoConsumo: TCB.featIdUnico++ }
+      //I editing will keep idTipoConsumo if not new id
+      if (editing.current) {
+        nuevoTipoConsumo = { idTipoConsumo: formData.idTipoConsumo }
+      } else {
+        nuevoTipoConsumo = { idTipoConsumo: TCB.featIdUnico++ }
+      }
 
       nuevoTipoConsumo.nombreTipoConsumo = formData.nombreTipoConsumo
       nuevoTipoConsumo.fuente = formData.fuente
@@ -193,30 +221,32 @@ export default function ConsumptionSummary() {
           : '3.0TD'
         nuevoTipoConsumo.nombreFicheroCSV = nuevoTipoConsumo.tipoTarifaREE
         nuevoTipoConsumo.fuente = 'REE'
+        await create_load(nuevoTipoConsumo)
       } else {
+        //Es uno o varios ficheros del mismo tipo de fuente que no es REE
         nuevoTipoConsumo.consumoAnualREE = ''
-        nuevoTipoConsumo.ficheroCSV = formData.ficheroCSV
-        nuevoTipoConsumo.nombreFicheroCSV = formData.ficheroCSV.name
-      }
 
-      let rCode
-      cursorOriginal = document.body.style.cursor
-      document.body.style.cursor = 'progress'
-
-      //Will create a new TipoConsumo always, if editing will replace previous one by new one.
-      const newTipoConsumo = new TipoConsumo(nuevoTipoConsumo)
-      rCode = await newTipoConsumo.loadTipoConsumoFromCSV()
-      if (rCode.status) {
-        if (editing.current) {
-          //Editando uno existente
-          modifyConsumptionData('TipoConsumo', newTipoConsumo)
+        if (!Array.isArray(formData.ficheroCSV)) {
+          //Si viene solo un fichero
+          nuevoTipoConsumo.nombreTipoConsumo = formData.nombreTipoConsumo
+          nuevoTipoConsumo.ficheroCSV = formData.ficheroCSV
+          nuevoTipoConsumo.nombreFicheroCSV = formData.ficheroCSV.name
+          await create_load(nuevoTipoConsumo)
         } else {
-          //Creando uno nuevo
-          addConsumptionData('TipoConsumo', newTipoConsumo)
+          for (const inFile of formData.ficheroCSV) {
+            console.log('Procesando', inFile)
+            nuevoTipoConsumo.idTipoConsumo = TCB.featIdUnico++
+            nuevoTipoConsumo.nombreTipoConsumo = inFile.name
+              .split('.')
+              .slice(0, -1)
+              .join('.')
+            nuevoTipoConsumo.ficheroCSV = inFile
+            nuevoTipoConsumo.nombreFicheroCSV = inFile.name
+            //Will create a new TipoConsumo always, if editing will replace previous one by new one.
+            console.log('Creando', nuevoTipoConsumo)
+            await create_load(nuevoTipoConsumo)
+          }
         }
-      } else {
-        UTIL.debugLog('Error detectado en carga de CSV')
-        SLDRAlert('CARGA TIPOLOGIA USO ENERGIA', rCode.err, 'Error')
       }
     }
 

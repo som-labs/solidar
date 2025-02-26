@@ -23,15 +23,15 @@ const BasesContextProvider = ({ children }) => {
   const { SLDRAlert } = useAlert()
   const [map, setMap] = useState()
   const [bases, setBases] = useState([])
-
-  //REVISAR: No se puede copiar de la TCB por falta de sincronismo en solidarenergia
   const [tipoPanelActivo, setTipoPanelActivo] = useState({
+    id: 3,
     nombre: '430 Wp',
     tecnologia: 'crystSi',
     potencia: 430,
     ancho: 1.134,
     largo: 1.762,
   })
+  //TCB.tipoPaneles[TCB.defaultPanelActivo],
 
   const addBase = (base) => {
     setBases((prev) => [...prev, base])
@@ -97,7 +97,7 @@ const BasesContextProvider = ({ children }) => {
       let opcCumbrera = {
         ...formData,
       }
-      const A = BaseSolar.configuraPaneles(opcCumbrera, tipoPanelActivo)
+      const A = BaseSolar.configuraPaneles(opcCumbrera)
       // console.log(
       //   'OPTION Cumbrera como Cumbrera',
       //   A,
@@ -111,7 +111,7 @@ const BasesContextProvider = ({ children }) => {
         anchoReal: formData.cumbrera,
         cumbrera: formData.anchoReal,
       }
-      const B = BaseSolar.configuraPaneles(opcAncho, tipoPanelActivo)
+      const B = BaseSolar.configuraPaneles(opcAncho)
       // console.log(
       //   'OPTION Ancho como cumbrera',
       //   B,
@@ -202,17 +202,14 @@ const BasesContextProvider = ({ children }) => {
       formData = { ...formData, ...computeAcimut(formData, centerPoint, areaShape) }
     }
 
-    formData = Object.assign(
-      {},
-      formData,
-      BaseSolar.configuraPaneles(formData, tipoPanelActivo),
-    )
+    formData = Object.assign({}, formData, BaseSolar.configuraPaneles(formData))
+
     if (formData.filas * formData.columnas === 0) {
       SLDRAlert(
         'VERICACION AREA',
         t('LOCATION.NOT_ENOUGH_AREA', {
-          largo: UTIL.formatoValor('longitud', TCB.tipoPanelActivo.largo),
-          ancho: UTIL.formatoValor('longitud', TCB.tipoPanelActivo.ancho),
+          largo: UTIL.formatoValor('longitud', formData.tipoPanel.largo),
+          ancho: UTIL.formatoValor('longitud', formData.tipoPanel.ancho),
           margen: UTIL.formatoValor('longitud', TCB.parametros.margen),
         }),
         'Warning',
@@ -237,10 +234,10 @@ const BasesContextProvider = ({ children }) => {
     //Update or create a BaseSolar with formData
     if (reason === 'save') {
       // We are creating a new base
-      addBase(new BaseSolar(formData, tipoPanelActivo))
+      addBase(new BaseSolar(formData))
     } else {
       //We are updating existing base
-      modifyBase(new BaseSolar(formData, tipoPanelActivo))
+      modifyBase(new BaseSolar(formData))
     }
     setNewBases(true)
     TCB.requiereOptimizador = true

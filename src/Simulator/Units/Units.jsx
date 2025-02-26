@@ -22,6 +22,7 @@ import * as UTIL from '../classes/Utiles'
 //React global components
 import { useDialog } from '../../components/DialogProvider'
 import TipoConsumo from '../classes/TipoConsumo.js'
+import Finca from '../classes/Finca.js'
 import { GlobalContext } from '../GlobalContext.jsx'
 
 export default function UnitsStep() {
@@ -34,7 +35,7 @@ export default function UnitsStep() {
     setFincas,
     zonasComunes,
     setZonasComunes,
-    tipoConsumo,
+    tiposConsumo,
     allocationGroup,
     setAllocationGroup,
     updateTCBUnitsFromState,
@@ -73,54 +74,127 @@ export default function UnitsStep() {
       })
   }
 
+  const participacionTotal = fincas.reduce((p, f) => {
+    return p + UTIL.returnFloat(f.participacion)
+  }, 0)
+
+  const addZonaComun2AllocationGroup = (_zona) => {
+    //Add new zona comun to allocationGroup
+    setAllocationGroup((prev) => {
+      const tmpAG = prev
+      for (const grupo in tmpAG) {
+        if (tmpAG[grupo].unidades > 0)
+          //Is a DGC group, need to add new zonacomun to the list
+          tmpAG[grupo].zonasComunes = {
+            ...tmpAG[grupo].zonasComunes,
+            [_zona.id]: true,
+          }
+      }
+      return tmpAG
+    })
+  }
+
+  const buildAllocationGroup = (_fincas) => {
+    let uniqueGroup = {}
+
+    //Get consumption from each Finca and add to allocationGroup by grupo value
+    _fincas.forEach((f) => {
+      if (uniqueGroup[f.grupo]) {
+        uniqueGroup[f.grupo].participacionT += f.participacion
+        uniqueGroup[f.grupo].unidades++
+        if (f.participa) {
+          uniqueGroup[f.grupo].participacionP += f.participacion
+          uniqueGroup[f.grupo].participes++
+          uniqueGroup[f.grupo].consumo +=
+            f.nombreTipoConsumo !== '' ? getConsumoTotal(f.nombreTipoConsumo) : 0
+        }
+      } else {
+        uniqueGroup[f.grupo] = {
+          nombre: f.grupo,
+          criterio: 'PARTICIPACION',
+          participacionT: f.participacion,
+          unidades: 1,
+          consumo: 0,
+          produccion: 0,
+        }
+        if (f.participa) {
+          uniqueGroup[f.grupo].participes = 1
+          uniqueGroup[f.grupo].participacionP = f.participacion
+          uniqueGroup[f.grupo].consumo +=
+            f.nombreTipoConsumo !== '' ? getConsumoTotal(f.nombreTipoConsumo) : 0
+        } else {
+          uniqueGroup[f.grupo].participes = 0
+          uniqueGroup[f.grupo].participacionP = 0
+        }
+      }
+    })
+
+    //Get consumption from each ZonaComun and add to allocationGroup by name
+    zonasComunes.forEach((zc) => {
+      uniqueGroup[zc.id] = {
+        nombre: zc.nombre,
+        unidades: 0,
+        produccion: 0,
+        consumo: zc.nombreTipoConsumo !== '' ? getConsumoTotal(zc.nombreTipoConsumo) : 0,
+      }
+    })
+
+    setAllocationGroup(uniqueGroup)
+  }
+
   useEffect(() => {
     if (!allocationGroup) {
       //Build new allocationGroup
-      let uniqueGroup = {}
 
-      //Get consumption from each Finca and add to allocationGroup by grupo value
-      fincas.forEach((f) => {
-        if (uniqueGroup[f.grupo]) {
-          uniqueGroup[f.grupo].participacionT += f.participacion
-          uniqueGroup[f.grupo].unidades++
-          if (f.participa) {
-            uniqueGroup[f.grupo].participacionP += f.participacion
-            uniqueGroup[f.grupo].participes++
-            uniqueGroup[f.grupo].consumo +=
-              f.nombreTipoConsumo !== '' ? getConsumoTotal(f.nombreTipoConsumo) : 0
-          }
-        } else {
-          uniqueGroup[f.grupo] = {
-            nombre: f.grupo,
-            criterio: 'PARTICIPACION',
-            participacionT: f.participacion,
-            unidades: 1,
-            consumo: 0,
-            produccion: 0,
-          }
-          if (f.participa) {
-            uniqueGroup[f.grupo].participes = 1
-            uniqueGroup[f.grupo].participacionP = f.participacion
-            uniqueGroup[f.grupo].consumo +=
-              f.nombreTipoConsumo !== '' ? getConsumoTotal(f.nombreTipoConsumo) : 0
-          } else {
-            uniqueGroup[f.grupo].participes = 0
-            uniqueGroup[f.grupo].participacionP = 0
-          }
-        }
-      })
+      // const buildAllocationGroup = () => {
+      //   let uniqueGroup = {}
 
-      //Get consumption from each ZonaComun and add to allocationGroup by name
-      zonasComunes.forEach((zc) => {
-        uniqueGroup[zc.id] = {
-          nombre: zc.nombre,
-          unidades: 0,
-          produccion: 0,
-          consumo:
-            zc.nombreTipoConsumo !== '' ? getConsumoTotal(zc.nombreTipoConsumo) : 0,
-        }
-      })
-      setAllocationGroup(uniqueGroup)
+      //   //Get consumption from each Finca and add to allocationGroup by grupo value
+      //   fincas.forEach((f) => {
+      //     if (uniqueGroup[f.grupo]) {
+      //       uniqueGroup[f.grupo].participacionT += f.participacion
+      //       uniqueGroup[f.grupo].unidades++
+      //       if (f.participa) {
+      //         uniqueGroup[f.grupo].participacionP += f.participacion
+      //         uniqueGroup[f.grupo].participes++
+      //         uniqueGroup[f.grupo].consumo +=
+      //           f.nombreTipoConsumo !== '' ? getConsumoTotal(f.nombreTipoConsumo) : 0
+      //       }
+      //     } else {
+      //       uniqueGroup[f.grupo] = {
+      //         nombre: f.grupo,
+      //         criterio: 'PARTICIPACION',
+      //         participacionT: f.participacion,
+      //         unidades: 1,
+      //         consumo: 0,
+      //         produccion: 0,
+      //       }
+      //       if (f.participa) {
+      //         uniqueGroup[f.grupo].participes = 1
+      //         uniqueGroup[f.grupo].participacionP = f.participacion
+      //         uniqueGroup[f.grupo].consumo +=
+      //           f.nombreTipoConsumo !== '' ? getConsumoTotal(f.nombreTipoConsumo) : 0
+      //       } else {
+      //         uniqueGroup[f.grupo].participes = 0
+      //         uniqueGroup[f.grupo].participacionP = 0
+      //       }
+      //     }
+      //   })
+
+      //   //Get consumption from each ZonaComun and add to allocationGroup by name
+      //   zonasComunes.forEach((zc) => {
+      //     uniqueGroup[zc.id] = {
+      //       nombre: zc.nombre,
+      //       unidades: 0,
+      //       produccion: 0,
+      //       consumo:
+      //         zc.nombreTipoConsumo !== '' ? getConsumoTotal(zc.nombreTipoConsumo) : 0,
+      //     }
+      //   })
+      //   setAllocationGroup(uniqueGroup)
+      // }
+
+      buildAllocationGroup(fincas)
 
       //If previous allocationGroup just update consumo if there has been any change in TipoConsumo
     } else if (newTiposConsumo) {
@@ -165,22 +239,28 @@ export default function UnitsStep() {
           for (let finca of data) {
             finca.participacion = parseFloat(finca.participacion)
             finca.participa = String(finca.participa).toLowerCase() === 'true'
-            //Si la finca cargada tiene un tipo de consumo inexistente lo limpiamos
+            /* 
+            PENDIENTE: decidir si el tipoConsumo y la tarifa son susceptibles de export e import de Units
+            Si la finca cargada tiene un tipo de consumo inexistente lo limpiamos
+            */
             if (finca.nombreTipoConsumo !== '') {
               if (
-                !tipoConsumo.find(
+                !tiposConsumo.find(
                   (tc) => tc.nombreTipoConsumo === finca.nombreTipoConsumo,
                 )
               ) {
                 finca.nombreTipoConsumo = ''
               }
             }
-            newFincas.push(finca)
+
+            newFincas.push(new Finca(finca))
           }
 
           console.log('setting fincas in UNITS loadCSV')
+          buildAllocationGroup(newFincas)
           setFincas([...newFincas])
           setNewTiposConsumo(true)
+          for (let zc of zonasComunes) addZonaComun2AllocationGroup(zc)
         }
       }
       reader.readAsText(file)
@@ -252,14 +332,9 @@ export default function UnitsStep() {
       CUPS: 'CUPS de ' + TCB.idFinca.toFixed(0),
       nombre: 'Zona Comun ' + TCB.idFinca,
       coefEnergia: 0,
-      coefHucha: 0,
-      cuotaHucha: 0,
     }
 
     //Initially al groups participate in the cost of all zonas
-    const participacionTotal = fincas.reduce((p, f) => {
-      return p + UTIL.returnFloat(f.participacion)
-    }, 0)
 
     //Add new zona comun to allocationGroup
     setAllocationGroup((prev) => {
@@ -284,7 +359,6 @@ export default function UnitsStep() {
     })
 
     //Add new zona comun to state
-
     addConsumptionData('ZonaComun', newZonaComun)
 
     //Add new zona comun to TCB

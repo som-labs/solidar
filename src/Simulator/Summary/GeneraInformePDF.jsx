@@ -358,14 +358,19 @@ async function GeneraInformePDF() {
     alternateRowStyles: { fillColor: [229, 255, 204] },
   })
 
-  doc.addImage({
-    imageData: TCB.graphs.MonthSavings,
-    x: margenIzquierdo,
-    y: currentY + 5,
-    w: margenDerecho - margenIzquierdo,
-    h: 110,
-  })
-
+  /*
+  El informe de ahorro mensual global solo tiene sentido en el modo INDIVIDUAL en EconomicBalanceStep. 
+  En modo COLECTIVO no se genera por lo cual no esta guardado en TCB.graphs
+  */
+  if (TCB.modoActivo === 'INDIVIDUAL') {
+    doc.addImage({
+      imageData: TCB.graphs.MonthSavings,
+      x: margenIzquierdo,
+      y: currentY + 5,
+      w: margenDerecho - margenIzquierdo,
+      h: 110,
+    })
+  }
   nuevaLinea('Pie', pagina++, true)
   nuevaLinea('Disclaimer', i++, TCB.i18next.t('Economico.MSG_disclaimerAhorro'), '')
   currentY += 20

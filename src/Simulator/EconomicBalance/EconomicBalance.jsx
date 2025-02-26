@@ -11,7 +11,7 @@ import { SLDRInfoBox, SLDRCollapsibleCard } from '../../components/SLDRComponent
 import ReduccionIBI from './ReduccionIBI'
 import Subvencion from './Subvencion'
 import InstallationCost from './InstallationCost'
-import VirtualBattery from './VirtualBattery'
+//import VirtualBattery from './VirtualBattery'
 import AmortizationTime from './AmortizationTime'
 import YearSaving from './YearSavings'
 import MonthSaving from './MonthSavings'
