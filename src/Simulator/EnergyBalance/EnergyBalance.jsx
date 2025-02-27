@@ -32,7 +32,6 @@ import ValidateServerNameGrid from './ValidateServerNameGrid'
 
 // Solidar objects
 import TCB from '../classes/TCB'
-import * as UTIL from '../classes/Utiles'
 
 export default function EnergyBalanceStep() {
   const { t } = useTranslation()
@@ -215,7 +214,7 @@ export default function EnergyBalanceStep() {
                 }}
               />
               <SLDRInfoBox sx={{ mt: '1rem' }}>
-                {dataReady && <MonthFiveParts monthlyData={monthlyData}></MonthFiveParts>}
+                <MonthFiveParts monthlyData={monthlyData}></MonthFiveParts>
               </SLDRInfoBox>
             </Grid>
 

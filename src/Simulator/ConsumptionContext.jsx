@@ -174,7 +174,6 @@ const ConsumptionContextProvider = ({ children }) => {
     let usuarios = 0
     let results = { status: true, error: '' }
 
-    console.log(zonasComunes)
     for (const _zc of zonasComunes) {
       //Verify each zonaComun has Tarifa assigned
       if (_zc.idTarifa === '') {

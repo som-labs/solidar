@@ -27,11 +27,9 @@ import { GlobalContext } from '../GlobalContext.jsx'
 
 export default function EnergyAllocationStep() {
   const { t } = useTranslation()
-  const theme = useTheme()
 
   const {
     fincas,
-    setFincas,
     zonasComunes,
     setZonasComunes,
     repartoValido,
@@ -47,25 +45,6 @@ export default function EnergyAllocationStep() {
   const [openDialog, closeDialog] = useDialog()
 
   useEffect(() => {
-    /*
-    allocationGroup = { 
-       group: {
-         consumo: como % del consumo total
-         produccion: asignada como % de la produccion total
-         criterio: de distribución de la produccion ['PARTICIPACION', 'CONSUMO', 'PARITARIO']
-         unidades: numero de unidades que conforman el grupo. Las que pagarán las zonas comunes
-         participes: numero de unidades que participan. Las que recibiran produccion
-         participacionT: % de propiedad total de participacion
-         participacionP: % de propiedad de los participes
-       }
-    }
-    */
-    // console.log(
-    //   'UE EnergyAllocation',
-    //   JSON.stringify(allocationGroup),
-    //   TCB.requiereAllocation,
-    // )
-
     if (newEnergyBalance) {
       //Primera asignacion de produccion a cada grupo basada en el consumo grupal
       setAllocationGroup((prev) => {
