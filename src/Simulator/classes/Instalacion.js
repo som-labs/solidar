@@ -70,7 +70,6 @@ class Instalacion {
       },
     })
 
-    console.log('Nueva Instalacion', inInst)
     this._name = 'Instalacion'
     this.#potenciaUnitaria = inInst.potenciaUnitaria
     this.#numeroPaneles = inInst.paneles

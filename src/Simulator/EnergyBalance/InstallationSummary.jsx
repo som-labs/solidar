@@ -205,7 +205,6 @@ export default function InstallationSummary() {
 
   function setNewPaneles() {
     /* Recalculamos el balance energetico con el nuevo numero de paneles */
-    console.log('Recalculamos balance energetico')
     calculaResultados(consumoGlobal)
     setNewEnergyBalance(true)
 
@@ -251,8 +250,6 @@ export default function InstallationSummary() {
    */
 
   function nuevaInstalacion(newRow, oldRow) {
-    console.log('nueva', newRow)
-
     let tmpPaneles = newRow.paneles
     newRow.instalacion.paneles = newRow.paneles
 

@@ -46,6 +46,7 @@ export default function DialogProject({ onClose }) {
     tarifas,
     setTarifas,
     setTiposConsumo,
+    setRepartoValido,
   } = useContext(ConsumptionContext)
   const {
     totalPaneles,
@@ -66,6 +67,7 @@ export default function DialogProject({ onClose }) {
     setNewBases,
     setNewPanelActivo,
     setNewUnits,
+    setNewEnergyBalance,
   } = useContext(GlobalContext)
 
   const defaultData = {
@@ -390,7 +392,7 @@ export default function DialogProject({ onClose }) {
     setNewUnits(false)
     setTotalPaneles(datosImportar.totalPaneles)
 
-    console.log(datosImportar)
+    //console.log(datosImportar)
     // Import Tarifa
     // TCB.nombreTarifaActiva = datosImportar.nombreTarifaActiva
     // TCB.tipoTarifa = datosImportar.tipoTarifa
@@ -412,7 +414,8 @@ export default function DialogProject({ onClose }) {
         console.log('IMPORTADO AllocationGroup', datosImportar.allocationGroup)
       }
     }
-
+    setNewEnergyBalance(false)
+    setRepartoValido(true)
     setEconomicoGlobal(datosImportar?.economico)
     onClose()
   }
@@ -583,7 +586,7 @@ export default function DialogProject({ onClose }) {
             <DialogActions>
               <Button onClick={cancelProject}>{t('BASIC.LABEL_CANCEL')}</Button>
               {task === 'Export' ? (
-                <Button type="submit">{t('BASIC.LABEL EXEC')}</Button>
+                <Button type="submit">{t('BASIC.LABEL_EXEC')}</Button>
               ) : (
                 ''
               )}
