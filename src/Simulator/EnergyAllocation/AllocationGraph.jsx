@@ -51,12 +51,19 @@ export default function AllocationGraph() {
   const graphWidth = useRef()
   const graphBox = useRef()
 
-  const layout = {
-    title: t('ENERGY_ALLOCATION.TITLE_BAR_CHART'),
-    barmode: 'stack', // Set bar mode to "stack"
-    yaxis: { title: t('ENERGY_ALLOCATION.GRAPH_Y_AXIS') },
-    width: graphWidth.current,
-  }
+  // useEffect(() => {
+  //   console.log('UseEffct 1')
+  //   // Function to get the width of the element
+  //   const getWidth = () => {
+  //     if (graphBox.current) {
+  //       graphWidth.current = graphBox.current.offsetWidth
+  //     }
+  //   }
+
+  //   // Call the function to get the width after initial render
+  //   getWidth()
+  //   console.log('UseEffct 1', graphWidth.current)
+  // }, [])
 
   useEffect(() => {
     // Function to get the width of the element
@@ -68,12 +75,22 @@ export default function AllocationGraph() {
 
     // Call the function to get the width after initial render
     getWidth()
-  }, [])
-
-  useEffect(() => {
     //console.log(newEnergyBalance)
     //if (newEnergyBalance) {
-    console.log(allocationGroup)
+
+    const layout = {
+      title: t('ENERGY_ALLOCATION.TITLE_BAR_CHART'),
+      barmode: 'stack', // Set bar mode to "stack"
+      yaxis: { title: t('ENERGY_ALLOCATION.GRAPH_Y_AXIS') },
+      width: graphWidth.current,
+      //autosize: true,
+      //margin: { b: 20, t: 50, r: 40, l: 100 },
+    }
+
+    const config = {
+      displayModeBar: false,
+    }
+
     let tmp = []
     for (const g in allocationGroup) {
       if (allocationGroup[g].produccion > 0) {
@@ -98,7 +115,7 @@ export default function AllocationGraph() {
     if (Math.abs(1 - tmp.reduce((a, b) => a + b.y[1], 0)) <= 0.001) applyBalance()
     else setRepartoValido(false)
 
-    if (graphBox.current) Plotly.react(graphBox.current, tmp, layout)
+    Plotly.react(graphBox.current, tmp, layout, config)
     setNewEnergyBalance(false)
     //}
   }, [allocationGroup])
@@ -378,10 +395,7 @@ export default function AllocationGraph() {
             mt: 4,
           }}
         >
-          <Box
-            ref={graphBox}
-            sx={{ display: 'flex', flex: 1, width: graphWidth.current }}
-          ></Box>
+          <Box ref={graphBox} sx={{ display: 'flex', flex: 1 }}></Box>
         </Box>
       </Container>
     </>

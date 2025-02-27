@@ -6,17 +6,13 @@ import { useTheme } from '@mui/material/styles'
 import Plot from 'react-plotly.js'
 
 //React global components
-import { BasesContext } from '../BasesContext'
-import { EconomicContext } from '../EconomicContext'
 import { EnergyContext } from '../EnergyContext'
-import { GlobalContext } from '../GlobalContext'
 
 // MUI objects
 import { Typography, MenuItem, TextField, Container, Box } from '@mui/material'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
-import TCB from '../classes/TCB'
 
 export default function HourlyEnergyBalance(props) {
   const { t } = useTranslation()
@@ -29,8 +25,8 @@ export default function HourlyEnergyBalance(props) {
   const [mes, setMes] = useState(t('ENERGY_BALANCE.VALUE_FULL_YEAR'))
   const { report } = props
   const maxHour = useRef()
-  const { consumoGlobal, setConsumoGlobal, calculaResultados, produccionGlobal } =
-    useContext(EnergyContext)
+  const { consumoGlobal, produccionGlobal } = useContext(EnergyContext)
+
   useEffect(() => {
     // Function to get the width of the element
     const getWidth = () => {
