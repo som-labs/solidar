@@ -32,11 +32,12 @@ export default function DialogPanelsType({ data, onClose }) {
   const ndxPanel = useRef(2)
   //const [tipoPanel, setTipoPanel] = useState(TCB.tipoPanelActivo)
 
+  //20250303 - Correccion lista posibles tecnologias. Quitamos unknown porque PVGIS no retorna el campo P y se corrige CdTe que estab mal escrito
   const tecnologias = [
     { value: 'crystSi', text: 'Silicio Cristalino' },
     { value: 'CIS', text: 'CIS' },
-    { value: 'Cadmium Telluride', text: 'CdTe' },
-    { value: 'Unknown', text: t('Instalacion.LABEL_tecnologiaDesconocida') },
+    { value: 'CdTe', text: 'Cadmium Telluride' },
+    // { value: 'Unknown', text: t('Instalacion.LABEL_tecnologiaDesconocida') },
   ]
 
   function cambiaTipoPanel(index, values, setValues) {
