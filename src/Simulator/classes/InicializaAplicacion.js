@@ -32,7 +32,6 @@ async function InicializaAplicacion() {
   TCB.basePath =
     window.location.hostname === '127.0.0.1' ? 'http://localhost/SOM/REACT/solidar/' : '/'
   UTIL.debugLog('_initEvents ejecutando desde ' + TCB.basePath)
-  TCB.basePath = 'http://localhost/SOM/REACT/solidar/'
 
   //lectura del fichero de precios de instalación del servidor. Si falla se usan las de la TCB
   const ficheroPreciosInstalacion = '/datos/precios instalacion.json'
