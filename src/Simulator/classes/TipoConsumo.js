@@ -25,6 +25,7 @@ class TipoConsumo extends DiaHora {
     this.ficheroCSV
     this.nombreFicheroCSV
     this.options = {}
+    this.totalDiurno //Es el consumo que se realiza en horas en el que hay producción
 
     //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto
     for (const objProp in tipo) {
@@ -40,6 +41,15 @@ class TipoConsumo extends DiaHora {
     const t = TCB.TipoConsumo.find((tc) => tc.nombreTipoConsumo === nombreTipoConsumo)
     if (t) return t.totalAnual
     else return null
+  }
+
+  setTotalDiurno(produccion) {
+    this.totalDiurno = 0
+    for (let dia = 0; dia < 365; dia++) {
+      for (let hora = 0; hora < 24; hora++) {
+        if (produccion.diaHora[dia][hora] > 0) this.totalDiurno += this.diaHora[dia][hora]
+      }
+    }
   }
 
   /**

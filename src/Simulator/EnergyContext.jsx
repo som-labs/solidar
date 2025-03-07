@@ -16,6 +16,7 @@ const EnergyContextProvider = ({ children }) => {
   const [totalPaneles, setTotalPaneles] = useState(0)
 
   const { bases, setBases } = useContext(BasesContext)
+  const { tiposConsumo } = useContext(ConsumptionContext)
 
   /**
    * Esta funcion realiza los calculos del balance de energia para la configuracion de bases y consumos existentes.

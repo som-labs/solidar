@@ -52,7 +52,7 @@ export default function EnergyAllocationStep() {
         Object.keys(newAllocation).forEach(
           (group) =>
             (newAllocation[group].produccion =
-              newAllocation[group].consumo / consumoGlobal.totalAnual),
+              newAllocation[group].totalDiurno / consumoGlobal.totalDiurno),
         )
         return newAllocation
       })

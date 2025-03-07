@@ -115,8 +115,20 @@ export default function UnitTypeBox(props) {
                   justifyContent: 'center',
                 }}
               >
-                Uso eléctrico demandado:{' '}
+                Uso eléctrico total:{' '}
                 {UTIL.formatoValor('energia', allocationGroup[grupo].consumo)}
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flex: 1,
+                  border: '1px solid',
+                  padding: 0.5,
+                  justifyContent: 'center',
+                }}
+              >
+                Uso diurno:{' '}
+                {UTIL.formatoValor('energia', allocationGroup[grupo].totalDiurno)}
               </Box>
               <Box
                 sx={{

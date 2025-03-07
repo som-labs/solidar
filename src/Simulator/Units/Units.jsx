@@ -42,7 +42,7 @@ export default function UnitsStep() {
     addConsumptionData,
     modifyConsumptionData,
     deleteConsumptionData,
-    getConsumoTotal,
+    getConsumo,
   } = useContext(ConsumptionContext)
 
   const { newTiposConsumo, setNewTiposConsumo } = useContext(GlobalContext)
@@ -105,8 +105,7 @@ export default function UnitsStep() {
         if (f.participa) {
           uniqueGroup[f.grupo].participacionP += f.participacion
           uniqueGroup[f.grupo].participes++
-          uniqueGroup[f.grupo].consumo +=
-            f.nombreTipoConsumo !== '' ? getConsumoTotal(f.nombreTipoConsumo) : 0
+          uniqueGroup[f.grupo].consumo += getConsumo(f.nombreTipoConsumo).total
         }
       } else {
         uniqueGroup[f.grupo] = {
@@ -120,8 +119,7 @@ export default function UnitsStep() {
         if (f.participa) {
           uniqueGroup[f.grupo].participes = 1
           uniqueGroup[f.grupo].participacionP = f.participacion
-          uniqueGroup[f.grupo].consumo +=
-            f.nombreTipoConsumo !== '' ? getConsumoTotal(f.nombreTipoConsumo) : 0
+          uniqueGroup[f.grupo].consumo += getConsumo(f.nombreTipoConsumo).total
         } else {
           uniqueGroup[f.grupo].participes = 0
           uniqueGroup[f.grupo].participacionP = 0
@@ -135,7 +133,7 @@ export default function UnitsStep() {
         nombre: zc.nombre,
         unidades: 0,
         produccion: 0,
-        consumo: zc.nombreTipoConsumo !== '' ? getConsumoTotal(zc.nombreTipoConsumo) : 0,
+        consumo: getConsumo(zc.nombreTipoConsumo).total,
       }
     })
 
@@ -203,11 +201,10 @@ export default function UnitsStep() {
         if (previo[g].unidades > 0) {
           previo[g].consumo = fincas
             .filter((_f) => _f.grupo === g && _f.participa && _f.nombreTipoConsumo !== '')
-            .reduce((t, _fc) => t + getConsumoTotal(_fc.nombreTipoConsumo), 0)
+            .reduce((t, _fc) => t + getConsumo(_fc.nombreTipoConsumo).total, 0)
         } else {
           const zc = zonasComunes.find((_zc) => _zc.id === g)
-          previo[g].consumo =
-            zc.nombreTipoConsumo !== '' ? getConsumoTotal(zc.nombreTipoConsumo) : 0
+          previo[g].consumo = getConsumo(zc.nombreTipoConsumo).total
         }
       }
       setAllocationGroup({ ...previo })
