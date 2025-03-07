@@ -15,13 +15,16 @@ class Consumo extends DiaHora {
     super()
     this._name = 'Consumo'
     this.periodo //Will store kWh per fee period (P1, P2, ...)
+    this.totalDiurno
 
     //Creacion del consumo global
     //Dependiendo del modo debemos calcular el consumo total
     //En modo INDIVIDUAL el consumo total es la suma de todos los tipos de consumo
+    this.totalDiurno = 0
     if (TCB.modoActivo === 'INDIVIDUAL') {
       for (let _tc of tiposConsumo) {
         this.suma(_tc)
+        this.totalDiurno += _tc.totalDiurno
       }
       //En otro modo el consumo total es:
       //la suma de los consumos de cada finca
@@ -45,5 +48,16 @@ class Consumo extends DiaHora {
       }
     }
   } // End constructor
+
+  setTotalDiurno(produccion) {
+    console.log(produccion)
+    this.totalDiurno = 0
+    for (let dia = 0; dia < 365; dia++) {
+      for (let hora = 0; hora < 24; hora++) {
+        if (produccion.diaHora[dia][hora] > 0) this.totalDiurno += this.diaHora[dia][hora]
+      }
+    }
+    console.log('CONSUMO GLOBAL', this.totalDiurno)
+  }
 }
 export default Consumo

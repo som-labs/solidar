@@ -295,13 +295,6 @@ export default function UnitsSummary(props) {
     setTotalCost(v * economicoGlobal.precioInstalacionCorregido)
   }, [])
 
-  // console.log(units.filter((_f) => _f.participa))
-  // console.log(
-  //   units
-  //     .filter((_f) => _f.participa)
-  //     .reduce((_fe, t) => t + _fe.economico.ahorroAnual, 0),
-  // )
-  console.log(units)
   return (
     <Dialog
       fullScreen

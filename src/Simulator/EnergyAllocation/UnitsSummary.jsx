@@ -32,7 +32,7 @@ export default function UnitsSummary(props) {
 
   const [openDialog, closeDialog] = useDialog()
 
-  const { allocationGroup, setAllocationGroup, fincas, setFincas, getConsumoTotal } =
+  const { allocationGroup, setAllocationGroup, fincas, setFincas, getConsumo } =
     useContext(ConsumptionContext)
 
   const { grupo } = props
@@ -180,6 +180,7 @@ export default function UnitsSummary(props) {
             label="Participación"
           />
           <FormControlLabel value="CONSUMO" control={<Radio />} label="Uso eléctrico" />
+          <FormControlLabel value="DIURNO" control={<Radio />} label="Uso diurno" />
           <FormControlLabel
             value="PARITARIO"
             control={<Radio />}
@@ -228,7 +229,21 @@ export default function UnitsSummary(props) {
           prev.map((f) => {
             if (f.grupo === grupo && f.participa) {
               f.coefEnergia =
-                (getConsumoTotal(f.nombreTipoConsumo) / allocationGroup[grupo].consumo) *
+                (getConsumo(f.nombreTipoConsumo).total / allocationGroup[grupo].consumo) *
+                coefGrupo
+            }
+            return f
+          }),
+        )
+        break
+
+      case 'DIURNO':
+        setFincas((prev) =>
+          prev.map((f) => {
+            if (f.grupo === grupo && f.participa) {
+              f.coefEnergia =
+                (getConsumo(f.nombreTipoConsumo).diurno /
+                  allocationGroup[grupo].totalDiurno) *
                 coefGrupo
             }
             return f

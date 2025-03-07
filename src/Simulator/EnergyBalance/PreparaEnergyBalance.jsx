@@ -26,7 +26,7 @@ export default function PreparaEnergyBalance() {
 
   const { bases, setBases, tipoPanelActivo } = useContext(BasesContext)
 
-  const { fincas, setFincas, zonasComunes, tiposConsumo, getConsumoTotal } =
+  const { fincas, setFincas, zonasComunes, tiposConsumo, getConsumo } =
     useContext(ConsumptionContext)
   const { consumoGlobal, setConsumoGlobal, calculaResultados, produccion, balance } =
     useContext(EnergyContext)

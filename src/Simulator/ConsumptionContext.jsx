@@ -226,10 +226,13 @@ const ConsumptionContextProvider = ({ children }) => {
     return results
   }
 
-  function getConsumoTotal(nombreTipoConsumo) {
-    return nombreTipoConsumo !== ''
-      ? tiposConsumo.find((tc) => tc.nombreTipoConsumo === nombreTipoConsumo).totalAnual
-      : 0
+  function getConsumo(nombreTipoConsumo) {
+    if (nombreTipoConsumo !== '') {
+      const tc = tiposConsumo.find((tc) => tc.nombreTipoConsumo === nombreTipoConsumo)
+      return { total: tc.totalAnual, diurno: tc.totalDiurno }
+    } else {
+      return { total: 0, diurno: 0 }
+    }
   }
 
   const contextValue = {
@@ -255,7 +258,7 @@ const ConsumptionContextProvider = ({ children }) => {
     addConsumptionData,
     modifyConsumptionData,
     deleteConsumptionData,
-    getConsumoTotal,
+    getConsumo,
   }
 
   return (

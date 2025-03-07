@@ -100,7 +100,7 @@ export default function AllocationGraph() {
             t('ENERGY_ALLOCATION.GRAPH_PRODUCCION'),
           ],
           y: [
-            allocationGroup[g].consumo / consumoGlobal.totalAnual,
+            allocationGroup[g].totalDiurno / consumoGlobal.totalDiurno,
             allocationGroup[g].produccion,
           ],
           name: allocationGroup[g].nombre,
