@@ -61,7 +61,7 @@ export default function EnergyBalanceStep() {
     produccionGlobal,
     balanceGlobal,
   } = useContext(EnergyContext)
-  const { fincas, getConsumoTotal, tiposConsumo, zonasComunes } =
+  const { fincas, getConsumo, tiposConsumo, zonasComunes } =
     useContext(ConsumptionContext)
 
   useEffect(() => {

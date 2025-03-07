@@ -67,7 +67,6 @@ export default function EconomicAllocationStep() {
   }
 
   useEffect(() => {
-    console.log(fincas)
     let tmatrix = {}
     for (const _g in allocationGroup) {
       if (allocationGroup[_g].unidades > 0) {

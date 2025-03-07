@@ -62,8 +62,10 @@ export default function Page() {
     fincas,
     zonasComunes,
     tiposConsumo,
-    getConsumoTotal,
+    getConsumo,
     tarifas,
+    allocationGroup,
+    setAllocationGroup,
   } = useContext(ConsumptionContext)
 
   const { economicoGlobal, setEconomicoGlobal, setNewEconomicBalance, costeZCenFinca } =
@@ -147,7 +149,7 @@ export default function Page() {
       /* Calculamos el coeficiente del consumo de cada finca sobre el total */
       if (TCB.modoActivo !== 'INDIVIDUAL') {
         for (const f of fincas) {
-          f.coefConsumo = getConsumoTotal(f.nombreTipoConsumo) / newConsumo.totalAnual
+          f.coefConsumo = getConsumo(f.nombreTipoConsumo).total / newConsumo.totalAnual
         }
       }
       UTIL.debugLog('PreparaEnergyBalance - Nuevo consumo global creado', newConsumo)
@@ -348,6 +350,39 @@ export default function Page() {
 
     if (TCB.modoActivo === 'INDIVIDUAL') {
       return await PreparaEconomicBalance().status
+    } else {
+      //Dado un perfil de producción podemos definir cual es el consumo diurno
+      console.log(consumoGlobal)
+      consumoGlobal.setTotalDiurno(produccionGlobal)
+
+      for (let tc of tiposConsumo) tc.setTotalDiurno(produccionGlobal)
+
+      for (let group in allocationGroup) {
+        let tDiurno
+        if (allocationGroup[group].unidades > 0) {
+          const ps = fincas.filter((f) => f.grupo === group && f.participa)
+          tDiurno = ps.reduce(
+            (t, f) =>
+              t +
+              tiposConsumo.find((tc) => tc.nombreTipoConsumo === f.nombreTipoConsumo)
+                .totalDiurno,
+            0,
+          )
+        } else {
+          const zc = zonasComunes.find((zc) => zc.id === group)
+          tDiurno = tiposConsumo.find(
+            (tc) => tc.nombreTipoConsumo === zc.nombreTipoConsumo,
+          ).totalDiurno
+        }
+
+        setAllocationGroup((prev) => ({
+          ...prev,
+          [group]: {
+            ...prev[group],
+            totalDiurno: tDiurno,
+          },
+        }))
+      }
     }
   }
 
