@@ -4,7 +4,7 @@ export default function SomEnergiaTheme(isDarkMode) {
   return responsiveFontSizes(
     createTheme({
       typography: {
-        fontFamily: '"Roboto","Montserrat", "Helvetica", "Arial", sans-serif',
+        fontFamily: '"Outfit","Roboto","Montserrat", "Helvetica", "Arial", sans-serif',
         // Custom variant for home page paragraphs
         brochureP: {
           fontSize: 18,
@@ -15,20 +15,30 @@ export default function SomEnergiaTheme(isDarkMode) {
         //contrastThreshold: 0.2, // From webforms-ui
         contrastThreshold: 4.5, // Recommended by WCAG 2.1 Rule 1.4.3
         tonalOffset: 0.2,
+
+        background: {
+          default: isDarkMode ? '#000000' : '#FFFFFF',
+          paper: isDarkMode ? '#000000' : '#FFFFFF',
+        },
+        // background: {
+        //   default: alpha('#1976d2', 0.1),
+        //   paper: '#ffffff',
+        // },
+
         text: {
-          primary: isDarkMode ? '#bdbdbd' : '#4d4d4d',
+          primary: isDarkMode ? '#FFFFFF' : '#000000',
         },
+
         primary: {
-          //main: '#96D600', //'hsl(78, 100%, 42%)', // from style guide
-          main: '#96b633', // from webforms-ui
-          contrastText: 'white',
+          main: isDarkMode ? '#F0F3EC' : '#0B2E34',
+          contrastText: isDarkMode ? '#0B2E34' : '#000000',
         },
+
         secondary: {
-          //main: '#E0E723', //'hsl(62, 80%, 52%)', // from style guide
-          //main: '#a1a1a1', // from webforms-ui
-          main: '#e6cc00', // From representa-ov highlight
-          contrastText: 'white',
+          main: '#F0F3EC',
+          contrastText: '#000000',
         },
+
         databox: {
           main: isDarkMode ? '#333333' : 'grey',
           contrastText: isDarkMode ? 'white' : 'white',
@@ -51,7 +61,7 @@ export default function SomEnergiaTheme(isDarkMode) {
           display: 'flex',
           flexWrap: 'wrap',
           flex: 1,
-          borderRadius: 0,
+
           justifyContent: 'center',
         },
 
@@ -128,16 +138,6 @@ export default function SomEnergiaTheme(isDarkMode) {
           fontWeight: 700,
         },
       },
-
-      //       fontWeight: 400,
-      // borderRadius: "var(--none, 0px)",
-      // borderBottom: "1px solid var(--divider, rgba(0, 0, 0, 0.12))",
-      // borderLeft: "var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12))",
-      // borderRight: "var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12))",
-      // borderTop: "var(--none, 0px) solid var(--divider, rgba(0, 0, 0, 0.12))",
-      // background: "var(--primary-selected, rgba(33, 150, 243, 0.08))",
-      // alignItems: 'space-between !important'
-      //REVISAR: como hacer la justificacion del texto del header aqui
       tables: {
         headerWrap: {
           '& .MuiDataGrid-columnHeaderTitle': {
@@ -164,6 +164,76 @@ export default function SomEnergiaTheme(isDarkMode) {
           '& .MuiDataGrid-columnsContainer': {
             border: 'none',
             borderBottom: 'none', // Remove border at the bottom of the header row
+          },
+        },
+      },
+      components: {
+        MuiOutlinedInput: {
+          styleOverrides: {
+            root: {
+              borderRadius: '20px',
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#D9D9D9',
+              },
+              // Hover state
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'blue',
+              },
+              // Focused state
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#007AFF',
+              },
+              // Disabled state
+              '&.Mui-disabled .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'lightgray',
+              },
+              // Error state
+              '&.Mui-error .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'red',
+              },
+            },
+          },
+        },
+        MuiButton: {
+          styleOverrides: {
+            root: {
+              // Default state
+              borderRadius: '20px',
+              backgroundColor: '#CDFF80',
+              color: '#000000',
+              textTransform: 'none',
+              transition: 'background-color 0.3s ease',
+
+              // Hover state
+              '&:hover': {
+                backgroundColor: '#B6E471',
+              },
+
+              // Active (pressed) state
+              '&.Mui-active': {
+                backgroundColor: '#004080',
+              },
+
+              // Disabled (inactive) state
+              '&.Mui-disabled': {
+                backgroundColor: '##F0F3EC',
+                color: '#a1a1a1',
+              },
+            },
+          },
+        },
+        MuiTooltip: {
+          styleOverrides: {
+            tooltip: {
+              textAlign: 'left',
+              padding: '8px',
+              border: '1px solid black',
+              backgroundColor: 'rgba(205,255,128,0.9)',
+              color: 'black',
+              borderRadius: '10px',
+              fontFamily: 'inherit',
+              fontSize: 'inherit',
+            },
           },
         },
       },

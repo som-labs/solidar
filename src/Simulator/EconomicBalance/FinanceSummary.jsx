@@ -204,7 +204,7 @@ export default function FinanceSummary() {
           flexWrap: 'wrap',
           width: '100%',
           '& .super-app.positive': {
-            backgroundColor: theme.palette.primary.main, //'rgba(157, 255, 118, 0.49)',
+            backgroundColor: 'rgba(157, 255, 118, 0.49)',
             color: '#1a3e72',
             fontWeight: '700',
           },

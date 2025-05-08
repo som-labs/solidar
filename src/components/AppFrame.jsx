@@ -1,7 +1,7 @@
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
+import { useContext, useEffect, useState } from 'react'
+
+import { AppBar, Toolbar, Typography, Box } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 import ColorModeButton from './ColorModeButton'
 import LanguageMenu from './LanguageMenu'
@@ -9,7 +9,6 @@ import PagesMenu from './PagesMenu'
 import PagesButtons from './PagesButtons'
 import Footer from './Footer'
 
-import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { ScrollRestoration } from 'react-router-dom'
@@ -17,29 +16,29 @@ import { ScrollRestoration } from 'react-router-dom'
 import { AlertContext } from '../Simulator/components/Alert'
 import ParametersMenu from '../Simulator/Parameters/ParametersMenu'
 import ContactMenu from '../Simulator/Contact/ContactMenu'
-import InLineHelp from '../Simulator/InLineHelp/InLineHelp'
 import ProjectMenu from '../Simulator/Project/ProjectMenu'
 import { getParametrosEntrada } from '../Simulator/classes/Utiles'
 
-import TCB from '../Simulator/classes/TCB'
-
 export default function AppFrame({ children }) {
   const { t } = useTranslation()
-
-  const { setInLineHelp } = useContext(AlertContext)
+  const theme = useTheme()
+  const { setInLineHelp, inLineHelp, DisplayInLineHelp } = useContext(AlertContext)
+  const [inLineHelpIcon, setInLineHelpIcon] = useState(false)
 
   useEffect(() => {
     //DEMO: Detalle
     const a = getParametrosEntrada('inLineHelp')
-
-    if (a) setInLineHelp(true)
-    else setInLineHelp(false)
+    console.log('APPFRAM', a)
+    if (a) {
+      setInLineHelp(true)
+      setInLineHelpIcon(true)
+    }
   }, [])
 
   const navigate = useNavigate()
 
   const title = 'Solidar Energia'
-  const logo = '/logo.svg'
+  const logo = '/logo.png'
   const pages = [
     // {
     //   text: t('APP_FRAME.PAGE_HOME'),
@@ -54,12 +53,20 @@ export default function AppFrame({ children }) {
       path: '/about',
     },
   ]
-
-  // TODO: Move styling to the global style
+  console.log(inLineHelp)
   return (
     <>
       <ScrollRestoration /> {/* Scroll up on page switch */}
-      <AppBar position="static" enableColorOnDark>
+      <AppBar
+        position="static"
+        //enableColorOnDark
+        sx={{
+          borderRadius: '10px',
+          margin: '16px',
+          width: 'calc(100% - 32px)',
+          backgroundColor: theme.palette.background.default,
+        }}
+      >
         <Toolbar>
           {/* Page selector for small devices */}
           <PagesMenu
@@ -73,7 +80,7 @@ export default function AppFrame({ children }) {
           />
 
           {/* Logo */}
-          <img src={logo} width="32px" style={{ marginInline: '.5rem' }} />
+          <img src={logo} width="56px" style={{ marginInline: '1rem' }} />
 
           {/* App name */}
           <Typography
@@ -98,12 +105,12 @@ export default function AppFrame({ children }) {
             }}
           />
           {/* Tool buttons */}
-          <ColorModeButton />
+          {/* <ColorModeButton /> */}
           <LanguageMenu />
           <ParametersMenu />
           <ContactMenu />
           <ProjectMenu />
-          {InLineHelp && <InLineHelp />}
+          {inLineHelpIcon && <DisplayInLineHelp />}
         </Toolbar>
       </AppBar>
       <Box sx={{ minHeight: 'calc( 100vh - 7rem )' }}>{children}</Box>
