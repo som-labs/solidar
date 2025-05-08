@@ -2,9 +2,7 @@ import { useState, useEffect, Fragment, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form } from 'formik'
 
-import Grid from '@mui/material/Grid'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
+import { Grid, MenuItem, FormControl, InputLabel } from '@mui/material'
 
 // REACT Solidar Components
 import { SLDRInputField } from '../../components/SLDRComponents'
@@ -78,33 +76,35 @@ export default function PreciosTarifa() {
       <Formik initialValues={TCB.tarifaActiva.precios} validate={validateFields}>
         {({ values, setValues, setPreciosValidos }) => (
           <Form>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <SLDRInputField
-                sx={{ width: 200, height: 50, textAlign: 'center', mb: '1rem' }}
-                select
-                label={t('Tarifa.PROP.tipoTarifa')}
-                onChange={(e) => cambiaTipoTarifa(e, setValues)}
-                name="tipoTarifa"
-                value={tipoTarifa}
-                object="Tarifa"
-              >
-                <MenuItem key={'A1'} value={'2.0TD'}>
-                  2.0TD
-                </MenuItem>
-                <MenuItem key={'A2'} value={'3.0TD'}>
-                  3.0TD
-                </MenuItem>
-              </SLDRInputField>
-            </FormControl>
+            <InputLabel htmlFor="tipoTarifa">{t('Tarifa.PROP.tipoTarifa')}</InputLabel>
+            <SLDRInputField
+              sx={{ width: 200, textAlign: 'center', mb: '1rem' }}
+              MUIType="Select"
+              label={t('Tarifa.PROP.tipoTarifa')}
+              onChange={(e) => cambiaTipoTarifa(e, setValues)}
+              name="tipoTarifa"
+              value={tipoTarifa}
+              object="Tarifa"
+            >
+              <MenuItem key={'A1'} value={'2.0TD'}>
+                2.0TD
+              </MenuItem>
+              <MenuItem key={'A2'} value={'3.0TD'}>
+                3.0TD
+              </MenuItem>
+            </SLDRInputField>
 
             <Grid container spacing={1} alignItems="center" justifyContent="space-evenly">
               {values.map((precio, index) => (
                 <Fragment key={index}>
                   {index < nPrecios && (
                     <Grid item xs>
+                      <InputLabel htmlFor={String(index)}>
+                        {t('Tarifa.PROP.' + tipoTarifa + '.P' + index)}
+                      </InputLabel>
                       <SLDRInputField
                         unit=" €"
-                        //object="Tarifa"
+                        //object="Tarifa" //Hace aparecer el tooltip
                         value={precio.toLocaleString(i18n.language)}
                         onChange={(ev) =>
                           cambiaPrecio(
@@ -115,7 +115,6 @@ export default function PreciosTarifa() {
                             setPreciosValidos,
                           )
                         }
-                        label={t('Tarifa.PROP.' + tipoTarifa + '.P' + index)}
                         name={String(index)}
                       ></SLDRInputField>
                     </Grid>

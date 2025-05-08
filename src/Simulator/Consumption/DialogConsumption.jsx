@@ -198,9 +198,9 @@ export default function DialogConsumption({ data, previous, onClose }) {
                   padding={3}
                   control={
                     <SLDRInputField
-                      sx={{ flex: 1, ml: '1rem', width: 390 }}
+                      sx={{ flex: 1, ml: '1rem', mb: '0.5rem', width: 390 }}
                       //sx={{ width: 350, height: 50, mr: 2 }}
-                      select
+                      MUIType="Select"
                       value={values.fuente}
                       name="fuente"
                       object="TipoConsumo"

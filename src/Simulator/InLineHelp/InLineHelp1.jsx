@@ -5,7 +5,7 @@ import { AlertContext } from '../components/Alert'
 import HelpIcon from '@mui/icons-material/Help'
 import IconButton from '@mui/material/IconButton'
 
-export default function InLineHelp() {
+export default function DisplayInLineHelp() {
   //DEMO: Detalle
   const { inLineHelp, setInLineHelp } = useContext(AlertContext)
 

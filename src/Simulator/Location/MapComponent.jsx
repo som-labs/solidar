@@ -43,7 +43,7 @@ export default function MapComponent() {
   const { t } = useTranslation()
 
   // Map state
-  const [mapType, setMapType] = useState('LOCATION.LABEL_SATELITE')
+  const [mapType, setMapType] = useState('LOCATION.LABEL_VECTOR')
   const [selectedCoord] = useState([-3.7, 40.45])
 
   const { map, setMap, processFormData } = useContext(BasesContext)

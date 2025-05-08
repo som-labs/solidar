@@ -92,6 +92,7 @@ class Rendimiento extends DiaHora {
     UTIL.debugLog('PVGIS url:' + url)
     try {
       respuesta = await fetch(url)
+      console.log(url, respuesta)
       if (respuesta.status === 200) {
         var PVGISdata = await respuesta.json()
         if (PVGISdata.status !== undefined) {

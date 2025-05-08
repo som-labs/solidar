@@ -1,0 +1,12 @@
+translateUrl: 'https://traduccio.somenergia.coop/projects/solidar/'
+supportedLanguages:
+  - id: 'ca'
+    text: 'Català'
+  - id: 'en'
+    text: 'English'
+  - id: 'es'
+    text: 'Español'
+  - id: 'eu'
+    text: 'Euskara'
+  - id: 'gl'
+    text: 'Galego'
