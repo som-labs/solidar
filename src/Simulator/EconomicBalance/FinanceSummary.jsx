@@ -209,7 +209,7 @@ export default function FinanceSummary() {
             fontWeight: '700',
           },
           '& .super-app.negative': {
-            backgroundColor: '#ffff99',
+            backgroundColor: 'rgba(255, 255, 153, 0.49)', //'#ffff99',
             color: '#1a3e72',
             fontWeight: '400',
           },
