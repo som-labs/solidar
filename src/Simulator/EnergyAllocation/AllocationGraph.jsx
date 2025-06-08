@@ -93,7 +93,7 @@ export default function AllocationGraph() {
 
     let tmp = []
     for (const g in allocationGroup) {
-      if (allocationGroup[g].produccion > 0) {
+      if (allocationGroup[g].totalDiurno > 0) {
         tmp.push({
           x: [
             t('ENERGY_ALLOCATION.GRAPH_CONSUMPTION'),

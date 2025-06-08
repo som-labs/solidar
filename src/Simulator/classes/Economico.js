@@ -94,7 +94,7 @@ class Economico {
       _balance = balanceGlobal
     }
 
-    console.log('6 Balance ', _balance)
+    //console.log('6 Balance ', _balance)
 
     tarifaHoras = TCB.tarifas[tarifaActiva.detalle].horas
     if (tarifaActiva.tipo === '2.0TD') _consumo.periodo = new Array(3).fill(0)
