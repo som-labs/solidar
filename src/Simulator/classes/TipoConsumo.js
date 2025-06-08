@@ -37,12 +37,6 @@ class TipoConsumo extends DiaHora {
     this.options = this.selectCSVOptions(this.fuente)
   } // End constructor
 
-  static getTotal(nombreTipoConsumo) {
-    const t = TCB.TipoConsumo.find((tc) => tc.nombreTipoConsumo === nombreTipoConsumo)
-    if (t) return t.totalAnual
-    else return null
-  }
-
   setTotalDiurno(produccion) {
     this.totalDiurno = 0
     for (let dia = 0; dia < 365; dia++) {

@@ -23,12 +23,13 @@ import * as UTIL from '../classes/Utiles'
 //React global components
 import { useDialog } from '../../components/DialogProvider'
 import InstallationCost from '../EconomicBalance/InstallationCost.jsx'
+import TipoConsumo from '../classes/TipoConsumo.js'
 
 export default function EconomicAllocationStep() {
   const { t } = useTranslation()
   const theme = useTheme()
   const { economicoGlobal, costeZCenFinca } = useContext(EconomicContext)
-  const { fincas, zonasComunes, allocationGroup, setAllocationGroup } =
+  const { fincas, zonasComunes, allocationGroup, setAllocationGroup, getConsumo } =
     useContext(ConsumptionContext)
 
   const [ready, setReady] = useState(false)
@@ -49,6 +50,14 @@ export default function EconomicAllocationStep() {
     sortable: false,
     type: 'text',
   })
+
+  for (let zc of zonasComunes) {
+    console.log({
+      zona: zc,
+      autoconsumo: zc.balance.autoconsumo,
+      consumo: allocationGroup[zc.id].consumo,
+    })
+  }
 
   for (const _zc of zonasComunes) {
     if (_zc.coefEnergia > 0) {

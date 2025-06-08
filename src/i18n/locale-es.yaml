@@ -1064,7 +1064,7 @@ ENERGY_ALLOCATION:
   DESCRIPTION: A continuación se definirá la cuota de energía producida por la instalación fotovoltaica a cada uno de los grupos de fincas y zonas comunes que participan en el proyecto.
   DESCRIPTION_1: Indique el porcentaje de la energía total que se asignará a cada grupo y zona común.<br />La distribución debe ser tal que el total sume 100%, que se indicará con el semáforo en verde.
   DESCRIPTION_2: A continuación se muestran los datos resultantes de esta asignación para cada grupo y zona común.
-  TOTAL_ENERGY: 'Energia total disponible: {{energy}}'
+  TOTAL_ENERGY: 'Energia total disponible: {{energy}}<br />Demanda diurna: {{solar}}'
   ALLOCATION_GROUPS: Grupos de asignación de energía producida
   ALLOCATION_SUMMARY: Unidades con uso {{grupo}}
   BETA_LABEL: Beta

@@ -18,6 +18,7 @@ import MonthSaving from './MonthSavings'
 import FinanceSummary from './FinanceSummary'
 import GraphAlternatives from './GraphAlternatives'
 import { EconomicContext } from '../EconomicContext'
+import { ConsumptionContext } from '../ConsumptionContext'
 
 export default function EconomicBalanceStep() {
   const { t } = useTranslation()
