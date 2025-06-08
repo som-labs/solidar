@@ -846,7 +846,7 @@ PARAMETROS:
       de algunos componentes, condiciones adversas, inversores deficientes, etc.
     interesVAN: Tasa de descuento a aplicar en el cálculo del valor actual neto
     margen: Distancia mantenida alrededor de la instalación a efectos de mantenimiento. Será 0 si es tejado inclinado
-    CAU: El código de autoconsumo será suministrado o asignado por la distribuidora eléctrica a la que se conecte la instalación de generación de electricidad
+    CAU: La ley obliga a elegir un CUPS de referencia al que vincular una instalación fotovoltaica que se utilizará para asignar el CAU. Cuando la energía generada se destine al suministro o suministros eléctricos de una o varias zonas comunes, se recomienda utilizar el CUPS del suministro eléctrico de una zona común. Si no se destinara energía a las zonas comunes, deberá elegirse el CUPS del suministro eléctrico de uno de los destinatarios de la energía generada
 
 CONTACTO:
   DIALOG_TITLE: Formulario de contacto
@@ -1040,11 +1040,13 @@ REPORT:
   ANYS: años
   RETURN: Volver a la simulación
 UNITS:
-  DESCRIPTION_1: 'Los participes se agrupan por el tipo de uso en grupos a los que posteriormente se les asignará un porcentaje de la energía producida por los paneles.<br />  En este paso solo definimos el uso de la energia previsto para cada grupo, la distribución de la energía dentro del grupo se definirá en el paso de <b>REPARTO ENERGÍA</b>'
-  TITLE: Unidades
-  DESCRIPTION_2: "A continuación se definirá el uso de energía previsto para cada participe asi como de las zonas comunes identificadas.<br />Si no se muestra información en esta pantalla es posible que no se hubieran obtenido datos de la Dirección General del Catastro en las coordenadas donde se realiza la instalación, en este caso podrás subir los datos desde un fichero CSV que incluya al menos las siguientes columnas: idFinca, nombreFinca, uso y participacion. <a href={{url}} target='_blank'>Puedes descargar una plantilla aqui"
+  DESCRIPTION_1: "En este paso se identifican los participantes del proyecto fotovoltaico y su tipo de consumo eléctrico, concretamente: los locales comerciales, las viviendas y las zonas comunes de la comunidad de propietarios. <br /><br />Excepto para Pais Vasco y Navarra los locales comerciales, las viviendas y su coeficiente de participación en los gastos de la comunidad de propietarios se obtienen automáticamente de la Dirección General del Catastro. Si no se muestra información en esta pantalla es posible que no se hubieran obtenido datos de la Dirección General del Catastro en las coordenadas donde se realiza la instalación, en este caso podrás subir los datos desde un fichero CSV que incluya al menos las siguientes columnas: idFinca, nombreFinca, uso y participación.  <a href={{url}} target='_blank'>Puedes descargar una plantilla aqui"
+  TITLE: Participes
+  DESCRIPTION_2: Una vez confirmados los datos obtenidos del catastro (o definidos manualmente) tendrás que identificar qué locales comerciales y viviendas participan en el proyecto y su consumo eléctrico anual (definidos en la pestaña 'Consumo') y excluir los que no deseen participar. No resulta preciso definir un tipo de consumo por cada participante individualmente, aunque se pierda precisión se puede utilizar el mismo tipo de consumo para muchos (o todos).
   HEADER_FIELDS: El campo {{field}} es requerido
-  DESCRIPTION_3: Definición de las zonas comunes del inmueble y sus usos eléctricos.
+
+  DESCRIPTION_3: 'También deberás identificar manualmente qué zonas comunes con su propio suministro eléctrico consumirán parte de la energía fotovoltaica generada; por ejemplo: el suministro eléctrico del edificio (puede haber más de uno en la comunidad), el suministro de zonas ajardinadas, el de una sala de reuniones, el de la caldera o la piscina, etcétera.<br />Se asume que los locales comerciales no contribuyen a sufragar los gastos del portal.<br />Añadir zona común'
+
   SUMMARY_DESCRIPTION: Se definirá el uso eléctrico y la tarifa de cada unidad de forma individual.<br />Puedes utilizar la asignación global que asignará los mismos valores a todas ellas y luego cambiar individualemente las que correspondan
   LABEL_TIPO_USO: Define tipo de uso eléctrico para todas las unidades
   TOOLTIP_TIPO_USO: Selecciona el tipo de uso eléctrico para asignarlo a todas las unidades

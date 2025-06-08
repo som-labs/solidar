@@ -18,7 +18,9 @@ async function verificaTerritorio(point) {
       return { status: status, details: details }
     } else {
       //Check new base is in Spain
-      if (details.country === 'España') {
+      const countries = ['España', 'Norge']
+      console.log(details.country)
+      if (countries.includes(details.country)) {
         // Verificamos si estamos en territorio insular o no.
         //Para Ceuta y Melilla Nominatim no devuelve state pero usamos city.
         let detalle = details.zona ?? details.city

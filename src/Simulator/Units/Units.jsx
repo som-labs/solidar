@@ -34,14 +34,10 @@ export default function UnitsStep() {
     fincas,
     setFincas,
     zonasComunes,
-    setZonasComunes,
     tiposConsumo,
     allocationGroup,
     setAllocationGroup,
-    updateTCBUnitsFromState,
     addConsumptionData,
-    modifyConsumptionData,
-    deleteConsumptionData,
     getConsumo,
   } = useContext(ConsumptionContext)
 
@@ -372,7 +368,7 @@ export default function UnitsStep() {
               __html: t('UNITS.DESCRIPTION_1'),
             }}
           />
-          <IconButton
+          {/* <IconButton
             onClick={() => help(1)}
             size="small"
             style={{
@@ -384,7 +380,7 @@ export default function UnitsStep() {
             }}
           >
             <HelpIcon />
-          </IconButton>
+          </IconButton> */}
         </Grid>
 
         <Grid item xs={12}>

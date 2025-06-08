@@ -526,7 +526,7 @@ async function loadFromCSV(csvFile, aThis, options) {
           let parts = value.split('/')
           let _dia = parts[posDia]
           let _mes = parts[posMes] - 1 //_mes es el indice interno gestionado por JS pero es 1-24 en los ficheros de las distribuidoras
-          let _ano = parts[posAno]
+          let _ano = parts[posAno].slice(0, 4) //Añadido porque EREDES incluye la hora 00:00:00 en el campo fecha
           if (_dia > 31 || _mes > 11) {
             //Es probable que hayan definido DATADIS para un CSV de distribuidora
             const tError = new Error(
