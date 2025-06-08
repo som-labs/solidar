@@ -1,6 +1,9 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '@mui/material/styles'
+
+//React global context
+import { EnergyContext } from '../EnergyContext'
 
 // MUI objects
 import { Container, Typography, Box, CardMedia } from '@mui/material'
@@ -14,11 +17,12 @@ import arrowDeficit from '../assets/arrowDeficit.svg'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
-import TCB from '../classes/TCB'
 
 export default function EnergyFlow(props) {
   const { t } = useTranslation()
   const theme = useTheme()
+
+  const { consumoGlobal, produccionGlobal, balanceGlobal } = useContext(EnergyContext)
 
   const [anchoPanel, setAnchoPanel] = useState()
   const [leftMargin, setLeftMargin] = useState()
@@ -306,23 +310,23 @@ export default function EnergyFlow(props) {
           variant="body"
           dangerouslySetInnerHTML={{
             __html: t('ENERGY_BALANCE.DESCRIPTION_YEAR_ENERGY_BALANCE', {
-              consumoTotal: UTIL.formatoValor('energia', TCB.consumo.totalAnual),
+              consumoTotal: UTIL.formatoValor('energia', consumoGlobal.totalAnual),
               porcientoAutoconsumo: UTIL.formatoValor(
                 'porciento',
-                (TCB.balance.autoconsumo / TCB.consumo.totalAnual) * 100,
+                (balanceGlobal.autoconsumo / consumoGlobal.totalAnual) * 100,
               ),
               porcientoDemanda: UTIL.formatoValor(
                 'porciento',
-                (TCB.balance.deficitAnual / TCB.consumo.totalAnual) * 100,
+                (balanceGlobal.deficitAnual / consumoGlobal.totalAnual) * 100,
               ),
               porcientoAutoproduccion: UTIL.formatoValor(
                 'porciento',
-                (TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100,
+                (balanceGlobal.autoconsumo / produccionGlobal.totalAnual) * 100,
               ),
-              produccionTotal: UTIL.formatoValor('energia', TCB.produccion.totalAnual),
+              produccionTotal: UTIL.formatoValor('energia', produccionGlobal.totalAnual),
               porcientoVertido: UTIL.formatoValor(
                 'porciento',
-                (TCB.balance.excedenteAnual / TCB.produccion.totalAnual) * 100,
+                (balanceGlobal.excedenteAnual / produccionGlobal.totalAnual) * 100,
               ),
             }),
           }}

@@ -54,6 +54,7 @@ export default function EnergyBalanceStep() {
     newTiposConsumo,
     setNewTiposConsumo,
   } = useContext(GlobalContext)
+
   const {
     consumoGlobal,
     setConsumoGlobal,
@@ -61,6 +62,7 @@ export default function EnergyBalanceStep() {
     produccionGlobal,
     balanceGlobal,
   } = useContext(EnergyContext)
+
   const { fincas, getConsumo, tiposConsumo, zonasComunes } =
     useContext(ConsumptionContext)
 

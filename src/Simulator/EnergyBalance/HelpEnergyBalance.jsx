@@ -65,6 +65,9 @@ export default function HelpEnergyBalance(props) {
             </Box>
           </Box>
         </DialogContent>
+        <DialogActions sx={{ mt: '1rem' }}>
+          <Button onClick={() => props.onClose()}>{t('BASIC.LABEL_CANCEL')}</Button>
+        </DialogActions>
       </>
     )
 }
