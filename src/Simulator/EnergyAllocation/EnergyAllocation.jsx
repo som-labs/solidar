@@ -47,13 +47,17 @@ export default function EnergyAllocationStep() {
   useEffect(() => {
     if (newEnergyBalance) {
       //Primera asignacion de produccion a cada grupo basada en el consumo grupal
-      console.log(allocationGroup, produccionGlobal.totalAnual, consumoGlobal.totalDiurno)
+      console.log({
+        allocatio: allocationGroup,
+        produccionTotal: produccionGlobal.totalAnual,
+        consumoDiurno: consumoGlobal.totalDiurno,
+      })
 
       if (
         produccionGlobal.totalAnual >= consumoGlobal.totalDiurno ||
         zonasComunes.length === 0
       ) {
-        console.log('Energia para todos')
+        console.log('Energia para todos. Distribuimos por consumo diurno')
         setAllocationGroup((prev) => {
           const newAllocation = { ...prev }
           Object.keys(newAllocation).forEach(
@@ -66,6 +70,7 @@ export default function EnergyAllocationStep() {
       } else {
         // Segundo algoritmo maximizando asignación a zonas comunes
         // Cuanta energia necesitan las zonas comunes
+        console.log('No hay energia para todos')
         let zc_needs = 0
         let g_needs = 0
         for (const g in allocationGroup) {
@@ -75,7 +80,10 @@ export default function EnergyAllocationStep() {
         }
 
         if (zc_needs < produccionGlobal.totalAnual) {
-          console.log('Energia para zonas', { needs: zc_needs, residual: g_needs })
+          console.log('Energia suficiente para zonas y residual para grupos DGT', {
+            needs: zc_needs,
+            residual: g_needs,
+          })
           setAllocationGroup((prev) => {
             const newAllocation = { ...prev }
             for (const grupo in allocationGroup) {
@@ -92,7 +100,7 @@ export default function EnergyAllocationStep() {
             return newAllocation
           })
         } else {
-          console.log('Energia para algunos', {
+          console.log('Energia solo para zonas en base a consumo diurno', {
             needs: zc_needs,
           })
 
@@ -138,7 +146,6 @@ export default function EnergyAllocationStep() {
       }
       closeBetasToOne()
       setRepartoValido(true)
-      setNewEnergyBalance(false)
     }
   }, [])
 
@@ -274,7 +281,7 @@ export default function EnergyAllocationStep() {
           )}
         </>
 
-        <Button onClick={() => UTIL.dumpData('Fincas.csv', fincas)}>Exportar</Button>
+        <Button onClick={() => UTIL.dumpData('Unidades.csv', fincas)}>Exportar</Button>
         <Button onClick={generaFicheroReparto}>Genera fichero reparto</Button>
       </Container>
     )

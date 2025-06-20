@@ -179,8 +179,16 @@ export default function UnitsSummary(props) {
             control={<Radio />}
             label="Participación"
           />
-          <FormControlLabel value="CONSUMO" control={<Radio />} label="Uso eléctrico" />
-          <FormControlLabel value="DIURNO" control={<Radio />} label="Uso diurno" />
+          <FormControlLabel
+            value="CONSUMO"
+            control={<Radio />}
+            label="Uso eléctrico 24 horas"
+          />
+          <FormControlLabel
+            value="DIURNO"
+            control={<Radio />}
+            label="Uso eléctrico diurno"
+          />
           <FormControlLabel
             value="PARITARIO"
             control={<Radio />}

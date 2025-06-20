@@ -18,7 +18,7 @@ async function verificaTerritorio(point) {
       return { status: status, details: details }
     } else {
       //Check new base is in Spain
-      const countries = ['España', 'Norge']
+      const countries = ['España'] //, 'Norge'] para hacer pruebas con Lazaro en Noruega
       console.log(details.country)
       if (countries.includes(details.country)) {
         // Verificamos si estamos en territorio insular o no.

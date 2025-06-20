@@ -29,10 +29,10 @@ import TipoConsumo from '../classes/TipoConsumo.js'
 import { GlobalContext } from '../GlobalContext.jsx'
 
 export default function DialogProject({ onClose }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { SLDRAlert } = useAlert()
   const fileInputRef = useRef(null)
-  const [task, setTask] = useState()
+  const [task, setTask] = useState(null)
   const { tipoPanelActivo, setTipoPanelActivo, bases, setBases, map } =
     useContext(BasesContext)
   const {
@@ -51,12 +51,8 @@ export default function DialogProject({ onClose }) {
   const {
     totalPaneles,
     setTotalPaneles,
-    calculaResultados,
-    consumoGlobal,
     setConsumoGlobal,
-    balanceGlobal,
     setBalanceGlobal,
-    produccionGlobal,
     setProduccionGlobal,
   } = useContext(EnergyContext)
   const { setEconomicoGlobal, economicoGlobal } = useContext(EconomicContext)
@@ -110,21 +106,21 @@ export default function DialogProject({ onClose }) {
 
     const date = new Date()
     let fName = TCB.nombreProyecto + '(' + date.getFullYear()
-    fName += (date.getMonth() + 1).toLocaleString(TCB.i18next.language, {
+    fName += (date.getMonth() + 1).toLocaleString(i18n.language, {
       minimumIntegerDigits: 2,
       useGrouping: false,
     })
-    fName += date.getDate().toLocaleString(TCB.i18next.language, {
+    fName += date.getDate().toLocaleString(i18n.language, {
       minimumIntegerDigits: 2,
       useGrouping: false,
     })
     fName +=
       '-' +
-      date.getHours().toLocaleString(TCB.i18next.language, {
+      date.getHours().toLocaleString(i18n.language, {
         minimumIntegerDigits: 2,
         useGrouping: false,
       })
-    fName += date.getMinutes().toLocaleString(TCB.i18next.language, {
+    fName += date.getMinutes().toLocaleString(i18n.language, {
       minimumIntegerDigits: 2,
       useGrouping: false,
     })
@@ -148,6 +144,8 @@ export default function DialogProject({ onClose }) {
       SLDRAlert('EXPORT', t('Proyecto.NO_EXPORT_AVAILABLE'), 'Error')
       return false
     }
+
+    document.body.style.cursor = 'wait'
 
     //If any proyecto property has been edited it will be included in solimp file
     for (let key in values) {
@@ -221,6 +219,7 @@ export default function DialogProject({ onClose }) {
     //Generamos el fichero solimp
     const rFile = export2txt(TCB.datosProyecto)
     SLDRAlert('EXPORT', t('Proyecto.MSG_SUCCESS_EXPORT', { fichero: rFile }))
+    document.body.style.cursor = 'default'
     onClose()
   }
 
@@ -231,9 +230,7 @@ export default function DialogProject({ onClose }) {
     return new Promise((resolve, reject) => {
       reader.onerror = (err) => {
         alert(
-          TCB.i18next.t('precios_MSG_errorLecturaFicheroImportacion') +
-            '\nReader.error: ' +
-            err,
+          i18n.t('precios_MSG_errorLecturaFicheroImportacion') + '\nReader.error: ' + err,
         )
         reject('...error de lectura')
       }
@@ -246,7 +243,7 @@ export default function DialogProject({ onClose }) {
           resolve(datos)
         } catch (err) {
           alert(
-            TCB.i18next.t('precios_MSG_errorLecturaFicheroImportacion') +
+            i18n.t('precios_MSG_errorLecturaFicheroImportacion') +
               '\nParser.error: ' +
               err,
           )
@@ -317,12 +314,16 @@ export default function DialogProject({ onClose }) {
       if (
         await SLDRAlert('CONFIRM', t('Proyecto.MSG_CONFIRM_REPLACE'), 'Warning', true)
       ) {
+        document.body.style.cursor = 'wait'
         setTask('Import')
         fileInputRef.current.click()
+        setTask(null)
       }
     } else {
+      document.body.style.cursor = 'wait'
       setTask('Import')
       fileInputRef.current.click()
+      setTask(null)
     }
   }
 
@@ -332,8 +333,6 @@ export default function DialogProject({ onClose }) {
    * @returns {boolean} true si todo ha ido bien false si algo ha fallado
    */
   async function importProject(event) {
-    if (event.target.files.length === 0) return
-
     const fichero = event.target.files[0]
 
     setImportando(true)
@@ -357,6 +356,7 @@ export default function DialogProject({ onClose }) {
     // Check solimp version to check if compatible
     if (datosImportar.version[0] !== '4') {
       SLDRAlert('IMPORT ERROR', t('PROYECTO.MSG_VERSION_PROBLEM'))
+      document.body.style.cursor = 'default'
       return
     }
 
@@ -366,6 +366,7 @@ export default function DialogProject({ onClose }) {
         t('Proyecto.MSG_INCOMPATIBLE_MODE', { modo: datosImportar.modoActivo }),
         'Warning',
       )
+      document.body.style.cursor = 'default'
       return
     }
 
@@ -417,11 +418,14 @@ export default function DialogProject({ onClose }) {
     setNewEnergyBalance(false)
     setRepartoValido(true)
     setEconomicoGlobal(datosImportar?.economico)
+    document.body.style.cursor = 'default'
+
     onClose()
   }
 
   function cancelProject() {
     console.log('cancel')
+    document.body.style.cursor = 'default'
     onClose()
   }
 
@@ -461,7 +465,11 @@ export default function DialogProject({ onClose }) {
         initialValues={initialData}
         validate={validate}
         onSubmit={(values) => {
-          exportProject(values)
+          document.body.style.cursor = 'wait'
+          setTimeout(() => {
+            exportProject(values)
+            document.body.style.cursor = 'default'
+          }, 1000)
         }}
       >
         {({ values }) => (
@@ -479,36 +487,49 @@ export default function DialogProject({ onClose }) {
                 }}
               >
                 {/* Hidden file input element */}
+
                 <input
                   ref={fileInputRef}
                   type="file"
                   accept=".solimp"
                   style={{ display: 'none' }}
-                  onChange={importProject}
+                  onChange={(event) => {
+                    document.body.style.cursor = 'wait'
+                    setTimeout(() => {
+                      importProject(event)
+                      document.body.style.cursor = 'default'
+                    }, 1000)
+                  }}
+                  //onChange={importProject}
                 />
+                {!task && (
+                  <>
+                    <Tooltip title={t('Proyecto.TOOLTIP.importarProyecto')}>
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        color="primary"
+                        size="large"
+                        onClick={handleImportClick}
+                      >
+                        {t('Proyecto.LABEL.importarProyecto')}
+                      </Button>
+                    </Tooltip>
+                  </>
+                )}
 
-                <Tooltip title={t('Proyecto.TOOLTIP.importarProyecto')}>
+                {!task && (
                   <Button
                     variant="contained"
                     fullWidth
                     color="primary"
                     size="large"
-                    onClick={handleImportClick}
+                    onClick={() => setTask('Export')}
+                    disabled={bases.length === 0}
                   >
-                    {t('Proyecto.LABEL.importarProyecto')}
+                    {t('Proyecto.LABEL.exportarProyecto')}
                   </Button>
-                </Tooltip>
-
-                <Button
-                  variant="contained"
-                  fullWidth
-                  color="primary"
-                  size="large"
-                  onClick={() => setTask('Export')}
-                  disabled={bases.length === 0}
-                >
-                  {t('Proyecto.LABEL.exportarProyecto')}
-                </Button>
+                )}
               </Box>
 
               {task === 'Export' ? (

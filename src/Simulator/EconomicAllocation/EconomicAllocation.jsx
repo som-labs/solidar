@@ -52,11 +52,11 @@ export default function EconomicAllocationStep() {
   })
 
   for (let zc of zonasComunes) {
-    console.log({
-      zona: zc,
-      autoconsumo: zc.balance.autoconsumo,
-      consumo: allocationGroup[zc.id].consumo,
-    })
+    // console.log({
+    //   zona: zc,
+    //   autoconsumo: zc.balance.autoconsumo,
+    //   consumo: allocationGroup[zc.id].consumo,
+    // })
   }
 
   for (const _zc of zonasComunes) {
@@ -132,6 +132,8 @@ export default function EconomicAllocationStep() {
         Nombre: f.nombreFinca,
         Grupo: f.grupo,
         Participacion: f.participacion,
+        'Uso anual': UTIL.roundDecimales(getConsumo(f.nombreTipoConsumo).total, 2),
+        'Porciento uso': UTIL.roundDecimales(f.coefConsumo * 100, 2),
         beta: UTIL.roundDecimales(f.coefEnergia, 6),
         'Coste propio': UTIL.roundDecimales(
           economicoGlobal.precioInstalacionCorregido * f.coefEnergia,
@@ -157,6 +159,10 @@ export default function EconomicAllocationStep() {
         ahorroTotal += aZC
       }
       e['Coste total'] = UTIL.roundDecimales(costeTotal, 2)
+      e['Porciento inversión'] = UTIL.roundDecimales(
+        (costeTotal / economicoGlobal.precioInstalacionCorregido) * 100,
+        2,
+      )
       e['Ahorro anual'] = UTIL.roundDecimales(ahorroTotal, 2)
 
       rowList.push(e)

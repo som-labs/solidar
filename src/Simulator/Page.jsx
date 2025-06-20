@@ -242,7 +242,6 @@ export default function Page() {
     let cursorOriginal = document.body.style.cursor
     document.body.style.cursor = 'progress'
     //When importing first time will not compute Economico next yes
-
     if (!importando || !economicoGlobal || newEnergyBalance) {
       let newEconomico = new Economico(
         null,
@@ -283,29 +282,9 @@ export default function Page() {
             (_tc) => _zc.nombreTipoConsumo === _tc.nombreTipoConsumo,
           )
           _zc.balance = new Balance(produccionGlobal, consumoIndividual, _zc.coefEnergia)
-          _zc.economico = new Economico(
-            _zc,
-            tarifas,
-            tiposConsumo,
-            consumoGlobal,
-            balanceGlobal,
-            produccionGlobal,
-            newEconomico,
-            zonasComunes,
-            costeZCenFinca,
-          )
-        }
-
-        //Calcular balance y economico de las fincas
-
-        for (let _f of fincas) {
-          if (_f.participa && _f.nombreTipoConsumo !== '') {
-            consumoIndividual = tiposConsumo.find(
-              (_tc) => _tc.nombreTipoConsumo === _f.nombreTipoConsumo,
-            )
-            _f.balance = new Balance(produccionGlobal, consumoIndividual, _f.coefEnergia)
-            _f.economico = new Economico(
-              _f,
+          try {
+            _zc.economico = new Economico(
+              _zc,
               tarifas,
               tiposConsumo,
               consumoGlobal,
@@ -315,10 +294,40 @@ export default function Page() {
               zonasComunes,
               costeZCenFinca,
             )
+          } catch (e) {
+            _zc.economico = null
+            console.log('Error creando economico ', _zc.nombre)
+          }
+        }
+
+        //Calcular balance y economico de las fincas
+        for (let _f of fincas) {
+          if (_f.participa && _f.nombreTipoConsumo !== '') {
+            consumoIndividual = tiposConsumo.find(
+              (_tc) => _tc.nombreTipoConsumo === _f.nombreTipoConsumo,
+            )
+            _f.balance = new Balance(produccionGlobal, consumoIndividual, _f.coefEnergia)
+            try {
+              _f.economico = new Economico(
+                _f,
+                tarifas,
+                tiposConsumo,
+                consumoGlobal,
+                balanceGlobal,
+                produccionGlobal,
+                newEconomico,
+                zonasComunes,
+                costeZCenFinca,
+              )
+            } catch (e) {
+              _f.economico = null
+              console.log('Error creando economico finca ' + _f.nombreFinca)
+            }
           }
         }
       }
       TCB.requiereReparto = false
+      setNewEnergyBalance(false)
     }
 
     document.body.style.cursor = cursorOriginal
@@ -351,15 +360,19 @@ export default function Page() {
     if (TCB.modoActivo === 'INDIVIDUAL') {
       return await PreparaEconomicBalance().status
     } else {
-      //Dado un perfil de producción podemos definir cual es el consumo diurno
-      console.log(consumoGlobal)
+      /*
+      Dado un perfil de producción (produccionGlobal) podemos definir cual es el consumo diurno. 
+      Se asigna consumo como diurno si la produccion a esa hora es >0
+      */
       consumoGlobal.setTotalDiurno(produccionGlobal)
-
       for (let tc of tiposConsumo) tc.setTotalDiurno(produccionGlobal)
 
+      /* Se asigna el consumo diurno a cada grupo del allocatioGroup */
       for (let group in allocationGroup) {
         let tDiurno
+
         if (allocationGroup[group].unidades > 0) {
+          // Se asigna el consumo diurno a los grupos de DGC
           const ps = fincas.filter((f) => f.grupo === group && f.participa)
           tDiurno = ps.reduce(
             (t, f) =>
@@ -369,6 +382,7 @@ export default function Page() {
             0,
           )
         } else {
+          // Se asigna el consumo diurno a los grupos de DGC
           const zc = zonasComunes.find((zc) => zc.id === group)
           tDiurno = tiposConsumo.find(
             (tc) => tc.nombreTipoConsumo === zc.nombreTipoConsumo,
