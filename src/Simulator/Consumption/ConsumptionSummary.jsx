@@ -226,11 +226,11 @@ export default function ConsumptionSummary() {
         //Es uno o varios ficheros del mismo tipo de fuente que no es REE
         nuevoTipoConsumo.consumoAnualREE = ''
 
-        if (!Array.isArray(formData.ficheroCSV)) {
+        if (formData.ficheroCSV.length === 1) {
           //Si viene solo un fichero
           nuevoTipoConsumo.nombreTipoConsumo = formData.nombreTipoConsumo
-          nuevoTipoConsumo.ficheroCSV = formData.ficheroCSV
-          nuevoTipoConsumo.nombreFicheroCSV = formData.ficheroCSV.name
+          nuevoTipoConsumo.ficheroCSV = formData.ficheroCSV[0]
+          nuevoTipoConsumo.nombreFicheroCSV = formData.ficheroCSV[0].name
           await create_load(nuevoTipoConsumo)
         } else {
           for (const inFile of formData.ficheroCSV) {

@@ -50,14 +50,12 @@ class Consumo extends DiaHora {
   } // End constructor
 
   setTotalDiurno(produccion) {
-    console.log(produccion)
     this.totalDiurno = 0
     for (let dia = 0; dia < 365; dia++) {
       for (let hora = 0; hora < 24; hora++) {
         if (produccion.diaHora[dia][hora] > 0) this.totalDiurno += this.diaHora[dia][hora]
       }
     }
-    console.log('CONSUMO GLOBAL', this.totalDiurno)
   }
 }
 export default Consumo

@@ -1040,7 +1040,8 @@ REPORT:
   ANYS: años
   RETURN: Volver a la simulación
 UNITS:
-  DESCRIPTION_1: "En este paso se identifican los participantes del proyecto fotovoltaico y su tipo de consumo eléctrico, concretamente: los locales comerciales, las viviendas y las zonas comunes de la comunidad de propietarios. <br /><br />Excepto para Pais Vasco y Navarra los locales comerciales, las viviendas y su coeficiente de participación en los gastos de la comunidad de propietarios se obtienen automáticamente de la Dirección General del Catastro. Si no se muestra información en esta pantalla es posible que no se hubieran obtenido datos de la Dirección General del Catastro en las coordenadas donde se realiza la instalación, en este caso podrás subir los datos desde un fichero CSV que incluya al menos las siguientes columnas: idFinca, nombreFinca, uso y participación.  <a href={{url}} target='_blank'>Puedes descargar una plantilla aqui"
+  DESCRIPTION_1: |
+    En este paso se identifican los participantes del proyecto fotovoltaico y su tipo de consumo eléctrico, concretamente: los locales comerciales, las viviendas y las zonas comunes de la comunidad de propietarios. <br /><br />Excepto para Pais Vasco y Navarra los locales comerciales, las viviendas y su coeficiente de participación en los gastos de la comunidad de propietarios se obtienen automáticamente de la Dirección General del Catastro. Si no se muestra información en esta pantalla es posible que no se hubieran obtenido datos de la Dirección General del Catastro en las coordenadas donde se realiza la instalación, en este caso podrás subir los datos desde un fichero CSV que incluya al menos las siguientes columnas: idFinca, nombreFinca, uso y participación.<a href='FincasSample.csv'>Puedes descargar una plantilla aqui</a>
   TITLE: Participes
   DESCRIPTION_2: Una vez confirmados los datos obtenidos del catastro (o definidos manualmente) tendrás que identificar qué locales comerciales y viviendas participan en el proyecto y su consumo eléctrico anual (definidos en la pestaña 'Consumo') y excluir los que no deseen participar. No resulta preciso definir un tipo de consumo por cada participante individualmente, aunque se pierda precisión se puede utilizar el mismo tipo de consumo para muchos (o todos).
   HEADER_FIELDS: El campo {{field}} es requerido
@@ -1125,9 +1126,8 @@ Finca:
   botonDescargaFincas_TT: Descarga la tabla actual a un fichero CSV
   botonSubeFincas_LBL: Sube CSV
   botonSubeFincas_TT: Puede aportar los datos de fincas desde un fichero CSV,
-  finca_MSG_accionFincas:
-    Asignar tipo de consumo a las fincas que participan del proyecto o crear nuevas fincas. Si no dispone de datos Catastrales puede crear un fichero nuevo a partir <a href='./datos/fincas ejemplo.csv'>de este template</a>,
-    finca_MSG_noTipoConsumoAsignado:Ninguna finca tiene tipo de consumo asignado,
+  finca_MSG_accionFincas: Asignar tipo de consumo a las fincas que participan del proyecto o crear nuevas fincas. Si no dispone de datos Catastrales puede crear un fichero nuevo a partir <a href='./datos/fincas ejemplo.csv'>de este template</a>,
+  finca_MSG_noTipoConsumoAsignado: Ninguna finca tiene tipo de consumo asignado
   catastro_MSG_errorFetch: Error ejecutando fecth en Catastro.\n {{err}} \n {{url}},
   nominatim_MSG_errorFetch: Error ejecutando fecth en Nominatim.\n {{err}} \n {{url}},
   nominatim_MSG_errorBuscandoTerritorio: Nominatim Error buscando territorio status-> {{resp}},

@@ -388,7 +388,7 @@ export default function UnitsStep() {
             variant="body"
             dangerouslySetInnerHTML={{
               __html: t('UNITS.DESCRIPTION_2', {
-                url: TCB.basePath + '/public/FincasSample.csv',
+                enlace: TCB.basePath + 'FincasSample.csv',
               }),
             }}
           />
@@ -468,7 +468,7 @@ export default function UnitsStep() {
           variant="contained"
           color="primary"
           component="span"
-          onClick={() => UTIL.dumpData('Fincas.csv', fincas, null, dumpFields)}
+          onClick={() => UTIL.dumpData('Participes.csv', fincas, null, dumpFields)}
         >
           {t('BASIC.LABEL_EXPORT')}
         </Button>

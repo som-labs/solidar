@@ -161,7 +161,18 @@ export default function UnitTypeBox(props) {
                     UTIL.formatoValor(
                       'dinero',
                       zonasComunes.find((zc) => zc.id === grupo).economico.ahorroAnual,
-                    ),
+                    ) +
+                    (allocationGroup[grupo].produccion > 0
+                      ? '</b><br />Autoconsumo <b>' +
+                        UTIL.formatoValor(
+                          'porciento',
+                          (zonasComunes.find((zc) => zc.id === grupo).balance
+                            .autoconsumo /
+                            (produccionGlobal.totalAnual *
+                              allocationGroup[grupo].produccion)) *
+                            100,
+                        )
+                      : ''),
                 }}
               />
             </Box>
