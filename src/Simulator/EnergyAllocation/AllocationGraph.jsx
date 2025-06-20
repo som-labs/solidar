@@ -112,11 +112,13 @@ export default function AllocationGraph() {
 
     setChartAllocation([...tmp])
 
-    if (Math.abs(1 - tmp.reduce((a, b) => a + b.y[1], 0)) <= 0.001) applyBalance()
-    else setRepartoValido(false)
+    if (Math.abs(1 - tmp.reduce((a, b) => a + b.y[1], 0)) <= 0.001) {
+      applyBalance()
+      setNewEnergyBalance(true)
+    } else setRepartoValido(false)
 
     Plotly.react(graphBox.current, tmp, layout, config)
-    setNewEnergyBalance(false)
+    //setNewEnergyBalance(false)
     //}
   }, [allocationGroup])
 
@@ -156,23 +158,19 @@ export default function AllocationGraph() {
   }
 
   function changeAllocation(group, value) {
+    console.log(typeof value, value, UTIL.ValidateDecimal(i18n.language, value))
+
     if (!UTIL.ValidateDecimal(i18n.language, value)) {
       setError({ status: true, field: group })
       return
     } else {
       setError({ status: false, field: group })
     }
-
+    value = UTIL.returnFloat(value)
     if (Number(value) < 0 || Number(value) > 100) {
       setError({ status: true, field: group })
-      return
     } else {
       setError({ status: false, field: group })
-    }
-
-    if (Number(value) === 0) {
-      SLDRAlert('ASIGNACIÓN NULA', t('ENERGY_ALLOCATION.NULL_ALLOCATION'), 'Warning')
-      return
     }
 
     setAllocationGroup((prev) => ({
@@ -192,18 +190,13 @@ export default function AllocationGraph() {
       prevItems.map((item, i) => (i === chartItemIndex ? newItem : item)),
     )
 
-    if (Math.abs(1 - chartAllocation.reduce((a, b) => a + b.y[1], 0)) <= 0.001)
+    if (Math.abs(1 - chartAllocation.reduce((a, b) => a + b.y[1], 0)) <= 0.001) {
+      setNewEnergyBalance(true)
       applyBalance()
-    else {
+    } else {
       setRepartoValido(false)
     }
   }
-
-  // console.log({
-  //   variable: 'allocationgraph rendering group',
-  //   chartAllocation: chartAllocation,
-  //   allocationGroup: allocationGroup,
-  // })
 
   function Semaphore({ state }) {
     const colors = {
@@ -293,7 +286,7 @@ export default function AllocationGraph() {
                 }}
               >
                 {Object.keys(allocationGroup)
-                  .filter((g) => allocationGroup[g].produccion > 0)
+                  .filter((g) => allocationGroup[g].produccion >= 0)
                   .map((group, index) => {
                     return (
                       <Fragment key={index}>
@@ -320,7 +313,7 @@ export default function AllocationGraph() {
                               borderRadius: 3,
                             }}
                             size="small"
-                            type="number"
+                            //type="number"
                             id="allocation"
                             InputProps={{
                               endAdornment: (
@@ -330,8 +323,13 @@ export default function AllocationGraph() {
                                 style: { textAlign: 'right' },
                               },
                             }}
-                            value={UTIL.round2Decimales(
+                            // value={UTIL.round2Decimales(
+                            //   allocationGroup[group].produccion * 100,
+                            // )}
+                            value={UTIL.formatoValor(
+                              'lon',
                               allocationGroup[group].produccion * 100,
+                              '',
                             )}
                             onChange={(event) =>
                               changeAllocation(group, event.target.value)

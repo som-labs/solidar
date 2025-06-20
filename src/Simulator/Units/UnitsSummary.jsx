@@ -40,30 +40,36 @@ export default function UnitsSummary(props) {
   const [openDialog, closeDialog] = useDialog()
   const {
     tiposConsumo,
-    preciosValidos,
+
     tarifas,
     fincas,
     setFincas,
-    allocationGroup,
+
     setAllocationGroup,
-    addConsumptionData,
+
     modifyConsumptionData,
-    deleteConsumptionData,
   } = useContext(ConsumptionContext)
   const { setNewTiposConsumo } = useContext(GlobalContext)
 
   const { grupo } = props
   const [selectionModel, setSelectionModel] = useState([])
-  const [tipoConsumoAsignado, setTipoConsumoAsignado] = useState('')
-  const [tipoTarifaAsignada, setTipoTarifaAsignada] = useState('')
+  const [tipoConsumoAsignado, setTipoConsumoAsignado] = useState(0)
+  const [tipoTarifaAsignada, setTipoTarifaAsignada] = useState(0)
 
-  const tiposActivos = [{ label: 'Indefinido', value: '' }].concat(
+  const tiposActivos = [
+    { label: 'seleccione tipo de uso', value: 0 },
+    { label: 'Indefinido', value: '' },
+  ].concat(
     tiposConsumo.map((tc) => ({
       label: tc.nombreTipoConsumo,
       value: tc.nombreTipoConsumo,
     })),
   )
-  const tarifasActivas = [{ label: 'Indefinido', value: '' }].concat(
+
+  const tarifasActivas = [
+    { label: 'seleccione tarifa', value: 0 },
+    { label: 'Indefinido', value: '' },
+  ].concat(
     tarifas.map((t) => ({
       label: t.nombreTarifa,
       value: t.idTarifa,
@@ -205,7 +211,7 @@ export default function UnitsSummary(props) {
         return f
       }),
     )
-
+    setTipoConsumoAsignado(0)
     setNewTiposConsumo(true)
     TCB.requiereReparto = true
   }
@@ -225,6 +231,7 @@ export default function UnitsSummary(props) {
         return f
       }),
     )
+    setTipoTarifaAsignada(0)
     setNewTiposConsumo(true)
   }
 
@@ -251,10 +258,11 @@ export default function UnitsSummary(props) {
                 name="tipoConsumo"
                 size="small"
                 onChange={(event) => handleTipoConsumo(event.target.value)}
+                //onClick={(event) => handleTipoConsumo(event.target.value)}
                 value={tipoConsumoAsignado}
               >
                 {tiposActivos.map((e, index) => (
-                  <MenuItem key={index} value={e.value}>
+                  <MenuItem key={index} value={e.value} disabled={e.value === 0}>
                     {e.label}
                   </MenuItem>
                 ))}
@@ -274,9 +282,10 @@ export default function UnitsSummary(props) {
                 name="tarifa"
                 object="Tarifa"
                 onChange={(event) => handleTipoTarifa(event.target.value)}
+                //onClick={(event) => handleTipoTarifa(event.target.value)}
               >
                 {tarifasActivas.map((e, index) => (
-                  <MenuItem key={index} value={e.value}>
+                  <MenuItem key={index} value={e.value} disabled={e.value === 0}>
                     {e.label}
                   </MenuItem>
                 ))}

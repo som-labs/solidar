@@ -89,7 +89,6 @@ class Economico {
       _balance = unidad.balance
     } else {
       tarifaActiva = tarifas[0]
-      console.log('Balance de dia 0 hora 13 antes', balanceGlobal.diaHora[0][13])
       _consumo = consumoGlobal
       _balance = balanceGlobal
     }
@@ -460,11 +459,16 @@ class Economico {
       }
     } else {
       this.periodoAmortizacion = -maxNumberCashFlow
-      alert(
+      throw new Error(
         'Probable número excesivo de paneles en la simulación -> retorno > ' +
           maxNumberCashFlow +
           ' años',
       )
+      // alert(
+      //   'Probable número excesivo de paneles en la simulación -> retorno > ' +
+      //     maxNumberCashFlow +
+      //     ' años',
+      // )
     }
 
     if (coefInversion === 1) {
@@ -510,10 +514,15 @@ class Economico {
         flag = true
         rate = rate - delta
         if (rate < 0) {
-          alert(
-            'Probable número excesivo de paneles -> mucha inversión -> retorno > 30 años',
-          )
           numberOfTries = depth
+          throw new Error(
+            'Probable número excesivo de paneles en la simulación -> retorno > ' +
+              maxNumberCashFlow +
+              ' años',
+          )
+          // alert(
+          //   'Probable número excesivo de paneles -> mucha inversión -> retorno > 30 años',
+          // )
         }
       } else {
         flag ? (delta /= 2) : (delta *= 2)
