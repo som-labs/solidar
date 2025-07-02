@@ -31,7 +31,6 @@ const BasesContextProvider = ({ children }) => {
     ancho: 1.134,
     largo: 1.762,
   })
-  //TCB.tipoPaneles[TCB.defaultPanelActivo],
 
   const addBase = (base) => {
     setBases((prev) => [...prev, base])
@@ -231,9 +230,12 @@ const BasesContextProvider = ({ children }) => {
     acimutLine.setStyle(null)
     TCB.origenDatosSolidar.addFeature(acimutLine)
 
+    //console.log('setting default to', formData.inclinacion)
+
+    TCB.inclinacionDefault = formData.inclinacion
     //Update or create a BaseSolar with formData
     if (reason === 'save') {
-      // We are creating a new base
+      //We are creating a new base
       addBase(new BaseSolar(formData))
     } else {
       //We are updating existing base

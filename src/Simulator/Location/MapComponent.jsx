@@ -50,7 +50,8 @@ export default function MapComponent() {
   const { SLDRAlert } = useAlert()
   const [openDialog, closeDialog] = useDialog()
 
-  const { setFincas } = useContext(ConsumptionContext)
+  const { fincas, setFincas, setZonasComunes, setAllocationGroup } =
+    useContext(ConsumptionContext)
   const { map, setMap, bases, updateBaseFromForm, tipoPanelActivo } =
     useContext(BasesContext)
 
@@ -369,8 +370,35 @@ export default function MapComponent() {
     if (TCB.modoActivo !== 'INDIVIDUAL') {
       const alfa = await getParcelaXY(puntoAplicacion_4326)
       console.log('GETPARCELAXY', alfa)
+
       if (alfa.status) {
-        setFincas(alfa.units.map((u) => new Finca(u)))
+        //Si es la primera llamada
+        if (TCB.lastRefCat === null) {
+          TCB.lastRefCat = alfa.parcela.refcat
+          console.log('Setting fincas')
+          setZonasComunes([])
+          setAllocationGroup(null)
+          setFincas(alfa.units.map((u) => new Finca(u)))
+        }
+        //Verificamos que estamos en la misma parcela de donde hemos obtenido los participes
+        if (alfa.parcela.refcat !== TCB.lastRefCat) {
+          if (
+            await SLDRAlert(
+              'CONFIRM',
+              t('LOCATION.PROMPT_CAMBIO_PARCELA'),
+              'Warning',
+              true,
+            )
+          ) {
+            console.log('Cambiamos a nuevas fincas')
+            TCB.lastRefCat = alfa.parcela.refcat
+            setZonasComunes([])
+            setAllocationGroup(null)
+            setFincas(alfa.units.map((u) => new Finca(u)))
+          } else {
+            console.log('Mantenemos las fincas de la base existente')
+          }
+        }
       } else {
         if (
           !(await SLDRAlert(
@@ -383,23 +411,24 @@ export default function MapComponent() {
           ))
         ) {
           TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
+          console.log('Borramos fincas existentes')
           setFincas([])
           return false
         }
       }
+      console.log(fincas)
     }
 
     //Preparamos los datos default para constuir un objeto BaseSolar
     geoBaseSolar.feature.setId('BaseSolar.area.' + TCB.featIdUnico)
     let nuevaBaseSolar = {}
     //const areaMapa = getArea(geometria, { projection: 'EPSG:3857' })
-
     nuevaBaseSolar.idBaseSolar = TCB.featIdUnico.toString()
     nuevaBaseSolar.nombreBaseSolar = 'Base ' + nuevaBaseSolar.idBaseSolar
     nuevaBaseSolar.cumbrera = cumbrera
     nuevaBaseSolar.ancho = ancho
     nuevaBaseSolar.area = getArea(geometria)
-    nuevaBaseSolar.inclinacion = 20
+    nuevaBaseSolar.inclinacion = TCB.inclinacionDefault
     nuevaBaseSolar.inclinacionOptima = false
     nuevaBaseSolar.roofType = TCB.modoActivo === 'INDIVIDUAL' ? 'Inclinado' : 'Horizontal'
     nuevaBaseSolar.inAcimut = undefined

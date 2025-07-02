@@ -456,6 +456,7 @@ LOCATION:
   ERROR_NOMBRE_BASE_SOLAR_DUPLICADO: El nombre de la base no puede estar duplicado
   ERROR_INCLINACION: Debe ser un número entero mayor que 0 y menor o igual que 80
 
+  PROMPT_CAMBIO_PARCELA: Esta base esta en una parcela diferente de las anteriores. ¿deseas cambiar los participes a los residentes de esta nueva base?
   LABEL_BASES_SUMMARY: Resumen
   PROMPT_BASES_SUMMARY: Recuerda que puedes indicar diferentes áreas disponibles y
     que cada una de ellas puede tener una orientación respecto al sur distinta. Revisa
@@ -1077,6 +1078,9 @@ ENERGY_ALLOCATION:
   GRAPH_Y_AXIS: Coeficiente sobre total
   GRAPH_PRODUCCION: Produccion asignada
   GRAPH_CONSUMPTION: Uso de energía
+  CRITERIA_1: 'La energía producida anualmente ({{produccionTotal}}) es superior a la energia diurna consumida ({{consumoTotal}}) por lo que asignaremos la energía a cada grupo según el procentaje de uso de energía diurna que demanda'
+  CRITERIA_2: 'Existe energía suficiente para cubrir el uso de electrícidad diurno de las zonas comunes ({{zc_needs}}) y un residual ({{g_needs}}) para el resto de participes'
+  CRITERIA_3: 'No hay energía suficiente para el uso de electrícidad diurno de las zonas comunes ({{zc_needs}})por lo que se ha asignado toda la producción a las zonas comunes según su procentaje de uso sobre el total'
 
 ECONOMIC_ALLOCATION:
   TITLE: Reparto Económico

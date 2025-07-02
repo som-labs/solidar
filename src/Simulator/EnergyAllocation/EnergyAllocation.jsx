@@ -39,7 +39,8 @@ export default function EnergyAllocationStep() {
     modifyConsumptionData,
   } = useContext(ConsumptionContext)
 
-  const { consumoGlobal, produccionGlobal } = useContext(EnergyContext)
+  const { consumoGlobal, produccionGlobal, setAllocationCriteria } =
+    useContext(EnergyContext)
   const { newEnergyBalance, setNewEnergyBalance } = useContext(GlobalContext)
 
   const [openDialog, closeDialog] = useDialog()
@@ -47,17 +48,23 @@ export default function EnergyAllocationStep() {
   useEffect(() => {
     if (newEnergyBalance) {
       //Primera asignacion de produccion a cada grupo basada en el consumo grupal
-      console.log({
-        allocatio: allocationGroup,
-        produccionTotal: produccionGlobal.totalAnual,
-        consumoDiurno: consumoGlobal.totalDiurno,
-      })
+      // console.log({
+      //   allocatio: allocationGroup,
+      //   produccionTotal: produccionGlobal.totalAnual,
+      //   consumoDiurno: consumoGlobal.totalDiurno,
+      // })
 
       if (
         produccionGlobal.totalAnual >= consumoGlobal.totalDiurno ||
         zonasComunes.length === 0
       ) {
-        console.log('Energia para todos. Distribuimos por consumo diurno')
+        setAllocationCriteria(
+          t('ENERGY_ALLOCATION.CRITERIA_1', {
+            produccionTotal: UTIL.formatoValor('energia', produccionGlobal.totalAnual),
+            consumoTotal: UTIL.formatoValor('energia', consumoGlobal.totalDiurno),
+          }),
+        )
+
         setAllocationGroup((prev) => {
           const newAllocation = { ...prev }
           Object.keys(newAllocation).forEach(
@@ -70,7 +77,6 @@ export default function EnergyAllocationStep() {
       } else {
         // Segundo algoritmo maximizando asignación a zonas comunes
         // Cuanta energia necesitan las zonas comunes
-        console.log('No hay energia para todos')
         let zc_needs = 0
         let g_needs = 0
         for (const g in allocationGroup) {
@@ -80,10 +86,16 @@ export default function EnergyAllocationStep() {
         }
 
         if (zc_needs < produccionGlobal.totalAnual) {
-          console.log('Energia suficiente para zonas y residual para grupos DGT', {
-            needs: zc_needs,
-            residual: g_needs,
-          })
+          setAllocationCriteria(
+            t('ENERGY_ALLOCATION.CRITERIA_2', {
+              zc_needs: UTIL.formatoValor('energia', zc_needs),
+              g_needs: UTIL.formatoValor(
+                'energia',
+                produccionGlobal.totalAnual - zc_needs,
+              ),
+            }),
+          )
+
           setAllocationGroup((prev) => {
             const newAllocation = { ...prev }
             for (const grupo in allocationGroup) {
@@ -100,9 +112,11 @@ export default function EnergyAllocationStep() {
             return newAllocation
           })
         } else {
-          console.log('Energia solo para zonas en base a consumo diurno', {
-            needs: zc_needs,
-          })
+          setAllocationCriteria(
+            t('ENERGY_ALLOCATION.CRITERIA_3', {
+              zc_needs: UTIL.formatoValor('energia', zc_needs),
+            }),
+          )
 
           setAllocationGroup((prev) => {
             const newAllocation = { ...prev }

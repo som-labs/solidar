@@ -43,27 +43,30 @@ export default function AllocationGraph() {
     fincas,
   } = useContext(ConsumptionContext)
 
-  const { consumoGlobal, produccionGlobal } = useContext(EnergyContext)
+  const { consumoGlobal, produccionGlobal, allocationCriteria } =
+    useContext(EnergyContext)
   const { newEnergyBalance, setNewEnergyBalance } = useContext(GlobalContext)
 
   const [chartAllocation, setChartAllocation] = useState([])
 
+  /* numbersValue contiene el valor de cada asignación de allocationGroup en formato numérico local */
+  const [numbersValue, setNumbersValue] = useState({})
+
   const graphWidth = useRef()
   const graphBox = useRef()
 
-  // useEffect(() => {
-  //   console.log('UseEffct 1')
-  //   // Function to get the width of the element
-  //   const getWidth = () => {
-  //     if (graphBox.current) {
-  //       graphWidth.current = graphBox.current.offsetWidth
-  //     }
-  //   }
-
-  //   // Call the function to get the width after initial render
-  //   getWidth()
-  //   console.log('UseEffct 1', graphWidth.current)
-  // }, [])
+  useEffect(() => {
+    for (const g in allocationGroup) {
+      setNumbersValue((prev) => ({
+        ...prev,
+        [allocationGroup[g].nombre]: UTIL.formatoValor(
+          'lon',
+          allocationGroup[g].produccion * 100,
+          '',
+        ),
+      }))
+    }
+  }, [])
 
   useEffect(() => {
     // Function to get the width of the element
@@ -75,9 +78,6 @@ export default function AllocationGraph() {
 
     // Call the function to get the width after initial render
     getWidth()
-    //console.log(newEnergyBalance)
-    //if (newEnergyBalance) {
-
     const layout = {
       title: t('ENERGY_ALLOCATION.TITLE_BAR_CHART'),
       barmode: 'stack', // Set bar mode to "stack"
@@ -118,8 +118,6 @@ export default function AllocationGraph() {
     } else setRepartoValido(false)
 
     Plotly.react(graphBox.current, tmp, layout, config)
-    //setNewEnergyBalance(false)
-    //}
   }, [allocationGroup])
 
   function applyBalance() {
@@ -140,7 +138,6 @@ export default function AllocationGraph() {
 
   function distributeAllocation(grupo, coefGrupo) {
     //Fincas que participan del grupo
-    //const participes = TCB.Finca.filter((f) => f.participa && f.grupo === grupo)
     const totalParticipation =
       fincas
         .filter((f) => f.participa && f.grupo === grupo)
@@ -157,33 +154,39 @@ export default function AllocationGraph() {
     })
   }
 
-  function changeAllocation(group, value) {
-    console.log(typeof value, value, UTIL.ValidateDecimal(i18n.language, value))
+  function changeAllocation(grupo, value) {
+    setNumbersValue((prev) => ({
+      ...prev,
+      [allocationGroup[grupo].nombre]: value,
+    }))
 
     if (!UTIL.ValidateDecimal(i18n.language, value)) {
-      setError({ status: true, field: group })
+      setError({ status: true, field: grupo })
+      setRepartoValido(false)
       return
     } else {
-      setError({ status: false, field: group })
+      setError({ status: false, field: grupo })
     }
+
     value = UTIL.returnFloat(value)
     if (Number(value) < 0 || Number(value) > 100) {
-      setError({ status: true, field: group })
+      setError({ status: true, field: grupo })
+      setRepartoValido(false)
     } else {
-      setError({ status: false, field: group })
+      setError({ status: false, field: grupo })
     }
 
     setAllocationGroup((prev) => ({
       ...prev,
-      [group]: {
-        ...prev[group],
-        consumo: prev[group].consumo,
-        criterio: prev[group].criterio,
+      [grupo]: {
+        ...prev[grupo],
+        consumo: prev[grupo].consumo,
+        criterio: prev[grupo].criterio,
         produccion: value / 100,
       },
     }))
 
-    const chartItemIndex = chartAllocation.findIndex((e) => e.id === group)
+    const chartItemIndex = chartAllocation.findIndex((e) => e.id === grupo)
     let newItem = chartAllocation[chartItemIndex]
     newItem.y[1] = value / 100
     setChartAllocation((prevItems) =>
@@ -267,6 +270,14 @@ export default function AllocationGraph() {
                 {t('ENERGY_ALLOCATION.ALLOCATION_GROUPS')}
               </Typography>
               <Typography
+                sx={{ textAlign: 'center', mb: 1 }}
+                variant="body"
+                dangerouslySetInnerHTML={{
+                  __html: allocationCriteria,
+                }}
+              />
+
+              <Typography
                 sx={{ textAlign: 'center' }}
                 variant="body"
                 dangerouslySetInnerHTML={{
@@ -275,98 +286,97 @@ export default function AllocationGraph() {
               />
             </Box>
             <Box sx={{ display: 'flex', width: '100%', alignItems: 'center' }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  mt: 1,
-                  mb: 2,
-                  width: '100%',
-                  justifyContent: 'center',
-                }}
-              >
-                {Object.keys(allocationGroup)
-                  .filter((g) => allocationGroup[g].produccion >= 0)
-                  .map((group, index) => {
-                    return (
-                      <Fragment key={index}>
-                        <Grid
-                          container
-                          spacing={0.2}
-                          alignItems="center"
-                          justifyContent="space-evenly"
-                        >
+              {numbersValue ? (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    mt: 1,
+                    mb: 2,
+                    width: '100%',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {Object.keys(allocationGroup)
+                    .filter((g) => allocationGroup[g].produccion >= 0)
+                    .map((group, index) => {
+                      return (
+                        <Fragment key={index}>
                           <Grid
-                            item
-                            xs={3}
-                            sx={{ border: 0, textAlign: 'right', padding: 1 }}
+                            container
+                            spacing={0.2}
+                            alignItems="center"
+                            justifyContent="space-evenly"
                           >
-                            {allocationGroup[group].nombre}
-                          </Grid>
+                            <Grid
+                              item
+                              xs={3}
+                              sx={{ border: 0, textAlign: 'right', padding: 1 }}
+                            >
+                              {allocationGroup[group].nombre}
+                            </Grid>
 
-                          <TextField
-                            sx={{
-                              mt: '0.1rem',
-                              mb: '0.1rem',
-                              fontWeight: 'bold',
-                              border: 1,
-                              borderRadius: 3,
-                            }}
-                            size="small"
-                            //type="number"
-                            id="allocation"
-                            InputProps={{
-                              endAdornment: (
-                                <InputAdornment position="start">&nbsp;%</InputAdornment>
-                              ),
-                              inputProps: {
-                                style: { textAlign: 'right' },
-                              },
-                            }}
-                            // value={UTIL.round2Decimales(
-                            //   allocationGroup[group].produccion * 100,
-                            // )}
-                            value={UTIL.formatoValor(
-                              'lon',
-                              allocationGroup[group].produccion * 100,
-                              '',
-                            )}
-                            onChange={(event) =>
-                              changeAllocation(group, event.target.value)
-                            }
-                            error={error.status && error.field === group}
-                            helperText={
-                              error.status && error.field === group
-                                ? t('BASIC.LABEL_NUMBER')
-                                : ''
-                            }
-                          />
+                            <TextField
+                              sx={{
+                                mt: '0.1rem',
+                                mb: '0.1rem',
+                                fontWeight: 'bold',
+                                border: 1,
+                                borderRadius: 3,
+                              }}
+                              size="small"
+                              //type="number"
+                              id="allocation"
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="start">
+                                    &nbsp;%
+                                  </InputAdornment>
+                                ),
+                                inputProps: {
+                                  style: { textAlign: 'right' },
+                                },
+                              }}
+                              value={numbersValue[allocationGroup[group].nombre]}
+                              onChange={(event) =>
+                                changeAllocation(group, event.target.value)
+                              }
+                              error={error.status && error.field === group}
+                              helperText={
+                                error.status && error.field === group
+                                  ? t('BASIC.LABEL_NUMBER')
+                                  : ''
+                              }
+                            />
 
-                          <Grid
-                            item
-                            xs={3}
-                            sx={{
-                              fontWeight: 'bold',
-                              border: 1,
-                              borderRadius: 3,
-                              textAlign: 'center',
-                              padding: 0.5,
-                              borderColor: 'primary.light',
-                            }}
-                          >
-                            {UTIL.formatoValor(
-                              'energia',
-                              Math.round(
-                                allocationGroup[group].produccion *
-                                  produccionGlobal.totalAnual,
-                              ),
-                            )}
+                            <Grid
+                              item
+                              xs={3}
+                              sx={{
+                                fontWeight: 'bold',
+                                border: 1,
+                                borderRadius: 3,
+                                textAlign: 'center',
+                                padding: 0.5,
+                                borderColor: 'primary.light',
+                              }}
+                            >
+                              {UTIL.formatoValor(
+                                'energia',
+                                Math.round(
+                                  allocationGroup[group].produccion *
+                                    produccionGlobal.totalAnual,
+                                ),
+                              )}
+                            </Grid>
                           </Grid>
-                        </Grid>
-                      </Fragment>
-                    )
-                  })}
-              </Box>
+                        </Fragment>
+                      )
+                    })}
+                </Box>
+              ) : (
+                ''
+              )}
               <Box>
                 <Semaphore state={repartoValido}></Semaphore>
               </Box>
