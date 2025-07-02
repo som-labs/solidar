@@ -19,7 +19,7 @@ async function verificaTerritorio(point) {
     } else {
       //Check new base is in Spain
       const countries = ['España'] //, 'Norge'] para hacer pruebas con Lazaro en Noruega
-      console.log(details.country)
+      //console.log(details.country)
       if (countries.includes(details.country)) {
         // Verificamos si estamos en territorio insular o no.
         //Para Ceuta y Melilla Nominatim no devuelve state pero usamos city.

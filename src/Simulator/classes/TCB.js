@@ -45,8 +45,9 @@ const TCB = {
   fechaCreacion: new Date(),
   descripcion: '',
   direccion: '',
-
   territorio: null,
+  lastRefCat: null,
+  inclinacionDefault: 30,
 
   //Donde se guardan los datos a exportar
   datosProyecto: { version: '4.2' },
@@ -97,25 +98,6 @@ const TCB = {
   pdfDoc: '',
   pdf: '',
   tooltipTriggerList: '',
-
-  // Creamos el nuevo marker
-  // markerAcimutSymbol : new ol.style.Style({
-  //         image: new ol.style.Icon({
-  //         anchor: [0.5, 0.5],
-  //         /* En el caso de dibujar los paneles en el centro de la base
-  //         scale: 0.075,
-  //         src: "./datos/panel simple.svg" */
-  //         src: "./datos/ABC.svg",
-  //         }),
-  //     }),
-
-  // markerConsumo : new ol.style.Style({
-  //         image: new ol.style.Icon({
-  //         scale: 1,
-  //         anchor: [0.5, 1],
-  //         src: "./datos/marker.png",
-  //         }),
-  //     }),
 
   // Variables del mapa
   map: '', // Objeto OpenLayers base del mapa
