@@ -1132,7 +1132,7 @@ function selectTCB(tabla, campo, valor) {
 }
 
 async function cargaTarifasDesdeSOM() {
-  const urlSOMTarifas = TCB.basePath + 'proxy SOM.php?nombre='
+  const urlSOMTarifas = TCB.basePath + 'proxy_som.php?nombre='
   let _url
   let respuesta
   let txtTarifas
