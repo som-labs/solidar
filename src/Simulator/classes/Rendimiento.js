@@ -78,7 +78,7 @@ class Rendimiento extends DiaHora {
 
     let url =
       TCB.basePath +
-      'proxy PVGIS.php?' +
+      'proxy_pvgis.php?' +
       'idSesion=' +
       TCB.idSesion +
       '&lat=' +
