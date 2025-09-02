@@ -27,10 +27,11 @@ async function InicializaAplicacion() {
 
   //Definimos si es un usuario especial
   TCB.user = UTIL.getParametrosEntrada('user')
-
   // Define la url base de la aplicación
-  TCB.basePath =
-    window.location.hostname === '127.0.0.1' ? 'http://localhost/SOM/REACT/solidar/' : '/'
+  const localHost = ['127.0.0.1', 'localhost']
+  TCB.basePath = localHost.includes(window.location.hostname)
+    ? 'http://localhost/SOM/REACT/solidar/'
+    : '/'
   UTIL.debugLog('_initEvents ejecutando desde ' + TCB.basePath)
 
   //lectura del fichero de precios de instalación del servidor. Si falla se usan las de la TCB

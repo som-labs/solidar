@@ -1,10 +1,7 @@
 import { lazy, Suspense } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import './App.css'
 import './i18n/i18n'
 
-const TestPage = lazy(() => import('./components/TestPage'))
-const HomePage = lazy(() => import('./Home/Page'))
 const SimulatorPage = lazy(() => import('./Simulator/Page'))
 const AboutPage = lazy(() => import('./About/Page'))
 const NotFoundPage = lazy(() => import('./NotFound/Page'))
@@ -32,10 +29,6 @@ const routes = [
   {
     path: '/about',
     element: <AboutPage />,
-  },
-  {
-    path: '/test',
-    element: <TestPage />,
   },
 ]
 

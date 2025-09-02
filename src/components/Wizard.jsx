@@ -1,3 +1,4 @@
+import React from 'react'
 import { useState, useEffect } from 'react'
 import { createBrowserRouter, RouterProvider, useLocation } from 'react-router-dom'
 
@@ -15,7 +16,7 @@ import MenuItem from '@mui/material/MenuItem'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import SendIcon from '@mui/icons-material/Send'
-import React from 'react'
+
 import { useTheme } from '@mui/material/styles'
 
 function ScrollToTop() {
@@ -51,11 +52,15 @@ function DefaultWizardPage(params) {
       <ScrollToTop />
       <Box
         sx={{
-          width: '100%',
+          width: '102.5%',
           display: 'flex',
           flexFlow: 'row',
           justifyContent: 'space-between',
-          my: 2,
+          alignItems: 'center',
+          mt: -1,
+          mb: 2,
+          ml: -1.75,
+          flexShrink: 0,
         }}
       >
         <Button
@@ -67,7 +72,6 @@ function DefaultWizardPage(params) {
         </Button>
         {title ? <Typography sx={theme.titles.level_0}>{title}</Typography> : null}
         <Button
-          variant="contained"
           endIcon={<ArrowForwardIosIcon />}
           disabled={nextDisabled || !isCurrent}
           onClick={next}
@@ -95,7 +99,10 @@ function DefaultWizardPage(params) {
           display: 'flex',
           flexFlow: 'row',
           justifyContent: 'space-between',
+          alignItems: 'center',
           my: 2,
+          backgroundColor: theme.palette.secondary.main,
+          color: theme.palette.secondary.contrastText,
         }}
       >
         <Button
@@ -111,7 +118,6 @@ function DefaultWizardPage(params) {
           </Typography>
         ) : null}
         <Button
-          variant="contained"
           endIcon={<ArrowForwardIosIcon />}
           disabled={nextDisabled || !isCurrent}
           onClick={next}
@@ -132,6 +138,8 @@ function isPromise(thing) {
 }
 
 export default function Wizard(params) {
+  const theme = useTheme()
+
   const {
     children,
     showAll = false,
@@ -140,11 +148,12 @@ export default function Wizard(params) {
     nextLabel,
     prevLabel,
   } = params
-  const [currentStep, setCurrentStep] = React.useState(0)
-  const [isInTransition, beInTransition] = React.useState(false)
+
+  const [currentStep, setCurrentStep] = useState(0)
+  const [isInTransition, beInTransition] = useState(false)
   const totalSteps = children.length
 
-  React.useEffect(() => {
+  useEffect(() => {
     onPageChange && onPageChange(currentStep)
   }, [currentStep])
 
@@ -188,6 +197,8 @@ export default function Wizard(params) {
             width: '100%',
             flexFlow: 'row',
             justifyContent: 'space-around',
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.secondary.contrastText,
           }}
         >
           {children.map((child, ichild) => (
@@ -252,74 +263,5 @@ export default function Wizard(params) {
         )
       })}
     </Box>
-  )
-}
-
-//// Example
-
-const WizardExampleContext = React.createContext({ value: '', setValue: () => {} })
-
-function MyPage({ label }) {
-  const { value, setValue } = React.useContext(WizardExampleContext)
-  const field = label.toLowerCase()
-  return (
-    <Container>
-      <TextField
-        label={label}
-        value={value[field] ? value[field] : ''}
-        onChange={(e) => {
-          setValue((old) => {
-            const newValue = { ...old }
-            newValue[field] = e.target.value
-            return newValue
-          })
-        }}
-      ></TextField>
-    </Container>
-  )
-}
-
-export function WizardExample() {
-  const [variant, setVariant] = React.useState('progress')
-  const [value, setValue] = React.useState({
-    primera: '',
-    segunda: '',
-    tercera: '',
-    quarta: '',
-  })
-  return (
-    <>
-      <WizardExampleContext.Provider value={{ value, setValue }}>
-        <Wizard variant={variant}>
-          <MyPage
-            title="La primera"
-            label="Primera"
-            validate={() => {
-              if (!value?.primera) return true
-              if (value?.primera !== '1') return 'Tiene que ser 1'
-            }}
-          />
-          <MyPage title="La segunda" label="Segunda" skip={() => true} />
-          <MyPage title="La tercera" label="Tercera" skip={() => false} />
-          <MyPage title="La cuarta" label="Cuarta" skip={() => false} />
-        </Wizard>
-      </WizardExampleContext.Provider>
-
-      <Select value={variant} onChange={(e) => setVariant(e.target.value)}>
-        <MenuItem value={'progress'}>Progress Bar</MenuItem>
-        <MenuItem value={'tabs'}>Tabs</MenuItem>
-        <MenuItem value={'stepper'}>Stepper</MenuItem>
-      </Select>
-
-      <Container>
-        <pre>{JSON.stringify(value, null, 2)}</pre>
-      </Container>
-
-      <Wizard>
-        <p>page 1</p>
-        <p>page 2</p>
-        <p>page 3</p>
-      </Wizard>
-    </>
   )
 }

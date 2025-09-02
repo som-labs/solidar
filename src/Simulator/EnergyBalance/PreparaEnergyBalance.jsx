@@ -48,6 +48,7 @@ export default async function PreparaEnergyBalance() {
         }
       }
 
+      console.log(base.rendimiento.PVGISresults)
       if (!base.rendimiento.PVGISresults.status) return base.rendimiento.PVGISresults
 
       if (waitLoop >= TCB.tiempoEsperaPVGIS) {

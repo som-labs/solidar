@@ -10,6 +10,10 @@ import { useDialog } from '../../components/DialogProvider'
 
 const AlertContext = createContext()
 
+// MUI objects
+import HelpIcon from '@mui/icons-material/Help'
+import IconButton from '@mui/material/IconButton'
+
 function BasicAlert(props) {
   const { t } = useTranslation()
   const { title, contents, type, onClose } = props
@@ -30,7 +34,7 @@ function BasicAlert(props) {
 
 const AlertProvider = ({ children }) => {
   //DEMO: Detalle
-  const [inLineHelp, setInLineHelp] = useState(null)
+  const [inLineHelp, setInLineHelp] = useState(false)
   const [openDialog, closeDialog] = useDialog()
 
   function SLDRAlert(title, message, type) {
@@ -46,11 +50,27 @@ const AlertProvider = ({ children }) => {
     })
   }
 
+  function DisplayInLineHelp() {
+    console.log('inlinehelp')
+    const swapInLineHelp = () => {
+      setInLineHelp(!inLineHelp)
+    }
+
+    return (
+      <>
+        <IconButton color={'inherit'} onClick={swapInLineHelp}>
+          <HelpIcon />
+        </IconButton>
+      </>
+    )
+  }
+
   //DEMO: Detalle
   const contextValue = {
     SLDRAlert,
     inLineHelp,
     setInLineHelp,
+    DisplayInLineHelp,
   }
   return <AlertContext.Provider value={contextValue}>{children}</AlertContext.Provider>
 }
