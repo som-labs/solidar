@@ -11,7 +11,7 @@ import clsx from 'clsx'
 //React global components
 import calculaResultados from '../classes/calculaResultados'
 import { BasesContext } from '../BasesContext'
-import { SLDRFooterBox } from '../../components/SLDRComponents'
+import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
 import { AlertContext } from '../components/Alert'
 import { useDialog } from '../../components/DialogProvider'
 import DialogProperties from '../components/DialogProperties'
@@ -308,21 +308,23 @@ export default function InstallationSummary() {
           },
         }}
       >
-        <Grid item xs={11}>
-          <DataGrid
-            sx={theme.tables.headerWrap}
-            getRowId={getRowId}
-            rows={bases}
-            columns={columns}
-            hideFooter={false}
-            rowHeight={30}
-            autoHeight
-            disableColumnMenu
-            editMode="cell"
-            onCellKeyDown={(params, event) => handleEditCellChange(params, event)}
-            onCellEditStop={(params, event) => nuevaInstalacion(params, event)}
-            slots={{ footer: footerSummary }}
-          />
+        <Grid item xs={12}>
+          <SLDRInfoBox>
+            <DataGrid
+              sx={theme.tables.headerWrap}
+              getRowId={getRowId}
+              rows={bases}
+              columns={columns}
+              hideFooter={false}
+              rowHeight={30}
+              autoHeight
+              disableColumnMenu
+              editMode="cell"
+              onCellKeyDown={(params, event) => handleEditCellChange(params, event)}
+              onCellEditStop={(params, event) => nuevaInstalacion(params, event)}
+              slots={{ footer: footerSummary }}
+            />
+          </SLDRInfoBox>
         </Grid>
       </Grid>
     </>

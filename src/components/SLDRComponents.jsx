@@ -14,6 +14,7 @@ import {
   CardHeader,
   CardContent,
   Collapse,
+  Select,
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useTheme } from '@mui/material/styles'
@@ -53,16 +54,8 @@ function SLDRInfoBox(props) {
 
 //REVISAR: estos style no estan funcionando
 function SLDRTooltip({ title, children, placement }) {
-  const ToolTipStyle = {
-    textAlign: 'left',
-    padding: '8px',
-    borderColor: 'red',
-    borderRadius: '4px',
-    fontFamily: 'inherit', // Ensure that it inherits the font
-    fontSize: 'inherit',
-  }
   return (
-    <Tooltip title={title} placement={placement} arrow style={ToolTipStyle}>
+    <Tooltip title={title} placement={placement} arrow>
       {children}
     </Tooltip>
   )
@@ -97,34 +90,49 @@ function SLDRInputField({ unit, object, MUIType, toolTipPlacement, ...props }) {
   const defaultStyle = {
     textAlign: 'right',
     padding: '8px',
-    borderColor: 'green',
-    borderRadius: '4px',
+    //borderColor: 'green',
+    //borderRadius: '10px',
+  }
+
+  const sxFix = {
+    // border: '1px solid',
+    flex: 1,
+    borderRadius: '20px',
+    //borderColor: 'green',
     fontFamily: 'inherit', // Ensure that it inherits the font
     fontSize: 'inherit',
   }
 
   const finalStyle = { ...defaultStyle, ...props.sx }
 
-  const sxFix = {
+  const textFieldProps = {
     variant: 'outlined',
     size: 'small',
-    border: '1px solid',
-    flex: 1,
   }
 
-  if (MUIType !== 'Checkbox' && MUIType !== 'TextareaAutosize')
-    sxFix.InputProps = {
+  if (props.onChange) {
+    textFieldProps.onChange = props.onChange
+  }
+
+  if (MUIType !== 'Checkbox' && MUIType !== 'TextareaAutosize' && MUIType !== 'Select')
+    textFieldProps.InputProps = {
       endAdornment: <InputAdornment position="start">{unit}</InputAdornment>,
       inputProps: {
         style: finalStyle,
       },
     }
 
-  let sxFull = { ...sxFix, ...props }
+  let sxFull = { ...sxFix, ...props.sx }
+
+  // console.log('props', props)
+  // console.log('MUIType', MUIType)
+  // console.log('sxfull', sxFull)
+  // console.log('textFieldProps', textFieldProps)
+  // console.dir(field)
 
   return (
     <>
-      {MUIType === undefined && (
+      {(MUIType === undefined || MUIType === 'text') && (
         <>
           {object !== undefined ? (
             <SLDRTooltip
@@ -137,28 +145,73 @@ function SLDRInputField({ unit, object, MUIType, toolTipPlacement, ...props }) {
               }
               placement={toolTipPlacement ?? 'top'}
             >
-              <TextField {...field} {...sxFull} />
+              <TextField
+                {...field}
+                {...textFieldProps}
+                sx={sxFull}
+                error={meta.touched && Boolean(meta.error)}
+              />
             </SLDRTooltip>
           ) : (
-            <TextField {...field} {...sxFull} />
+            <TextField {...field} {...textFieldProps} sx={sxFull} />
           )}
         </>
       )}
+
+      {MUIType === 'Select' && (
+        <SLDRTooltip
+          title={
+            <Typography
+              dangerouslySetInnerHTML={{
+                __html: t(`${object}.TOOLTIP.${props.name}`),
+              }}
+            />
+          }
+          placement="right"
+        >
+          <Select {...field} {...textFieldProps} sx={sxFull} value={props.value}>
+            {props.children}
+          </Select>
+        </SLDRTooltip>
+      )}
+
       {MUIType === 'TextareaAutosize' && (
         <SLDRTooltip
-          title={<Typography>{t(`${object}.TOOLTIP.${props.name}`)}</Typography>}
+          title={
+            <Typography
+              dangerouslySetInnerHTML={{
+                __html: t(`${object}.TOOLTIP.${props.name}`),
+              }}
+            />
+          }
           placement="top"
         >
-          <TextareaAutosize {...field} {...sxFull} />
+          <TextareaAutosize
+            {...field}
+            {...textFieldProps}
+            sx={sxFull}
+            error={meta.touched && Boolean(meta.error)}
+          />
         </SLDRTooltip>
       )}
 
       {MUIType === 'Checkbox' && (
         <SLDRTooltip
-          title={<Typography>{t(`${object}.TOOLTIP.${props.name}`)}</Typography>}
+          title={
+            <Typography
+              dangerouslySetInnerHTML={{
+                __html: t(`${object}.TOOLTIP.${props.name}`),
+              }}
+            />
+          }
           placement="top"
         >
-          <Checkbox {...field} {...sxFull} />
+          <Checkbox
+            {...field}
+            {...textFieldProps}
+            sx={sxFull}
+            error={meta.touched && Boolean(meta.error)}
+          />
         </SLDRTooltip>
       )}
       {meta.error ? (
@@ -166,8 +219,6 @@ function SLDRInputField({ unit, object, MUIType, toolTipPlacement, ...props }) {
           {(msg) => <div style={{ color: 'red' }}>{msg}</div>}
         </ErrorMessage>
       ) : null}
-
-      {/* {meta.error ? <div style={{ color: 'red' }}>{meta.error}</div> : null} */}
     </>
   )
 }

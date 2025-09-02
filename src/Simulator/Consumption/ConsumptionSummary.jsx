@@ -309,7 +309,7 @@ export default function ConsumptionSummary() {
   return (
     <Grid container justifyContent={'center'} rowSpacing={4}>
       {preciosValidos && (
-        <Grid item xs={11}>
+        <Grid item xs={12}>
           <SLDRInfoBox>
             <DataGrid
               sx={theme.tables.headerWrap}
