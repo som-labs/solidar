@@ -41,6 +41,7 @@ export default function DialogPanelsType({ data, onClose }) {
   ]
 
   function cambiaTipoPanel(index, values, setValues) {
+    console.log(index, TCB.tipoPaneles[index])
     ndxPanel.current = index
     const newValues = TCB.tipoPaneles[index]
     setValues((prevValues) => ({
@@ -106,8 +107,14 @@ export default function DialogPanelsType({ data, onClose }) {
                 labelPlacement="start"
                 control={
                   <SLDRInputField
-                    sx={{ width: 200, height: 50, justifyContent: 'flex-end' }}
-                    select
+                    sx={{
+                      width: 200,
+                      height: 40,
+                      justifyContent: 'flex-end',
+                      textAlign: 'center',
+                      ml: 2,
+                    }}
+                    MUIType="Select"
                     value={ndxPanel.current}
                     name="tipoPanel"
                     object="Instalacion"
@@ -129,27 +136,6 @@ export default function DialogPanelsType({ data, onClose }) {
                 label={t('Instalacion.LABEL_tipoPanel')}
               />
 
-              {/* <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <SLDRInputField
-                  sx={{ height: 50, textAlign: 'center', mb: '1rem' }}
-                  select
-                  label={t('Instalacion.PROP.potenciaUnitaria')}
-                  onChange={(e) => cambiaTipoPanel(e, values, setValues)}
-                  name="tipoPanel"
-                  value={ndxPanel.current}
-                  object="Instalacion"
-                >
-                  <MenuItem key={-1} value={-1}>
-                    {t('Instalacion.LABEL_tipoPanel')}
-                  </MenuItem>
-                  {TCB.tipoPaneles.map((panelType, index) => (
-                    <MenuItem key={index} value={index}>
-                      {panelType.nombre}
-                    </MenuItem>
-                  ))}
-                </SLDRInputField>
-              </FormControl> */}
-
               <Typography variant="body" sx={{ ml: '1rem', mt: '1rem' }}>
                 {t('DIALOG_PANELS.OTHERS')}
               </Typography>
@@ -170,9 +156,8 @@ export default function DialogPanelsType({ data, onClose }) {
                   sx={{
                     height: 50,
                     textAlign: 'center',
-                    mb: '1rem',
                   }}
-                  select
+                  MUIType="Select"
                   object="Instalacion"
                   name="tecnologia"
                   value={values.tecnologia}

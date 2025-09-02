@@ -38,8 +38,7 @@ export default function Page() {
   // const location = useLocation()
   // console.log(location)
 
-  const [a] = useSearchParams()
-  TCB.URLParameters = a
+  TCB.URLParameters = useSearchParams()[0]
 
   let results
   InicializaAplicacion()
