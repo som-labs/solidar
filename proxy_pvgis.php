@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-$url = 'https://re.jrc.ec.europa.eu/api/v5_2/seriescalc?&pvcalculation=1&peakpower=1&outputformat=json&startyear=2015'; //&startyear=2016
+$url = 'https://re.jrc.ec.europa.eu/api/v5_3/seriescalc?&pvcalculation=1&peakpower=1&outputformat=json&startyear=2015'; //&startyear=2016
 $t1=date("Y/m/d H:i:s");
 if(isset($_GET['idSesion']))
 {
@@ -86,10 +86,11 @@ curl_close($ch);
 //Print the data out onto the page.
 echo $data;
 
-// $t2=date("Y/m/d H:i:s");
-// //Log call
-// $file = fopen("./log/PVGIScalls.txt", "a");
-// fwrite($file, $idSesion . ";" . $t1 . ";" . $t2 . ";" . $url . PHP_EOL);
-// fclose($file);
+
+$t2=date("Y/m/d H:i:s");
+//Log call
+$file = fopen("./log/PVGIScalls.txt", "a");
+fwrite($file, $idSesion . ";" . $t1 . ";" . $t2 . ";" . $url . PHP_EOL);
+fclose($file);
 
 ?>
