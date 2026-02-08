@@ -175,6 +175,8 @@ class Rendimiento extends DiaHora {
         this.mete(unDia, 'PROMEDIO')
         for (let i = 0; i < 365; i++) this.unitarioTotal += this.idxTable[i].suma / 1000
 
+        console.log(lastFecha)
+
         this.PVGISfechaFin = lastFecha
         this.numeroRegistros = i
         this.sintesis()
