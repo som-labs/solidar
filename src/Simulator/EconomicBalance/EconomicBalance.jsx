@@ -16,6 +16,9 @@ import YearSaving from './YearSavings'
 import MonthSaving from './MonthSavings'
 import FinanceSummary from './FinanceSummary'
 import GraphAlternatives from './GraphAlternatives'
+import BateryCost from './BateryCost'
+
+import TCB from '../classes/TCB'
 
 export default function EconomicBalanceStep() {
   const { t } = useTranslation()
@@ -59,16 +62,41 @@ export default function EconomicBalanceStep() {
               display: 'flex',
               width: '100%',
               gap: '15px',
+              flexDirection: 'row',
             }}
           >
-            <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
-              <InstallationCost></InstallationCost>
-            </SLDRInfoBox>
-            <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
-              <YearSaving></YearSaving>
-            </SLDRInfoBox>
+            <Box
+              sx={{
+                display: 'flex',
+                width: '50%',
+                gap: '15px',
+                flexDirection: 'column',
+              }}
+            >
+              <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
+                <InstallationCost></InstallationCost>
+              </SLDRInfoBox>
+              {TCB.bateria && (
+                <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
+                  <BateryCost></BateryCost>
+                </SLDRInfoBox>
+              )}
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                width: '50%',
+                gap: '15px',
+                flexDirection: 'column',
+              }}
+            >
+              <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
+                <YearSaving></YearSaving>
+              </SLDRInfoBox>
+            </Box>
           </Box>
         </Grid>
+
         <Grid item xs={12}>
           <SLDRInfoBox sx={{ bgcolor: '#96b633AA' }}>
             <AmortizationTime></AmortizationTime>

@@ -45,7 +45,7 @@ class Economico {
 
     this.huchaSaldo = new Array(12).fill(0)
     this.extraccionHucha = new Array(12).fill(0)
-
+    this.precioBateria = 0
     this.ahorradoAutoconsumoMes = new Array(12).fill(0)
     this.perdidaMes = new Array(12).fill(0)
     this.ahorroAnual = 0
@@ -102,7 +102,7 @@ class Economico {
 
           // Store energia consumed by fee period
           TCB.consumo.periodo[idxPeriodo - 1] += TCB.consumo.diaHora[dia][hora]
-          if (idxPeriodo > 6) console.log(dia, hora)
+          if (idxPeriodo > 6) console.log('IDX Periodo > 6', dia, hora)
 
           // Determinamos el precio de esa hora (la tarifa) segun sea el balance es decir teniendo en cuanta los paneles. Si es negativo compensa
           if (TCB.balance.diaHora[dia][hora] < 0) {
@@ -228,6 +228,7 @@ class Economico {
    */
   calculoFinanciero(coefEnergia, coefInversion) {
     //Es un participe que invierte pero no recibe energia. ¿existe?
+
     if (coefEnergia == 0) {
       this.VANProyecto = 'N/A'
       this.TIRProyecto = 'N/A'
@@ -247,6 +248,7 @@ class Economico {
     const valorSubvencionIBI = TCB.valorSubvencionIBI
     const tiempoSubvencionIBI = TCB.tiempoSubvencionIBI
     const porcientoSubvencionIBI = TCB.porcientoSubvencionIBI
+    const precioBateria = TCB.precioBateria
 
     // Calculo de la subvención
     var valorSubvencion
@@ -291,8 +293,10 @@ class Economico {
 
     let i = 1
     let unFlow = {}
+
     //InversionReal includes IVA
-    const inversionReal = -this.precioInstalacionCorregido * (coefInversion / 100)
+    const inversionReal =
+      -this.precioInstalacionCorregido * (coefInversion / 100) - this.precioBateria
 
     unFlow = {
       ano: i,
@@ -330,7 +334,12 @@ class Economico {
       unFlow.ano = ++i
       unFlow.ahorro = this.ahorroAnual
       unFlow.previo = lastPendiente
-      unFlow.inversion = 0 //LONGTERM: Cuidado probablemente en caso de prestamo cambie
+
+      if (this.precioBateria > 0 && unFlow.ano === 10) {
+        unFlow.inversion = this.precioBateria
+      } else {
+        unFlow.inversion = 0 //LONGTERM: Cuidado probablemente en caso de prestamo cambie
+      }
       if (i == 2) {
         //La subvención se cobra con suerte despues de un año
         //unFlow.subvencion = (valorSubvencion * coefInversion) / 100
@@ -347,7 +356,7 @@ class Economico {
       } else {
         unFlow.IBI = 0
       }
-      cuota = unFlow.ahorro + unFlow.IBI + unFlow.subvencion
+      cuota = unFlow.ahorro + unFlow.IBI + unFlow.subvencion - unFlow.inversion
       cuotaPeriodo.push(cuota)
       unFlow.pendiente = unFlow.previo + cuota
       this.cashFlow.push(unFlow)

@@ -47,6 +47,9 @@ if(isset($_GET['nombre']))
             foreach($unidad->prices->current->activeEnergy as $clave=>$valor) {
                 $tmp = $tmp . $valor->value . ",";
             }
+            foreach($unidad->prices->current->power as $clave=>$valor) {
+                $tmp = $tmp . $valor->value . ",";
+            }
             echo substr($tmp, 0, -1);
         }
     } else {

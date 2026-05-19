@@ -24,14 +24,13 @@ import EnvironmentalImpact from './EnvironmentalImpact'
 import HourlyEnergyBalance from './HourlyEnergyBalance'
 import PieChart from './PieChart'
 import HelpEnergyBalance from './HelpEnergyBalance'
-import ValidateServerNameGrid from './ValidateServerNameGrid'
+import MapaDiaHoraBateria from '../Batery/MapaDiaHoraBateria'
 
 //React global components
 import { useDialog } from '../../components/DialogProvider'
 
 // Solidar objects
 import TCB from '../classes/TCB'
-import * as UTIL from '../classes/Utiles'
 
 export default function EnergyBalanceStep() {
   const { t } = useTranslation()
@@ -60,6 +59,9 @@ export default function EnergyBalanceStep() {
       deficit: TCB.balance.resumenMensual('deficit'),
       autoconsumo: TCB.balance.resumenMensual('autoconsumo'),
       excedente: TCB.balance.resumenMensual('excedente'),
+      perdidas: TCB.balance.resumenMensual('perdidas'),
+      descargas: TCB.balance.resumenMensual('descargas'),
+      cargas: TCB.balance.resumenMensual('cargas'),
     })
 
     setYearlyData({
@@ -69,6 +71,13 @@ export default function EnergyBalanceStep() {
       autoconsumo: TCB.balance.autoconsumo,
       excedente: TCB.balance.excedenteAnual,
       consumoDiurno: TCB.balance.consumoDiurno,
+      perdidas: TCB.balance.perdidaAnual,
+      descargas: TCB.balance.descargaAnual,
+      cargas: TCB.balance.cargasAnuales,
+      descarga_diurna: TCB.balance.descarga_diurna,
+      descarga_nocturna: TCB.balance.descarga_nocturna,
+      deficit_diurno: TCB.balance.deficit_diurno,
+      deficit_nocturno: TCB.balance.deficit_nocturno,
     })
 
     setEcoData(TCB.economico)
@@ -82,191 +91,211 @@ export default function EnergyBalanceStep() {
   }
 
   return (
-    <Container>
-      <Grid container rowSpacing={4}>
-        <Grid item xs={12}>
-          <Typography
-            variant="body"
-            dangerouslySetInnerHTML={{
-              __html: t('ENERGY_BALANCE.DESCRIPTION'),
-            }}
-          />
-          <Typography
-            variant="body"
-            dangerouslySetInnerHTML={{
-              __html: t('ENERGY_BALANCE.PROMPT'),
-            }}
-          />
-        </Grid>
+    <Grid container rowSpacing={4}>
+      <Grid item xs={12}>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('ENERGY_BALANCE.DESCRIPTION'),
+          }}
+        />
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('ENERGY_BALANCE.PROMPT'),
+          }}
+        />
+      </Grid>
 
-        <Grid item xs={12}>
-          <InstallationSummary></InstallationSummary>
-        </Grid>
+      <Grid item xs={12}>
+        <InstallationSummary></InstallationSummary>
+      </Grid>
 
-        <Grid item xs={12}>
-          <Typography sx={theme.titles.level_1} textAlign={'center'}>
-            {t('ENERGY_BALANCE.FLOW_TITLE')}
-          </Typography>
-          <Typography
-            variant="body"
-            dangerouslySetInnerHTML={{
-              __html: t('ENERGY_BALANCE.FLOW_DESCRIPTION'),
-            }}
-          />
-          <IconButton
-            onClick={() => help(1)}
-            size="small"
-            style={{
-              color: theme.palette.infoIcon.main,
-              fontSize: 'inherit',
-              verticalAlign: 'text-center',
-              transform: 'scale(0.8)',
-              padding: 0,
-            }}
-          >
-            <InfoIcon />
-          </IconButton>
-        </Grid>
+      <Grid item xs={12}>
+        <Typography sx={theme.titles.level_1} textAlign={'center'}>
+          {t('ENERGY_BALANCE.FLOW_TITLE')}
+        </Typography>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('ENERGY_BALANCE.FLOW_DESCRIPTION'),
+          }}
+        />
+        <IconButton
+          onClick={() => help(1)}
+          size="small"
+          style={{
+            color: theme.palette.infoIcon.main,
+            fontSize: 'inherit',
+            verticalAlign: 'text-center',
+            transform: 'scale(0.8)',
+            padding: 0,
+          }}
+        >
+          <InfoIcon />
+        </IconButton>
+      </Grid>
 
+      <Grid item xs={12}>
+        <SLDRInfoBox>
+          <CallSankey yearlyData={yearlyData}></CallSankey>
+        </SLDRInfoBox>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('ENERGY_BALANCE.NOTE_DISCLAIMER_PRODUCCION'),
+          }}
+        />
+        <IconButton
+          onClick={() => help(2)}
+          size="small"
+          style={{
+            color: theme.palette.infoIcon.main,
+            fontSize: 'inherit',
+            verticalAlign: 'text-center',
+            transform: 'scale(0.8)',
+            padding: 0,
+          }}
+        >
+          <InfoIcon />
+        </IconButton>
+      </Grid>
+
+      {dataReady && (
         <Grid item xs={12}>
-          <SLDRInfoBox>
-            <CallSankey yearlyData={yearlyData}></CallSankey>
+          <SLDRInfoBox sx={{ alignItems: 'center' }}>
+            <Grid item xs={6}>
+              <PieChart
+                labels={[
+                  t('ENERGY_BALANCE.LABEL_AUTOCONSUMO'),
+                  t('ENERGY_BALANCE.LABEL_ENERGIA_RED'),
+                ]}
+                values={[TCB.balance.autoconsumo, TCB.balance.deficitAnual]}
+                colors={[
+                  theme.palette.balance.autoconsumo,
+                  theme.palette.balance.deficit,
+                ]}
+                title={t('ENERGY_BALANCE.TITLE_GRAPH_DEMAND')}
+              ></PieChart>
+            </Grid>
+            <Grid item xs={6}>
+              <PieChart
+                labels={[
+                  t('ENERGY_BALANCE.LABEL_AUTOCONSUMO'),
+                  t('ENERGY_BALANCE.LABEL_VERTIDO_RED'),
+                ]}
+                values={[TCB.balance.autoconsumo, TCB.balance.excedenteAnual]}
+                colors={[
+                  theme.palette.balance.autoconsumo,
+                  theme.palette.balance.excedente,
+                ]}
+                title={t('ENERGY_BALANCE.TITLE_GRAPH_AUTOPRODUCIDA')}
+              ></PieChart>
+            </Grid>
           </SLDRInfoBox>
         </Grid>
+      )}
 
-        <Grid item xs={12}>
-          <Typography
-            variant="body"
-            dangerouslySetInnerHTML={{
-              __html: t('ENERGY_BALANCE.NOTE_DISCLAIMER_PRODUCCION'),
-            }}
-          />
-          <IconButton
-            onClick={() => help(2)}
-            size="small"
-            style={{
-              color: theme.palette.infoIcon.main,
-              fontSize: 'inherit',
-              verticalAlign: 'text-center',
-              transform: 'scale(0.8)',
-              padding: 0,
-            }}
-          >
-            <InfoIcon />
-          </IconButton>
-        </Grid>
+      <Grid item xs={12}>
+        <Typography sx={theme.titles.level_1} textAlign={'center'}>
+          {t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_FIVE_PARTS')}
+        </Typography>
+        <Typography
+          variant="body"
+          dangerouslySetInnerHTML={{
+            __html: t('ENERGY_BALANCE.DESCRIPTION_GRAPH_MONTH_FIVE_PARTS'),
+          }}
+        />
+        <SLDRInfoBox sx={{ mt: '1rem' }}>
+          {dataReady && <MonthFiveParts monthlyData={monthlyData}></MonthFiveParts>}
+        </SLDRInfoBox>
+      </Grid>
 
-        {dataReady && (
-          <Grid item xs={12}>
-            <SLDRInfoBox sx={{ alignItems: 'center' }}>
-              <Grid item xs={6}>
-                <PieChart
-                  labels={[
-                    t('ENERGY_BALANCE.LABEL_AUTOCONSUMO'),
-                    t('ENERGY_BALANCE.LABEL_ENERGIA_RED'),
-                  ]}
-                  values={[TCB.balance.autoconsumo, TCB.balance.deficitAnual]}
-                  colors={[
-                    theme.palette.balance.autoconsumo,
-                    theme.palette.balance.deficit,
-                  ]}
-                  title={t('ENERGY_BALANCE.TITLE_GRAPH_DEMAND')}
-                ></PieChart>
-              </Grid>
-              <Grid item xs={6}>
-                <PieChart
-                  labels={[
-                    t('ENERGY_BALANCE.LABEL_AUTOCONSUMO'),
-                    t('ENERGY_BALANCE.LABEL_VERTIDO_RED'),
-                  ]}
-                  values={[TCB.balance.autoconsumo, TCB.balance.excedenteAnual]}
-                  colors={[
-                    theme.palette.balance.autoconsumo,
-                    theme.palette.balance.excedente,
-                  ]}
-                  title={t('ENERGY_BALANCE.TITLE_GRAPH_AUTOPRODUCIDA')}
-                ></PieChart>
-              </Grid>
-            </SLDRInfoBox>
-          </Grid>
-        )}
+      <Grid item xs={12}>
+        <Typography sx={theme.titles.level_1} textAlign={'center'}>
+          {t('ENERGY_BALANCE.TITLE_HOURLY_ENERGY_BALANCE')}
+        </Typography>
 
-        <Grid item xs={12}>
-          <Typography sx={theme.titles.level_1} textAlign={'center'}>
-            {t('ENERGY_BALANCE.TITLE_GRAPH_MONTH_FIVE_PARTS')}
-          </Typography>
-          <Typography
-            variant="body"
-            dangerouslySetInnerHTML={{
-              __html: t('ENERGY_BALANCE.DESCRIPTION_GRAPH_MONTH_FIVE_PARTS'),
-            }}
-          />
-          <SLDRInfoBox sx={{ mt: '1rem' }}>
-            {dataReady && <MonthFiveParts monthlyData={monthlyData}></MonthFiveParts>}
-          </SLDRInfoBox>
-        </Grid>
+        <SLDRInfoBox>
+          <HourlyEnergyBalance report={false}></HourlyEnergyBalance>
+        </SLDRInfoBox>
+      </Grid>
 
-        <Grid item xs={12}>
-          <Typography sx={theme.titles.level_1} textAlign={'center'}>
-            {t('ENERGY_BALANCE.TITLE_HOURLY_ENERGY_BALANCE')}
-          </Typography>
-
-          <SLDRInfoBox>
-            <HourlyEnergyBalance report={false}></HourlyEnergyBalance>
-          </SLDRInfoBox>
-        </Grid>
-
+      {TCB.bateria && (
         <Grid item xs={12}>
           <SLDRCollapsibleCard
             expanded={true}
             titleSX={theme.titles.level_1}
-            title={t('ENERGY_BALANCE.TITLE_ENVIRONMENTAL_IMPACT')}
+            title={t('ENERGY_BALANCE.TITLE_BATERY_MAP')}
           >
             <Typography
               variant="body"
               dangerouslySetInnerHTML={{
-                __html: t('ENERGY_BALANCE.DESCRIPTION_ENVIRONMENTAL_IMPACT'),
+                __html: t('ENERGY_BALANCE.DESCRIPTION_BATERIA'),
               }}
             />
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ width: '100%' }}>
               <SLDRInfoBox sx={{ mt: '1rem' }}>
-                <EnvironmentalImpact></EnvironmentalImpact>
+                <MapaDiaHoraBateria activo={TCB.bateria}></MapaDiaHoraBateria>
               </SLDRInfoBox>
             </Grid>
           </SLDRCollapsibleCard>
         </Grid>
+      )}
 
-        <Grid item xs={12}>
-          <SLDRCollapsibleCard
-            expanded={false}
-            title={t('ENERGY_BALANCE.FLOW_TITLE_OTHER_WAY')}
-          >
-            <SLDRInfoBox>
-              <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
-            </SLDRInfoBox>
-          </SLDRCollapsibleCard>
-        </Grid>
-
-        {TCB.estiloActivo === 'CLARA' && (
+      <Grid item xs={12}>
+        <SLDRCollapsibleCard
+          expanded={true}
+          titleSX={theme.titles.level_1}
+          title={t('ENERGY_BALANCE.TITLE_ENVIRONMENTAL_IMPACT')}
+        >
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('ENERGY_BALANCE.DESCRIPTION_ENVIRONMENTAL_IMPACT'),
+            }}
+          />
           <Grid item xs={12}>
-            <SLDRInfoBox>
-              {dataReady && <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>}
+            <SLDRInfoBox sx={{ mt: '1rem' }}>
+              <EnvironmentalImpact></EnvironmentalImpact>
             </SLDRInfoBox>
           </Grid>
-        )}
-
-        <Grid item xs={12}>
-          <SLDRCollapsibleCard
-            expanded={false}
-            titleSX={theme.titles.level_1}
-            title={t('ENERGY_BALANCE.TITLE_GRAFICO_CONSUMOGENERACION3D')}
-          >
-            <SLDRInfoBox>
-              <ConsumoGeneracion3D></ConsumoGeneracion3D>
-            </SLDRInfoBox>
-          </SLDRCollapsibleCard>
-        </Grid>
+        </SLDRCollapsibleCard>
       </Grid>
-    </Container>
+
+      <Grid item xs={12}>
+        <SLDRCollapsibleCard
+          expanded={false}
+          title={t('ENERGY_BALANCE.FLOW_TITLE_OTHER_WAY')}
+        >
+          <SLDRInfoBox>
+            <EnergyFlow yearlyData={yearlyData}></EnergyFlow>
+          </SLDRInfoBox>
+        </SLDRCollapsibleCard>
+      </Grid>
+
+      {TCB.estiloActivo === 'CLARA' && (
+        <Grid item xs={12}>
+          <SLDRInfoBox>
+            {dataReady && <MonthThreeParts monthlyData={monthlyData}></MonthThreeParts>}
+          </SLDRInfoBox>
+        </Grid>
+      )}
+
+      <Grid item xs={12}>
+        <SLDRCollapsibleCard
+          expanded={false}
+          titleSX={theme.titles.level_1}
+          title={t('ENERGY_BALANCE.TITLE_GRAFICO_CONSUMOGENERACION3D')}
+        >
+          <SLDRInfoBox>
+            <ConsumoGeneracion3D></ConsumoGeneracion3D>
+          </SLDRInfoBox>
+        </SLDRCollapsibleCard>
+      </Grid>
+    </Grid>
   )
 }

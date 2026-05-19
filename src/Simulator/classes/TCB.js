@@ -2,7 +2,7 @@
  * TCB
  * @namespace
  * @fileoverview Area de allmacenamiento de las variables globales de la aplicación
- * @version      Solidar.4
+ * @version      Solidar.5
  * @author       José Luis García (SOM Madrid)
  * @copyright
  *
@@ -48,7 +48,7 @@ const TCB = {
   readyToExport: false,
   importando: false, //Es verdadero durante el proceso de importacion
   //Donde se guardan los datos a exportar
-  datosProyecto: { version: '4.1' },
+  datosProyecto: { version: '5' },
 
   /**
    * @type {Array<TipoConsumo>}
@@ -59,6 +59,8 @@ const TCB = {
    * @type {Array<BaseSolar>}
    */
   BaseSolar: [],
+
+  bateria: null, //Objeto Bateria de la instalación, pendiente implementar
 
   // Variables de totalización
   consumo: {}, // Este campo contiene la suma de todos las consumos[]
@@ -119,11 +121,13 @@ const TCB = {
   // Estos precios son los de SOM a agosto 2022 y no deberían estar aqui.
   tarifas: {
     '2.0TD': {
-      precios: [0.07, 0.247, 0.189, 0.154, 0, 0, 0],
+      precios: [0.03, 0.226, 0.15, 0.124, 0, 0, 0],
       horas: [3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 2, 2, 2],
+      potencia: [0.082011, 0.008096],
     },
     '3.0TD-Peninsula': {
-      precios: [0.07, 0.215, 0.197, 0.167, 0.159, 0.145, 0.147],
+      precios: [0.03, 0.171, 0.154, 0.125, 0.113, 0.11, 0.125],
+      potencia: [0.055827, 0.029089, 0.012278, 0.010647, 0.006887, 0.003951],
       horas: [
         [6, 6, 6, 6, 6, 6, 6, 6, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2],
         [6, 6, 6, 6, 6, 6, 6, 6, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2],
@@ -141,6 +145,7 @@ const TCB = {
     },
     '3.0TD-Ceuta': {
       precios: [0.07, 0.215, 0.197, 0.167, 0.159, 0.145, 0.147],
+      potencia: [0.055827, 0.029089, 0.012278, 0.010647, 0.006887, 0.003951],
       horas: [
         [6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 1, 1, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 1, 4],
         [6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 1, 1, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 1, 4],
@@ -158,6 +163,7 @@ const TCB = {
     },
     '3.0TD-Melilla': {
       precios: [0.07, 0.215, 0.197, 0.167, 0.159, 0.145, 0.147],
+      potencia: [0.055827, 0.029089, 0.012278, 0.010647, 0.006887, 0.003951],
       horas: [
         [6, 6, 6, 6, 6, 6, 6, 6, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 1, 2],
         [6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 3],
@@ -175,6 +181,7 @@ const TCB = {
     },
     '3.0TD-Illes Balears': {
       precios: [0.07, 0.215, 0.197, 0.167, 0.159, 0.145, 0.147],
+      potencia: [0.055827, 0.029089, 0.012278, 0.010647, 0.006887, 0.003951],
       horas: [
         [6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 4, 4],
         [6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 4, 4],
@@ -192,6 +199,7 @@ const TCB = {
     },
     '3.0TD-Canarias': {
       precios: [0.07, 0.215, 0.197, 0.167, 0.159, 0.145, 0.147],
+      potencia: [0.055827, 0.029089, 0.012278, 0.010647, 0.006887, 0.003951],
       horas: [
         [6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 2, 2, 2, 2, 2, 4, 4, 4, 2, 2, 2, 2, 4, 4],
         [6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 2, 2, 2, 2, 2, 4, 4, 4, 2, 2, 2, 2, 4, 4],
@@ -258,6 +266,7 @@ const TCB = {
     { desde: 100, hasta: 1000, precio: 650 },
   ],
 
+  precioBateria: 0,
   tiempoSubvencionIBI: 0,
   valorSubvencionIBI: 0,
   porcientoSubvencionIBI: 0,

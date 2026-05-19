@@ -78,4 +78,32 @@ export default function HelpEconomicBalance(props) {
         </DialogActions>
       </>
     )
+  if (level === 4)
+    return (
+      <>
+        <DialogTitle sx={theme.titles.level_1}>
+          {t('ECONOMIC_BALANCE.HELP_BATERY')}
+        </DialogTitle>
+        <DialogContent>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              flexWrap: 'wrap',
+              flex: 1,
+            }}
+          >
+            <Typography
+              variant="body"
+              dangerouslySetInnerHTML={{
+                __html: t('ECONOMIC_BALANCE.HELP_BATERY_DESCRIPTION'),
+              }}
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ mt: '1rem' }}>
+          <Button onClick={() => props.onClose()}>{t('BASIC.LABEL_CANCEL')}</Button>
+        </DialogActions>
+      </>
+    )
 }

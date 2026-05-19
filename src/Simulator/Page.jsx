@@ -10,6 +10,7 @@ import Wizard from '../components/Wizard'
 
 import LocationStep from './Location/Location'
 import ConsumptionStep from './Consumption/Consumption'
+import BateryStep from './Batery/Batery'
 import EnergyBalanceStep from './EnergyBalance/EnergyBalance'
 import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
 import SummaryClaraStep from './Summary/Clara/Summary'
@@ -23,6 +24,7 @@ import { EconomicContext } from './EconomicContext'
 // Solidar objects
 import PreparaEnergyBalance from './EnergyBalance/PreparaEnergyBalance'
 import TCB from './classes/TCB'
+import Bateria from './classes/Bateria'
 import * as UTIL from './classes/Utiles'
 import InicializaAplicacion from './classes/InicializaAplicacion'
 
@@ -32,7 +34,7 @@ export default function Page() {
   const { t } = useTranslation()
   const { SLDRAlert } = useContext(AlertContext)
   const { validaBases } = useContext(BasesContext)
-  const { validaTipoConsumo } = useContext(ConsumptionContext)
+  const { validaTipoConsumo, bateria, bateriaValida } = useContext(ConsumptionContext)
   const { ecoData, setEcoData } = useContext(EconomicContext)
 
   // const location = useLocation()
@@ -83,13 +85,34 @@ export default function Page() {
       SLDRAlert('VALIDACION', results.error, 'error')
       return false
     }
+  }
 
+  async function validaBateryStep() {
     // Se crearan los objetos produccion, balance y economico
-    // PENDIENTE: podria haber un warning de falta de espacio enviado desde Prepara...
+    // PENDIENTE: podria haber un warning de falta de espacio enviado desde
+    if (TCB.bateria) {
+      if (!TCB.importando) {
+        if (bateria && Object.keys(bateriaValida).length != 0) {
+          const message = Object.entries(bateriaValida)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join(`\n`)
+          SLDRAlert(t('BATERY.MSG_ERROR_BATERIA'), message, 'Error')
+          return false
+        } else {
+          Bateria.update(TCB.bateria, bateria)
+          TCB.bateria.fechaInicio = TCB.consumo.fechaInicio
+          TCB.bateria.fechaFin = TCB.consumo.fechaFin
+          TCB.bateria.sintesis()
+          TCB.requiereOptimizador = true
+        }
+      }
+    }
+
     results = await PreparaEnergyBalance()
     if (results.status) {
       setEcoData((prev) => ({ ...prev, ...TCB.economico }))
       TCB.readyToExport = true
+      TCB.importando = false
     } else {
       console.log(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error)
       SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
@@ -115,6 +138,11 @@ export default function Page() {
               label="consumption"
               title={t('CONSUMPTION.TITLE')}
               next={validaConsumptionStep}
+            />
+            <BateryStep
+              label="battery"
+              title={t('BATERY.TITLE')}
+              next={validaBateryStep}
             />
             <EnergyBalanceStep
               label="energybalance"

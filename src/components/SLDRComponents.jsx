@@ -111,6 +111,9 @@ function SLDRInputField({ unit, object, MUIType, toolTipPlacement, ...props }) {
   }
 
   if (props.onChange) {
+    if (MUIType === 'Number') {
+      console.log(props)
+    }
     textFieldProps.onChange = props.onChange
   }
 
@@ -146,14 +149,15 @@ function SLDRInputField({ unit, object, MUIType, toolTipPlacement, ...props }) {
               placement={toolTipPlacement ?? 'top'}
             >
               <TextField
-                {...field}
                 {...textFieldProps}
+                {...field}
+                {...props} // ← props del usuario GANAN
                 sx={sxFull}
                 error={meta.touched && Boolean(meta.error)}
               />
             </SLDRTooltip>
           ) : (
-            <TextField {...field} {...textFieldProps} sx={sxFull} />
+            <TextField {...field} {...textFieldProps} {...props} sx={sxFull} />
           )}
         </>
       )}

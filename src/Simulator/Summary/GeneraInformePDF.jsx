@@ -12,6 +12,7 @@
 // Solidar objects
 import TCB from '../classes/TCB.js'
 import * as UTIL from '../classes/Utiles.js'
+import Bateria from '../classes/Bateria'
 
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
@@ -104,6 +105,20 @@ async function GeneraInformePDF() {
       ),
     )
   }
+
+  if (TCB.bateria) {
+    nuevaLinea('Titulo', null, null, 'REPORT.BATERIA')
+
+    Bateria.CAMPOS.forEach((idCampo) => {
+      nuevaLinea(
+        'Dato',
+        i++,
+        'BATERY.PROP.' + idCampo.name,
+        UTIL.formatoValor(idCampo.name, TCB.bateria[idCampo.name]),
+      )
+    })
+  }
+
   nuevaLinea('Pie', pagina++, true)
 
   //Volcamos los tipos de consumo
@@ -218,12 +233,7 @@ async function GeneraInformePDF() {
     'Balance.PROP.autosuficienciaMediaAnual',
     UTIL.formatoValor('porciento', p_autosuficiencia),
   )
-  nuevaLinea(
-    'Dato',
-    i++,
-    'Balance.PROP.autosuficienciaMaxima',
-    UTIL.formatoValor('porciento', p_autosuficiencia + (100 - p_autoconsumo)),
-  )
+
   nuevaLinea(
     'Dato',
     i++,

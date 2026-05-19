@@ -651,7 +651,7 @@ function validaResultados() {
           'nombreTipoConsumo',
           finca.nombreTipoConsumo,
         )[0]
-        finca.balance = new Balance(TCB.produccion, _tc, finca.coefEnergia)
+        finca.balance = new Balance(TCB.produccion, _tc, finca.coefEnergia, TCB.bateria)
         finca.economico = new Economico(finca)
       }
     }

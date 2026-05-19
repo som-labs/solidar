@@ -21,7 +21,9 @@ function BasicAlert(props) {
     <>
       <DialogTitle>{type + '--' + title}</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">{contents}</DialogContentText>
+        <DialogContentText id="alert-dialog-description" sx={{ whiteSpace: 'pre-line' }}>
+          {contents}
+        </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} variant="contained" color="primary">

@@ -5,13 +5,13 @@ import { useTranslation } from 'react-i18next'
 // MUI objects
 import {
   Grid,
-  MenuItem,
   Box,
   Typography,
   Button,
   DialogActions,
   DialogContent,
   DialogTitle,
+  InputLabel,
 } from '@mui/material'
 
 // REACT Solidar Components
@@ -28,6 +28,7 @@ export default function DialogParameters({ parameters, onClose }) {
   for (let key in parameters) {
     parametersVector.push(key)
   }
+  console.log(parametersVector)
 
   function validateFields(values) {
     let errors = {}
@@ -84,6 +85,7 @@ export default function DialogParameters({ parameters, onClose }) {
                 {parametersVector.map((key) => (
                   <Fragment key={key}>
                     <Grid item xs={5}>
+                      <InputLabel htmlFor={key}>{t('PARAMETROS.PROP.' + key)}</InputLabel>
                       <SLDRInputField
                         value={values[key].toLocaleString(i18n.language)}
                         object="PARAMETROS"
@@ -96,6 +98,7 @@ export default function DialogParameters({ parameters, onClose }) {
               </Grid>
             </Box>
           </DialogContent>
+
           <DialogActions>
             {/* PENDIENTE: Decidir si ponemos un checkbox para guardar preferencias */}
             <Button onClick={() => onClose('cancel')}>{t('BASIC.LABEL_CANCEL')}</Button>

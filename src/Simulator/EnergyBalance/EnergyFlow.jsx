@@ -40,9 +40,22 @@ export default function EnergyFlow(props) {
     'stroke: black; border-radius: 1em; fill:' + theme.palette.balance.excedente
   const stProduccion =
     'stroke: black; border-radius: 1em; fill:' + theme.palette.balance.produccion
+  const stPerdidas =
+    'stroke: black; border-radius: 1em; fill:' + theme.palette.balance.perdidas
+  const stBateria =
+    'stroke: black; border-radius: 1em; fill:' + theme.palette.balance.bateria
   const stTitulo = 'font-size: 13px; text-anchor: middle; dominant-baseline: middle'
 
-  const { consumo, produccion, deficit, autoconsumo, excedente } = props.yearlyData
+  const {
+    consumo,
+    produccion,
+    deficit,
+    autoconsumo,
+    excedente,
+    cargas,
+    descargas,
+    perdidas,
+  } = props.yearlyData
 
   useEffect(() => {
     if (grafResumen.current) {
@@ -55,14 +68,17 @@ export default function EnergyFlow(props) {
   if (dibujo) {
     bar.current.innerHTML = ''
     var altoLinea = 25
-    const anchoEnergia = autoconsumo + deficit + excedente
+    const anchoEnergia = autoconsumo + deficit + excedente + cargas + perdidas
     const scale = anchoPanel / anchoEnergia
 
     const wConsumo = consumo * scale
     const wProduccion = produccion * scale
     const wDeficit = deficit * scale
-    const wAutoconsumo = autoconsumo * scale
+    const wAutoconsumo = (autoconsumo - cargas) * scale
     const wExcedente = excedente * scale
+    const wCargas = cargas * scale
+    const wDescargas = descargas * scale
+    const wPerdidas = perdidas * scale
 
     let linea
     let gSymbol
@@ -84,7 +100,7 @@ export default function EnergyFlow(props) {
 
     _drawRectText(
       bar.current,
-      leftMargin + wDeficit + wAutoconsumo,
+      leftMargin + wConsumo,
       linea,
       wExcedente,
       t('ENERGY_BALANCE.LABEL_EXCEDENTE_ANUAL'),
@@ -93,10 +109,20 @@ export default function EnergyFlow(props) {
     )
 
     gSymbol = graficoExcedente.current
-    gSymbol.style.left =
-      (leftMargin + wDeficit + wAutoconsumo + wExcedente / 2 - 150).toFixed(0) + 'px'
+    gSymbol.style.left = (leftMargin + wConsumo + wExcedente / 2 - 150).toFixed(0) + 'px'
     gSymbol.style.display = 'inline-block'
 
+    if (TCB.bateria) {
+      _drawRectText(
+        bar.current,
+        leftMargin + wConsumo + wExcedente,
+        linea,
+        wPerdidas,
+        t('ENERGY_BALANCE.LABEL_PERDIDAS'),
+        stPerdidas,
+        stTitulo,
+      )
+    }
     linea = 2
     _drawRectText(
       bar.current,
@@ -109,13 +135,24 @@ export default function EnergyFlow(props) {
     )
     _drawRectText(
       bar.current,
-      leftMargin + wDeficit + wAutoconsumo,
+      leftMargin + wConsumo,
       linea,
       wExcedente,
       UTIL.formatoValor('energia', excedente),
       stExcedente,
       stTitulo,
     )
+    if (TCB.bateria) {
+      _drawRectText(
+        bar.current,
+        leftMargin + wConsumo + wExcedente,
+        linea,
+        wPerdidas,
+        UTIL.formatoValor('energia', perdidas),
+        stPerdidas,
+        stTitulo,
+      )
+    }
 
     linea = 3
     _drawRectText(
@@ -136,14 +173,25 @@ export default function EnergyFlow(props) {
       stAutoconsumo,
       stTitulo,
     )
+    if (TCB.bateria) {
+      _drawRectText(
+        bar.current,
+        leftMargin + wDeficit + wAutoconsumo,
+        linea,
+        wDescargas,
+        UTIL.formatoValor('porciento', (descargas / consumo) * 100),
+        stBateria,
+        stTitulo,
+      )
+    }
     _drawArrow(
       bar.current,
-      leftMargin + wConsumo + wExcedente / 2 - 10,
+      leftMargin + wConsumo + wExcedente / 2 - 25,
       linea,
       4,
       'Excedente',
     )
-    _drawArrow(bar.current, leftMargin + wDeficit / 2 - 10, linea + 1, 4, 'Deficit')
+    _drawArrow(bar.current, leftMargin + wDeficit / 2 - 15, linea + 1, 4, 'Deficit')
 
     linea = 5
     _drawElipseText(
@@ -156,6 +204,18 @@ export default function EnergyFlow(props) {
       stTitulo,
     )
 
+    if (TCB.bateria) {
+      _drawElipseText(
+        bar.current,
+        leftMargin + wDeficit + wAutoconsumo + wDescargas / 2,
+        linea,
+        wDescargas / 2,
+        [t('ENERGY_BALANCE.LABEL_BATERIA'), UTIL.formatoValor('energia', descargas)],
+        stBateria,
+        stTitulo,
+      )
+    }
+
     linea = 7
     _drawRectText(
       bar.current,
@@ -166,16 +226,37 @@ export default function EnergyFlow(props) {
       stAutoconsumo,
       stTitulo,
     )
+    if (TCB.bateria) {
+      _drawRectText(
+        bar.current,
+        leftMargin + wDeficit + wAutoconsumo,
+        linea,
+        wDescargas,
+        UTIL.formatoValor('porciento', (descargas / produccion) * 100),
+        stBateria,
+        stTitulo,
+      )
+    }
     _drawRectText(
       bar.current,
-      leftMargin + wDeficit + wAutoconsumo,
+      leftMargin + wDeficit + wAutoconsumo + wDescargas,
       linea,
       wExcedente,
       UTIL.formatoValor('porciento', (excedente / produccion) * 100),
       stExcedente,
       stTitulo,
     )
-
+    if (TCB.bateria) {
+      _drawRectText(
+        bar.current,
+        leftMargin + wDeficit + wAutoconsumo + wDescargas + wExcedente,
+        linea,
+        wPerdidas,
+        UTIL.formatoValor('porciento', (perdidas / produccion) * 100),
+        stPerdidas,
+        stTitulo,
+      )
+    }
     linea = 8
     _drawRectText(
       bar.current,

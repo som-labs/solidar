@@ -17,7 +17,9 @@ import { AlertContext } from '../Simulator/components/Alert'
 import ParametersMenu from '../Simulator/Parameters/ParametersMenu'
 import ContactMenu from '../Simulator/Contact/ContactMenu'
 import ProjectMenu from '../Simulator/Project/ProjectMenu'
-import { getParametrosEntrada } from '../Simulator/classes/Utiles'
+import { getParametrosEntrada, debugLog } from '../Simulator/classes/Utiles'
+
+import TCB from '../Simulator/classes/TCB'
 
 export default function AppFrame({ children }) {
   const { t } = useTranslation()
@@ -28,7 +30,6 @@ export default function AppFrame({ children }) {
   useEffect(() => {
     //DEMO: Detalle
     const a = getParametrosEntrada('inLineHelp')
-    console.log('APPFRAM', a)
     if (a) {
       setInLineHelp(true)
       setInLineHelpIcon(true)
@@ -53,7 +54,7 @@ export default function AppFrame({ children }) {
       path: '/about',
     },
   ]
-  console.log(inLineHelp)
+
   return (
     <>
       <ScrollRestoration /> {/* Scroll up on page switch */}

@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { useTheme } from '@mui/material/styles'
 
 // Plotly objects
-import Plot from 'react-plotly.js'
 import Plotly from 'plotly.js-dist'
 
 // MUI objects
@@ -14,11 +13,21 @@ import { Container } from '@mui/material'
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
 
-export default function MonthThreeParts(props) {
+export default function MonthFiveParts(props) {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { autoconsumo, excedente, deficit, consumo, produccion } = props.monthlyData
+  const {
+    autoconsumo,
+    excedente,
+    deficit,
+    consumo,
+    produccion,
+    perdidas,
+    descargas,
+    cargas,
+  } = props.monthlyData
 
+  const autoconsumo_d = autoconsumo.map((v, i) => v - cargas[i])
   const graphElement = useRef()
   const graphWidth = useRef()
 
@@ -42,9 +51,16 @@ export default function MonthThreeParts(props) {
     }
     const mesMapa = Array.from(i18nextMes())
 
+    const traceWidth = 0.6
+    const w_gruesa = 0.6
+    const w_delgada = w_gruesa * 0.45
+    const offset_izq = -w_delgada
+    const offset_der = 0
+
     var trace_consumo = {
       x: mesMapa,
       y: consumo,
+      offset: offset_der,
       type: 'scatter',
       name: t('Consumo.PROP.consumoMensual'),
       line: { shape: 'spline', width: 5, color: theme.palette.balance.consumo },
@@ -53,46 +69,83 @@ export default function MonthThreeParts(props) {
     var trace_produccion = {
       x: mesMapa,
       y: produccion,
+      offset: offset_izq,
       type: 'scatter',
       name: t('Produccion.PROP.produccionMensual'),
       line: { shape: 'spline', width: 5, color: theme.palette.balance.produccion },
     }
 
-    const traceWidth = 0.6
+    let trace_cargas = {}
+    let trace_autoconsumo = {}
+    let trace_excedente = {}
+    let trace_deficit = {}
+    let trace_descargas = {}
 
-    const trace_autoconsumo = {
+    trace_autoconsumo = {
       width: traceWidth,
       x: mesMapa,
-      y: autoconsumo,
+      y: autoconsumo_d,
       name: t('GRAFICOS.LABEL_graficasAutoconsumo'),
       type: 'bar',
       base: 0,
       marker: { color: theme.palette.balance.autoconsumo },
-      hovertemplate: autoconsumo.map((e) => UTIL.formatoValor('energia', e)),
+      hovertemplate: autoconsumo_d.map((e) => UTIL.formatoValor('energia', e)),
     }
 
-    const trace_excedente = {
-      width: traceWidth * 0.45,
+    trace_excedente = {
+      width: w_delgada,
       x: mesMapa,
       y: excedente,
       name: t('GRAFICOS.LABEL_graficasExcedente'),
       type: 'bar',
-      base: trace_autoconsumo.y,
-      offset: -traceWidth * 0.5,
+      base: autoconsumo_d,
+      offset: offset_izq,
+      offset_group: 'produccion',
       marker: { color: theme.palette.balance.excedente },
       hovertemplate: excedente.map((e) => UTIL.formatoValor('energia', e)),
     }
 
-    const trace_deficit = {
-      width: traceWidth * 0.45,
+    trace_deficit = {
+      width: w_delgada,
       x: mesMapa,
       y: deficit,
       name: t('GRAFICOS.LABEL_graficasDeficit'),
       type: 'bar',
-      base: trace_autoconsumo.y,
-      offset: traceWidth * 0.05,
+      base: autoconsumo_d,
+      offset: offset_der,
+      offset_group: 'consumo',
       marker: { color: theme.palette.balance.deficit },
       hovertemplate: deficit.map((e) => UTIL.formatoValor('energia', e)),
+    }
+
+    if (TCB.bateria) {
+      //Base de las partes altas = base_val + parte baja
+      const base_cargas = autoconsumo_d.map((b, i) => b + excedente[i])
+      const base_descargas = autoconsumo_d.map((b, i) => b + deficit[i])
+
+      trace_cargas = {
+        width: w_delgada,
+        x: mesMapa,
+        y: cargas,
+        name: t('GRAFICOS.LABEL_graficasCargas'),
+        type: 'bar',
+        base: base_cargas,
+        offset: offset_izq,
+        marker: { color: 'Red' }, //{ color: theme.palette.balance.perdidas },
+        hovertemplate: cargas.map((e) => UTIL.formatoValor('energia', e)),
+      }
+
+      trace_descargas = {
+        width: w_delgada,
+        x: mesMapa,
+        y: descargas,
+        name: t('GRAFICOS.LABEL_graficasDescargas'),
+        type: 'bar',
+        base: base_descargas,
+        offset: offset_der,
+        marker: { color: 'Green' }, //{ color: theme.palette.balance.bateria },
+        hovertemplate: descargas.map((e) => UTIL.formatoValor('energia', e)),
+      }
     }
 
     const data = [
@@ -101,6 +154,8 @@ export default function MonthThreeParts(props) {
       trace_excedente,
       trace_deficit,
       trace_autoconsumo,
+      trace_descargas,
+      trace_cargas,
     ]
     const layout = {
       font: {

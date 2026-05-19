@@ -595,12 +595,17 @@ ENERGY_BALANCE:
   LABEL_AUTOCONSUMO: Uso directo energía
   LABEL_ENERGIA_RED: Energía obtenida de la red
   LABEL_ENERGIA_PANELES: Energía obtenida de los paneles
+  LABEL_BATERIA: Bateria
+  LABEL_PERDIDAS: Perdidas
   TITLE_HOURLY_ENERGY_BALANCE: Balance horario
   TITLE_HOURLY_PERIODO: Periodo
   LABEL_HOURLY_PRODUCTION_YEAR: Producción horaria media anual
   LABEL_HOURLY_CONSUMPTION_YEAR: Uso horario medio anual
   LABEL_HOURLY_PRODUCTION_MONTH: Producción horaria media del mes
   LABEL_HOURLY_CONSUMPTION_MONTH: Uso horario medio del mes
+  TITLE_BATERY_MAP: Estado de carga de la batería
+  DESCRIPTION_BATERIA: El siguiente gráfico muestra el estado de carga de la batería en cada momento
+  HOOVER_MAPA_BATERIA_MONTH_DAY: SOC
   VALUE_FULL_YEAR: Media anual
   TITLE_YEAR_ENERGY_BALANCE: Balance energético anual
   DESCRIPTION_YEAR_ENERGY_BALANCE: |
@@ -654,6 +659,8 @@ ENERGY_BALANCE:
     ENERGIA_RED: Energía de la red
     USO_NOCTURNO: Uso eléctrico nocturno
     USO_TOTAL: Uso de la energía total
+    BATERIA: Bateria
+    PERDIDAS: Perdidas
 
 ECONOMIC_BALANCE:
   TITLE: Balance Económico
@@ -673,7 +680,11 @@ ECONOMIC_BALANCE:
     del precio del mercado. Además, no tiene en cuenta tasas y/o gastos adicionales
     que puedan aparecer.
   IVA_INCLUDED: (IVA incluido)
-
+  TITLE_BATERY_COST: Precio de la batería
+  DESCRIPTION_BATERY_COST: Debes incluir el coste de la batería mas su instalación IVA incluido.
+  LABEL_BATERY_COST: Coste previost de la batería (€ con IVA)
+  HELP_BATERY: Cuidado con este detalle
+  HELP_BATERY_DESCRIPTION: Las baterías tienen una vida útil estimada de 10 años, por lo que, en el caso de que el periodo de amortización de la instalación sea superior, se incluirá una nueva inversión del mismo valor en el año 10.
   PROMPT_INSTALLATION_COST: Si tienes una oferta diferente, puedes cambiar el valor
     del importe en el siguiente campo.
   ADVICE_PRICE_TITLE: Tener en consideración
@@ -758,6 +769,7 @@ SUMMARY:
   LABEL_PRODUCCION_ANUAL: kwh <br />produccion anual
   LABEL_PRODUCCION: <strong>{{produccion}}</strong> producción anual
   LABEL_POTENCIA: <strong>{{potencia}}</strong> potencia total instalada
+  LABEL_BATERIA: Batería instalada de <strong>{{capacidad}}</strong>
   LABEL_COSTE: <strong>{{coste}}</strong> coste de la instalación
   TITLE_CONSUMO: Consumo
   DESCRIPTION_CONSUMO: ''
@@ -792,12 +804,14 @@ BASIC:
   LABEL_AÑOS: Años
   LABEL_REQUIRED: Requerido
   LABEL_NUMBER: Pon un número mayor o igual que cero
+  LABEL_RANGO: Entre {{min}} y {{max}}
   LABEL_ACCIONES: Acciones
   LABEL_INFO: Info
   main_TAB_noMostrarMas: No volver a mostrar este mensaje
   valor_true: Verdadero
   valor_false: Falso
   LABEL_NO_ROWS: Sin datos
+  LABEL_DELETE: Borrar
 
 GRAPHICS:
   LABEL_CONSUMPTION: Uso eléctrico
@@ -891,8 +905,10 @@ GRAFICOS:
   LABEL_graficasGastoSinPaneles: Gasto sin paneles
   LABEL_graficasExcedente: Excedente
   LABEL_graficasDeficit: Energía de la red
-  LABEL_graficasAutoconsumo: Autoconsumo
+  LABEL_graficasAutoconsumo: Autoconsumo directo
   LABEL_graficasCompensacion: Compensación simplificada
+  LABEL_graficasDescargas: Obtenido de la batería
+  LABEL_graficasCargas: Enviado a la batería
   LABEL_SALDO_VIRTUAL_BATTERY: Descuentos disponibles
   LABEL_EXTRACCION_VIRTUAL_BATTERY: Descuento aplicado
 
@@ -935,6 +951,7 @@ REPORT:
   DADES_DIRECCIO: Dirección
   US_TITLE: Uso de la energía
   US_ANUAL: 'Uso de la energía anual:'
+  BATERIA: Información de la batería instalada
   US_HORAS_SOL: Uso de la energía en horas solares
   FEE_TITLE: Precios aplicados (€/kWh)
   INSTALACIO_TITLE: Características instalación propuesta
@@ -1016,3 +1033,38 @@ REPORT:
   ANY: año
   ANYS: años
   RETURN: Volver a la simulación
+
+BATERY:
+  TITLE: Batería
+  DESCRIPTION: |
+    Las baterías permiten almacenar la energía producida por los paneles solares para su uso posterior. De esta forma, puedes aumentar tu autoconsumo y reducir tu dependencia de la red eléctrica, especialmente durante las horas en las que no hay producción fotovoltaica (por ejemplo, durante la noche). Sin embargo, es importante tener en cuenta que las baterías pueden aumentar significativamente el coste de la instalación y que su vida útil suele ser menor que la de los paneles solares.<br />
+    EL algoritmo de carga y descarga de la batería es el básico, cuando hay excedente se utiliza para cargar y cuando hay deficit se descarga, no hay una aplicación óptima de posibles mejoras por precios en cada hora.
+  LABEL_CREATE: Crear batería
+  LABEL_DELETE: Borrar batería
+  TITLE_PRESET: Configuración de la batería
+  TITLE_PRESET_MODELS: Modelos habituales
+  MSG_ERROR_BATERIA: Validación batería
+  TOOLTIP_BUTTON_NUEVA_BATERIA: Boton para añadir una batería a la configuración
+  TOOLTIP_BUTTON_BORRA_BATERIA: Boton para quitar la batería de la configuración
+  TITLE_SECTION_CAPACIDAD: CAPACIDAD
+  TITLE_SECTION_SOC: LIMITES DE CARGA (SOC)
+  TITLE_SECTION_RENDIMIENTO: RENDIMIENTO
+  TITLE_SECTION_POTENCIA: POTENCIA MAXIMA
+  LABEL_TITLE_PROFILE_DAY: Perfil diario de carga de batería
+  LABEL_TITLE_MAP_MONTH_DAY: Mapa de estado de carga batería en kWh
+  PROP:
+    capacidad: Capacidad total
+    socMax: SOC Máximo
+    socMin: SOC Mínimo
+    eficiencia: Eficiencia round-trip
+    precio: Precio de la batería en euros
+    maxCargaKw: Carga máxima
+    maxDescargaKw: Descarga máxima
+  TOOLTIP:
+    capacidad: Capacidad nominal del fabricante
+    socMax: Limite superior de carga
+    socMin: Estado de carga mínimo
+    eficiencia: Energía recuperada / energía almacenada
+    precio: Precio de la batería en euros
+    maxCargaKw: Potencia máxima de carga en kW
+    maxDescargaKw: Potencia máxima de descarga en kW

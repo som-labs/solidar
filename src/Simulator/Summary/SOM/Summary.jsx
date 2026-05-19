@@ -33,6 +33,13 @@ export default function SummarySOMStep() {
       autoconsumo: TCB.balance.autoconsumo,
       excedente: TCB.balance.excedenteAnual,
       consumoDiurno: TCB.balance.consumoDiurno,
+      perdidas: TCB.balance.perdidaAnual,
+      descargas: TCB.balance.descargaAnual,
+      cargas: TCB.balance.cargasAnuales,
+      descarga_diurna: TCB.balance.descarga_diurna,
+      descarga_nocturna: TCB.balance.descarga_nocturna,
+      deficit_diurno: TCB.balance.deficit_diurno,
+      deficit_nocturno: TCB.balance.deficit_nocturno,
     })
   }, [])
 

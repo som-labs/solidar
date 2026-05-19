@@ -9,6 +9,9 @@ async function InicializaAplicacion() {
   //Identificación de la sesión con objeto Date.now() de javascript.
   TCB.idSesion = Date.now()
 
+  //Debug version
+  UTIL.debugLog('_initEvents APP version: ' + TCB.datosProyecto.version)
+
   //Definimos el modo de trabajo
   let _modo = UTIL.getParametrosEntrada('modo')
   if (_modo) {

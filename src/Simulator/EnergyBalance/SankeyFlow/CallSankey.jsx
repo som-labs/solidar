@@ -15,69 +15,137 @@ import { BasesContext } from '../../BasesContext'
 import SankeyFun from './SankeyFun'
 import { ColorModeContext } from '../../../components/GlobalTheme'
 
+import TCB from '../../classes/TCB'
+
 export default function CallSankey(props) {
   const { t } = useTranslation()
   var svgRef = useRef(null)
   const boxRef = useRef(null)
   const [boxHeight, setBoxHeight] = useState(null)
   const { bases } = useContext(BasesContext)
-  const { consumo, autoconsumo, excedente, consumoDiurno } = props.yearlyData
+  const {
+    consumo,
+    autoconsumo,
+    excedente,
+    consumoDiurno,
+    cargas,
+    perdidas,
+    descarga_diurna,
+    descarga_nocturna,
+    deficit_diurno,
+    deficit_nocturno,
+  } = props.yearlyData
+
+  const NAME_NODOS = {
+    deRed: t('ENERGY_BALANCE.SANKEY.ENERGIA_RED'),
+    aRed: t('ENERGY_BALANCE.SANKEY.VERTIDO_RED'),
+    bateria: t('ENERGY_BALANCE.SANKEY.BATERIA'),
+    paneles: t('ENERGY_BALANCE.SANKEY.PRODUCCION_PANELES'),
+    usoDiurno: t('ENERGY_BALANCE.SANKEY.USO_DIURNO'),
+    usoNocturno: t('ENERGY_BALANCE.SANKEY.USO_NOCTURNO'),
+    perdidas: t('ENERGY_BALANCE.SANKEY.PERDIDAS'),
+    usoTotal: t('ENERGY_BALANCE.SANKEY.USO_TOTAL'),
+  }
+
+  //Esto define el orden en el que salen los links del nodo
+  const LINK_ORDER = [
+    NAME_NODOS.perdidas,
+    NAME_NODOS.aRed,
+    NAME_NODOS.usoDiurno,
+    NAME_NODOS.bateria,
+    '_bypass',
+    NAME_NODOS.usoNocturno,
+    NAME_NODOS.usoTotal,
+  ]
 
   const theme = useTheme()
   const { current } = useContext(ColorModeContext) //dark or light
+  let data = []
 
-  const data = [
-    {
-      source: t('ENERGY_BALANCE.SANKEY.PRODUCCION_PANELES'),
-      target: t('ENERGY_BALANCE.SANKEY.EXCEDENTES'),
-      value: excedente,
-    },
-    {
-      source: t('ENERGY_BALANCE.SANKEY.PRODUCCION_PANELES'),
-      target: t('ENERGY_BALANCE.SANKEY.USO_DIURNO'),
-      value: autoconsumo,
-    },
+  if (TCB.bateria)
+    data.push({
+      source: NAME_NODOS.paneles,
+      target: NAME_NODOS.perdidas,
+      value: perdidas,
+    })
 
-    {
-      source: t('ENERGY_BALANCE.SANKEY.ENERGIA_RED'),
-      target: t('ENERGY_BALANCE.SANKEY.USO_NOCTURNO'),
-      value: consumo - consumoDiurno,
-    },
+  data.push({
+    source: NAME_NODOS.paneles,
+    target: NAME_NODOS.aRed,
+    value: excedente,
+  })
 
-    {
-      source: t('ENERGY_BALANCE.SANKEY.ENERGIA_RED'),
-      target: t('ENERGY_BALANCE.SANKEY.USO_DIURNO'),
-      value: consumoDiurno - autoconsumo,
-    },
+  data.push({
+    source: NAME_NODOS.paneles,
+    target: NAME_NODOS.usoDiurno,
+    value: autoconsumo - cargas,
+  })
 
-    {
-      source: t('ENERGY_BALANCE.SANKEY.EXCEDENTES'),
-      target: t('ENERGY_BALANCE.SANKEY.VERTIDO_RED'),
-      value: excedente,
-    },
+  if (TCB.bateria)
+    data.push({
+      source: NAME_NODOS.paneles,
+      target: NAME_NODOS.bateria,
+      value: cargas - perdidas,
+    })
 
-    {
-      source: t('ENERGY_BALANCE.SANKEY.USO_DIURNO'),
-      target: t('ENERGY_BALANCE.SANKEY.USO_TOTAL'),
-      value: consumoDiurno,
-    },
-    {
-      source: t('ENERGY_BALANCE.SANKEY.USO_NOCTURNO'),
-      target: t('ENERGY_BALANCE.SANKEY.USO_TOTAL'),
-      value: consumo - consumoDiurno,
-    },
-  ]
+  if (TCB.bateria) {
+    data.push({
+      source: NAME_NODOS.deRed,
+      target: '_bypass',
+      value: deficit_diurno,
+    })
+    data.push({
+      source: '_bypass',
+      target: NAME_NODOS.usoDiurno,
+      value: deficit_diurno,
+    })
+  } else {
+    data.push({
+      source: NAME_NODOS.deRed,
+      target: NAME_NODOS.usoDiurno,
+      value: deficit_diurno,
+    })
+  }
+  data.push({
+    source: NAME_NODOS.deRed,
+    target: NAME_NODOS.usoNocturno,
+    value: deficit_nocturno,
+  })
+
+  if (TCB.bateria) {
+    data.push({
+      source: NAME_NODOS.bateria,
+      target: NAME_NODOS.usoDiurno,
+      value: descarga_diurna,
+    })
+    data.push({
+      source: NAME_NODOS.bateria,
+      target: NAME_NODOS.usoNocturno,
+      value: descarga_nocturna,
+    })
+  }
+
+  data.push({
+    source: NAME_NODOS.usoDiurno,
+    target: NAME_NODOS.usoTotal,
+    value: consumoDiurno,
+  })
+
+  data.push({
+    source: NAME_NODOS.usoNocturno,
+    target: NAME_NODOS.usoTotal,
+    value: consumo - consumoDiurno,
+  })
 
   const colors = [
     theme.palette.balance.produccion, //Producción paneles
     theme.palette.balance.deficit, //Consumo de red
-    theme.palette.balance.excedente, //Excedente
     theme.palette.balance.consumoDiurno, //Cosumo diurno
+    '#ff9da7', //Bateria
     theme.palette.balance.consumoNocturno, //Consumo nocturno
     theme.palette.balance.excedente, //Excedente
+    '#af7aa1', //Perdidas
     theme.palette.balance.consumo, //Consumo total
-    '#af7aa1',
-    '#ff9da7',
     '#9c755f',
     '#bab0ab',
   ]
@@ -94,15 +162,26 @@ export default function CallSankey(props) {
     getHeight()
   }, [bases])
 
+  let alturaCalculada
+  if (TCB.bateria) {
+    const totalFlujo = consumo + excedente + (TCB.bateria ? perdidas : 0)
+    const alturaMinima = 1005
+    alturaCalculada = Math.max(alturaMinima, totalFlujo / 5)
+  } else {
+    alturaCalculada = 1000
+  }
+
   SankeyFun(
     { links: data, svgRef },
     {
       textColor: theme.palette.text.primary,
       colors: colors,
       linkMixBlendMode: current === 'light' ? 'multiply' : 'screen',
-      height: 900,
+      height: alturaCalculada,
       width: 2000,
       nodeGroup: (d) => d.id, //.split(/\W/)[0], // take first word for color
+      nameNodos: NAME_NODOS,
+      linkOrder: LINK_ORDER,
     },
   )
 

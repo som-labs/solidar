@@ -171,6 +171,14 @@ const campos = {
   TIR: { unidad: '%', decimales: 1, salvar: false, mostrar: true },
   precioInstalacion: { unidad: ' €', decimales: 0, salvar: true, mostrar: true },
   precioInstalacionCorregido: { unidad: ' €', decimales: 0, salvar: true, mostrar: true },
+  /* Bateria */
+
+  capacidad: { unidad: ' kWh', decimales: 1, salvar: true, mostrar: true },
+  socMax: { unidad: ' ', decimales: 2, salvar: true, mostrar: true },
+  socMin: { unidad: ' ', decimales: 2, salvar: true, mostrar: true },
+  eficiencia: { unidad: ' ', decimales: 2, salvar: true, mostrar: true },
+  maxCargaKw: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true },
+  maxDescargaKw: { unidad: ' kWh', decimales: 2, salvar: true, mostrar: true },
 
   /* Globales */
   areaTotal: { unidad: ' m²', decimales: 2, salvar: true, mostrar: true },
@@ -274,9 +282,10 @@ const returnFloat = (value) => {
     return value
   }
 }
+
+const decimalSeparator = (1.1).toLocaleString().substring(1, 2)
+
 const ValidateDecimal = (language, inputValue) => {
-  const number = 1.1
-  const decimalSeparator = number.toLocaleString(language).substring(1, 2)
   const decimalRegex = new RegExp(`^\\d*\\${decimalSeparator}?\\d*$`)
   return decimalRegex.test(inputValue)
 }
@@ -293,7 +302,6 @@ const ValidateEntero = (inputValue) => {
  * @returns {Boolean|String}  false si la variable no está en la entrada o el valor de la misma si está
  */
 function getParametrosEntrada(variable) {
-  console.log(variable, TCB.URLParameters.get(variable))
   if (TCB.URLParameters === null) return false
   return TCB.URLParameters.get(variable) ?? false
 }
@@ -1151,14 +1159,17 @@ async function cargaTarifasDesdeSOM() {
     respuesta = await fetch(_url, { ...options, signal })
     clearTimeout(timeoutId)
     //
-
+    let precios
     if (respuesta.status === 200) {
       txtTarifas = await respuesta.text()
       if (txtTarifas.includes('error')) throw new Error(txtTarifas)
-      else
-        TCB.tarifas['2.0TD'].precios = txtTarifas.split(',').map((t) => {
+      else {
+        precios = txtTarifas.split(',').map((t) => {
           return parseFloat(t)
         })
+        TCB.tarifas['2.0TD'].precios = precios.slice(0, 4)
+        TCB.tarifas['2.0TD'].potencia = precios.slice(4, 6)
+      }
     }
     debugLog('Success Tarifas 2.0TD desde SOM', { txtTarifas })
 
@@ -1168,21 +1179,21 @@ async function cargaTarifasDesdeSOM() {
       txtTarifas = await respuesta.text()
       if (txtTarifas.includes('error')) throw new Error(txtTarifas)
       else {
-        TCB.tarifas['3.0TD-Peninsula'].precios = txtTarifas.split(',').map((t) => {
+        precios = txtTarifas.split(',').map((t) => {
           return parseFloat(t)
         })
-        TCB.tarifas['3.0TD-Ceuta'].precios = txtTarifas.split(',').map((t) => {
-          return parseFloat(t)
-        })
-        TCB.tarifas['3.0TD-Melilla'].precios = txtTarifas.split(',').map((t) => {
-          return parseFloat(t)
-        })
-        TCB.tarifas['3.0TD-Illes Balears'].precios = txtTarifas.split(',').map((t) => {
-          return parseFloat(t)
-        })
-        TCB.tarifas['3.0TD-Canarias'].precios = txtTarifas.split(',').map((t) => {
-          return parseFloat(t)
-        })
+        const preciosEnergia = precios.slice(0, 7)
+        const preciosPotencia = precios.slice(7, 13)
+        TCB.tarifas['3.0TD-Peninsula'].precios = [...preciosEnergia]
+        TCB.tarifas['3.0TD-Peninsula'].potencia = [...preciosPotencia]
+        TCB.tarifas['3.0TD-Ceuta'].precios = [...preciosEnergia]
+        TCB.tarifas['3.0TD-Ceuta'].potencia = [...preciosPotencia]
+        TCB.tarifas['3.0TD-Melilla'].precios = [...preciosEnergia]
+        TCB.tarifas['3.0TD-Melilla'].potencia = [...preciosPotencia]
+        TCB.tarifas['3.0TD-Illes Balears'].precios = [...preciosEnergia]
+        TCB.tarifas['3.0TD-Illes Balears'].potencia = [...preciosPotencia]
+        TCB.tarifas['3.0TD-Canarias'].precios = [...preciosEnergia]
+        TCB.tarifas['3.0TD-Canarias'].potencia = [...preciosPotencia]
       }
     }
     debugLog('Success Tarifas 3.0TD desde SOM', { txtTarifas })
@@ -1236,6 +1247,7 @@ export {
   suma,
   swapTabla,
   swapObjeto,
+  decimalSeparator,
   ValidateDecimal,
   ValidateEntero,
   campos,

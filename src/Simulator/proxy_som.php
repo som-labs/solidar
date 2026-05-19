@@ -40,7 +40,7 @@ if(isset($_GET['nombre']))
     curl_close($ch);
     //Print the data out onto the page.
     $tarifa = json_decode($serviceData);
-
+    echo $tarifa
     if ($tarifa->count > 0) {
         $tmp = $tarifa->data[0]->prices->current->autoconsumo->P1->value . ",";
         foreach($tarifa->data as $unidad) {

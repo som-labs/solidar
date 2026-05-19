@@ -9,6 +9,8 @@ const ConsumptionContextProvider = ({ children }) => {
   const { t } = useTranslation()
   const [tipoConsumo, setTipoConsumo] = useState([])
   const [preciosValidos, setPreciosValidos] = useState(true)
+  const [bateria, setBateria] = useState(null)
+  const [bateriaValida, setBateriaValida] = useState(null)
 
   //TCB fields to be reflected in state
   const hdrTipo = {
@@ -66,6 +68,10 @@ const ConsumptionContextProvider = ({ children }) => {
     preciosValidos,
     setPreciosValidos,
     addTCBTipoToState,
+    bateria,
+    setBateria,
+    bateriaValida,
+    setBateriaValida,
   }
 
   return (

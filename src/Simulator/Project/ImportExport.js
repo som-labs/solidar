@@ -8,6 +8,7 @@ import BaseSolar from '../classes/BaseSolar.js'
 import Instalacion from '../classes/Instalacion.js'
 import Rendimiento from '../classes/Rendimiento.js'
 import TipoConsumo from '../classes/TipoConsumo.js'
+import Bateria from '../classes/Bateria.js'
 import Consumo from '../classes/Consumo.js'
 import Economico from '../classes/Economico.js'
 import calculaResultados from '../classes/calculaResultados.js'
@@ -105,6 +106,8 @@ async function exportProject() {
   TCB.datosProyecto.TipoConsumo.forEach((tipo) => {
     delete tipo.ficheroCSV
   })
+
+  TCB.datosProyecto.bateria = TCB.bateria
 
   // Guardamos condiciones economicas no almacenadas en el objeto Economico
   TCB.datosProyecto.tiempoSubvencionIBI = TCB.tiempoSubvencionIBI
@@ -303,6 +306,8 @@ async function importProject(fichero) {
     TCB.cuotaHucha = datosImportar.cuotaHucha
     TCB.version = datosImportar.version
   }
+
+  TCB.bateria = datosImportar.bateria ? new Bateria(datosImportar.bateria) : null
 
   importLocalizacion(datosImportar)
   importTipoConsumo(datosImportar)

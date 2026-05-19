@@ -183,16 +183,17 @@ export default function DialogProject({ recoverFormData, onClose }) {
                   {t('Proyecto.LABEL.importarProyecto')}
                 </Button>
               </Tooltip>
-
-              <Button
-                variant="contained"
-                fullWidth
-                color="primary"
-                size="large"
-                onClick={() => exportProject(values)}
-              >
-                {t('Proyecto.LABEL.exportarProyecto')}
-              </Button>
+              <Tooltip title={t('Proyecto.TOOLTIP.exportarProyecto')}>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  color="primary"
+                  size="large"
+                  onClick={() => exportProject(values)}
+                >
+                  {t('Proyecto.LABEL.exportarProyecto')}
+                </Button>
+              </Tooltip>
             </Box>
           </DialogContent>
           <DialogActions>

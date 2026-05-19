@@ -9,7 +9,7 @@ import { SLDRInputField } from '../../components/SLDRComponents'
 import { ConsumptionContext } from '../ConsumptionContext'
 // Solidar objects
 import TCB from '../classes/TCB'
-import * as UTIL from '../classes/Utiles'
+import { decimalSeparator } from '../classes/Utiles'
 
 export default function PreciosTarifa() {
   const { t, i18n } = useTranslation()
@@ -53,28 +53,37 @@ export default function PreciosTarifa() {
   }
 
   function validateFields(values) {
-    let errors = {}
+    const errors = {}
     setPreciosValidos(true)
-    for (let i = 0; i < nPrecios; i++) {
-      if (values[i] === '') {
-        errors[i] = 'Requerido'
+
+    Object.entries(values).forEach(([campo, valor]) => {
+      if (valor === '') {
+        errors[campo] = 'Requerido'
       } else {
-        if (typeof values[i] === 'string') {
-          if (!UTIL.ValidateDecimal(i18n.language, values[i])) {
-            errors[i] = 'Debe ser un número mayor o igual que cero'
-          }
+        if (isNaN(Number(valor))) {
+          errors[campo] = t('BASIC.LABEL_NUMBER')
+        } else if (valor < 0) {
+          errors[campo] = t('BASIC.LABEL_NUMBER')
         }
       }
-    }
-    //PreciosValidos in ConsumptionContext is a flag to know if we can proceed to EnergyBalance
+    })
+    //PreciosValidos in ConsumptionContext is a flag to know if we can proceed to nextStep
     if (Object.keys(errors).length !== 0) setPreciosValidos(false)
     return errors
   }
 
+  console.log(TCB.tarifaActiva.potencia)
   if (TCB.tarifaActiva.precios.length !== 0) {
     return (
-      <Formik initialValues={TCB.tarifaActiva.precios} validate={validateFields}>
-        {({ values, setValues, setPreciosValidos }) => (
+      <Formik
+        initialValues={TCB.tarifaActiva.precios}
+        validate={validateFields}
+        validateOnChange={true}
+        validateOnBlur={true}
+        validateOnMount={true}
+        onSubmit={() => {}}
+      >
+        {({ values, setValues }) => (
           <Form>
             <InputLabel htmlFor="tipoTarifa">{t('Tarifa.PROP.tipoTarifa')}</InputLabel>
             <SLDRInputField
@@ -104,18 +113,13 @@ export default function PreciosTarifa() {
                       </InputLabel>
                       <SLDRInputField
                         unit=" €"
-                        //object="Tarifa" //Hace aparecer el tooltip
-                        value={precio.toLocaleString(i18n.language)}
-                        onChange={(ev) =>
-                          cambiaPrecio(
-                            index,
-                            ev.target.value,
-                            values,
-                            setValues,
-                            setPreciosValidos,
-                          )
-                        }
                         name={String(index)}
+                        value={String(values[index] ?? '').replace('.', decimalSeparator)}
+                        onChange={(ev) => {
+                          const crudo = ev.target.value
+                          const normalizado = crudo.replace(decimalSeparator, '.')
+                          cambiaPrecio(index, normalizado, values, setValues)
+                        }}
                       ></SLDRInputField>
                     </Grid>
                   )}

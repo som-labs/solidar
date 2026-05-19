@@ -35,7 +35,7 @@ export default function ProjectMenu() {
   const { SLDRAlert } = useContext(AlertContext)
   const { map, bases, setBases, addTCBBaseToState, setTipoPanelActivo } =
     useContext(BasesContext)
-  const { setTipoConsumo, addTCBTipoToState } = useContext(ConsumptionContext)
+  const { setTipoConsumo, addTCBTipoToState, setBateria } = useContext(ConsumptionContext)
   const { setEcoData } = useContext(EconomicContext)
 
   function openDialogProject() {
@@ -91,6 +91,10 @@ export default function ProjectMenu() {
         if (TCB.BaseSolar.length > 0 && TCB.TipoConsumo.length > 0) {
           await PreparaEnergyBalance()
           setEcoData(TCB.economico)
+        }
+
+        if (TCB.bateria) {
+          setBateria(TCB.bateria)
         }
 
         //SLDRAlert(t('Proyecto.MSG_success'), 'ABC', 'Info')

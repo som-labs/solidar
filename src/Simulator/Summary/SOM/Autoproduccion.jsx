@@ -104,6 +104,18 @@ export default function Autoproduccion() {
             }),
           }}
         />
+        {TCB.bateria && (
+          <Typography
+            variant="h5"
+            color={theme.palette.text}
+            textAlign={'center'}
+            dangerouslySetInnerHTML={{
+              __html: t('SUMMARY.LABEL_BATERIA', {
+                capacidad: UTIL.formatoValor('energia', TCB.bateria.capacidad),
+              }),
+            }}
+          />
+        )}
       </SLDRInfoBox>
 
       <SLDRInfoBox sx={{ border: '0', display: 'flex', flex: '1' }}>

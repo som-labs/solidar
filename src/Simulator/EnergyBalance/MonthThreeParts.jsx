@@ -2,7 +2,6 @@ import { useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Plotly objects
-import Plot from 'react-plotly.js'
 import Plotly from 'plotly.js-dist'
 
 // MUI objects
