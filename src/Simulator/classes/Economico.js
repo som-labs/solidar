@@ -10,7 +10,7 @@ import Instalacion from './Instalacion'
 const maxNumberCashFlow = 50
 
 class Economico {
-  constructor() {
+  constructor(inLoop) {
     this._name = 'Economico'
     // Inicializa la tabla indice de acceso
     this.idxTable = Array(365)
@@ -28,7 +28,6 @@ class Economico {
     }
 
     //Este array contiene lo pagado por consumo, lo cobrado por compensacion y el balance neto sin tener en cuenta posibles limites
-
     this.diaHoraPrecioOriginal = Array.from(Array(365), () => new Array(24).fill(0))
     this.diaHoraPrecioConPaneles = Array.from(Array(365), () => new Array(24).fill(0))
     this.diaHoraTarifaOriginal = Array.from(Array(365), () => new Array(24).fill(0))
@@ -45,7 +44,7 @@ class Economico {
 
     this.huchaSaldo = new Array(12).fill(0)
     this.extraccionHucha = new Array(12).fill(0)
-    this.precioBateria = 0
+
     this.ahorradoAutoconsumoMes = new Array(12).fill(0)
     this.perdidaMes = new Array(12).fill(0)
     this.ahorroAnual = 0
@@ -55,9 +54,15 @@ class Economico {
 
     //A efectos de fechas (fines de semana) por ahora usamos el TipoConsumo[0]
     let _tc = TCB.TipoConsumo[0]
-    if (TCB.tipoTarifa === '2.0TD') TCB.consumo.periodo = new Array(3).fill(0)
-    else TCB.consumo.periodo = new Array(6).fill(0)
-
+    if (TCB.tipoTarifa === '2.0TD') {
+      TCB.consumo.periodo = new Array(3).fill(0)
+      TCB.consumo.maxPotenciaOriginal = new Array(3).fill(0)
+      TCB.consumo.maxPotenciaNueva = new Array(3).fill(0)
+    } else {
+      TCB.consumo.periodo = new Array(6).fill(0)
+      TCB.consumo.maxPotenciaOriginal = new Array(6).fill(0)
+      TCB.consumo.maxPotenciaNueva = new Array(6).fill(0)
+    }
     //Vamos a calcular el precio de la energia cada dia
     for (let dia = 0; dia < 365; dia++) {
       this.idxTable[dia].consumoOriginal = 0
@@ -102,6 +107,11 @@ class Economico {
 
           // Store energia consumed by fee period
           TCB.consumo.periodo[idxPeriodo - 1] += TCB.consumo.diaHora[dia][hora]
+
+          TCB.consumo.maxPotenciaOriginal[idxPeriodo - 1] = Math.max(
+            TCB.consumo.maxPotenciaOriginal[idxPeriodo - 1],
+            TCB.consumo.diaHora[dia][hora],
+          )
           if (idxPeriodo > 6) console.log('IDX Periodo > 6', dia, hora)
 
           // Determinamos el precio de esa hora (la tarifa) segun sea el balance es decir teniendo en cuanta los paneles. Si es negativo compensa
@@ -119,6 +129,11 @@ class Economico {
             this.idxTable[dia].compensado += this.diaHoraPrecioConPaneles[dia][hora]
           } else {
             //Demandamos energia de la red de distribucion
+            TCB.consumo.maxPotenciaNueva[idxPeriodo - 1] = Math.max(
+              TCB.consumo.maxPotenciaNueva[idxPeriodo - 1],
+              TCB.balance.diaHora[dia][hora],
+            )
+
             this.diaHoraTarifaConPaneles[dia][hora] =
               this.diaHoraTarifaOriginal[dia][hora]
             this.diaHoraPrecioConPaneles[dia][hora] =
@@ -136,6 +151,10 @@ class Economico {
       }
     }
 
+    console.log('AYUDA POTENCIA?', TCB.consumo.periodo)
+    console.log('AYUDA POTENCIA original?', TCB.consumo.maxPotenciaOriginal)
+    console.log('AYUDA POTENCIA nueva?', TCB.consumo.maxPotenciaNueva)
+
     this.consumoOriginalMensual = this.resumenMensual('consumoOriginal')
     this.consumoConPlacasMensual = this.resumenMensual('consumoConPlacas')
     this.compensadoMensual = this.resumenMensual('compensado')
@@ -150,7 +169,7 @@ class Economico {
     //Se debe corregir que si la comercializadora limita economicamente la compensacion al consumo o compensar mediante bateria virtual
 
     this.correccionExcedentes(TCB.coefHucha, TCB.cuotaHucha)
-    this.calculoFinanciero(100, 100)
+    this.calculoFinanciero(100, 100, inLoop)
   }
 
   /** Función para la gestion economica de excedentes de cada mes
@@ -226,9 +245,8 @@ class Economico {
    * @param {number} coefEnergia Porcentaje de la inversión total que correponde a la Finca
    * @param {number} coefInversion Porcentaje del la producción total de energia que corresponde a la Finca
    */
-  calculoFinanciero(coefEnergia, coefInversion) {
+  calculoFinanciero(coefEnergia, coefInversion, inLoop) {
     //Es un participe que invierte pero no recibe energia. ¿existe?
-
     if (coefEnergia == 0) {
       this.VANProyecto = 'N/A'
       this.TIRProyecto = 'N/A'
@@ -248,7 +266,6 @@ class Economico {
     const valorSubvencionIBI = TCB.valorSubvencionIBI
     const tiempoSubvencionIBI = TCB.tiempoSubvencionIBI
     const porcientoSubvencionIBI = TCB.porcientoSubvencionIBI
-    const precioBateria = TCB.precioBateria
 
     // Calculo de la subvención
     var valorSubvencion
@@ -296,7 +313,8 @@ class Economico {
 
     //InversionReal includes IVA
     const inversionReal =
-      -this.precioInstalacionCorregido * (coefInversion / 100) - this.precioBateria
+      -this.precioInstalacionCorregido * (coefInversion / 100) -
+      (TCB.bateria?.precio ?? 0)
 
     unFlow = {
       ano: i,
@@ -334,9 +352,9 @@ class Economico {
       unFlow.ano = ++i
       unFlow.ahorro = this.ahorroAnual
       unFlow.previo = lastPendiente
-
-      if (this.precioBateria > 0 && unFlow.ano === 10) {
-        unFlow.inversion = this.precioBateria
+      //Cambiar por parametro el numero de años vida util bateria
+      if (TCB.bateria?.precio > 0 && unFlow.ano % 10 == 0) {
+        unFlow.inversion = TCB.bateria.precio
       } else {
         unFlow.inversion = 0 //LONGTERM: Cuidado probablemente en caso de prestamo cambie
       }
@@ -378,11 +396,13 @@ class Economico {
       }
     } else {
       this.periodoAmortizacion = -maxNumberCashFlow
-      alert(
-        'Probable número excesivo de paneles en la simulación -> retorno > ' +
-          maxNumberCashFlow +
-          ' años',
-      )
+      if (!inLoop) {
+        alert(
+          'Probable coste excesivo de instalación en la simulación -> retorno > ' +
+            maxNumberCashFlow +
+            ' años',
+        )
+      }
     }
 
     if (coefInversion === 100) {
@@ -429,7 +449,7 @@ class Economico {
         rate = rate - delta
         if (rate < 0) {
           alert(
-            'Probable número excesivo de paneles -> mucha inversión -> retorno > 30 años',
+            'Probable coste excesivo de instalación -> mucha inversión -> retorno > 30 años',
           )
           numberOfTries = depth
         }

@@ -229,6 +229,9 @@ const TCB = {
     perdidasSistema: 20,
     interesVAN: 3,
     margen: 0.5,
+    bateriaPrecioUnitario: 700,
+    bateriaPrecioInstalacion: 500,
+    bateriaVidaUtil: 10,
   },
 
   //Default panel type
@@ -266,7 +269,6 @@ const TCB = {
     { desde: 100, hasta: 1000, precio: 650 },
   ],
 
-  precioBateria: 0,
   tiempoSubvencionIBI: 0,
   valorSubvencionIBI: 0,
   porcientoSubvencionIBI: 0,

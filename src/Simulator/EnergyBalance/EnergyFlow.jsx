@@ -59,7 +59,7 @@ export default function EnergyFlow(props) {
 
   useEffect(() => {
     if (grafResumen.current) {
-      setAnchoPanel(grafResumen.current.getBoundingClientRect().width * 0.9)
+      setAnchoPanel(grafResumen.current.getBoundingClientRect().width)
       setLeftMargin(grafResumen.current.getBoundingClientRect().width * 0.05)
       setDibujo(true)
     }

@@ -247,7 +247,8 @@ async function importProject(fichero) {
   const datosImportar = await obtenerDatos(fichero)
 
   // Check solimp version to check if compatible
-  if (datosImportar.version[0] !== '4') {
+  const version = parseFloat(datosImportar.version[0])
+  if (version < 4) {
     return { status: false, error: 'MSG_problemaVersion' }
   }
 

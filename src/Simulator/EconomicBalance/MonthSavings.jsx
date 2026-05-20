@@ -2,7 +2,6 @@ import { useContext, useRef, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // Plotly library
-import Plot from 'react-plotly.js'
 import Plotly from 'plotly.js-dist'
 
 // MUI objects
@@ -46,10 +45,25 @@ export default function MonthSaving() {
 
       var _perdidas = new Array(12)
       var _compensado = new Array(12)
+      var ahorroAbsoluto = new Array(12)
+      var ahorroCalculado = new Array(12)
+      var _corregido = new Array(12)
+
       for (let i = 0; i < 12; i++) {
         //las perdidas y lo compensado lo graficamos negativo
         _perdidas[i] = -ecoData.perdidaMes[i]
         _compensado[i] = -ecoData.compensadoMensualCorregido[i]
+        //La diferencia de precio hora entre la carga de la bateria y la descarga produce un desequilibrio de costes.
+        //Como no almacenamos la carga y descarga horaria que nos permitiria hacer ese calculo con precision lo corregimos a los bruto
+        ahorroAbsoluto[i] =
+          ecoData.consumoOriginalMensual[i] - ecoData.consumoConPlacasMensualCorregido[i]
+
+        ahorroCalculado[i] =
+          ecoData.ahorradoAutoconsumoMes[i] -
+          ecoData.compensadoMensualCorregido[i] +
+          ecoData.perdidaMes[i]
+        _corregido[i] =
+          ecoData.ahorradoAutoconsumoMes[i] + ahorroAbsoluto[i] - ahorroCalculado[i]
       }
 
       var trace_pagado = {
@@ -106,7 +120,7 @@ export default function MonthSaving() {
 
       var trace_ahorro = {
         x: mesMapa,
-        y: ecoData.ahorradoAutoconsumoMes,
+        y: _corregido, //ecoData.ahorradoAutoconsumoMes,
         width: 0.3,
         marker: { color: '#C7A6CF' },
         name: t('GRAFICOS.LABEL_graficasAutoconsumo'),

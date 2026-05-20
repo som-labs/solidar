@@ -89,7 +89,7 @@ export default function DialogParameters({ parameters, onClose }) {
                       <SLDRInputField
                         value={values[key].toLocaleString(i18n.language)}
                         object="PARAMETROS"
-                        label={t('PARAMETROS.PROP.' + key)}
+                        // label={t('PARAMETROS.PROP.' + key)}
                         name={key}
                       ></SLDRInputField>
                     </Grid>

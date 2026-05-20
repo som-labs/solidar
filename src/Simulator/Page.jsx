@@ -34,7 +34,8 @@ export default function Page() {
   const { t } = useTranslation()
   const { SLDRAlert } = useContext(AlertContext)
   const { validaBases } = useContext(BasesContext)
-  const { validaTipoConsumo, bateria, bateriaValida } = useContext(ConsumptionContext)
+  const { validaTipoConsumo, bateria, bateriaValida, setBateria } =
+    useContext(ConsumptionContext)
   const { ecoData, setEcoData } = useContext(EconomicContext)
 
   // const location = useLocation()
@@ -99,10 +100,11 @@ export default function Page() {
           SLDRAlert(t('BATERY.MSG_ERROR_BATERIA'), message, 'Error')
           return false
         } else {
-          Bateria.update(TCB.bateria, bateria)
+          TCB.bateria.updatePrice()
           TCB.bateria.fechaInicio = TCB.consumo.fechaInicio
           TCB.bateria.fechaFin = TCB.consumo.fechaFin
           TCB.bateria.sintesis()
+          setBateria(TCB.bateria)
           TCB.requiereOptimizador = true
         }
       }

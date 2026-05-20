@@ -84,7 +84,7 @@ export default function GraphAlternatives() {
         // Se realizan todos los calculos
         calculaResultados()
 
-        TCB.economico = new Economico()
+        TCB.economico = new Economico(true)
         UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
 
         if (TCB.economico.periodoAmortizacion > 0) {
@@ -109,7 +109,7 @@ export default function GraphAlternatives() {
     }
 
     calculaResultados()
-    TCB.economico = new Economico()
+    TCB.economico = new Economico(true)
 
     //Buscamos punto en el que la produccion represente el 80% del consumo anual total para definir el limite subvencion EU
     let i = 0

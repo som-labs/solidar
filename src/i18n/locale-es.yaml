@@ -681,10 +681,10 @@ ECONOMIC_BALANCE:
     que puedan aparecer.
   IVA_INCLUDED: (IVA incluido)
   TITLE_BATERY_COST: Precio de la batería
-  DESCRIPTION_BATERY_COST: Debes incluir el coste de la batería mas su instalación IVA incluido.
-  LABEL_BATERY_COST: Coste previost de la batería (€ con IVA)
+  DESCRIPTION_BATERY_COST: Se estima que una batería de {{capacidad}} de capacidad podría tener un coste con instalación incluida de
+  LABEL_BATERY_COST: Coste de la batería (€ con IVA)
   HELP_BATERY: Cuidado con este detalle
-  HELP_BATERY_DESCRIPTION: Las baterías tienen una vida útil estimada de 10 años, por lo que, en el caso de que el periodo de amortización de la instalación sea superior, se incluirá una nueva inversión del mismo valor en el año 10.
+  HELP_BATERY_DESCRIPTION: El precio estimado que proponemos se basa en un precio de 700€/kWh de capacidad mas 500€ de instalación con IVA incluido pero, dada la volatilidad del mercado, puedes poner el valor que consideres mas adecuado en este campo. <br><br>Las baterías tienen una vida útil estimada de 10 años, por lo que, en el caso de que el periodo de amortización de la instalación sea superior, se incluirá una nueva inversión del mismo valor en el año 10.
   PROMPT_INSTALLATION_COST: Si tienes una oferta diferente, puedes cambiar el valor
     del importe en el siguiente campo.
   ADVICE_PRICE_TITLE: Tener en consideración
@@ -739,7 +739,7 @@ ECONOMIC_BALANCE:
   LABEL_FOOTER_VAN: 'Valor actual neto (VAN): {{VANProyecto}}'
   LABEL_FOOTER_TIR: 'Tasa interna de retorno (TIR): {{TIRProyecto}}'
   MSG_NO_FINANCE: |
-    Un número de paneles excesivo provoca que el retorno de la inversión no se obtenga antes de {{periodo}} años por lo que el resultado financiero no es significativo. Por favor reduzca el número de paneles, lo que reducirá la inversión, o aumente el consumo de energía, para incrementar el ahorro. De ese modo mejorará el cashflow.
+    Un número de paneles excesivo o el coste de la batría si la hubiera, provoca que el retorno de la inversión no se obtenga antes de {{periodo}} años por lo que el resultado financiero no es significativo. Por favor reduzca el número de paneles o quite la batería, lo que reducirá la inversión, o aumente el consumo de energía, para incrementar el ahorro. De ese modo mejorará el cashflow.
 
   HELP_TITLE_TIR: Tasa interna de retorno
   HELP_TIR: |
@@ -831,6 +831,9 @@ PARAMETROS:
     perdidasSistema: Pérdidas estimadas de la instalación en %
     interesVAN: Interés base (%) para calculo de VAN
     margen: Margen de instalación en metros
+    bateriaPrecioUnitario: € por kWh de capacidad
+    bateriaPrecioInstalacion: Precio instalación en €
+    bateriaVidaUtil: Años de vida útil de la bateria
   TOOLTIP:
     impuestoElectrico: El impuesto especial sobre la electricidad
     IVAEnergia: El IVA que se repercute por el gasto en electricidad
@@ -839,6 +842,9 @@ PARAMETROS:
       de algunos componentes, condiciones adversas, inversores deficientes, etc.
     interesVAN: Tasa de descuento a aplicar en el cálculo del valor actual neto
     margen: Distancia mantenida alrededor de la instalación a efectos de mantenimiento
+    bateriaPrecioUnitario: Se utilizará para un cálculo estimado de coste de la batería
+    bateriaPrecioInstalacion: Se utilizará para un cálculo estimado de coste de la batería
+    bateriaVidaUtil: Se utilizará para tener en cuenta la renovación de la batería al cabo de estos años
 
 CONTACTO:
   DIALOG_TITLE: Formulario de contacto

@@ -21,6 +21,7 @@ import { SLDRInfoBox, SLDRInputField } from '../../components/SLDRComponents'
 
 import Bateria from '../classes/Bateria'
 import { decimalSeparator } from '../classes/Utiles'
+import TCB from '../classes/TCB'
 
 // ── Presets de baterías comunes ──────────────────────────────────────────────
 const PRESETS = [
@@ -97,19 +98,25 @@ function Campo({ label, name, formik, unidad }) {
  *   onEliminar()        — callback para quitar la batería del sistema
  *   valorInicial        — si ya hay una batería configurada, la precarga
  */
-export default function BateriaForm({ valorInicial, setBateriaValida, setBateria }) {
+export default function BateriaForm({
+  bateriaInicial,
+  setBateriaValida,
+  setBateria,
+  nuevaBateria,
+}) {
   const { t } = useTranslation()
   const theme = useTheme()
 
   function validar(values) {
     const errors = {}
-    setBateriaValida(true)
 
     Object.entries(values).forEach(([campo, valor]) => {
       const idCampo = Bateria.CAMPOS.find((p) => p.name === campo)
 
       if (idCampo) {
-        if (isNaN(Number(valor))) {
+        if (valor === '' || valor === null) {
+          errors[campo] = t('BASIC.LABEL_REQUIRED')
+        } else if (isNaN(Number(valor))) {
           errors[campo] = t('BASIC.LABEL_NUMBER')
         } else if (valor < idCampo.min || valor > idCampo.max) {
           errors[campo] = t('BATERY.LABEL_RANGO', {
@@ -117,16 +124,18 @@ export default function BateriaForm({ valorInicial, setBateriaValida, setBateria
             min: idCampo.min,
             max: idCampo.max,
           })
+        } else {
+          TCB.bateria[campo] = Number(valor)
+          setBateria((prev) => ({ ...prev, campo: valor }))
         }
       }
     })
 
     if (Object.keys(errors).length === 0) {
-      setBateria((prev) => ({ ...prev, ...values }))
+      setBateriaValida(true)
     } else {
       setBateriaValida(errors)
     }
-
     return errors
   }
 
@@ -145,13 +154,13 @@ export default function BateriaForm({ valorInicial, setBateriaValida, setBateria
     // Esperar a que Formik procese los nuevos valores y validar
     const errors = await formik.validateForm(preset.values)
     if (Object.keys(errors).length === 0) {
-      setBateria((prev) => ({ ...prev, ...preset.values })) // ← directamente con preset.values
+      nuevaBateria(preset.values)
     }
   }
 
   return (
     <Formik
-      initialValues={valorInicial}
+      initialValues={bateriaInicial}
       validate={(values) => validar(values, setBateriaValida)}
       validateOnChange={true}
       validateOnBlur={true}

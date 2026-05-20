@@ -36,8 +36,8 @@ const BateryStep = () => {
       })
   }
 
-  function nuevaBateria() {
-    const new_bateria = new Bateria()
+  function nuevaBateria(bateria) {
+    const new_bateria = new Bateria(bateria)
     setBateria(new_bateria)
     TCB.bateria = new_bateria
     TCB.requiereOptimizador = true
@@ -97,9 +97,10 @@ const BateryStep = () => {
         )}
         {bateria && (
           <BateryForm
-            valorInicial={bateria}
+            bateriaInicial={bateria}
             setBateriaValida={setBateriaValida}
             setBateria={setBateria}
+            nuevaBateria={nuevaBateria}
           />
         )}
       </Grid>

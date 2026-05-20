@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -20,6 +20,8 @@ import { useTheme } from '@mui/material/styles'
 import { useDialog } from '../../components/DialogProvider'
 
 import { EconomicContext } from '../EconomicContext'
+import { ConsumptionContext } from '../ConsumptionContext'
+
 import HelpEconomicBalance from './HelpEconomicBalance'
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
@@ -29,20 +31,27 @@ export default function BateryCost() {
   const theme = useTheme()
   const [openDialog, closeDialog] = useDialog()
   const { ecoData, setEcoData } = useContext(EconomicContext)
+  const { bateria, setBateria } = useContext(ConsumptionContext)
 
-  const [precioBateria, setPrecioBateria] = useState(ecoData.precioBateria)
+  // // Estimación orientativa
+  // const precioEstimadoBateria = () => {
+  //   const costePorKwh = 700 // €/kWh, valor medio
+  //   const costeInstalacion = 500 // fijo
+  //   return bateria.capacidad * costePorKwh + costeInstalacion
+  // }
+
+  const [precioBateria, setPrecioBateria] = useState(
+    bateria.precio, // valor inicial correcto
+  )
   const [error, setError] = useState(false)
 
-  const applyPrecioBateria = (event) => {
-    event.preventDefault()
-
-    console.log('Cambiando precio', event, precioBateria)
+  const applyPrecioBateria = () => {
     if (!UTIL.ValidateDecimal(i18n.language, precioBateria)) {
       setError(true)
     } else {
       if (precioBateria > 0) {
-        TCB.economico.precioBateria = parseInt(precioBateria)
-        console.log('llamando', TCB.economico)
+        TCB.bateria.precio = parseInt(precioBateria)
+        setBateria((prev) => ({ ...prev, precio: precioBateria }))
         TCB.economico.calculoFinanciero(100, 100)
         if (TCB.economico.periodoAmortizacion > 20) {
           alert(t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
@@ -53,9 +62,19 @@ export default function BateryCost() {
     }
   }
 
+  // useEffect(() => {
+  //   if (bateria.precio === '' || bateria.precio == 0) {
+  //     const estimado = precioEstimadoBateria()
+  //     setBateria((prev) => ({ ...prev, precio: estimado }))
+  //     TCB.bateria.precio = parseInt(estimado)
+  //     setPrecioBateria(estimado)
+  //     applyPrecioBateria()
+  //   }
+  // }, [])
+
   function changePrecioBateria(event) {
     if (event.target.value === '') {
-      setPrecioBateria(TCB.economico.precioBateria)
+      setPrecioBateria(bateria.precio)
       setError(false)
       return
     }
@@ -71,6 +90,10 @@ export default function BateryCost() {
       children: <HelpEconomicBalance level={level} onClose={() => closeDialog()} />,
     })
   }
+
+  const precioEstimado =
+    TCB.parametros.bateriaPrecioUnitario * bateria.capacidad +
+    TCB.parametros.bateriaPrecioInstalacion
 
   return (
     <>
@@ -95,7 +118,9 @@ export default function BateryCost() {
 
           <Box flexDirection={'row'}>
             <Typography variant={'body'} textAlign={'left'} marginTop="1rem">
-              {t('ECONOMIC_BALANCE.DESCRIPTION_BATERY_COST')}
+              {t('ECONOMIC_BALANCE.DESCRIPTION_BATERY_COST', {
+                capacidad: UTIL.formatoValor('energia', bateria.capacidad),
+              })}
             </Typography>
             <IconButton
               onClick={() => help(4)}
@@ -111,6 +136,19 @@ export default function BateryCost() {
               <InfoIcon />
             </IconButton>
           </Box>
+          <Typography
+            variant="h4"
+            color={theme.palette.primary.main}
+            textAlign={'center'}
+          >
+            {UTIL.formatoValor('precioInstalacion', precioEstimado) +
+              ' ' +
+              t('ECONOMIC_BALANCE.IVA_INCLUDED')}
+          </Typography>
+          <Typography variant="body">
+            {t('ECONOMIC_BALANCE.PROMPT_INSTALLATION_COST')}
+          </Typography>
+
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <TextField
               type="text"

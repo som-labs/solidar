@@ -26,29 +26,38 @@ class Bateria extends DiaHora {
     this._name = 'Bateria'
     this.idBateria //Probablemente no se use
     this.nombreBateria
-    this.capacidad = 5 // Capacidad total de la batería en kWh
+    this.capacidad = null // Capacidad total de la batería en kWh
     this.socMax = 0.9 // Estado de carga máximo como porcentaje (0-1)
     this.socMin = 0.1 // Estado de carga mínimo como porcentaje (0-1)
     this.eficiencia = 0.95 // Eficiencia round-trip como porcentaje (0-1)
-    this.precio // Precio de la batería en euros
+    this.precio = null // Precio de la batería en euros
     this.maxCargaKw = 3.6 // Potencia máxima de carga en kW (opcional)
     this.maxDescargaKw = 3.6 // Potencia máxima de descarga en kW (opcional)
     this.SOC = 0 //Estado de carga actual en kWh, se inicializa a 0 pero se puede modificar para simular diferentes escenarios
 
     if (bateria && typeof bateria === 'object') {
-      Object.assign(this, bateria)
+      Bateria.update(this, bateria)
+      this.updatePrice()
     }
   } // End constructor
 
   static update(instance, bateria) {
     //Asignacion propiedades contenidas en el objeto de entrada salvo que sean un objeto
-    for (const objProp in bateria) {
-      if (typeof bateria[objProp] !== Object) {
+    Object.keys(bateria).forEach((objProp) => {
+      if (typeof bateria[objProp] !== 'function') {
         if (objProp === 'fecha' && typeof bateria[objProp] === 'string')
           instance[objProp] = new Date(bateria[objProp])
-        instance[objProp] = bateria[objProp]
+        else instance[objProp] = bateria[objProp]
       }
-    }
+    })
+    instance.updatePrice()
+  }
+
+  updatePrice() {
+    this.precio = this.capacidad
+      ? TCB.parametros.bateriaPrecioUnitario * this.capacidad +
+        TCB.parametros.bateriaPrecioInstalacion
+      : 0
   }
 
   carga(fecha, dia, hora, energia) {

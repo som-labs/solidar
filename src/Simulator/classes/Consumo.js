@@ -14,6 +14,8 @@ class Consumo extends DiaHora {
     super()
     this._name = 'Consumo'
     this.periodo //Will store kWh per fee period (P1, P2, ...)
+    this.maxPotenciaOriginal //Para cada periodo guardaremos la potencia maxima utilizada. Posible ahorro por disminucion pot contratada
+    this.maxPotenciaNueva
 
     if (consumo === undefined) {
       //Creacion del consumo global
