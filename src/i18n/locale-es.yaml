@@ -324,6 +324,7 @@ Economico:
     precioInstalacion: Precio de la instalación
 
   TOOLTIP:
+    precioInstalacionCorregido: Precio de la instalación que se considera mas adecuado para el cálculo del ahorro. Se corrige el precio de la instalación en función de la potencia instalada y el tipo de panel utilizado. Si el precio corregido es distinto al precio propuesto se muestra este campo para que puedas decidir si quieres utilizarlo o no.
     gastoSinPlacasAnual: El gasto anual en electricidad sin paneles solares. Solo
       se tiene en cuenta la parte variable de la factura
     gastoConPlacasAnual: El gasto anual estimado en electricidad con paneles solares.
@@ -1040,7 +1041,7 @@ REPORT:
   ANYS: años
   RETURN: Volver a la simulación
 
-BATERY:
+Bateria:
   TITLE: Batería
   DESCRIPTION: |
     Las baterías permiten almacenar la energía producida por los paneles solares para su uso posterior. De esta forma, puedes aumentar tu autoconsumo y reducir tu dependencia de la red eléctrica, especialmente durante las horas en las que no hay producción fotovoltaica (por ejemplo, durante la noche). Sin embargo, es importante tener en cuenta que las baterías pueden aumentar significativamente el coste de la instalación y que su vida útil suele ser menor que la de los paneles solares.<br />

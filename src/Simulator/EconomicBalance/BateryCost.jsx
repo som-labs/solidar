@@ -23,8 +23,14 @@ import { EconomicContext } from '../EconomicContext'
 import { ConsumptionContext } from '../ConsumptionContext'
 
 import HelpEconomicBalance from './HelpEconomicBalance'
-import * as UTIL from '../classes/Utiles'
+import {
+  withNormalized,
+  ValidateDecimal,
+  formatoValor,
+  decimalSeparator,
+} from '../classes/Utiles'
 import TCB from '../classes/TCB'
+import { SLDRInputField } from '../../components/SLDRComponents'
 
 export default function BateryCost() {
   const { t, i18n } = useTranslation()
@@ -46,7 +52,7 @@ export default function BateryCost() {
   const [error, setError] = useState(false)
 
   const applyPrecioBateria = () => {
-    if (!UTIL.ValidateDecimal(i18n.language, precioBateria)) {
+    if (!ValidateDecimal(i18n.language, precioBateria)) {
       setError(true)
     } else {
       if (precioBateria > 0) {
@@ -62,26 +68,16 @@ export default function BateryCost() {
     }
   }
 
-  // useEffect(() => {
-  //   if (bateria.precio === '' || bateria.precio == 0) {
-  //     const estimado = precioEstimadoBateria()
-  //     setBateria((prev) => ({ ...prev, precio: estimado }))
-  //     TCB.bateria.precio = parseInt(estimado)
-  //     setPrecioBateria(estimado)
-  //     applyPrecioBateria()
-  //   }
-  // }, [])
-
-  function changePrecioBateria(event) {
-    if (event.target.value === '') {
+  function changePrecioBateria(value) {
+    if (value === '') {
       setPrecioBateria(bateria.precio)
       setError(false)
       return
     }
-    if (!UTIL.ValidateDecimal(i18n.language, event.target.value)) setError(true)
+    if (isNaN(Number(value))) setError(true)
     else {
       setError(false)
-      setPrecioBateria(parseInt(event.target.value))
+      setPrecioBateria(value)
     }
   }
 
@@ -119,7 +115,7 @@ export default function BateryCost() {
           <Box flexDirection={'row'}>
             <Typography variant={'body'} textAlign={'left'} marginTop="1rem">
               {t('ECONOMIC_BALANCE.DESCRIPTION_BATERY_COST', {
-                capacidad: UTIL.formatoValor('energia', bateria.capacidad),
+                capacidad: formatoValor('energia', bateria.capacidad),
               })}
             </Typography>
             <IconButton
@@ -141,7 +137,7 @@ export default function BateryCost() {
             color={theme.palette.primary.main}
             textAlign={'center'}
           >
-            {UTIL.formatoValor('precioInstalacion', precioEstimado) +
+            {formatoValor('precioInstalacion', precioEstimado) +
               ' ' +
               t('ECONOMIC_BALANCE.IVA_INCLUDED')}
           </Typography>
@@ -150,21 +146,17 @@ export default function BateryCost() {
           </Typography>
 
           <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <TextField
-              type="text"
+            <SLDRInputField
+              object={'Bateria'}
+              unit=" €"
+              id="precio"
               onBlur={applyPrecioBateria}
-              onChange={changePrecioBateria}
+              onChange={withNormalized(changePrecioBateria)}
+              name="precio"
               label={t('ECONOMIC_BALANCE.LABEL_BATERY_COST')}
-              name="precioBateria"
-              InputProps={{
-                endAdornment: <InputAdornment position="start">&nbsp;€</InputAdornment>,
-                inputProps: {
-                  style: { textAlign: 'right' },
-                },
-              }}
               error={error}
               helperText={error ? 'Pon un número válido mayor que cero' : ''}
-              value={precioBateria}
+              value={String(precioBateria ?? '').replace('.', decimalSeparator)}
             />
           </FormControl>
         </Box>

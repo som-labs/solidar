@@ -72,7 +72,7 @@ export default function PreciosTarifa() {
     return errors
   }
 
-  console.log(TCB.tarifaActiva.potencia)
+  console.log('Precios POTENCIAS en tarifa activa:', TCB.tarifaActiva.potencia)
   if (TCB.tarifaActiva.precios.length !== 0) {
     return (
       <Formik

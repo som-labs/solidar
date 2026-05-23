@@ -1083,6 +1083,15 @@ function round2Decimales(numero) {
   return +(Math.round(numero + 'e+2') + 'e-2')
 }
 
+/** En caso de que el separador decimal del numero sea ',' lo cambia por '.' para poder operar con el numero. Se usa en SLDRInputField para que los onChange reciban los numeros con .
+ *
+ * @param {Number} numero EL número a redondear
+ * @returns {Number} El valor del argumento numero a dos decimales
+ */
+const withNormalized = (handler) => (ev) => {
+  handler(ev.target.value.replace(decimalSeparator, '.'))
+}
+
 /** Nuestra el texto en el campo cuyo id es campo
  *
  * @param {string} campo Identificacion del nodo del DOM donde mostrar el texto
@@ -1250,6 +1259,7 @@ export {
   decimalSeparator,
   ValidateDecimal,
   ValidateEntero,
+  withNormalized,
   campos,
 }
 window.dumpData = dumpData

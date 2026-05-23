@@ -162,9 +162,9 @@ export default function MapaDiaHoraBateria({ activo }) {
         }}
         justifyContent="center"
       >
-        <Tooltip title={t('BATERY.TOOLTIP_MAP_MONTH_DAY')} placement="top">
+        <Tooltip title={t('Bateria.TOOLTIP_MAP_MONTH_DAY')} placement="top">
           <Typography variant="h5" align="center" sx={{ mt: '1rem' }}>
-            {t('BATERY.LABEL_TITLE_MAP_MONTH_DAY')}
+            {t('Bateria.LABEL_TITLE_MAP_MONTH_DAY')}
           </Typography>
         </Tooltip>
         <div ref={divGraph}>

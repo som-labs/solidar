@@ -369,7 +369,7 @@ export default function ReportSOM({ onClose }) {
                   </Typography>
                   {TCB.bateria && (
                     <Typography>
-                      {t('BATERY.TITLE')}:{' '}
+                      {t('Bateria.TITLE')}:{' '}
                       <strong>
                         {UTIL.formatoValor('capacidad', TCB.bateria.capacidad)}
                       </strong>

@@ -20,8 +20,9 @@ import { useDialog } from '../../components/DialogProvider'
 
 import { EconomicContext } from '../EconomicContext'
 import HelpEconomicBalance from './HelpEconomicBalance'
-import * as UTIL from '../classes/Utiles'
+import { decimalSeparator, formatoValor, withNormalized } from '../classes/Utiles'
 import TCB from '../classes/TCB'
+import { SLDRInputField } from '../../components/SLDRComponents'
 
 export default function InstallationCost() {
   const { t, i18n } = useTranslation()
@@ -43,8 +44,6 @@ export default function InstallationCost() {
       setPrecioCorregido(TCB.economico.precioInstalacion)
       TCB.economico.precioInstalacionCorregido = TCB.economico.precioInstalacion
       setError(false)
-    } else if (!UTIL.ValidateDecimal(i18n.language, precioCorregido)) {
-      setError(true)
     } else {
       if (precioCorregido > 0) {
         TCB.economico.precioInstalacionCorregido = parseInt(precioCorregido)
@@ -61,16 +60,16 @@ export default function InstallationCost() {
     }
   }
 
-  function changePrecioInstalacion(event) {
-    if (event.target.value === '') {
+  function changePrecioInstalacion(value) {
+    if (value === '') {
       setPrecioCorregido(TCB.economico.precioInstalacion)
       setError(false)
       return
     }
-    if (!UTIL.ValidateDecimal(i18n.language, event.target.value)) setError(true)
+    if (isNaN(Number(value))) setError(true)
     else {
       setError(false)
-      setPrecioCorregido(parseInt(event.target.value))
+      setPrecioCorregido(value)
     }
   }
 
@@ -123,7 +122,7 @@ export default function InstallationCost() {
             color={theme.palette.primary.main}
             textAlign={'center'}
           >
-            {UTIL.formatoValor('precioInstalacion', TCB.economico.precioInstalacion) +
+            {formatoValor('precioInstalacion', TCB.economico.precioInstalacion) +
               ' ' +
               t('ECONOMIC_BALANCE.IVA_INCLUDED')}
           </Typography>
@@ -132,22 +131,20 @@ export default function InstallationCost() {
           </Typography>
 
           <FormControl sx={{ m: 1, minWidth: 120 }}>
-            <TextField
-              type="text"
+            <SLDRInputField
+              object={'Economico'}
+              unit=" €"
+              id="precioInstalacionCorregido"
               onBlur={setPrecioInstalacion}
-              onChange={changePrecioInstalacion}
-              label={t('ECONOMIC_BALANCE.LABEL_INSTALLATION_COST')}
+              onChange={withNormalized(changePrecioInstalacion)}
               name="precioInstalacionCorregido"
-              InputProps={{
-                endAdornment: <InputAdornment position="start">&nbsp;€</InputAdornment>,
-                inputProps: {
-                  style: { textAlign: 'right' },
-                },
-              }}
+              label={t('Economico.PROP.precioInstalacionCorregido')}
               error={error}
               helperText={error ? 'Pon un número válido mayor que cero' : ''}
               value={
-                precioCorregido !== TCB.economico.precioInstalacion ? precioCorregido : ''
+                precioCorregido !== TCB.economico.precioInstalacion
+                  ? String(precioCorregido).replace('.', decimalSeparator)
+                  : ''
               }
             />
           </FormControl>

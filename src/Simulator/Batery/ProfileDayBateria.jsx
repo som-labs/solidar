@@ -146,7 +146,7 @@ export default function ProfileDayBateria(props) {
       <Box>
         <DialogTitle>
           <Typography sx={theme.titles.level_1} textAlign={'center'} gutterBottom>
-            {t('BATERY.LABEL_TITLE_PROFILE_DAY', {
+            {t('Bateria.LABEL_TITLE_PROFILE_DAY', {
               dia: dia,
               mes: mes,
             })}

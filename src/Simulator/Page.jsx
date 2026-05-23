@@ -97,7 +97,7 @@ export default function Page() {
           const message = Object.entries(bateriaValida)
             .map(([key, value]) => `${key}: ${value}`)
             .join(`\n`)
-          SLDRAlert(t('BATERY.MSG_ERROR_BATERIA'), message, 'Error')
+          SLDRAlert(t('Bateria.MSG_ERROR_BATERIA'), message, 'Error')
           return false
         } else {
           TCB.bateria.updatePrice()
@@ -143,7 +143,7 @@ export default function Page() {
             />
             <BateryStep
               label="battery"
-              title={t('BATERY.TITLE')}
+              title={t('Bateria.TITLE')}
               next={validaBateryStep}
             />
             <EnergyBalanceStep

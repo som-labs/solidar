@@ -113,7 +113,7 @@ async function GeneraInformePDF() {
       nuevaLinea(
         'Dato',
         i++,
-        'BATERY.PROP.' + idCampo.name,
+        'Bateria.PROP.' + idCampo.name,
         UTIL.formatoValor(idCampo.name, TCB.bateria[idCampo.name]),
       )
     })

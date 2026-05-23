@@ -23,7 +23,8 @@ export default function SankeyFun(
     nodeGroup, // given d in nodes, returns an (ordinal) value for color
     nodeGroups, // an array of ordinal values representing the node groups
     nodeLabel, // given d in (computed) nodes, text to label the associated rect
-    nodeTitle = (d) => `${d.id}\n${UTIL.formatoValor('energia', d.value)}`, // given d in (computed) nodes, hover text
+    nodeTitle = (d) =>
+      `${d.id}\n${UTIL.formatoValor('energia', d.valueReal / energyScale)}`, // given d in (computed) nodes, hover text
     nodeAlign = align, // Sankey node alignment strategy: left, right, justify, center
     nodeWidth = 120, // width of node rects
     nodePadding = 80, // vertical separation between adjacent nodes
@@ -37,7 +38,10 @@ export default function SankeyFun(
     linkValue = ({ value }) => value, // given d in links, returns the quantitative value
     linkPath = d3Sankey.sankeyLinkHorizontal(), // given d in (computed) links, returns the SVG path
     linkTitle = (d) =>
-      `${d.source.id} → ${d.target.id}\n${UTIL.formatoValor('energia', d.value)}`, // given d in (computed) links
+      `${d.source.id} → ${d.target.id}\n${UTIL.formatoValor(
+        'energia',
+        d.valueReal / energyScale,
+      )}`, // given d in (computed) links
     linkColor = 'source-target', // source, target, source-target, or static color
     linkStrokeOpacity = 0.5, // link stroke opacity
     linkMixBlendMode, // = 'screen', //'multiply', // link blending mode
@@ -50,6 +54,7 @@ export default function SankeyFun(
     marginLeft = 200, // left margin, in pixels
     nameNodos,
     linkOrder,
+    energyScale,
   } = {},
 ) {
   // Convert nodeAlign from a name to a function (since d3-sankey is not part of core d3).
@@ -66,17 +71,20 @@ export default function SankeyFun(
   const LS = d3.map(links, linkSource).map(intern) //Lista de fuentes
   const LT = d3.map(links, linkTarget).map(intern) //Lista de destinos
   const LV = d3.map(links, linkValue) //List de valores
+  const LVR = d3.map(links, (d) => d.valueReal) //List de valores reales sin escalar
 
   if (nodes === undefined) nodes = Array.from(d3.union(LS, LT), (id) => ({ id }))
+
   const N = d3.map(nodes, nodeId).map(intern) //Lista de nodos
   const G = nodeGroup == null ? null : d3.map(nodes, nodeGroup).map(intern) //Lista de grupo
 
   // Replace the input nodes and links with mutable objects for the simulation.
-  nodes = d3.map(nodes, (_, i) => ({ id: N[i] }))
+  nodes = d3.map(nodes, (node, i) => ({ id: N[i] }))
   links = d3.map(links, (_, i) => ({
     source: LS[i],
     target: LT[i],
     value: LV[i],
+    valueReal: LVR[i],
   }))
 
   // Ignore a group-based linkColor option if no groups are specified.
@@ -100,70 +108,89 @@ export default function SankeyFun(
       [width - marginRight, height - marginBottom],
     ])({ nodes, links })
 
-  //Si hay bateria hay que reacomodar algunos nodos
-  const xOffset = -90
-  const yOffset = 50
+  // DESPUÉS el layout ya ha calculado node.value le aplicamos la escalaEnergia
+  nodes.forEach((n) => {
+    n.valueReal = n.value / energyScale
+  })
+
+  // esta es la escala para posicionar correctamente los nodos
+  const graphScale = (nodes[0].y1 - nodes[0].y0) / nodes[0].value
+
+  const perdidas = nodes.find((n) => n.id === nameNodos.perdidas)
+  const diurno = nodes.find((n) => n.id === nameNodos.usoDiurno)
+  const nocturno = nodes.find((n) => n.id === nameNodos.usoNocturno)
+  const aRed = nodes.find((n) => n.id === nameNodos.aRed)
+  const aUso = nodes.find((n) => n.id === nameNodos.usoTotal)
+  const deRed = nodes.find((n) => n.id === nameNodos.deRed)
+
+  const delta = perdidas ? perdidas.value : 0
+  const verticalGap = (height - (aRed.value + aUso.value + delta) * graphScale) / 2
+
+  aRed.y0 = perdidas ? perdidas.y1 + verticalGap : 0 //Perdidas solo existe si hay bateria, si no, el nodo de la red empieza desde 0
+  aRed.y1 = aRed.y0 + aRed.value * graphScale
+  aUso.y0 = aRed.y1 + verticalGap
+  aUso.y1 = aUso.y0 + aUso.value * graphScale
+  nocturno.y1 = aUso.y1
+  nocturno.y0 = nocturno.y1 - nocturno.value * graphScale
+  diurno.y1 = nocturno.y0 - verticalGap / 2
+  diurno.y0 = diurno.y1 - diurno.value * graphScale
 
   const batpos = nodes.find((n) => n.id === nameNodos.bateria)
+  const shift = (nocturno.x0 - deRed.x1) * 0.2
+
   if (batpos) {
     nodes.forEach((n) => {
       if (n.id.startsWith('_')) {
-        const x0nuevo = 700
-        n.x0 = x0nuevo
-        n.x1 = x0nuevo // o x0nuevo si quieres ancho cero
+        n.y0 = deRed.y0
+        n.y1 = deRed.y0 + n.value * graphScale
+        n.x0 += shift
+        n.x1 = n.x0 // o x0nuevo si quieres ancho cero
       }
     })
+    batpos.x0 -= shift
+    batpos.x1 -= shift
 
-    batpos.x0 += xOffset
-    batpos.x1 += xOffset
-
-    batpos.y0 += yOffset
-    batpos.y1 += yOffset
-
-    links.forEach((l) => {
-      if (l.target.id === nameNodos.bateria || l.target.id === nameNodos.bateria) {
-        l.y1 += 50
-      }
-      if (l.source.id === nameNodos.bateria || l.source.id === nameNodos.bateria) {
-        l.y0 += 50
-      }
-    })
-
-    const desplazamiento = 120 // ajusta hasta que quede bien
-
-    const diurno = nodes.find((n) => n.id === nameNodos.usoDiurno)
-    const nocturno = nodes.find((n) => n.id === nameNodos.usoNocturno)
-
-    ;[diurno, nocturno].forEach((n) => {
-      if (n) {
-        n.y0 += desplazamiento
-        n.y1 += desplazamiento
-      }
-    })
-
-    links.forEach((l) => {
-      if (l.target.id === nameNodos.usoDiurno || l.target.id === nameNodos.usoNocturno) {
-        l.y1 += desplazamiento
-      }
-      if (l.source.id === nameNodos.usoDiurno || l.source.id === nameNodos.usoNocturno) {
-        l.y0 += desplazamiento
-      }
-    })
-
-    // Después de todos los ajustes de posición
-    const redNode = nodes.find((n) => n.id === nameNodos.deRed)
-    if (redNode) {
-      // Los sourceLinks son los que salen de ese nodo
-      redNode.sourceLinks.sort((a, b) => b.target.y0 - a.target.y0)
-
-      // Recalcular y0/y1 de cada link según el nuevo orden
-      let y = redNode.y0
-      redNode.sourceLinks.forEach((l) => {
-        l.y0 = y + l.width / 2
-        y += l.width
-      })
+    batpos.y0 = diurno.y1 - 2 * batpos.sourceLinks[0].width
+    batpos.y1 = batpos.y0 + batpos.value * graphScale
+    if (batpos.y1 > deRed.y0) {
+      const overlap = batpos.y1 - deRed.y0 + verticalGap / 10 // un pequeño extra para que no se toquen
+      batpos.y0 -= overlap
+      batpos.y1 -= overlap
     }
   }
+  // deRed.y1 = aRed.y1
+  // deRed.y0 = deRed.y1 - deRed.value * graphScale
+
+  //Recalculamos todos los links a partir de las nuevas posiciones de los nodos, para evitar que se solapen los links que salen del nodo de la red. Para eso vamos a ordenar los sourceLinks del nodo de la red según el orden definido en LINK_ORDER, y luego recalculamos las posiciones y0/y1 de cada link según el nuevo orden
+  nodes.forEach((nodo) => {
+    let y = nodo.y0
+    nodo.sourceLinks.forEach((l) => {
+      l.y0 = y + l.width / 2
+      y += l.width
+    })
+
+    y = nodo.y0
+    nodo.targetLinks.forEach((l) => {
+      l.y1 = y + l.width / 2
+      y += l.width
+    })
+  })
+
+  // Después de todos los ajustes de posición ajustamos los links que salen del nodo de la red para que salgan en el orden correcto y no se solapen. Para eso vamos a ordenar los sourceLinks del nodo de la red según el orden definido en LINK_ORDER, y luego recalculamos las posiciones y0/y1 de cada link según el nuevo orden
+
+  // if (deRed) {
+  //   // Los sourceLinks son los que salen de ese nodo
+  //   deRed.sourceLinks.sort((a, b) => b.target.y0 - a.target.y0)
+
+  //   // Recalcular y0/y1 de cada link según el nuevo orden
+  //   let y = deRed.y0
+  //   deRed.sourceLinks.forEach((l) => {
+  //     l.y0 = y + l.width / 2
+  //     y += l.width
+  //   })
+  // }
+  // }
+
   // Compute titles and labels using layout nodes, so as to access aggregate values.
   if (typeof format !== 'function') format = d3.format(format)
 
@@ -182,6 +209,7 @@ export default function SankeyFun(
     .attr('height', 1200)
     .attr('viewBox', [0, 0, width, height])
     .attr('preserveAspectRatio', 'none')
+
     .attr('style', 'max-width: 100%; height: auto; height: intrinsic;')
 
   const node = svg
@@ -198,9 +226,7 @@ export default function SankeyFun(
     .attr('height', (d) => d.y1 - d.y0)
     .attr('width', (d) => d.x1 - d.x0)
 
-  // if (G) node.attr('fill', ({ index: i }) => color(G[i]))
-  // if (Tt) node.append('title').text(({ index: i }) => Tt[i])
-
+  // Asignacion de los colores
   if (G)
     node.attr('fill', (d) => {
       const i = nodes.findIndex((n) => n.id === d.id)
@@ -283,7 +309,11 @@ export default function SankeyFun(
     .attr('y', (d) => d.y0) // posición vertical del link en el source
     .attr('dy', '0.35em')
     .attr('text-anchor', 'start')
-    .text((d) => (!d.source.id.startsWith('_') ? `${d.value.toFixed(0)} kWh` : ''))
+
+    .text((d) =>
+      !d.source.id.startsWith('_') ? `${UTIL.formatoValor('energia', d.valueReal)}` : '',
+    )
+  //.text((d) => (!d.source.id.startsWith('_') ? `${d.valueReal} kWh` : ''))
 
   if (Tl)
     svg
@@ -312,7 +342,10 @@ export default function SankeyFun(
         //const x = d.x0 < width / 2 ? d.x1 + nodeLabelPadding : d.x0 - nodeLabelPadding
         const x = (d.x1 + d.x0) / 2
         const lines =
-          d.id != nameNodos.perdidas ? [d.id, `${d.value.toFixed(0)} kWh`] : ['', d.id] // texto1 y texto2
+          d.id != nameNodos.perdidas
+            ? // ? [d.id, `${d.valueReal.toFixed(0)} kWh`]
+              [d.id, `${UTIL.formatoValor('energia', d.valueReal)}`]
+            : ['', d.id] // texto1 y texto2
 
         lines.forEach((line, j) => {
           el.append('tspan')

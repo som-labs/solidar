@@ -60,6 +60,7 @@ export default function CallSankey(props) {
 
   const theme = useTheme()
   const { current } = useContext(ColorModeContext) //dark or light
+
   let data = []
 
   if (TCB.bateria)
@@ -162,26 +163,43 @@ export default function CallSankey(props) {
     getHeight()
   }, [bases])
 
-  let alturaCalculada
-  if (TCB.bateria) {
-    const totalFlujo = consumo + excedente + (TCB.bateria ? perdidas : 0)
-    const alturaMinima = 1005
-    alturaCalculada = Math.max(alturaMinima, totalFlujo / 5)
-  } else {
-    alturaCalculada = 1000
-  }
+  // Guard: si no hay datos, no renderizar nada
+  if (!props.yearlyData || !props.yearlyData.consumo) return null
+
+  // let alturaCalculada
+  // if (TCB.bateria) {
+  //   const totalFlujo = consumo + excedente + (TCB.bateria ? perdidas : 0)
+  //   const alturaMinima = 1005
+  //   alturaCalculada = Math.max(alturaMinima, totalFlujo / 5)
+  // } else {
+  //   alturaCalculada = 1000
+  // }
+
+  // Calcular factor de escala
+  const maxHeight = autoconsumo + excedente + deficit_diurno + deficit_nocturno
+  const umbral = 2000 // por encima de esto, escalar
+
+  const escala = maxHeight > umbral ? umbral / maxHeight : 1
+
+  // Escalar los valores para el layout
+  const dataEscalada = data.map((d) => ({
+    ...d,
+    value: d.value * escala,
+    valueReal: d.value,
+  }))
 
   SankeyFun(
-    { links: data, svgRef },
+    { links: dataEscalada, svgRef },
     {
       textColor: theme.palette.text.primary,
       colors: colors,
       linkMixBlendMode: current === 'light' ? 'multiply' : 'screen',
-      height: alturaCalculada,
+      height: 1200,
       width: 2000,
       nodeGroup: (d) => d.id, //.split(/\W/)[0], // take first word for color
       nameNodos: NAME_NODOS,
       linkOrder: LINK_ORDER,
+      energyScale: escala,
     },
   )
 

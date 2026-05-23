@@ -60,7 +60,7 @@ const BateryStep = () => {
         <Typography
           variant="body"
           dangerouslySetInnerHTML={{
-            __html: t('BATERY.DESCRIPTION'),
+            __html: t('Bateria.DESCRIPTION'),
           }}
         />
       </Grid>
@@ -68,7 +68,7 @@ const BateryStep = () => {
         {/* ── Botón principal ── */}
         {!bateria ? (
           <SLDRTooltip
-            title={<Typography>{t('BATERY.TOOLTIP_BUTTON_NUEVA_BATERIA')}</Typography>}
+            title={<Typography>{t('Bateria.TOOLTIP_BUTTON_NUEVA_BATERIA')}</Typography>}
             placement="top"
           >
             <Button
@@ -77,12 +77,12 @@ const BateryStep = () => {
               startIcon={<AddIcon />}
               onClick={nuevaBateria}
             >
-              {t('BATERY.LABEL_CREATE')}
+              {t('Bateria.LABEL_CREATE')}
             </Button>
           </SLDRTooltip>
         ) : (
           <SLDRTooltip
-            title={<Typography>{t('BATERY.TOOLTIP_BUTTON_BORRA_BATERIA')}</Typography>}
+            title={<Typography>{t('Bateria.TOOLTIP_BUTTON_BORRA_BATERIA')}</Typography>}
             placement="top"
           >
             <Button
@@ -91,7 +91,7 @@ const BateryStep = () => {
               startIcon={<DeleteIcon />}
               onClick={eliminarBateria}
             >
-              {t('BATERY.LABEL_DELETE')}
+              {t('Bateria.LABEL_DELETE')}
             </Button>
           </SLDRTooltip>
         )}

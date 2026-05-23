@@ -73,7 +73,7 @@ function Campo({ label, name, formik, unidad }) {
       <InputLabel htmlFor={name}>{label}</InputLabel>
 
       <SLDRInputField
-        object={'BATERY'}
+        object={'Bateria'}
         id={name}
         name={name}
         onBlur={formik.handleBlur}
@@ -119,7 +119,7 @@ export default function BateriaForm({
         } else if (isNaN(Number(valor))) {
           errors[campo] = t('BASIC.LABEL_NUMBER')
         } else if (valor < idCampo.min || valor > idCampo.max) {
-          errors[campo] = t('BATERY.LABEL_RANGO', {
+          errors[campo] = t('Bateria.LABEL_RANGO', {
             campo: campo,
             min: idCampo.min,
             max: idCampo.max,
@@ -188,7 +188,7 @@ export default function BateriaForm({
                 >
                   <Grid item xs={12} sx={{ mt: '2rem' }}>
                     <Typography sx={theme.titles.level_1} textAlign={'center'}>
-                      {t('BATERY.TITLE_PRESET')}
+                      {t('Bateria.TITLE_PRESET')}
                     </Typography>
                   </Grid>
 
@@ -196,7 +196,7 @@ export default function BateriaForm({
                   <Grid container columnSpacing={2}>
                     <Grid item xs={12} sx={{ mb: '2rem' }} textAlign={'center'}>
                       <Typography sx={theme.titles.level_2}>
-                        {t('BATERY.TITLE_PRESET_MODELS')}
+                        {t('Bateria.TITLE_PRESET_MODELS')}
                       </Typography>
 
                       {/* ── Presets ── */}
@@ -226,10 +226,10 @@ export default function BateriaForm({
                         <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
                           <Box sx={{ mb: '1rem' }}>
                             <Typography fontWeight="bold" sx={{ mt: '1rem', mb: '1rem' }}>
-                              {t('BATERY.TITLE_SECTION_CAPACIDAD')}
+                              {t('Bateria.TITLE_SECTION_CAPACIDAD')}
                             </Typography>
                             <Campo
-                              label={t('BATERY.PROP.capacidad')}
+                              label={t('Bateria.PROP.capacidad')}
                               name="capacidad"
                               formik={formik}
                               unidad="kWh"
@@ -244,7 +244,7 @@ export default function BateriaForm({
                         <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
                           <Box>
                             <Typography fontWeight="bold" sx={{ mt: '1rem', mb: '1rem' }}>
-                              {t('BATERY.TITLE_SECTION_SOC')}
+                              {t('Bateria.TITLE_SECTION_SOC')}
                             </Typography>
                             <Campo
                               label="SOC máximo"
@@ -282,10 +282,10 @@ export default function BateriaForm({
                         <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
                           <Box>
                             <Typography fontWeight="bold" sx={{ mt: '1rem', mb: '1rem' }}>
-                              {t('BATERY.TITLE_SECTION_RENDIMIENTO')}
+                              {t('Bateria.TITLE_SECTION_RENDIMIENTO')}
                             </Typography>
                             <Campo
-                              label={t('BATERY.PROP.eficiencia')}
+                              label={t('Bateria.PROP.eficiencia')}
                               name="eficiencia"
                               formik={formik}
                               unidad="(0–1)"
@@ -296,7 +296,7 @@ export default function BateriaForm({
                         <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
                           <Box>
                             <Typography fontWeight="bold" sx={{ mt: '1rem', mb: '1rem' }}>
-                              {t('BATERY.TITLE_SECTION_POTENCIA')}
+                              {t('Bateria.TITLE_SECTION_POTENCIA')}
                             </Typography>
                             <Campo
                               label="Carga máxima"
