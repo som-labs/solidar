@@ -514,7 +514,7 @@ async function loadFromCSV(csvFile, aThis, options) {
       transformHeader: (header) => {
         // Rename headers
         let tmpHeader = header.toUpperCase()
-        if (options.valorArr.includes(header)) return 'consumo'
+        if (options.valorArr.includes(tmpHeader)) return 'consumo'
         if (['ENERGIAVERTIDA_KWH'].includes(tmpHeader)) return 'excedente' //Not used yet
         if (['FECHA'].includes(tmpHeader)) return 'fecha'
         if (['HORA'].includes(tmpHeader)) return 'hora'

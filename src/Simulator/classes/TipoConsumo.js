@@ -50,7 +50,7 @@ class TipoConsumo extends DiaHora {
       }
     } else {
       options = {
-        valorArr: ['consumo_kWh', 'AE_kWh', 'Consumo_kWh', 'Consumo'], //Header for consumption -> options to be received based on file source
+        valorArr: ['CONSUMO_KWH', 'AE_KWH', 'CONSUMO'], //Header for consumption -> options to be received based on file source
         factor: 1,
       }
     }

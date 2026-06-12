@@ -17,9 +17,7 @@ import { AlertContext } from '../Simulator/components/Alert'
 import ParametersMenu from '../Simulator/Parameters/ParametersMenu'
 import ContactMenu from '../Simulator/Contact/ContactMenu'
 import ProjectMenu from '../Simulator/Project/ProjectMenu'
-import { getParametrosEntrada, debugLog } from '../Simulator/classes/Utiles'
-
-import TCB from '../Simulator/classes/TCB'
+import { getParametrosEntrada } from '../Simulator/classes/Utiles'
 
 export default function AppFrame({ children }) {
   const { t } = useTranslation()
@@ -54,7 +52,7 @@ export default function AppFrame({ children }) {
       path: '/about',
     },
   ]
-
+  console.log('inLineHelp', inLineHelp)
   return (
     <>
       <ScrollRestoration /> {/* Scroll up on page switch */}
