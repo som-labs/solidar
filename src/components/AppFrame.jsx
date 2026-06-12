@@ -28,7 +28,6 @@ export default function AppFrame({ children }) {
   useEffect(() => {
     //DEMO: Detalle
     const a = getParametrosEntrada('inLineHelp')
-    console.log('APPFRAM', a)
     if (a) {
       setInLineHelp(true)
       setInLineHelpIcon(true)
@@ -53,7 +52,7 @@ export default function AppFrame({ children }) {
       path: '/about',
     },
   ]
-  console.log(inLineHelp)
+  console.log('inLineHelp', inLineHelp)
   return (
     <>
       <ScrollRestoration /> {/* Scroll up on page switch */}
