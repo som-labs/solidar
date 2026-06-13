@@ -522,6 +522,7 @@ async function loadFromCSV(csvFile, aThis, options) {
       },
 
       transform: (value, header) => {
+        // console.log('Header transformado: ' + header)
         // Convert 'consumo' column to float
         if (header === 'consumo') {
           return parseFloat(value.replace(',', '.'))
@@ -568,7 +569,10 @@ async function loadFromCSV(csvFile, aThis, options) {
 
       complete: (results) => {
         // Check if the header row contains both "Name" and "Value" headers
+
         const headers = results.meta.fields
+        console.log('Header transformado: ' + headers.join(', '))
+
         let chkHeaders = true
         let failHdr = []
         if (!headers.includes('consumo')) {
@@ -1221,6 +1225,27 @@ async function cargaTarifasDesdeSOM() {
   }
 }
 
+function statsSinCeros(arr, prop) {
+  // Extraer valores válidos: números y distintos de 0
+  const valores = arr
+    .map((o) => Number(o[prop]))
+    .filter((v) => !isNaN(v) && v !== 0)
+    .sort((a, b) => a - b)
+
+  if (valores.length === 0) {
+    return { min: null, median: null, max: null }
+  }
+
+  const min = valores[0]
+  const max = valores[valores.length - 1]
+
+  const mid = Math.floor(valores.length / 2)
+  const median =
+    valores.length % 2 === 1 ? valores[mid] : (valores[mid - 1] + valores[mid]) / 2
+
+  return { min, median, max }
+}
+
 export {
   cambioValor,
   cargaTarifasDesdeSOM,
@@ -1239,6 +1264,7 @@ export {
   indiceDesdeDiaMes,
   indiceDesdeFecha,
   loadFromCSV,
+  statsSinCeros,
   mensaje,
   mete,
   muestra,

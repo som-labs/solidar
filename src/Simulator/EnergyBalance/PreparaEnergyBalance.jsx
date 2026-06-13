@@ -32,7 +32,7 @@ export default async function PreparaEnergyBalance() {
   )
 
   if (TCB.requiereOptimizador) {
-    // Comprobamos que estan cargados todos los rendimientos. Es el flag base.rendimiento.PVGISresults.status. True si todo OK, undefined si pendiente, False si error en PVGIS
+    //Comprobamos que estan cargados todos los rendimientos. Es el flag base.rendimiento.PVGISresults.status. True si todo OK, undefined si pendiente, False si error en PVGIS
     let waitLoop = 0
     for (let base of TCB.BaseSolar) {
       var sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
@@ -86,15 +86,15 @@ export default async function PreparaEnergyBalance() {
     await calculaResultados()
   }
 
-  //When importing first time will not compute Economico next yes
-  if (!TCB.importando) {
-    TCB.economico = new Economico()
-  }
+  // //When importing first time will not compute Economico next yes
+  // if (!TCB.importando) {
+  //   TCB.economico = new Economico()
+  // }
 
-  UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
-  if (TCB.economico.periodoAmortizacion > 20) {
-    alert(TCB.i18next.t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
-  }
+  // UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
+  // if (TCB.economico.periodoAmortizacion > 20) {
+  //   alert(TCB.i18next.t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
+  // }
   document.body.style.cursor = cursorOriginal
   return { status: true }
 }

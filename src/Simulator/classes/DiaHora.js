@@ -19,6 +19,7 @@ class DiaHora {
   fechaInicio
   horaInicio
   maximoAnual = -Infinity
+  minimoAnual = Infinity
   totalAnual = 0
   datosCargados = false
 
@@ -126,6 +127,9 @@ class DiaHora {
       this.idxTable[dia].maximo = inDiaHora.idxTable[dia].maximo * factor
     }
     this.maximoAnual = inDiaHora.maximoAnual * factor
+    this.minimoAnual = inDiaHora.minimoAnual * factor
+    this.numeroDias = inDiaHora.numeroDias
+    this.numeroRegistros = inDiaHora.numeroRegistros
     this.totalAnual = inDiaHora.totalAnual * factor
   }
   /**
@@ -157,6 +161,7 @@ class DiaHora {
     this.idxTable[indiceDia].suma = UTIL.suma(unDia.valores)
     this.idxTable[indiceDia].promedio = UTIL.promedio(unDia.valores)
     this.idxTable[indiceDia].maximo = Math.max(...unDia.valores)
+    this.idxTable[indiceDia].minimo = Math.min(...unDia.valores)
   }
   /**
    * Calcula los campos maximoAnual y totalAnual de diaHora
@@ -167,6 +172,9 @@ class DiaHora {
     for (let i = 0; i < 365; i++) {
       if (this.idxTable[i].maximo > this.maximoAnual) {
         this.maximoAnual = this.idxTable[i].maximo
+      }
+      if (this.idxTable[i].minimo < this.minimoAnual) {
+        this.minimoAnual = this.idxTable[i].minimo
       }
       if (this.idxTable[i].previos > 0) {
         this.numeroDias++

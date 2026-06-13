@@ -19,8 +19,10 @@ import Bateria from '../classes/Bateria'
 // import HelpConsumption from './HelpConsumption'
 // import HelpDistribuidora from './HelpDistribuidora'
 import TCB from '../classes/TCB'
+import * as UTIL from '../classes/Utiles'
 //React global components
 import { useDialog } from '../../components/DialogProvider'
+import calculaResultados from '../classes/calculaResultados'
 
 const BateryStep = () => {
   const { t } = useTranslation()
@@ -47,7 +49,28 @@ const BateryStep = () => {
     setBateria(null)
     TCB.bateria = null
     TCB.requiereOptimizador = true
+    calculaResultados()
   }
+
+  const deficitStats = UTIL.statsSinCeros(TCB.balance.idxTable, 'excedente')
+  const invierno = []
+  const verano = []
+  const medio = []
+  for (let i = 0; i < 365; i++) {
+    const mes = TCB.balance.idxTable[i].fecha.getMonth() + 1
+    if (mes >= 10 || mes <= 3) {
+      invierno.push(TCB.balance.idxTable[i])
+    } else if (mes > 4 && mes < 9) {
+      verano.push(TCB.balance.idxTable[i])
+    } else {
+      medio.push(TCB.balance.idxTable[i])
+    }
+  }
+  const inviernoStats = UTIL.statsSinCeros(invierno, 'excedente')
+  const veranoStats = UTIL.statsSinCeros(verano, 'excedente')
+  const medioStats = UTIL.statsSinCeros(medio, 'excedente')
+
+  console.log('bateria state:', bateria)
 
   return (
     <Grid
@@ -64,6 +87,52 @@ const BateryStep = () => {
           }}
         />
       </Grid>
+
+      <Grid item xs={12} sx={{ mb: '1rem' }}>
+        <SLDRInfoBox>
+          <Grid item xs={4}>
+            <Typography variant="body2">
+              {'Mediana excedente diario invierno: ' +
+                UTIL.formatoValor('energia', inviernoStats.median)}
+            </Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body2">
+              {'Mediana excedente diario intermedio: ' +
+                UTIL.formatoValor('energia', medioStats.median)}
+            </Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body2">
+              {'Mediana excedente diario verano: ' +
+                UTIL.formatoValor('energia', veranoStats.median)}
+            </Typography>
+          </Grid>
+        </SLDRInfoBox>
+      </Grid>
+
+      <Grid item xs={12} sx={{ mb: '1rem' }}>
+        <SLDRInfoBox>
+          <Grid item xs={4}>
+            <Typography variant="body2">
+              {'Excedente diario mínimo anual: ' +
+                UTIL.formatoValor('energia', deficitStats.min)}
+            </Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body2">
+              {'Excedente diario mediana anual: ' +
+                UTIL.formatoValor('energia', deficitStats.median)}
+            </Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body2">
+              {'Excedente diario máximo anual: ' +
+                UTIL.formatoValor('energia', deficitStats.max)}
+            </Typography>
+          </Grid>
+        </SLDRInfoBox>
+      </Grid>
       <Grid item xs={12} textAlign="center">
         {/* ── Botón principal ── */}
         {!bateria ? (
@@ -75,7 +144,12 @@ const BateryStep = () => {
               variant="contained"
               size="large"
               startIcon={<AddIcon />}
-              onClick={nuevaBateria}
+              onClick={() => {
+                const b = new Bateria()
+                setBateria(b)
+                TCB.bateria = b
+                TCB.requiereOptimizador = true
+              }}
             >
               {t('Bateria.LABEL_CREATE')}
             </Button>

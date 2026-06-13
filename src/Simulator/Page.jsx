@@ -25,6 +25,7 @@ import { EconomicContext } from './EconomicContext'
 import PreparaEnergyBalance from './EnergyBalance/PreparaEnergyBalance'
 import TCB from './classes/TCB'
 import Bateria from './classes/Bateria'
+import Economico from './classes/Economico'
 import * as UTIL from './classes/Utiles'
 import InicializaAplicacion from './classes/InicializaAplicacion'
 
@@ -74,7 +75,7 @@ export default function Page() {
     }
   }
 
-  function validaLocationStep() {
+  async function validaLocationStep() {
     results = validaBases()
     if (!results.status) SLDRAlert('VALIDACION', results.error, 'error')
     return results.status
@@ -86,6 +87,14 @@ export default function Page() {
       SLDRAlert('VALIDACION', results.error, 'error')
       return false
     }
+
+    console.log('llamamos a preparar energía salida consumption', TCB.bateria)
+    results = await PreparaEnergyBalance()
+    if (!results.status) {
+      console.log(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error)
+      SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
+    }
+    return results.status
   }
 
   async function validaBateryStep() {
@@ -110,8 +119,19 @@ export default function Page() {
       }
     }
 
+    console.log('llamamos a preparar energía salida bateria', TCB.bateria)
     results = await PreparaEnergyBalance()
     if (results.status) {
+      //When importing first time will not compute Economico next yes
+      if (!TCB.importando) {
+        TCB.economico = new Economico()
+      }
+
+      UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
+      if (TCB.economico.periodoAmortizacion > 20) {
+        alert(TCB.i18next.t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
+      }
+
       setEcoData((prev) => ({ ...prev, ...TCB.economico }))
       TCB.readyToExport = true
       TCB.importando = false

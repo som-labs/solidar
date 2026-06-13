@@ -18,7 +18,11 @@ import { useTheme } from '@mui/material/styles'
 
 //React global components
 import { SLDRInfoBox, SLDRInputField } from '../../components/SLDRComponents'
-
+import { EconomicContext } from '../EconomicContext'
+import { AlertContext } from '../components/Alert'
+// Solidar objects
+import PreparaEnergyBalance from '../EnergyBalance/PreparaEnergyBalance'
+import calculaResultados from '../classes/calculaResultados'
 import Bateria from '../classes/Bateria'
 import { decimalSeparator } from '../classes/Utiles'
 import TCB from '../classes/TCB'
@@ -106,6 +110,8 @@ export default function BateriaForm({
 }) {
   const { t } = useTranslation()
   const theme = useTheme()
+  const { ecoData, setEcoData } = useContext(EconomicContext)
+  const { SLDRAlert } = useContext(AlertContext)
 
   function validar(values) {
     const errors = {}
@@ -127,12 +133,21 @@ export default function BateriaForm({
         } else {
           TCB.bateria[campo] = Number(valor)
           setBateria((prev) => ({ ...prev, campo: valor }))
+
+          // console.log('llamamos a preparar energía con', TCB.bateria)
+
+          // console.log('resultados de preparar energía', results)
+          // if (!results.status) {
+          //   console.log(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error)
+          //   SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
+          // }
         }
       }
     })
 
     if (Object.keys(errors).length === 0) {
       setBateriaValida(true)
+      const results = calculaResultados()
     } else {
       setBateriaValida(errors)
     }
@@ -161,7 +176,7 @@ export default function BateriaForm({
   return (
     <Formik
       initialValues={bateriaInicial}
-      validate={(values) => validar(values, setBateriaValida)}
+      validate={async (values) => await validar(values)}
       validateOnChange={true}
       validateOnBlur={true}
       validateOnMount={true}
