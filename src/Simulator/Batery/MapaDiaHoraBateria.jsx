@@ -13,6 +13,7 @@ import { useDialog } from '../../components/DialogProvider'
 import ProfileDayBateria from './ProfileDayBateria'
 
 // Solidar objects
+import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
 export default function MapaDiaHoraBateria({ activo }) {

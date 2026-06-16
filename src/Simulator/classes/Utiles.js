@@ -571,8 +571,6 @@ async function loadFromCSV(csvFile, aThis, options) {
         // Check if the header row contains both "Name" and "Value" headers
 
         const headers = results.meta.fields
-        console.log('Header transformado: ' + headers.join(', '))
-
         let chkHeaders = true
         let failHdr = []
         if (!headers.includes('consumo')) {
@@ -819,7 +817,7 @@ function dumpData(nombre, idxTable, dataTable) {
  * @returns {string} valor formateado segun definición de UTIL.campos
  */
 function formatoValor(campo, valor, unidadFinal) {
-  if (valor === undefined) return undefined
+  if (valor === null || valor === undefined) return '—'
 
   const dato = campos[campo]
   /*      console.log(dato); 

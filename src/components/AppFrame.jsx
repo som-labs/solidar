@@ -52,7 +52,6 @@ export default function AppFrame({ children }) {
       path: '/about',
     },
   ]
-  console.log('inLineHelp', inLineHelp)
   return (
     <>
       <ScrollRestoration /> {/* Scroll up on page switch */}

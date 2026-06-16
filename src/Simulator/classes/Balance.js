@@ -1,4 +1,3 @@
-import Bateria from './Bateria'
 import DiaHora from './DiaHora'
 import * as UTIL from './Utiles'
 /**
@@ -63,7 +62,7 @@ class Balance extends DiaHora {
         let excedente_primario = 0
         let excedente_neto = 0
         let perdidas_carga = 0
-        let perdidas_descarga = 0 //Con el metod de asignar todas las perdidas a la carga debería ser siempre 0
+        let perdidas_descarga = 0 //Con el metodo de asignar todas las perdidas a la carga debería ser siempre 0
         let autoconsumo_directo = 0
         let deficit_primario = 0
         let deficit_neto = 0
@@ -156,8 +155,8 @@ class Balance extends DiaHora {
       if (this.idxTable[i].maximo > this.excedenteMaximo) {
         this.excedenteMaximo = this.idxTable[i].maximo
       }
-      if (this.idxTable[i].maximo < this.deficitMaximo) {
-        this.deficitMaximo = this.idxTable[i].maximo
+      if (this.idxTable[i].minimo < this.deficitMaximo) {
+        this.deficitMaximo = this.idxTable[i].minimo
       }
     }
   }

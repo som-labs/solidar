@@ -107,6 +107,7 @@ export default function BateriaForm({
   setBateriaValida,
   setBateria,
   nuevaBateria,
+  onResultados, // <-- nuevo
 }) {
   const { t } = useTranslation()
   const theme = useTheme()
@@ -147,7 +148,9 @@ export default function BateriaForm({
 
     if (Object.keys(errors).length === 0) {
       setBateriaValida(true)
-      const results = calculaResultados()
+      calculaResultados()
+      setBateria({ ...TCB.bateria })
+      setTimeout(() => onResultados?.(), 200)
     } else {
       setBateriaValida(errors)
     }

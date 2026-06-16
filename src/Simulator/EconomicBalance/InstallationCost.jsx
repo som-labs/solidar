@@ -19,6 +19,7 @@ import { useTheme } from '@mui/material/styles'
 import { useDialog } from '../../components/DialogProvider'
 
 import { EconomicContext } from '../EconomicContext'
+import { AlertContext } from '../components/Alert'
 import HelpEconomicBalance from './HelpEconomicBalance'
 import { decimalSeparator, formatoValor, withNormalized } from '../classes/Utiles'
 import TCB from '../classes/TCB'
@@ -27,6 +28,7 @@ import { SLDRInputField } from '../../components/SLDRComponents'
 export default function InstallationCost() {
   const { t, i18n } = useTranslation()
   const theme = useTheme()
+  const { SLDRAlert } = useContext(AlertContext)
   const [openDialog, closeDialog] = useDialog()
 
   const { ecoData, setEcoData } = useContext(EconomicContext)
@@ -49,12 +51,12 @@ export default function InstallationCost() {
         TCB.economico.precioInstalacionCorregido = parseInt(precioCorregido)
         TCB.economico.calculoFinanciero(100, 100)
         if (TCB.economico.periodoAmortizacion > 20) {
-          alert(t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
+          SLDRAlert('AVISO', t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME', 'Aviso'))
         }
         setEcoData({ ...ecoData, ...TCB.economico })
         setError(false)
         if (TCB.porcientoSubvencion !== 0) {
-          alert('Es posible que tenga que verificar el valor de la subvención recibida')
+          SLDRAlert('AVISO', t('ECONOMIC_BALANCE.WARNING_CAMBIO_PRECIOS', 'Aviso'))
         }
       }
     }

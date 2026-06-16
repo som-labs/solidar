@@ -231,7 +231,7 @@ const TCB = {
     margen: 0.5,
     bateriaPrecioUnitario: 700,
     bateriaPrecioInstalacion: 500,
-    bateriaVidaUtil: 10,
+    bateriaVidaUtil: 20,
   },
 
   //Default panel type

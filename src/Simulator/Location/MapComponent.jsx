@@ -342,7 +342,7 @@ export default function MapComponent() {
         SLDRAlert(
           'NOMINATIM error 1',
           t('LOCATION.ERROR_' + status, { err: details }),
-          'ERROR',
+          'Error',
         )
         TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
         return false
@@ -350,7 +350,7 @@ export default function MapComponent() {
       TCB.direccion = details.direccion
     } catch (error) {
       console.log('CATCHED', error)
-      SLDRAlert('NOMINATIM error 2', error, 'ERROR')
+      SLDRAlert('NOMINATIM error 2', error, 'Error')
       TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
       return false
     }

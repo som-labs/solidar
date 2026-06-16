@@ -14,12 +14,21 @@ const AlertContext = createContext()
 import HelpIcon from '@mui/icons-material/Help'
 import IconButton from '@mui/material/IconButton'
 
+const colorPorTipo = {
+  Mensaje: 'info.light',
+  Aviso: 'warning.light',
+  Error: 'error.light',
+}
+
 function BasicAlert(props) {
   const { t } = useTranslation()
   const { title, contents, type, onClose } = props
+
+  const bgColor = colorPorTipo[type] ?? 'grey.200'
+
   return (
     <>
-      <DialogTitle>{type + '--' + title}</DialogTitle>
+      <DialogTitle sx={{ backgroundColor: bgColor }}>{title}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description" sx={{ whiteSpace: 'pre-line' }}>
           {contents}
@@ -35,10 +44,14 @@ function BasicAlert(props) {
 }
 
 const AlertProvider = ({ children }) => {
-  //DEMO: Detalle
   const [inLineHelp, setInLineHelp] = useState(false)
   const [openDialog, closeDialog] = useDialog()
 
+  /** Muestra dialogo de alerta
+   * @param {String} title
+   * @param {String} mensaje
+   * @param {String} type ['Mensaje', 'Aviso', "Error"]
+   */
   function SLDRAlert(title, message, type) {
     openDialog({
       children: (

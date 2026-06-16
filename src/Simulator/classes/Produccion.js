@@ -1,6 +1,5 @@
 import TCB from './TCB'
 import DiaHora from './DiaHora'
-import * as UTIL from './Utiles'
 /**
  * Clase representa la produccion horaria. Puede ser de una base o en caso TCB.produccion la global de toda la configuración
  * @extends DiaHora
@@ -38,11 +37,13 @@ class Produccion extends DiaHora {
       this.potenciaTotal = 0
       this.CO2AnualRenovable = 0
       this.CO2AnualNoRenovable = 0
+      this.totalPaneles = 0
 
       for (let _base of TCB.BaseSolar) {
         this.suma(_base.produccion)
         this.CO2AnualRenovable += _base.produccion.CO2AnualRenovable
         this.CO2AnualNoRenovable += _base.produccion.CO2AnualNoRenovable
+        this.totalPaneles += _base.instalacion.paneles
       }
 
       //This property is only used on the global production instance.

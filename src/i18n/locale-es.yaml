@@ -458,6 +458,7 @@ LOCATION:
     que cada una de ellas puede tener una orientación respecto al sur distinta. Revisa
     que los datos del resumen son correctos.
   ERROR_DEFINE_BASE: Debes definir las bases solares antes de continuar
+  ERROR_PANELES_BASE: Todas las bases deben tener un numero entero de paneles
   NOT_ENOUGH_AREA: No es posible poner paneles de {{largo}} por {{ancho}} con margen
     lateral de {{margen}} en este area. Redefine el área disponible, el tipo de panel
     a utilizar o el margen lateral en los parametros de la aplicación.
@@ -578,8 +579,8 @@ ENERGY_BALANCE:
   SUMMARY_TITLE: Datos de la cubierta
   SUMMARY_TOOLTIP_INFO: Información detallada del área seleccionada
   SUMMARY_FOOTER: |
-    {{paneles}} paneles<br />
-    Potencia instalada: {{potencia}}
+
+  ERROR_NUMERO_PANELES: El número de paneles debe ser mayor o igual a uno e idealmente menor que los {{maximo}} paneles que estimamos se pueden instalar en el area definida
   FOOTER_BUTON_MAXIMO: Configuración máxima ({{paneles}})
   FOOTER_BUTON_OPTIMO: Recupera optimizador
   TITLE_GRAFICO_CONSUMOGENERACION3D: Gráfico detallado de uso eléctrico y producción
@@ -696,8 +697,10 @@ ECONOMIC_BALANCE:
     Este es el número de años que tardarás en recuperar la inversión realizada
   PROMPT_AMORTIZATION_TIME: Los paneles tienen una vida útil de 20 a 30 años (si se
     mantienen correctamente)
+  PROMPT_AMORTIZATION_TIME_CON_BATERIA: Para la batería se ha considerado una vida útil de {{vidaUtil}} años, por lo que si el periodo de amortización de la instalación es superior, se incluirá una nueva inversión del mismo valor cada {{vidaUtil}} años.
   WARNING_AMORTIZATION_TIME: Esta configuración recupera la inversión en un tiempo
     superior a 20 años.
+  WARNING_CAMBIO_PRECIOS: Es posible que tenga que verificar el valor de la subvención recibida
   LABEL_INSTALLATION_COST: Coste previsto de la instalación (€ con IVA)
   TITLE_VIRTUAL_BATTERY: Excedentes no compensados
   DESCRIPTION_VIRTUAL_BATTERY: |

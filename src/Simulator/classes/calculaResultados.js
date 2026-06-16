@@ -27,10 +27,43 @@ async function calculaResultados() {
   UTIL.debugLog('calculaResultados - produccion global ', TCB.produccion)
   // Construccion objeto Balance global
   TCB.balance = new Balance(TCB.produccion, TCB.consumo, 100, TCB.bateria)
-  UTIL.debugLog('calculaResultados - balance global ', TCB.balance)
+  if (TCB.bateria) {
+    UTIL.debugLog(
+      `calculaResultados - balance global con ${TCB.produccion.totalPaneles} paneles y bateria de ${TCB.bateria.capacidad} kWh`,
+      TCB.balance,
+    )
+  } else {
+    UTIL.debugLog(
+      `calculaResultados - balance global con ${TCB.produccion.totalPaneles} paneles y sin bateria`,
+      TCB.balance,
+    )
+  }
   TCB.balanceCreado = true
   // TCB.economico = new Economico()
   // UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
+
+  //Recalculamos los estadisticos de deficit y excedente para el caso sin bateria. Esto nos permite mostrar al usuario la diferencia entre tener o no tener bateria.
+  if (!TCB.bateria) {
+    const deficit = UTIL.statsSinCeros(TCB.balance.idxTable, 'excedente')
+    const invierno = [],
+      verano = [],
+      medio = []
+    for (let i = 0; i < 365; i++) {
+      const mes = TCB.balance.idxTable[i].fecha.getMonth() + 1
+      if (mes >= 10 || mes <= 3) invierno.push(TCB.balance.idxTable[i])
+      else if (mes > 4 && mes < 9) verano.push(TCB.balance.idxTable[i])
+      else medio.push(TCB.balance.idxTable[i])
+    }
+
+    TCB.statsSinBateria = {
+      deficitStats: deficit,
+      inviernoStats: UTIL.statsSinCeros(invierno, 'excedente'),
+      veranoStats: UTIL.statsSinCeros(verano, 'excedente'),
+      medioStats: UTIL.statsSinCeros(medio, 'excedente'),
+      autoconsumo: TCB.balance.autoconsumo / TCB.produccion.totalAnual,
+      autosuficiencia: TCB.balance.autoconsumo / TCB.consumo.totalAnual,
+    }
+  }
   return
 }
 

@@ -24,6 +24,7 @@ import * as UTIL from '../classes/Utiles'
 export default function Subvencion() {
   const { t, i18n } = useTranslation()
   const theme = useTheme()
+
   const [error, setError] = useState({ status: false, field: '' })
 
   const { ecoData, setEcoData } = useContext(EconomicContext)
@@ -35,7 +36,7 @@ export default function Subvencion() {
     if (!UTIL.ValidateDecimal(i18n.language, value)) {
       setError({ status: true, field: name })
     } else {
-      if (valor > ecoData.precioInstalacionCorregido) {
+      if (valor > ecoData.precioInstalacionCorregido + ecoData.precioBateria) {
         //alert(t('ECONOMIC_BALANCE.SUBVENCION_SURPLUS'))
         // setValor(ecoData.precioInstalacionCorregido)
         // setPorciento(100)
@@ -64,10 +65,21 @@ export default function Subvencion() {
       } else {
         if (name === 'valorSubvencion') {
           setValor(parseInt(value))
-          setPorciento(parseInt((value / ecoData.precioInstalacionCorregido) * 100))
+          setPorciento(
+            parseInt(
+              (value / (ecoData.precioInstalacionCorregido + ecoData.precioBateria)) *
+                100,
+            ),
+          )
         } else {
+          console.log(ecoData.precioInstalacionCorregido + ecoData.precioBateria, value)
           setPorciento(parseInt(value))
-          setValor(parseInt((ecoData.precioInstalacionCorregido * value) / 100))
+          setValor(
+            parseInt(
+              ((ecoData.precioInstalacionCorregido + ecoData.precioBateria) * value) /
+                100,
+            ),
+          )
         }
       }
     }

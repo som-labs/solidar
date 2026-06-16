@@ -107,11 +107,12 @@ class Economico {
 
           // Store energia consumed by fee period
           TCB.consumo.periodo[idxPeriodo - 1] += TCB.consumo.diaHora[dia][hora]
-
+          // Store maxima potencia demandada por periodo antes de los paneles
           TCB.consumo.maxPotenciaOriginal[idxPeriodo - 1] = Math.max(
             TCB.consumo.maxPotenciaOriginal[idxPeriodo - 1],
             TCB.consumo.diaHora[dia][hora],
           )
+
           if (idxPeriodo > 6) console.log('IDX Periodo > 6', dia, hora)
 
           // Determinamos el precio de esa hora (la tarifa) segun sea el balance es decir teniendo en cuanta los paneles. Si es negativo compensa
@@ -129,6 +130,8 @@ class Economico {
             this.idxTable[dia].compensado += this.diaHoraPrecioConPaneles[dia][hora]
           } else {
             //Demandamos energia de la red de distribucion
+
+            // Store maxima potencia demandada por periodo despues de los paneles
             TCB.consumo.maxPotenciaNueva[idxPeriodo - 1] = Math.max(
               TCB.consumo.maxPotenciaNueva[idxPeriodo - 1],
               TCB.balance.diaHora[dia][hora],
@@ -151,9 +154,9 @@ class Economico {
       }
     }
 
-    console.log('AYUDA POTENCIA?', TCB.consumo.periodo)
-    console.log('AYUDA POTENCIA original?', TCB.consumo.maxPotenciaOriginal)
-    console.log('AYUDA POTENCIA nueva?', TCB.consumo.maxPotenciaNueva)
+    // console.log('AYUDA POTENCIA?', TCB.consumo.periodo)
+    // console.log('AYUDA POTENCIA original?', TCB.consumo.maxPotenciaOriginal)
+    // console.log('AYUDA POTENCIA nueva?', TCB.consumo.maxPotenciaNueva)
 
     this.consumoOriginalMensual = this.resumenMensual('consumoOriginal')
     this.consumoConPlacasMensual = this.resumenMensual('consumoConPlacas')
@@ -165,6 +168,7 @@ class Economico {
       TCB.produccion.potenciaTotalInstalada,
     )
     this.precioInstalacionCorregido = this.precioInstalacion
+    this.precioBateria = TCB.bateria ? TCB.bateria.precio : 0
 
     //Se debe corregir que si la comercializadora limita economicamente la compensacion al consumo o compensar mediante bateria virtual
 
@@ -181,10 +185,13 @@ class Economico {
     const _cuotaHucha = (cuotaHucha * (100 + TCB.parametros.IVAInstalacion)) / 100
 
     for (let i = 0; i < 12; i++) {
+      //Calculamos el precio del consumo con placas aumentado por la cuota de la hucha
       const consumoConCuota = this.consumoConPlacasMensual[i] + _cuotaHucha
+
       if (consumoConCuota < 0) {
-        //el excedente supera lo que hay que pagar
+        //el precio del excedente mensual supera lo que hay que pagar
         this.perdidaMes[i] = -consumoConCuota //en principio no se compensa y es perdida
+
         this.compensadoMensualCorregido[i] =
           this.compensadoMensual[i] + this.perdidaMes[i] + _cuotaHucha
 
@@ -194,7 +201,7 @@ class Economico {
         if (i === 0) {
           this.huchaSaldo[i] = huchaMes //Se asume que el saldo de enero es cero.
         } else {
-          this.huchaSaldo[i] = this.huchaSaldo[i - 1] + huchaMes
+          this.huchaSaldo[i] = this.huchaSaldo[i - 1] + huchaMes //El saldo de la hucha es el saldo del mes anterior mas lo que se ha podido meter en la hucha este mes
         }
         this.perdidaMes[i] -= huchaMes //El resto del coefHucha se asume como perdidas
       } else {
@@ -313,8 +320,7 @@ class Economico {
 
     //InversionReal includes IVA
     const inversionReal =
-      -this.precioInstalacionCorregido * (coefInversion / 100) -
-      (TCB.bateria?.precio ?? 0)
+      -this.precioInstalacionCorregido * (coefInversion / 100) - this.precioBateria
 
     unFlow = {
       ano: i,
@@ -352,9 +358,9 @@ class Economico {
       unFlow.ano = ++i
       unFlow.ahorro = this.ahorroAnual
       unFlow.previo = lastPendiente
-      //Cambiar por parametro el numero de años vida util bateria
-      if (TCB.bateria?.precio > 0 && unFlow.ano % 10 == 0) {
-        unFlow.inversion = TCB.bateria.precio
+
+      if (this.precioBateriao > 0 && unFlow.ano % TCB.parametros.bateriaVidaUtil == 0) {
+        unFlow.inversion = this.precioBateria
       } else {
         unFlow.inversion = 0 //LONGTERM: Cuidado probablemente en caso de prestamo cambie
       }

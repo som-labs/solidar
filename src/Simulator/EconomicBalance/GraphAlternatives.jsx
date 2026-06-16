@@ -90,7 +90,6 @@ export default function GraphAlternatives() {
         if (TCB.economico.periodoAmortizacion > 0) {
           // Se extraen los valores de las variables que forman parte del grafico
           // En el caso de baterias se considera que las cargas de la bateria son autoconsumo
-          const autoConsumoTotal = TCB.balance.autoconsumo + TCB.balance.cargas
           paneles.push(intento)
           autoconsumo.push((TCB.balance.autoconsumo / TCB.produccion.totalAnual) * 100)
           autosuficiencia.push((TCB.balance.autoconsumo / TCB.consumo.totalAnual) * 100)

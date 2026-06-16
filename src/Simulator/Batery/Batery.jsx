@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -42,35 +42,45 @@ const BateryStep = () => {
     const new_bateria = new Bateria(bateria)
     setBateria(new_bateria)
     TCB.bateria = new_bateria
-    TCB.requiereOptimizador = true
   }
 
   function eliminarBateria() {
     setBateria(null)
     TCB.bateria = null
-    TCB.requiereOptimizador = true
     calculaResultados()
+    setStatsConBateria(null)
   }
 
-  const deficitStats = UTIL.statsSinCeros(TCB.balance.idxTable, 'excedente')
-  const invierno = []
-  const verano = []
-  const medio = []
-  for (let i = 0; i < 365; i++) {
-    const mes = TCB.balance.idxTable[i].fecha.getMonth() + 1
-    if (mes >= 10 || mes <= 3) {
-      invierno.push(TCB.balance.idxTable[i])
-    } else if (mes > 4 && mes < 9) {
-      verano.push(TCB.balance.idxTable[i])
-    } else {
-      medio.push(TCB.balance.idxTable[i])
+  // Stats con batería — se actualizan cuando BateryForm recalcula
+  const [statsConBateria, setStatsConBateria] = useState(null)
+
+  function handleResultados() {
+    const invierno = [],
+      verano = [],
+      medio = []
+    for (let i = 0; i < 365; i++) {
+      const mes = TCB.balance.idxTable[i].fecha.getMonth() + 1
+      if (mes >= 11 || mes <= 2) invierno.push(TCB.balance.idxTable[i])
+      else if (mes >= 5 && mes <= 8) verano.push(TCB.balance.idxTable[i])
+      else medio.push(TCB.balance.idxTable[i])
     }
-  }
-  const inviernoStats = UTIL.statsSinCeros(invierno, 'excedente')
-  const veranoStats = UTIL.statsSinCeros(verano, 'excedente')
-  const medioStats = UTIL.statsSinCeros(medio, 'excedente')
 
-  console.log('bateria state:', bateria)
+    const deficit = UTIL.statsSinCeros(TCB.balance.idxTable, 'excedente')
+    const inv = UTIL.statsSinCeros(invierno, 'excedente')
+    const ver = UTIL.statsSinCeros(verano, 'excedente')
+    const med = UTIL.statsSinCeros(medio, 'excedente')
+    const autoconsumo = TCB.balance.autoconsumo / TCB.produccion.totalAnual
+    const autosuficiencia = TCB.balance.autoconsumo / TCB.consumo.totalAnual
+
+    setStatsConBateria({
+      deficitStats: deficit,
+      inviernoStats: inv,
+      veranoStats: ver,
+      medioStats: med,
+      autoconsumo: autoconsumo,
+      autosuficiencia: autosuficiencia,
+    })
+  }
 
   return (
     <Grid
@@ -79,60 +89,169 @@ const BateryStep = () => {
       alignItems="center"
       justifyContent="space-evenly"
     >
-      <Grid item xs={12} sx={{ mb: '1rem' }}>
-        <Typography
-          variant="body"
-          dangerouslySetInnerHTML={{
-            __html: t('Bateria.DESCRIPTION'),
-          }}
-        />
-      </Grid>
+      <SLDRInfoBox>
+        <Grid item xs={12} sx={{ mb: '1rem' }}>
+          <Typography
+            variant="body"
+            dangerouslySetInnerHTML={{
+              __html: t('Bateria.DESCRIPTION'),
+            }}
+          />
+        </Grid>
 
-      <Grid item xs={12} sx={{ mb: '1rem' }}>
-        <SLDRInfoBox>
+        <Grid container rowSpacing={1}>
+          <Grid item xs={12}>
+            <Typography
+              variant="body1"
+              fontWeight={500}
+              textAlign="center"
+              sx={{ borderBottom: '1px solid', borderColor: 'divider', pb: 0.5 }}
+            >
+              Datos sin batería
+            </Typography>
+          </Grid>
           <Grid item xs={4}>
             <Typography variant="body2">
               {'Mediana excedente diario invierno: ' +
-                UTIL.formatoValor('energia', inviernoStats.median)}
+                UTIL.formatoValor(
+                  'produccionTotal',
+                  TCB.statsSinBateria.inviernoStats.median,
+                )}
             </Typography>
           </Grid>
           <Grid item xs={4}>
             <Typography variant="body2">
               {'Mediana excedente diario intermedio: ' +
-                UTIL.formatoValor('energia', medioStats.median)}
+                UTIL.formatoValor(
+                  'produccionTotal',
+                  TCB.statsSinBateria.medioStats.median,
+                )}
             </Typography>
           </Grid>
           <Grid item xs={4}>
             <Typography variant="body2">
               {'Mediana excedente diario verano: ' +
-                UTIL.formatoValor('energia', veranoStats.median)}
+                UTIL.formatoValor(
+                  'produccionTotal',
+                  TCB.statsSinBateria.veranoStats.median,
+                )}
             </Typography>
           </Grid>
-        </SLDRInfoBox>
-      </Grid>
 
-      <Grid item xs={12} sx={{ mb: '1rem' }}>
-        <SLDRInfoBox>
           <Grid item xs={4}>
             <Typography variant="body2">
               {'Excedente diario mínimo anual: ' +
-                UTIL.formatoValor('energia', deficitStats.min)}
+                UTIL.formatoValor(
+                  'produccionTotal',
+                  TCB.statsSinBateria.deficitStats.min,
+                )}
             </Typography>
           </Grid>
           <Grid item xs={4}>
             <Typography variant="body2">
               {'Excedente diario mediana anual: ' +
-                UTIL.formatoValor('energia', deficitStats.median)}
+                UTIL.formatoValor(
+                  'produccionTotal',
+                  TCB.statsSinBateria.deficitStats.median,
+                )}
             </Typography>
           </Grid>
           <Grid item xs={4}>
             <Typography variant="body2">
               {'Excedente diario máximo anual: ' +
-                UTIL.formatoValor('energia', deficitStats.max)}
+                UTIL.formatoValor(
+                  'produccionTotal',
+                  TCB.statsSinBateria.deficitStats.max,
+                )}
             </Typography>
           </Grid>
-        </SLDRInfoBox>
-      </Grid>
+          <Grid item xs={6} textAlign="center">
+            <Typography variant="body2">
+              {'Autosuficiencia: ' +
+                UTIL.formatoValor('porciento', TCB.statsSinBateria.autosuficiencia * 100)}
+            </Typography>
+          </Grid>
+          <Grid item xs={6} textAlign="center">
+            <Typography variant="body2">
+              {'Autoconsumo: ' +
+                UTIL.formatoValor('porciento', TCB.statsSinBateria.autoconsumo * 100)}
+            </Typography>
+          </Grid>
+        </Grid>
+
+        {statsConBateria && (
+          <Grid container rowSpacing={1} sx={{ mt: '1rem' }}>
+            <Grid item xs={12}>
+              <Typography
+                variant="body1"
+                fontWeight={500}
+                textAlign="center"
+                sx={{ borderBottom: '1px solid', borderColor: 'divider', pb: 0.5 }}
+              >
+                Datos con batería
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body2">
+                {'Mediana excedente diario invierno: ' +
+                  UTIL.formatoValor(
+                    'produccionTotal',
+                    statsConBateria.inviernoStats.median,
+                  )}
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body2">
+                {'Mediana excedente diario intermedio: ' +
+                  UTIL.formatoValor('produccionTotal', statsConBateria.medioStats.median)}
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body2">
+                {'Mediana excedente diario verano: ' +
+                  UTIL.formatoValor(
+                    'produccionTotal',
+                    statsConBateria.veranoStats.median,
+                  )}
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body2">
+                {'Excedente diario mínimo anual: ' +
+                  UTIL.formatoValor('produccionTotal', statsConBateria.deficitStats.min)}
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body2">
+                {'Excedente diario mediana anual: ' +
+                  UTIL.formatoValor(
+                    'produccionTotal',
+                    statsConBateria.deficitStats.median,
+                  )}
+              </Typography>
+            </Grid>
+            <Grid item xs={4}>
+              <Typography variant="body2">
+                {'Excedente diario máximo anual: ' +
+                  UTIL.formatoValor('produccionTotal', statsConBateria.deficitStats.max)}
+              </Typography>
+            </Grid>
+            <Grid item xs={6} textAlign="center">
+              <Typography variant="body2">
+                {'Autosuficiencia: ' +
+                  UTIL.formatoValor('porciento', statsConBateria.autosuficiencia * 100)}
+              </Typography>
+            </Grid>
+            <Grid item xs={6} textAlign="center">
+              <Typography variant="body2">
+                {'Autoconsumo: ' +
+                  UTIL.formatoValor('porciento', statsConBateria.autoconsumo * 100)}
+              </Typography>
+            </Grid>
+          </Grid>
+        )}
+      </SLDRInfoBox>
+
       <Grid item xs={12} textAlign="center">
         {/* ── Botón principal ── */}
         {!bateria ? (
@@ -148,8 +267,8 @@ const BateryStep = () => {
                 const b = new Bateria()
                 setBateria(b)
                 TCB.bateria = b
-                TCB.requiereOptimizador = true
               }}
+              sx={{ mt: '1rem' }}
             >
               {t('Bateria.LABEL_CREATE')}
             </Button>
@@ -164,6 +283,7 @@ const BateryStep = () => {
               size="large"
               startIcon={<DeleteIcon />}
               onClick={eliminarBateria}
+              sx={{ mt: '1rem' }}
             >
               {t('Bateria.LABEL_DELETE')}
             </Button>
@@ -175,6 +295,7 @@ const BateryStep = () => {
             setBateriaValida={setBateriaValida}
             setBateria={setBateria}
             nuevaBateria={nuevaBateria}
+            onResultados={handleResultados} // <-- nuevo
           />
         )}
       </Grid>

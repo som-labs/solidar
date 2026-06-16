@@ -11,6 +11,9 @@ import { useTheme } from '@mui/material/styles'
 // REACT Solidar Components
 import { EconomicContext } from '../EconomicContext'
 
+// Solidar objects
+import TCB from '../classes/TCB'
+
 export default function AmortizationTime() {
   const { t } = useTranslation()
   const theme = useTheme()
@@ -38,11 +41,25 @@ export default function AmortizationTime() {
           /> */}
           <FormControl sx={{ m: 1, minWidth: 120 }}>
             <Typography variant="h4" color={'#4D4D4D'} textAlign={'center'}>
-              {ecoData.periodoAmortizacion + ' ' + t('BASIC.LABEL_AÑOS')}
+              {ecoData.periodoAmortizacion < 0
+                ? '>' +
+                  Math.abs(ecoData.periodoAmortizacion) +
+                  ' ' +
+                  t('BASIC.LABEL_AÑOS')
+                : ecoData.periodoAmortizacion + ' ' + t('BASIC.LABEL_AÑOS')}
             </Typography>
+
             <Typography variant="body" textAlign={'center'}>
               {t('ECONOMIC_BALANCE.PROMPT_AMORTIZATION_TIME')}
             </Typography>
+            {TCB.bateria && (
+              <Typography variant="body" textAlign={'center'}>
+                {t('ECONOMIC_BALANCE.PROMPT_AMORTIZATION_TIME_CON_BATERIA', {
+                  vidaUtil: TCB.parametros.bateriaVidaUtil,
+                })}
+              </Typography>
+            )}
+
             <br />
           </FormControl>
         </Box>

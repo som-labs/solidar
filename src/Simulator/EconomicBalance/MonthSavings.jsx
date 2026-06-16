@@ -47,23 +47,23 @@ export default function MonthSaving() {
       var _compensado = new Array(12)
       var ahorroAbsoluto = new Array(12)
       var ahorroCalculado = new Array(12)
-      var _corregido = new Array(12)
+      var _autoConsumoCorregido = new Array(12)
 
       for (let i = 0; i < 12; i++) {
         //las perdidas y lo compensado lo graficamos negativo
         _perdidas[i] = -ecoData.perdidaMes[i]
         _compensado[i] = -ecoData.compensadoMensualCorregido[i]
-        //La diferencia de precio hora entre la carga de la bateria y la descarga produce un desequilibrio de costes.
-        //Como no almacenamos la carga y descarga horaria que nos permitiria hacer ese calculo con precision lo corregimos a los bruto
+
+        //La diferencia de precio hora entre la carga de la batería y la descarga produce un desequilibrio de costes.
+        //Como no almacenamos la carga y descarga horaria que nos permitiría hacer ese cálculo con precisián lo corregimos a lo bruto
+
+        //Ahorro real obtenido
         ahorroAbsoluto[i] =
           ecoData.consumoOriginalMensual[i] - ecoData.consumoConPlacasMensualCorregido[i]
 
-        ahorroCalculado[i] =
-          ecoData.ahorradoAutoconsumoMes[i] -
-          ecoData.compensadoMensualCorregido[i] +
-          ecoData.perdidaMes[i]
-        _corregido[i] =
-          ecoData.ahorradoAutoconsumoMes[i] + ahorroAbsoluto[i] - ahorroCalculado[i]
+        //Quitamos lo obtenido por compensación simplificada y por lo recuperado de la hucha y eso es el autoconsumo
+        _autoConsumoCorregido[i] =
+          ahorroAbsoluto[i] - _compensado[i] - ecoData.extraccionHucha[i]
       }
 
       var trace_pagado = {
@@ -120,7 +120,7 @@ export default function MonthSaving() {
 
       var trace_ahorro = {
         x: mesMapa,
-        y: _corregido, //ecoData.ahorradoAutoconsumoMes,
+        y: _autoConsumoCorregido,
         width: 0.3,
         marker: { color: '#C7A6CF' },
         name: t('GRAFICOS.LABEL_graficasAutoconsumo'),

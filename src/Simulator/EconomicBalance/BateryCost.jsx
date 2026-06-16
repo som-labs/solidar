@@ -21,6 +21,7 @@ import { useDialog } from '../../components/DialogProvider'
 
 import { EconomicContext } from '../EconomicContext'
 import { ConsumptionContext } from '../ConsumptionContext'
+import { AlertContext } from '../components/Alert'
 
 import HelpEconomicBalance from './HelpEconomicBalance'
 import {
@@ -36,6 +37,7 @@ export default function BateryCost() {
   const { t, i18n } = useTranslation()
   const theme = useTheme()
   const [openDialog, closeDialog] = useDialog()
+  const { SLDRAlert } = useContext(AlertContext)
   const { ecoData, setEcoData } = useContext(EconomicContext)
   const { bateria, setBateria } = useContext(ConsumptionContext)
 
@@ -58,9 +60,13 @@ export default function BateryCost() {
       if (precioBateria > 0) {
         TCB.bateria.precio = parseInt(precioBateria)
         setBateria((prev) => ({ ...prev, precio: precioBateria }))
+        TCB.economico.precioBateria = parseInt(precioBateria)
         TCB.economico.calculoFinanciero(100, 100)
         if (TCB.economico.periodoAmortizacion > 20) {
-          alert(t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME'))
+          SLDRAlert('AVISO', t('ECONOMIC_BALANCE.WARNING_AMORTIZATION_TIME', 'Aviso'))
+        }
+        if (TCB.porcientoSubvencion !== 0) {
+          SLDRAlert('AVISO', t('ECONOMIC_BALANCE.WARNING_CAMBIO_PRECIOS', 'Aviso'))
         }
         setEcoData({ ...ecoData, ...TCB.economico })
         setError(false)

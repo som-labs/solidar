@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams, useLocation } from 'react-router-dom'
 
@@ -45,31 +45,28 @@ export default function Page() {
   TCB.URLParameters = useSearchParams()[0]
 
   let results
-  InicializaAplicacion()
+  useEffect(() => {
+    InicializaAplicacion()
+  }, [])
 
   function validaEnergyBalanceStep() {
     for (let base of TCB.BaseSolar) {
       if (!UTIL.ValidateEntero(base.instalacion.paneles)) {
-        SLDRAlert(
-          'VALIDACION',
-          t('todas las bases deben tener un numero entero de paneles'),
-          'error',
-        )
+        SLDRAlert('VALIDACION', t('ERROR_PANELES_BASE'), 'Aviso')
         return false
       }
     }
 
     //If periodoAmortizacion is less than zero means it is bigger than maximum number of years expected for the economic balance and cannot continue.
-
     if (ecoData.periodoAmortizacion < 0) {
       SLDRAlert(
         'VALIDACION',
         t('ECONOMIC_BALANCE.MSG_NO_FINANCE', {
           periodo: Math.abs(ecoData.periodoAmortizacion),
         }),
-        'error',
+        'Aviso',
       )
-      return false
+      return true
     } else {
       return true
     }
@@ -77,18 +74,17 @@ export default function Page() {
 
   async function validaLocationStep() {
     results = validaBases()
-    if (!results.status) SLDRAlert('VALIDACION', results.error, 'error')
+    if (!results.status) SLDRAlert('VALIDACION', results.error, 'Aviso')
     return results.status
   }
 
   async function validaConsumptionStep() {
     results = validaTipoConsumo()
     if (!results.status) {
-      SLDRAlert('VALIDACION', results.error, 'error')
+      SLDRAlert('VALIDACION', results.error, 'Error')
       return false
     }
 
-    console.log('llamamos a preparar energía salida consumption', TCB.bateria)
     results = await PreparaEnergyBalance()
     if (!results.status) {
       console.log(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error)
@@ -110,16 +106,14 @@ export default function Page() {
           return false
         } else {
           TCB.bateria.updatePrice()
-          TCB.bateria.fechaInicio = TCB.consumo.fechaInicio
-          TCB.bateria.fechaFin = TCB.consumo.fechaFin
+          TCB.bateria.diaHora.fechaInicio = TCB.consumo.diaHora.fechaInicio
+          TCB.bateria.diaHora.fechaFin = TCB.consumo.diaHora.fechaFin
           TCB.bateria.sintesis()
           setBateria(TCB.bateria)
-          TCB.requiereOptimizador = true
         }
       }
     }
 
-    console.log('llamamos a preparar energía salida bateria', TCB.bateria)
     results = await PreparaEnergyBalance()
     if (results.status) {
       //When importing first time will not compute Economico next yes

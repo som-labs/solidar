@@ -57,19 +57,32 @@ export default function EnergyFlow(props) {
     perdidas,
   } = props.yearlyData
 
+  // useEffect(() => {
+  //   if (grafResumen.current) {
+  //     setAnchoPanel(grafResumen.current.getBoundingClientRect().width)
+  //     setLeftMargin(grafResumen.current.getBoundingClientRect().width * 0.05)
+  //     setDibujo(true)
+  //   }
+  // }, [])
   useEffect(() => {
-    if (grafResumen.current) {
-      setAnchoPanel(grafResumen.current.getBoundingClientRect().width)
-      setLeftMargin(grafResumen.current.getBoundingClientRect().width * 0.05)
+    if (!grafResumen.current) return
+
+    const observer = new ResizeObserver((entries) => {
+      const ancho = entries[0].contentRect.width // contentRect ya excluye padding
+      setAnchoPanel(ancho)
+      setLeftMargin(ancho * 0.05)
       setDibujo(true)
-    }
+    })
+
+    observer.observe(grafResumen.current)
+    return () => observer.disconnect()
   }, [])
 
   if (dibujo) {
     bar.current.innerHTML = ''
     var altoLinea = 25
-    const anchoEnergia = autoconsumo + deficit + excedente + cargas + perdidas
-    const scale = anchoPanel / anchoEnergia
+    const anchoEnergia = consumo + excedente
+    const scale = (anchoPanel * 0.9) / anchoEnergia
 
     const wConsumo = consumo * scale
     const wProduccion = produccion * scale
@@ -112,17 +125,17 @@ export default function EnergyFlow(props) {
     gSymbol.style.left = (leftMargin + wConsumo + wExcedente / 2 - 150).toFixed(0) + 'px'
     gSymbol.style.display = 'inline-block'
 
-    if (TCB.bateria) {
-      _drawRectText(
-        bar.current,
-        leftMargin + wConsumo + wExcedente,
-        linea,
-        wPerdidas,
-        t('ENERGY_BALANCE.LABEL_PERDIDAS'),
-        stPerdidas,
-        stTitulo,
-      )
-    }
+    // if (TCB.bateria) {
+    //   _drawRectText(
+    //     bar.current,
+    //     leftMargin + wConsumo + wExcedente,
+    //     linea,
+    //     wPerdidas,
+    //     t('ENERGY_BALANCE.LABEL_PERDIDAS'),
+    //     stPerdidas,
+    //     stTitulo,
+    //   )
+    // }
     linea = 2
     _drawRectText(
       bar.current,
@@ -142,17 +155,6 @@ export default function EnergyFlow(props) {
       stExcedente,
       stTitulo,
     )
-    if (TCB.bateria) {
-      _drawRectText(
-        bar.current,
-        leftMargin + wConsumo + wExcedente,
-        linea,
-        wPerdidas,
-        UTIL.formatoValor('energia', perdidas),
-        stPerdidas,
-        stTitulo,
-      )
-    }
 
     linea = 3
     _drawRectText(
@@ -169,7 +171,7 @@ export default function EnergyFlow(props) {
       leftMargin + wDeficit,
       linea,
       wAutoconsumo,
-      UTIL.formatoValor('porciento', (autoconsumo / consumo) * 100),
+      UTIL.formatoValor('porciento', ((autoconsumo - cargas) / consumo) * 100),
       stAutoconsumo,
       stTitulo,
     )
@@ -199,7 +201,10 @@ export default function EnergyFlow(props) {
       leftMargin + wDeficit + wAutoconsumo / 2,
       linea,
       wAutoconsumo / 2,
-      [t('ENERGY_BALANCE.LABEL_AUTOCONSUMO'), UTIL.formatoValor('energia', autoconsumo)],
+      [
+        t('ENERGY_BALANCE.LABEL_AUTOCONSUMO'),
+        UTIL.formatoValor('energia', autoconsumo - cargas),
+      ],
       stAutoconsumo,
       stTitulo,
     )
@@ -210,8 +215,22 @@ export default function EnergyFlow(props) {
         leftMargin + wDeficit + wAutoconsumo + wDescargas / 2,
         linea,
         wDescargas / 2,
-        [t('ENERGY_BALANCE.LABEL_BATERIA'), UTIL.formatoValor('energia', descargas)],
+        [
+          UTIL.formatoValor('energia', descargas),
+          t('ENERGY_BALANCE.LABEL_BATERIA'),
+          UTIL.formatoValor('energia', cargas),
+        ],
         stBateria,
+        stTitulo,
+      )
+
+      _drawRectText(
+        bar.current,
+        leftMargin + wConsumo,
+        linea,
+        wPerdidas,
+        UTIL.formatoValor('energia', cargas - descargas),
+        stPerdidas,
         stTitulo,
       )
     }
@@ -222,7 +241,7 @@ export default function EnergyFlow(props) {
       leftMargin + wDeficit,
       linea,
       wAutoconsumo,
-      UTIL.formatoValor('porciento', (autoconsumo / produccion) * 100),
+      UTIL.formatoValor('porciento', ((autoconsumo - cargas) / produccion) * 100),
       stAutoconsumo,
       stTitulo,
     )
@@ -231,32 +250,41 @@ export default function EnergyFlow(props) {
         bar.current,
         leftMargin + wDeficit + wAutoconsumo,
         linea,
-        wDescargas,
-        UTIL.formatoValor('porciento', (descargas / produccion) * 100),
+        wDescargas + wPerdidas,
+        UTIL.formatoValor('porciento', ((cargas + perdidas) / produccion) * 100),
         stBateria,
         stTitulo,
       )
+      // _drawRectText(
+      //   bar.current,
+      //   leftMargin + wDeficit + wAutoconsumo + wCargas,
+      //   linea,
+      //   wPerdidas,
+      //   UTIL.formatoValor('porciento', (perdidas / produccion) * 100),
+      //   stPerdidas,
+      //   stTitulo,
+      // )
     }
     _drawRectText(
       bar.current,
-      leftMargin + wDeficit + wAutoconsumo + wDescargas,
+      leftMargin + wDeficit + wAutoconsumo + wCargas,
       linea,
       wExcedente,
       UTIL.formatoValor('porciento', (excedente / produccion) * 100),
       stExcedente,
       stTitulo,
     )
-    if (TCB.bateria) {
-      _drawRectText(
-        bar.current,
-        leftMargin + wDeficit + wAutoconsumo + wDescargas + wExcedente,
-        linea,
-        wPerdidas,
-        UTIL.formatoValor('porciento', (perdidas / produccion) * 100),
-        stPerdidas,
-        stTitulo,
-      )
-    }
+    // if (TCB.bateria) {
+    //   _drawRectText(
+    //     bar.current,
+    //     leftMargin + wDeficit + wAutoconsumo + wDescargas + wExcedente,
+    //     linea,
+    //     wPerdidas,
+    //     UTIL.formatoValor('porciento', (perdidas / produccion) * 100),
+    //     stPerdidas,
+    //     stTitulo,
+    //   )
+    // }
     linea = 8
     _drawRectText(
       bar.current,
@@ -452,6 +480,7 @@ function _drawElipseText(svg, x, linea, ancho, texto, estiloR, estiloT) {
   // variable for the namespace
   const svgns = 'http://www.w3.org/2000/svg'
   const altoLinea = 25
+  const nLineas = texto.length
 
   let y = (linea - 1) * altoLinea + altoLinea / 2
 
@@ -463,19 +492,30 @@ function _drawElipseText(svg, x, linea, ancho, texto, estiloR, estiloT) {
   rect.setAttribute('ry', (3 * altoLinea) / 2)
   svg.appendChild(rect)
 
-  let labelText = document.createElementNS(svgns, 'text')
-  labelText.setAttribute('style', estiloT)
-  labelText.setAttribute('x', x)
-  labelText.setAttribute('y', y - altoLinea / 2)
-  labelText.textContent = texto[0]
-  svg.appendChild(labelText)
+  // let labelText = document.createElementNS(svgns, 'text')
+  // labelText.setAttribute('style', estiloT)
+  // labelText.setAttribute('x', x)
+  // labelText.setAttribute('y', y - altoLinea / 2)
+  // labelText.textContent = texto[0]
+  // svg.appendChild(labelText)
 
-  let valueText = document.createElementNS(svgns, 'text')
-  valueText.setAttribute('style', estiloT)
-  valueText.setAttribute('x', x)
-  valueText.setAttribute('y', y + altoLinea / 2)
-  valueText.textContent = texto[1]
-  svg.appendChild(valueText)
+  // let valueText = document.createElementNS(svgns, 'text')
+  // valueText.setAttribute('style', estiloT)
+  // valueText.setAttribute('x', x)
+  // valueText.setAttribute('y', y + altoLinea / 2)
+  // valueText.textContent = texto[1]
+  // svg.appendChild(valueText)
+
+  // Repartir líneas centradas verticalmente
+  texto.forEach((lineasTexto, i) => {
+    const offsetY = (i - (nLineas - 1) / 2) * altoLinea
+    let textEl = document.createElementNS(svgns, 'text')
+    textEl.setAttribute('style', estiloT)
+    textEl.setAttribute('x', x)
+    textEl.setAttribute('y', y + offsetY)
+    textEl.textContent = lineasTexto
+    svg.appendChild(textEl)
+  })
 }
 
 function _drawArrow(svg, x, linea, lineas, tipoFlecha) {

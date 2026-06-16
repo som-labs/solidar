@@ -64,6 +64,10 @@ class DiaHora {
         this.idxTable[dia].maximo > inDiaHora.idxTable[dia].maximo
           ? this.idxTable[dia].maximo
           : inDiaHora.idxTable[dia].maximo
+      this.idxTable[dia].minimo =
+        this.idxTable[dia].minimo < inDiaHora.idxTable[dia].minimo
+          ? this.idxTable[dia].minimo
+          : inDiaHora.idxTable[dia].minimo
       this.idxTable[dia].fecha = inDiaHora.idxTable[dia].fecha
     }
     this.sintesis()
@@ -118,19 +122,21 @@ class DiaHora {
    */
   escala(inDiaHora, factor) {
     for (let dia = 0; dia < 365; dia++) {
+      this.idxTable[dia].fecha = inDiaHora.idxTable[dia].fecha
       for (let hora = 0; hora < 24; hora++) {
         this.diaHora[dia][hora] = inDiaHora.diaHora[dia][hora] * factor
       }
-      this.idxTable[dia].fecha = inDiaHora.idxTable[dia].fecha
-      this.idxTable[dia].suma = inDiaHora.idxTable[dia].suma * factor
-      this.idxTable[dia].promedio = inDiaHora.idxTable[dia].promedio * factor
-      this.idxTable[dia].maximo = inDiaHora.idxTable[dia].maximo * factor
+      // this.idxTable[dia].fecha = inDiaHora.idxTable[dia].fecha
+      // this.idxTable[dia].suma = inDiaHora.idxTable[dia].suma * factor
+      // this.idxTable[dia].promedio = inDiaHora.idxTable[dia].promedio * factor
+      // this.idxTable[dia].maximo = inDiaHora.idxTable[dia].maximo * factor
     }
-    this.maximoAnual = inDiaHora.maximoAnual * factor
-    this.minimoAnual = inDiaHora.minimoAnual * factor
-    this.numeroDias = inDiaHora.numeroDias
-    this.numeroRegistros = inDiaHora.numeroRegistros
-    this.totalAnual = inDiaHora.totalAnual * factor
+    this.sintesis()
+    // this.maximoAnual = inDiaHora.maximoAnual * factor
+    // this.minimoAnual = inDiaHora.minimoAnual * factor
+    // this.numeroDias = inDiaHora.numeroDias
+    // this.numeroRegistros = inDiaHora.numeroRegistros
+    // this.totalAnual = inDiaHora.totalAnual * factor
   }
   /**
    * Introduce los valores de un dia en diaHora y actualiza la tabla idx del dia correspondiente
@@ -158,10 +164,10 @@ class DiaHora {
 
     this.idxTable[indiceDia].fecha = unDia.fecha
     this.idxTable[indiceDia].previos = this.idxTable[indiceDia].previos + 1
-    this.idxTable[indiceDia].suma = UTIL.suma(unDia.valores)
-    this.idxTable[indiceDia].promedio = UTIL.promedio(unDia.valores)
-    this.idxTable[indiceDia].maximo = Math.max(...unDia.valores)
-    this.idxTable[indiceDia].minimo = Math.min(...unDia.valores)
+    // this.idxTable[indiceDia].suma = UTIL.suma(unDia.valores)
+    // this.idxTable[indiceDia].promedio = UTIL.promedio(unDia.valores)
+    // this.idxTable[indiceDia].maximo = Math.max(...unDia.valores)
+    // this.idxTable[indiceDia].minimo = Math.min(...unDia.valores)
   }
   /**
    * Calcula los campos maximoAnual y totalAnual de diaHora
@@ -169,7 +175,14 @@ class DiaHora {
   sintesis() {
     this.totalAnual = 0
     this.maximoAnual = -Infinity
+    this.minimoAnual = Infinity
+
     for (let i = 0; i < 365; i++) {
+      this.idxTable[i].suma = UTIL.suma(this.diaHora[i])
+      this.idxTable[i].promedio = UTIL.promedio(this.diaHora[i])
+      this.idxTable[i].maximo = Math.max(...this.diaHora[i])
+      this.idxTable[i].minimo = Math.min(...this.diaHora[i])
+
       if (this.idxTable[i].maximo > this.maximoAnual) {
         this.maximoAnual = this.idxTable[i].maximo
       }

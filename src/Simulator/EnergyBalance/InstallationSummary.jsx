@@ -11,6 +11,7 @@ import clsx from 'clsx'
 //React global components
 import calculaResultados from '../classes/calculaResultados'
 import { BasesContext } from '../BasesContext'
+import { ConsumptionContext } from '../ConsumptionContext'
 import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
 import { AlertContext } from '../components/Alert'
 import { useDialog } from '../../components/DialogProvider'
@@ -19,6 +20,7 @@ import DialogProperties from '../components/DialogProperties'
 // Solidar objects
 import Economico from '../classes/Economico'
 import { optimizador } from '../classes/optimizador'
+import Bateria from '../classes/Bateria'
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
 
@@ -29,6 +31,7 @@ export default function InstallationSummary() {
   const [openDialog, closeDialog] = useDialog()
   const { SLDRAlert } = useContext(AlertContext)
   const { bases, setBases, updateTCBBasesToState } = useContext(BasesContext)
+  const { bateria, setBateria } = useContext(ConsumptionContext)
   const [updatedCells, setUpdatedCells] = useState({})
 
   const handleEditCellChange = (params, event) => {
@@ -206,9 +209,14 @@ export default function InstallationSummary() {
     )
   }
 
-  function setNewPaneles() {
+  async function setNewPaneles() {
     //Update context with new TCB data
-    calculaResultados()
+
+    await calculaResultados()
+    if (TCB.bateria) {
+      const nuevaBateria = Object.assign(new Bateria(), TCB.bateria)
+      setBateria(nuevaBateria)
+    }
     TCB.economico = new Economico()
     UTIL.debugLog('calculaResultados - economico global ', TCB.economico)
     if (TCB.economico.periodoAmortizacion > 20) {
@@ -254,13 +262,11 @@ export default function InstallationSummary() {
     if (params.field === 'paneles') {
       if (UTIL.ValidateEntero(event.target.value)) {
         tmpPaneles = parseInt(event.target.value)
-        if (tmpPaneles < 0) {
+        if (tmpPaneles <= 0) {
           SLDRAlert(
             'VALIDACION',
-            'El número de paneles debe ser mayor o igual a cero e idealmente menor que los ' +
-              params.row.panelesMaximo +
-              ' paneles que estimamos se pueden instalar en el area definida',
-            'error',
+            t('ERROR_NUMERO_PANELES', { maximo: params.row.panelesMaximo }),
+            'Error',
           )
           return
         }
@@ -268,10 +274,8 @@ export default function InstallationSummary() {
         if (tmpPaneles > params.row.panelesMaximo) {
           SLDRAlert(
             'VALIDACION',
-            'Esta asignando mas paneles que los ' +
-              params.row.panelesMaximo +
-              ' que estimamos se pueden instalar en el area definida',
-            'error',
+            t('ERROR_NUMERO_PANELES', { maximo: params.row.panelesMaximo }),
+            'Error',
           )
         }
 

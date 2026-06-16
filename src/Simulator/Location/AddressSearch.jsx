@@ -52,7 +52,7 @@ export default function AddressSearch() {
             err: 'Status: ' + respCandidatos.status,
             url: url,
           }),
-          'error',
+          'Error',
         )
         return false
       }
@@ -60,7 +60,7 @@ export default function AddressSearch() {
       SLDRAlert(
         'VALIDACION',
         t('ERROR_NOMINATIM_FETCH', { err: err.message, url: url }),
-        'error',
+        'Error',
       )
       return false
     }

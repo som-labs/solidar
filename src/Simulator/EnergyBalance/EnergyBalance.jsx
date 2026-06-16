@@ -10,6 +10,7 @@ import InfoIcon from '@mui/icons-material/Info'
 //React global components
 import { BasesContext } from '../BasesContext'
 import { EconomicContext } from '../EconomicContext'
+import { ConsumptionContext } from '../ConsumptionContext'
 import { SLDRInfoBox, SLDRCollapsibleCard } from '../../components/SLDRComponents'
 
 // REACT Solidar Components
@@ -41,6 +42,7 @@ export default function EnergyBalanceStep() {
   const [yearlyData, setYearlyData] = useState({})
   const { bases, updateTCBBasesToState } = useContext(BasesContext)
   const { setEcoData } = useContext(EconomicContext)
+  const { bateria, setBateria } = useContext(ConsumptionContext)
   const [mes, setMes] = useState(t('ENERGY_BALANCE.VALUE_FULL_YEAR'))
   const [openDialog, closeDialog] = useDialog()
 
@@ -224,7 +226,7 @@ export default function EnergyBalanceStep() {
         </SLDRInfoBox>
       </Grid>
 
-      {TCB.bateria && (
+      {bateria && (
         <Grid item xs={12}>
           <SLDRCollapsibleCard
             expanded={true}
@@ -239,7 +241,7 @@ export default function EnergyBalanceStep() {
             />
             <Grid item xs={12} sx={{ width: '100%' }}>
               <SLDRInfoBox sx={{ mt: '1rem' }}>
-                <MapaDiaHoraBateria activo={TCB.bateria}></MapaDiaHoraBateria>
+                <MapaDiaHoraBateria activo={bateria}></MapaDiaHoraBateria>
               </SLDRInfoBox>
             </Grid>
           </SLDRCollapsibleCard>
