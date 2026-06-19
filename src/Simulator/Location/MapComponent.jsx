@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 
 // OpenLayers objects
 import { Map, View } from 'ol'
+import Attribution from 'ol/control/Attribution'
+import { defaults as defaultControls } from 'ol/control'
 import TileLayer from 'ol/layer/Tile'
 import Overlay from 'ol/Overlay.js'
 import { OSM, Vector as VectorSource, XYZ } from 'ol/source'
@@ -225,23 +227,37 @@ export default function MapComponent() {
         source: new OSM({
           maxZoom: 30,
         }),
+        attributions: '© OpenStreetMap contributors',
       })
       OpenS.set('name', 'OSM')
       OpenS.setVisible(false)
-      // SAT is satellite layer provided by ESRI via arcgisonline
-      // const SAT = new TileLayer({
-      //   source: new XYZ({
-      //     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      //     maxZoom: 30,
-      //   }),
-      // })
 
-      const SAT = new TileLayer({
-        source: new XYZ({
-          url: 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}?access_token=MAPBOX_TOKEN_REMOVED',
-          tileSize: 512,
-        }),
-      })
+      //Modificación 2926-06-18 Detectado token en git se mueve a .env
+      let SAT = null
+      const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN
+      // SAT  is satellite layer provided by Mapbox
+      if (mapboxToken) {
+        SAT = new TileLayer({
+          source: new XYZ({
+            url: `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`,
+            tileSize: 512,
+            attributions:
+              '© <a href="https://www.mapbox.com/about/maps/" target="_blank">Mapbox</a>',
+          }),
+        })
+        UTIL.debugLog('Using layer provided by Mapbox')
+      } else {
+        // SAT is satellite layer provided by ESRI via arcgisonline
+        SAT = new TileLayer({
+          source: new XYZ({
+            url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+            maxZoom: 30,
+            attributions:
+              '© <a href="https://www.arcgis.com" target="_blank">ArcGIS Online World Imagery</a>',
+          }),
+        })
+        UTIL.debugLog('Using layer provided by ESRI')
+      }
       SAT.set('name', 'SAT')
 
       // Vector is the layers where new features (bases o puntosConsumo) are shown from vectorSource
@@ -268,7 +284,11 @@ export default function MapComponent() {
           maxZoom: 20,
           zoom: 18,
         }),
-        controls: [],
+        controls: [
+          new Attribution({
+            collapsible: false, // true = muestra botón para colapsar, false = siempre visible
+          }),
+        ],
       })
 
       //Load interactions to allow bases drawing
@@ -436,6 +456,20 @@ export default function MapComponent() {
         ref={mapElement}
         className="map"
         style={{ width: '100%', height: '500px' }}
+        sx={{
+          position: 'relative',
+          '& .ol-overlaycontainer-stopevent': {
+            pointerEvents: 'none',
+          },
+          '& .ol-attribution': {
+            position: 'absolute !important',
+            top: 'unset !important',
+            left: '0 !important',
+            bottom: '0 !important',
+            right: 'unset !important',
+            pointerEvents: 'auto',
+          },
+        }}
       ></Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', flex: 1 }}>
         {/* Boton para cambiar vista mapa vs satelite */}

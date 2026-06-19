@@ -25,7 +25,6 @@ and considering **online use as redistribution**.
 
 [Full binding version of the License](LICENSE)
 
-
 ## Setup
 
 ```bash
@@ -35,7 +34,14 @@ npm install
 npm run dev
 ```
 
+## Mapbox token
+
+Satellite map depends on availability or not of Mapbox token.
+If you want to have it go to https://www.mapbox.com/ and get token for Static Tiles API, is free with a limit of 200.000 tiles
+Create file .env and insert line:
+VITE_MAPBOX_TOKEN="your Mapbox token"
+If no Mapbox tokken available solidar will use ArcGIS Online World Imagery from https://www.arcgis.com
+
 ## Contributing
 
 Take a look at the [Contribution guide](CONTRIB.md)
-
