@@ -1,6 +1,3 @@
-// test line
-// proxy_pvgis.php?idSesion=1781766025043&lat=40.4505&lon=-3.6995&angle=20&aspect=-87&loss=20&pvtechchoice=crystSi
-
 <?PHP
 // Allow from any origin
 if (isset($_SERVER['HTTP_ORIGIN'])) {

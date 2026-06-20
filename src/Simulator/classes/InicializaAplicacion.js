@@ -30,7 +30,7 @@ async function InicializaAplicacion() {
   // Define la url base de la aplicación
   const localHost = ['127.0.0.1', 'localhost']
   TCB.basePath = localHost.includes(window.location.hostname)
-    ? 'http://localhost/SOM/REACT/solidar/'
+    ? 'http://localhost/solidar/'
     : '/'
   UTIL.debugLog('_initEvents ejecutando desde ' + TCB.basePath)
 

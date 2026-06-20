@@ -43,6 +43,9 @@ $headers = 'From: '.$email_from."\r\n".
 'Content-Type: text/html; charset=UTF-8;' .
 'X-Mailer: PHP/' . phpversion();
 
+echo "Mensaje:" . $email_message;
+echo "subject" . $email_subject;
+
 if (mail($email_to, $email_subject, $email_message, $headers)) {
     echo "¡El formulario se ha enviado con éxito!";
 } else {
