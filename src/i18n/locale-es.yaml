@@ -6,10 +6,13 @@ APP_FRAME:
   CHANGE_LANGUAGE: Cambia el idioma
   CONTRIBUTE_TRANSLATIONS: Ayúdanos a traducir
   GO_HOME: Ir a la página principal
+  GO_HOME: Ir a la página principal
   GO_SIMULATOR: Ir al simulador
   PAGE_NOT_FOUND: No se ha encontrado la pàgina
   IMPORT_EXPORT: Gestion de exportación / recuperación de un proyecto de simulación
+  IMPORT_EXPORT: Gestion de exportación / recuperación de un proyecto de simulación
 HOME:
+  IS_IT_WORTH_TITLE1: Quiero ponerme paneles solares
   IS_IT_WORTH_TITLE1: Quiero ponerme paneles solares
   IS_IT_WORTH_TITLE2: ¿cómo sé si me compensa?
   IS_IT_WORTH_PARAGRAPH1: |
@@ -19,6 +22,10 @@ HOME:
     y del consumo eléctrico de las personas participantes.
 
   IS_IT_WORTH_PARAGRAPH2: |
+    Toma datos como el tamaño de la cubierta
+    su inclinación y orientación
+    el consumo eléctrico y la tarifa
+    y genera un informe con el número de paneles
     Toma datos como el tamaño de la cubierta
     su inclinación y orientación
     el consumo eléctrico y la tarifa

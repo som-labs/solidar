@@ -5,6 +5,7 @@ export default function SomEnergiaTheme(isDarkMode) {
     createTheme({
       typography: {
         fontFamily: '"Outfit","Roboto","Montserrat", "Helvetica", "Arial", sans-serif',
+        fontFamily: '"Outfit","Roboto","Montserrat", "Helvetica", "Arial", sans-serif',
         // Custom variant for home page paragraphs
         brochureP: {
           fontSize: 18,
@@ -25,14 +26,30 @@ export default function SomEnergiaTheme(isDarkMode) {
         //   paper: '#ffffff',
         // },
 
+        tonalOffset: 0.2,
+
+        background: {
+          default: isDarkMode ? '#000000' : '#FFFFFF',
+          paper: isDarkMode ? '#000000' : '#FFFFFF',
+        },
+        // background: {
+        //   default: alpha('#1976d2', 0.1),
+        //   paper: '#ffffff',
+        // },
+
         text: {
           primary: isDarkMode ? '#FFFFFF' : '#000000',
+          primary: isDarkMode ? '#FFFFFF' : '#000000',
         },
+
 
         primary: {
           main: isDarkMode ? '#F0F3EC' : '#0B2E34',
           contrastText: isDarkMode ? '#0B2E34' : '#000000',
+          main: isDarkMode ? '#F0F3EC' : '#0B2E34',
+          contrastText: isDarkMode ? '#0B2E34' : '#000000',
         },
+
 
         secondary: {
           main: '#F0F3EC',

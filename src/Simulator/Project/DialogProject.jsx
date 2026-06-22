@@ -161,7 +161,6 @@ export default function DialogProject({ recoverFormData, onClose }) {
                 object="Proyecto"
                 sx={{ textAlign: 'left', mb: '1rem' }}
               ></SLDRInputField>
-
               <SLDRInputField
                 name="descripcion"
                 style={{
