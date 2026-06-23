@@ -10,6 +10,7 @@ import Wizard from '../components/Wizard'
 
 import LocationStep from './Location/Location'
 import ConsumptionStep from './Consumption/Consumption'
+import BateryStep from './Batery/Batery'
 import EnergyBalanceStep from './EnergyBalance/EnergyBalance'
 import EconomicBalanceStep from './EconomicBalance/EconomicBalance'
 import SummaryClaraStep from './Summary/Clara/Summary'
@@ -23,6 +24,7 @@ import { EconomicContext } from './EconomicContext'
 // Solidar objects
 import PreparaEnergyBalance from './EnergyBalance/PreparaEnergyBalance'
 import TCB from './classes/TCB'
+import Economico from './classes/Economico'
 import * as UTIL from './classes/Utiles'
 import InicializaAplicacion from './classes/InicializaAplicacion'
 
