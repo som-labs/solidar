@@ -7,7 +7,7 @@ if ($token !== $secret) {
     exit('Forbidden');
 }
 
-$file = __DIR__ . '/log/PVGIScalls.txt';
+$file = '/var/log/solidar/PVGIScalls_test.txt';
 
 if (!file_exists($file)) {
     http_response_code(404);
@@ -15,7 +15,7 @@ if (!file_exists($file)) {
 }
 
 header('Content-Type: text/plain');
-header('Content-Disposition: attachment; filename="PVGIScalls.txt"');
+header('Content-Disposition: attachment; filename="PVGIScalls_test.txt"');
 header('Content-Length: ' . filesize($file));
 readfile($file);
 ?>

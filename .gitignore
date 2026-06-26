@@ -150,5 +150,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-src/Simulator/log/PVGIScalls.txt
-src/Simulator/log/PVGIScalls.txt
+
