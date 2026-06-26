@@ -108,6 +108,7 @@ async function exportProject() {
   })
 
   TCB.datosProyecto.bateria = TCB.bateria
+  TCB.datosProyecto.statsSinBateria = TCB.statsSinBateria
 
   // Guardamos condiciones economicas no almacenadas en el objeto Economico
   TCB.datosProyecto.tiempoSubvencionIBI = TCB.tiempoSubvencionIBI
@@ -309,6 +310,7 @@ async function importProject(fichero) {
   }
 
   TCB.bateria = datosImportar.bateria ? new Bateria(datosImportar.bateria) : null
+  TCB.statsSinBateria = datosImportar.statsSinBateria
 
   importLocalizacion(datosImportar)
   importTipoConsumo(datosImportar)

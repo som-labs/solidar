@@ -40,7 +40,14 @@ Satellite map depends on availability or not of Mapbox token.
 If you want to have it go to https://www.mapbox.com/ and get token for Static Tiles API, is free with a limit of 200.000 tiles
 Create file .env and insert line:
 VITE_MAPBOX_TOKEN="your Mapbox token"
-If no Mapbox tokken available solidar will use ArcGIS Online World Imagery from https://www.arcgis.com
+If no Mapbox token available solidar will use ArcGIS Online World Imagery from https://www.arcgis.com
+
+## Log file
+
+proxy_PVGIS.php generates a log file with the full request sent to PVGIS.
+It will be generated in /var/log/solidar/ directory that has to created before and www-data or the Apache owner authorized to write on it.
+Other option is to create a file '/solidar/config.local.php' with one line:
+PVGIS_LOG_PATH = full path and name of log file to be used
 
 ## Contributing
 

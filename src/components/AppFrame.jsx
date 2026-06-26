@@ -90,7 +90,6 @@ export default function AppFrame({ children }) {
 
           {/* Logo */}
           <img src={logo} width="56px" style={{ marginInline: '1rem' }} />
-          <img src={logo} width="56px" style={{ marginInline: '1rem' }} />
 
           {/* App name */}
           <Typography
@@ -118,10 +117,6 @@ export default function AppFrame({ children }) {
           {/* <ColorModeButton /> */}
           {/* <ColorModeButton /> */}
           <LanguageMenu />
-          <ParametersMenu />
-          <ContactMenu />
-          <ProjectMenu />
-          {inLineHelpIcon && <DisplayInLineHelp />}
           <ParametersMenu />
           <ContactMenu />
           <ProjectMenu />

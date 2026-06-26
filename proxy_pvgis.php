@@ -86,10 +86,40 @@ curl_close($ch);
 //Print the data out onto the page.
 echo $data;
 
+// Buscar config.local.php en el directorio padre de dist/
+// El contenido del fichero config.local.php debe ser algo como:
+
+// <?php para Windows
+// define('PVGIS_LOG_PATH', __DIR__ . '/.log/PVGIScalls.txt');
+// <?php entorno test
+// define('PVGIS_LOG_PATH', '/var/log/solidar/PVGIScalls_test.txt');
+// <?php entorno debug
+// define('PVGIS_LOG_PATH', '/var/log/solidar/PVGIScalls_debug.txt');
+
+//dependiendo del entorno. Si no existe, por ejemplo producción será /var/log/solidar/PVGIScalls.txt
+
+$configFile = dirname(__DIR__) . '/solidar/config.local.php';
+// echo dirname(__DIR__) . "\n";
+// echo $configFile . "\n";
+
+if (file_exists($configFile)) {
+    // echo "Existe\n";
+    require_once $configFile;
+}
+
+if (!defined('PVGIS_LOG_PATH')) {
+    // echo "No esta definido PVGIS_LOG_PATH\n";
+    define('PVGIS_LOG_PATH', '/var/log/solidar/PVGIScalls.txt');
+}
+
+// echo PVGIS_LOG_PATH;
+$logFile = PVGIS_LOG_PATH;
+
 
 $t2=date("Y/m/d H:i:s");
 //Log call
-$file = fopen("./log/PVGIScalls.txt", "a");
+$file = fopen($logFile, "a"); // development
+
 fwrite($file, $idSesion . ";" . $t1 . ";" . $t2 . ";" . $url . PHP_EOL);
 fclose($file);
 
