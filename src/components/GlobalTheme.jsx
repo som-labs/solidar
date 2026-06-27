@@ -5,18 +5,20 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import CssBaseline from '@mui/material/CssBaseline'
 import SomEnergiaTheme from './SomEnergiaTheme'
 import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles'
-import React from 'react'
+import { useState, useMemo, createContext } from 'react'
 import useLocalStorage from '../hooks/LocalStorage'
 
-const ColorModeContext = React.createContext({
+const ColorModeContext = createContext({
   current: null,
   set: (value) => {},
   toggle: () => {},
 })
 
 function GlobalTheme({ children }) {
-  const [colorMode, setColorMode] = useLocalStorage('colorMode', null)
-  const colorModeContext = React.useMemo(
+  //With new design no dark mode used
+  //const [colorMode, setColorMode] = useLocalStorage('colorMode', null)
+  const [colorMode, setColorMode] = useState('light')
+  const colorModeContext = useMemo(
     () => ({
       current: colorMode,
       set: (value) => {
@@ -33,7 +35,7 @@ function GlobalTheme({ children }) {
 
   const darkModeMediaQuery = useMediaQuery('(prefers-color-scheme: dark)')
   const isDarkMode = colorMode === 'dark' || (colorMode === null && darkModeMediaQuery)
-  const theme = React.useMemo(() => SomEnergiaTheme(isDarkMode), [isDarkMode])
+  const theme = useMemo(() => SomEnergiaTheme(isDarkMode), [isDarkMode])
 
   return (
     <ColorModeContext.Provider value={colorModeContext}>
