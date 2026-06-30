@@ -236,20 +236,20 @@ export default function MapComponent() {
       })
       OpenS.set('name', 'OSM')
       OpenS.setVisible(false)
-      // SAT is satellite layer provided by ESRI via arcgisonline
-      // const SAT = new TileLayer({
-      //   source: new XYZ({
-      //     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      //     maxZoom: 30,
-      //   }),
-      // })
-
+      //SAT is satellite layer provided by ESRI via arcgisonline
       const SAT = new TileLayer({
         source: new XYZ({
-          url: 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}?access_token=MAPBOX_TOKEN_REMOVED',
-          tileSize: 512,
+          url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+          maxZoom: 30,
         }),
       })
+
+      // const SAT = new TileLayer({
+      //   source: new XYZ({
+      //     url: 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}?access_token=MAPBOX_TOKEN_REMOVED',
+      //     tileSize: 512,
+      //   }),
+      // })
       SAT.set('name', 'SAT')
 
       // Vector is the layers where new features (bases o puntosConsumo) are shown from vectorSource
