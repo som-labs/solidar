@@ -1,0 +1,19 @@
+solidar = {
+    'server': 'host.somenergia.lan',
+    'user': '',
+    'password': '',
+    'logs_directory': '/var/log/solidar/',
+    'file_name': 'PVGIScalls'
+}
+
+user_solidar = {
+   'sender': 'sender@somenergia.coop',
+   'recipients': [''],
+   'bcc': [''],
+   'smtp_host': 'smtp.host.com',
+   'smtp_port': ,
+   'username': '', #False is not user required
+   'password': '',
+   'use_tls': False,
+}
+
