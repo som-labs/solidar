@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form } from 'formik'
 
@@ -14,6 +14,27 @@ import TCB from '../classes/TCB'
 export default function DialogProject({ recoverFormData, onClose }) {
   const { t } = useTranslation()
   const fileInputRef = useRef(null)
+
+  /* Añadido para descargar pvgis_calls.txt al hacer 3 clicks en el titulo del dialogo*/
+  const [adminVisible, setAdminVisible] = useState(false)
+  const clickCount = useRef(0)
+
+  const handleLogoClick = () => {
+    clickCount.current++
+    if (clickCount.current >= 3) {
+      setAdminVisible(true)
+      clickCount.current = 0
+    }
+  }
+
+  const descargarLog = () => {
+    const a = document.createElement('a')
+    a.href = TCB.basePath + 'download-log.php?token=solar2026'
+    a.download = 'PVGIScalls.txt'
+    a.click()
+    setAdminVisible(false)
+  }
+  /* fin añadido para descargar pvgis_calls.txt */
 
   const defaultData = {
     nombreProyecto: undefined,
@@ -84,7 +105,9 @@ export default function DialogProject({ recoverFormData, onClose }) {
     >
       {({ values }) => (
         <Form>
-          <DialogTitle>{t('Proyecto.DIALOG_TITLE')}</DialogTitle>
+          <DialogTitle onClick={handleLogoClick}>
+            {t('Proyecto.DIALOG_TITLE')}
+          </DialogTitle>
           <DialogContent>
             <Box
               sx={{
@@ -183,21 +206,33 @@ export default function DialogProject({ recoverFormData, onClose }) {
                   {t('Proyecto.LABEL.importarProyecto')}
                 </Button>
               </Tooltip>
-
-              <Button
-                variant="contained"
-                fullWidth
-                color="primary"
-                size="large"
-                onClick={() => exportProject(values)}
-              >
-                {t('Proyecto.LABEL.exportarProyecto')}
-              </Button>
+              <Tooltip title={t('Proyecto.TOOLTIP.exportarProyecto')}>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  color="primary"
+                  size="large"
+                  onClick={() => exportProject(values)}
+                >
+                  {t('Proyecto.LABEL.exportarProyecto')}
+                </Button>
+              </Tooltip>
             </Box>
           </DialogContent>
           <DialogActions>
             <Button onClick={cancelProject}>{t('BASIC.LABEL_CANCEL')}</Button>
             <Button type="submit">{t('BASIC.LABEL_OK')}</Button>
+            {adminVisible && (
+              <Button
+                onClick={descargarLog}
+                variant="contained"
+                color="error"
+                size="large"
+                style={{ margin: '0 auto', display: 'block' }}
+              >
+                ⬇ Descargar Log PVGIS
+              </Button>
+            )}
           </DialogActions>
         </Form>
       )}

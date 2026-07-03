@@ -18,7 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 $url = 'https://re.jrc.ec.europa.eu/api/v5_3/seriescalc?&pvcalculation=1&peakpower=1&outputformat=json&startyear=2015'; //&startyear=2016
+
+date_default_timezone_set('Europe/Madrid');
 $t1=date("Y/m/d H:i:s");
+
 if(isset($_GET['idSesion']))
 {
 	$idSesion = $_GET['idSesion'];
@@ -99,8 +102,6 @@ echo $data;
 //dependiendo del entorno. Si no existe, por ejemplo producción será /var/log/solidar/PVGIScalls.txt
 
 $configFile = dirname(__DIR__) . '/solidar/config.local.php';
-// echo dirname(__DIR__) . "\n";
-// echo $configFile . "\n";
 
 if (file_exists($configFile)) {
     // echo "Existe\n";
