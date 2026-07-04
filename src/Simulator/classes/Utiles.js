@@ -274,6 +274,9 @@ const returnFloat = (value) => {
     return value
   }
 }
+
+const decimalSeparator = (1.1).toLocaleString().substring(1, 2)
+
 const ValidateDecimal = (language, inputValue) => {
   const number = 1.1
   const decimalSeparator = number.toLocaleString(language).substring(1, 2)
@@ -293,7 +296,6 @@ const ValidateEntero = (inputValue) => {
  * @returns {Boolean|String}  false si la variable no está en la entrada o el valor de la misma si está
  */
 function getParametrosEntrada(variable) {
-  console.log(variable, TCB.URLParameters.get(variable))
   if (TCB.URLParameters === null) return false
   return TCB.URLParameters.get(variable) ?? false
 }
@@ -1207,6 +1209,7 @@ export {
   //copyClipboard,
   //csvToArray,
   debugLog,
+  decimalSeparator,
   deleteBaseGeometries,
   difDays,
   distancia,
