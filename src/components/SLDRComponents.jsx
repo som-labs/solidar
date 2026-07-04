@@ -213,7 +213,6 @@ function SLDRDetalle(props) {
 //             {...field}
 //             {...textFieldProps}
 //             sx={sxFull}
-//             error={meta.touched && Boolean(meta.error)}
 //           />
 //         </SLDRTooltip>
 //       )}
