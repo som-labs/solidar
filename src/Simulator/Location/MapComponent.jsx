@@ -225,7 +225,7 @@ export default function MapComponent() {
       //Landbase Open Street Map
       const OpenS = new TileLayer({
         source: new OSM({
-          maxZoom: 30,
+          maxZoom: 19,
         }),
         attributions: '© OpenStreetMap contributors',
       })

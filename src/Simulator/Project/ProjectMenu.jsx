@@ -94,7 +94,7 @@ export default function ProjectMenu() {
         }
 
         if (TCB.bateria) {
-          setBateria(TCB.bateria)
+          setBateria({...TCB.bateria})
         }
 
         //SLDRAlert(t('Proyecto.MSG_success'), 'ABC', 'Info')

@@ -134,14 +134,6 @@ export default function BateriaForm({
         } else {
           TCB.bateria[campo] = Number(valor)
           setBateria((prev) => ({ ...prev, campo: valor }))
-
-          // console.log('llamamos a preparar energía con', TCB.bateria)
-
-          // console.log('resultados de preparar energía', results)
-          // if (!results.status) {
-          //   console.log(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error)
-          //   SLDRAlert(t('Rendimiento.MSG_BASE_SIN_RENDIMIENTO'), results.error, 'Error')
-          // }
         }
       }
     })
@@ -171,9 +163,7 @@ export default function BateriaForm({
 
     // Esperar a que Formik procese los nuevos valores y validar
     const errors = await formik.validateForm(preset.values)
-    if (Object.keys(errors).length === 0) {
-      nuevaBateria(preset.values)
-    }
+
   }
 
   return (

@@ -38,9 +38,6 @@ export default function Page() {
     useContext(ConsumptionContext)
   const { ecoData, setEcoData } = useContext(EconomicContext)
 
-  // const location = useLocation()
-  // console.log(location)
-
   TCB.URLParameters = useSearchParams()[0]
 
   let results
@@ -108,7 +105,7 @@ export default function Page() {
           TCB.bateria.diaHora.fechaInicio = TCB.consumo.diaHora.fechaInicio
           TCB.bateria.diaHora.fechaFin = TCB.consumo.diaHora.fechaFin
           TCB.bateria.sintesis()
-          setBateria(TCB.bateria)
+          setBateria({...TCB.bateria})
         }
       }
     }
