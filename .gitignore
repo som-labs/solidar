@@ -150,3 +150,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Coniguration for scripts
+config.py
