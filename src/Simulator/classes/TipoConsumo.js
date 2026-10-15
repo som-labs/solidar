@@ -58,7 +58,7 @@ class TipoConsumo extends DiaHora {
     } else {
       options = {
         ...options,
-        valorArr: ['consumo_kWh', 'AE_kWh', 'Consumo_kWh', 'Consumo', 'Consumo kWh'], //Header for consumption -> options to be received based on file source
+        valorArr: ['CONSUMO_KWH', 'AE_KWH', 'CONSUMO', 'CONSUMO KWH'], //Header for consumption -> options to be received based on file source
         factor: 1,
       }
     }
@@ -72,9 +72,10 @@ class TipoConsumo extends DiaHora {
   async loadTipoConsumoFromCSV() {
     this.inicializa()
     var rCode = { status: false, err: '' }
-
+    console.log("TIPOCONSUMO-Cargaremos", this.ficheroCSV, this.options)
     await UTIL.loadFromCSV(this.ficheroCSV, this, this.options)
       .then((returnObject) => {
+        console.log("OBJETO CSV", returnObject)
         //Verificamos que tenemos 365 dias registrados.
         let faltan = 0
         for (let i = 0; i < 365; i++) {

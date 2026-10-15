@@ -28,7 +28,7 @@ export default function ReduccionIBI({ finca }) {
   const { economicoGlobal, setEconomicoGlobal, costeZCenFinca, forceUpdate } =
     useContext(EconomicContext)
   const { setFincas, zonasComunes } = useContext(ConsumptionContext)
-  const { SLDRAlert } = useAlert()
+ const { SLDRAlert } = useContext(AlertContext)
 
   const localEcoData = finca ? finca.economico : economicoGlobal
 

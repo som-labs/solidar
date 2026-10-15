@@ -309,7 +309,10 @@ export default function Wizard(params) {
 
 //// Example
 
-const WizardExampleContext = React.createContext({ value: '', setValue: () => {} })
+const WizardExampleContext = React.createContext({
+  value: '',
+  setValue: () => {},
+})
 
 function MyPage({ label }) {
   const { value, setValue } = React.useContext(WizardExampleContext)

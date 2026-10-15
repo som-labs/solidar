@@ -12,6 +12,7 @@ import {
   Button,
   Box,
   InputAdornment,
+  InputLabel,
 } from '@mui/material'
 
 // REACT Solidar Components
@@ -54,6 +55,8 @@ export default function DialogTarifa({ tarifa, previous, onClose }) {
       setValues((prevValues) => ({
         ...prevValues,
         detalle: value,
+        tipo: value,
+        precios: TCB.tarifas[value].precios.map((a) => a),
       }))
       setNPrecios(4)
     }
@@ -136,16 +139,20 @@ export default function DialogTarifa({ tarifa, previous, onClose }) {
           <Form>
             <DialogTitle>{t('CONSUMPTION.TITLE_DIALOG_NEW_TARIFA')}</DialogTitle>
             <DialogContent>
-              <Box
-                sx={{ display: 'flex', mb: 3, gap: 2, padding: 1, alignItems: 'center' }}
+              <Grid
+                container
+                spacing={1}
+                alignItems="center"
+                justifyContent="space-evenly"
+                sx={{ mt: '1rem' }}
               >
-                <FormControl sx={{ display: 'flex', flex: 0.8 }}>
+                <Grid item xs={2}>
+                  <InputLabel htmlFor="tipoTarifa">{t('Tarifa.PROP.tipoTarifa')}</InputLabel>
                   <SLDRInputField
                     sx={{
-                      textAlign: 'center',
+                      textAlign: 'center'
                     }}
-                    select
-                    label={t('Tarifa.PROP.tipoTarifa')}
+                    MUIType = 'Select' 
                     onChange={(e) => cambiaTipoTarifa(e, values, setValues)}
                     name="tipoTarifa"
                     value={tipoTarifa}
@@ -158,21 +165,21 @@ export default function DialogTarifa({ tarifa, previous, onClose }) {
                       3.0TD
                     </MenuItem>
                   </SLDRInputField>
-                </FormControl>
-                <FormControl sx={{ display: 'flex', flex: 1.7 }}>
+                </Grid>
+                <Grid item xs={4}>
+                  <InputLabel htmlFor="nombreTarifa">{t('Tarifa.PROP.nombreTarifa')}</InputLabel>
                   <SLDRInputField
                     sx={{
                       textAlign: 'center',
                     }}
-                    label={t('Tarifa.PROP.nombreTarifa')}
                     name="nombreTarifa"
                     value={values.nombreTarifa}
                     object="Tarifa"
                   ></SLDRInputField>
-                </FormControl>
-                <FormControl sx={{ display: 'flex', flex: 1 }}>
+                </Grid>
+                <Grid item xs={3}>
+                  <InputLabel htmlFor="coefHucha">{t('Tarifa.PROP.coefHucha')}</InputLabel>
                   <SLDRInputField
-                    label={t('Tarifa.PROP.coefHucha')}
                     name="coefHucha"
                     value={values.coefHucha}
                     object="Tarifa"
@@ -185,10 +192,10 @@ export default function DialogTarifa({ tarifa, previous, onClose }) {
                       },
                     }}
                   ></SLDRInputField>
-                </FormControl>
-                <FormControl sx={{ display: 'flex', flex: 1 }}>
+                </Grid>
+                <Grid item xs={3}>
+                  <InputLabel htmlFor="cuotaHucha">{t('Tarifa.PROP.cuotaHucha')}</InputLabel>
                   <SLDRInputField
-                    label={t('Tarifa.PROP.cuotaHucha')}
                     name="cuotaHucha"
                     value={values.cuotaHucha}
                     object="Tarifa"
@@ -201,8 +208,8 @@ export default function DialogTarifa({ tarifa, previous, onClose }) {
                       },
                     }}
                   ></SLDRInputField>
-                </FormControl>
-              </Box>
+                </Grid>
+              </Grid>
               <Grid
                 container
                 spacing={1}
@@ -213,9 +220,10 @@ export default function DialogTarifa({ tarifa, previous, onClose }) {
                   <Fragment key={index}>
                     {index < nPrecios && (
                       <Grid item xs>
+                        <InputLabel htmlFor={String(index)}>{t('Tarifa.PROP.' + tipoTarifa + '.P' + index)}</InputLabel>
                         <SLDRInputField
                           unit=" €"
-                          //object="Tarifa"
+                          object="Tarifa"
                           value={precio.toLocaleString(i18n.language)}
                           onChange={(ev) =>
                             cambiaPrecio(
@@ -226,7 +234,7 @@ export default function DialogTarifa({ tarifa, previous, onClose }) {
                               setPreciosValidos,
                             )
                           }
-                          label={t('Tarifa.PROP.' + tipoTarifa + '.P' + index)}
+
                           name={'P' + index}
                         ></SLDRInputField>
                       </Grid>

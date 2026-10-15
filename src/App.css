@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+
 #root {
   width: 100%;
   padding: 0;
@@ -33,19 +35,10 @@
   width: 100%;
 }
 
-/* Custom CSS for wrapping column header text */
-.MuiDataGrid-root .MuiDataGrid-columnHeader {
-  white-space: normal !important;
-  line-height: 1.5;
+.dataGrid-headers {
   font-weight: bold;
-  color: 'red';
   background-color: 'rgba(255,7,0,0.55)';
-  text-align: 'center';
 }
-/* .dataGrid-headers {
-  font-weight: bold;
-  background-color: 'rgba(255,7,0,0.55)';
-} */
 
 .centered-alert {
   background-color: #f0f0f0;

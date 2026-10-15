@@ -5,15 +5,10 @@ import { useTranslation } from 'react-i18next'
 import { Typography, IconButton, Box } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 
-// REACT Solidar Global Components
+// REACT Solidar Components
 import { useDialog } from '../../components/DialogProvider'
-
-// REACT Solidar local Components
 import DialogPanelsType from './DialogPanelsType'
-
-// REACT Solidar contexts
 import { BasesContext } from '../BasesContext'
-import { GlobalContext } from '../GlobalContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -23,74 +18,75 @@ import BaseSolar from '../classes/BaseSolar'
 export default function PanelsSelector() {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
-  const { setNewPanelActivo } = useContext(GlobalContext)
-
-  const { tipoPanelActivo, setTipoPanelActivo, bases, modifyBase } =
+  //const [tipo, setTipo] = useState(TCB.tipoPanelActivo)
+  const { tipoPanelActivo, setTipoPanelActivo, updateTCBBasesToState } =
     useContext(BasesContext)
 
   function changePanelsType() {
     openDialog({
       children: (
         <DialogPanelsType
-          tipoPanelActivo={tipoPanelActivo}
-          onClose={(cause, formData) => processFormData(cause, formData)}
+          data={TCB.tipoPanelActivo}
+          onClose={(cause, formData) => endDialog(cause, formData)}
         ></DialogPanelsType>
       ),
     })
   }
 
-  function processFormData(reason, formData) {
+  function endDialog(reason, formData) {
     if (reason === 'save') {
-      //Si el usuario ha definido o cambiado el userPanel lo copiamos a TCB.tipoPaneles[0]
-      if (formData.id === 0) Object.assign(TCB.tipoPaneles[0], formData)
-
-      //Si se ha cambiado el tipo de panel activo en el form y hay bases ya creadas hay que aplicar el cambio a todas
-      if (formData.id !== tipoPanelActivo.id || formData.id === 0) {
-        bases.forEach((base) => {
-          base.tipoPanel = TCB.tipoPaneles[formData.id]
-
-          //If we are changing panel technology need to update PVGIS data for existing bases
-          if (tipoPanelActivo.tecnologia !== formData.tecnologia)
-            base.requierePVGIS = true
-
-          //If there is any change in panel size need to reconfigure base
-          if (
-            tipoPanelActivo.ancho !== formData.ancho ||
-            tipoPanelActivo.largo !== formData.largo
-          ) {
-            formData.ancho = UTIL.returnFloat(formData.ancho)
-            formData.largo = UTIL.returnFloat(formData.largo)
-            const newConfiguration = BaseSolar.configuraPaneles(base)
-            base.columnas = newConfiguration.columnas
-            base.filas = newConfiguration.filas
-            base.modoInstalacion = newConfiguration.modoInstalacion
-            modifyBase(base)
-          }
-          setNewPanelActivo(true)
+      //setTipo(formData)
+      setTipoPanelActivo(formData)
+      //If we are changing panel technology need to update PVGIS data for existing bases
+      if (TCB.tipoPanelActivo.tecnologia !== formData.tecnologia) {
+        TCB.tipoPanelActivo.tecnologia = formData.tecnologia
+        TCB.BaseSolar.forEach((base) => {
+          base.requierePVGIS = true
         })
-        setTipoPanelActivo({ ...formData })
       }
+
+      //If the panel peak power has changes optimizer has to be executed
+      if (TCB.tipoPanelActivo.potencia !== formData.potencia) {
+        TCB.tipoPanelActivo.potencia = UTIL.returnFloat(formData.potencia)
+        TCB.requiereOptimizador = true
+      }
+
+      //If there is any change in panel size need to reconfigura exisiting bases
+      if (
+        TCB.tipoPanelActivo.ancho !== formData.ancho ||
+        TCB.tipoPanelActivo.largo !== formData.largo
+      ) {
+        TCB.tipoPanelActivo.ancho = UTIL.returnFloat(formData.ancho)
+        TCB.tipoPanelActivo.largo = UTIL.returnFloat(formData.largo)
+
+        //If panel ancho or largo has changed need to update bases configuration
+
+        TCB.BaseSolar.forEach((TCBbase) => {
+          const config = BaseSolar.configuraPaneles(TCBbase)
+          //Update in TCB
+          TCBbase.updateBase(config)
+        })
+      }
+
+      updateTCBBasesToState()
+      TCB.requiereOptimizador = true
     }
     closeDialog()
   }
 
   return (
-    <>
-      <Box
-        sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', padding: 1 }}
-      >
-        <Typography
-          variant="body"
-          dangerouslySetInnerHTML={{
-            __html: t('DIALOG_PANELS.DESCRIPTION_1', {
-              potencia: UTIL.formatoValor('potenciaWp', tipoPanelActivo.potencia),
-            }),
-          }}
-        ></Typography>
-        <IconButton onClick={changePanelsType}>
-          <EditIcon />
-        </IconButton>
-      </Box>
-    </>
+    <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', padding: 1 }}>
+      <Typography
+        variant="body"
+        dangerouslySetInnerHTML={{
+          __html: t('Instalacion.DESCRIPTION.paneles', {
+            potencia: UTIL.formatoValor('potenciaWp', tipoPanelActivo.potencia),
+          }),
+        }}
+      ></Typography>
+      <IconButton onClick={changePanelsType}>
+        <EditIcon />
+      </IconButton>
+    </Box>
   )
 }

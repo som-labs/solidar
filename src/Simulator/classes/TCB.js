@@ -231,12 +231,18 @@ const TCB = {
     margen: 0.5, //Se pondrá a 0 si es tejado inclinado
     CAU: 'CAU Proyecto',
   },
-
-  /* This data will be read from datos/tipoPaneles.json during InicializaAplicacion */
-  /* tipoPaneles[0], is the user defined panel. It can be filled in PanelsSelector */
+  //Default panel type
+  tipoPanelActivo: {
+    nombre: '430 Wp',
+    tecnologia: 'crystSi',
+    potencia: 430,
+    ancho: 1.134,
+    largo: 1.762,
+  },
+  
+  // This data will be read from datos/tipoPaneles.json during InicailizaAplicacion
   tipoPaneles: [],
-  defaultPanelActivo: 2, //Default panel type from json file
-
+  panelesOptimos: [],
   /** Constante donde se define el precio estimado de la instalación en base a la potencia instalada
    * @typedef {object} precioInstalacion
    * @property {number} precioInstalacion.desde rango inferior de kWp para este precio

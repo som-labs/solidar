@@ -16,7 +16,6 @@ import { GlobalContext } from '../GlobalContext'
 import MapaMesHora from './MapaMesHora'
 import MapaDiaHora from './MapaDiaHora'
 import { useDialog } from '../../components/DialogProvider'
-import { useAlert } from '../../components/AlertProvider'
 import DialogConsumption from './DialogConsumption'
 import { SLDRFooterBox, SLDRInfoBox, SLDRTooltip } from '../../components/SLDRComponents'
 
@@ -29,7 +28,6 @@ import TipoConsumo from '../classes/TipoConsumo'
 export default function ConsumptionSummary() {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { SLDRAlert } = useAlert()
   const [openDialog, closeDialog] = useDialog()
   const {
     tiposConsumo,
@@ -171,8 +169,10 @@ export default function ConsumptionSummary() {
   }
 
   const create_load = async (tipo) => {
+
     const newTipoConsumo = new TipoConsumo(tipo)
     const rCode = await newTipoConsumo.loadTipoConsumoFromCSV()
+
     if (rCode.status) {
       if (editing.current) {
         //Editando uno existente
@@ -183,7 +183,7 @@ export default function ConsumptionSummary() {
       }
     } else {
       UTIL.debugLog('Error detectado en carga de CSV')
-      SLDRAlert(
+      alert(
         'CARGA TIPOLOGIA USO ENERGIA',
         'Fichero: ' + newTipoConsumo.nombreFicheroCSV + '\n' + rCode.err,
         'Error',
@@ -192,6 +192,7 @@ export default function ConsumptionSummary() {
   }
 
   async function processFormData(reason, formData) {
+
     let nuevoTipoConsumo = {}
     let cursorOriginal
     cursorOriginal = document.body.style.cursor
@@ -267,7 +268,7 @@ export default function ConsumptionSummary() {
     //Si estamos en colectivo no se pueden borrar tipos de consumo utilizados en alguna finca
     if (TCB.modoActivo !== 'INDIVIDUAL') {
       if (fincas.find((f) => f.nombreTipoConsumo === tc.nombreTipoConsumo)) {
-        SLDRAlert('VALIDACIÓN', t('CONSUMPTION.ERROR_TIPO_CONSUMO_FINCAS'), 'Warning')
+        alert('VALIDACIÓN', t('CONSUMPTION.ERROR_TIPO_CONSUMO_FINCAS'), 'Warning')
         return
       }
     }
@@ -360,7 +361,7 @@ export default function ConsumptionSummary() {
 
   return (
     <Grid container justifyContent={'center'} rowSpacing={4}>
-      <Grid item xs={11}>
+      <Grid item xs={12}>
         <SLDRInfoBox>
           <DataGrid
             sx={theme.tables.headerWrap}

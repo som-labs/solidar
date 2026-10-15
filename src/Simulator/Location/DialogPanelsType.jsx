@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react'
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 //Formik objects
@@ -10,45 +10,38 @@ import {
   Button,
   InputLabel,
   MenuItem,
+  FormControlLabel,
   DialogActions,
   DialogContent,
   DialogTitle,
   Typography,
-  Grid,
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
-// REACT Solidar Global Components
+// REACT Solidar Components
 import { SLDRInputField } from '../../components/SLDRComponents'
-
-// REACT Solidar contexts
-import { BasesContext } from '../BasesContext'
 
 // Solidar objects
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-/**
- * Permite definir el tipo de panel activo y configurar un tipo de panel de usuario
- * Los paneles tipo estan en TCB.TipoPaneles
- * El tipo de panel de usuario se define en TCB.TipoPaneles[0]
- *
- * @param {*} param0
- * @returns
- */
-export default function DialogPanelsType({ onClose }) {
+
+export default function DialogPanelsType({ data, onClose }) {
   const { t, i18n } = useTranslation()
-  const { tipoPanelActivo } = useContext(BasesContext)
+  const theme = useTheme()
 
-  const ndxPanel = useRef(tipoPanelActivo.id)
-  const data = TCB.tipoPaneles[tipoPanelActivo.id]
+  const ndxPanel = useRef(2)
+  //const [tipoPanel, setTipoPanel] = useState(TCB.tipoPanelActivo)
 
+  //20250303 - Correccion lista posibles tecnologias. Quitamos unknown porque PVGIS no retorna el campo P y se corrige CdTe que estab mal escrito
   const tecnologias = [
     { value: 'crystSi', text: 'Silicio Cristalino' },
     { value: 'CIS', text: 'CIS' },
-    { value: 'Cadmium Telluride', text: 'CdTe' },
-    { value: 'Unknown', text: t('Instalacion.LABEL_tecnologiaDesconocida') },
+    { value: 'CdTe', text: 'Cadmium Telluride' },
+    // { value: 'Unknown', text: t('Instalacion.LABEL_tecnologiaDesconocida') },
   ]
 
   function cambiaTipoPanel(index, values, setValues) {
+    console.log(index, TCB.tipoPaneles[index])
     ndxPanel.current = index
     const newValues = TCB.tipoPaneles[index]
     setValues((prevValues) => ({
@@ -62,7 +55,6 @@ export default function DialogPanelsType({ onClose }) {
   }
 
   function handleClose(values) {
-    if (ndxPanel.current === 0) TCB.tipoPaneles[0] = values
     onClose('save', values)
   }
 
@@ -108,23 +100,21 @@ export default function DialogPanelsType({ onClose }) {
               }}
             >
               <Typography variant="body" sx={{ ml: '1rem', mb: '1rem' }}>
-                {t('DIALOG_PANELS.DESCRIPTION_1')}
+                {t('DIALOG_PANELS.DESCRIPTION')}
               </Typography>
 
-              <Grid container alignItems="center">
-                <Grid item xs={6} style={{ textAlign: 'right' }}>
-                  <InputLabel htmlFor="tipoPanel">
-                    {t('Instalacion.PROP.tecnologia')}
-                  </InputLabel>
-                </Grid>
-                <Grid item xs={6}>
+              <FormControlLabel
+                labelPlacement="start"
+                control={
                   <SLDRInputField
-                    fullWidth
-                    size="small"
                     sx={{
+                      width: 200,
+                      height: 40,
                       justifyContent: 'flex-end',
+                      textAlign: 'center',
+                      ml: 2,
                     }}
-                    select
+                    MUIType="Select"
                     value={ndxPanel.current}
                     name="tipoPanel"
                     object="Instalacion"
@@ -132,43 +122,45 @@ export default function DialogPanelsType({ onClose }) {
                       cambiaTipoPanel(event.target.value, values, setValues)
                     }
                   >
-                    {TCB.tipoPaneles.map((panel) => (
+                    {TCB.tipoPaneles.map((panelType, index) => (
                       <MenuItem
-                        key={panel.id}
-                        value={panel.id}
+                        key={index}
+                        value={index}
                         sx={{ justifyContent: 'flex-end' }}
                       >
-                        {panel.nombre}
+                        {panelType.nombre}
                       </MenuItem>
                     ))}
                   </SLDRInputField>
-                </Grid>
-              </Grid>
+                }
+                label={t('Instalacion.LABEL_tipoPanel')}
+              />
 
               <Typography variant="body" sx={{ ml: '1rem', mt: '1rem' }}>
                 {t('DIALOG_PANELS.OTHERS')}
               </Typography>
-            </Box>
-
-            <Grid container alignItems="center">
-              <Grid item xs={6} style={{ textAlign: 'right' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  flexDirection: 'column',
+                  flex: 1,
+                  padding: '5px',
+                }}
+              >
                 <InputLabel htmlFor="tecnologia">
                   {t('Instalacion.PROP.tecnologia')}
                 </InputLabel>
-              </Grid>
-              <Grid item xs={6}>
                 <SLDRInputField
                   toolTipPlacement="right"
-                  fullWidth
-                  size="small"
                   sx={{
+                    height: 50,
                     textAlign: 'center',
                   }}
-                  select
+                  MUIType="Select"
                   object="Instalacion"
                   name="tecnologia"
                   value={values.tecnologia}
-                  disabled={ndxPanel.current !== 0}
                 >
                   {tecnologias.map((tecnologia, index) => (
                     <MenuItem key={index} value={tecnologia.value}>
@@ -176,60 +168,42 @@ export default function DialogPanelsType({ onClose }) {
                     </MenuItem>
                   ))}
                 </SLDRInputField>
-              </Grid>
-              <Grid item xs={6} style={{ textAlign: 'right' }}>
+
                 <InputLabel htmlFor="potencia">
                   {t('Instalacion.PROP.potencia')}
                 </InputLabel>
-              </Grid>
-              <Grid item xs={6}>
                 <SLDRInputField
-                  fullWidth
-                  size="small"
                   id="potencia"
                   name="potencia"
                   object="Instalacion"
                   unit=" Wp"
                   value={UTIL.formatoValor('potenciaWp', values.potencia, '')}
-                  disabled={ndxPanel.current !== 0}
-                  sx={{ textAlign: 'right' }}
+                  sx={{ textAlign: 'right', width: '100%' }}
                 ></SLDRInputField>
-              </Grid>
-              <Grid item xs={6} style={{ textAlign: 'right' }}>
+
                 <InputLabel htmlFor="ancho">{t('Instalacion.PROP.ancho')}</InputLabel>
-              </Grid>
-              <Grid item xs={6}>
                 <SLDRInputField
-                  fullWidth
-                  size="small"
                   id="ancho"
                   name="ancho"
                   object="Instalacion"
                   unit=" m"
                   value={UTIL.formatoValor('longitud', values.ancho, '')}
-                  disabled={ndxPanel.current !== 0}
-                  sx={{ textAlign: 'right' }}
+                  sx={{ textAlign: 'right', width: '100%' }}
                 ></SLDRInputField>
-              </Grid>
-              <Grid item xs={6} style={{ textAlign: 'right' }}>
+
                 <InputLabel htmlFor="largo">{t('Instalacion.PROP.largo')}</InputLabel>
-              </Grid>
-              <Grid item xs={6}>
                 <SLDRInputField
-                  fullWidth
-                  size="small"
                   id="largo"
                   name="largo"
                   object="Instalacion"
                   unit=" m"
                   value={UTIL.formatoValor('longitud', values.largo, '')}
-                  disabled={ndxPanel.current !== 0}
-                  sx={{ textAlign: 'right' }}
+                  sx={{ textAlign: 'right', width: '100%' }}
                 ></SLDRInputField>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           </DialogContent>
-          <DialogActions>
+          <DialogActions sx={{ mt: '1rem' }}>
             <Button onClick={() => handleCancel(values)}>
               {t('BASIC.LABEL_CANCEL')}
             </Button>

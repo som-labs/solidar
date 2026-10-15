@@ -20,7 +20,6 @@ const campos = {
   potencia: { unidad: ' kWp', decimales: 0, salvar: true, mostrar: true },
   potenciaWp: { unidad: ' Wp', decimales: 0, salvar: true, mostrar: true },
   porciento: { unidad: '%', decimales: 0, salvar: true, mostrar: true },
-  porciento2: { unidad: '%', decimales: 2, salvar: true, mostrar: true },
   peso: { unidad: ' Kg', decimales: 2, salvar: true, mostrar: true },
   dinero: { unidad: ' €', decimales: 0, salvar: true, mostrar: true },
   superficie: { unidad: 'm²', decimales: 2, salvar: true, mostrar: true },
@@ -294,6 +293,7 @@ const ValidateEntero = (inputValue) => {
  * @returns {Boolean|String}  false si la variable no está en la entrada o el valor de la misma si está
  */
 function getParametrosEntrada(variable) {
+  console.log(variable, TCB.URLParameters.get(variable))
   if (TCB.URLParameters === null) return false
   return TCB.URLParameters.get(variable) ?? false
 }
@@ -506,7 +506,7 @@ async function loadFromCSV(csvFile, aThis, options) {
       transformHeader: (header) => {
         // Rename headers
         let tmpHeader = header.toUpperCase()
-        if (options.valorArr.includes(header)) return 'consumo'
+        if (options.valorArr.includes(tmpHeader)) return 'consumo'
         if (['ENERGIAVERTIDA_KWH'].includes(tmpHeader)) return 'excedente' //Not used yet
         if (['FECHA'].includes(tmpHeader)) return 'fecha'
         if (['HORA'].includes(tmpHeader)) return 'hora'
@@ -526,7 +526,7 @@ async function loadFromCSV(csvFile, aThis, options) {
           let parts = value.split('/')
           let _dia = parts[posDia]
           let _mes = parts[posMes] - 1 //_mes es el indice interno gestionado por JS pero es 1-24 en los ficheros de las distribuidoras
-          let _ano = parts[posAno].slice(0, 4) //Añadido porque EREDES incluye la hora 00:00:00 en el campo fecha
+          let _ano = parts[posAno]
           if (_dia > 31 || _mes > 11) {
             //Es probable que hayan definido DATADIS para un CSV de distribuidora
             const tError = new Error(
@@ -554,7 +554,6 @@ async function loadFromCSV(csvFile, aThis, options) {
           }
           return tHora
         }
-
         return value // Return original value for other columns
       },
 
@@ -582,15 +581,15 @@ async function loadFromCSV(csvFile, aThis, options) {
           const tError = new Error(errorMsg)
           reject(tError)
         }
-
+        console.log(results.data)
         if (results.data.length === 0) return false
 
-        // if (tHoraChk > 1) {
-        //   const tError = new Error(
-        //     TCB.i18next.t('CONSUMPTION.ERROR_fuenteTipoErroneo_SOM'),
-        //   )
-        //   reject(tError)
-        // }
+        if (tHoraChk > 1) {
+          const tError = new Error(
+            TCB.i18next.t('CONSUMPTION.ERROR_fuenteTipoErroneo_SOM'),
+          )
+          reject(tError)
+        }
 
         debugLog(
           'CSV procesando ' +
@@ -671,6 +670,59 @@ async function loadFromCSV(csvFile, aThis, options) {
   })
 }
 
+// function csvToArray(str, delimiter = ',') {
+//   // slice from start of text to the first \n index
+//   // use split to create an array from string by delimiter
+//   try {
+//     var headers = str.slice(0, str.indexOf('\n')).split(delimiter)
+//     for (let i = 0; i < headers.length; i++) headers[i] = headers[i].trim()
+//   } catch (e) {
+//     alert('Posible error de formato fichero de consumos\n' + str)
+//     return
+//   }
+//   debugLog('Cabecera CSV:', headers)
+
+//   // la diferencia entre los ficheros de Naturgy y de Iberdrola es que
+//   // la cuarta columna donde esta el consumo se llama Consumo en Naturgy y Consumo_kWh en Iberdrola y VIESGO y AE_kWh en ENDESA.
+//   // unificamos en "Consumo"
+//   if (headers[3] == 'Consumo_kWh') headers[3] = 'Consumo'
+//   if (headers[3] == 'AE_kWh') headers[3] = 'Consumo'
+
+//   let chk_consumo = false
+//   let chk_fecha = false
+//   let chk_hora = false
+//   headers.forEach((hdr) => {
+//     if (hdr === 'Consumo' || hdr === '2.0TD' || hdr === '3.0TD') chk_consumo = true
+//     if (hdr === 'Fecha') chk_fecha = true
+//     if (hdr === 'Hora') chk_hora = true
+//   })
+//   if (!(chk_consumo && chk_fecha && chk_hora)) {
+//     let failHdr = ''
+//     if (!chk_consumo) failHdr += 'Consumo '
+//     if (!chk_fecha) failHdr += 'Fecha '
+//     if (!chk_hora) failHdr += 'Hora '
+//     alert(TCB.i18next.t('consumo_MSG_errorCabeceras', { cabeceras: failHdr }))
+//     return []
+//   }
+//   // slice from \n index + 1 to the end of the text
+//   // use split to create an array of each csv value row
+//   const rows = str.slice(str.indexOf('\n') + 1).split('\n')
+//   let arr = []
+//   rows.forEach((row) => {
+//     if (row.length > 1) {
+//       const values = row.split(delimiter)
+//       const el = headers.reduce(function (object, header, index) {
+//         object[header] = values[index]
+//         return object
+//       }, {})
+//       arr.push(el)
+//     }
+//   })
+
+//   // return the array
+//   return arr
+// }
+
 function promedio(arr) {
   return arr.reduce((a, b) => a + b) / arr.length
 }
@@ -705,41 +757,34 @@ function fechaDesdeIndice(indice) {
   }
 }
 
-function dumpData(nombre, idxTable, dataTable = null, fields = []) {
+function dumpData(nombre, idxTable, dataTable) {
   // Loop the array of objects
-  var csv = ''
-
-  // fields argument exposes which fields to be dumped. If no fields argument all properties will be dumped
-  if (fields.length === 0) fields = Object.keys(idxTable[0])
-
-  let keysAmount = fields.length
-  let keysCounter = 0
-
-  for (let key of fields) {
-    // This is to not add a comma at the last cell
-    // The '\n' adds a new line
-    csv += key + (keysCounter + 1 < keysAmount ? ';' : '')
-    keysCounter++
-  }
-
-  if (dataTable) {
-    for (let i = 0; i < 24; i++) {
-      csv += ';' + i
-    }
-  }
-  csv += '\r\n'
-
+  var csv
   for (let row = 0; row < idxTable.length; row++) {
+    let keysAmount = Object.keys(idxTable[row]).length
+    let keysCounter = 0
+
+    // If this is the first row, generate the headings
+    if (row === 0) {
+      // Loop each property of the object
+      for (let key in idxTable[row]) {
+        // This is to not add a comma at the last cell
+        // The '\n' adds a new line
+        csv += key + (keysCounter + 1 < keysAmount ? ';' : '')
+        keysCounter++
+      }
+      for (let i = 0; i < 24; i++) {
+        csv += ';' + i
+      }
+      csv += '\r\n'
+    }
     keysCounter = 0
-    for (const key of fields) {
-      csv += idxTable[row]?.[key] + (keysCounter + 1 < keysAmount ? ';' : '')
+    for (let key in idxTable[row]) {
+      csv += idxTable[row][key] + (keysCounter + 1 < keysAmount ? ';' : '')
       keysCounter++
     }
-
-    if (dataTable) {
-      for (let i = 0; i < 24; i++) {
-        csv += ';' + dataTable[row][i]
-      }
+    for (let i = 0; i < 24; i++) {
+      csv += ';' + dataTable[row][i]
     }
     csv += '\r\n'
   }
@@ -1028,9 +1073,6 @@ function obtenerPropiedades(objeto, nivel) {
 function round2Decimales(numero) {
   return +(Math.round(numero + 'e+2') + 'e-2')
 }
-function roundDecimales(numero, decimales) {
-  return +(Math.round(numero + 'e+' + decimales) + 'e-' + decimales)
-}
 
 /** Nuestra el texto en el campo cuyo id es campo
  *
@@ -1088,60 +1130,64 @@ function selectTCB(tabla, campo, valor) {
   return recordSet
 }
 
-/**
- * Funcion para obtener los valores de las tarifas actuales de SOM
- * @returns
- */
 async function cargaTarifasDesdeSOM() {
-  const urlSOMTarifas = TCB.basePath + 'proxy SOM.php'
+  const urlSOMTarifas = TCB.basePath + 'proxy_som.php?nombre='
   let _url
   let respuesta
   let txtTarifas
 
-  // Add_1: Adding non response status from apienergia after waiting 20 secs
+  // Add_1: Adding non response status from apienergia
   const controller = new AbortController()
   const signal = controller.signal
-  const timeoutId = setTimeout(() => controller.abort(), TCB.tiempoEsperaTarifas * 1000)
+  const timeoutId = setTimeout(() => controller.abort(), 5000)
   const options = {}
   //
 
   try {
-    _url = urlSOMTarifas
+    _url = urlSOMTarifas + '2.0TD'
     debugLog('Intentando tarifas desde SOM:' + _url)
-
+    // Modify_1: , { ...options, signal }
     respuesta = await fetch(_url, { ...options, signal })
     clearTimeout(timeoutId)
+    //
 
     if (respuesta.status === 200) {
-      txtTarifas = await respuesta.json()
-
-      if ('error' in txtTarifas) throw new Error(txtTarifas.error)
-
-      TCB.tarifas['2.0TD'].precios = txtTarifas['2.0TD'].map((t, ndx) => {
-        return ndx < 4 ? parseFloat(t) : 0
-      })
-      TCB.tarifas['3.0TD-Peninsula'].precios = txtTarifas['3.0TD'].map((t) => {
-        return parseFloat(t)
-      })
-      TCB.tarifas['3.0TD-Ceuta'].precios = txtTarifas['3.0TD'].map((t) => {
-        return parseFloat(t)
-      })
-      TCB.tarifas['3.0TD-Melilla'].precios = txtTarifas['3.0TD'].map((t) => {
-        return parseFloat(t)
-      })
-      TCB.tarifas['3.0TD-Illes Balears'].precios = txtTarifas['3.0TD'].map((t) => {
-        return parseFloat(t)
-      })
-      TCB.tarifas['3.0TD-Canarias'].precios = txtTarifas['3.0TD'].map((t) => {
-        return parseFloat(t)
-      })
-    } else {
-      throw new Error(respuesta)
+      txtTarifas = await respuesta.text()
+      if (txtTarifas.includes('error')) throw new Error(txtTarifas)
+      else
+        TCB.tarifas['2.0TD'].precios = txtTarifas.split(',').map((t) => {
+          return parseFloat(t)
+        })
     }
-    debugLog('Success Tarifas desde SOM', { txtTarifas })
+    debugLog('Success Tarifas 2.0TD desde SOM', { txtTarifas })
+
+    _url = urlSOMTarifas + '3.0TD'
+    respuesta = await fetch(_url)
+    if (respuesta.status === 200) {
+      txtTarifas = await respuesta.text()
+      if (txtTarifas.includes('error')) throw new Error(txtTarifas)
+      else {
+        TCB.tarifas['3.0TD-Peninsula'].precios = txtTarifas.split(',').map((t) => {
+          return parseFloat(t)
+        })
+        TCB.tarifas['3.0TD-Ceuta'].precios = txtTarifas.split(',').map((t) => {
+          return parseFloat(t)
+        })
+        TCB.tarifas['3.0TD-Melilla'].precios = txtTarifas.split(',').map((t) => {
+          return parseFloat(t)
+        })
+        TCB.tarifas['3.0TD-Illes Balears'].precios = txtTarifas.split(',').map((t) => {
+          return parseFloat(t)
+        })
+        TCB.tarifas['3.0TD-Canarias'].precios = txtTarifas.split(',').map((t) => {
+          return parseFloat(t)
+        })
+      }
+    }
+    debugLog('Success Tarifas 3.0TD desde SOM', { txtTarifas })
     return true
   } catch (err) {
-    console.log('FALLO SOM', err)
+    //Add_1
     clearTimeout(timeoutId)
     debugLog(
       'Error leyendo tarifas desde SOM Energia\n' +
@@ -1183,7 +1229,6 @@ export {
   promedio,
   returnFloat,
   round2Decimales,
-  roundDecimales,
   selectTCB,
   setActivo,
   setLabel,

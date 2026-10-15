@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 
 // OpenLayers objects
 import { Map, View } from 'ol'
+import Attribution from 'ol/control/Attribution'
+import { defaults as defaultControls } from 'ol/control'
 import TileLayer from 'ol/layer/Tile'
 import Overlay from 'ol/Overlay.js'
 import { OSM, Vector as VectorSource, XYZ } from 'ol/source'
@@ -17,24 +19,18 @@ import { getArea, getDistance } from 'ol/sphere.js'
 // MUI objects
 import { Button, Tooltip, Box, Grid } from '@mui/material'
 
-// REACT Solidar Global Components
-import { useDialog } from '../../components/DialogProvider'
-import { useAlert } from '../../components/AlertProvider.jsx'
-
-// REACT Solidar contexts
+//React global components
 import { BasesContext } from '../BasesContext'
-import { ConsumptionContext } from '../ConsumptionContext'
-
-// REACT Solidar local Components
 import DialogBaseSolar from './DialogBaseSolar'
+import { useDialog } from '../../components/DialogProvider'
+import { AlertContext } from '../components/Alert'
 
 // Local Location module
-import { verificaTerritorio, getParcelaXY } from './Nominatim.js'
+import verificaTerritorio from './Nominatim.js'
 
-// Solidar objects
+// Solidar global modules
 import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-import Finca from '../classes/Finca.js'
 
 /**
  * A React component to create BaseSolar on the OpenLayer map interface
@@ -47,20 +43,18 @@ import Finca from '../classes/Finca.js'
 
 export default function MapComponent() {
   const { t } = useTranslation()
-  const { SLDRAlert } = useAlert()
-  const [openDialog, closeDialog] = useDialog()
-
-  const { fincas, setFincas, setZonasComunes, setAllocationGroup } =
-    useContext(ConsumptionContext)
-  const { map, setMap, bases, updateBaseFromForm, tipoPanelActivo } =
-    useContext(BasesContext)
 
   // Map state
-  const [mapType, setMapType] = useState('LOCATION.LABEL_SATELITE')
+  const [mapType, setMapType] = useState('LOCATION.LABEL_VECTOR')
   const [selectedCoord] = useState([-3.7, 40.45])
+
+  const { map, setMap, processFormData } = useContext(BasesContext)
   const mapElement = useRef()
   const basesLayer = useRef()
   const mapRef = useRef(map)
+  const { SLDRAlert } = useContext(AlertContext)
+
+  const [openDialog, closeDialog] = useDialog()
 
   const baseInteraction = new Draw({
     source: TCB.origenDatosSolidar,
@@ -233,23 +227,37 @@ export default function MapComponent() {
         source: new OSM({
           maxZoom: 30,
         }),
+        attributions: '© OpenStreetMap contributors',
       })
       OpenS.set('name', 'OSM')
       OpenS.setVisible(false)
-      // SAT is satellite layer provided by ESRI via arcgisonline
-      // const SAT = new TileLayer({
-      //   source: new XYZ({
-      //     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      //     maxZoom: 30,
-      //   }),
-      // })
 
-      const SAT = new TileLayer({
-        source: new XYZ({
-          url: 'https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}?access_token=MAPBOX_TOKEN_REMOVED',
-          tileSize: 512,
-        }),
-      })
+      //Modificación 2926-06-18 Detectado token en git se mueve a .env
+      let SAT = null
+      const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN
+      // SAT  is satellite layer provided by Mapbox
+      if (mapboxToken) {
+        SAT = new TileLayer({
+          source: new XYZ({
+            url: `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`,
+            tileSize: 512,
+            attributions:
+              '© <a href="https://www.mapbox.com/about/maps/" target="_blank">Mapbox</a>',
+          }),
+        })
+        UTIL.debugLog('Using layer provided by Mapbox')
+      } else {
+        // SAT is satellite layer provided by ESRI via arcgisonline
+        SAT = new TileLayer({
+          source: new XYZ({
+            url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+            maxZoom: 30,
+            attributions:
+              '© <a href="https://www.arcgis.com" target="_blank">ArcGIS Online World Imagery</a>',
+          }),
+        })
+        UTIL.debugLog('Using layer provided by ESRI')
+      }
       SAT.set('name', 'SAT')
 
       // Vector is the layers where new features (bases o puntosConsumo) are shown from vectorSource
@@ -276,7 +284,11 @@ export default function MapComponent() {
           maxZoom: 20,
           zoom: 18,
         }),
-        controls: [],
+        controls: [
+          new Attribution({
+            collapsible: false, // true = muestra botón para colapsar, false = siempre visible
+          }),
+        ],
       })
 
       //Load interactions to allow bases drawing
@@ -298,12 +310,12 @@ export default function MapComponent() {
   }, [])
 
   // Function called when properties dialog is closed
-  function processFromData(reason, formData) {
+  function endDialog(reason, formData) {
     switch (reason) {
       case undefined:
         return
       case 'save':
-        updateBaseFromForm(reason, formData)
+        processFormData(reason, formData)
         break
       case 'cancel':
         UTIL.deleteBaseGeometries(formData.idBaseSolar)
@@ -334,14 +346,9 @@ export default function MapComponent() {
     end = transform(puntos[2], 'EPSG:3857', 'EPSG:4326')
     const ancho = getDistance(start, end)
 
-    /*
-    Calculamos una coordenada central para esta base que utilizaremos en:
-    - Llamada nominatim para verificar territorio
-    - Llamada PVGIS para obtener rendimiento unitario
-    - Rotularemos el label
-    - Llamada DGCatastro para obtener fincas
-    */
+    // Calculamos una coordenada central para esta base que utilizaremos en PVGIS y donde la rotularemos
     const puntoAplicacion = geometria.getInteriorPoint().getCoordinates()
+
     // Transformamos el punto al EPSG:4326 necesario para Nominatim
     const puntoAplicacion_4326 = transform(puntoAplicacion, 'EPSG:3857', 'EPSG:4326')
 
@@ -353,88 +360,37 @@ export default function MapComponent() {
       document.body.style.cursor = cursorOriginal
       if (status !== 'success') {
         SLDRAlert(
-          'NOMINATIM Verifica territorio',
+          'NOMINATIM error 1',
           t('LOCATION.ERROR_' + status, { err: details }),
-          'Warning',
+          'ERROR',
         )
         TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
         return false
       }
       TCB.direccion = details.direccion
     } catch (error) {
-      SLDRAlert('NOMINATIM error 2', error, 'Error')
+      console.log('CATCHED', error)
+      SLDRAlert('NOMINATIM error 2', error, 'ERROR')
       TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
       return false
-    }
-
-    if (TCB.modoActivo !== 'INDIVIDUAL') {
-      const alfa = await getParcelaXY(puntoAplicacion_4326)
-      console.log('GETPARCELAXY', alfa)
-
-      if (alfa.status) {
-        //Si es la primera llamada
-        if (TCB.lastRefCat === null) {
-          TCB.lastRefCat = alfa.parcela.refcat
-          console.log('Setting fincas')
-          setZonasComunes([])
-          setAllocationGroup(null)
-          setFincas(alfa.units.map((u) => new Finca(u)))
-        }
-        //Verificamos que estamos en la misma parcela de donde hemos obtenido los participes
-        if (alfa.parcela.refcat !== TCB.lastRefCat) {
-          if (
-            await SLDRAlert(
-              'CONFIRM',
-              t('LOCATION.PROMPT_CAMBIO_PARCELA'),
-              'Warning',
-              true,
-            )
-          ) {
-            console.log('Cambiamos a nuevas fincas')
-            TCB.lastRefCat = alfa.parcela.refcat
-            setZonasComunes([])
-            setAllocationGroup(null)
-            setFincas(alfa.units.map((u) => new Finca(u)))
-          } else {
-            console.log('Mantenemos las fincas de la base existente')
-          }
-        }
-      } else {
-        if (
-          !(await SLDRAlert(
-            'Busqueda catastro',
-            'Error desde DGC buscando parcela en esas coordenadas:<br />' +
-              alfa.error +
-              '<br />¿Desea continuar y cargar las fincas mas tarde?',
-            'Warning',
-            true,
-          ))
-        ) {
-          TCB.origenDatosSolidar.removeFeature(geoBaseSolar.feature)
-          console.log('Borramos fincas existentes')
-          setFincas([])
-          return false
-        }
-      }
-      console.log(fincas)
     }
 
     //Preparamos los datos default para constuir un objeto BaseSolar
     geoBaseSolar.feature.setId('BaseSolar.area.' + TCB.featIdUnico)
     let nuevaBaseSolar = {}
     //const areaMapa = getArea(geometria, { projection: 'EPSG:3857' })
+
     nuevaBaseSolar.idBaseSolar = TCB.featIdUnico.toString()
     nuevaBaseSolar.nombreBaseSolar = 'Base ' + nuevaBaseSolar.idBaseSolar
     nuevaBaseSolar.cumbrera = cumbrera
     nuevaBaseSolar.ancho = ancho
     nuevaBaseSolar.area = getArea(geometria)
-    nuevaBaseSolar.inclinacion = TCB.inclinacionDefault
+    nuevaBaseSolar.inclinacion = 20
     nuevaBaseSolar.inclinacionOptima = false
-    nuevaBaseSolar.roofType = TCB.modoActivo === 'INDIVIDUAL' ? 'Inclinado' : 'Horizontal'
+    nuevaBaseSolar.roofType = 'Inclinado'
     nuevaBaseSolar.inAcimut = undefined
     nuevaBaseSolar.angulosOptimos = false
     nuevaBaseSolar.requierePVGIS = true
-    nuevaBaseSolar.tipoPanel = tipoPanelActivo
     nuevaBaseSolar.lonlatBaseSolar =
       puntoAplicacion_4326[0].toFixed(4) + ',' + puntoAplicacion_4326[1].toFixed(4)
     //New point feature where the name label will be set
@@ -447,7 +403,7 @@ export default function MapComponent() {
       children: (
         <DialogBaseSolar
           data={nuevaBaseSolar}
-          onClose={(cause, formData) => processFromData(cause, formData)}
+          onClose={(cause, formData) => endDialog(cause, formData)}
         />
       ),
     })
@@ -455,7 +411,7 @@ export default function MapComponent() {
 
   //Fit map view to bases if any
   function fitMap() {
-    if (bases.length > 0) {
+    if (TCB.BaseSolar.length > 0) {
       const mapView = map.getView()
       const center = mapView.getCenter()
       mapView.fit(TCB.origenDatosSolidar.getExtent())
@@ -479,19 +435,19 @@ export default function MapComponent() {
     )
   }
 
-  // function openShadowMap() {
-  //   const center = mapRef.current.getView().getCenter()
-  //   const lonLat = transform(center, 'EPSG:3857', 'EPSG:4326')
-  //   const lon = lonLat[0]
-  //   const lat = lonLat[1]
-  //   window.open(
-  //     'https://app.shadowmap.org/?lat=' +
-  //       lat +
-  //       '&lng=' +
-  //       lon +
-  //       '&zoom=16.31&azimuth=-0.07499&basemap=map&elevation=nextzen&f=29.0&polar=0.52360&time=1708600229817&vq=2',
-  //   )
-  // }
+  function openShadowMap() {
+    const center = mapRef.current.getView().getCenter()
+    const lonLat = transform(center, 'EPSG:3857', 'EPSG:4326')
+    const lon = lonLat[0]
+    const lat = lonLat[1]
+    window.open(
+      'https://app.shadowmap.org/?lat=' +
+        lat +
+        '&lng=' +
+        lon +
+        '&zoom=16.31&azimuth=-0.07499&basemap=map&elevation=nextzen&f=29.0&polar=0.52360&time=1708600229817&vq=2',
+    )
+  }
 
   return (
     <Grid container>
@@ -500,6 +456,20 @@ export default function MapComponent() {
         ref={mapElement}
         className="map"
         style={{ width: '100%', height: '500px' }}
+        sx={{
+          position: 'relative',
+          '& .ol-overlaycontainer-stopevent': {
+            pointerEvents: 'none',
+          },
+          '& .ol-attribution': {
+            position: 'absolute !important',
+            top: 'unset !important',
+            left: '0 !important',
+            bottom: '0 !important',
+            right: 'unset !important',
+            pointerEvents: 'auto',
+          },
+        }}
       ></Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', flex: 1 }}>
         {/* Boton para cambiar vista mapa vs satelite */}

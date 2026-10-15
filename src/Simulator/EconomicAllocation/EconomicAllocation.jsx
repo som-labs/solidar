@@ -36,7 +36,7 @@ export default function EconomicAllocationStep() {
   const [matrix, setMatrix] = useState({})
 
   const [openDialog, closeDialog] = useDialog()
-  const { SLDRAlert } = useAlert()
+ const { SLDRAlert } = useContext(AlertContext)
   const allocationBox = useRef()
 
   //La tabla de asignación de costes tiene una columna por cada zona comun y una fila por cada grupo

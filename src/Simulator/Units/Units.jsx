@@ -28,7 +28,7 @@ import { GlobalContext } from '../GlobalContext.jsx'
 export default function UnitsStep() {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { SLDRAlert } = useAlert()
+ const { SLDRAlert } = useContext(AlertContext)
 
   const {
     fincas,

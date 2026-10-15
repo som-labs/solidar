@@ -165,7 +165,6 @@ Instalacion:
     tecnologia: Tecnología de los paneles
     largo: Largo del panel propuesto
     ancho: Ancho del panel propuesto
-  LABEL_tecnologiaDesconocida: Desconocida
 
   TOOLTIP:
     precioInstalacion: Precio de la instalación
@@ -193,6 +192,12 @@ Instalacion:
     largo: Largo del panel en metros
     ancho: Ancho del panel en metros
 
+  DESCRIPTION:
+    paneles: |
+      La simulación se realizará con un panel estándar de {{potencia}}. Si lo deseas, puedes modificar la potencia y la tecnología utilizada.
+  LABEL_tecnologiaDesconocida: Desconocida
+  LABEL_tipoPanel: Seleccione la potencia del panel
+
 Tarifa:
   NAME: Tarifa
   PROP:
@@ -218,10 +223,18 @@ Tarifa:
       P6: P6
   TOOLTIP:
     P0: Precio con el que la comercializadora compensa los excedentes de producción
+    P1: P1
+    P2: P2
+    P3: P3
+    P4: P4
+    P5: P5
+    P6: P6
     tipoTarifa: El tipo de tarifa contratada con la compañía comercializadora
     nombreTarifa: Nombre con el que se identificará la tarifa para asignar al tipo de consumo
     coefHucha: Porcentaje del saldo no compensado que pasa a la hucha
     cuotaHucha: Cuota fija mensual en Euros sin IVA que la empresa comercializadora cobra por la gestión de la hucha
+    botonBorraTarifa: Borra la tarifa seleccionada
+    botonEditaTarifa: Edita la tarifa seleccionada
 
 Rendimiento:
   NAME: Rendimiento según PVGIS
@@ -365,13 +378,12 @@ Economico:
 
 DIALOG_PANELS:
   TITLE: Características de los paneles solares
-  DESCRIPTION_2: |
-    Puedes escoger entre diferentes paneles estándar con tecnología de silicio cristalino (los más habituales en el mercado).
-  OTHERS: |
-    Sin embargo, si deseas utilizar un panel que no esta en la lista, selecciona la opción "Otros" de la lista y podrás definir sus caracteristicas en los siguientes campos.
-  DESCRIPTION_1: La simulación se realizará con un panel estándar de {{potencia}}. Si lo deseas, puedes modificar la potencia y la tecnología utilizada.
-  UNKNONW_TECHNOLOGY: Desconocida
-  LABEL_NOMBRE_PANEL: Seleccione el tipo de panel
+  DESCRIPTION:
+    Puedes escoger entre diferentes paneles estándar con tecnología de
+    silicio cristalino (los más habituales en el mercado).
+  OTHERS:
+    Sin embargo, si deseas utilizar un panel que no esta en la lista, puedes
+    definir sus caracteristicas en los siguientes campos.
 
 LOCATION:
   LABEL: Localización

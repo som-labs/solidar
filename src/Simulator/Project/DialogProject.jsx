@@ -30,7 +30,7 @@ import { GlobalContext } from '../GlobalContext.jsx'
 
 export default function DialogProject({ onClose }) {
   const { t, i18n } = useTranslation()
-  const { SLDRAlert } = useAlert()
+ const { SLDRAlert } = useContext(AlertContext)
   const fileInputRef = useRef(null)
   const [task, setTask] = useState(null)
   const { tipoPanelActivo, setTipoPanelActivo, bases, setBases, map } =

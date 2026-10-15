@@ -19,7 +19,6 @@ import { BasesContext } from '../BasesContext'
 
 // Solidar global modules
 import * as UTIL from '../classes/Utiles'
-import TCB from '../classes/TCB'
 
 /**
  * A React component to be used in conjunction with useDialog for create or edit a BaseSolar
@@ -50,10 +49,11 @@ export default function DialogBaseSolar({ data, onClose }) {
   const [roofType, setRoofType] = useState(data.roofType)
   const [inclinacionOptima, setInclinacionOptima] = useState(false)
   const canvasRef = useRef()
+  const inclinacionDefault = 30
 
   useEffect(() => {
     const canvas = canvasRef.current
-    if (!inclinacionOptima) drawHouse(canvas, data.inclinacion, roofType)
+    if (!inclinacionOptima) drawHouse(canvas, inclinacionDefault, roofType)
   }, [roofType, inclinacionOptima])
 
   const drawHouse = (canvas, inclinacion, roofType) => {
@@ -120,12 +120,12 @@ export default function DialogBaseSolar({ data, onClose }) {
           inclinacionOptima: false,
           //inAcimut: values.inAcimut,
           angulosOptimos: false,
-          inclinacion: TCB.inclinacionDefault,
+          inclinacion: inclinacionDefault,
           requierePVGIS: true,
         }))
         setRoofType('Inclinado', values)
         setInclinacionOptima(false)
-        drawHouse(canvasRef.current, TCB.inclinacionDefault, 'Inclinado')
+        drawHouse(canvasRef.current, inclinacionDefault, 'Inclinado')
         break
       case 'Horizontal':
         setValues((prev) => ({
@@ -133,12 +133,12 @@ export default function DialogBaseSolar({ data, onClose }) {
           roofType: 'Horizontal',
           inclinacionOptima: false,
           angulosOptimos: false,
-          inclinacion: TCB.inclinacionDefault,
+          inclinacion: inclinacionDefault,
           requierePVGIS: true,
         }))
         setRoofType('Horizontal')
         setInclinacionOptima(false)
-        drawHouse(canvasRef.current, TCB.inclinacionDefault, 'Horizontal')
+        drawHouse(canvasRef.current, inclinacionDefault, 'Horizontal')
         break
     }
   }
@@ -161,8 +161,7 @@ export default function DialogBaseSolar({ data, onClose }) {
     setValues((prevValues) => ({
       ...prevValues,
       inclinacionOptima: !values.inclinacionOptima,
-      inclinacion: TCB.inclinacionDefault,
-      requierePVGIS: true,
+      inclinacion: inclinacionDefault,
     }))
   }
 
@@ -307,7 +306,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                   __html: t('BaseSolar.DESCRIPTION.roofType'),
                 }}
               />
-
+              {/* PENDIENTE: hay que mejorar los iconos de los botones inclinado u horizontal */}
               <Box
                 sx={{
                   display: 'flex',
@@ -334,6 +333,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                   onClick={(event) => changeRoofType(event, setValues, values)}
                 >
                   <img src={coplanarSvgFile} width="170" height="90" alt="SVG Image" />
+                  {/* <HomeIcon /> */}
                 </Button>
                 <Button
                   style={{
@@ -357,9 +357,21 @@ export default function DialogBaseSolar({ data, onClose }) {
                     style={{ padding: 1 }}
                     alt="SVG Image"
                   />
+                  {/* <ApartmentIcon /> */}
                 </Button>
+                {/* <Button
+                  variant={values.roofType === 'Optimos' ? 'contained' : 'outlined'}
+                  name="roofType"
+                  value="Optimos"
+                  sx={{ flex: 1 }}
+                  className={'roofTypeButton'}
+                  onClick={(event) => changeRoofType(event, setValues)}
+                >
+                  {t('BaseSolar.PROP.angulosOptimos')}
+                </Button> */}
               </Box>
 
+              {/* {!values.inclinacionOptima && ( */}
               <>
                 <Box
                   sx={{

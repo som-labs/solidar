@@ -28,7 +28,7 @@ export default function InstallationSummary() {
 
   const [openDialog, closeDialog] = useDialog()
   //const { SLDRAlert } = useContext(AlertContext)
-  const { SLDRAlert } = useAlert()
+ const { SLDRAlert } = useContext(AlertContext)
   const { bases, setBases, addBase, modifyBase, deleteBase, tipoPanelActivo } =
     useContext(BasesContext)
   const { calculaResultados, setTotalPaneles, totalPaneles, consumoGlobal } =

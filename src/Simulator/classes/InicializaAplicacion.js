@@ -1,16 +1,37 @@
 import TCB from './TCB'
 import * as UTIL from './Utiles'
 
-export default async function InicializaAplicacion() {
+async function InicializaAplicacion() {
+  //Si recibimos argumento debug en la url ejecutamos con debug
+  TCB.debug = UTIL.getParametrosEntrada('debug')
+  UTIL.debugLog('_initEvents Debug activo: ' + TCB.debug)
+
   //Identificación de la sesión con objeto Date.now() de javascript.
   TCB.idSesion = Date.now()
 
-  console.log(window.location.hostname)
+  //Definimos el modo de trabajo
+  let _modo = UTIL.getParametrosEntrada('modo')
+  if (_modo) {
+    _modo = _modo.toUpperCase()
+    if (TCB.modos.includes(_modo)) TCB.modoActivo = _modo
+  }
+  UTIL.debugLog('_initEvents modo de trabajo: ' + TCB.modoActivo)
+
+  //Definimos el estilo. Por ahora puede ser SOM o GL. Cambia la pestaña de Resumen
+  let _estilo = UTIL.getParametrosEntrada('estilo')
+  if (_estilo) {
+    _estilo = _estilo.toUpperCase()
+    if (TCB.estilos.includes(_estilo)) TCB.estiloActivo = _estilo
+  }
+  UTIL.debugLog('_initEvents estilo de aplicacion: ' + TCB.estiloActivo)
+
+  //Definimos si es un usuario especial
+  TCB.user = UTIL.getParametrosEntrada('user')
   // Define la url base de la aplicación
-  TCB.basePath =
-    window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
-      ? 'http://localhost/SOM/REACT/solidar/'
-      : '/'
+  const localHost = ['127.0.0.1', 'localhost']
+  TCB.basePath = localHost.includes(window.location.hostname)
+    ? 'http://localhost/solidar/'
+    : '/'
   UTIL.debugLog('_initEvents ejecutando desde ' + TCB.basePath)
 
   //lectura del fichero de precios de instalación del servidor. Si falla se usan las de la TCB
@@ -19,7 +40,7 @@ export default async function InicializaAplicacion() {
   try {
     const precios = await fetch(ficheroPreciosInstalacion)
     if (precios.status === 200) {
-      TCB.preciosInstalacion = await precios.json()
+      TCB.precioInstalacion = await precios.json()
     }
   } catch (err) {
     UTIL.debugLog(
@@ -45,36 +66,27 @@ export default async function InicializaAplicacion() {
     )
   }
 
-  //Definicion de tarifas (APLICACION->SERVER->SOM)
-  TCB.fuenteTarifa = 'APLICACION'
-  const ficheroTarifa = '/datos/tarifas.json'
-  try {
-    UTIL.debugLog(
-      'Intentando leer tarifas desde servidor solidarenergia:' + ficheroTarifa,
-    )
-    const respuesta = await fetch(ficheroTarifa)
-    if (respuesta.status === 200) {
-      UTIL.debugLog('Success Tarifas leidas desde solidarenergia:' + ficheroTarifa)
-      TCB.tarifas = await respuesta.json()
-      TCB.fuenteTarifa = 'SERVER'
-    }
-  } catch (err) {
-    UTIL.debugLog(
-      'Error leyendo tarifas del servidor ' + err.message + '<br>Seguimos con TCB',
-    )
-  }
-
-  // Obtencion tarifas desde SOM
-  ;(async () => {
+  // lectura del fichero de tarifas del servidor. Si falla se usan las de la TCB
+  if (!(await UTIL.cargaTarifasDesdeSOM())) {
+    //Dejamos esta llamada hasta que el tiempo de respuesta de SOM sea aceptable
+    UTIL.debugLog('Fallo lectura desde apitarifas')
+    const ficheroTarifa = '/datos/tarifas.json'
     try {
-      const rCode = await UTIL.cargaTarifasDesdeSOM()
-      if (rCode) TCB.fuenteTarifa = 'SOM'
-    } catch (error) {
-      console.log('Fallo lectura desde apitarifas', error.message)
+      UTIL.debugLog(
+        'Intentando leer tarifas desde servidor solidarenergia:' + ficheroTarifa,
+      )
+      const respuesta = await fetch(ficheroTarifa)
+      if (respuesta.status === 200) {
+        UTIL.debugLog('Success Tarifas leidas desde solidarenergia:' + ficheroTarifa)
+        TCB.tarifas = await respuesta.json()
+      }
+    } catch (err) {
+      UTIL.debugLog(
+        'Error leyendo tarifas del servidor ' + err.message + '<br>Seguimos con TCB',
+      )
     }
-  })()
-
-  TCB.tarifaActiva.precios = [...TCB.tarifas[TCB.nombreTarifaActiva].precios]
+  }
+  TCB.tarifaActiva = TCB.tarifas[TCB.nombreTarifaActiva]
 
   // // Evento del boton de instrucciones
   // document.getElementById('botonInstrucciones').addEventListener("click", async function handleChange() {
@@ -119,6 +131,8 @@ export default async function InicializaAplicacion() {
   // if (noMostrarMas === 'false' || noMostrarMas === null) {
   //   bienvenida();
   // }
-  TCB.appInitialized = true
+
   return true
 }
+
+export default InicializaAplicacion

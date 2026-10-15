@@ -8,29 +8,22 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { useTheme } from '@mui/material/styles'
 
-// REACT Solidar Global Components
-import { useDialog } from '../../components/DialogProvider'
-import { SLDRFooterBox } from '../../components/SLDRComponents'
-
-// REACT Solidar contexts
+// REACT Solidar Components
 import { BasesContext } from '../BasesContext'
-import { GlobalContext } from '../GlobalContext'
-
-// REACT Solidar local Components
 import DialogBaseSolar from './DialogBaseSolar'
+import { useDialog } from '../../components/DialogProvider'
+import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
 
 // Solidar objects
+import TCB from '../classes/TCB'
 import * as UTIL from '../classes/Utiles'
-//import '../../App.css'
 
 export default function BasesSummary() {
   const { t } = useTranslation()
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()
-  const { bases, updateBaseFromForm, deleteBase } = useContext(BasesContext)
-
-  const { setNewBases } = useContext(GlobalContext)
+  const { bases, setBases, processFormData } = useContext(BasesContext)
 
   const getRowId = (row) => {
     return row.idBaseSolar
@@ -103,10 +96,7 @@ export default function BasesSummary() {
       sortable: false,
       description: t('BaseSolar.TOOLTIP.potenciaMaxima'),
       renderCell: (params) => {
-        return UTIL.formatoValor(
-          'potenciaMaxima',
-          (params.row.panelesMaximo * params.row.tipoPanel.potencia) / 1000,
-        )
+        return UTIL.formatoValor('potenciaMaxima', params.value)
       },
     },
     {
@@ -140,9 +130,17 @@ export default function BasesSummary() {
   ]
 
   function deleteBaseSolar(rowId) {
-    deleteBase(rowId)
-    setNewBases(true)
+    let prevBases = [...bases]
+    const nIndex = prevBases.findIndex((bs) => {
+      return bs.idBaseSolar === rowId
+    })
+
+    TCB.requiereOptimizador = true
     UTIL.deleteBaseGeometries(rowId)
+
+    prevBases.splice(nIndex, 1)
+    TCB.BaseSolar.splice(nIndex, 1)
+    setBases(prevBases)
   }
 
   function editBaseSolar(rowId) {
@@ -154,14 +152,14 @@ export default function BasesSummary() {
         <DialogBaseSolar
           data={_base}
           previous={bases}
-          onClose={(reason, formData) => processFormData(reason, formData)}
+          onClose={(reason, formData) => endDialog(reason, formData)}
         />
       ),
     })
   }
 
-  function processFormData(reason, formData) {
-    if (reason === 'save') updateBaseFromForm('edit', formData)
+  function endDialog(reason, formData) {
+    if (reason === 'save') processFormData('edit', formData)
     closeDialog()
   }
 
@@ -181,11 +179,7 @@ export default function BasesSummary() {
                   ),
                   potenciaMaxima: UTIL.formatoValor(
                     'potenciaMaxima',
-                    bases.reduce(
-                      (sum, tBase) =>
-                        sum + (tBase.panelesMaximo * tBase.tipoPanel.potencia) / 1000,
-                      0,
-                    ),
+                    bases.reduce((sum, tBase) => sum + tBase.potenciaMaxima, 0),
                   ),
                 }),
               }}
@@ -195,7 +189,6 @@ export default function BasesSummary() {
       </SLDRFooterBox>
     )
   }
-
   return (
     <Grid container justifyContent={'center'} sx={{ mt: '1rem' }}>
       <Grid item xs={11}>

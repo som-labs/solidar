@@ -34,7 +34,7 @@ import TipoConsumo from '../classes/TipoConsumo.js'
 
 export default function UnitsSummary(props) {
   const { t } = useTranslation()
-  const { SLDRAlert } = useAlert()
+ const { SLDRAlert } = useContext(AlertContext)
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()

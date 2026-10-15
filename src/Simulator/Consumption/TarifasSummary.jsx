@@ -16,7 +16,7 @@ import { GlobalContext } from '../GlobalContext'
 import MapaMesHora from './MapaMesHora'
 import MapaDiaHora from './MapaDiaHora'
 import { useDialog } from '../../components/DialogProvider'
-import { useAlert } from '../../components/AlertProvider'
+import { AlertContext } from '../components/Alert'
 import DialogConsumption from './DialogConsumption'
 import DialogTarifa from './DialogTarifa'
 import { SLDRFooterBox, SLDRInfoBox, SLDRTooltip } from '../../components/SLDRComponents'
@@ -31,7 +31,7 @@ import Tarifa from '../classes/Tarifa'
 export default function TarifasSummary() {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { SLDRAlert } = useAlert()
+  const { SLDRAlert } = useContext(AlertContext)
   const [openDialog, closeDialog] = useDialog()
   const [initialTarifa, setInitialTarifa] = useState()
   const {
@@ -49,6 +49,7 @@ export default function TarifasSummary() {
       setTarifas([new Tarifa('Tarifa Som Energia', '2.0TD')])
     }
   }, [])
+
   const { setNewPrecios } = useContext(GlobalContext)
 
   const editing = useRef()
@@ -122,7 +123,7 @@ export default function TarifasSummary() {
         <GridActionsCellItem
           key={1}
           icon={
-            <Tooltip title={t('TARIFA.TOOLTIP_botonBorraTarifa')}>
+            <Tooltip title={t('Tarifa.TOOLTIP.botonBorraTarifa')}>
               <DeleteIcon />
             </Tooltip>
           }
@@ -132,7 +133,7 @@ export default function TarifasSummary() {
         <GridActionsCellItem
           key={2}
           icon={
-            <Tooltip title={t('TARIFA.TOOLTIP_botonEditaTarifa')}>
+            <Tooltip title={t('Tarifa.TOOLTIP.botonEditaTarifa')}>
               <EditIcon />
             </Tooltip>
           }
@@ -184,6 +185,9 @@ export default function TarifasSummary() {
   function createTarifa() {
     editing.current = false
     const _t = new Tarifa('Tarifa Som Energia', '2.0TD')
+
+    console.log("Tarifa creada",_t)
+    
     setInitialTarifa(_t)
     openDialog({
       children: (
@@ -252,8 +256,8 @@ export default function TarifasSummary() {
   }
 
   return (
-    <Grid container justifyContent={'center'} rowSpacing={4}>
-      <Grid item xs={11}>
+    // <Grid container justifyContent={'center'} rowSpacing={4}>
+    //   <Grid item xs={11}>
         <DataGrid
           sx={theme.tables.headerWrap}
           getRowId={getRowId}
@@ -266,7 +270,7 @@ export default function TarifasSummary() {
           localeText={{ noRowsLabel: t('BASIC.LABEL_NO_ROWS') }}
           slots={{ toolbar: TCB.modoActivo !== 'INDIVIDUAL' ? newTarifa : '' }}
         />
-      </Grid>
-    </Grid>
+    //   </Grid>
+    // </Grid>
   )
 }
