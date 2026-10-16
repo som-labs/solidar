@@ -1,17 +1,14 @@
 import { lazy, Suspense } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import './App.css'
 import './i18n/i18n'
 
-const TestPage = lazy(() => import('./components/TestPage'))
-const HomePage = lazy(() => import('./Home/Page'))
 const SimulatorPage = lazy(() => import('./Simulator/Page'))
 const AboutPage = lazy(() => import('./About/Page'))
 const NotFoundPage = lazy(() => import('./NotFound/Page'))
 
 import GlobalTheme from './components/GlobalTheme'
 import DialogProvider from './components/DialogProvider'
-import { AlertProvider } from './components/AlertProvider'
+import { AlertProvider } from './Simulator/components/Alert'
 
 import { GlobalContextProvider } from './Simulator/GlobalContext'
 import { BasesContextProvider } from './Simulator/BasesContext'
@@ -36,33 +33,37 @@ const routes = [
     path: '/about',
     element: <AboutPage />,
   },
-  {
-    path: '/test',
-    element: <TestPage />,
-  },
 ]
 
 const router = createBrowserRouter(routes)
 function App() {
+  /* Orden de providers:
+     - El AlertProvider de main usa useDialog(), asi que va dentro de un DialogProvider.
+     - BasesContext (colectivo) usa SLDRAlert, asi que AlertProvider tiene que estar por encima de el.
+     - Los dialogos abiertos desde los componentes deben ver todos los contextos, por eso el
+       DialogProvider interior (el que usan los componentes con useDialog) va debajo de todos ellos.
+     SLDRAlert abre siempre en el DialogProvider exterior (su contenido es solo texto). */
   return (
     <GlobalTheme>
-      <GlobalContextProvider>
+      <DialogProvider>
         <AlertProvider>
-          <BasesContextProvider>
-            <ConsumptionContextProvider>
-              <EnergyContextProvider>
-                <EconomicContextProvider>
-                  <DialogProvider>
-                    <Suspense fallback={'Loading...'}>
-                      <RouterProvider router={router} />
-                    </Suspense>
-                  </DialogProvider>
-                </EconomicContextProvider>
-              </EnergyContextProvider>
-            </ConsumptionContextProvider>
-          </BasesContextProvider>
+          <GlobalContextProvider>
+            <BasesContextProvider>
+              <ConsumptionContextProvider>
+                <EnergyContextProvider>
+                  <EconomicContextProvider>
+                    <DialogProvider>
+                      <Suspense fallback={'Loading...'}>
+                        <RouterProvider router={router} />
+                      </Suspense>
+                    </DialogProvider>
+                  </EconomicContextProvider>
+                </EnergyContextProvider>
+              </ConsumptionContextProvider>
+            </BasesContextProvider>
+          </GlobalContextProvider>
         </AlertProvider>
-      </GlobalContextProvider>
+      </DialogProvider>
     </GlobalTheme>
   )
 }

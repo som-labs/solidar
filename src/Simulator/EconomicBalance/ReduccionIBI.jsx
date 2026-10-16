@@ -15,7 +15,7 @@ import { useTheme } from '@mui/material/styles'
 // REACT Solidar Components
 import { EconomicContext } from '../EconomicContext'
 import { ConsumptionContext } from '../ConsumptionContext'
-import { useAlert } from '../../components/AlertProvider.jsx'
+import { AlertContext } from '../components/Alert'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -28,7 +28,7 @@ export default function ReduccionIBI({ finca }) {
   const { economicoGlobal, setEconomicoGlobal, costeZCenFinca, forceUpdate } =
     useContext(EconomicContext)
   const { setFincas, zonasComunes } = useContext(ConsumptionContext)
-  const { SLDRAlert } = useAlert()
+  const { SLDRAlert } = useContext(AlertContext)
 
   const localEcoData = finca ? finca.economico : economicoGlobal
 

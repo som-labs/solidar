@@ -31,14 +31,14 @@ import * as UTIL from '../classes/Utiles'
 
 //React global components
 import { useDialog } from '../../components/DialogProvider'
-import { useAlert } from '../../components/AlertProvider'
+import { AlertContext } from '../components/Alert'
 import { ConsumptionContext } from '../ConsumptionContext'
 import { useContext } from 'react'
 
 export default function DialogConsumption({ data, previous, onClose, editing }) {
   const { t } = useTranslation()
   const [openDialog, closeDialog] = useDialog()
-  const { SLDRAlert } = useAlert()
+  const { SLDRAlert } = useContext(AlertContext)
   const { fincas } = useContext(ConsumptionContext)
 
   function showDistribuidoras() {
@@ -218,9 +218,9 @@ export default function DialogConsumption({ data, previous, onClose, editing }) 
                   padding={3}
                   control={
                     <SLDRInputField
-                      sx={{ flex: 1, ml: '1rem', width: 390 }}
+                      sx={{ flex: 1, ml: '1rem', mb: '0.5rem', width: 390 }}
                       //sx={{ width: 350, height: 50, mr: 2 }}
-                      select
+                      MUIType="Select"
                       value={values.fuente}
                       name="fuente"
                       object="TipoConsumo"

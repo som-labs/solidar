@@ -44,8 +44,9 @@ export default function GraphBoxSavings({ finca }) {
           id="B11"
           sx={{
             height: 200,
-            backgroundColor: theme.palette.primary.main,
+            backgroundColor: 'rgba(255, 255, 153, 0.49)',
             mr: '0.3rem',
+            border: 1,
             display: 'flex',
           }}
         ></Box>
@@ -94,7 +95,7 @@ export default function GraphBoxSavings({ finca }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: 'rgba(0,0,0,0)',
+            backgroundColor: 'rgba(157, 255, 118, 0.49)', //'rgba(0,0,0,0)',
             flexFlow: 'column',
             border: '2px dashed grey',
           }}
@@ -122,7 +123,8 @@ export default function GraphBoxSavings({ finca }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: theme.palette.primary.main,
+            border: 1,
+            backgroundColor: 'rgba(255, 255, 153, 0.49)',
           }}
         ></Box>
         <Box

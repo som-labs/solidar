@@ -20,7 +20,7 @@ import HelpAvailableAreas from './HelpAvailableAreas.jsx'
 
 // REACT Solidar contexts
 import { BasesContext } from '../BasesContext'
-import { GlobalContext } from '../GlobalContext'
+import { AlertContext } from '../components/Alert'
 
 //OpenLayers objects
 import { transform } from 'ol/proj'
@@ -29,7 +29,7 @@ const LocationStep = () => {
   const { t } = useTranslation()
   const theme = useTheme()
 
-  const { inLineHelp } = useContext(GlobalContext)
+  const { inLineHelp } = useContext(AlertContext)
   const [openDialog, closeDialog] = useDialog()
   const { map } = useContext(BasesContext)
 

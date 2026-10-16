@@ -10,7 +10,7 @@ import { SLDRInfoBox } from '../../components/SLDRComponents'
 // REACT Solidar Components
 import UnitTypeBox from './UnitTypeBox'
 
-import { useAlert } from '../../components/AlertProvider.jsx'
+import { AlertContext } from '../components/Alert'
 import HelpConsumption from '../Consumption/HelpConsumption'
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'

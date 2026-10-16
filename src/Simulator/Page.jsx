@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 
@@ -8,7 +8,7 @@ import Container from '@mui/material/Container'
 // REACT Solidar Global Components
 import AppFrame from '../components/AppFrame'
 import Wizard from '../components/Wizard'
-import { useAlert } from '../components/AlertProvider.jsx'
+import { AlertContext } from './components/Alert'
 
 // REACT Solidar local Components
 import LocationStep from './Location/Location'
@@ -38,7 +38,7 @@ import { optimizador } from './classes/optimizador.js'
 
 export default function Page() {
   const { t } = useTranslation()
-  const { SLDRAlert } = useAlert()
+  const { SLDRAlert } = useContext(AlertContext)
   const { validaBases, bases, tipoPanelActivo, modifyBase } = useContext(BasesContext)
 
   const {

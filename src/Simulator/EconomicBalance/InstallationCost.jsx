@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAlert } from '../../components/AlertProvider.jsx'
+import { AlertContext } from '../components/Alert'
 
 // MUI objects
 import {
@@ -27,7 +27,7 @@ import TCB from '../classes/TCB'
 export default function InstallationCost() {
   const { t, i18n } = useTranslation()
   const theme = useTheme()
-  const { SLDRAlert } = useAlert()
+  const { SLDRAlert } = useContext(AlertContext)
   const [openDialog, closeDialog] = useDialog()
 
   const { economicoGlobal, setEconomicoGlobal, forceUpdate } = useContext(EconomicContext)

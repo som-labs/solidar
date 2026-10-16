@@ -17,14 +17,14 @@ import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 
 //Solidar assets
-import logoPDF from '../assets/logoPDF.png'
+import logoPDF from '../assets/logo.png'
 
 var i
 let pagina = 1
 let currentY = 0
 var doc
 
-var img = new Image(160, 60)
+var img
 var margenIzquierdo
 var margenDerecho
 var pageWidth
@@ -467,7 +467,7 @@ function nuevaLinea(tipo, linea, propiedad, valor) {
   switch (tipo) {
     case 'Cabecera':
       doc.setLineWidth(1)
-      doc.addImage(img, 165, 2)
+      doc.addImage(img, 'PNG', 180, 5, 15, 10)
       doc.text(TCB.i18next.t(valor), margenIzquierdo, _hdr, null, null, 'left')
       doc.line(margenIzquierdo, _hdr + 2, margenDerecho, _hdr + 2)
       doc.setFontSize(_font['Normal'])

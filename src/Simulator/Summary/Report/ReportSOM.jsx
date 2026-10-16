@@ -248,8 +248,10 @@ export default function ReportSOM({ onClose }) {
                 <Box
                   id="F2C1Title"
                   sx={{
-                    backgroundColor: 'primary.main',
-                    color: 'primary.contrastText',
+                    backgroundColor: 'databox.main',
+                    color: 'databox.contrastText',
+                    // backgroundColor: 'primary.main',
+                    // color: 'primary.contrastText',
                     textAlign: 'center',
                     padding: 1,
                     mb: 2,
@@ -278,8 +280,10 @@ export default function ReportSOM({ onClose }) {
                 <Box
                   id="F2C2Title"
                   sx={{
-                    backgroundColor: 'primary.main',
-                    color: 'primary.contrastText',
+                    // backgroundColor: 'primary.main',
+                    // color: 'primary.contrastText',
+                    backgroundColor: 'databox.main',
+                    color: 'databox.contrastText',
                     textAlign: 'center',
                     padding: 1,
                     mb: 2,
@@ -326,8 +330,10 @@ export default function ReportSOM({ onClose }) {
               >
                 <Box
                   sx={{
-                    backgroundColor: 'primary.main',
-                    color: 'primary.contrastText',
+                    // backgroundColor: 'primary.main',
+                    // color: 'primary.contrastText',
+                    backgroundColor: 'databox.main',
+                    color: 'databox.contrastText',
                     textAlign: 'center',
                     padding: 1,
                   }}
@@ -384,8 +390,10 @@ export default function ReportSOM({ onClose }) {
             <Box
               sx={{
                 textTransform: 'uppercase',
-                backgroundColor: 'primary.main',
-                color: 'primary.contrastText',
+                // backgroundColor: 'primary.main',
+                // color: 'primary.contrastText',
+                backgroundColor: 'databox.main',
+                color: 'databox.contrastText',
                 textAlign: 'center',
                 padding: 1,
               }}
@@ -934,8 +942,10 @@ export default function ReportSOM({ onClose }) {
             {/* BOX Titulo Proximos pasos */}
             <Box
               sx={{
-                backgroundColor: 'primary.main',
-                color: 'primary.contrastText',
+                // backgroundColor: 'primary.main',
+                // color: 'primary.contrastText',
+                backgroundColor: 'databox.main',
+                color: 'databox.contrastText',
                 textAlign: 'center',
                 padding: 1,
               }}
@@ -950,8 +960,10 @@ export default function ReportSOM({ onClose }) {
             </Box>
             <Box
               sx={{
-                backgroundColor: 'primary.main',
-                color: 'primary.contrastText',
+                // backgroundColor: 'primary.main',
+                // color: 'primary.contrastText',
+                backgroundColor: 'databox.main',
+                color: 'databox.contrastText',
                 textAlign: 'center',
                 justifyContent: 'center',
                 padding: 1,
@@ -982,8 +994,10 @@ export default function ReportSOM({ onClose }) {
             {/*Informacion general sobre autogeneracion */}
             <Box
               sx={{
-                backgroundColor: 'primary.main',
-                color: 'primary.contrastText',
+                // backgroundColor: 'primary.main',
+                // color: 'primary.contrastText',
+                backgroundColor: 'databox.main',
+                color: 'databox.contrastText',
                 textAlign: 'center',
                 padding: 1,
               }}
@@ -1064,8 +1078,10 @@ export default function ReportSOM({ onClose }) {
                   flex: 11,
                   gap: 1,
                   padding: 2,
-                  backgroundColor: 'primary.main',
-                  color: 'primary.contrastText',
+                  // backgroundColor: 'primary.main',
+                  // color: 'primary.contrastText',
+                  backgroundColor: 'databox.main',
+                  color: 'databox.contrastText',
                 }}
               >
                 <Typography>{t('REPORT.PEU')}</Typography>

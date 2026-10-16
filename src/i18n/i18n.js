@@ -4,7 +4,7 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 
 import TCB from '../Simulator/classes/TCB'
 
-const translations = import.meta.globEager('./locale-*.yaml')
+const translations = import.meta.glob('./locale-*.yaml', { eager: true })
 
 const resources = Object.fromEntries(
   Object.keys(translations).map((key) => {

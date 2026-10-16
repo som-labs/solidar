@@ -10,14 +10,14 @@ import { TextField, Autocomplete } from '@mui/material'
 
 // REACT Solidar Components
 import { BasesContext } from '../BasesContext'
-import { useAlert } from '../../components/AlertProvider.jsx'
+import { AlertContext } from '../components/Alert'
 
 // Solidar objects
 import * as UTIL from '../classes/Utiles'
 
 export default function AddressSearch() {
   const { t } = useTranslation()
-  const { SLDRAlert } = useAlert()
+  const { SLDRAlert } = useContext(AlertContext)
 
   const { map } = useContext(BasesContext)
   // Address search states

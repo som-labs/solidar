@@ -7,7 +7,7 @@
   "private": "true",
   "scripts": {
     "dev": "vite",
-    "build": "cross-env NODE_OPTIONS='--max-old-space-size=6096' vite build",
+    "build": "cross-env NODE_OPTIONS='--max-old-space-size=6096' vite build && cp *.php dist/",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "test": "vitest",
     "preview": "vite preview"
@@ -31,7 +31,7 @@
     "pako": "^2.1.0",
     "papaparse": "^5.4.1",
     "plotly.js": "^2.27.0",
-    "plotly.js-dist": "^2.27.1",
+    "plotly.js-dist": "^2.35.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^13.2.0",
@@ -47,6 +47,7 @@
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",
+    "cross-env": "^10.1.0",
     "eslint": "^8.45.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",

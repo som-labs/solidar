@@ -16,7 +16,7 @@ import { GlobalContext } from '../GlobalContext'
 import MapaMesHora from './MapaMesHora'
 import MapaDiaHora from './MapaDiaHora'
 import { useDialog } from '../../components/DialogProvider'
-import { useAlert } from '../../components/AlertProvider'
+import { AlertContext } from '../components/Alert'
 import DialogConsumption from './DialogConsumption'
 import { SLDRFooterBox, SLDRInfoBox, SLDRTooltip } from '../../components/SLDRComponents'
 
@@ -29,7 +29,7 @@ import TipoConsumo from '../classes/TipoConsumo'
 export default function ConsumptionSummary() {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { SLDRAlert } = useAlert()
+  const { SLDRAlert } = useContext(AlertContext)
   const [openDialog, closeDialog] = useDialog()
   const {
     tiposConsumo,
@@ -360,7 +360,7 @@ export default function ConsumptionSummary() {
 
   return (
     <Grid container justifyContent={'center'} rowSpacing={4}>
-      <Grid item xs={11}>
+      <Grid item xs={12}>
         <SLDRInfoBox>
           <DataGrid
             sx={theme.tables.headerWrap}

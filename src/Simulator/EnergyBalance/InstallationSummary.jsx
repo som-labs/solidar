@@ -12,8 +12,8 @@ import clsx from 'clsx'
 import { BasesContext } from '../BasesContext'
 import { EnergyContext } from '../EnergyContext'
 import { GlobalContext } from '../GlobalContext.jsx'
-import { SLDRFooterBox } from '../../components/SLDRComponents'
-import { useAlert } from '../../components/AlertProvider.jsx'
+import { SLDRFooterBox, SLDRInfoBox } from '../../components/SLDRComponents'
+import { AlertContext } from '../components/Alert'
 import { useDialog } from '../../components/DialogProvider'
 import DialogProperties from '../components/DialogProperties'
 
@@ -28,7 +28,7 @@ export default function InstallationSummary() {
 
   const [openDialog, closeDialog] = useDialog()
   //const { SLDRAlert } = useContext(AlertContext)
-  const { SLDRAlert } = useAlert()
+  const { SLDRAlert } = useContext(AlertContext)
   const { bases, setBases, addBase, modifyBase, deleteBase, tipoPanelActivo } =
     useContext(BasesContext)
   const { calculaResultados, setTotalPaneles, totalPaneles, consumoGlobal } =
@@ -311,20 +311,22 @@ export default function InstallationSummary() {
           },
         }}
       >
-        <Grid item xs={11}>
-          <DataGrid
-            sx={theme.tables.headerWrap}
-            getRowId={getRowId}
-            rows={bases}
-            columns={columns}
-            hideFooter={false}
-            rowHeight={30}
-            autoHeight
-            disableColumnMenu
-            editMode="cell"
-            processRowUpdate={nuevaInstalacion}
-            slots={{ footer: footerSummary }}
-          />
+        <Grid item xs={12}>
+          <SLDRInfoBox>
+            <DataGrid
+              sx={theme.tables.headerWrap}
+              getRowId={getRowId}
+              rows={bases}
+              columns={columns}
+              hideFooter={false}
+              rowHeight={30}
+              autoHeight
+              disableColumnMenu
+              editMode="cell"
+              processRowUpdate={nuevaInstalacion}
+              slots={{ footer: footerSummary }}
+            />
+          </SLDRInfoBox>
         </Grid>
       </Grid>
     </>

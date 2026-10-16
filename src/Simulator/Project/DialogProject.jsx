@@ -15,7 +15,7 @@ import { ConsumptionContext } from '../ConsumptionContext'
 // MUI objects
 import { Box, Typography, Button, InputLabel, Tooltip } from '@mui/material'
 // REACT Solidar Components
-import { useAlert } from '../../components/AlertProvider.jsx'
+import { AlertContext } from '../components/Alert'
 import { SLDRInputField } from '../../components/SLDRComponents'
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
 
@@ -30,7 +30,7 @@ import { GlobalContext } from '../GlobalContext.jsx'
 
 export default function DialogProject({ onClose }) {
   const { t, i18n } = useTranslation()
-  const { SLDRAlert } = useAlert()
+  const { SLDRAlert } = useContext(AlertContext)
   const fileInputRef = useRef(null)
   const [task, setTask] = useState(null)
   const { tipoPanelActivo, setTipoPanelActivo, bases, setBases, map } =
@@ -65,6 +65,27 @@ export default function DialogProject({ onClose }) {
     setNewUnits,
     setNewEnergyBalance,
   } = useContext(GlobalContext)
+
+  /* Añadido para descargar pvgis_calls.txt al hacer 3 clicks en el titulo del dialogo*/
+  const [adminVisible, setAdminVisible] = useState(false)
+  const clickCount = useRef(0)
+
+  const handleLogoClick = () => {
+    clickCount.current++
+    if (clickCount.current >= 3) {
+      setAdminVisible(true)
+      clickCount.current = 0
+    }
+  }
+
+  const descargarLog = () => {
+    const a = document.createElement('a')
+    a.href = TCB.basePath + 'download-log.php?token=solar2026'
+    a.download = 'PVGIScalls.txt'
+    a.click()
+    setAdminVisible(false)
+  }
+  /* fin añadido para descargar pvgis_calls.txt */
 
   const defaultData = {
     nombreProyecto: undefined,
@@ -474,7 +495,7 @@ export default function DialogProject({ onClose }) {
       >
         {({ values }) => (
           <Form>
-            <DialogTitle>{t('Proyecto.DIALOG_TITLE')}</DialogTitle>
+            <DialogTitle onClick={handleLogoClick}>{t('Proyecto.DIALOG_TITLE')}</DialogTitle>
             <DialogContent>
               {/* Material-UI button that triggers file input click */}
               <Box
@@ -610,6 +631,17 @@ export default function DialogProject({ onClose }) {
                 <Button type="submit">{t('BASIC.LABEL_EXEC')}</Button>
               ) : (
                 ''
+              )}
+              {adminVisible && (
+                <Button
+                  onClick={descargarLog}
+                  variant="contained"
+                  color="error"
+                  size="large"
+                  style={{ margin: '0 auto', display: 'block' }}
+                >
+                  ⬇ Descargar Log PVGIS
+                </Button>
               )}
             </DialogActions>
           </Form>

@@ -78,7 +78,7 @@ class Rendimiento extends DiaHora {
 
     let url =
       TCB.basePath +
-      'proxy PVGIS.php?' +
+      'proxy_pvgis.php?' +
       'idSesion=' +
       TCB.idSesion +
       '&lat=' +
@@ -92,6 +92,7 @@ class Rendimiento extends DiaHora {
     UTIL.debugLog('PVGIS url:' + url)
     try {
       respuesta = await fetch(url)
+      console.log(url, respuesta)
       if (respuesta.status === 200) {
         var PVGISdata = await respuesta.json()
         if (PVGISdata.status !== undefined) {
@@ -173,6 +174,8 @@ class Rendimiento extends DiaHora {
         })
         this.mete(unDia, 'PROMEDIO')
         for (let i = 0; i < 365; i++) this.unitarioTotal += this.idxTable[i].suma / 1000
+
+        console.log(lastFecha)
 
         this.PVGISfechaFin = lastFecha
         this.numeroRegistros = i

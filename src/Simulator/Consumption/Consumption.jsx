@@ -10,7 +10,7 @@ import { useTheme } from '@mui/material/styles'
 import PreciosTarifa from './PreciosTarifa'
 import ConsumptionSummary from './ConsumptionSummary'
 import { SLDRInfoBox } from '../../components/SLDRComponents'
-import { useAlert } from '../../components/AlertProvider.jsx'
+import { AlertContext } from '../components/Alert'
 import HelpConsumption from './HelpConsumption'
 import HelpDistribuidora from './HelpDistribuidora'
 

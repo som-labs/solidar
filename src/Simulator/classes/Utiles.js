@@ -275,6 +275,9 @@ const returnFloat = (value) => {
     return value
   }
 }
+
+const decimalSeparator = (1.1).toLocaleString().substring(1, 2)
+
 const ValidateDecimal = (language, inputValue) => {
   const number = 1.1
   const decimalSeparator = number.toLocaleString(language).substring(1, 2)
@@ -506,7 +509,7 @@ async function loadFromCSV(csvFile, aThis, options) {
       transformHeader: (header) => {
         // Rename headers
         let tmpHeader = header.toUpperCase()
-        if (options.valorArr.includes(header)) return 'consumo'
+        if (options.valorArr.includes(tmpHeader)) return 'consumo'
         if (['ENERGIAVERTIDA_KWH'].includes(tmpHeader)) return 'excedente' //Not used yet
         if (['FECHA'].includes(tmpHeader)) return 'fecha'
         if (['HORA'].includes(tmpHeader)) return 'hora'
@@ -1093,7 +1096,7 @@ function selectTCB(tabla, campo, valor) {
  * @returns
  */
 async function cargaTarifasDesdeSOM() {
-  const urlSOMTarifas = TCB.basePath + 'proxy SOM.php'
+  const urlSOMTarifas = TCB.basePath + 'proxy_som.php?nombre='
   let _url
   let respuesta
   let txtTarifas
@@ -1160,6 +1163,7 @@ export {
   //copyClipboard,
   //csvToArray,
   debugLog,
+  decimalSeparator,
   deleteBaseGeometries,
   difDays,
   distancia,

@@ -17,7 +17,7 @@ import {
 import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
-import { useAlert } from '../../components/AlertProvider.jsx'
+import { AlertContext } from '../components/Alert'
 
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
@@ -31,7 +31,7 @@ import * as UTIL from '../classes/Utiles'
 
 export default function AllocationGraph() {
   const { t, i18n } = useTranslation()
-  const { SLDRAlert } = useAlert()
+  const { SLDRAlert } = useContext(AlertContext)
 
   const [error, setError] = useState({ status: false, field: '' })
   const {

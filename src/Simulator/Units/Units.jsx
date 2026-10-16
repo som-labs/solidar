@@ -10,7 +10,7 @@ import { useTheme } from '@mui/material/styles'
 // REACT Solidar Components
 import UnitTypeBox from './UnitTypeBox'
 import ZonaComunTypeBox from './ZonaComunTypeBox'
-import { useAlert } from '../../components/AlertProvider.jsx'
+import { AlertContext } from '../components/Alert'
 import HelpConsumption from '../Consumption/HelpConsumption'
 // REACT Solidar Components
 import { ConsumptionContext } from '../ConsumptionContext'
@@ -28,7 +28,7 @@ import { GlobalContext } from '../GlobalContext.jsx'
 export default function UnitsStep() {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { SLDRAlert } = useAlert()
+  const { SLDRAlert } = useContext(AlertContext)
 
   const {
     fincas,

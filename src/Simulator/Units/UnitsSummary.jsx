@@ -25,7 +25,7 @@ import { useTheme } from '@mui/material/styles'
 import { ConsumptionContext } from '../ConsumptionContext'
 import { GlobalContext } from '../GlobalContext'
 import { useDialog } from '../../components/DialogProvider'
-import { useAlert } from '../../components/AlertProvider.jsx'
+import { AlertContext } from '../components/Alert'
 
 // Solidar objects
 import TCB from '../classes/TCB'
@@ -34,7 +34,7 @@ import TipoConsumo from '../classes/TipoConsumo.js'
 
 export default function UnitsSummary(props) {
   const { t } = useTranslation()
-  const { SLDRAlert } = useAlert()
+  const { SLDRAlert } = useContext(AlertContext)
   const theme = useTheme()
 
   const [openDialog, closeDialog] = useDialog()

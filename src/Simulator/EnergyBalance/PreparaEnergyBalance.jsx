@@ -9,7 +9,7 @@ import { EnergyContext } from '../EnergyContext'
 import { GlobalContext } from '../GlobalContext'
 import { ConsumptionContext } from '../ConsumptionContext'
 
-import { useAlert } from '../../components/AlertProvider'
+import { AlertContext } from '../components/Alert'
 import * as UTIL from '../classes/Utiles'
 import TCB from '../classes/TCB'
 import Consumo from '../classes/Consumo'
@@ -20,7 +20,7 @@ import { useTheme } from '@mui/material/styles'
 export default function PreparaEnergyBalance() {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { SLDRAlert } = useAlert()
+  const { SLDRAlert } = useContext(AlertContext)
   const { newBases, newPrecios, newPanelActivo, newTiposConsumo, setNewTiposConsumo } =
     useContext(GlobalContext)
 

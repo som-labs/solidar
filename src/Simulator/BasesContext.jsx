@@ -7,7 +7,7 @@ import Feature from 'ol/Feature'
 import { LineString } from 'ol/geom'
 
 // REACT Solidar Components
-import { useAlert } from '../components/AlertProvider.jsx'
+import { AlertContext } from './components/Alert'
 import { GlobalContext } from './GlobalContext.jsx'
 
 // Solidar objects
@@ -20,7 +20,7 @@ const BasesContext = createContext()
 const BasesContextProvider = ({ children }) => {
   const { t } = useTranslation()
   const { setNewBases } = useContext(GlobalContext)
-  const { SLDRAlert } = useAlert()
+  const { SLDRAlert } = useContext(AlertContext)
   const [map, setMap] = useState()
   const [bases, setBases] = useState([])
   const [tipoPanelActivo, setTipoPanelActivo] = useState({

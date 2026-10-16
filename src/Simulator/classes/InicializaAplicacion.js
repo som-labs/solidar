@@ -5,12 +5,11 @@ export default async function InicializaAplicacion() {
   //Identificación de la sesión con objeto Date.now() de javascript.
   TCB.idSesion = Date.now()
 
-  console.log(window.location.hostname)
   // Define la url base de la aplicación
-  TCB.basePath =
-    window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
-      ? 'http://localhost/SOM/REACT/solidar/'
-      : '/'
+  const localHost = ['127.0.0.1', 'localhost']
+  TCB.basePath = localHost.includes(window.location.hostname)
+    ? 'http://localhost/solidar/'
+    : '/'
   UTIL.debugLog('_initEvents ejecutando desde ' + TCB.basePath)
 
   //lectura del fichero de precios de instalación del servidor. Si falla se usan las de la TCB

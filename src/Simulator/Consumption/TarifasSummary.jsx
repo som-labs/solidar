@@ -16,7 +16,7 @@ import { GlobalContext } from '../GlobalContext'
 import MapaMesHora from './MapaMesHora'
 import MapaDiaHora from './MapaDiaHora'
 import { useDialog } from '../../components/DialogProvider'
-import { useAlert } from '../../components/AlertProvider'
+import { AlertContext } from '../components/Alert'
 import DialogConsumption from './DialogConsumption'
 import DialogTarifa from './DialogTarifa'
 import { SLDRFooterBox, SLDRInfoBox, SLDRTooltip } from '../../components/SLDRComponents'
@@ -31,7 +31,7 @@ import Tarifa from '../classes/Tarifa'
 export default function TarifasSummary() {
   const { t } = useTranslation()
   const theme = useTheme()
-  const { SLDRAlert } = useAlert()
+  const { SLDRAlert } = useContext(AlertContext)
   const [openDialog, closeDialog] = useDialog()
   const [initialTarifa, setInitialTarifa] = useState()
   const {
