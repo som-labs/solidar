@@ -229,7 +229,7 @@ const TCB = {
     perdidasSistema: 20,
     interesVAN: 3,
     margen: 0.5,
-    bateriaPrecioUnitario: 700,
+    bateriaPrecioUnitario: 500,
     bateriaPrecioInstalacion: 500,
     bateriaVidaUtil: 20,
   },

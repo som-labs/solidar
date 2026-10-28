@@ -45,7 +45,7 @@ export default function SummarySOMStep() {
 
   return (
     <Container ref={contentRef}>
-      <Grid container rowSpacing={6}>
+      <Grid container rowSpacing={4}>
         <Grid item xs={12}>
           <Autoproduccion></Autoproduccion>
         </Grid>
@@ -68,16 +68,61 @@ export default function SummarySOMStep() {
           <Reports></Reports>
         </Grid>
 
+        {/* BOX Titulo Proximos pasos */}
         <Grid item xs={12}>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
               gap: 2,
-              padding: 4,
+
+            }}>
+            <Typography variant="h6" sx={{...theme.titles.level_1, textAlign: 'center', textTransform: 'uppercase' }}>
+              <strong>{t('REPORT.PROPERESPASES_TITLE')}</strong>
+            </Typography>
+            <Box>
+              <Typography 
+                variant="body"
+                dangerouslySetInnerHTML={{
+                  __html: t('REPORT.ADVISE'),
+                }}/>
+            </Box>
+          </Box>
+        </Grid>
+
+        {/* Que ofrecemos a traves de SOM ENERGIA */}
+        <Grid item xs={12}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+            }}>
+              <Typography variant="h6" sx={{...theme.titles.level_1, textAlign: 'center', textTransform: 'uppercase' }}>
+                <strong>{t('REPORT.PROPERESPASES_DESCRIPTION')}</strong>
+              </Typography>
+          
+              <Box sx={{ display: 'flex'}}>
+                <Typography
+                  dangerouslySetInnerHTML={{
+                    __html: t('REPORT.PROPERESPASES_TEXT'),
+                  }}
+                />
+              </Box>
+            </Box>
+          
+        </Grid>
+
+        {/* AVISO DISCLAIMER*/}
+        <Grid item xs={12}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+  
             }}
           >
-            <Typography sx={theme.titles.level_1} textAlign={'center'}>
+              <Typography variant="h6" sx={{...theme.titles.level_1, textAlign: 'center', textTransform: 'uppercase' }}>
               {t('BASIC.LABEL_AVISO')}
             </Typography>
             <Typography

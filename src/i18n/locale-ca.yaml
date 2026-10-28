@@ -743,7 +743,7 @@ ENERGY_BALANCE:
 ECONOMIC_BALANCE:
   TITLE: Balanç Econòmic
   DESCRIPTION: |
-    A continuació coneixeràs quant et costarà la instal·lació, quant t'estalviaràs anualment a la factura i en quant de temps recuperaràs la inversió. Has de tenir en compte les possibles subvencions que puguis demanar en el moment de la instal·lació, les bonificacions d'IBI (si l'ajuntament les ofereix) i les eines per obtenir descomptes pels <a href='https://ca.support.somenergia.coop/article/1397-que-son-els-excedents-no-compensats' target='_blank'>excedents no compensats</a> com el <a href='https://ca.support.somenergia.coop/article/1371-que-es-el-flux-solar' target='_blank'>Flux Solar</a>, bateries virtuals o guardiola solar en cas que la teva comercialitzadora ho ofereixi.
+    A continuació coneixeràs quant et costarà la instal·lació, quant t'estalviaràs anualment a la factura i en quant de temps recuperaràs la inversió. Has de tenir en compte les possibles subvencions que puguis demanar en el moment de la instal·lació, les bonificacions d'IBI (si l'ajuntament les ofereix) i les eines per obtenir descomptes pels <a href='https://ca.support.somenergia.coop/article/1397-que-son-els-excedents-no-compensats' target='_blank'>excedents no compensats</a> provinent <a href='https://ca.support.somenergia.coop/article/1371-que-es-el-flux-solar' target='_blank'>Flux Solar</a>, bateries virtuals o guardiola solar en cas que la teva comercialitzadora ho ofereixi.
 
   LABEL_ANO: Any
   TOOLTIP_ANO: Període d'amortització
@@ -1148,7 +1148,9 @@ REPORT:
   INSTALACIO_POTENCIA_UNITARIA: Potència unitaria per panell
   INSTALACIO_TOTAL: Potència total
   INSTALACIO_ANUAL: Generació anual
-  INSTALACIO_COST: Cost aproximat (IVA inclòs)
+  INSTALACIO_COST: Cost aproximat fotovoltaica(IVA inclòs)
+  BATERY_CAPACIDAD: Capacitat batería
+  BATERY_COST: Cost aproximat bateries(IVA inclòs)
   ESTUDI_TITLE: Estudi energètic - econòmic
   ESTUDI_AUTOGENERACIO: Autogeneració directa anual
   ESTUDI_EXCEDENT: Excedent
@@ -1163,13 +1165,14 @@ REPORT:
   PERFIL_ELECTRIC: Electric
   PERFIL_AUTOPRODUCCIO: Autoproduccio
   CONSUM_TITLE: Conceptes econòmics per mes
-  PROPERESPASES_TITLE: Properes pases
+  PROPERESPASES_TITLE: Recomanacions
   PROPERESPASES_DESCRIPTION: Què oferim a través de Som Energia?
   PROPERESPASES_DESCRIPTION_STRONG: compra col·lectiva
   PROPERESPASES_DESCRIPTION_FINAL: de Som Energia
-  PROPERESPASES_TEXT: "Consulta els nostres serveis a través de l'apartat produeix\
-    \ energia de la nostra pàgina web:\n<ul>\n<li> Instal·lacions individuals </li>\n\
-    <li> Generation kWh</li>\n</ul>\n"
+  PROPERESPASES_TEXT: "Et posem en contacte amb una empresa especialitzada a través de la nostra Xarxa d’Empreses Instal·ladores.
+    <br />Aprofita el <strong>3% de descompte </strong>que ofereixen a les persones sòcies de Som Energia!\n<ul>\n
+    <li>Informació de la <a href='https://www.somenergia.coop/ca/serveis/xarxa-installadores' target='_blank'>Xarxa d’Empreses Instal·ladores</a>.\n</li>\n\
+    <li>Et posem en contacte, <a href='https://docs.google.com/forms/d/e/1FAIpQLScXwfrof0vpvS7b6QVDI5Kpzgsp_QObKiqG0kMMQeuF-sh1CQ/viewform?usp=send_form' target='_blank'>formulari</a></li></ul>"
   PROPERESPASES_LINK: Com funcionen les compres col·lectives de Som Energia?
   PROPERESPASES_TITLE_SEGON: Contacta amb una
   PROPERESPASES_TITLE_SEGON_STRONG: empresa instal·ladora especialitzada i de confiança
@@ -1179,6 +1182,7 @@ REPORT:
   PROPERESPASES_TEXT_TERCER: També pots buscar entre les empreses que han tirat endavant
     les diferents compres col·lectives de lSom Energia o també altres empreses expertes
     del sector que pots trobaraquí.
+    
   AUTOGENERACIO_TITLE: Informació general sobre autogeneració
   AUTOGENERACIO_TEXT: Pots trobar informació general sobre
   AUTOGENERACIO_TEXT_STRONG: què és i com funciona l'autoconsum en els següents articles
@@ -1223,9 +1227,8 @@ REPORT:
   DESCUENTO_EXPLANATION: "(1) Són els Euros que has recuperat al llarg de l'any del\
     \ mètode d'estalvi que t'ofereix la teva comercialitzadora.<br />(2) Són els Euros\
     \ que han quedat a la guardiola a final d'any\n"
-  ADVISE: Per treure el màxim rendiment a la teva instal·lació hauries de desplaçar
-    l'ús elèctric a les hores de més producció fotovoltaica i recorda que l'energia
-    més sostenible és aquella que no es fa servir.
+  ADVISE: "Per treure el màxim rendiment de la teva instal·lació seria interessant desplaçar l’ús elèctric a les hores de més producció fotovoltaica. Si això no fos possible, o fos insuficient, valora incloure una bateria a la teva instal·lació o substituir la climatització, aigua calenta o cuina per equips que funcionin amb electricitat.<br/>En tot cas, recorda que l’energia més sostenible és aquella que no es fa servir.<br />"
+  
   US_HORAS_SOL: Ús de l'energia en hores solars
   FEE_TITLE: Preus aplicats (€/kWh)
   ESTUDI_DESCUENTO: Descompte aplicat

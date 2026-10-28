@@ -8,7 +8,7 @@ import { useReactToPrint } from 'react-to-print'
 import Print from '@mui/icons-material/Print'
 
 // Local images
-import logo from './images/logo_som_energia.png'
+import logo from './images/logo.png'
 import bombeta from './images/bombeta.png'
 import dona from './images/dona.png'
 import placa from './images/placa.png'
@@ -368,12 +368,20 @@ export default function ReportSOM({ onClose }) {
                     </strong>
                   </Typography>
                   {TCB.bateria && (
+                    <>
                     <Typography>
-                      {t('Bateria.TITLE')}:{' '}
+                      {t('REPORT.BATERY_CAPACIDAD')}:{' '}
                       <strong>
                         {UTIL.formatoValor('capacidad', TCB.bateria.capacidad)}
                       </strong>
                     </Typography>
+                    <Typography>
+                      {t('REPORT.BATERY_COST')}:{' '}
+                      <strong>
+                        {UTIL.formatoValor('dinero', TCB.bateria.precio)}
+                      </strong>
+                    </Typography>
+                    </>
                   )}
                 </Box>
               </Box>
@@ -522,8 +530,9 @@ export default function ReportSOM({ onClose }) {
                       <sup>(1)</sup>
                     </strong>
                   </Grid>
+                  <Grid xs={3}></Grid>
                   <Grid
-                    xs={6}
+                    xs={3}
                     item
                     sx={{
                       border: '1px solid #ccc',
@@ -551,8 +560,9 @@ export default function ReportSOM({ onClose }) {
                   >
                     <strong>{t('REPORT.ESTUDI_ESTALVI')}</strong>
                   </Grid>
+                  <Grid xs={3}></Grid>
                   <Grid
-                    xs={6}
+                    xs={3}
                     item
                     sx={{
                       border: '1px solid #ccc',
@@ -586,8 +596,9 @@ export default function ReportSOM({ onClose }) {
                       <sup>(2)</sup>
                     </strong>
                   </Grid>
+                  <Grid xs={3}></Grid>
                   <Grid
-                    xs={6}
+                    xs={3}
                     item
                     sx={{
                       border: '1px solid #ccc',
@@ -955,7 +966,11 @@ export default function ReportSOM({ onClose }) {
             </Box>
 
             <Box sx={{ padding: 2 }}>
-              <Typography variant="body">{t('REPORT.ADVISE')}</Typography>
+              <Typography 
+                variant="body"
+                dangerouslySetInnerHTML={{
+                  __html: t('REPORT.ADVISE'),
+                }}/>
             </Box>
             <Box
               sx={{
@@ -1025,7 +1040,6 @@ export default function ReportSOM({ onClose }) {
                   >
                     {t('REPORT.AUTOGENERACIO_TEXT_STRONG')}{' '}
                   </strong>
-                  {t('REPORT.AUTOGENERACIO_TEXT_FINAL')}{' '}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', flex: 1 }}>

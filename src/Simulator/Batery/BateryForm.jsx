@@ -17,7 +17,7 @@ import {
 import { useTheme } from '@mui/material/styles'
 
 //React global components
-import { SLDRInfoBox, SLDRInputField } from '../../components/SLDRComponents'
+import { SLDRInfoBox, SLDRInputField , SLDRCollapsibleCard} from '../../components/SLDRComponents'
 import { EconomicContext } from '../EconomicContext'
 import { AlertContext } from '../components/Alert'
 // Solidar objects
@@ -28,41 +28,41 @@ import { decimalSeparator } from '../classes/Utiles'
 import TCB from '../classes/TCB'
 
 // ── Presets de baterías comunes ──────────────────────────────────────────────
-const PRESETS = [
-  {
-    label: 'Tesla Powerwall 2',
-    values: {
-      capacidad: 13.5,
-      socMax: 0.95,
-      socMin: 0.05,
-      eficiencia: 0.9,
-      maxCargaKw: 5,
-      maxDescargaKw: 5,
-    },
-  },
-  {
-    label: 'BYD HVS 10',
-    values: {
-      capacidad: 10.2,
-      socMax: 0.95,
-      socMin: 0.1,
-      eficiencia: 0.95,
-      maxCargaKw: 5,
-      maxDescargaKw: 5,
-    },
-  },
-  {
-    label: 'Sonnen Eco 8',
-    values: {
-      capacidad: 8,
-      socMax: 0.9,
-      socMin: 0.1,
-      eficiencia: 0.92,
-      maxCargaKw: 3.3,
-      maxDescargaKw: 3.3,
-    },
-  },
-]
+// const PRESETS = [
+//   {
+//     label: '15 kWh',
+//     values: {
+//       capacidad: 15,
+//       socMax: 0.95,
+//       socMin: 0.1,
+//       eficiencia: 0.9,
+//       maxCargaKw: 5,
+//       maxDescargaKw: 5,
+//     },
+//   },
+//   {
+//     label: '10 kWh',
+//     values: {
+//       capacidad: 10,
+//       socMax: 0.95,
+//       socMin: 0.1,
+//       eficiencia: 0.95,
+//       maxCargaKw: 5,
+//       maxDescargaKw: 5,
+//     },
+//   },
+//   {
+//     label: '5 kWh',
+//     values: {
+//       capacidad: 5,
+//       socMax: 0.9,
+//       socMin: 0.1,
+//       eficiencia: 0.92,
+//       maxCargaKw: 3,
+//       maxDescargaKw: 3,
+//     },
+//   },
+// ]
 
 // ── Subcomponente: campo numérico con label, hint y error ────────────────────
 function Campo({ label, name, formik, unidad }) {
@@ -106,7 +106,6 @@ export default function BateriaForm({
   bateriaInicial,
   setBateriaValida,
   setBateria,
-  nuevaBateria,
   onResultados, // <-- nuevo
 }) {
   const { t } = useTranslation()
@@ -149,22 +148,22 @@ export default function BateriaForm({
     return errors
   }
 
-  async function aplicarPreset(preset, formik) {
-    if (!preset.values) return // "Personalizada" — no resetea
-    Object.entries(preset.values).forEach(([k, v]) => {
-      const texto = String(v)
-      formik.setFieldValue(k, texto)
-    })
-    // Limpiar errores previos
-    formik.setErrors({})
+  // async function aplicarPreset(preset, formik) {
+  //   if (!preset.values) return // "Personalizada" — no resetea
+  //   Object.entries(preset.values).forEach(([k, v]) => {
+  //     const texto = String(v)
+  //     formik.setFieldValue(k, texto)
+  //   })
+  //   // Limpiar errores previos
+  //   formik.setErrors({})
 
-    // Limpiar touched
-    formik.setTouched({})
+  //   // Limpiar touched
+  //   formik.setTouched({})
 
-    // Esperar a que Formik procese los nuevos valores y validar
-    const errors = await formik.validateForm(preset.values)
+  //   // Esperar a que Formik procese los nuevos valores y validar
+  //   const errors = await formik.validateForm(preset.values)
 
-  }
+  // }
 
   return (
     <Formik
@@ -187,146 +186,147 @@ export default function BateriaForm({
         return (
           <Form>
             <Container>
-              <SLDRInfoBox>
-                <Grid
-                  container
+              <Grid
+                container
                   rowSpacing={2}
                   justifyContent="center"
-                  sx={{ display: 'flex', gap: 2 }}
-                >
-                  <Grid item xs={12} sx={{ mt: '2rem' }}>
+                sx={{ display: 'flex'}}
+              >
+
+                  <Grid item xs={12}>
                     <Typography sx={theme.titles.level_1} textAlign={'center'}>
                       {t('Bateria.TITLE_PRESET')}
                     </Typography>
                   </Grid>
 
-                  {/* ── Botbos de preset ── */}
-                  <Grid container columnSpacing={2}>
-                    <Grid item xs={12} sx={{ mb: '2rem' }} textAlign={'center'}>
-                      <Typography sx={theme.titles.level_2}>
-                        {t('Bateria.TITLE_PRESET_MODELS')}
-                      </Typography>
+                    {/* ── Botbos de preset ── */}
+                    <Grid container columnSpacing={2}>
+                      {/* <Grid item xs={12} sx={{ mb: '2rem' }} textAlign={'center'}>
+                        <Typography sx={theme.titles.level_2}>
+                          {t('Bateria.TITLE_PRESET_MODELS')}
+                        </Typography>
 
-                      {/* ── Presets ── */}
-                      <Stack direction="row" spacing={2} justifyContent="center">
-                        {PRESETS.map((p) => (
-                          <Button
-                            variant="contained"
-                            key={p.label}
-                            type="button"
-                            size="small"
-                            onClick={() => aplicarPreset(p, formik)}
+                        {/* ── Presets ── */}
+                        {/* <Stack direction="row" spacing={2} justifyContent="center">
+                          {PRESETS.map((p) => (
+                            <Button
+                              variant="contained"
+                              key={p.label}
+                              type="button"
+                              size="small"
+                              onClick={() => aplicarPreset(p, formik)}
+                            >
+                              {p.label}
+                            </Button>
+                          ))}
+                        </Stack> */}
+                      {/* </Grid> */}
+
+                        <Grid item xs={12}>
+                          
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              width: '100%',
+                              gap: 5
+                            }}
                           >
-                            {p.label}
-                          </Button>
-                        ))}
-                      </Stack>
+                            <SLDRInfoBox sx={{ border: '1px solid #96b633' , mb: 2, borderRadius: 5}}>
+                              <Box sx={{ mb: '1rem' }}>
+                                <Typography fontWeight="bold" sx={{ mt: '1rem', mb: '1rem' }}>
+                                  {t('Bateria.TITLE_SECTION_CAPACIDAD')}
+                                </Typography>
+                                <Campo
+                                  label={t('Bateria.PROP.capacidad')}
+                                  name="capacidad"
+                                  formik={formik}
+                                  unidad="kWh"
+                                />
+                                <Typography sx={{ mt: '1rem' }}>
+                                  ⚡ Energía útil estimada: <strong>{energiaUtil} kWh</strong>
+                                </Typography>
+                                <span> capacidad × (SOC máx − SOC mín)</span>
+                              </Box>
+                            </SLDRInfoBox>
+
+                            <SLDRInfoBox sx={{ border: '1px solid #96b633' , mb:2, borderRadius: 5}}>
+                              <Box>
+                                <Typography fontWeight="bold" sx={{ mt: '1rem', mb: '1rem' }}>
+                                  {t('Bateria.TITLE_SECTION_SOC')}
+                                </Typography>
+                                <Campo
+                                  label="SOC máximo"
+                                  name="socMax"
+                                  formik={formik}
+                                  min={0.1}
+                                  max={1}
+                                  step={0.01}
+                                  unidad="(0–1)"
+                                  hint="Límite superior de carga"
+                                />
+                                <Campo
+                                  label="SOC mínimo"
+                                  name="socMin"
+                                  formik={formik}
+                                  min={0}
+                                  max={0.9}
+                                  step={0.01}
+                                  unidad="(0–1)"
+                                  hint="Reserva mínima, no se descarga por debajo"
+                                />
+                              </Box>
+                            </SLDRInfoBox>
+                          </Box>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              width: '100%',
+                              gap: 5,
+                            }}
+                          >
+                            <SLDRInfoBox sx={{ border: '1px solid #96b633' , mb:2, borderRadius: 5}}>
+                              <Box>
+                                <Typography fontWeight="bold" sx={{ mt: '1rem', mb: '1rem' }}>
+                                  {t('Bateria.TITLE_SECTION_RENDIMIENTO')}
+                                </Typography>
+                                <Campo
+                                  label={t('Bateria.PROP.eficiencia')}
+                                  name="eficiencia"
+                                  formik={formik}
+                                  unidad="(0–1)"
+                                />
+                              </Box>
+                            </SLDRInfoBox>
+
+                            <SLDRInfoBox sx={{ border: '1px solid #96b633' , mb:2, borderRadius: 5}}>
+                              <Box>
+                                <Typography fontWeight="bold" sx={{ mt: '1rem', mb: '1rem' }}>
+                                  {t('Bateria.TITLE_SECTION_POTENCIA')}
+                                </Typography>
+                                <Campo
+                                  label="Carga máxima"
+                                  name="maxCargaKw"
+                                  formik={formik}
+                                  unidad="kW"
+                                  hint="Potencia máxima de entrada"
+                                />
+                                <Campo
+                                  label="Descarga máxima"
+                                  name="maxDescargaKw"
+                                  formik={formik}
+                                  unidad="kW"
+                                  hint="Potencia máxima de salida"
+                                />
+                              </Box>
+                            </SLDRInfoBox>
+                          </Box>
+                        </Grid>
                     </Grid>
 
-                    <Grid item xs={12}>
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          width: '100%',
-                          gap: '15px',
-                        }}
-                      >
-                        <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
-                          <Box sx={{ mb: '1rem' }}>
-                            <Typography fontWeight="bold" sx={{ mt: '1rem', mb: '1rem' }}>
-                              {t('Bateria.TITLE_SECTION_CAPACIDAD')}
-                            </Typography>
-                            <Campo
-                              label={t('Bateria.PROP.capacidad')}
-                              name="capacidad"
-                              formik={formik}
-                              unidad="kWh"
-                            />
-                            <Typography sx={{ mt: '1rem' }}>
-                              ⚡ Energía útil estimada: <strong>{energiaUtil} kWh</strong>
-                            </Typography>
-                            <span> capacidad × (SOC máx − SOC mín)</span>
-                          </Box>
-                        </SLDRInfoBox>
-
-                        <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
-                          <Box>
-                            <Typography fontWeight="bold" sx={{ mt: '1rem', mb: '1rem' }}>
-                              {t('Bateria.TITLE_SECTION_SOC')}
-                            </Typography>
-                            <Campo
-                              label="SOC máximo"
-                              name="socMax"
-                              formik={formik}
-                              min={0.1}
-                              max={1}
-                              step={0.01}
-                              unidad="(0–1)"
-                              hint="Límite superior de carga"
-                            />
-                            <Campo
-                              label="SOC mínimo"
-                              name="socMin"
-                              formik={formik}
-                              min={0}
-                              max={0.9}
-                              step={0.01}
-                              unidad="(0–1)"
-                              hint="Reserva mínima, no se descarga por debajo"
-                            />
-                          </Box>
-                        </SLDRInfoBox>
-                      </Box>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          width: '100%',
-                          gap: '15px',
-                        }}
-                      >
-                        <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
-                          <Box>
-                            <Typography fontWeight="bold" sx={{ mt: '1rem', mb: '1rem' }}>
-                              {t('Bateria.TITLE_SECTION_RENDIMIENTO')}
-                            </Typography>
-                            <Campo
-                              label={t('Bateria.PROP.eficiencia')}
-                              name="eficiencia"
-                              formik={formik}
-                              unidad="(0–1)"
-                            />
-                          </Box>
-                        </SLDRInfoBox>
-
-                        <SLDRInfoBox sx={{ borderTop: '3px solid #96b633' }}>
-                          <Box>
-                            <Typography fontWeight="bold" sx={{ mt: '1rem', mb: '1rem' }}>
-                              {t('Bateria.TITLE_SECTION_POTENCIA')}
-                            </Typography>
-                            <Campo
-                              label="Carga máxima"
-                              name="maxCargaKw"
-                              formik={formik}
-                              unidad="kW"
-                              hint="Potencia máxima de entrada"
-                            />
-                            <Campo
-                              label="Descarga máxima"
-                              name="maxDescargaKw"
-                              formik={formik}
-                              unidad="kW"
-                              hint="Potencia máxima de salida"
-                            />
-                          </Box>
-                        </SLDRInfoBox>
-                      </Box>
-                    </Grid>
-                  </Grid>
                 </Grid>
-              </SLDRInfoBox>
             </Container>
           </Form>
         )

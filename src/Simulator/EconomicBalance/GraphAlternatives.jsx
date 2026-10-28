@@ -136,6 +136,11 @@ export default function GraphAlternatives() {
       name: 'TIR(%)',
       yaxis: 'y',
       type: 'scatter',
+      hovertemplate:
+          'Paneles: %{x}<br>' +
+          '%{fullData.name}' +
+          ': %{y:.0f}<br>' +
+          '<extra></extra>',
     }
 
     var trace_autosuficiencia = {
@@ -144,6 +149,11 @@ export default function GraphAlternatives() {
       name: t('Autosuficiencia') + '(%)',
       yaxis: 'y',
       type: 'scatter',
+      hovertemplate:
+          'Paneles: %{x}<br>' +
+          '%{fullData.name}' +
+          ': %{y:.0f}<br>' +
+          '<extra></extra>',
     }
 
     var trace_autoconsumo = {
@@ -152,6 +162,11 @@ export default function GraphAlternatives() {
       name: t('Autoconsumo') + '(%)',
       yaxis: 'y',
       type: 'scatter',
+      hovertemplate:
+          'Paneles: %{x}<br>' +
+          '%{fullData.name}' +
+          ': %{y:.0f}<br>' +
+          '<extra></extra>',
     }
 
     var trace_precioInstalacion = {
@@ -160,6 +175,11 @@ export default function GraphAlternatives() {
       name: t('Inversion') + '(€)',
       yaxis: 'y2',
       type: 'scatter',
+            hovertemplate:
+          'Paneles: %{x}<br>' +
+          '%{fullData.name}' +
+          ': %{y:.0f}<br>' +
+          '<extra></extra>',
     }
 
     var trace_ahorroAnual = {
@@ -168,6 +188,11 @@ export default function GraphAlternatives() {
       name: t('Ahorro') + '(€)',
       yaxis: 'y2',
       type: 'scatter',
+      hovertemplate:
+          'Paneles: %{x}<br>' +
+          '%{fullData.name}' +
+          ': %{y:.0f}<br>' +
+          '<extra></extra>',
     }
 
     setTraces([

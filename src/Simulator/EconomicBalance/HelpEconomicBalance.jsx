@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { Typography, Box, Button } from '@mui/material'
 import { DialogActions, DialogContent, DialogTitle } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import TCB from '../classes/TCB'
 
 export default function HelpEconomicBalance(props) {
   const { t } = useTranslation()
@@ -96,7 +97,10 @@ export default function HelpEconomicBalance(props) {
             <Typography
               variant="body"
               dangerouslySetInnerHTML={{
-                __html: t('ECONOMIC_BALANCE.HELP_BATERY_DESCRIPTION'),
+                __html: t('ECONOMIC_BALANCE.HELP_BATERY_DESCRIPTION', 
+                    {precioUnitario: TCB.parametros.bateriaPrecioUnitario, 
+                    precioInstalacion: TCB.parametros.bateriaPrecioInstalacion, 
+                    vidaUtil: TCB.parametros.bateriaVidaUtil}),
               }}
             />
           </Box>
