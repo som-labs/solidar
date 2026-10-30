@@ -274,7 +274,6 @@ Balance:
     autoconsumoMedioAnual: Autoconsum mitjà anual
     autosuficienciaMediaAnual: Autosuficiència mitjana anual
     autosuficienciaMaxima: Autosuficiència màxima
-
     excedenteAnual: Excedent
     deficitAnual: Electricitat comprada
     energiaFaltante%Consumo: Percentatge d'electricitat comprada
@@ -285,10 +284,8 @@ Balance:
       el 80%
     Produccion%Consumo: Percentatge d’energia fotovoltaica produïda respecte a la
       consumida
-    autoconsumoMedioAnual: El percentatge mitjà d’energia fotovoltaica consumida a
-      l’any (no sempre es consumeix tota).
-    autosuficienciaMediaAnual: Percentatge mitjà d’energia consumida procedent dels
-      panells solars. És una mesura d’independència respecte a la xarxa elèctrica
+    autoconsumoMedioAnual: Percentatge mitjà de l’energia fotovoltaica que es consumeix a l’any versus l’energia total produïda (no sempre es consumeix tota)
+    autosuficienciaMediaAnual: Percentatge mitjà de l’energia fotovoltaica consumida directament dels panells versus l’energia total requerida. És una mesura d’independència respecte a la xarxa elèctrica
     autosuficienciaMaxima: L'autosuficiència màxima que es podria assolir si tot l'excedent
       fotovoltaic es pogués consumir (bé amb bateries i/o canviant els hàbits de consum).\nS'assoleix
       el nombre màxim teòric de panells en arribar en aquesta variable al 100%.
@@ -336,6 +333,7 @@ Economico:
     valorSubvencionIBI: IBI (€)
     precioInstalacion: Preu de la instal·lació
   TOOLTIP:
+    precioInstalacionCorregido: Preu de la instal·lació que es considera més adequat pel càlcul d’estalvi. Es corregeix el preu de la instal·lació en funció de la potència instal·lada i el tipus de panell utilitzat. Si el preu corregit és diferent al preu proposat es mostra aquest camp perquè puguis decidir si vols utilitzar-ho o no.
     gastoSinPlacasAnual: Despesa elèctrica anual sense panaells solars. Només es té
       en compte la part variable de la factura
     gastoConPlacasAnual: La despesa anual estimada en electricitat amb panells solars.
@@ -384,6 +382,7 @@ LOCATION:
     cadascuna pot tenir una orientació respecte al sud diferent. Revisa que les dades
     del resum són correctes.
   ERROR_DEFINE_BASE: Cal definir las bases solares abans de continuar
+  ERROR_PANELES_BASE: Totes les bases han de tenir un nombre sencer de panells
   ERROR_tryError: Error en executar fecth a Nominatim. \n {{err}}
   ERROR_countryFailure: L'aplicació només és vàlida per a Espanya. Detectat {{message}}
   TOOLTIP_BORRA_BASE: Esborra l'àrea seleccionada
@@ -627,6 +626,8 @@ ENERGY_BALANCE:
   LABEL_AUTOCONSUMO: Ús directe d'energia
   LABEL_ENERGIA_RED: Energia obtinguda de la xarxa
   LABEL_ENERGIA_PANELES: Energia obtinguda dels panells
+  LABEL_BATERIA: Bateria
+  LABEL_PERDIDAS: Pèrdues
   TITLE_GRAPH_MONTH_ENERGY_BALANCE: "Producció versus consum mensual <br />\nper {{potencia}}\
     \ instal·lada\n"
 
@@ -667,6 +668,7 @@ ENERGY_BALANCE:
   SUMMARY_TITLE: Dades de la coberta
   SUMMARY_TOOLTIP_INFO: Informació detallada de l'àrea seleccionada
   SUMMARY_FOOTER: "{{paneles}} panells<br />\nPotència instal·lada: {{potencia}}\n"
+  ERROR_NUMERO_PANELES: El nombre de panells solars ha de ser major o igual a u i idealment menor que els {{maximo}} panells que estimem es poden instal·lar a l’àrea definida
   FOOTER_BUTON_MAXIMO: Configuració màxima ({{paneles}})
   FOOTER_BUTON_OPTIMO: Recupera optimitzador
   TITLE_GRAFICO_CONSUMOGENERACION3D: Gràfic detallat d'ús elèctric i producció
@@ -679,11 +681,14 @@ ENERGY_BALANCE:
   LABEL_HOURLY_CONSUMPTION_YEAR: Ús horari mitjà anual
   LABEL_HOURLY_PRODUCTION_MONTH: Producció horària mitjana del mes
   LABEL_HOURLY_CONSUMPTION_MONTH: Ús horari mitjà del mes
+  TITLE_BATERY_MAP: Estat de càrrega de la bateria
+  DESCRIPTION_BATERIA: El següent gràfic mostra l’estat de càrrega de la bateria en cada moment
+  HOOVER_MAPA_BATERIA_MONTH_DAY: SOC
   VALUE_FULL_YEAR: Mitjana anual
   TITLE_YEAR_ENERGY_BALANCE: Balanç energètic anual
   DESCRIPTION_YEAR_ENERGY_BALANCE: "Amb aquest nombre de panells podràs cobrir el\
     \ {{porcientoAutoconsumo}} de la teva demanda total d'energia ({{consumoTotal}}).\
-    \ La resta d'electricitat ({{percientoDemanda}}), l'hauràs de comprar de la xarxa.<br\
+    \ La resta d'electricitat ({{porcientoDemanda}}), l'hauràs de comprar de la xarxa.<br\
     \ />\nDe l'energia autoproduïda ({{produccionTotal}}), consumiràs el {{porcientoAutoproduccion}},\
     \ i el {{porcientoVertido}} s'abocarà a la xarxa, ja que es produirà en hores\
     \ en què no serà utilitzada.\n"
@@ -740,6 +745,8 @@ ENERGY_BALANCE:
     ENERGIA_RED: Energia de la xarxa
     USO_NOCTURNO: Ús elèctric nocturn
     USO_TOTAL: Ús de l'energia total
+    BATERIA: Bateria
+    PERDIDAS: Pèrdues
 ECONOMIC_BALANCE:
   TITLE: Balanç Econòmic
   DESCRIPTION: |
@@ -806,6 +813,12 @@ ECONOMIC_BALANCE:
     a 0 i menor que el preu de la instal·lació.
   TITLE_INSTALLATION_COST: Preu de la instal·lació
   IVA_INCLUDED: (IVA inclòs)
+  TITLE_BATERY_COST: Preu de la bateria
+  DESCRIPTION_BATERY_COST: S’estima que una bateria de {{capacidad}} de capacitat podria tenir un cost amb instal·lació inclosa de
+  LABEL_BATERY_COST: Cost de la bateria (€ amb IVA)
+  HELP_BATERY: Compte amb aquest detall
+  HELP_BATERY_DESCRIPTION: El preu estimat que proposem es basa en un preu de {{precioUnitario}} €/kWh de capacitat més {{precioInstalacion}} € d’instal·lació amb IVA inclòs però, donada la volatilitat del mercat, pots posar el valor que consideris més adequat en aquest camp. <br><br>Les bateries tenen una vida útil estimada de {{vidaUtil}} anys, pel que, en el cas de que el període d’amortitizació de la instal·lació sigui superior, s’inclourà una nova inversió del mateix valor en l’any {{vidaUtil}}.
+
   PROMPT_INSTALLATION_COST: Si tens una oferta diferent, pota canviar el valor de
     l'import al camp següent.
   ADVICE_PRICE_TITLE: Tenir en consideració
@@ -814,8 +827,10 @@ ECONOMIC_BALANCE:
     \ la inversió realitzada\n"
   PROMPT_AMORTIZATION_TIME: Els panells tenen una vida útil de 20 a 30 anys (si es
     mantenen correctament)
+  PROMPT_AMORTIZATION_TIME_CON_BATERIA: Per a la bateria s’ha considerat una vida útil de {{vidaUtil}} anys, pel que si el període d’amortització de la instal·lació és superior, s’inclourà una nova versió del mateix valor cada {{vidaUtil}} anys.
   WARNING_AMORTIZATION_TIME: Aquesta configuració recupera la inversió en un temps
     superior a 20 anys.
+  WARNING_CAMBIO_PRECIOS: És possible que hagi de verificar el valor de la subvenció rebuda
   LABEL_INSTALLATION_COST: Cost previst de la instal·lació (€ amb IVA)
   TITLE_VIRTUAL_BATTERY: Excedents no compensats
   LABEL_RECOGNITION_VIRTUAL_BATTERY: Percentatge corresponent
@@ -834,11 +849,7 @@ ECONOMIC_BALANCE:
   TITLE_DATA_AS_PANELS: Informació segons nombre de panells
   LABEL_FOOTER_VAN: 'Valor actual net (VAN): {{VANProyecto}}'
   LABEL_FOOTER_TIR: 'Taxa interna de retorn (TIR): {{TIRProyecto}}'
-  MSG_NO_FINANCE: "Un nombre de panells excessiu provoca que el retorn de la inversió\
-    \ no s'obtingui abans de {{periodo}} anys, per la qual cosa el resultat financer\
-    \ no és significatiu. Si us plau redueixi el nombre de panells, cosa que reduirà\
-    \ la inversió, o augmenti el consum d'energia, per incrementar l'estalvi. D'aquesta\
-    \ manera, millorarà el cashflow.\n"
+  MSG_NO_FINANCE: Un nombre de panells excessiu o el cost de la bateria si hi fos, provoca que el retorn de la inversió no s’obtingui abans de {{periodo}} anys pel que el resultat financer no és significatiu. Si us plau redueix el nombre de panells o treu la bateria, el que reduïrà la inversió, o augmenta el consum d’energia, per incrementar l’estalvi. D’aquesta manera millorarà el cashflow.
   HELP_TITLE_TIR: Taxa interna de retorn
   HELP_TITLE_VAN: Valor actual net
   HELP_VAN: "El valor actual net (VAN) és una mesura del valor present dels fluxos\
@@ -859,14 +870,15 @@ SUMMARY:
   LABEL_AREAS_ESCOGIDAS_zero: àrea triada
   LABEL_AREAS_ESCOGIDAS_one: <strong>Un</strong> àrea triada
   LABEL_AREAS_ESCOGIDAS_other: <strong>{{count}}</strong> àrees triades
-  LABEL_AREAS_DISPONIBLES_one: de <strong>un</strong> àrea disponible
-  LABEL_AREAS_DISPONIBLES_other: de <strong>{{count}}</strong> àrees disponibles
+  LABEL_AREAS_DISPONIBLES_one: ' de <strong>un</strong> àrea disponible'
+  LABEL_AREAS_DISPONIBLES_other: ' de <strong>{{count}}</strong> àrees disponibles'
   LABEL_PANELES_SUGERIDOS_zero: panells solars
   LABEL_PANELES_SUGERIDOS_one: <strong>Un</strong> panell solar
   LABEL_PANELES_SUGERIDOS_other: <strong>{{count}}</strong> panells solars
   LABEL_PRODUCCION_ANUAL: kwh <br />producció anual
   LABEL_PRODUCCION: <strong>{{produccion}}</strong> producció anual
   LABEL_POTENCIA: <strong>{{potencia}}</strong> potència total instal·lada
+  LABEL_BATERIA: Bateria instal·lada de <strong>{{capacidad}}</strong>
   LABEL_COSTE: <strong>{{coste}}</strong> cost de la instal·lació
   TITLE_CONSUMO: Consum
   TITLE_ECONOMIC_BALANCE: Balanç econòmic
@@ -903,9 +915,11 @@ BASIC:
   LABEL_AÑOS: Anys
   LABEL_REQUIRED: Requerit
   LABEL_NUMBER: Posa un nombre major o igual que zero
+  LABEL_RANGO: Entre {{min}} y {{max}} 
   LABEL_ACCIONES: Accions
   LABEL_INFO: Info
   LABEL_NO_ROWS: Sense dades
+  LABEL_DELETE: Esborrar
 GRAPHICS:
   LABEL_CONSUMPTION: Ús elèctric
   LABEL_PRODUCTION: Producció
@@ -946,6 +960,9 @@ PARAMETROS:
     IVAInstalacion: L'IVA que es repercuteix sobre l'import a què ascendeixi la instal·lació
     interesVAN: Taxa de descompte a aplicar al càlcul del valor actual net
     margen: Distància mantinguda al voltant de la instal·lació a efectes de manteniment
+    bateriaPrecioUnitario: S’utilitzarà per un càlcul estimat de cost de la bateria
+    bateriaPrecioInstalacion: S’utilitzarà per un càlcul estimat de cost de la bateria
+    bateriaVidaUtil: S’utilitzarà per tenir en compte la renovació de la bateria al cap d’aquests anys
   PROP:
     impuestoElectrico: Impost elèctric en %
     IVAEnergia: IVA aplicable a l'energia a %
@@ -953,6 +970,9 @@ PARAMETROS:
     perdidasSistema: Pèrdues estimades de la instal·lació en %
     interesVAN: Interès base (%) per a càlcul de VAN
     margen: Marge d'instal·lació en metres
+    bateriaPrecioUnitario: € per kWh de capacitat
+    bateriaPrecioInstalacion: Preu instal·lació en € 
+    bateriaVidaUtil: Anys de vida útil de la bateria
 CONTACTO:
   DIALOG_TITLE: Formulari de contacte
   DIALOG_DESCRIPTION: Envia'ns els teus comentaris. Intentarem atendre't el més aviat
@@ -1054,31 +1074,13 @@ GRAFICOS:
   LABEL_graficasGastoConPaneles: Despesa amb panells
   LABEL_graficasGastoSinPaneles: Despesa sense panells
   LABEL_graficasCompensacion: Compensació simplificada
-
   LABEL_graficasExcedente: Excedent
   LABEL_graficasDeficit: Energia de la xarxa
-
-  graficos_LBL_descripcion: Àrea de gràfics disponibles
-  graficos_LBL_balanceConsumo: Balanç mensual de consum amb {{potencia}} instal·lada
-  graficos_LBL_balanceProduccion: Balance mensual de producció amb {{potencia}} instal·lada
-  graficos_LBL_tituloBalanceEconomico: Balance econòmic mensual amb {{potencia}} instal·lada
-  graficos_LBL_alternativasPotencia: Alternatives amb paneles de {{potencia}} instal·lats
-
-  graficos_LBL_graficasProduccion: Producció
-  graficos_LBL_graficasConsumo: Consum
-  graficos_LBL_graficasInversion: Inversió
-  graficos_LBL_graficasAhorro: Estalvi
-
-  graficos_LBL_graficasAutosuficiencia: Autosuficiència
-  graficos_LBL_graficasprodvscons: Prod. vs. Cons.
-  graficos_LBL_graficasDia: Dia
-  graficos_LBL_graficasHora: Hora
-  graficos_LBL_cambiaPaneles: Clic canvia a {{paneles}} panells
-  graficos_LBL_paneles: Panells
-
+  LABEL_graficasAutoconsumo: Autoconsum directe
+  LABEL_graficasDescargas: Obtingut de la bateria
+  LABEL_graficasCargas: Enviat a la bateria
   LABEL_limiteSubvencionEU: Límit subvenció EU
   LABEL_numeroMaximoPaneles: Límit panells per àrea disponible
-  LABEL_graficasAutoconsumo: Autoconsum
   LABEL_SALDO_VIRTUAL_BATTERY: Descomptes disponibles
   LABEL_EXTRACCION_VIRTUAL_BATTERY: Descompte aplicat
 REPORT:
@@ -1142,6 +1144,7 @@ REPORT:
   US_POTENCIA: Potencia contractada
   US_TARIFA: Tarifa
   US_ANUAL: "Ús anual de l'energia:"
+  BATERIA: Informació de la bateria instal·lada
   INSTALACIO_TITLE: Característiques instal·lació proposada
   INSTALACIO_NOMBRE: Nombre de panells
   INSTALACIO_POTENCIA: Potència total instal·lada
@@ -1302,3 +1305,45 @@ Proyecto:
   MSG_problemaVersion: Malauradament no es pot importar un fitxer Solimp de versions
     anteriors a 4',
   NO_EXPORT_AVAILABLE: El projecte només es pot exportar després del pas Balanç d'energia
+Bateria:
+  TITLE: Bateria
+  DESCRIPTION: |
+    Les bateries permeten emmagatzemar l’energia produïda pels panells solars pel seu us posterior. D’aquesta forma, pots augmentar el teu autoconsum i reduïr la teva dependència de la xarxa elèctrica, especialment durant les hores en les que no hi ha producció fotovoltaica (per exemple, durant la nit). No obstant, és important tenir present que les bateries poden augmentar significativament el cost de la instal·lació i que la seva vida útil sol ser menor que la dels panells solars.<br> L’algoritme de càrrega i descàrrega de la bateria és el bàsic, quan hi han excedents s’utilitzen per carregar i quan hi ha dèficit es descarrega, no hi ha una aplicació òptima de possibles millores per preus a cada hora. 
+  DETALLES: A continuació alguns detalls tècnics típics d’una bateria.<br />Pots canviar la seva capacitat i qualsevol de les seves característiques segons el teu propi criteri.
+  DETALLES_TECNICOS: Detalls tècnics de la bateria
+  LABEL_CREATE: Afegir bateria
+  LABEL_DELETE: Esborrar bateria
+  LABEL_DATOS_SIN_BATERIA: Dades sense bateria
+  LABEL_DATOS_CON_BATERIA: Dades amb bateria de <strong>{{capacidad}}</strong>
+  LABEL_MEDIANA_EXCEDENTE_INVIERNO: 'Mediana de l''excedent diari hivern: {{excedente}}'
+  LABEL_MEDIANA_EXCEDENTE_INTERMEDIO: 'Mediana de l''excedent diari intermedi: {{excedente}}'
+  LABEL_MEDIANA_EXCEDENTE_VERANO: 'Mediana de l''excedent diari estiu: {{excedente}}'
+  LABEL_MINIMO_EXCEDENTE: 'Excedent diari mínim anual: {{excedente}}'
+  LABEL_MEDIANA_EXCEDENTE: 'Mediana de l''excedent diari anual: {{excedente}}'
+  LABEL_MAXIMO_EXCEDENTE: 'Excedent diari màxim anual: {{excedente}}'
+  TITLE_CONFIGURACION: Configuració de la bateria
+  MSG_ERROR_BATERIA: Validació de la bateria
+  TOOLTIP_BUTTON_NUEVA_BATERIA: Botó per afegir una bateria a la configuració
+  TOOLTIP_BUTTON_BORRA_BATERIA: Botó per eliminar la bateria de la configuració
+  TITLE_SECTION_CAPACIDAD: CAPACITAT
+  TITLE_SECTION_SOC: LÍMITS DE CÀRREGA (SOC)
+  TITLE_SECTION_RENDIMIENTO: RENDIMENT
+  TITLE_SECTION_POTENCIA: POTENCIA MÀXIM
+  LABEL_TITLE_PROFILE_DAY: Perfil diari de càrrega de bateria
+  LABEL_TITLE_MAP_MONTH_DAY: Mapa d’estat de càrrega bateria en kWh
+  PROP:
+    capacidad: Capacitat total
+    socMax: SOC Màxim
+    socMin: SOM Mínim
+    eficiencia: Eficiència round-trip
+    precio: Peru de la bateria en euros
+    maxCargaKw: Càrrega màxima
+    maxDescargaKw: Descàrrega màxima
+  TOOLTIP:
+    capacidad: Capacitat nominal del fabricant
+    socMax: Límit superior de càrrega
+    socMin: Estat de càrrega mínim
+    eficiencia: Energia recuperada / energia emmagatzemada
+    precio: Preu de la bateria en euros
+    maxCargaKw: Potència màxima de càrrega en kW
+    maxDescargaKw: Potència màxima de descàrrega en kW

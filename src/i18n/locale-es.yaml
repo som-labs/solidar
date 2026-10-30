@@ -23,12 +23,6 @@ HOME:
     su inclinación y orientación
     el consumo eléctrico y la tarifa
     y genera un informe con el número de paneles
-    Toma datos como el tamaño de la cubierta
-    su inclinación y orientación
-    el consumo eléctrico y la tarifa
-    y genera un informe con el número de paneles
-    el coste de la instalación y el ahorro potencial.
-
   IS_IT_WORTH_BUTTON: Ir a las herramientas de simulación
   SIMULATION_TOOLS_TITLE: Herramientas de simulación
   SIMULATION_TOOLS_INDIVIDUAL: Simulador para Consumo Individual
@@ -601,8 +595,8 @@ ENERGY_BALANCE:
   LABEL_AUTOCONSUMO: Uso directo energía
   LABEL_ENERGIA_RED: Energía obtenida de la red
   LABEL_ENERGIA_PANELES: Energía obtenida de los paneles
-  LABEL_BATERIA: Bateria
-  LABEL_PERDIDAS: Perdidas
+  LABEL_BATERIA: Batería
+  LABEL_PERDIDAS: Pérdidas
   TITLE_HOURLY_ENERGY_BALANCE: Balance horario
   TITLE_HOURLY_PERIODO: Periodo
   LABEL_HOURLY_PRODUCTION_YEAR: Producción horaria media anual
@@ -665,8 +659,8 @@ ENERGY_BALANCE:
     ENERGIA_RED: Energía de la red
     USO_NOCTURNO: Uso eléctrico nocturno
     USO_TOTAL: Uso de la energía total
-    BATERIA: Bateria
-    PERDIDAS: Perdidas
+    BATERIA: Batería
+    PERDIDAS: Pérdidas
 
 ECONOMIC_BALANCE:
   TITLE: Balance Económico
@@ -747,8 +741,7 @@ ECONOMIC_BALANCE:
   LABEL_FOOTER_VAN: 'Valor actual neto (VAN): {{VANProyecto}}'
   LABEL_FOOTER_TIR: 'Tasa interna de retorno (TIR): {{TIRProyecto}}'
   MSG_NO_FINANCE: |
-    Un número de paneles excesivo o el coste de la batría si la hubiera, provoca que el retorno de la inversión no se obtenga antes de {{periodo}} años por lo que el resultado financiero no es significativo. Por favor reduzca el número de paneles o quite la batería, lo que reducirá la inversión, o aumente el consumo de energía, para incrementar el ahorro. De ese modo mejorará el cashflow.
-
+    Un número de paneles excesivo o el coste de la batería si la hubiera, provoca que el retorno de la inversión no se obtenga antes de {{periodo}} años por lo que el resultado financiero no es significativo. Por favor reduzca el número de paneles o quite la batería, lo que reducirá la inversión, o aumente el consumo de energía, para incrementar el ahorro. De ese modo mejorará el cashflow.
   HELP_TITLE_TIR: Tasa interna de retorno
   HELP_TIR: |
     La Tasa Interna de Retorno (TIR) es la tasa de descuento que iguala el VAN de un proyecto de inversión a cero. En otras palabras, es la tasa de rendimiento que hace que el valor presente de los flujos de efectivo futuros sea igual a la inversión inicial.<br />
@@ -769,8 +762,8 @@ SUMMARY:
   LABEL_AREAS_ESCOGIDAS_zero: área escogida
   LABEL_AREAS_ESCOGIDAS_one: <strong>Un</strong> área escogida
   LABEL_AREAS_ESCOGIDAS_other: <strong>{{count}}</strong> áreas escogidas
-  LABEL_AREAS_DISPONIBLES_one: 'de <strong>un</strong> área disponible'
-  LABEL_AREAS_DISPONIBLES_other: 'de <strong>{{count}}</strong> áreas disponibles'
+  LABEL_AREAS_DISPONIBLES_one: ' de <strong>un</strong> área disponible'
+  LABEL_AREAS_DISPONIBLES_other: ' de <strong>{{count}}</strong> áreas disponibles'
   LABEL_PANELES_SUGERIDOS_zero: paneles solares
   LABEL_PANELES_SUGERIDOS_one: '<strong>Un</strong> panel solar'
   LABEL_PANELES_SUGERIDOS_other: '<strong>{{count}}</strong> paneles solares'
@@ -1057,8 +1050,14 @@ Bateria:
   LABEL_CREATE: Añadir batería
   LABEL_DELETE: Borrar batería
   LABEL_DATOS_SIN_BATERIA: Datos sin batería
+  LABEL_MEDIANA_EXCEDENTE_INVIERNO: 'Mediana excedente diario invierno: {{excedente}}'
+  LABEL_MEDIANA_EXCEDENTE_INTERMEDIO: 'Mediana excedente diario intermedio: {{excedente}}'
+  LABEL_MEDIANA_EXCEDENTE_VERANO: 'Mediana excedente diario verano: {{excedente}}'
+  LABEL_MINIMO_EXCEDENTE: 'Excedente diario mínimo anual: {{excedente}}'
+  LABEL_MEDIANA_EXCEDENTE: 'Excedente diario mediana anual: {{excedente}}'
+  LABEL_MAXIMO_EXCEDENTE: 'Excedente diario máximo anual: {{excedente}}'
   LABEL_DATOS_CON_BATERIA: Datos con batería de <strong>{{capacidad}}</strong>
-  TITLE_PRESET: Configuración de la batería
+  TITLE_CONFIGURACION: Configuración de la batería
   MSG_ERROR_BATERIA: Validación batería
   TOOLTIP_BUTTON_NUEVA_BATERIA: Boton para añadir una batería a la configuración
   TOOLTIP_BUTTON_BORRA_BATERIA: Boton para quitar la batería de la configuración

@@ -195,35 +195,13 @@ export default function BateriaForm({
 
                   <Grid item xs={12}>
                     <Typography sx={theme.titles.level_1} textAlign={'center'}>
-                      {t('Bateria.TITLE_PRESET')}
+                      {t('Bateria.TITLE_CONFIGURACION')}
                     </Typography>
                   </Grid>
 
                     {/* ── Botbos de preset ── */}
                     <Grid container columnSpacing={2}>
-                      {/* <Grid item xs={12} sx={{ mb: '2rem' }} textAlign={'center'}>
-                        <Typography sx={theme.titles.level_2}>
-                          {t('Bateria.TITLE_PRESET_MODELS')}
-                        </Typography>
-
-                        {/* ── Presets ── */}
-                        {/* <Stack direction="row" spacing={2} justifyContent="center">
-                          {PRESETS.map((p) => (
-                            <Button
-                              variant="contained"
-                              key={p.label}
-                              type="button"
-                              size="small"
-                              onClick={() => aplicarPreset(p, formik)}
-                            >
-                              {p.label}
-                            </Button>
-                          ))}
-                        </Stack> */}
-                      {/* </Grid> */}
-
-                        <Grid item xs={12}>
-                          
+                        <Grid item xs={12}>                       
                           <Box
                             sx={{
                               display: 'flex',
@@ -255,7 +233,7 @@ export default function BateriaForm({
                                   {t('Bateria.TITLE_SECTION_SOC')}
                                 </Typography>
                                 <Campo
-                                  label="SOC máximo"
+                                  label={t('Bateria.PROP.socMax')}
                                   name="socMax"
                                   formik={formik}
                                   min={0.1}
@@ -265,7 +243,7 @@ export default function BateriaForm({
                                   hint="Límite superior de carga"
                                 />
                                 <Campo
-                                  label="SOC mínimo"
+                                  label={t('Bateria.PROP.socMin')}
                                   name="socMin"
                                   formik={formik}
                                   min={0}
@@ -307,14 +285,14 @@ export default function BateriaForm({
                                   {t('Bateria.TITLE_SECTION_POTENCIA')}
                                 </Typography>
                                 <Campo
-                                  label="Carga máxima"
+                                  label={t('Bateria.PROP.maxCargaKw')}
                                   name="maxCargaKw"
                                   formik={formik}
                                   unidad="kW"
                                   hint="Potencia máxima de entrada"
                                 />
                                 <Campo
-                                  label="Descarga máxima"
+                                  label={t('Bateria.PROP.maxDescargaKw')}
                                   name="maxDescargaKw"
                                   formik={formik}
                                   unidad="kW"

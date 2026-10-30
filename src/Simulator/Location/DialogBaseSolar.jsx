@@ -300,7 +300,6 @@ export default function DialogBaseSolar({ data, onClose }) {
               />
 
               <Typography
-                sx={{ mt: '1rem' }}
                 variant="body"
                 dangerouslySetInnerHTML={{
                   __html: t('BaseSolar.DESCRIPTION.roofType'),
@@ -313,7 +312,6 @@ export default function DialogBaseSolar({ data, onClose }) {
                   flexDirection: 'row',
                   flexWrap: 'wrap',
                   mt: '1rem',
-                  mb: '1rem',
                   justifyContent: 'space-between',
                 }}
               >
@@ -379,6 +377,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                     flex: 2,
                     flexDirection: 'column',
                     flexWrap: 'wrap',
+                    mb: '-1rem',
                   }}
                 >
                   {values.roofType === 'Inclinado' && (
@@ -389,7 +388,7 @@ export default function DialogBaseSolar({ data, onClose }) {
 
                   {values.roofType === 'Horizontal' && (
                     <>
-                      <Typography variant="body" sx={{ mt: '1rem', mb: '1rem' }}>
+                      <Typography variant="body" sx={{ mt: '1rem' }}>
                         {t('BaseSolar.DESCRIPTION.inclinacionPaneles')}
                       </Typography>
 
@@ -413,7 +412,6 @@ export default function DialogBaseSolar({ data, onClose }) {
                       justifyContent: 'center',
                       alignItems: 'center',
                       flexDirection: 'column',
-                      mt: '1rem',
                     }}
                   >
                     {!values.inclinacionOptima ? (
@@ -450,7 +448,7 @@ export default function DialogBaseSolar({ data, onClose }) {
                         </Grid>
                       </Grid>
                     ) : (
-                      <Typography variant="body" sx={{ mt: '1rem', mb: '1rem' }}>
+                      <Typography variant="body" sx={{ mt: '1rem' }}>
                         {t('BaseSolar.DESCRIPTION.angulosOptimos')}
                       </Typography>
                     )}
@@ -513,7 +511,7 @@ export default function DialogBaseSolar({ data, onClose }) {
               )} */}
             </Box>
           </DialogContent>
-          <DialogActions sx={{ mt: '1rem' }}>
+          <DialogActions>
             <Button onClick={() => handleCancel(values)}>
               {t('BASIC.LABEL_CANCEL')}
             </Button>

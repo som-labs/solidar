@@ -1,4 +1,4 @@
-import { useRef, useContext, useState, useEffect } from 'react'
+import { useRef, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // MUI objects
@@ -6,8 +6,6 @@ import { Typography, Container, Box, Grid } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 // REACT Solidar Components
-import { EconomicContext } from '../../EconomicContext'
-import { BasesContext } from '../../BasesContext'
 import { SLDRInfoBox } from '../../../components/SLDRComponents'
 import CallSankey from '../../EnergyBalance/SankeyFlow/CallSankey'
 
@@ -22,11 +20,9 @@ import TCB from '../../classes/TCB'
 export default function SummarySOMStep() {
   const { t } = useTranslation()
   const theme = useTheme()
-  const [yearlyData, setYearlyData] = useState({})
   const contentRef = useRef(null)
 
-  useEffect(() => {
-    setYearlyData({
+  const yearlyData = useMemo(()=>({
       consumo: TCB.consumo.totalAnual,
       produccion: TCB.produccion.totalAnual,
       deficit: TCB.balance.deficitAnual,
@@ -40,8 +36,8 @@ export default function SummarySOMStep() {
       descarga_nocturna: TCB.balance.descarga_nocturna,
       deficit_diurno: TCB.balance.deficit_diurno,
       deficit_nocturno: TCB.balance.deficit_nocturno,
-    })
-  }, [])
+    
+  }), [])
 
   return (
     <Container ref={contentRef}>
@@ -56,7 +52,9 @@ export default function SummarySOMStep() {
 
         <Grid item xs={12}>
           <SLDRInfoBox>
-            <CallSankey yearlyData={yearlyData}></CallSankey>
+            {yearlyData.consumo !== undefined && (
+              <CallSankey yearlyData={yearlyData}></CallSankey>
+            )}
           </SLDRInfoBox>
         </Grid>
 

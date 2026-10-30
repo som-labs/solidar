@@ -40,8 +40,11 @@ const BateryStep = () => {
   function nuevaBateria() {
     const new_bateria = new Bateria()
     new_bateria.capacidad = Math.round(TCB.BaseSolar.reduce((sum, tBase) => sum + tBase.instalacion.potenciaTotal, 0) * 1.2)
-    setBateria(new_bateria)
     TCB.bateria = new_bateria
+    setBateria(new_bateria)
+    calculaResultados()
+    handleResultados()
+
   }
 
   function eliminarBateria() {
@@ -123,62 +126,62 @@ const BateryStep = () => {
           </Grid>
           <Grid item xs={4} sx={{ backgroundColor: 'lightgray' }}>
             <Typography variant="body2">
-              {'Mediana excedente diario invierno: ' +
+              {t('Bateria.LABEL_MEDIANA_EXCEDENTE_INVIERNO',{excedente:
                 UTIL.formatoValor(
                   'produccionTotal',
                   TCB.statsSinBateria.inviernoStats.median,
-                )}
+                )})}
             </Typography>
           </Grid>
           <Grid item xs={4} sx={{ backgroundColor: 'yellow' }}>
             <Typography variant="body2">
-              {'Mediana excedente diario intermedio: ' +
+              {t('Bateria.LABEL_MEDIANA_EXCEDENTE_INTERMEDIO',{excedente:
                 UTIL.formatoValor(
                   'produccionTotal',
                   TCB.statsSinBateria.medioStats.median,
-                )}
+              )})}
             </Typography>
           </Grid>
           <Grid item xs={4} sx={{ backgroundColor: 'lightgreen' }}>
             <Typography variant="body2">
-              {'Mediana excedente diario verano: ' +
+              {t('Bateria.LABEL_MEDIANA_EXCEDENTE_VERANO',{excedente:
                 UTIL.formatoValor(
                   'produccionTotal',
                   TCB.statsSinBateria.veranoStats.median,
-                )}
+              )})}
             </Typography>
           </Grid>
           <Grid item xs={4} sx={{ backgroundColor: 'lightgray' }}>
             <Typography variant="body2">
-              {'Excedente diario mínimo anual: ' +
+              {t('Bateria.LABEL_MINIMO_EXCEDENTE', {excedente:
                 UTIL.formatoValor(
                   'produccionTotal',
                   TCB.statsSinBateria.deficitStats.min,
-                )}
+              )})}
             </Typography>
           </Grid>
           <Grid item xs={4} sx={{ backgroundColor: 'yellow' }}>
             <Typography variant="body2">
-              {'Excedente diario mediana anual: ' +
+              {t('Bateria.LABEL_MEDIANA_EXCEDENTE', {excedente:
                 UTIL.formatoValor(
                   'produccionTotal',
                   TCB.statsSinBateria.deficitStats.median,
-                )}
+              )})}
             </Typography>
           </Grid>
           <Grid item xs={4} sx={{ backgroundColor: 'lightgreen' }}>
             <Typography variant="body2">
-              {'Excedente diario máximo anual: ' +
+              {t('Bateria.LABEL_MAXIMO_EXCEDENTE', {excedente:
                 UTIL.formatoValor(
                   'produccionTotal',
                   TCB.statsSinBateria.deficitStats.max,
-                )}
+              )})}
             </Typography>
           </Grid>
           <Grid item xs={6} textAlign="center" sx={{ border: '1px solid', borderColor: 'divider'}}>
             <SLDRTooltip title={t('Balance.TOOLTIP.autosuficienciaMediaAnual')}>
               <Typography variant="body2">
-                {'Autosuficiencia: ' +
+                {t('Balance.PROP.autosuficienciaMediaAnual') + ': ' +
                   UTIL.formatoValor('porciento', TCB.statsSinBateria.autosuficiencia * 100)}
               </Typography>
             </SLDRTooltip>
@@ -186,12 +189,13 @@ const BateryStep = () => {
           <Grid item xs={6} textAlign="center" sx={{ border: '1px solid', borderColor: 'divider'}}>
             <SLDRTooltip title={t('Balance.TOOLTIP.autoconsumoMedioAnual')}>
               <Typography variant="body2">
-                {'Autoconsumo: ' +
+                {t('Balance.PROP.autoconsumoMedioAnual') + ': ' +
                   UTIL.formatoValor('porciento', TCB.statsSinBateria.autoconsumo * 100)}
               </Typography>
             </SLDRTooltip>
           </Grid>
         </Grid>
+
         {/* ── Botón principal ── */}
       <Grid item xs={12} textAlign="center">
         {!bateria ? (
@@ -226,122 +230,123 @@ const BateryStep = () => {
           </SLDRTooltip>
         )}
       </Grid>
-        {/* Datos con bateria */}
-        
-        {statsConBateria && (
-          <Grid container rowSpacing={1} 
-            sx={{
-              '& .MuiGrid-item': {
-                display: 'flex',
-                alignItems: 'center',      // vertical
-                justifyContent: 'center',  // horizontal
-                textAlign: 'center',       // por si el texto ocupa varias líneas
-                py: 1.,
-                minHeight: 25,
-              },
-            }}>
 
-            <Grid item xs={12}>
-              <Typography
-                variant="body1"
-                fontWeight={500}
-                textAlign="center"
-                verticalAlign="middle"
-                sx={{ borderBottom: '1px solid', pb: 0.5 , mt: '1rem'}}
-                dangerouslySetInnerHTML={{
-                  __html: t('Bateria.LABEL_DATOS_CON_BATERIA', { capacidad: UTIL.formatoValor('capacidad', bateria.capacidad) })
-                }}
-              >
-              </Typography>
-            </Grid>
-            <Grid item xs={4} sx={{ backgroundColor: 'lightgray' }}>
-              <Typography variant="body2">
-                {'Mediana excedente diario invierno: ' +
-                  UTIL.formatoValor(
-                    'produccionTotal',
-                    statsConBateria.inviernoStats.median,
-                  )}
-              </Typography>
-            </Grid>
-            <Grid item xs={4} sx={{ backgroundColor: 'yellow' }}>
-              <Typography variant="body2">
-                {'Mediana excedente diario intermedio: ' +
-                  UTIL.formatoValor('produccionTotal', statsConBateria.medioStats.median)}
-              </Typography>
-            </Grid>
-            <Grid item xs={4} sx={{ backgroundColor: 'lightgreen' }}>
-              <Typography variant="body2">
-                {'Mediana excedente diario verano: ' +
-                  UTIL.formatoValor(
-                    'produccionTotal',
-                    statsConBateria.veranoStats.median,
-                  )}
-              </Typography>
-            </Grid>
-            <Grid item xs={4} sx={{ backgroundColor: 'lightgray' }}>
-              <Typography variant="body2">
-                {'Excedente diario mínimo anual: ' +
-                  UTIL.formatoValor('produccionTotal', statsConBateria.deficitStats.min)}
-              </Typography>
-            </Grid>
-            <Grid item xs={4} sx={{ backgroundColor: 'yellow' }}>
-              <Typography variant="body2">
-                {'Excedente diario mediana anual: ' +
-                  UTIL.formatoValor(
-                    'produccionTotal',
-                    statsConBateria.deficitStats.median,
-                  )}
-              </Typography>
-            </Grid>
-            <Grid item xs={4} sx={{ backgroundColor: 'lightgreen' }}>
-              <Typography variant="body2">
-                {'Excedente diario máximo anual: ' +
-                  UTIL.formatoValor('produccionTotal', statsConBateria.deficitStats.max)}
-              </Typography>
-            </Grid>
-            <Grid item xs={6} textAlign="center" sx={{ border: '1px solid', borderColor: 'divider'}}>
-                <Typography variant="body2">
-                  {'Autosuficiencia: ' +
-                    UTIL.formatoValor('porciento', statsConBateria.autosuficiencia * 100)}
-                </Typography>
-      
-              </Grid>
-              <Grid item xs={6} textAlign="center" sx={{ border: '1px solid', borderColor: 'divider'}}>
-                <Typography variant="body2">
-                  {'Autoconsumo: ' +
-                    UTIL.formatoValor('porciento', statsConBateria.autoconsumo * 100)}
-                </Typography>
-              </Grid>
-          </Grid>
-        )}
-        {bateria && (
-          <Grid item xs={12} sx={{ mt: '1rem' }}>
+      {/* Datos con bateria */}
+      {statsConBateria && (
+        <Grid container rowSpacing={1} 
+          sx={{
+            '& .MuiGrid-item': {
+              display: 'flex',
+              alignItems: 'center',      // vertical
+              justifyContent: 'center',  // horizontal
+              textAlign: 'center',       // por si el texto ocupa varias líneas
+              py: 1.,
+              minHeight: 25,
+            },
+          }}>
 
-            <Grid item xs={12}>
-              <Typography
-                variant="body"
-                dangerouslySetInnerHTML={{
-                  __html: t('Bateria.DETALLES', { capacidad: UTIL.formatoValor('capacidad', bateria.capacidad) }),
-                }}
-              />   
-            </Grid>
-              <SLDRCollapsibleCard
-                expanded={true}
-                titleSX={theme.titles.level_1}
-                title={t('Bateria.DETALLES_TECNICOS')}
-              >
-                <Grid item xs={12} sx={{ mt: '1rem' }}>
-                  <BateryForm
-                    bateriaInicial={bateria}
-                    setBateriaValida={setBateriaValida}
-                    setBateria={setBateria}
-                    onResultados={handleResultados} // <-- nuevo
-                  />
-                </Grid>
-              </SLDRCollapsibleCard>
+          <Grid item xs={12}>
+            <Typography
+              variant="body1"
+              fontWeight={500}
+              textAlign="center"
+              verticalAlign="middle"
+              sx={{ borderBottom: '1px solid', pb: 0.5 , mt: '1rem'}}
+              dangerouslySetInnerHTML={{
+                __html: t('Bateria.LABEL_DATOS_CON_BATERIA', { capacidad: UTIL.formatoValor('capacidad', bateria.capacidad) })
+              }}
+            >
+            </Typography>
           </Grid>
-        )}
-      </Grid>
+          <Grid item xs={4} sx={{ backgroundColor: 'lightgray' }}>
+            <Typography variant="body2">
+              {t('Bateria.LABEL_MEDIANA_EXCEDENTE_INVIERNO',{excedente:
+                UTIL.formatoValor(
+                  'produccionTotal',
+                  statsConBateria.inviernoStats.median,
+              )})}
+            </Typography>
+          </Grid>
+          <Grid item xs={4} sx={{ backgroundColor: 'yellow' }}>
+            <Typography variant="body2">
+              {t('Bateria.LABEL_MEDIANA_EXCEDENTE_INTERMEDIO',{excedente:
+                UTIL.formatoValor('produccionTotal', statsConBateria.medioStats.median)})}
+            </Typography>
+          </Grid>
+          <Grid item xs={4} sx={{ backgroundColor: 'lightgreen' }}>
+            <Typography variant="body2">
+              {t('Bateria.LABEL_MEDIANA_EXCEDENTE_VERANO',{excedente:
+                UTIL.formatoValor(
+                  'produccionTotal',
+                  statsConBateria.veranoStats.median,
+              )})}
+            </Typography>
+          </Grid>
+          <Grid item xs={4} sx={{ backgroundColor: 'lightgray' }}>
+            <Typography variant="body2">
+              {t('Bateria.LABEL_MINIMO_EXCEDENTE', {excedente:
+                UTIL.formatoValor('produccionTotal', statsConBateria.deficitStats.min)})}
+            </Typography>
+          </Grid>
+          <Grid item xs={4} sx={{ backgroundColor: 'yellow' }}>
+            <Typography variant="body2">
+               {t('Bateria.LABEL_MEDIANA_EXCEDENTE', {excedente:
+                UTIL.formatoValor(
+                  'produccionTotal',
+                  statsConBateria.deficitStats.median,
+               )})}
+            </Typography>
+          </Grid>
+          <Grid item xs={4} sx={{ backgroundColor: 'lightgreen' }}>
+            <Typography variant="body2">
+              {t('Bateria.LABEL_MAXIMO_EXCEDENTE', {excedente:
+                UTIL.formatoValor('produccionTotal', statsConBateria.deficitStats.max)})}
+            </Typography>
+          </Grid>
+          <Grid item xs={6} textAlign="center" sx={{ border: '1px solid', borderColor: 'divider'}}>
+              <Typography variant="body2">
+                {t('Balance.PROP.autosuficienciaMediaAnual') + ': ' +
+                  UTIL.formatoValor('porciento', statsConBateria.autosuficiencia * 100)}
+              </Typography>
+    
+          </Grid>
+          <Grid item xs={6} textAlign="center" sx={{ border: '1px solid', borderColor: 'divider'}}>
+              <Typography variant="body2">
+                {t('Balance.PROP.autoconsumoMedioAnual') + ': ' +
+                  UTIL.formatoValor('porciento', statsConBateria.autoconsumo * 100)}
+              </Typography>
+          </Grid>
+        </Grid>
+      )}
+
+      {/* Detalles de la batería */}
+      {bateria && (
+        <Grid item xs={12} sx={{ mt: '1rem' }}>
+          <Grid item xs={12}>
+            <Typography
+              variant="body"
+              dangerouslySetInnerHTML={{
+                __html: t('Bateria.DETALLES', { capacidad: UTIL.formatoValor('capacidad', bateria.capacidad) }),
+              }}
+            />   
+          </Grid>
+            <SLDRCollapsibleCard
+              expanded={true}
+              titleSX={theme.titles.level_1}
+              title={t('Bateria.DETALLES_TECNICOS')}
+            >
+              <Grid item xs={12} sx={{ mt: '1rem' }}>
+                <BateryForm
+                  bateriaInicial={bateria}
+                  setBateriaValida={setBateriaValida}
+                  setBateria={setBateria}
+                  onResultados={handleResultados} // <-- nuevo
+                />
+              </Grid>
+            </SLDRCollapsibleCard>
+        </Grid>
+      )}
+    </Grid>
   )
 }
 

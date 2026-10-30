@@ -98,7 +98,7 @@ export default function GraphBoxSavings() {
           }}
         >
           <Typography variant="body" textAlign={'center'} color={'black'}>
-            {'ahorro anual'}
+            {t('Economico.PROP.ahorroAnual')}
           </Typography>
           <Typography variant="h5" textAlign={'center'} color={'black'}>
             {UTIL.formatoValor('dinero', ecoData.ahorroAnual)}

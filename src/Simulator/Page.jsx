@@ -94,6 +94,7 @@ export default function Page() {
     // PENDIENTE: podria haber un warning de falta de espacio enviado desde
     if (TCB.bateria) {
       if (!TCB.importando) {
+        console.log(bateria, bateriaValida)
         if (bateria && Object.keys(bateriaValida).length != 0) {
           const message = Object.entries(bateriaValida)
             .map(([key, value]) => `${key}: ${value}`)

@@ -172,7 +172,7 @@ export default function GraphAlternatives() {
     var trace_precioInstalacion = {
       x: paneles,
       y: precioInstalacion,
-      name: t('Inversion') + '(€)',
+      name: t('ECONOMIC_BALANCE.LABEL_INVERSION') + '(€)',
       yaxis: 'y2',
       type: 'scatter',
             hovertemplate:
@@ -185,7 +185,7 @@ export default function GraphAlternatives() {
     var trace_ahorroAnual = {
       x: paneles,
       y: ahorroAnual,
-      name: t('Ahorro') + '(€)',
+      name: t('ECONOMIC_BALANCE.LABEL_AHORRO') + '(€)',
       yaxis: 'y2',
       type: 'scatter',
       hovertemplate:
