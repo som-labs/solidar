@@ -721,7 +721,10 @@ export default function ReportSOM({ onClose }) {
                     }}
                   >
                     <PieChart
-                      labels={['Consumo horas con sol', 'Resto consumo']}
+                      labels={[
+                        t('ENERGY_BALANCE.SANKEY.USO_DIURNO'),
+                        t('ENERGY_BALANCE.SANKEY.USO_NOCTURNO'),
+                      ]}
                       values={[
                         TCB.balance.consumoDiurno,
                         TCB.consumo.totalAnual - TCB.balance.consumoDiurno,

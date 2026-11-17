@@ -192,7 +192,7 @@ Instalacion:
   DESCRIPTION:
     precioInstalacion: |
       Tot i intentar mantenir els preus actualitzats aquesta quantitat s’hauria de considerar com una orientació provisional del projecte que un instal·lador pot formular (sobretot si té més informació sobre el lloc final). \n Aquí no estan repercutides algunes despeses: obra civil (si fos necessària) substitució de l’aïllament o les teules antigues de la coberta mitjans d'elevació si calguessin modificacions que la distribuïdora o l'Administració poguessin requerir per a la instal·lació i alguns impostos i taxes que l'ajuntament podria cobrar (ICIO o llicència d'obres)
-    paneles: "La simulació es realitzarà amb un panell estàndard de {{potència}}.\
+    paneles: "La simulació es realitzarà amb un panell estàndard de {{potencia}}.\
       \ Si vols, pots modificar la potència i la tecnologia utilitzada.\n"
   LABEL_tecnologiaDesconocida: Desconeguda
 
@@ -1141,7 +1141,7 @@ REPORT:
   COBERTA_INCLINACIO: Inclinació
   COBERTA_SUPERFICIE: Superficie util
   US_TITLE: Ús del l'energia
-  US_POTENCIA: Potencia contractada
+  US_POTENCIA: Potència contractada
   US_TARIFA: Tarifa
   US_ANUAL: "Ús anual de l'energia:"
   BATERIA: Informació de la bateria instal·lada
@@ -1152,7 +1152,7 @@ REPORT:
   INSTALACIO_TOTAL: Potència total
   INSTALACIO_ANUAL: Generació anual
   INSTALACIO_COST: Cost aproximat fotovoltaica(IVA inclòs)
-  BATERY_CAPACIDAD: Capacitat batería
+  BATERY_CAPACIDAD: Capacitat bateria
   BATERY_COST: Cost aproximat bateries(IVA inclòs)
   ESTUDI_TITLE: Estudi energètic - econòmic
   ESTUDI_AUTOGENERACIO: Autogeneració directa anual
@@ -1315,11 +1315,11 @@ Bateria:
   LABEL_DELETE: Esborrar bateria
   LABEL_DATOS_SIN_BATERIA: Dades sense bateria
   LABEL_DATOS_CON_BATERIA: Dades amb bateria de <strong>{{capacidad}}</strong>
-  LABEL_MEDIANA_EXCEDENTE_INVIERNO: 'Mediana de l''excedent diari hivern: {{excedente}}'
-  LABEL_MEDIANA_EXCEDENTE_INTERMEDIO: 'Mediana de l''excedent diari intermedi: {{excedente}}'
-  LABEL_MEDIANA_EXCEDENTE_VERANO: 'Mediana de l''excedent diari estiu: {{excedente}}'
+  LABEL_MEDIANA_EXCEDENTE_INVIERNO: 'Mitjana de l''excedent diari hivern: {{excedente}}'
+  LABEL_MEDIANA_EXCEDENTE_INTERMEDIO: 'Mitjana de l''excedent diari intermedi: {{excedente}}'
+  LABEL_MEDIANA_EXCEDENTE_VERANO: 'Mitjana de l''excedent diari estiu: {{excedente}}'
   LABEL_MINIMO_EXCEDENTE: 'Excedent diari mínim anual: {{excedente}}'
-  LABEL_MEDIANA_EXCEDENTE: 'Mediana de l''excedent diari anual: {{excedente}}'
+  LABEL_MEDIANA_EXCEDENTE: 'Mitjana de l''excedent diari anual: {{excedente}}'
   LABEL_MAXIMO_EXCEDENTE: 'Excedent diari màxim anual: {{excedente}}'
   TITLE_CONFIGURACION: Configuració de la bateria
   MSG_ERROR_BATERIA: Validació de la bateria
@@ -1328,7 +1328,7 @@ Bateria:
   TITLE_SECTION_CAPACIDAD: CAPACITAT
   TITLE_SECTION_SOC: LÍMITS DE CÀRREGA (SOC)
   TITLE_SECTION_RENDIMIENTO: RENDIMENT
-  TITLE_SECTION_POTENCIA: POTENCIA MÀXIM
+  TITLE_SECTION_POTENCIA: POTÈNCIA MÀXIM
   LABEL_TITLE_PROFILE_DAY: Perfil diari de càrrega de bateria
   LABEL_TITLE_MAP_MONTH_DAY: Mapa d’estat de càrrega bateria en kWh
   PROP:

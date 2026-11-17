@@ -17,8 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
     exit(0);
 }
+// Acmbio endpoint tarifas Som energia
+// $urlBase = 'https://apinergia.somenergia.coop/tariff?';
+$urlBase = 'https://api.somenergia.coop//data/tariff?';
 
-$urlBase = 'https://apinergia.somenergia.coop/tariff?';
 if(isset($_GET['nombre']))
 {
 	$nombre = $_GET['nombre'];
@@ -42,12 +44,15 @@ if(isset($_GET['nombre']))
     $tarifa = json_decode($serviceData);
 
     if ($tarifa->count > 0) {
-        $tmp = $tarifa->data[0]->prices->current->autoconsumo->P1->value . ",";
+        // $tmp = $tarifa->data[0]->prices->current->autoconsumo->P1->value . ",";
+        $tmp = $tarifa->data->current->excedent_autoconsum->P1->value . ",";
         foreach($tarifa->data as $unidad) {
-            foreach($unidad->prices->current->activeEnergy as $clave=>$valor) {
+            // foreach($unidad->prices->current->activeEnergy as $clave=>$valor) {
+            foreach($unidad->current->energia as $clave=>$valor) {
                 $tmp = $tmp . $valor->value . ",";
             }
-            foreach($unidad->prices->current->power as $clave=>$valor) {
+            // foreach($unidad->prices->current->power as $clave=>$valor) {
+            foreach($unidad->current->potencia as $clave=>$valor) {
                 $tmp = $tmp . $valor->value . ",";
             }
             echo substr($tmp, 0, -1);

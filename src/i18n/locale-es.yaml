@@ -1069,8 +1069,8 @@ Bateria:
   LABEL_TITLE_MAP_MONTH_DAY: Mapa de estado de carga batería en kWh
   PROP:
     capacidad: Capacidad total
-    socMax: SOC Máximo
-    socMin: SOC Mínimo
+    socMax: SOC máximo
+    socMin: SOC mínimo
     eficiencia: Eficiencia round-trip
     precio: Precio de la batería en euros
     maxCargaKw: Carga máxima
@@ -1079,7 +1079,7 @@ Bateria:
     capacidad: Capacidad nominal del fabricante
     socMax: Limite superior de carga
     socMin: Estado de carga mínimo
-    eficiencia: Energía recuperada / energía almacenada
+    eficiencia: Energía descargada / energía almacenada
     precio: Precio de la batería en euros
     maxCargaKw: Potencia máxima de carga en kW
     maxDescargaKw: Potencia máxima de descarga en kW
